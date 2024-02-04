@@ -10,6 +10,14 @@ enum NoiseType
     AlongTrajectory
 }
 
+enum MovementState
+{
+    Arrive,
+    Patrol,
+    Attack,
+    Death
+}
+
 
 public class EnemyMovement : MonoBehaviour
 {
@@ -41,11 +49,42 @@ public class EnemyMovement : MonoBehaviour
     private Vector3 _startPos;
     private Vector3 _enterPhasePosition;
     private float _prevTime;
+    
+    private float _offsetAngle;
 
     private void Start()
     {
         _startPos = new Vector3(-1.8f, -2.5f, 0f);
         _prevTime = Time.time;
+
+        // Calculate an offset Angle
+        float a = Mathf.Abs(transform.position.x);
+        a = a;
+        float d = Vector3.Magnitude(transform.position);
+        float r = radius;
+
+        _offsetAngle = Mathf.PI - Mathf.Acos(r / d) - Mathf.Acos(a / d);
+        
+        Debug.DrawLine(transform.position, Vector3.zero, Color.red, 10f);
+        Debug.DrawLine(Vector3.zero, new Vector3(transform.position.x, 0, 0), Color.red, 10f);
+        
+        // Build a vector r
+        Vector3 rVector;
+        rVector.x = Mathf.Cos(-_offsetAngle);
+        rVector.y = Mathf.Sin(-_offsetAngle);
+        rVector.z = 0;
+        rVector = rVector.normalized * radius;
+        Debug.DrawLine(Vector3.zero, rVector, Color.green, 10f);
+        
+        Debug.Log(r/d);
+        Debug.Log(a/d);
+        
+        Debug.DrawLine(transform.position, rVector, Color.blue, 10f);
+        
+        
+       
+
+
     }
 
     // Update is called once per frame
@@ -54,9 +93,13 @@ public class EnemyMovement : MonoBehaviour
         // Circle Movement
         _prevPosition = transform.position;
         _phase = Time.time * speed;
+
+        float xOffset = Mathf.Cos(-_offsetAngle);
+        float yOffset = Mathf.Sin(-_offsetAngle);
+        
         _newPosition = Vector3.zero;
-        _newPosition.x = Mathf.Cos(_phase) * radius;
-        _newPosition.y = Mathf.Sin(_phase) * radius * _verticalAmplitude;
+        _newPosition.x = Mathf.Cos(_phase - xOffset) * radius;
+        _newPosition.y = Mathf.Sin(_phase - xOffset) * radius * _verticalAmplitude;
        
         // Adding Noise
         if (_isNoiseEnabled)
@@ -75,19 +118,19 @@ public class EnemyMovement : MonoBehaviour
         }
         
         // Enter animation
-        float enterAnimationPhase = (Time.time - _prevTime) / _enterAnimationDuration; 
-        
-        Debug.Log(enterAnimationPhase);
-        
-        if(enterAnimationPhase < 1f)
-        {
-            _enterPhasePosition = Vector3.Lerp(_startPos, _newPosition, enterAnimationPhase);
-            transform.position = _enterPhasePosition;
-        }
-        else
-        {
-            transform.position = _newPosition;            
-        }
+        // float enterAnimationPhase = (Time.time - _prevTime) / _enterAnimationDuration; 
+        //
+        // Debug.Log(enterAnimationPhase);
+        //
+        // if(enterAnimationPhase < 1f)
+        // {
+        //     _enterPhasePosition = Vector3.Lerp(_startPos, _newPosition, enterAnimationPhase);
+        //     transform.position = _enterPhasePosition;
+        // }
+        // else
+        // {
+        //     transform.position = _newPosition;            
+        // }
 
         
         // Adding Depth 
@@ -97,10 +140,10 @@ public class EnemyMovement : MonoBehaviour
             _newPosition += _cameraDirection * (_depthAmplitude * Mathf.Sin(_phase));    
         }
         
-        // transform.position = _newPosition;
+        transform.position = _newPosition;
         
-        Debug.DrawLine(_prevPosition, transform.position, Color.cyan, _debugTrailGizmoDelay);
-        Debug.DrawLine(_mainCameraTransform.position, transform.position, Color.yellow, 0.01f);
+        //Debug.DrawLine(_prevPosition, transform.position, Color.cyan, _debugTrailGizmoDelay);
+        //Debug.DrawLine(_mainCameraTransform.position, transform.position, Color.yellow, 0.01f);
         
     }
 
