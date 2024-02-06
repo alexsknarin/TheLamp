@@ -714,6 +714,8 @@ MonoBehaviour:
   _noiseType: 0
   _noiseAmplitude: 0.12
   _noiseFrequency: 5
+  _spawnAreaCenter: {x: 2.6, y: -2.6, z: 0}
+  _spawnAreaSize: 0.5
   _verticalAdaptDuration: 2
   _attackPrepareDuration: 0.4
   _attackPrepareDistance: 1

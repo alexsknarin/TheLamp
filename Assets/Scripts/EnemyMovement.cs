@@ -1,10 +1,6 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.PlayerLoop;
-using UnityEngine.Serialization;
-using UnityEngine.TextCore.LowLevel;
+using Random = UnityEngine.Random;
 
 enum NoiseType
 {
@@ -40,6 +36,10 @@ public class EnemyMovement : MonoBehaviour
     [SerializeField] private float _noiseAmplitude;
     [SerializeField] private float _noiseFrequency;
     
+    [Header("------------Spawn------------")]
+    [SerializeField] private Vector3 _spawnAreaCenter;
+    [SerializeField] private float _spawnAreaSize;
+    
     // [Header("-------Enter Move State-------")]
     // [SerializeField] private float _enterAnimationDuration;
     
@@ -65,6 +65,7 @@ public class EnemyMovement : MonoBehaviour
     private Vector3 _noiseValue = Vector3.zero;
     
     // Enter Move State
+    private int _movementDirection;
     private Vector3 _startPos;
     private Vector3 _enterPhasePosition;
     private Vector3 _enterMovementDirection;
@@ -82,27 +83,47 @@ public class EnemyMovement : MonoBehaviour
     // Attack Move State
     private Vector3 _attackDirection;
 
+    private int GetRandomDirection()
+    {
+        return Random.Range(0, 2) * 2 - 1;
+    }
+    
+    private Vector3 GenerateSpawnPosition(int direction)
+    {
+        Vector3 spawnPosition = (Vector3)(Random.insideUnitCircle * _spawnAreaSize) + _spawnAreaCenter;
+        spawnPosition.x *= direction;
+        return spawnPosition;
+    }
+    
     private void Init()
     {
-        _startPos = new Vector3(-1.8f, -2.5f, 0f); // TODO: Replace with random circle
+        _movementDirection = GetRandomDirection();
+        _startPos = GenerateSpawnPosition(_movementDirection);
+        transform.position = _startPos;
+        
         var position = transform.position;
         float xProjectionLength = Mathf.Abs(position.x);
         float enterDirectionLength = Vector3.Magnitude(position); // TODO: calculate noise to add it into account
         float r = _radius * _verticalAmplitude;
 
         _patrolStartOffsetAngle = Mathf.PI - Mathf.Acos(r / enterDirectionLength) - Mathf.Acos(xProjectionLength / enterDirectionLength);
-        Debug.Log(_patrolStartOffsetAngle);
-        
-        _patrolStartPos.x = Mathf.Cos(-_patrolStartOffsetAngle);
+
+        _patrolStartPos.x = -Mathf.Cos(-_patrolStartOffsetAngle) * _movementDirection;
         _patrolStartPos.y = Mathf.Sin(-_patrolStartOffsetAngle);
+        
         _patrolStartPos = _patrolStartPos.normalized * r;
         
         _enterMovementDirection = (_patrolStartPos - _startPos).normalized;
+        Debug.Log(_enterMovementDirection);
         
         _movementState = MovementState.Enter;
         _prevTime = Time.time;
     }
-
+    
+    //
+    // TODO: reverse movement direction ???????
+    //
+    
     private void DrawInitDebugGizmos(Vector3 startPos, float radius, float patrolStartOffsetAngle, Vector3 patrolStartPos)
     {
         Debug.DrawLine(startPos, Vector3.zero, Color.red, 10f);
@@ -118,8 +139,8 @@ public class EnemyMovement : MonoBehaviour
         transform.position = _newPosition;
         
         Debug.DrawLine(_prevPosition, _prevPosition + _enterMovementDirection*0.01f, Color.cyan, _debugTrailGizmoDelay);
-        
-        if(transform.position.x > _patrolStartPos.x)
+
+        if(-transform.position.x*_movementDirection > Mathf.Abs(_patrolStartPos.x))
         {
             _enterTimeOffset = Time.time;
             _prevTime = Time.time;
@@ -190,11 +211,21 @@ public class EnemyMovement : MonoBehaviour
         }
         
         _prevPosition = transform.position;
-        _phase = (Time.time - _enterTimeOffset) * speed;
+        _phase = -(Time.time - _enterTimeOffset) * speed * _movementDirection;
       
         _newPosition = Vector3.zero;
-        _newPosition.x = Mathf.Cos(_phase - _patrolStartOffsetAngle) * _finalXRadius;               //TODO: X radius Y radius
-        _newPosition.y = Mathf.Sin(_phase - _patrolStartOffsetAngle) * _radius * _verticalAmplitude;
+        float offsetAngleWithDirection;
+        if (_movementDirection < 0)
+        {
+            offsetAngleWithDirection = _patrolStartOffsetAngle;
+        }
+        else
+        {
+            offsetAngleWithDirection = -_patrolStartOffsetAngle-Mathf.PI;
+        }
+       
+        _newPosition.x = Mathf.Cos(_phase - offsetAngleWithDirection) * _finalXRadius;               //TODO: X radius Y radius
+        _newPosition.y = Mathf.Sin(_phase - offsetAngleWithDirection) * _radius * _verticalAmplitude;
         
         // Adding Depth 
         if (_isDepthEnabled)
