@@ -150,9 +150,9 @@ public class EnemyMovement : MonoBehaviour
     
     private void Start()
     {
-        _rigidbody2D = GetComponent<Rigidbody2D>();
-        Init();
-        DrawInitDebugGizmos(_startPos, _radius, _patrolStartOffsetAngle, _patrolStartPos);
+        // _rigidbody2D = GetComponent<Rigidbody2D>();
+        // Init();
+        // DrawInitDebugGizmos(_startPos, _radius, _patrolStartOffsetAngle, _patrolStartPos);
     }
 
     // Update is called once per frame
