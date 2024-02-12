@@ -25,6 +25,10 @@ public abstract class EnemyMovementBaseState : IMovementState
     {
     }
 
+    public virtual void CheckForStateChange()
+    {
+    }
+
     public void ExitState()
     {
     }

@@ -18,4 +18,9 @@ public class EnemyMovementStateMachine
     {
         _currentState.ExecuteState(currentPosition);
     }
+    
+    public void CheckForStateChange()
+    {
+        _currentState.CheckForStateChange();
+    }
 }

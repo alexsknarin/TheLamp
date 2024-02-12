@@ -50,18 +50,24 @@ public class EnemyMovementEnterState: EnemyMovementBaseState
         _endPos.x = -Mathf.Cos(-patrolStartOffsetAngle) * _sideDirection;
         _endPos.y = Mathf.Sin(-patrolStartOffsetAngle);
         _endPos = _endPos.normalized * r;
-        
+       
         _enterDirection = (_endPos - _startPos).normalized;
+
+        Position = _startPos;
+        Debug.Log(_sideDirection);
+        Debug.Log(_startPos);
+        Debug.Break();
     }
     
     public override void ExecuteState(Vector3 currentPosition)
     {
         Position = currentPosition + _enterDirection * (_speed * Time.deltaTime * (Mathf.PI/2));
-        
+    }
+    
+    public override void CheckForStateChange()
+    {
         if(-Position.x*_sideDirection > Mathf.Abs(_endPos.x))
         {
-            Debug.Break();
-            Debug.Log("Switching to Patrol");
             _owner.SwitchState();
         }
     }
@@ -73,7 +79,9 @@ public class EnemyMovementEnterState: EnemyMovementBaseState
     private Vector3 GenerateSpawnPosition(int direction)
     {
         Vector3 spawnPosition = (Vector3)(Random.insideUnitCircle * _spawnAreaSize) + _spawnAreaCenter;
+        Debug.Log(spawnPosition);
         spawnPosition.x *= direction;
+        Debug.Log(spawnPosition);
         return spawnPosition;
     }
 

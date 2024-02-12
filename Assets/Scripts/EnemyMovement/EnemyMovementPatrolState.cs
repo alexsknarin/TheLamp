@@ -23,6 +23,7 @@ public class EnemyMovementPatrolState: EnemyMovementBaseState
     
     public override void ExecuteState(Vector3 currentPosition)
     {
+        Debug.Log(currentPosition);
         Position = currentPosition;
     }
 

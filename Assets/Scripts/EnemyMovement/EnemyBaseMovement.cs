@@ -37,8 +37,7 @@ public class EnemyBaseMovement : MonoBehaviour
         _currentState = _enterState;
         
         _movementStateMachine.SetState(_currentState);
-        
-        Debug.Log(_sideDirection);
+        transform.position = _currentState.Position;
     }
     
     public void SwitchState()
@@ -53,13 +52,14 @@ public class EnemyBaseMovement : MonoBehaviour
         
         _currentState = newState;
         _movementStateMachine.SetState(_currentState);
+        Debug.Log("State Changed -------------------------");
     }
 
     private void Update()
-    {
-        _movementStateMachine.Execute(transform.position);
+    {   
         Debug.Log(_currentState.State);
-        Debug.Log(_currentState.Position);
+        _movementStateMachine.Execute(transform.position);
         transform.position = _currentState.Position;
+        _movementStateMachine.CheckForStateChange();
     }
 }

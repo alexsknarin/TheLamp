@@ -263,13 +263,13 @@ public class EnemyMovement : MonoBehaviour
     }
 
 
-    private void OnTriggerEnter2D(Collider2D other)
-    {
-        Debug.Log("Collided");
-        transform.position += -_attackDirection * 0.15f;
-        _rigidbody2D.bodyType = RigidbodyType2D.Dynamic;
-        _movementState = MovementState.Fall;
-    }
+    // private void OnTriggerEnter2D(Collider2D other)
+    // {
+    //     Debug.Log("Collided");
+    //     transform.position += -_attackDirection * 0.15f;
+    //     _rigidbody2D.bodyType = RigidbodyType2D.Dynamic;
+    //     _movementState = MovementState.Fall;
+    // }
 
 
     private void TMP()
