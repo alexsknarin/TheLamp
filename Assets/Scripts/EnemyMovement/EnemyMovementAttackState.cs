@@ -16,7 +16,7 @@ public class EnemyMovementAttackState: EnemyMovementBaseState
         protected set  { }
     }
 
-    public override void EnterState()
+    public override void EnterState(Vector3 currentPosition)
     {
     }
     

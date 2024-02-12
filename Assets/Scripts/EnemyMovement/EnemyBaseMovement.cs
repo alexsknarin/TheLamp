@@ -9,7 +9,7 @@ public class EnemyBaseMovement : MonoBehaviour
     [SerializeField] private float _speed;
     [SerializeField] private float _radius;
     [SerializeField] private float _verticalAmplitude;
-    
+
     private EnemyMovementStateMachine _movementStateMachine;
     
     private EnemyMovementBaseState _currentState;
@@ -18,6 +18,8 @@ public class EnemyBaseMovement : MonoBehaviour
     private EnemyMovementPatrolState _patrolState;
     private EnemyMovementAttackState _attackState;
     
+    //Debug
+    private Vector3 _prevPos;
 
 
     private void Start()
@@ -36,7 +38,7 @@ public class EnemyBaseMovement : MonoBehaviour
         
         _currentState = _enterState;
         
-        _movementStateMachine.SetState(_currentState);
+        _movementStateMachine.SetState(_currentState, transform.position);
         transform.position = _currentState.Position;
     }
     
@@ -51,15 +53,17 @@ public class EnemyBaseMovement : MonoBehaviour
         };
         
         _currentState = newState;
-        _movementStateMachine.SetState(_currentState);
-        Debug.Log("State Changed -------------------------");
+        _movementStateMachine.SetState(_currentState, transform.position);
     }
 
     private void Update()
     {   
-        Debug.Log(_currentState.State);
+        _prevPos = transform.position;
         _movementStateMachine.Execute(transform.position);
         transform.position = _currentState.Position;
+        
         _movementStateMachine.CheckForStateChange();
+        
+        Debug.DrawLine(_prevPos, _prevPos + (transform.position-_prevPos).normalized*0.02f, Color.cyan, 5f);
     }
 }

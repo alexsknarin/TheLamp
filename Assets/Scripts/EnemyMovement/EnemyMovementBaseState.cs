@@ -17,7 +17,7 @@ public abstract class EnemyMovementBaseState : IMovementState
     {
     }
 
-    public virtual void EnterState()
+    public virtual void EnterState(Vector3 currentPosition)
     {
     }
 
@@ -29,7 +29,7 @@ public abstract class EnemyMovementBaseState : IMovementState
     {
     }
 
-    public void ExitState()
+    public virtual void ExitState()
     {
     }
 }
