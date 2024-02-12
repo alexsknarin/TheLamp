@@ -6,6 +6,7 @@ public class EnemyMovementPatrolState: EnemyMovementBaseState
     private float _prevTime;
     private float _patrolStartOffsetAngle;
     private float _enterTimeOffset; // TMP
+    private float _phase;
     
     public EnemyMovementPatrolState(EnemyBaseMovement owner, int sideDirection, float speed, float radius, float verticalAmplitude) : base()
     {
@@ -26,9 +27,9 @@ public class EnemyMovementPatrolState: EnemyMovementBaseState
     {
         _prevTime = Time.time;
         Vector3 horizntalVector = Vector3.right;
-        horizntalVector.x = _sideDirection;
+        horizntalVector.x *= _sideDirection;
         _patrolStartOffsetAngle = Mathf.Acos(Vector3.Dot(horizntalVector.normalized, currentPosition.normalized));
-        
+        _phase = 0;
     }
     
     public override void ExecuteState(Vector3 currentPosition)
@@ -41,22 +42,22 @@ public class EnemyMovementPatrolState: EnemyMovementBaseState
             finalXRadius = Mathf.Lerp(_radius * _verticalAmplitude, _radius,  Mathf.SmoothStep(0, 1, radiusAdaptPhase));
         }
         
-        float phase = Time.time * _speed * _sideDirection;  // find a way to provide _enterTimeOffset;
+        _phase += Time.deltaTime * _speed * _sideDirection;
         
         float offsetAngleWithDirection;
-        if (_sideDirection < 0)
+        if (_sideDirection > 0)
         {
-            offsetAngleWithDirection = _patrolStartOffsetAngle;
+            offsetAngleWithDirection = -_patrolStartOffsetAngle;
         }
         else
         {
-            offsetAngleWithDirection = -_patrolStartOffsetAngle-Mathf.PI;
+            offsetAngleWithDirection = _patrolStartOffsetAngle-Mathf.PI;
         }
         
         Vector3 newPosition = Vector3.zero;
         
-        newPosition.x = Mathf.Cos(phase + offsetAngleWithDirection) * finalXRadius;               //TODO: X radius Y radius
-        newPosition.y = Mathf.Sin(phase + offsetAngleWithDirection) * _radius * _verticalAmplitude;
+        newPosition.x = Mathf.Cos(_phase + offsetAngleWithDirection) * finalXRadius;               //TODO: X radius Y radius ?????
+        newPosition.y = Mathf.Sin(_phase + offsetAngleWithDirection) * _radius * _verticalAmplitude;
         
         Position = newPosition;
         

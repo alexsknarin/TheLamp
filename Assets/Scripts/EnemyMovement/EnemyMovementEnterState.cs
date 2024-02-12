@@ -35,7 +35,6 @@ public class EnemyMovementEnterState: EnemyMovementBaseState
         float r = _radius * _verticalAmplitude;
         
         float patrolStartOffsetAngle = Mathf.PI - Mathf.Acos(r / enterDirectionLength) - Mathf.Acos(xProjectionLength / enterDirectionLength);
-        Debug.Log(patrolStartOffsetAngle);
         
         _endPos.x = Mathf.Cos(-patrolStartOffsetAngle) * _sideDirection;
         _endPos.y = Mathf.Sin(-patrolStartOffsetAngle);

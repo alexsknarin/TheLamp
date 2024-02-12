@@ -114,8 +114,7 @@ public class EnemyMovement : MonoBehaviour
         _patrolStartPos = _patrolStartPos.normalized * r;
         
         _enterMovementDirection = (_patrolStartPos - _startPos).normalized;
-        Debug.Log(_enterMovementDirection);
-        
+
         _movementState = MovementState.Enter;
         _prevTime = Time.time;
     }
