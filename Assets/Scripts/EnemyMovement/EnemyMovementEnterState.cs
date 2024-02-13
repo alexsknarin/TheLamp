@@ -68,5 +68,4 @@ public class EnemyMovementEnterState: EnemyMovementBaseState
         return spawnPosition;
     }
 
-
 }

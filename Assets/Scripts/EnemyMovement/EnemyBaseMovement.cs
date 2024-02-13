@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class EnemyBaseMovement : MonoBehaviour
@@ -17,6 +18,7 @@ public class EnemyBaseMovement : MonoBehaviour
     private EnemyMovementEnterState _enterState;
     private EnemyMovementPatrolState _patrolState;
     private EnemyMovementAttackState _attackState;
+    private EnemyMovementFallState _fallState;
     
     //Debug
     private Vector3 _prevPos;
@@ -35,6 +37,7 @@ public class EnemyBaseMovement : MonoBehaviour
         _enterState = new EnemyMovementEnterState(this, _sideDirection, _speed, _radius, _verticalAmplitude);
         _patrolState  = new EnemyMovementPatrolState(this, _sideDirection, _speed, _radius, _verticalAmplitude);
         _attackState = new EnemyMovementAttackState(this, _sideDirection, _speed, _radius, _verticalAmplitude);
+        _fallState = new EnemyMovementFallState(this, _sideDirection, _speed, _radius, _verticalAmplitude);
         
         _currentState = _enterState;
         
@@ -48,7 +51,8 @@ public class EnemyBaseMovement : MonoBehaviour
         {
             EnemyStates.Enter => _patrolState,
             EnemyStates.Patrol => _attackState,
-            EnemyStates.Attack => _enterState,
+            EnemyStates.Attack => _fallState,
+            EnemyStates.Fall => _patrolState,
             _ => throw new ArgumentOutOfRangeException()
         };
         
@@ -65,5 +69,21 @@ public class EnemyBaseMovement : MonoBehaviour
         _movementStateMachine.CheckForStateChange();
         
         Debug.DrawLine(_prevPos, _prevPos + (transform.position-_prevPos).normalized*0.02f, Color.cyan, 5f);
+        
+        if(Input.GetKeyDown(KeyCode.Space))
+        {
+            if (_currentState.State == EnemyStates.Patrol)
+            {
+                SwitchState();
+            }
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if(_currentState.State == EnemyStates.Attack)
+        {
+            SwitchState();
+        }
     }
 }

@@ -65,5 +65,7 @@ public class EnemyMovementPatrolState: EnemyMovementBaseState
 
     public void ExitState()
     {
+        _prevTime = 0;
+        _patrolStartOffsetAngle = 0;
     }
 }

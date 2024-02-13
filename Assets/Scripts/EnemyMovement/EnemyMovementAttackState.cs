@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class EnemyMovementAttackState: EnemyMovementBaseState
@@ -22,6 +23,10 @@ public class EnemyMovementAttackState: EnemyMovementBaseState
     
     public override void ExecuteState(Vector3 currentPosition)
     {
+        Vector3 newPosition = currentPosition;
+        Vector3 direction = -newPosition.normalized;
+        newPosition += direction * _speed * Time.deltaTime;
+        Position = newPosition;
     }
 
     public void ExitState()
