@@ -13,11 +13,7 @@ public class EnemyMovementAttackState: EnemyMovementBaseState
         _verticalAmplitude = verticalAmplitude;
         _owner = owner;
     }
-    public override EnemyStates State
-    {
-        get => EnemyStates.Attack;
-        protected set  { }
-    }
+    public override EnemyStates State => EnemyStates.Attack;
 
     public override void EnterState(Vector3 currentPosition, int sideDirection)
     {

@@ -16,6 +16,7 @@ public class EnemyBaseMovement : MonoBehaviour
     private EnemyMovementEnterState _enterState;
     private EnemyMovementPatrolState _patrolState;
     private EnemyMovementAttackState _attackState;
+    private EnemyMovementPreAttackState _preAttackState;
     private EnemyMovementFallState _fallState;
     
     //Debug
@@ -41,6 +42,7 @@ public class EnemyBaseMovement : MonoBehaviour
         
         _enterState = new EnemyMovementEnterState(this, _speed, _radius, _verticalAmplitude);
         _patrolState  = new EnemyMovementPatrolState(this, _speed, _radius, _verticalAmplitude);
+        _preAttackState = new EnemyMovementPreAttackState(this, _speed, _radius, _verticalAmplitude);
         _attackState = new EnemyMovementAttackState(this, _speed, _radius, _verticalAmplitude);
         _fallState = new EnemyMovementFallState(this, _speed, _radius, _verticalAmplitude);
         
@@ -62,7 +64,8 @@ public class EnemyBaseMovement : MonoBehaviour
         EnemyMovementBaseState newState = _currentState.State switch
         {
             EnemyStates.Enter => _patrolState,
-            EnemyStates.Patrol => _attackState,
+            EnemyStates.Patrol => _preAttackState,
+            EnemyStates.PreAttack => _attackState,
             EnemyStates.Attack => _fallState,
             EnemyStates.Fall => ReturnToPatrol(),
             _ => throw new ArgumentOutOfRangeException()
@@ -87,6 +90,8 @@ public class EnemyBaseMovement : MonoBehaviour
         _movementStateMachine.CheckForStateChange();
         
         Debug.DrawLine(_prevPos, _prevPos + (transform.position-_prevPos).normalized*0.02f, Color.cyan, 5f);
+       
+        
         
         if(Input.GetKeyDown(KeyCode.Space))
         {

@@ -16,11 +16,7 @@ public class EnemyMovementFallState: EnemyMovementBaseState
         _verticalAmplitude = verticalAmplitude;
         _owner = owner;
     }
-    public override EnemyStates State
-    {
-        get => EnemyStates.Fall;
-        protected set  { }
-    }
+    public override EnemyStates State => EnemyStates.Fall;
 
     public override void EnterState(Vector3 currentPosition, int sideDirection)
     {

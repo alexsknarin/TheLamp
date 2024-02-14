@@ -13,12 +13,7 @@ public class EnemyMovementEnterState: EnemyMovementBaseState
         _owner = owner;
     } 
 
-
-    public override EnemyStates State
-    {
-        get => EnemyStates.Enter;
-        protected set  { }
-    }
+    public override EnemyStates State => EnemyStates.Enter;
    
     public override void EnterState(Vector3 currentPosition, int sideDirection)
     {

@@ -4,7 +4,7 @@ using UnityEngine.UIElements;
 public abstract class EnemyMovementBaseState : IMovementState
 {
     public Vector3 Position { get; protected set; }
-    abstract public EnemyStates State { get; protected set;}
+    abstract public EnemyStates State { get; }
 
     protected int _sideDirection;
     protected float _speed;

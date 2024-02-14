@@ -16,11 +16,7 @@ public class EnemyMovementPatrolState: EnemyMovementBaseState
         _owner = owner;
     }
     
-    public override EnemyStates State
-    {
-        get => EnemyStates.Patrol;
-        protected set  { }
-    }
+    public override EnemyStates State => EnemyStates.Patrol;
 
     public override void EnterState(Vector3 currentPosition, int sideDirection)
     {
