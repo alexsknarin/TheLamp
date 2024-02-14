@@ -11,6 +11,9 @@ public class EnemyBaseMovement : MonoBehaviour
     [SerializeField] private float _spawnAreaSize = 0.5f;
     [SerializeField] private Vector3 _spawnAreaCenter;
 
+    [SerializeField] private float _smoothTime = .3f;
+    private Vector3 _velocity = Vector3.zero;
+    
     private EnemyMovementStateMachine _movementStateMachine;
     private EnemyMovementBaseState _currentState;
     private EnemyMovementEnterState _enterState;
@@ -21,6 +24,8 @@ public class EnemyBaseMovement : MonoBehaviour
     
     //Debug
     private Vector3 _prevPos;
+    private Vector3 _prevPosSmooth;
+    private Vector3 _position;
 
 
     private void Start()
@@ -51,12 +56,13 @@ public class EnemyBaseMovement : MonoBehaviour
         _currentState = _enterState;
         
         _movementStateMachine.SetState(_currentState, transform.position, _sideDirection);
-        transform.position = _currentState.Position;
+        _position = _currentState.Position;
+        transform.position = _position;
     }
     
     private void Spawn()
     {
-        transform.position = GenerateSpawnPosition(-_sideDirection);
+        _position = GenerateSpawnPosition(-_sideDirection);
     }
     
     public void SwitchState()
@@ -72,24 +78,37 @@ public class EnemyBaseMovement : MonoBehaviour
         };
         
         _currentState = newState;
-        _movementStateMachine.SetState(_currentState, transform.position, _sideDirection);
+        _movementStateMachine.SetState(_currentState, _position, _sideDirection);
     }
 
     private EnemyMovementEnterState ReturnToPatrol()
     {
-        _sideDirection = -(int)Mathf.Sign(transform.position.x);
+        _sideDirection = -(int)Mathf.Sign(_position.x);
         return _enterState;
     }
 
     private void Update()
     {   
-        _prevPos = transform.position;
-        _movementStateMachine.Execute(transform.position);
-        transform.position = _currentState.Position;
+        _prevPos = _position;
+        _prevPosSmooth = transform.position;
+        
+        _movementStateMachine.Execute(_position);
+        _position = _currentState.Position;
+
+
+        if (_currentState.State == EnemyStates.Attack)
+        {
+            transform.position = _position;
+        }
+        else
+        {
+            transform.position = Vector3.SmoothDamp(transform.position, _position, ref _velocity, _smoothTime);;    
+        }
         
         _movementStateMachine.CheckForStateChange();
         
-        Debug.DrawLine(_prevPos, _prevPos + (transform.position-_prevPos).normalized*0.02f, Color.cyan, 5f);
+        Debug.DrawLine(_prevPos, _prevPos + (_position-_prevPos).normalized*0.02f, Color.cyan, 5f);
+        Debug.DrawLine(_prevPosSmooth, _prevPosSmooth + (transform.position-_prevPosSmooth).normalized*0.02f, Color.yellow, 5f);
        
         
         
