@@ -2,11 +2,11 @@ using System;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-enum NoiseType
-{
-    WorldSpace,
-    AlongTrajectory
-}
+// enum NoiseType
+// {
+//     WorldSpace,
+//     AlongTrajectory
+// }
 
 enum MovementState
 {

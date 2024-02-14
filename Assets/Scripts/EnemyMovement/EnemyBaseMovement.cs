@@ -2,6 +2,12 @@ using System;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
+enum NoiseType
+{
+    WorldSpace,
+    AlongTrajectory
+}
+
 public class EnemyBaseMovement : MonoBehaviour
 {
     private int _sideDirection;
@@ -10,7 +16,12 @@ public class EnemyBaseMovement : MonoBehaviour
     [SerializeField] private float _verticalAmplitude;
     [SerializeField] private float _spawnAreaSize = 0.5f;
     [SerializeField] private Vector3 _spawnAreaCenter;
-
+    
+    [SerializeField] private bool _isNoiseEnabled;
+    [SerializeField] private float _noiseFrequency;
+    [SerializeField] private float _noiseAmplitude;
+    [SerializeField] private NoiseType _noiseType;
+    
     [SerializeField] private float _smoothTime = .3f;
     private Vector3 _velocity = Vector3.zero;
     
@@ -26,6 +37,7 @@ public class EnemyBaseMovement : MonoBehaviour
     private Vector3 _prevPos;
     private Vector3 _prevPosSmooth;
     private Vector3 _position;
+    
 
 
     private void Start()
@@ -95,7 +107,25 @@ public class EnemyBaseMovement : MonoBehaviour
         _movementStateMachine.Execute(_position);
         _position = _currentState.Position;
 
+        
+        // Add Noise
+        if (_isNoiseEnabled && _currentState.State == EnemyStates.Patrol)  
+        {
+            Vector3 noiseValue = Vector3.zero;
+            noiseValue.x = Mathf.PerlinNoise(_noiseFrequency * Time.time, 0) * 2 - 1;
+            noiseValue.y = Mathf.PerlinNoise(0, _noiseFrequency * Time.time) * 2 - 1;
 
+            if (_noiseType == NoiseType.WorldSpace)
+            {
+                _position += noiseValue * _noiseAmplitude;
+            }
+            else if (_noiseType == NoiseType.AlongTrajectory)
+            {
+                _position += transform.position.normalized * (noiseValue.x * _noiseAmplitude);
+            }
+        }
+        
+        // Add SmoothDamp
         if (_currentState.State == EnemyStates.Attack)
         {
             transform.position = _position;
