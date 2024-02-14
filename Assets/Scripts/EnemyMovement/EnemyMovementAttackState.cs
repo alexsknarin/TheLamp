@@ -1,8 +1,11 @@
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.TextCore.LowLevel;
 
 public class EnemyMovementAttackState: EnemyMovementBaseState
 {
+    private float _acceleration = 0.06f;
+    private float _acceleratedSpeed = 1f;
     public EnemyMovementAttackState(EnemyBaseMovement owner, float speed, float radius, float verticalAmplitude) : base()
     {
         _speed = speed;
@@ -19,13 +22,15 @@ public class EnemyMovementAttackState: EnemyMovementBaseState
     public override void EnterState(Vector3 currentPosition, int sideDirection)
     {
         _sideDirection = sideDirection;
+        _acceleratedSpeed = 1f;
     }
     
     public override void ExecuteState(Vector3 currentPosition)
     {
         Vector3 newPosition = currentPosition;
         Vector3 direction = -newPosition.normalized;
-        newPosition += direction * (_speed * Time.deltaTime);
+        newPosition += direction * (_speed * _acceleratedSpeed * Time.deltaTime);
+        _acceleratedSpeed += _acceleration;
         Position = newPosition;
     }
 
