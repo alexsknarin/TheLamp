@@ -3,9 +3,8 @@ using UnityEngine;
 
 public class EnemyMovementAttackState: EnemyMovementBaseState
 {
-    public EnemyMovementAttackState(EnemyBaseMovement owner, int sideDirection, float speed, float radius, float verticalAmplitude) : base()
+    public EnemyMovementAttackState(EnemyBaseMovement owner, float speed, float radius, float verticalAmplitude) : base()
     {
-        _sideDirection = sideDirection;
         _speed = speed;
         _radius = radius;
         _verticalAmplitude = verticalAmplitude;
@@ -17,15 +16,16 @@ public class EnemyMovementAttackState: EnemyMovementBaseState
         protected set  { }
     }
 
-    public override void EnterState(Vector3 currentPosition)
+    public override void EnterState(Vector3 currentPosition, int sideDirection)
     {
+        _sideDirection = sideDirection;
     }
     
     public override void ExecuteState(Vector3 currentPosition)
     {
         Vector3 newPosition = currentPosition;
         Vector3 direction = -newPosition.normalized;
-        newPosition += direction * _speed * Time.deltaTime;
+        newPosition += direction * (_speed * Time.deltaTime);
         Position = newPosition;
     }
 

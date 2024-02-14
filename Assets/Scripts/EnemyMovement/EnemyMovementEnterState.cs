@@ -1,23 +1,18 @@
-using UnityEngine;
+    using UnityEngine;
 
 public class EnemyMovementEnterState: EnemyMovementBaseState
 {
-    public EnemyMovementEnterState(EnemyBaseMovement owner, int sideDirection, float speed, float radius, float verticalAmplitude) : base()
+    private Vector3 _endPos = Vector3.zero;
+    private Vector3 _enterDirection;
+    
+    public EnemyMovementEnterState(EnemyBaseMovement owner, float speed, float radius, float verticalAmplitude) : base()
     {
-        _sideDirection = sideDirection;
         _speed = speed;
         _radius = radius;
         _verticalAmplitude = verticalAmplitude;
         _owner = owner;
-    }
-    
-    private Vector3 _startPos;
-    private Vector3 _endPos = Vector3.zero;
-    private Vector3 _enterDirection;
- 
-    // for Scriprable Object UI
-    private float _spawnAreaSize = 0.5f;
-    private Vector3 _spawnAreaCenter;
+    } 
+
 
     public override EnemyStates State
     {
@@ -25,13 +20,11 @@ public class EnemyMovementEnterState: EnemyMovementBaseState
         protected set  { }
     }
    
-    public override void EnterState(Vector3 currentPosition)
+    public override void EnterState(Vector3 currentPosition, int sideDirection)
     {
-        _spawnAreaCenter = new Vector3(2.6f, -2.6f, 0); // Hardcoded for now - TODO: remove new Vector3 and replace with a serialized field
- 
-        _startPos = GenerateSpawnPosition(-_sideDirection);
-        float xProjectionLength = Mathf.Abs(_startPos.x);
-        float enterDirectionLength = Vector3.Magnitude(_startPos);
+        _sideDirection = sideDirection;
+        float xProjectionLength = Mathf.Abs(currentPosition.x);
+        float enterDirectionLength = Vector3.Magnitude(currentPosition);
         float r = _radius * _verticalAmplitude;
         
         float patrolStartOffsetAngle = Mathf.PI - Mathf.Acos(r / enterDirectionLength) - Mathf.Acos(xProjectionLength / enterDirectionLength);
@@ -40,8 +33,8 @@ public class EnemyMovementEnterState: EnemyMovementBaseState
         _endPos.y = Mathf.Sin(-patrolStartOffsetAngle);
         _endPos = _endPos.normalized * r;
        
-        _enterDirection = (_endPos - _startPos).normalized;
-        Position = _startPos;
+        _enterDirection = (_endPos - currentPosition).normalized;
+        Position = currentPosition;
     }
     
     public override void ExecuteState(Vector3 currentPosition)
@@ -61,11 +54,6 @@ public class EnemyMovementEnterState: EnemyMovementBaseState
     {
     }
     
-    private Vector3 GenerateSpawnPosition(int direction)
-    {
-        Vector3 spawnPosition = (Vector3)(Random.insideUnitCircle * _spawnAreaSize) + _spawnAreaCenter;
-        spawnPosition.x *= direction;
-        return spawnPosition;
-    }
+
 
 }

@@ -798,6 +798,8 @@ MonoBehaviour:
   _speed: 3
   _radius: 1.4
   _verticalAmplitude: 1.2
+  _spawnAreaSize: 0.5
+  _spawnAreaCenter: {x: 2.6, y: -2.6, z: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

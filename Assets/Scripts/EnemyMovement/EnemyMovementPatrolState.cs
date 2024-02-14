@@ -8,9 +8,8 @@ public class EnemyMovementPatrolState: EnemyMovementBaseState
     private float _enterTimeOffset; // TMP
     private float _phase;
     
-    public EnemyMovementPatrolState(EnemyBaseMovement owner, int sideDirection, float speed, float radius, float verticalAmplitude) : base()
+    public EnemyMovementPatrolState(EnemyBaseMovement owner, float speed, float radius, float verticalAmplitude) : base()
     {
-        _sideDirection = sideDirection;
         _speed = speed;
         _radius = radius;
         _verticalAmplitude = verticalAmplitude;
@@ -23,8 +22,9 @@ public class EnemyMovementPatrolState: EnemyMovementBaseState
         protected set  { }
     }
 
-    public override void EnterState(Vector3 currentPosition)
+    public override void EnterState(Vector3 currentPosition, int sideDirection)
     {
+        _sideDirection = sideDirection;
         _prevTime = Time.time;
         Vector3 horizntalVector = Vector3.right;
         horizntalVector.x *= _sideDirection;

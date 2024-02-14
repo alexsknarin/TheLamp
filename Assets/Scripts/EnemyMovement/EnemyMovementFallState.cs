@@ -6,12 +6,11 @@ public class EnemyMovementFallState: EnemyMovementBaseState
     private Vector3 _bounceForce;
     private Vector3 _gravityForce;
     private float _bounceForceMagnitude = 4f;
-    private float _gravityForceMagnitude = .1f;
+    private float _gravityForceMagnitude = .2f;
     private float _dragAmount = 0.94f;
     
-    public EnemyMovementFallState(EnemyBaseMovement owner, int sideDirection, float speed, float radius, float verticalAmplitude) : base()
+    public EnemyMovementFallState(EnemyBaseMovement owner, float speed, float radius, float verticalAmplitude) : base()
     {
-        _sideDirection = sideDirection;
         _speed = speed;
         _radius = radius;
         _verticalAmplitude = verticalAmplitude;
@@ -23,8 +22,9 @@ public class EnemyMovementFallState: EnemyMovementBaseState
         protected set  { }
     }
 
-    public override void EnterState(Vector3 currentPosition)
+    public override void EnterState(Vector3 currentPosition, int sideDirection)
     {
+        _sideDirection = sideDirection;
         _bounceForce = currentPosition.normalized * _bounceForceMagnitude;
         _gravityForce = Vector3.zero;
     }
