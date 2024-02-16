@@ -4,14 +4,14 @@ public class EnemyMovementStateMachine
 {
     private IMovementState _currentState;
 
-    public void SetState(IMovementState state, Vector3 currentPosition, int sideDirection)
+    public void SetState(IMovementState state, Vector3 currentPosition, int sideDirection, int depthDirection)
     {
         if (_currentState != null)
         {
             _currentState.ExitState();
         }
         _currentState = state;
-        _currentState.EnterState(currentPosition, sideDirection);
+        _currentState.EnterState(currentPosition, sideDirection, depthDirection);
     }
 
     public void Execute(Vector3 currentPosition)

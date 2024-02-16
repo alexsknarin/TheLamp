@@ -18,7 +18,7 @@ public class EnemyMovementPreAttackState: EnemyMovementBaseState
         _owner = owner;
     }
     
-    public override void EnterState(Vector3 currentPosition, int sideDirection)
+    public override void EnterState(Vector3 currentPosition, int sideDirection, int depthDirection)
     {
         _prevTime = Time.time;
         _acceleratedSpeed = 1f;

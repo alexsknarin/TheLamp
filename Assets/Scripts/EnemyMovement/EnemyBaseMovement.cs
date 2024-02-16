@@ -10,28 +10,37 @@ enum NoiseType
 
 public class EnemyBaseMovement : MonoBehaviour
 {
-    private int _sideDirection;
+    [Header("-- Movement Settings --")]
     [SerializeField] private float _speed;
     [SerializeField] private float _radius;
     [SerializeField] private float _verticalAmplitude;
+    private int _sideDirection;
+    [Header("---- Spawn Settings ----")]
     [SerializeField] private float _spawnAreaSize = 0.5f;
     [SerializeField] private Vector3 _spawnAreaCenter;
-    
+    [Header("---- Noise Settings ----")]
     [SerializeField] private bool _isNoiseEnabled;
     [SerializeField] private float _noiseFrequency;
     [SerializeField] private float _noiseAmplitude;
     [SerializeField] private NoiseType _noiseType;
-    
+    [Header("-- Smooth Damp Settings --")]
+    [SerializeField] private bool _isSmoothDampEnabled;
     [SerializeField] private float _smoothTime = .3f;
     private Vector3 _velocity = Vector3.zero;
+    [Header("---- Depth Settings ----")]
+    [SerializeField] bool _isDepthEnabled;
+    private int _depthDirection;
     
+    // Movement Stats
     private EnemyMovementStateMachine _movementStateMachine;
     private EnemyMovementBaseState _currentState;
     private EnemyMovementEnterState _enterState;
     private EnemyMovementPatrolState _patrolState;
     private EnemyMovementAttackState _attackState;
-    private EnemyMovementPreAttackState _preAttackState;
+    private EnemyMovementPreAttackState _preAttackState;    
     private EnemyMovementFallState _fallState;
+    
+    
     
     //Debug
     private Vector3 _prevPos;
@@ -55,6 +64,10 @@ public class EnemyBaseMovement : MonoBehaviour
     private void Init()
     {
         _sideDirection = RandomDirection.Generate();
+        Debug.Log("Side Direction: " + _sideDirection.ToString());
+        _depthDirection = RandomDirection.Generate();
+        Debug.Log("Depth Direction: " + _depthDirection.ToString());
+        
         _movementStateMachine = new EnemyMovementStateMachine();
         
         _enterState = new EnemyMovementEnterState(this, _speed, _radius, _verticalAmplitude);
@@ -67,7 +80,7 @@ public class EnemyBaseMovement : MonoBehaviour
         
         _currentState = _enterState;
         
-        _movementStateMachine.SetState(_currentState, transform.position, _sideDirection);
+        _movementStateMachine.SetState(_currentState, _position, _sideDirection, _depthDirection);
         _position = _currentState.Position;
         transform.position = _position;
     }
@@ -90,7 +103,7 @@ public class EnemyBaseMovement : MonoBehaviour
         };
         
         _currentState = newState;
-        _movementStateMachine.SetState(_currentState, _position, _sideDirection);
+        _movementStateMachine.SetState(_currentState, _position, _sideDirection, _depthDirection);
     }
 
     private EnemyMovementEnterState ReturnToPatrol()
@@ -107,7 +120,6 @@ public class EnemyBaseMovement : MonoBehaviour
         _movementStateMachine.Execute(_position);
         _position = _currentState.Position;
 
-        
         // Add Noise
         if (_isNoiseEnabled && _currentState.State == EnemyStates.Patrol)  
         {
@@ -125,16 +137,32 @@ public class EnemyBaseMovement : MonoBehaviour
             }
         }
         
-        // Add SmoothDamp
-        if (_currentState.State == EnemyStates.Attack)
+        // Add Depth
+        if (_isDepthEnabled)
         {
-            transform.position = _position;
+            transform.position += _currentState.Depth * 0.1f; // TODO: Make a setting, or fix it in the state
+        }
+        
+        // Add SmoothDamp
+        if (_isSmoothDampEnabled)
+        {
+            if (_currentState.State == EnemyStates.Attack)
+            {
+                transform.position = _position;
+            }
+            else
+            {
+                transform.position = Vector3.SmoothDamp(transform.position, _position, ref _velocity, _smoothTime);
+            }
         }
         else
         {
-            transform.position = Vector3.SmoothDamp(transform.position, _position, ref _velocity, _smoothTime);;    
+            transform.position = _position;
         }
         
+
+      
+
         _movementStateMachine.CheckForStateChange();
         
         Debug.DrawLine(_prevPos, _prevPos + (_position-_prevPos).normalized*0.02f, Color.cyan, 5f);

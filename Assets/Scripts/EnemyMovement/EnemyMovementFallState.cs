@@ -18,7 +18,7 @@ public class EnemyMovementFallState: EnemyMovementBaseState
     }
     public override EnemyStates State => EnemyStates.Fall;
 
-    public override void EnterState(Vector3 currentPosition, int sideDirection)
+    public override void EnterState(Vector3 currentPosition, int sideDirection, int depthDirection)
     {
         _sideDirection = sideDirection;
         _bounceForce = currentPosition.normalized * _bounceForceMagnitude;

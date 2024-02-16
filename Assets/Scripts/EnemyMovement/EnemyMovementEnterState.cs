@@ -4,7 +4,8 @@ public class EnemyMovementEnterState: EnemyMovementBaseState
 {
     private Vector3 _endPos = Vector3.zero;
     private Vector3 _enterDirection;
-    
+    private float _depthMultiplier = 2f;
+
     public EnemyMovementEnterState(EnemyBaseMovement owner, float speed, float radius, float verticalAmplitude) : base()
     {
         _speed = speed;
@@ -15,9 +16,11 @@ public class EnemyMovementEnterState: EnemyMovementBaseState
 
     public override EnemyStates State => EnemyStates.Enter;
    
-    public override void EnterState(Vector3 currentPosition, int sideDirection)
+    public override void EnterState(Vector3 currentPosition, int sideDirection, int depthDirection)
     {
         _sideDirection = sideDirection;
+        _depthDirection = depthDirection;
+        
         float xProjectionLength = Mathf.Abs(currentPosition.x);
         float enterDirectionLength = Vector3.Magnitude(currentPosition);
         float r = _radius * _verticalAmplitude;
@@ -35,6 +38,12 @@ public class EnemyMovementEnterState: EnemyMovementBaseState
     public override void ExecuteState(Vector3 currentPosition)
     {
         Position = currentPosition + _enterDirection * (_speed * Time.deltaTime * (Mathf.PI/2));
+        
+        // Depth To Camera
+        Vector3 cameraDirection = (_cameraPosition - Position).normalized;
+        Depth = cameraDirection * (-_depthDirection * (_endPos - Position).magnitude);
+        // Depth = cameraDirection * (_depthDirection * Position.y * _depthMultiplier * (_endPos - Position).magnitude * 0.5f);
+       
     }
     
     public override void CheckForStateChange()

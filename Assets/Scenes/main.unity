@@ -619,7 +619,6 @@ GameObject:
   - component: {fileID: 1969479200}
   - component: {fileID: 1969479204}
   - component: {fileID: 1969479205}
-  - component: {fileID: 1969479203}
   - component: {fileID: 1969479206}
   m_Layer: 0
   m_Name: Enemy
@@ -687,40 +686,12 @@ Transform:
   m_GameObject: {fileID: 1969479198}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1.8, y: -2.5, z: 0}
+  m_LocalPosition: {x: -3.6, y: -2.87, z: 0}
   m_LocalScale: {x: 0.2, y: 0.2, z: 0.2}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 771570258}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1969479203
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1969479198}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c5062995d25efa64e88c51ac0a4d718c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _mainCameraTransform: {fileID: 330585546}
-  _radius: 1.4
-  _verticalAmplitude: 1.2
-  speed: 3
-  _isDepthEnabled: 0
-  _depthAmplitude: 2
-  _isNoiseEnabled: 1
-  _noiseType: 0
-  _noiseAmplitude: 0.12
-  _noiseFrequency: 5
-  _spawnAreaCenter: {x: 2.6, y: -2.6, z: 0}
-  _spawnAreaSize: 0.5
-  _verticalAdaptDuration: 2
-  _attackPrepareDuration: 0.4
-  _attackPrepareDistance: 1
-  _debugTrailGizmoDelay: 2
 --- !u!58 &1969479204
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -799,12 +770,14 @@ MonoBehaviour:
   _radius: 1.4
   _verticalAmplitude: 1.2
   _spawnAreaSize: 0.5
-  _spawnAreaCenter: {x: 2.6, y: -2.6, z: 0}
+  _spawnAreaCenter: {x: 3.6, y: -2.6, z: 0}
   _isNoiseEnabled: 1
   _noiseFrequency: 4.3
   _noiseAmplitude: 0.22
   _noiseType: 0
+  _isSmoothDampEnabled: 1
   _smoothTime: 0.12
+  _isDepthEnabled: 1
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

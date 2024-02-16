@@ -7,6 +7,7 @@ public class EnemyMovementPatrolState: EnemyMovementBaseState
     private float _patrolStartOffsetAngle;
     private float _enterTimeOffset; // TMP
     private float _phase;
+    private float _depthMultiplier = 1f;
     
     public EnemyMovementPatrolState(EnemyBaseMovement owner, float speed, float radius, float verticalAmplitude) : base()
     {
@@ -18,9 +19,10 @@ public class EnemyMovementPatrolState: EnemyMovementBaseState
     
     public override EnemyStates State => EnemyStates.Patrol;
 
-    public override void EnterState(Vector3 currentPosition, int sideDirection)
+    public override void EnterState(Vector3 currentPosition, int sideDirection, int depthDirection)
     {
         _sideDirection = sideDirection;
+        _depthDirection = depthDirection;
         _prevTime = Time.time;
         Vector3 horizntalVector = Vector3.right;
         horizntalVector.x *= _sideDirection;
@@ -54,6 +56,10 @@ public class EnemyMovementPatrolState: EnemyMovementBaseState
         
         newPosition.x = Mathf.Cos(_phase + offsetAngleWithDirection) * finalXRadius;               //TODO: X radius Y radius ?????
         newPosition.y = Mathf.Sin(_phase + offsetAngleWithDirection) * _radius * _verticalAmplitude;
+        
+        // Depth To Camera
+        Vector3 cameraDirection = (_cameraPosition - newPosition).normalized;
+        Depth = cameraDirection * (_depthDirection * newPosition.y * _depthMultiplier);
         
         Position = newPosition;
         

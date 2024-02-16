@@ -15,7 +15,7 @@ public class EnemyMovementAttackState: EnemyMovementBaseState
     }
     public override EnemyStates State => EnemyStates.Attack;
 
-    public override void EnterState(Vector3 currentPosition, int sideDirection)
+    public override void EnterState(Vector3 currentPosition, int sideDirection, int depthDirection)
     {
         _sideDirection = sideDirection;
         _acceleratedSpeed = 1f;
