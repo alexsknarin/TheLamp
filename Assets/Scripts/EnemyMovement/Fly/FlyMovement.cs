@@ -50,7 +50,9 @@ public class FlyMovement : MonoBehaviour
     private Vector3 _positionDepth;
     private Vector3 _prevPositionDepth;
     
-
+    // Events
+    public event Action OnPreAttackStart;
+    public event Action OnPreAttackEnd;
 
     private void Start()
     {
@@ -98,8 +100,8 @@ public class FlyMovement : MonoBehaviour
         FlyMovementBaseState newState = _currentState.State switch
         {
             EnemyStates.Enter => _patrolState,
-            EnemyStates.Patrol => _preAttackState,
-            EnemyStates.PreAttack => _attackState,
+            EnemyStates.Patrol => startPreAttackState(),
+            EnemyStates.PreAttack => startAttackState(),
             EnemyStates.Attack => _fallState,
             EnemyStates.Fall => ReturnToPatrol(),
             _ => throw new ArgumentOutOfRangeException()
@@ -109,11 +111,26 @@ public class FlyMovement : MonoBehaviour
         _movementStateMachine.SetState(_currentState, _position2d, _sideDirection, _depthDirection);
     }
 
+    // Transition Handlers
     private FlyMovementEnterState ReturnToPatrol()
     {
         _sideDirection = -(int)Mathf.Sign(_position2d.x);
         return _enterState;
     }
+    
+    private FlyMovementPreAttackState startPreAttackState()
+    {
+        OnPreAttackStart?.Invoke();
+        return _preAttackState;
+    }
+    
+    private FlyMovementAttackState startAttackState()
+    {
+        OnPreAttackEnd?.Invoke();
+        return _attackState;
+    }
+    
+    
 
     private void Update()
     {   
