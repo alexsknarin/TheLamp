@@ -43,9 +43,12 @@ public class EnemyBaseMovement : MonoBehaviour
     
     
     //Debug
-    private Vector3 _prevPos;
+    private Vector3 _prevPosition2d;
     private Vector3 _prevPosSmooth;
+    private Vector3 _position2d;
     private Vector3 _position;
+    private Vector3 _positionDepth;
+    private Vector3 _prevPositionDepth;
     
 
 
@@ -80,14 +83,14 @@ public class EnemyBaseMovement : MonoBehaviour
         
         _currentState = _enterState;
         
-        _movementStateMachine.SetState(_currentState, _position, _sideDirection, _depthDirection);
-        _position = _currentState.Position;
-        transform.position = _position;
+        _movementStateMachine.SetState(_currentState, _position2d, _sideDirection, _depthDirection);
+        _position2d = _currentState.Position;
+        transform.position = _position2d;
     }
     
     private void Spawn()
     {
-        _position = GenerateSpawnPosition(-_sideDirection);
+        _position2d = GenerateSpawnPosition(-_sideDirection);
     }
     
     public void SwitchState()
@@ -103,23 +106,26 @@ public class EnemyBaseMovement : MonoBehaviour
         };
         
         _currentState = newState;
-        _movementStateMachine.SetState(_currentState, _position, _sideDirection, _depthDirection);
+        _movementStateMachine.SetState(_currentState, _position2d, _sideDirection, _depthDirection);
     }
 
     private EnemyMovementEnterState ReturnToPatrol()
     {
-        _sideDirection = -(int)Mathf.Sign(_position.x);
+        _sideDirection = -(int)Mathf.Sign(_position2d.x);
         return _enterState;
     }
 
     private void Update()
     {   
-        _prevPos = _position;
+        _prevPosition2d = _position2d;
+        
+        // Debug Only
         _prevPosSmooth = transform.position;
         
-        _movementStateMachine.Execute(_position);
-        _position = _currentState.Position;
-
+        _movementStateMachine.Execute(_position2d);
+        _position2d = _currentState.Position;
+        _position = _position2d;
+        
         // Add Noise
         if (_isNoiseEnabled && _currentState.State == EnemyStates.Patrol)  
         {
@@ -129,18 +135,20 @@ public class EnemyBaseMovement : MonoBehaviour
 
             if (_noiseType == NoiseType.WorldSpace)
             {
-                _position += noiseValue * _noiseAmplitude;
+                _position2d += noiseValue * _noiseAmplitude;
             }
             else if (_noiseType == NoiseType.AlongTrajectory)
             {
-                _position += transform.position.normalized * (noiseValue.x * _noiseAmplitude);
+                _position2d += transform.position.normalized * (noiseValue.x * _noiseAmplitude);
             }
+            _position = _position2d;
         }
         
         // Add Depth
         if (_isDepthEnabled)
         {
-            transform.position += _currentState.Depth * 0.1f; // TODO: Make a setting, or fix it in the state
+            _positionDepth = _position2d + _currentState.Depth;
+            _position = _positionDepth;
         }
         
         // Add SmoothDamp
@@ -157,17 +165,14 @@ public class EnemyBaseMovement : MonoBehaviour
         }
         else
         {
-            transform.position = _position;
+            transform.position = _position2d;
         }
         
-
-      
-
         _movementStateMachine.CheckForStateChange();
         
-        Debug.DrawLine(_prevPos, _prevPos + (_position-_prevPos).normalized*0.02f, Color.cyan, 5f);
+        
+        Debug.DrawLine(_prevPosition2d, _prevPosition2d + (_position2d-_prevPosition2d).normalized*0.02f, Color.cyan, 5f);
         Debug.DrawLine(_prevPosSmooth, _prevPosSmooth + (transform.position-_prevPosSmooth).normalized*0.02f, Color.yellow, 5f);
-       
         
         
         if(Input.GetKeyDown(KeyCode.Space))

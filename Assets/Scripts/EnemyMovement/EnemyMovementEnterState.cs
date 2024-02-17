@@ -5,6 +5,7 @@ public class EnemyMovementEnterState: EnemyMovementBaseState
     private Vector3 _endPos = Vector3.zero;
     private Vector3 _enterDirection;
     private float _depthMultiplier = 2f;
+    private float _initialDistance;
 
     public EnemyMovementEnterState(EnemyBaseMovement owner, float speed, float radius, float verticalAmplitude) : base()
     {
@@ -31,7 +32,11 @@ public class EnemyMovementEnterState: EnemyMovementBaseState
         _endPos.y = Mathf.Sin(-patrolStartOffsetAngle);
         _endPos = _endPos.normalized * r;
        
-        _enterDirection = (_endPos - currentPosition).normalized;
+        _enterDirection = (_endPos - currentPosition);
+        _initialDistance = _enterDirection.magnitude;
+        _enterDirection = _enterDirection.normalized;
+        
+        
         Position = currentPosition;
     }
     
@@ -40,10 +45,9 @@ public class EnemyMovementEnterState: EnemyMovementBaseState
         Position = currentPosition + _enterDirection * (_speed * Time.deltaTime * (Mathf.PI/2));
         
         // Depth To Camera
+        float distancePhase = 1 - (_endPos - Position).magnitude / _initialDistance;
         Vector3 cameraDirection = (_cameraPosition - Position).normalized;
-        Depth = cameraDirection * (-_depthDirection * (_endPos - Position).magnitude);
-        // Depth = cameraDirection * (_depthDirection * Position.y * _depthMultiplier * (_endPos - Position).magnitude * 0.5f);
-       
+        Depth = cameraDirection * (_depthDirection * Mathf.Lerp(Position.y * _depthMultiplier, Position.y, distancePhase));
     }
     
     public override void CheckForStateChange()
