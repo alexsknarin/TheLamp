@@ -692,7 +692,7 @@
     "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot",
     "m_ObjectId": "31940194b40e47ebae409da62ad0d367",
     "m_Id": 0,
-    "m_DisplayName": "AttackSemaphor",
+    "m_DisplayName": "AttackSemaphore",
     "m_SlotType": 1,
     "m_Hidden": false,
     "m_ShaderOutputName": "Out",
@@ -1394,10 +1394,10 @@
     "m_Guid": {
         "m_GuidSerialized": "a22b2dca-e09d-4834-87b8-214675041edd"
     },
-    "m_Name": "AttackSemaphor",
+    "m_Name": "AttackSemaphore",
     "m_DefaultRefNameVersion": 1,
-    "m_RefNameGeneratedByDisplayName": "AttackSemaphor",
-    "m_DefaultReferenceName": "_AttackSemaphor",
+    "m_RefNameGeneratedByDisplayName": "AttackSemaphore",
+    "m_DefaultReferenceName": "_AttackSemaphore",
     "m_OverrideReferenceName": "",
     "m_GeneratePropertyBlock": true,
     "m_UseCustomSlotLabel": false,
