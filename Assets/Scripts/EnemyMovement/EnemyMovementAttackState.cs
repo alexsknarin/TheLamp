@@ -5,6 +5,7 @@ using UnityEngine.TextCore.LowLevel;
 public class EnemyMovementAttackState: EnemyMovementBaseState
 {
     private float _acceleration = 0.06f;
+    private float _depthDecrement = 0.2f;
     private float _acceleratedSpeed = 1f;
     public EnemyMovementAttackState(EnemyBaseMovement owner, float speed, float radius, float verticalAmplitude) : base()
     {
@@ -28,6 +29,9 @@ public class EnemyMovementAttackState: EnemyMovementBaseState
         newPosition += direction * (_speed * _acceleratedSpeed * Time.deltaTime);
         _acceleratedSpeed += _acceleration;
         Position = newPosition;
+        
+        Vector3 cameraDirection = (_cameraPosition - Position).normalized;
+        Depth = cameraDirection * (2.5f * _depthDecrement);
     }
 
     public void ExitState()

@@ -33,6 +33,8 @@ public class EnemyMovementPreAttackState: EnemyMovementBaseState
     public override void ExecuteState(Vector3 currentPosition)
     {
         Position = currentPosition + _direction * (_speed * Time.deltaTime * (Mathf.PI/2) * _acceleratedSpeed);
+        Vector3 cameraDirection = (_cameraPosition - Position).normalized;
+        Depth = cameraDirection * 2.5f;
         _acceleratedSpeed *= _acceleration;
     }
     
