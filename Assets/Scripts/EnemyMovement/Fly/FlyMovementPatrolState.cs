@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class EnemyMovementPatrolState: EnemyMovementBaseState
+public class FlyMovementPatrolState: FlyMovementBaseState
 {
     private float _verticalAdaptDuration = 2f; // TODO: Serialized Field
     private float _prevTime;
@@ -9,7 +9,7 @@ public class EnemyMovementPatrolState: EnemyMovementBaseState
     private float _phase;
     private float _depthMultiplier = 1f;
     
-    public EnemyMovementPatrolState(EnemyBaseMovement owner, float speed, float radius, float verticalAmplitude) : base()
+    public FlyMovementPatrolState(FlyMovement owner, float speed, float radius, float verticalAmplitude) : base()
     {
         _speed = speed;
         _radius = radius;

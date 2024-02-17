@@ -2,12 +2,12 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.TextCore.LowLevel;
 
-public class EnemyMovementAttackState: EnemyMovementBaseState
+public class FlyMovementAttackState: FlyMovementBaseState
 {
     private float _acceleration = 0.06f;
     private float _depthDecrement = 0.2f;
     private float _acceleratedSpeed = 1f;
-    public EnemyMovementAttackState(EnemyBaseMovement owner, float speed, float radius, float verticalAmplitude) : base()
+    public FlyMovementAttackState(FlyMovement owner, float speed, float radius, float verticalAmplitude) : base()
     {
         _speed = speed;
         _radius = radius;

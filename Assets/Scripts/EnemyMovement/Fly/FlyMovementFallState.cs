@@ -1,7 +1,7 @@
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class EnemyMovementFallState: EnemyMovementBaseState
+public class FlyMovementFallState: FlyMovementBaseState
 {
     private Vector3 _bounceForce;
     private Vector3 _gravityForce;
@@ -9,7 +9,7 @@ public class EnemyMovementFallState: EnemyMovementBaseState
     private float _gravityForceMagnitude = .2f;
     private float _dragAmount = 0.94f;
     
-    public EnemyMovementFallState(EnemyBaseMovement owner, float speed, float radius, float verticalAmplitude) : base()
+    public FlyMovementFallState(FlyMovement owner, float speed, float radius, float verticalAmplitude) : base()
     {
         _speed = speed;
         _radius = radius;

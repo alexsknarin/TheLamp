@@ -8,7 +8,7 @@ enum NoiseType
     AlongTrajectory
 }
 
-public class EnemyBaseMovement : MonoBehaviour
+public class FlyMovement : MonoBehaviour
 {
     [Header("-- Movement Settings --")]
     [SerializeField] private float _speed;
@@ -33,12 +33,12 @@ public class EnemyBaseMovement : MonoBehaviour
     
     // Movement Stats
     private EnemyMovementStateMachine _movementStateMachine;
-    private EnemyMovementBaseState _currentState;
-    private EnemyMovementEnterState _enterState;
-    private EnemyMovementPatrolState _patrolState;
-    private EnemyMovementAttackState _attackState;
-    private EnemyMovementPreAttackState _preAttackState;    
-    private EnemyMovementFallState _fallState;
+    private FlyMovementBaseState _currentState;
+    private FlyMovementEnterState _enterState;
+    private FlyMovementPatrolState _patrolState;
+    private FlyMovementAttackState _attackState;
+    private FlyMovementPreAttackState _preAttackState;    
+    private FlyMovementFallState _fallState;
     
     
     
@@ -73,11 +73,11 @@ public class EnemyBaseMovement : MonoBehaviour
         
         _movementStateMachine = new EnemyMovementStateMachine();
         
-        _enterState = new EnemyMovementEnterState(this, _speed, _radius, _verticalAmplitude);
-        _patrolState  = new EnemyMovementPatrolState(this, _speed, _radius, _verticalAmplitude);
-        _preAttackState = new EnemyMovementPreAttackState(this, _speed, _radius, _verticalAmplitude);
-        _attackState = new EnemyMovementAttackState(this, _speed, _radius, _verticalAmplitude);
-        _fallState = new EnemyMovementFallState(this, _speed, _radius, _verticalAmplitude);
+        _enterState = new FlyMovementEnterState(this, _speed, _radius, _verticalAmplitude);
+        _patrolState  = new FlyMovementPatrolState(this, _speed, _radius, _verticalAmplitude);
+        _preAttackState = new FlyMovementPreAttackState(this, _speed, _radius, _verticalAmplitude);
+        _attackState = new FlyMovementAttackState(this, _speed, _radius, _verticalAmplitude);
+        _fallState = new FlyMovementFallState(this, _speed, _radius, _verticalAmplitude);
         
         Spawn();
         
@@ -95,7 +95,7 @@ public class EnemyBaseMovement : MonoBehaviour
     
     public void SwitchState()
     {
-        EnemyMovementBaseState newState = _currentState.State switch
+        FlyMovementBaseState newState = _currentState.State switch
         {
             EnemyStates.Enter => _patrolState,
             EnemyStates.Patrol => _preAttackState,
@@ -109,7 +109,7 @@ public class EnemyBaseMovement : MonoBehaviour
         _movementStateMachine.SetState(_currentState, _position2d, _sideDirection, _depthDirection);
     }
 
-    private EnemyMovementEnterState ReturnToPatrol()
+    private FlyMovementEnterState ReturnToPatrol()
     {
         _sideDirection = -(int)Mathf.Sign(_position2d.x);
         return _enterState;

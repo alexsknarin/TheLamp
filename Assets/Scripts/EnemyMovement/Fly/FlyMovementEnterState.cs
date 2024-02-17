@@ -1,13 +1,13 @@
     using UnityEngine;
 
-public class EnemyMovementEnterState: EnemyMovementBaseState
+public class FlyMovementEnterState: FlyMovementBaseState
 {
     private Vector3 _endPos = Vector3.zero;
     private Vector3 _enterDirection;
     private float _depthMultiplier = 2f;
     private float _initialDistance;
 
-    public EnemyMovementEnterState(EnemyBaseMovement owner, float speed, float radius, float verticalAmplitude) : base()
+    public FlyMovementEnterState(FlyMovement owner, float speed, float radius, float verticalAmplitude) : base()
     {
         _speed = speed;
         _radius = radius;

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class EnemyMovementPreAttackState: EnemyMovementBaseState
+public class FlyMovementPreAttackState: FlyMovementBaseState
 {
     public override EnemyStates State => EnemyStates.PreAttack;
     
@@ -10,7 +10,7 @@ public class EnemyMovementPreAttackState: EnemyMovementBaseState
     private Vector3 _direction;
     private float _prevTime;
     
-    public EnemyMovementPreAttackState(EnemyBaseMovement owner, float speed, float radius, float verticalAmplitude) : base()
+    public FlyMovementPreAttackState(FlyMovement owner, float speed, float radius, float verticalAmplitude) : base()
     {
         _speed = speed;
         _radius = radius;
