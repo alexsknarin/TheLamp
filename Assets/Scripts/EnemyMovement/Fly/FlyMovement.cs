@@ -42,9 +42,8 @@ public class FlyMovement : MonoBehaviour
     
     
     
-    //Debug
-    private Vector3 _prevPosition2d;
-    private Vector3 _prevPosSmooth;
+    private Vector3 _prevPosition2d; //Debug
+    private Vector3 _prevPosSmooth; //Debug
     private Vector3 _position2d;
     private Vector3 _position;
     private Vector3 _positionDepth;
@@ -95,6 +94,7 @@ public class FlyMovement : MonoBehaviour
         _position2d = GenerateSpawnPosition(-_sideDirection);
     }
     
+    // Extract to the Interface
     public void SwitchState()
     {
         FlyMovementBaseState newState = _currentState.State switch

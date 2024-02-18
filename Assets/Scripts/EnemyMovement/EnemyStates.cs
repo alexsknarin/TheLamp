@@ -6,6 +6,7 @@ public enum EnemyStates
     Attack,
     Fall,
     Return,
+    Hover,
     Stick,
     Death
 }
