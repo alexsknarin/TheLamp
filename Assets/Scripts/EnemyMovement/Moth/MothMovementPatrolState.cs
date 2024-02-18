@@ -33,32 +33,26 @@ public class MothMovementPatrolState: MothMovementBaseState
         Vector3 horizontalVector = Vector3.right;
         horizontalVector.x *= _sideDirection;
         _patrolStartOffsetAngle = Mathf.Acos(Vector3.Dot(horizontalVector.normalized, currentPosition.normalized));
+        _patrolStartOffsetAngle *= Mathf.Sign(currentPosition.y);
+        if (_sideDirection < 0)
+        {
+            _patrolStartOffsetAngle = Mathf.PI - _patrolStartOffsetAngle;
+        }
     }
     
     public override void ExecuteState(Vector3 currentPosition)
     {
         float trajectoryAdaptPhase = (Time.time - _prevTime) / _mainTrajectoryAdaptTime;
-        
-        float offsetAngleWithDirection;
-        if (_sideDirection > 0)
-        {
-            offsetAngleWithDirection = -_patrolStartOffsetAngle;
-        }
-        else
-        {
-            offsetAngleWithDirection = _patrolStartOffsetAngle-Mathf.PI;
-        }
-        
         _phase += Time.deltaTime * _speed * _sideDirection;
+
         Vector3 newPosition = Vector3.zero;
-        newPosition.x = Mathf.Cos(_phase + offsetAngleWithDirection) * _radius;
-        newPosition.y = Mathf.Sin(_phase + offsetAngleWithDirection) * _radius * _verticalAmplitude;
+        newPosition.x = Mathf.Cos(_phase + _patrolStartOffsetAngle) * _radius;
+        newPosition.y = Mathf.Sin(_phase +  _patrolStartOffsetAngle) * _radius * _verticalAmplitude;
 
         if (trajectoryAdaptPhase < 1)
         {
             newPosition = Vector3.Lerp(currentPosition, newPosition, Mathf.SmoothStep(0, 1, trajectoryAdaptPhase));
         }
-        
         Position = newPosition;
     }
     
