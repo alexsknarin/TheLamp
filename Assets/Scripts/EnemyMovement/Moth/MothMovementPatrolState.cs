@@ -58,6 +58,7 @@ public class MothMovementPatrolState: EnemyMovementBaseState
         
         // Add noise
         Vector3 trajectoryNoise = TrajectoryNoise.Generate(_noiseFrequency);
+        
         Position = circlePosition + trajectoryNoise * _noiseAmplitude;
     }
     

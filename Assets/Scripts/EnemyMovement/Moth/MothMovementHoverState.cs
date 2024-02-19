@@ -46,26 +46,20 @@ public class MothMovementHoverState: EnemyMovementBaseState
         _phase += Time.deltaTime * _speed * _sideDirection * _speedFactor * speedNoiseCompensation;
         _hoverPhase = (Time.time - _prevTime) / _hoverDuration;
 
-        Vector3 newPosition = Vector3.zero;
-        newPosition.x = Mathf.Cos(_phase) * _hoverRadius;
-        newPosition.y = Mathf.Sin(_phase) * _hoverRadius;
-        
-        newPosition += _hoverCenter;
+        Vector3 circlePosition = _hoverCenter + EnemyMovementPatterns.CircleMotion(0, _hoverRadius, _hoverRadius, 1, _phase);
         
         if (radiusAdaptPhase < 1f)
         {
-            newPosition = Vector3.Lerp(_hoverCenter, newPosition, Mathf.SmoothStep(0, 1, radiusAdaptPhase));
+            circlePosition = Vector3.Lerp(_hoverCenter, circlePosition, Mathf.SmoothStep(0, 1, radiusAdaptPhase));
         }
         
         // Add noise
         Vector3 trajectoryNoise = TrajectoryNoise.Generate(_noiseFrequency);
-        Position = newPosition + trajectoryNoise * (Mathf.Clamp(radiusAdaptPhase, 0, 1) * _noiseAmplitude);
+        Position = circlePosition + trajectoryNoise * (Mathf.Clamp(radiusAdaptPhase, 0, 1) * _noiseAmplitude);
         
         // Depth To Camera
         Vector3 cameraDirection = (_cameraPosition - Position).normalized;
         Depth = cameraDirection * _depthMultiplier;
-
-
     }
     
     public override void CheckForStateChange()
