@@ -26,7 +26,6 @@ public class FlyMovementPreAttackState: FlyMovementBaseState
         _direction = currentPosition.normalized;
         Quaternion rotation = Quaternion.Euler(0, 0, 60 * _sideDirection);
         _direction = rotation * _direction;
-      
         Position = currentPosition;
     }
     

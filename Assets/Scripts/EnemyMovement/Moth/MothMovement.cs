@@ -31,6 +31,10 @@ public class MothMovement : MonoBehaviour, IStateMachineOwner
     private Vector3 _prevPosition2d; //Debug
     private Vector3 _position2d;
     // private Vector3 _position;
+    
+    // Events
+    public event Action OnPreAttackStart;
+    public event Action OnPreAttackEnd;
 
     private void Start()
     {
@@ -90,7 +94,7 @@ public class MothMovement : MonoBehaviour, IStateMachineOwner
             EnemyStates.Enter => _hoverState,
             EnemyStates.Hover => _patrolState,
             EnemyStates.Patrol => _hoverState,
-            EnemyStates.PreAttack => _attackState,
+            EnemyStates.PreAttack => startAttackState(),
             EnemyStates.Attack => _fallState,
             EnemyStates.Fall => _hoverState,
             _ => throw new ArgumentOutOfRangeException()
@@ -98,6 +102,12 @@ public class MothMovement : MonoBehaviour, IStateMachineOwner
         
         _currentState = newState;
         _movementStateMachine.SetState(_currentState, _position2d, _sideDirection, _depthDirection);
+    }
+    
+    private MothMovementAttackState startAttackState()
+    {
+        OnPreAttackEnd?.Invoke();
+        return _attackState;
     }
     
     private void Update()
@@ -108,10 +118,12 @@ public class MothMovement : MonoBehaviour, IStateMachineOwner
         _position2d = _currentState.Position;
         
         transform.position = _position2d;
-        
         _movementStateMachine.CheckForStateChange();
+
+        
         
         Debug.DrawLine(_prevPosition2d, _prevPosition2d + (_position2d-_prevPosition2d).normalized*0.02f, Color.cyan, 5f);
+        
         
         
         if(Input.GetKeyDown(KeyCode.Space))
@@ -120,6 +132,7 @@ public class MothMovement : MonoBehaviour, IStateMachineOwner
             {
                 _currentState = _preAttackState;
                 _movementStateMachine.SetState(_currentState, _position2d, _sideDirection, _depthDirection);
+                OnPreAttackStart?.Invoke();
             }
         }
     }

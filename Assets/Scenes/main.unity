@@ -591,7 +591,9 @@ GameObject:
   - component: {fileID: 1569626934}
   - component: {fileID: 1569626938}
   - component: {fileID: 1569626937}
+  - component: {fileID: 1569626940}
   - component: {fileID: 1569626936}
+  - component: {fileID: 1569626939}
   m_Layer: 0
   m_Name: Moth
   m_TagString: Untagged
@@ -634,7 +636,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: 4b026aa9c11a4c641887b530527071b1, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -744,6 +746,31 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &1569626939
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1569626931}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d2e420a26cc356d4ba375c424a8b4a47, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _meshRenderer: {fileID: 1569626934}
+--- !u!114 &1569626940
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1569626931}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba4a520e94cb6764788e60e92e64a109, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1934066237
 GameObject:
   m_ObjectHideFlags: 0
@@ -1078,7 +1105,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _meshRenderer: {fileID: 1969479200}
-  _flyMovement: {fileID: 1969479206}
 --- !u!114 &1969479208
 MonoBehaviour:
   m_ObjectHideFlags: 0

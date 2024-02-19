@@ -3,7 +3,6 @@ using UnityEngine;
 public class PreAttackFlash : MonoBehaviour
 {
     [SerializeField] private MeshRenderer _meshRenderer;
-    [SerializeField] FlyMovement _flyMovement;
     private Material _material;
     
     private void Start()
@@ -13,11 +12,13 @@ public class PreAttackFlash : MonoBehaviour
 
     public void PreAttackStart()
     {
+        Debug.Log("PreAttackStart");
         _material.SetFloat("_AttackSemaphore", 1f);
     }
     
     public void PreAttackEnd()
     {
+        Debug.Log("PreAttackEnd");
         _material.SetFloat("_AttackSemaphore", 0f);   
     }
 }
