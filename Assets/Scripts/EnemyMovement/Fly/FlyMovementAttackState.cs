@@ -5,7 +5,7 @@ public class FlyMovementAttackState: FlyMovementBaseState
     private float _acceleration = 0.06f;
     private float _depthDecrement = 0.2f;
     private float _acceleratedSpeed = 1f;
-    public FlyMovementAttackState(FlyMovement owner, float speed, float radius, float verticalAmplitude) : base()
+    public FlyMovementAttackState(IStateMachineOwner owner, float speed, float radius, float verticalAmplitude) : base()
     {
         _speed = speed;
         _radius = radius;

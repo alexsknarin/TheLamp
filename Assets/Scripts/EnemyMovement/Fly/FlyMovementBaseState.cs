@@ -15,7 +15,7 @@ public abstract class FlyMovementBaseState : IMovementState
     protected float _radius;
     protected float _verticalAmplitude;
 
-    protected FlyMovement _owner;
+    protected IStateMachineOwner _owner;
 
     public FlyMovementBaseState()
     {

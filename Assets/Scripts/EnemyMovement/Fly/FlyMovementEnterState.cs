@@ -7,7 +7,7 @@ public class FlyMovementEnterState: FlyMovementBaseState
     private float _depthMultiplier = 2f;
     private float _initialDistance;
 
-    public FlyMovementEnterState(FlyMovement owner, float speed, float radius, float verticalAmplitude) : base()
+    public FlyMovementEnterState(IStateMachineOwner owner, float speed, float radius, float verticalAmplitude) : base()
     {
         _speed = speed;
         _radius = radius;

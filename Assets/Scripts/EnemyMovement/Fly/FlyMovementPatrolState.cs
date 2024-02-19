@@ -9,7 +9,7 @@ public class FlyMovementPatrolState: FlyMovementBaseState
     private float _phase;
     private float _depthMultiplier = 1f;
     
-    public FlyMovementPatrolState(FlyMovement owner, float speed, float radius, float verticalAmplitude) : base()
+    public FlyMovementPatrolState(IStateMachineOwner owner, float speed, float radius, float verticalAmplitude) : base()
     {
         _speed = speed;
         _radius = radius;

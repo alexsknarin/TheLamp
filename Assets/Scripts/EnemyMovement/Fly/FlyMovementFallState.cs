@@ -9,7 +9,7 @@ public class FlyMovementFallState: FlyMovementBaseState
     private float _gravityForceMagnitude = .2f;
     private float _dragAmount = 0.94f;
     
-    public FlyMovementFallState(FlyMovement owner, float speed, float radius, float verticalAmplitude) : base()
+    public FlyMovementFallState(IStateMachineOwner owner, float speed, float radius, float verticalAmplitude) : base()
     {
         _speed = speed;
         _radius = radius;

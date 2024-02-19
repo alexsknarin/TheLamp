@@ -10,7 +10,7 @@ public class FlyMovementPreAttackState: FlyMovementBaseState
     private Vector3 _direction;
     private float _prevTime;
     
-    public FlyMovementPreAttackState(FlyMovement owner, float speed, float radius, float verticalAmplitude) : base()
+    public FlyMovementPreAttackState(IStateMachineOwner owner, float speed, float radius, float verticalAmplitude) : base()
     {
         _speed = speed;
         _radius = radius;
