@@ -684,6 +684,7 @@ MonoBehaviour:
   _spawnXPos: 3.6
   _spawnYPosMin: 1
   _spawnYPosMax: 3.1
+  _isDepthEnabled: 1
 --- !u!58 &1569626937
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -940,7 +941,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!23 &1969479200
 MeshRenderer:
   m_ObjectHideFlags: 0

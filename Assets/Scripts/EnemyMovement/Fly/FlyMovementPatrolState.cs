@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class FlyMovementPatrolState: FlyMovementBaseState
+public class FlyMovementPatrolState: EnemyMovementBaseState
 {
     private float _verticalAdaptDuration = 2f; // TODO: Serialized Field
     private float _prevTime;

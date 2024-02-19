@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class MothMovementPreAttackState: MothMovementBaseState
+public class MothMovementPreAttackState: EnemyMovementBaseState
 {
     public override EnemyStates State => EnemyStates.PreAttack;
     

@@ -1,7 +1,7 @@
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class FlyMovementFallState: FlyMovementBaseState
+public class FlyMovementFallState: EnemyMovementBaseState
 {
     private Vector3 _bounceForce;
     private Vector3 _gravityForce;

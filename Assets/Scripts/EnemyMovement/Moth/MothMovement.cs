@@ -21,7 +21,7 @@ public class MothMovement : MonoBehaviour, IStateMachineOwner
 
     // Movement Stats
     private EnemyMovementStateMachine _movementStateMachine;
-    private MothMovementBaseState _currentState;
+    private EnemyMovementBaseState _currentState;
     private MothMovementPatrolState _patrolState;
     private MothMovementEnterState _enterState;
     private MothMovementHoverState _hoverState;
@@ -91,7 +91,7 @@ public class MothMovement : MonoBehaviour, IStateMachineOwner
     // Extract to the Interface
     public void SwitchState()
     {
-        MothMovementBaseState newState = _currentState.State switch
+        EnemyMovementBaseState newState = _currentState.State switch
         {
             EnemyStates.Enter => _hoverState,
             EnemyStates.Hover => _patrolState,

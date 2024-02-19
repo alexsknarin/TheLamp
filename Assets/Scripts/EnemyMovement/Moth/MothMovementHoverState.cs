@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class MothMovementHoverState: MothMovementBaseState
+public class MothMovementHoverState: EnemyMovementBaseState
 {
     private float _prevTime;
     private float _patrolStartOffsetAngle;

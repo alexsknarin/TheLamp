@@ -1,7 +1,6 @@
 using UnityEngine;
-using UnityEngine.UIElements;
 
-public abstract class FlyMovementBaseState : IMovementState
+public abstract class EnemyMovementBaseState : IMovementState
 {
     public Vector3 Position { get; protected set; }
     public Vector3 Depth { get; protected set; }
@@ -17,7 +16,7 @@ public abstract class FlyMovementBaseState : IMovementState
 
     protected IStateMachineOwner _owner;
 
-    public FlyMovementBaseState()
+    public EnemyMovementBaseState()
     {
     }
 

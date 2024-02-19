@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class MothMovementAttackState: MothMovementBaseState
+public class MothMovementAttackState: EnemyMovementBaseState
 {
     private float _acceleration = 0.02f;
     private float _depthDecrement = 0.2f;

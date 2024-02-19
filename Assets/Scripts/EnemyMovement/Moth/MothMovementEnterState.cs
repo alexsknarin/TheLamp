@@ -1,7 +1,7 @@
 // https://mathworld.wolfram.com/Ellipse-LineIntersection.html
 using UnityEngine;
 
-public class MothMovementEnterState: MothMovementBaseState
+public class MothMovementEnterState: EnemyMovementBaseState
 {
     private Vector3 _endPos = Vector3.zero;
     private Vector3 _enterDirection;

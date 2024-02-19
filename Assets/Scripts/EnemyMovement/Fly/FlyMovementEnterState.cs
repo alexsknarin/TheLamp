@@ -1,6 +1,6 @@
     using UnityEngine;
 
-public class FlyMovementEnterState: FlyMovementBaseState
+public class FlyMovementEnterState: EnemyMovementBaseState
 {
     private Vector3 _endPos = Vector3.zero;
     private Vector3 _enterDirection;

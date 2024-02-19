@@ -33,7 +33,7 @@ public class FlyMovement : MonoBehaviour, IStateMachineOwner
     
     // Movement Stats
     private EnemyMovementStateMachine _movementStateMachine;
-    private FlyMovementBaseState _currentState;
+    private EnemyMovementBaseState _currentState;
     private FlyMovementEnterState _enterState;
     private FlyMovementPatrolState _patrolState;
     private FlyMovementAttackState _attackState;
@@ -95,7 +95,7 @@ public class FlyMovement : MonoBehaviour, IStateMachineOwner
     // Extract to the Interface
     public void SwitchState()
     {
-        FlyMovementBaseState newState = _currentState.State switch
+        EnemyMovementBaseState newState = _currentState.State switch
         {
             EnemyStates.Enter => _patrolState,
             EnemyStates.Patrol => startPreAttackState(),

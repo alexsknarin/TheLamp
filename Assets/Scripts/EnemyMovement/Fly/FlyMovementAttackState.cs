@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class FlyMovementAttackState: FlyMovementBaseState
+public class FlyMovementAttackState: EnemyMovementBaseState
 {
     private float _acceleration = 0.06f;
     private float _depthDecrement = 0.2f;

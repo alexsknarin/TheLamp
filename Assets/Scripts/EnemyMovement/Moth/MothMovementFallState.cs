@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class MothMovementFallState: MothMovementBaseState
+public class MothMovementFallState: EnemyMovementBaseState
 {
     private Vector3 _bounceForce;
     private Vector3 _gravityForce;

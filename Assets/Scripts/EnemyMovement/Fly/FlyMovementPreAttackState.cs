@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class FlyMovementPreAttackState: FlyMovementBaseState
+public class FlyMovementPreAttackState: EnemyMovementBaseState
 {
     public override EnemyStates State => EnemyStates.PreAttack;
     
