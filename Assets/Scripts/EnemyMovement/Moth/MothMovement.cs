@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public class MothMovement : MonoBehaviour
+public class MothMovement : MonoBehaviour, IStateMachineOwner
 {
     [Header("-- Movement Settings --")]
     [SerializeField] private float _speed;
@@ -24,6 +24,9 @@ public class MothMovement : MonoBehaviour
     private MothMovementPatrolState _patrolState;
     private MothMovementEnterState _enterState;
     private MothMovementHoverState _hoverState;
+    private MothMovementPreAttackState _preAttackState;
+    private MothMovementAttackState _attackState;
+    private MothMovementFallState _fallState;
     
     private Vector3 _prevPosition2d; //Debug
     private Vector3 _position2d;
@@ -67,6 +70,9 @@ public class MothMovement : MonoBehaviour
         _patrolState  = new MothMovementPatrolState(this, _speed, _radius, _verticalAmplitude);
         _enterState = new MothMovementEnterState(this, _speed, _radius, _verticalAmplitude);
         _hoverState = new MothMovementHoverState(this, _speed, _radius, _verticalAmplitude);
+        _preAttackState = new MothMovementPreAttackState(this, _speed, _radius, _verticalAmplitude);
+        _attackState = new MothMovementAttackState(this, _speed, _radius, _verticalAmplitude);
+        _fallState = new MothMovementFallState(this, _speed, _radius, _verticalAmplitude);
         
         Spawn();
        
@@ -84,16 +90,16 @@ public class MothMovement : MonoBehaviour
             EnemyStates.Enter => _hoverState,
             EnemyStates.Hover => _patrolState,
             EnemyStates.Patrol => _hoverState,
-            // EnemyStates.PreAttack => startAttackState(),
-            // EnemyStates.Attack => _fallState,
-            // EnemyStates.Fall => ReturnToPatrol(),
+            EnemyStates.PreAttack => _attackState,
+            EnemyStates.Attack => _fallState,
+            EnemyStates.Fall => _hoverState,
             _ => throw new ArgumentOutOfRangeException()
         };
         
         _currentState = newState;
         _movementStateMachine.SetState(_currentState, _position2d, _sideDirection, _depthDirection);
     }
-
+    
     private void Update()
     {
         _prevPosition2d = _position2d;
@@ -106,5 +112,23 @@ public class MothMovement : MonoBehaviour
         _movementStateMachine.CheckForStateChange();
         
         Debug.DrawLine(_prevPosition2d, _prevPosition2d + (_position2d-_prevPosition2d).normalized*0.02f, Color.cyan, 5f);
+        
+        
+        if(Input.GetKeyDown(KeyCode.Space))
+        {
+            if (_currentState.State == EnemyStates.Hover)
+            {
+                _currentState = _preAttackState;
+                _movementStateMachine.SetState(_currentState, _position2d, _sideDirection, _depthDirection);
+            }
+        }
+    }
+    
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if(_currentState.State == EnemyStates.Attack)
+        {
+            SwitchState();
+        }
     }
 }

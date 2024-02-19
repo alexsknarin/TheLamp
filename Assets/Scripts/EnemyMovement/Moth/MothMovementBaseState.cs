@@ -15,7 +15,7 @@ public abstract class MothMovementBaseState : IMovementState
     protected float _radius;
     protected float _verticalAmplitude;
 
-    protected MothMovement _owner;
+    protected IStateMachineOwner _owner;
 
     public MothMovementBaseState()
     {

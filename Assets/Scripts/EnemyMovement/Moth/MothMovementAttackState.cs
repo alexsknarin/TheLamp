@@ -1,11 +1,11 @@
 using UnityEngine;
 
-public class FlyMovementAttackState: FlyMovementBaseState
+public class MothMovementAttackState: MothMovementBaseState
 {
-    private float _acceleration = 0.06f;
+    private float _acceleration = 0.02f;
     private float _depthDecrement = 0.2f;
     private float _acceleratedSpeed = 1f;
-    public FlyMovementAttackState(FlyMovement owner, float speed, float radius, float verticalAmplitude) : base()
+    public MothMovementAttackState(IStateMachineOwner owner, float speed, float radius, float verticalAmplitude) : base()
     {
         _speed = speed;
         _radius = radius;
@@ -26,8 +26,14 @@ public class FlyMovementAttackState: FlyMovementBaseState
         Vector3 direction = -newPosition.normalized;
         newPosition += direction * (_speed * _acceleratedSpeed * Time.deltaTime);
         _acceleratedSpeed += _acceleration;
-        Position = newPosition;
         
+        // Add noise
+        Vector3 noiseValue = Vector3.zero;
+        noiseValue.x = Mathf.PerlinNoise(13f * Time.time, 0) * 2 - 1;
+        noiseValue.y = Mathf.PerlinNoise( 0, 13f * Time.time) * 2 - 1;
+        
+        Position = newPosition + noiseValue*0.08f;
+
         Vector3 cameraDirection = (_cameraPosition - Position).normalized;
         Depth = cameraDirection * (2.5f * _depthDecrement);
     }

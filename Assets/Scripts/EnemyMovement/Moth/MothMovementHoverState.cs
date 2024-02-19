@@ -16,7 +16,7 @@ public class MothMovementHoverState: MothMovementBaseState
     private float _hoverDuration;
     private float _hoverPhase;
     
-    public MothMovementHoverState(MothMovement owner, float speed, float radius, float verticalAmplitude) : base()
+    public MothMovementHoverState(IStateMachineOwner owner, float speed, float radius, float verticalAmplitude) : base()
     {
         _speed = speed;
         _radius = radius;

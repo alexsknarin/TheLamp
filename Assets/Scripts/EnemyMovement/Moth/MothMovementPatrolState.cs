@@ -11,7 +11,7 @@ public class MothMovementPatrolState: MothMovementBaseState
     
     private float _patrolDuration;
     
-    public MothMovementPatrolState(MothMovement owner, float speed, float radius, float verticalAmplitude) : base()
+    public MothMovementPatrolState(IStateMachineOwner owner, float speed, float radius, float verticalAmplitude) : base()
     {
         _speed = speed;
         _radius = radius;

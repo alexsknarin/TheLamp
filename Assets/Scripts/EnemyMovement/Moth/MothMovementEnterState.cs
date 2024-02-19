@@ -9,7 +9,7 @@ public class MothMovementEnterState: MothMovementBaseState
     private float _initialDistance;
     private float _phase;
 
-    public MothMovementEnterState(MothMovement owner, float speed, float radius, float verticalAmplitude) : base()
+    public MothMovementEnterState(IStateMachineOwner owner, float speed, float radius, float verticalAmplitude) : base()
     {
         _speed = speed;
         _radius = radius;

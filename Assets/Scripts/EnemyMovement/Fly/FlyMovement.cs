@@ -8,7 +8,7 @@ enum NoiseType
     AlongTrajectory
 }
 
-public class FlyMovement : MonoBehaviour
+public class FlyMovement : MonoBehaviour, IStateMachineOwner
 {
     [Header("-- Movement Settings --")]
     [SerializeField] private float _speed;
