@@ -128,8 +128,6 @@ public class MothMovement : MonoBehaviour, IStateMachineOwner
             _position = _position2d + _currentState.Depth;
         }
         
-        
-        
         _movementStateMachine.CheckForStateChange();
         transform.position = _position;
         

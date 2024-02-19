@@ -40,6 +40,7 @@ public class FlyMovementPatrolState: EnemyMovementBaseState
             finalXRadius = Mathf.Lerp(_radius * _verticalAmplitude, _radius,  Mathf.SmoothStep(0, 1, radiusAdaptPhase));
         }
         
+        // Circle motion
         _phase += Time.deltaTime * _speed * _sideDirection;
         
         float offsetAngleWithDirection;
@@ -52,17 +53,12 @@ public class FlyMovementPatrolState: EnemyMovementBaseState
             offsetAngleWithDirection = _patrolStartOffsetAngle-Mathf.PI;
         }
         
-        Vector3 newPosition = Vector3.zero;
-        
-        newPosition.x = Mathf.Cos(_phase + offsetAngleWithDirection) * finalXRadius;               //TODO: X radius Y radius ?????
-        newPosition.y = Mathf.Sin(_phase + offsetAngleWithDirection) * _radius * _verticalAmplitude;
+        Vector3 circlePosition = EnemyMovementPatterns.CircleMotion(offsetAngleWithDirection, finalXRadius, _radius, _verticalAmplitude, _phase);
+        Position = circlePosition;
         
         // Depth To Camera
-        Vector3 cameraDirection = (_cameraPosition - newPosition).normalized;
-        Depth = cameraDirection * (_depthDirection * newPosition.y * _depthMultiplier);
-        
-        Position = newPosition;
-        
+        Vector3 cameraDirection = (_cameraPosition - Position).normalized;
+        Depth = cameraDirection * (_depthDirection * Position.y * _depthMultiplier);
     }
     
     public void ExitState()

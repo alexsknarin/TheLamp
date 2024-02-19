@@ -31,7 +31,7 @@ public class FlyMovementEnterState: EnemyMovementBaseState
         _endPos.x = Mathf.Cos(-patrolStartOffsetAngle) * _sideDirection;
         _endPos.y = Mathf.Sin(-patrolStartOffsetAngle);
         _endPos = _endPos.normalized * r;
-       
+
         _enterDirection = (_endPos - currentPosition);
         _initialDistance = _enterDirection.magnitude;
         _enterDirection = _enterDirection.normalized;

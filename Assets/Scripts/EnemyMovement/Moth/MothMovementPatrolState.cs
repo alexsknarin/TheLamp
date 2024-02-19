@@ -34,6 +34,7 @@ public class MothMovementPatrolState: EnemyMovementBaseState
         
         Vector3 horizontalVector = Vector3.right;
         horizontalVector.x *= _sideDirection;
+        
         _patrolStartOffsetAngle = Mathf.Acos(Vector3.Dot(horizontalVector.normalized, currentPosition.normalized));
         _patrolStartOffsetAngle *= Mathf.Sign(currentPosition.y);
         if (_sideDirection < 0)
@@ -47,18 +48,17 @@ public class MothMovementPatrolState: EnemyMovementBaseState
         float trajectoryAdaptPhase = (Time.time - _prevTime) / _mainTrajectoryAdaptTime;
         _phase += Time.deltaTime * _speed * _sideDirection;
 
-        Vector3 newPosition = Vector3.zero;
-        newPosition.x = Mathf.Cos(_phase + _patrolStartOffsetAngle) * _radius;
-        newPosition.y = Mathf.Sin(_phase +  _patrolStartOffsetAngle) * _radius * _verticalAmplitude;
-
+        // Circle motion
+        Vector3 circlePosition = EnemyMovementPatterns.CircleMotion(_patrolStartOffsetAngle, _radius, _radius, _verticalAmplitude, _phase);
+        
         if (trajectoryAdaptPhase < 1)
         {
-            newPosition = Vector3.Lerp(currentPosition, newPosition, Mathf.SmoothStep(0, 1, trajectoryAdaptPhase));
+            circlePosition = Vector3.Lerp(currentPosition, circlePosition, Mathf.SmoothStep(0, 1, trajectoryAdaptPhase));
         }
         
         // Add noise
         Vector3 trajectoryNoise = TrajectoryNoise.Generate(_noiseFrequency);
-        Position = newPosition + trajectoryNoise * _noiseAmplitude;
+        Position = circlePosition + trajectoryNoise * _noiseAmplitude;
     }
     
     public override void CheckForStateChange()
