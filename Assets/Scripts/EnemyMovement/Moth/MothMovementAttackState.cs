@@ -5,6 +5,8 @@ public class MothMovementAttackState: EnemyMovementBaseState
     private float _acceleration = 0.02f;
     private float _depthDecrement = 0.2f;
     private float _acceleratedSpeed = 1f;
+    private float _noiseFrequency = 13f;
+    private float _noiseAmplitude = 0.08f;
     public MothMovementAttackState(IStateMachineOwner owner, float speed, float radius, float verticalAmplitude) : base()
     {
         _speed = speed;
@@ -28,11 +30,8 @@ public class MothMovementAttackState: EnemyMovementBaseState
         _acceleratedSpeed += _acceleration;
         
         // Add noise
-        Vector3 noiseValue = Vector3.zero;
-        noiseValue.x = Mathf.PerlinNoise(13f * Time.time, 0) * 2 - 1;
-        noiseValue.y = Mathf.PerlinNoise( 0, 13f * Time.time) * 2 - 1;
-        
-        Position = newPosition + noiseValue*0.08f;
+        Vector3 trajectoryNoise = TrajectoryNoise.Generate(_noiseFrequency);
+        Position = newPosition + trajectoryNoise * _noiseAmplitude;
 
         Vector3 cameraDirection = (_cameraPosition - Position).normalized;
         Depth = cameraDirection * (2.5f * _depthDecrement);

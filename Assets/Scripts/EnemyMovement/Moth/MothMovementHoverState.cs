@@ -12,10 +12,11 @@ public class MothMovementHoverState: EnemyMovementBaseState
     private float _speedFactor;
     private float _moveFromCenterDuration = 0.2f;
     private float _speedNoiseCompensation = 0.4f;
-
     private float _hoverDuration;
     private float _hoverPhase;
-    
+    private float _noiseFrequency = 8f;
+    private float _noiseAmplitude = 0.29f;
+
     public MothMovementHoverState(IStateMachineOwner owner, float speed, float radius, float verticalAmplitude) : base()
     {
         _speed = speed;
@@ -57,13 +58,8 @@ public class MothMovementHoverState: EnemyMovementBaseState
         }
         
         // Add noise
-        Vector3 noiseValue = Vector3.zero;
-        noiseValue.x = Mathf.PerlinNoise(8f * Time.time, 0) * 2 - 1;
-        noiseValue.y = Mathf.PerlinNoise( 0, 8f * Time.time) * 2 - 1;
-        
-        
-        Position = newPosition + noiseValue * (Mathf.Clamp(radiusAdaptPhase, 0, 1) * 0.29f);
-        
+        Vector3 trajectoryNoise = TrajectoryNoise.Generate(_noiseFrequency);
+        Position = newPosition + trajectoryNoise * (Mathf.Clamp(radiusAdaptPhase, 0, 1) * _noiseAmplitude);
         
         // Depth To Camera
         Vector3 cameraDirection = (_cameraPosition - Position).normalized;

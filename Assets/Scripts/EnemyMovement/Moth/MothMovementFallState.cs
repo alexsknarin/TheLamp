@@ -7,7 +7,9 @@ public class MothMovementFallState: EnemyMovementBaseState
     private float _bounceForceMagnitude = 4f;
     private float _gravityForceMagnitude = .2f;
     private float _dragAmount = 0.94f;
-    
+    private float _noiseFrequency = 7f;
+    private float _noiseAmplitude = 0.035f;
+
     public MothMovementFallState(IStateMachineOwner owner, float speed, float radius, float verticalAmplitude) : base()
     {
         _speed = speed;
@@ -29,11 +31,8 @@ public class MothMovementFallState: EnemyMovementBaseState
         Position = currentPosition + _bounceForce * Time.deltaTime + _gravityForce;
         
         // Add noise
-        Vector3 noiseValue = Vector3.zero;
-        noiseValue.x = Mathf.PerlinNoise(7f * Time.time, 0) * 2 - 1;
-        noiseValue.y = Mathf.PerlinNoise( 0, 7f * Time.time) * 2 - 1;
-        
-        Position += noiseValue * 0.035f;
+        Vector3 trajectoryNoise = TrajectoryNoise.Generate(_noiseFrequency);
+        Position += trajectoryNoise * _noiseAmplitude;
         
         _bounceForce = _bounceForce * _dragAmount;
         _gravityForce = _gravityForce + Vector3.down * (_gravityForceMagnitude * Time.deltaTime);

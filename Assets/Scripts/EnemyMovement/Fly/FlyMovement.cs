@@ -144,18 +144,8 @@ public class FlyMovement : MonoBehaviour, IStateMachineOwner
         // Add Noise
         if (_isNoiseEnabled && _currentState.State == EnemyStates.Patrol)  
         {
-            Vector3 noiseValue = Vector3.zero;
-            noiseValue.x = Mathf.PerlinNoise(_noiseFrequency * Time.time, 0) * 2 - 1;
-            noiseValue.y = Mathf.PerlinNoise(0, _noiseFrequency * Time.time) * 2 - 1;
-
-            if (_noiseType == NoiseType.WorldSpace)
-            {
-                _position2d += noiseValue * _noiseAmplitude;
-            }
-            else if (_noiseType == NoiseType.AlongTrajectory)
-            {
-                _position2d += transform.position.normalized * (noiseValue.x * _noiseAmplitude);
-            }
+            Vector3 trajectoryNoise = TrajectoryNoise.Generate(_noiseFrequency); 
+            _position2d += trajectoryNoise * _noiseAmplitude;
             _position = _position2d;
         }
         
