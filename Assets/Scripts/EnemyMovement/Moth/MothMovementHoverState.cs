@@ -6,7 +6,7 @@ public class MothMovementHoverState: MothMovementBaseState
     private float _patrolStartOffsetAngle;
     private float _enterTimeOffset; // TMP
     private float _phase;
-    private float _depthMultiplier = 1.8f;
+    private float _depthMultiplier = 0.6f;
     private float _hoverRadius = .35f;
     private Vector3 _hoverCenter;
     private float _speedFactor;

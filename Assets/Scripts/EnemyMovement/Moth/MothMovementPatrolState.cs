@@ -54,9 +54,13 @@ public class MothMovementPatrolState: MothMovementBaseState
             newPosition = Vector3.Lerp(currentPosition, newPosition, Mathf.SmoothStep(0, 1, trajectoryAdaptPhase));
         }
         
-        Position = newPosition;
         
+        // Add noise
+        Vector3 noiseValue = Vector3.zero;
+        noiseValue.x = Mathf.PerlinNoise(9f * Time.time, 0) * 2 - 1;
+        noiseValue.y = Mathf.PerlinNoise( 0, 9f * Time.time) * 2 - 1;
         
+        Position = newPosition + noiseValue*0.05f;
     }
     
     public override void CheckForStateChange()
