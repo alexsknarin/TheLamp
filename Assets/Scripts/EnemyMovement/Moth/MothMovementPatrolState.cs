@@ -53,7 +53,10 @@ public class MothMovementPatrolState: MothMovementBaseState
         {
             newPosition = Vector3.Lerp(currentPosition, newPosition, Mathf.SmoothStep(0, 1, trajectoryAdaptPhase));
         }
+        
         Position = newPosition;
+        
+        
     }
     
     public override void CheckForStateChange()

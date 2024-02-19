@@ -15,7 +15,8 @@ public class MothMovement : MonoBehaviour, IStateMachineOwner
     [SerializeField] private float _spawnXPos;
     [SerializeField] private float _spawnYPosMin;
     [SerializeField] private float _spawnYPosMax;
-    
+    [Header("---- Depth Settings ----")]
+    [SerializeField] bool _isDepthEnabled;
     private int _depthDirection;
 
     // Movement Stats
@@ -30,7 +31,7 @@ public class MothMovement : MonoBehaviour, IStateMachineOwner
     
     private Vector3 _prevPosition2d; //Debug
     private Vector3 _position2d;
-    // private Vector3 _position;
+    private Vector3 _position;
     
     // Events
     public event Action OnPreAttackStart;
@@ -70,6 +71,7 @@ public class MothMovement : MonoBehaviour, IStateMachineOwner
     {
         _sideDirection = RandomDirection.Generate();
         _depthDirection = RandomDirection.Generate();
+        
         _movementStateMachine = new EnemyMovementStateMachine();
         _patrolState  = new MothMovementPatrolState(this, _speed, _radius, _verticalAmplitude);
         _enterState = new MothMovementEnterState(this, _speed, _radius, _verticalAmplitude);
@@ -117,14 +119,21 @@ public class MothMovement : MonoBehaviour, IStateMachineOwner
         _movementStateMachine.Execute(_position2d);
         _position2d = _currentState.Position;
         
-        transform.position = _position2d;
-        _movementStateMachine.CheckForStateChange();
-
         
+        _position = _position2d;
+
+        // Add Depth
+        if (_isDepthEnabled)
+        {
+            _position = _position2d + _currentState.Depth;
+        }
+        
+        
+        
+        _movementStateMachine.CheckForStateChange();
+        transform.position = _position;
         
         Debug.DrawLine(_prevPosition2d, _prevPosition2d + (_position2d-_prevPosition2d).normalized*0.02f, Color.cyan, 5f);
-        
-        
         
         if(Input.GetKeyDown(KeyCode.Space))
         {

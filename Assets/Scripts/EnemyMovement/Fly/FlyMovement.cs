@@ -46,8 +46,6 @@ public class FlyMovement : MonoBehaviour, IStateMachineOwner
     private Vector3 _prevPosSmooth; //Debug
     private Vector3 _position2d;
     private Vector3 _position;
-    private Vector3 _positionDepth;
-    private Vector3 _prevPositionDepth;
     
     // Events
     public event Action OnPreAttackStart;
@@ -138,7 +136,7 @@ public class FlyMovement : MonoBehaviour, IStateMachineOwner
         
         // Debug Only
         _prevPosSmooth = transform.position;
-        
+       
         _movementStateMachine.Execute(_position2d);
         _position2d = _currentState.Position;
         _position = _position2d;
@@ -164,8 +162,7 @@ public class FlyMovement : MonoBehaviour, IStateMachineOwner
         // Add Depth
         if (_isDepthEnabled)
         {
-            _positionDepth = _position2d + _currentState.Depth;
-            _position = _positionDepth;
+            _position = _position2d + _currentState.Depth;
         }
         
         // Add SmoothDamp

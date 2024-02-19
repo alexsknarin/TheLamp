@@ -5,7 +5,7 @@ public class MothMovementEnterState: MothMovementBaseState
 {
     private Vector3 _endPos = Vector3.zero;
     private Vector3 _enterDirection;
-    private float _depthMultiplier = 2f;
+    private float _depthMultiplier = 1.6f;
     private float _initialDistance;
     private float _phase;
 
@@ -43,6 +43,12 @@ public class MothMovementEnterState: MothMovementBaseState
     {
         Position = currentPosition + _enterDirection * (_speed * Time.deltaTime * (Mathf.PI/2));
         _phase = (_endPos - Position).magnitude / _initialDistance;
+        
+        
+        // Depth To Camera
+        float distancePhase = 1 - (_endPos - Position).magnitude / _initialDistance;
+        Vector3 cameraDirection = (_cameraPosition - Position).normalized;
+        Depth = cameraDirection * (_depthDirection * Mathf.Lerp(Position.y * _depthMultiplier, Position.y, distancePhase));
 
     }
     
