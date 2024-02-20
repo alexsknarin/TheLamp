@@ -96,8 +96,8 @@ public class FlyMovement : MonoBehaviour, IStateMachineOwner, IPreAttackStatePro
         EnemyMovementBaseState newState = _currentState.State switch
         {
             EnemyStates.Enter => _patrolState,
-            EnemyStates.Patrol => startPreAttackState(),
-            EnemyStates.PreAttack => startAttackState(),
+            EnemyStates.Patrol => StartPreAttackState(),
+            EnemyStates.PreAttack => StartAttackState(),
             EnemyStates.Attack => _fallState,
             EnemyStates.Fall => ReturnToPatrol(),
             _ => throw new ArgumentOutOfRangeException()
@@ -108,19 +108,19 @@ public class FlyMovement : MonoBehaviour, IStateMachineOwner, IPreAttackStatePro
     }
 
     // Transition Handlers
-    private FlyMovementEnterState ReturnToPatrol()
+    private EnemyMovementBaseState ReturnToPatrol()
     {
         _sideDirection = -(int)Mathf.Sign(_position2d.x);
         return _enterState;
     }
     
-    private FlyMovementPreAttackState startPreAttackState()
+    private EnemyMovementBaseState StartPreAttackState()
     {
         OnPreAttackStart?.Invoke();
         return _preAttackState;
     }
     
-    private FlyMovementAttackState startAttackState()
+    private EnemyMovementBaseState StartAttackState()
     {
         OnPreAttackEnd?.Invoke();
         return _attackState;

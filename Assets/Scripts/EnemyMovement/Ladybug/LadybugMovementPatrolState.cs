@@ -5,8 +5,8 @@ public class LadybugMovementPatrolState: EnemyMovementBaseState
     private float _patrolStartOffsetAngle;
     private float _enterTimeOffset; // TMP
     private float _phase;
-    private float _spiralSpeedStart = 0.13f;
-    private float _spiralSpeedEnd = 0.009f;
+    private float _spiralSpeedStart = 0.2f;
+    private float _spiralSpeedEnd = 0.015f;
     private float _spiralPhase = 1f;
     
     private float _spiralAcceleration = .25f;

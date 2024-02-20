@@ -882,6 +882,9 @@ GameObject:
   - component: {fileID: 1730390746}
   - component: {fileID: 1730390745}
   - component: {fileID: 1730390744}
+  - component: {fileID: 1730390750}
+  - component: {fileID: 1730390749}
+  - component: {fileID: 1730390751}
   m_Layer: 0
   m_Name: Ladybug
   m_TagString: Untagged
@@ -919,6 +922,7 @@ MonoBehaviour:
   _speed: 2
   _radius: 3.8
   _verticalAmplitude: 1.2
+  _isSmoothDampEnabled: 0
 --- !u!58 &1730390745
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -1031,6 +1035,45 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1730390742}
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1730390749
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1730390742}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 04ee26263296a024fa641d7fcb8978af, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1730390750
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1730390742}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba6a21b334c1ea443b60c78c130a1ba8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _meshRenderer: {fileID: 1730390747}
+  _duration: 0.5
+--- !u!114 &1730390751
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1730390742}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d2e420a26cc356d4ba375c424a8b4a47, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _meshRenderer: {fileID: 1730390747}
 --- !u!1 &1934066237
 GameObject:
   m_ObjectHideFlags: 0

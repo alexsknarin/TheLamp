@@ -4,21 +4,21 @@ using UnityEngine;
 [RequireComponent(typeof(FlyMovement))]
 public class FlyPresentation : MonoBehaviour
 {
-    private IPreAttackStateProvider _flyMovement;
+    private IPreAttackStateProvider _preAttackStateProvider;
     private PreAttackFlash _preAttackFlash;
 
     private void OnEnable()
     {
         _preAttackFlash = GetComponent<PreAttackFlash>();
-        _flyMovement = GetComponent<FlyMovement>();
+        _preAttackStateProvider = GetComponent<FlyMovement>();
         
-        _flyMovement.OnPreAttackStart += _preAttackFlash.PreAttackStart;
-        _flyMovement.OnPreAttackEnd += _preAttackFlash.PreAttackEnd;
+        _preAttackStateProvider.OnPreAttackStart += _preAttackFlash.PreAttackStart;
+        _preAttackStateProvider.OnPreAttackEnd += _preAttackFlash.PreAttackEnd;
     }
     
     private void OnDisable()
     {
-        _flyMovement.OnPreAttackStart -= _preAttackFlash.PreAttackStart;
-        _flyMovement.OnPreAttackEnd -= _preAttackFlash.PreAttackEnd;
+        _preAttackStateProvider.OnPreAttackStart -= _preAttackFlash.PreAttackStart;
+        _preAttackStateProvider.OnPreAttackEnd -= _preAttackFlash.PreAttackEnd;
     }
 }

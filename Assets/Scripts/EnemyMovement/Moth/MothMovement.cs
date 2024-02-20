@@ -106,7 +106,7 @@ public class MothMovement : MonoBehaviour, IStateMachineOwner, IPreAttackStatePr
         _movementStateMachine.SetState(_currentState, _position2d, _sideDirection, _depthDirection);
     }
     
-    private MothMovementAttackState startAttackState()
+    private EnemyMovementBaseState startAttackState()
     {
         OnPreAttackEnd?.Invoke();
         return _attackState;
