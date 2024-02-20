@@ -902,7 +902,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -4.95, y: -2.69, z: 0}
-  m_LocalScale: {x: 0.3, y: 0.3, z: 0.3}
+  m_LocalScale: {x: 0.25, y: 0.25, z: 0.25}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 771570258}
@@ -923,6 +923,7 @@ MonoBehaviour:
   _radius: 3.8
   _verticalAmplitude: 1.2
   _isSmoothDampEnabled: 0
+  _isDepthEnabled: 1
 --- !u!58 &1730390745
 CircleCollider2D:
   m_ObjectHideFlags: 0

@@ -34,7 +34,7 @@ public class MothMovementAttackState: EnemyMovementBaseState
         Position = newPosition + trajectoryNoise * _noiseAmplitude;
 
         Vector3 cameraDirection = (_cameraPosition - Position).normalized;
-        Depth = cameraDirection * (2.5f * _depthDecrement);
+        Depth = cameraDirection * (0.2f * _depthDecrement);
     }
 
     public void ExitState()

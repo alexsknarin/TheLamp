@@ -9,7 +9,7 @@ public class LadybugMovement : MonoBehaviour, IStateMachineOwner, IPreAttackStat
     [SerializeField] private float _radius;
     [SerializeField] private float _verticalAmplitude;
     [SerializeField] private bool _isSmoothDampEnabled;
-    
+    [SerializeField] private bool _isDepthEnabled;
 
     // Movement States
     private EnemyMovementStateMachine _movementStateMachine;
@@ -24,6 +24,7 @@ public class LadybugMovement : MonoBehaviour, IStateMachineOwner, IPreAttackStat
     private int _depthDirection;
     private Vector3 _position2d;
     private Vector3 _prevPosition2d;
+    
 
     public event Action OnPreAttackStart;
     public event Action OnPreAttackEnd;
@@ -101,16 +102,19 @@ public class LadybugMovement : MonoBehaviour, IStateMachineOwner, IPreAttackStat
         _prevPosition2d = _position2d;
         _currentState.ExecuteState(_position2d);
         _position2d = _currentState.Position;
-
-        _movementStateMachine.CheckForStateChange();
-        transform.position = _position2d;
         
-        if (_isSmoothDampEnabled)
+        Vector3 position = _position2d;
+        
+        // Add Depth
+        if (_isDepthEnabled)
         {
-            
+            position = _position2d + _currentState.Depth;
         }
         
+        _movementStateMachine.CheckForStateChange();
+        transform.position = position;
         
+
         Debug.DrawLine(_prevPosition2d, _prevPosition2d + (_position2d-_prevPosition2d).normalized*0.02f, Color.cyan, 5f);
         
         if(Input.GetKeyDown(KeyCode.Space))

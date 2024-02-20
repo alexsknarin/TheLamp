@@ -8,6 +8,8 @@ public class LadybugMovementPreAttackState: EnemyMovementBaseState
     private float _acceleratedSpeed;
     private float _acceleration = 0.93f;
     private Vector3 _direction;
+    private Vector3 _tangentDirection;
+    private Vector3 _endPos;
     private float _prevTime;
     
     public LadybugMovementPreAttackState(IStateMachineOwner owner, float speed, float radius, float verticalAmplitude) : base()
@@ -24,14 +26,29 @@ public class LadybugMovementPreAttackState: EnemyMovementBaseState
         _acceleratedSpeed = 1f;
         _sideDirection = sideDirection;
         _direction = currentPosition.normalized;
+        Quaternion rotation = Quaternion.Euler(0, 0, 90 * _sideDirection);
+        _tangentDirection = rotation * _direction;
+        
         Position = currentPosition;
     }
     
     public override void ExecuteState(Vector3 currentPosition)
     {
-        Position = currentPosition + _direction * (_speed * Time.deltaTime * (Mathf.PI/2) * _acceleratedSpeed);
+        Vector3 direction;
+        float phase = (Time.time - _prevTime) / _duration;
+        if (phase < 0.5f)
+        {
+            direction = Vector3.Lerp(_tangentDirection, _direction, phase * 2).normalized;
+        }
+        else
+        {
+            direction = Vector3.Lerp(_direction, -_tangentDirection , (phase - 0.5f) * 2).normalized;
+        }
+        
+        Position = currentPosition + direction * (_speed * Time.deltaTime * (Mathf.PI/2) * _acceleratedSpeed);
+        
         Vector3 cameraDirection = (_cameraPosition - Position).normalized;
-        Depth = cameraDirection * 2.5f;
+        Depth = cameraDirection * 0.1f;
         _acceleratedSpeed *= _acceleration;
     }
     
