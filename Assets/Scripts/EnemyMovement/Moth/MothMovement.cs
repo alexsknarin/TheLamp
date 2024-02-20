@@ -19,7 +19,7 @@ public class MothMovement : MonoBehaviour, IStateMachineOwner, IPreAttackStatePr
     [SerializeField] bool _isDepthEnabled;
     private int _depthDirection;
 
-    // Movement Stats
+    // Movement States
     private EnemyMovementStateMachine _movementStateMachine;
     private EnemyMovementBaseState _currentState;
     private MothMovementPatrolState _patrolState;
