@@ -4,7 +4,7 @@ using UnityEngine;
 [RequireComponent(typeof(FlyMovement))]
 public class FlyPresentation : MonoBehaviour
 {
-    private FlyMovement _flyMovement;
+    private IPreAttackStateProvider _flyMovement;
     private PreAttackFlash _preAttackFlash;
 
     private void OnEnable()

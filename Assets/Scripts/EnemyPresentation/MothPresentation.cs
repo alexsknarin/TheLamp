@@ -4,7 +4,7 @@ using UnityEngine;
 [RequireComponent(typeof(MothMovement))]
 public class MothPresentation : MonoBehaviour
 {
-    private MothMovement _mothMovement;
+    private IPreAttackStateProvider _mothMovement;
     private PreAttackFlash _preAttackFlash;
 
     private void OnEnable()

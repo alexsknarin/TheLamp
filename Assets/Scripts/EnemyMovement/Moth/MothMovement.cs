@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public class MothMovement : MonoBehaviour, IStateMachineOwner
+public class MothMovement : MonoBehaviour, IStateMachineOwner, IPreAttackStateProvider
 {
     [Header("-- Movement Settings --")]
     [SerializeField] private float _speed;

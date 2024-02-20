@@ -8,7 +8,7 @@ enum NoiseType
     AlongTrajectory
 }
 
-public class FlyMovement : MonoBehaviour, IStateMachineOwner
+public class FlyMovement : MonoBehaviour, IStateMachineOwner, IPreAttackStateProvider
 {
     [Header("-- Movement Settings --")]
     [SerializeField] private float _speed;
@@ -66,9 +66,7 @@ public class FlyMovement : MonoBehaviour, IStateMachineOwner
     private void Init()
     {
         _sideDirection = RandomDirection.Generate();
-        Debug.Log("Side Direction: " + _sideDirection.ToString());
         _depthDirection = RandomDirection.Generate();
-        Debug.Log("Depth Direction: " + _depthDirection.ToString());
         
         _movementStateMachine = new EnemyMovementStateMachine();
         
