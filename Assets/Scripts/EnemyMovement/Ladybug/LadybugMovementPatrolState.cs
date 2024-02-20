@@ -33,7 +33,7 @@ public class LadybugMovementPatrolState: EnemyMovementBaseState
 
         _phase = 0;
         _spiralPhase = 1f;
-        Position = currentPosition;
+            Position = currentPosition;
         
         Vector3 horizontalVector = Vector3.right;
         horizontalVector.x *= _sideDirection;
