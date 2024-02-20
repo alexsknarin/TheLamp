@@ -32,7 +32,7 @@ public class FlyMovementAttackState: EnemyMovementBaseState
         Depth = cameraDirection * (2.5f * _depthDecrement);
     }
 
-    public void ExitState()
+    public override void ExitState()
     {
     }
 }

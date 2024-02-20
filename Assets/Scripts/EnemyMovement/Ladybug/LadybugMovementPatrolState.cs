@@ -10,8 +10,6 @@ public class LadybugMovementPatrolState: EnemyMovementBaseState
     private float _spiralSpeedEnd = 0.015f;
     private float _spiralPhase = 1f;
     
-    private float _spiralAcceleration = .25f;
-    private float _spiralAccelerationPhase = 1f;
     private float _preAttackTriggerDistance = 0.7f;
     private float _preAttackTriggerYThreshold = 0.3f;
     
@@ -35,7 +33,6 @@ public class LadybugMovementPatrolState: EnemyMovementBaseState
 
         _phase = 0;
         _spiralPhase = 1f;
-        _spiralAccelerationPhase = 1f;
         Position = currentPosition;
         
         Vector3 horizontalVector = Vector3.right;
@@ -84,7 +81,7 @@ public class LadybugMovementPatrolState: EnemyMovementBaseState
         }
     }
 
-    public void ExitState()
+    public override void ExitState()
     {
 
     }

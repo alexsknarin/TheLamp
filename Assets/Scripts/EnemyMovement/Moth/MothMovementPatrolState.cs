@@ -6,7 +6,6 @@ public class MothMovementPatrolState: EnemyMovementBaseState
     private float _patrolStartOffsetAngle;
     private float _enterTimeOffset; // TMP
     private float _phase;
-    private float _depthMultiplier = 1f;
     private float _mainTrajectoryAdaptTime = 0.45f;
     
     private float _patrolDuration;
@@ -70,7 +69,7 @@ public class MothMovementPatrolState: EnemyMovementBaseState
         }
     }
 
-    public void ExitState()
+    public override void ExitState()
     {
 
     }

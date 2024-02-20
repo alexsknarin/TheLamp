@@ -70,7 +70,7 @@ public class MothMovementHoverState: EnemyMovementBaseState
         }
     }
 
-    public void ExitState()
+    public override void ExitState()
     {
 
     }

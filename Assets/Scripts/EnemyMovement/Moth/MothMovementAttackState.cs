@@ -37,7 +37,7 @@ public class MothMovementAttackState: EnemyMovementBaseState
         Depth = cameraDirection * (0.2f * _depthDecrement);
     }
 
-    public void ExitState()
+    public override void ExitState()
     {
     }
 }

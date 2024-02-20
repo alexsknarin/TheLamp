@@ -33,7 +33,7 @@ public class LadybugMovementFallState: EnemyMovementBaseState
         _gravityForce = _gravityForce + Vector3.down * (_gravityForceMagnitude * Time.deltaTime);
     }
 
-    public void ExitState()
+    public override void ExitState()
     {
     }
     

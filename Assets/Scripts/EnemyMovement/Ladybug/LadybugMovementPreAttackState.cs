@@ -60,7 +60,7 @@ public class LadybugMovementPreAttackState: EnemyMovementBaseState
         }
     }
 
-    public void ExitState()
+    public override void ExitState()
     {
     }
 }

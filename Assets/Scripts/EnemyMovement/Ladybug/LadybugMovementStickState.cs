@@ -21,7 +21,7 @@ public class LadybugMovementStickState: EnemyMovementBaseState
         Position = currentPosition;
     }
 
-    public void ExitState()
+    public override void ExitState()
     {
     }
 }

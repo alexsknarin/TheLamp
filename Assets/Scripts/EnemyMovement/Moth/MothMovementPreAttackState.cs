@@ -43,7 +43,7 @@ public class MothMovementPreAttackState: EnemyMovementBaseState
         }
     }
 
-    public void ExitState()
+    public override void ExitState()
     {
     }
 }

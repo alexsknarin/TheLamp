@@ -61,7 +61,7 @@ public class FlyMovementPatrolState: EnemyMovementBaseState
         Depth = cameraDirection * (_depthDirection * Position.y * _depthMultiplier);
     }
     
-    public void ExitState()
+    public override void ExitState()
     {
         _prevTime = 0;
         _patrolStartOffsetAngle = 0;
