@@ -175,15 +175,7 @@ public class FlyMovement : MonoBehaviour, IStateMachineOwner, IPreAttackStatePro
         
         Debug.DrawLine(_prevPosition2d, _prevPosition2d + (_position2d-_prevPosition2d).normalized*0.02f, Color.cyan, 5f);
         Debug.DrawLine(_prevPosSmooth, _prevPosSmooth + (transform.position-_prevPosSmooth).normalized*0.02f, Color.yellow, 5f);
-        
-        
-        if(Input.GetKeyDown(KeyCode.Space))
-        {
-            if (_currentState.State == EnemyStates.Patrol)
-            {
-                SwitchState();
-            }
-        }
+
     }
 
     private void OnTriggerEnter2D(Collider2D other)
