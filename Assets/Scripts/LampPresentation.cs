@@ -19,7 +19,7 @@ public class LampPresentation : MonoBehaviour
     private readonly float _lampNeutralEmission = 1f;
     
     private readonly float _lightMinimumIntensity = 1;
-    private readonly float _lampMinimumEmission = 0.05f;
+    private readonly float _lampMinimumEmission = 0.01f;
     
     private readonly float _lightMaximumIntensity = 90;
     private readonly float _lampMaximumEmission = 30f;
