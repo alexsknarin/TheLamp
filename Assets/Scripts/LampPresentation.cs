@@ -1,13 +1,6 @@
 using System;
 using UnityEngine;
 
-enum LampStates
-{
-    Neutral,
-    Attack,
-    Regenerate
-}
-
 public class LampPresentation : MonoBehaviour
 {
     [SerializeField] private Light _lampLight;
@@ -17,10 +10,10 @@ public class LampPresentation : MonoBehaviour
     [SerializeField] private float _lightRegenerateDuration;
     private LampStates _lampState = LampStates.Neutral;
     
-    private float _attackPower = 1f;
-    private float _attackPowerCached;
-    
+    private float _lightPower = 1f;
+    private float _attackDuration = 1f;
     private float _prevTime;
+    private bool _isAttack = false;
     
     private readonly float _lightNeutralIntensity = 22;
     private readonly float _lampNeutralEmission = 1f;
@@ -34,106 +27,64 @@ public class LampPresentation : MonoBehaviour
     
     private void OnEnable()
     {
-        PlayerInput.OnPlayerAttack += StartAttack;
+        LampAttackModel.OnLampAttack += StartAttackState;
+        LampAttackModel.OnLampCurrentPowerChanged += PerformCooldownState;
     }
 
     private void OnDisable()
     {
-        PlayerInput.OnPlayerAttack -= StartAttack;
+        LampAttackModel.OnLampAttack -= StartAttackState;
+        LampAttackModel.OnLampCurrentPowerChanged -= PerformCooldownState;
     }
 
+   
     private void Start()
     {
         _lampMaterial = GetComponent<MeshRenderer>().material;
-        ResetLightNeutral();
-        _lampState = LampStates.Neutral;
-    }
-    
-    private void ResetLightNeutral()
-    {
-        _lampLight.intensity = _lightNeutralIntensity;
-        _lampMaterial.SetFloat("_EmissionLevel", _lampNeutralEmission);
-        UpdateMaterialAttackPower();
-    }
-    
-    private void ResetLightRegenerate()
-    {
-        _lampLight.intensity = _lightMinimumIntensity;
-        _lampMaterial.SetFloat("_EmissionLevel", _lampMinimumEmission);
-        UpdateMaterialAttackPower();
-    }
-    
-    private void UpdateMaterialAttackPower()
-    {
-        _lampMaterial.SetFloat("_attackPower", _attackPower);
-    }
-    
-    private void StartAttack()
-    {
-        if (_lampState != LampStates.Attack)
-        {
-            _lampState = LampStates.Attack;
-            _prevTime = Time.time;
-            _attackPowerCached = (float)Math.Pow(_attackPower, 2f);
-        }
-    }
-    
-    private void PerformAttack()
-    {
-        float phase = (Time.time - _prevTime) / _lightAttackFadeDuration;
-        
-        if (phase > 1)
-        {
-            StartRegenerate();
-            return;
-        }
-        _lampLight.intensity = Mathf.Lerp(_lightMaximumIntensity * _attackPowerCached, _lightMinimumIntensity, phase);
-        _lampMaterial.SetFloat("_EmissionLevel", Mathf.Lerp(_lampMaximumEmission * _attackPowerCached, _lampMinimumEmission, phase));
-        _attackPower = 0;
-        UpdateMaterialAttackPower();
-    }
-    
-    private void StartRegenerate()
-    {
-        ResetLightRegenerate();
-        _prevTime = Time.time;
-        _lampState = LampStates.Regenerate;
-    }
-    
-    private void PerformRegenerate()
-    {
-        float phase = (Time.time - _prevTime) / _lightRegenerateDuration;
-        _attackPower = phase;
-        UpdateMaterialAttackPower();
-        if (phase > 1)
-        {
-            StartNeutral();
-            _attackPower = 1f;
-            UpdateMaterialAttackPower();
-            return;
-        }
-        _lampLight.intensity = Mathf.Lerp(_lightMinimumIntensity, _lightNeutralIntensity, phase);
-        _lampMaterial.SetFloat("_EmissionLevel", Mathf.Lerp(_lampMinimumEmission, _lampNeutralEmission, phase));
-    }
-    
-    private void StartNeutral()
-    {
-        ResetLightNeutral();
-        _lampState = LampStates.Neutral;
+        ResetLightNeutralState();
     }
 
     private void Update()
     {
-        switch (_lampState)
+        if (_isAttack)
         {
-            case LampStates.Attack:
-                PerformAttack();
-                break;
-            case LampStates.Regenerate:
-                PerformRegenerate();
-                break;
-            case LampStates.Neutral:
-                break;
+            PerformAttack();
         }
+    }
+
+    private void ResetLightNeutralState()
+    {
+        _lampLight.intensity = _lightNeutralIntensity;
+        _lampMaterial.SetFloat("_EmissionLevel", _lampNeutralEmission);
+    }
+    
+    private void StartAttackState(int attackPower, float currentPower, float attackDuration)
+    {
+        _lampMaterial.SetFloat("_attackPower", 0f);
+        _lightPower = Mathf.Pow(currentPower, 2f);
+        _attackDuration = attackDuration;
+        _prevTime = Time.time;
+        _isAttack = true;
+    }
+    
+    private void PerformAttack()
+    {
+        float phase = (Time.time - _prevTime) / _attackDuration;
+        if (phase > 1)
+        {
+            _isAttack = false;
+            _lampLight.intensity = _lightMinimumIntensity;
+            _lampMaterial.SetFloat("_EmissionLevel", _lampMinimumEmission);
+            return;
+        }
+        _lampLight.intensity = Mathf.Lerp(_lightMaximumIntensity * _lightPower, _lightMinimumIntensity, phase);
+        _lampMaterial.SetFloat("_EmissionLevel", Mathf.Lerp(_lampMaximumEmission * _lightPower, _lampMinimumEmission, phase));
+    }
+    
+    private void PerformCooldownState(float currentPower)
+    {
+        _lampLight.intensity = Mathf.Lerp(_lightMinimumIntensity, _lightNeutralIntensity, currentPower);
+        _lampMaterial.SetFloat("_EmissionLevel", Mathf.Lerp(_lampMinimumEmission, _lampNeutralEmission, currentPower));
+        _lampMaterial.SetFloat("_attackPower", currentPower);
     }
 }

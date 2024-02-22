@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class PlayerInput : MonoBehaviour
+public class PlayerInputHandler : MonoBehaviour
 {
     public static event Action OnPlayerAttack;
     
@@ -10,7 +10,6 @@ public class PlayerInput : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space))
         {
             OnPlayerAttack?.Invoke();
-            Debug.Log("Player Attack");
         }
     }
 }
