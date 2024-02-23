@@ -51,11 +51,19 @@ public class FlyMovement : MonoBehaviour, IStateMachineOwner, IPreAttackStatePro
     public event Action OnPreAttackStart;
     public event Action OnPreAttackEnd;
 
-    private void Start()
+    // private void Start()
+    // {
+    //     Init();
+    // }
+    
+    public void StartAttack()
     {
-        Init();
+        if(_currentState.State == EnemyStates.Patrol)
+        {
+            SwitchState();
+        }
     }
- 
+    
     private Vector3 GenerateSpawnPosition(int direction)
     {
         Vector3 spawnPosition = (Vector3)(Random.insideUnitCircle * _spawnAreaSize) + _spawnAreaCenter;
@@ -63,7 +71,7 @@ public class FlyMovement : MonoBehaviour, IStateMachineOwner, IPreAttackStatePro
         return spawnPosition;
     }
 
-    private void Init()
+    public void Init()
     {
         _sideDirection = RandomDirection.Generate();
         _depthDirection = RandomDirection.Generate();

@@ -42,11 +42,6 @@ public class LampAttackModel : MonoBehaviour
         }
     }
 
-    private void Start()
-    {
-        Init();
-    }
-    
     public void Init()
     {
         _currentPower = _maxPower;
