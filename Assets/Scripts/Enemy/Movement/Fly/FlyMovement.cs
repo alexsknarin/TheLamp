@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public class FlyMovement : MonoBehaviour, IStateMachineOwner, IPreAttackStateProvider
+public class FlyMovement : EnemyMovement
 {
     [Header("-- Movement Settings --")]
     [SerializeField] private float _speed;
@@ -91,7 +91,7 @@ public class FlyMovement : MonoBehaviour, IStateMachineOwner, IPreAttackStatePro
         _position2d = GenerateSpawnPosition(-_sideDirection);
     }
     
-    public void SwitchState()
+    public override void SwitchState()
     {
         EnemyMovementBaseState newState = _currentState.State switch
         {
