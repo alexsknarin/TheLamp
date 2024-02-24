@@ -2,12 +2,6 @@ using System;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-enum NoiseType
-{
-    WorldSpace,
-    AlongTrajectory
-}
-
 public class FlyMovement : MonoBehaviour, IStateMachineOwner, IPreAttackStateProvider
 {
     [Header("-- Movement Settings --")]
@@ -22,7 +16,6 @@ public class FlyMovement : MonoBehaviour, IStateMachineOwner, IPreAttackStatePro
     [SerializeField] private bool _isNoiseEnabled;
     [SerializeField] private float _noiseFrequency;
     [SerializeField] private float _noiseAmplitude;
-    [SerializeField] private NoiseType _noiseType;
     [Header("-- Smooth Damp Settings --")]
     [SerializeField] private bool _isSmoothDampEnabled;
     [SerializeField] private float _smoothTime = .3f;
@@ -98,7 +91,6 @@ public class FlyMovement : MonoBehaviour, IStateMachineOwner, IPreAttackStatePro
         _position2d = GenerateSpawnPosition(-_sideDirection);
     }
     
-    // Extract to the Interface
     public void SwitchState()
     {
         EnemyMovementBaseState newState = _currentState.State switch
