@@ -23,6 +23,7 @@ public class FlyMovementDeathState: EnemyMovementBaseState
         _sideDirection = sideDirection;
         _bounceForce = currentPosition.normalized * _bounceForceMagnitude;
         _gravityForce = Vector3.zero;
+        Debug.Log("Death State");
     }
     
     public override void ExecuteState(Vector3 currentPosition)
@@ -31,6 +32,7 @@ public class FlyMovementDeathState: EnemyMovementBaseState
         
         _bounceForce = _bounceForce * _dragAmount;
         _gravityForce = _gravityForce + Vector3.down * (_gravityForceMagnitude * Time.deltaTime);
+        Debug.Log(State);
     }
 
     public override void ExitState()
@@ -39,7 +41,7 @@ public class FlyMovementDeathState: EnemyMovementBaseState
     
     public override void CheckForStateChange()
     {
-        if (Position.y < 4f)
+        if (Position.y < -4f)
         {
             _owner.SwitchState();
         }

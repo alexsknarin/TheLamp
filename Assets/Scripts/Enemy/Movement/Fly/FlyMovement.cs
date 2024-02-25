@@ -80,18 +80,16 @@ public class FlyMovement : EnemyMovement
 
     public override void TriggerDeath()
     {
-        Debug.Log("TriggerDeath");
-        _isDead = true;
-        if(_currentState.State == EnemyStates.Attack)
+        if (_currentState.State == EnemyStates.Attack || _currentState.State == EnemyStates.Fall)
         {
+            Debug.Log("TriggerDeath");
+            _isDead = true;
             SwitchState();
         }
-
     }
 
     public override void TriggerAttack()
     {
-        // TODO: here needs to be a delayed attack logic - attack at specific time amd attack tokens
         if(_currentState.State == EnemyStates.Patrol)
         {
             SwitchState();
@@ -151,7 +149,7 @@ public class FlyMovement : EnemyMovement
                     break;
                 }
             case EnemyStates.Death:
-                gameObject.SetActive(false);
+                    gameObject.SetActive(false);
                 break;
         }
 

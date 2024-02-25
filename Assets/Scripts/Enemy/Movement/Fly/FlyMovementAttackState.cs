@@ -30,6 +30,7 @@ public class FlyMovementAttackState: EnemyMovementBaseState
         
         Vector3 cameraDirection = (_cameraPosition - Position).normalized;
         Depth = cameraDirection * (2.5f * _depthDecrement);
+        Debug.Log(State);
     }
 
     public override void ExitState()
