@@ -38,10 +38,6 @@ public class FlyMovement : EnemyMovement
     private Vector3 _position2d;
     private Vector3 _position;
     
-    // Events
-    // public event Action OnPreAttackStart;
-    // public event Action OnPreAttackEnd;
-
     public override void Initialize()
     {
         _sideDirection = RandomDirection.Generate();
@@ -124,17 +120,13 @@ public class FlyMovement : EnemyMovement
     
     private EnemyMovementBaseState StartPreAttackState()
     {
-        // OnPreAttackStart?.Invoke();
         OnPreAttackStartInvoke();
-        Debug.Log("Start PreAttack");
         return _preAttackState;
     }
     
     private EnemyMovementBaseState StartAttackState()
     {
         OnPreAttackEndInvoke();
-        // OnPreAttackEnd?.Invoke();
-        Debug.Log("Stop PreAttack");
         return _attackState;
     }
     

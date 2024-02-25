@@ -163,7 +163,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6bc5045abc006447b7038591cae55e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _maxHealth: 0
+  _maxHealth: 1
   _enemyMovement: {fileID: 8229054006275703212}
   _enemyPresentation: {fileID: 1890363464832327224}
 --- !u!114 &8229054006275703212
