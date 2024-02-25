@@ -4,7 +4,7 @@ public class EnemyManager : MonoBehaviour
 {
     [Header("------ Enemy Prefabs -------")]
     [SerializeField] private GameObject _flyEnemyPrefab;
-    private FlyMovement _flyMovement;
+    private Enemy _fly;
     private bool _isAttacking = false;
 
     private void Start()
@@ -20,8 +20,8 @@ public class EnemyManager : MonoBehaviour
     public void SpawnEnemy()
     {
         var enemy = Instantiate(_flyEnemyPrefab, transform.position, Quaternion.identity);
-        _flyMovement = enemy.gameObject.GetComponent<FlyMovement>();
-        _flyMovement.Init();
+        _fly = enemy.gameObject.GetComponent<Enemy>();
+        _fly.Initialize();
     }
 
     private void Update()
@@ -32,7 +32,7 @@ public class EnemyManager : MonoBehaviour
            
             if (random > 0.95f)
             {
-                _flyMovement.StartAttack();
+                _fly.Attack();
             }
         }
     }

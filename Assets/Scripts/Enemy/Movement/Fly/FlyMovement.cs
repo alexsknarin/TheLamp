@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public class FlyMovement : MonoBehaviour, IStateMachineOwner, IPreAttackStateProvider
+public class FlyMovement : EnemyMovement
 {
     [Header("-- Movement Settings --")]
     [SerializeField] private float _speed;
@@ -32,39 +32,18 @@ public class FlyMovement : MonoBehaviour, IStateMachineOwner, IPreAttackStatePro
     private FlyMovementAttackState _attackState;
     private FlyMovementPreAttackState _preAttackState;    
     private FlyMovementFallState _fallState;
-    
-    
+    private FlyMovementDeathState _deathState;
     
     private Vector3 _prevPosition2d; //Debug
     private Vector3 _prevPosSmooth; //Debug
     private Vector3 _position2d;
     private Vector3 _position;
     
-    // Events
-    public event Action OnPreAttackStart;
-    public event Action OnPreAttackEnd;
-
-    // private void Start()
-    // {
-    //     Init();
-    // }
+    // State parameters
+    private bool _isDead = false;
+    private bool _isCollided = false;
     
-    public void StartAttack()
-    {
-        if(_currentState.State == EnemyStates.Patrol)
-        {
-            SwitchState();
-        }
-    }
-    
-    private Vector3 GenerateSpawnPosition(int direction)
-    {
-        Vector3 spawnPosition = (Vector3)(Random.insideUnitCircle * _spawnAreaSize) + _spawnAreaCenter;
-        spawnPosition.x *= direction;
-        return spawnPosition;
-    }
-
-    public void Init()
+    public override void Initialize()
     {
         _sideDirection = RandomDirection.Generate();
         _depthDirection = RandomDirection.Generate();
@@ -76,6 +55,7 @@ public class FlyMovement : MonoBehaviour, IStateMachineOwner, IPreAttackStatePro
         _preAttackState = new FlyMovementPreAttackState(this, _speed, _radius, _verticalAmplitude);
         _attackState = new FlyMovementAttackState(this, _speed, _radius, _verticalAmplitude);
         _fallState = new FlyMovementFallState(this, _speed, _radius, _verticalAmplitude);
+        _deathState = new FlyMovementDeathState(this, _speed, _radius, _verticalAmplitude);
         
         Spawn();
         
@@ -91,42 +71,92 @@ public class FlyMovement : MonoBehaviour, IStateMachineOwner, IPreAttackStatePro
         _position2d = GenerateSpawnPosition(-_sideDirection);
     }
     
-    public void SwitchState()
+    public override void TriggerFall()
     {
-        EnemyMovementBaseState newState = _currentState.State switch
-        {
-            EnemyStates.Enter => _patrolState,
-            EnemyStates.Patrol => StartPreAttackState(),
-            EnemyStates.PreAttack => StartAttackState(),
-            EnemyStates.Attack => _fallState,
-            EnemyStates.Fall => ReturnToPatrol(),
-            _ => throw new ArgumentOutOfRangeException()
-        };
-        
-        _currentState = newState;
-        _movementStateMachine.SetState(_currentState, _position2d, _sideDirection, _depthDirection);
+        Debug.Log("TriggerFall");
+        _isCollided = true;
+        SwitchState();
     }
 
-    // Transition Handlers
-    private EnemyMovementBaseState ReturnToPatrol()
+    public override void TriggerDeath()
     {
-        _sideDirection = -(int)Mathf.Sign(_position2d.x);
-        return _enterState;
+        if (_currentState.State == EnemyStates.Attack || _currentState.State == EnemyStates.Fall)
+        {
+            Debug.Log("TriggerDeath");
+            _isDead = true;
+            SwitchState();
+        }
     }
-    
-    private EnemyMovementBaseState StartPreAttackState()
+
+    public override void TriggerAttack()
     {
-        OnPreAttackStart?.Invoke();
-        return _preAttackState;
+        if(_currentState.State == EnemyStates.Patrol)
+        {
+            SwitchState();
+        }
     }
-    
-    private EnemyMovementBaseState StartAttackState()
+   
+    private Vector3 GenerateSpawnPosition(int direction)
     {
-        OnPreAttackEnd?.Invoke();
-        return _attackState;
+        Vector3 spawnPosition = (Vector3)(Random.insideUnitCircle * _spawnAreaSize) + _spawnAreaCenter;
+        spawnPosition.x *= direction;
+        return spawnPosition;
     }
-    
-    
+  
+
+
+    public override void SwitchState()
+    {
+        EnemyMovementBaseState newState = _currentState;
+        switch (_currentState.State)
+        {
+            case EnemyStates.Enter:
+                newState = _patrolState;
+                break;
+            case EnemyStates.Patrol:
+                OnPreAttackStartInvoke();
+                newState = _preAttackState;
+                break;
+            case EnemyStates.PreAttack:
+                OnPreAttackEndInvoke();
+                newState = _attackState;
+                break;
+            case EnemyStates.Attack:
+                if (_isCollided && !_isDead)
+                {
+                    newState = _fallState;
+                    _isCollided = false;
+                    break;
+                }
+                else if (_isDead)
+                {
+                    newState = _deathState;
+                    _isDead = false;
+                    break;
+                }
+                break;
+            case EnemyStates.Fall:
+                if (_isDead)
+                {
+                    newState = _deathState;
+                    _isDead = false;
+                    break;
+                }
+                else
+                {
+                    _sideDirection = -(int)Mathf.Sign(_position2d.x);
+                    newState = _enterState;
+                    break;
+                }
+            case EnemyStates.Death:
+                    gameObject.SetActive(false);
+                break;
+        }
+
+        _currentState = newState;
+        MovementState = _currentState.State;
+        _movementStateMachine.SetState(_currentState, _position2d, _sideDirection, _depthDirection);
+    }
 
     private void Update()
     {   
@@ -171,7 +201,6 @@ public class FlyMovement : MonoBehaviour, IStateMachineOwner, IPreAttackStatePro
         }
         
         _movementStateMachine.CheckForStateChange();
-        
         
         Debug.DrawLine(_prevPosition2d, _prevPosition2d + (_position2d-_prevPosition2d).normalized*0.02f, Color.cyan, 5f);
         Debug.DrawLine(_prevPosSmooth, _prevPosSmooth + (transform.position-_prevPosSmooth).normalized*0.02f, Color.yellow, 5f);

@@ -59,6 +59,7 @@ public class FlyMovementPatrolState: EnemyMovementBaseState
         // Depth To Camera
         Vector3 cameraDirection = (_cameraPosition - Position).normalized;
         Depth = cameraDirection * (_depthDirection * Position.y * _depthMultiplier);
+        Debug.Log(State);
     }
     
     public override void ExitState()
