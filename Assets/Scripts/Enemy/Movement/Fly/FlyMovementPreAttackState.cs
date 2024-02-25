@@ -35,7 +35,6 @@ public class FlyMovementPreAttackState: EnemyMovementBaseState
         Vector3 cameraDirection = (_cameraPosition - Position).normalized;
         Depth = cameraDirection * 2.5f;
         _acceleratedSpeed *= _acceleration;
-        Debug.Log(State);
     }
     
     public override void CheckForStateChange()

@@ -5,7 +5,8 @@ public class LampPresentation : MonoBehaviour
 {
     [SerializeField] private Light _lampLight;
     private Material _lampMaterial;
-    
+    [SerializeField] private GameObject _lampAttackZoneObject;
+    private Material _lampAttackZoneMaterial;
     [SerializeField] private float _lightAttackFadeDuration;
     [SerializeField] private float _lightRegenerateDuration;
     private LampStates _lampState = LampStates.Neutral;
@@ -41,6 +42,7 @@ public class LampPresentation : MonoBehaviour
     private void Start()
     {
         _lampMaterial = GetComponent<MeshRenderer>().material;
+        _lampAttackZoneMaterial = _lampAttackZoneObject.GetComponent<MeshRenderer>().material;
         ResetLightNeutralState();
     }
 
@@ -58,7 +60,7 @@ public class LampPresentation : MonoBehaviour
         _lampMaterial.SetFloat("_EmissionLevel", _lampNeutralEmission);
     }
     
-    private void StartAttackState(int attackPower, float currentPower, float attackDuration)
+    private void StartAttackState(int attackPower, float currentPower, float attackDuration, float attackDistance)
     {
         _lampMaterial.SetFloat("_attackPower", 0f);
         _lightPower = Mathf.Pow(currentPower, 2f);
@@ -75,10 +77,12 @@ public class LampPresentation : MonoBehaviour
             _isAttack = false;
             _lampLight.intensity = _lightMinimumIntensity;
             _lampMaterial.SetFloat("_EmissionLevel", _lampMinimumEmission);
+            _lampAttackZoneMaterial.SetFloat("_Alpha", 0);
             return;
         }
         _lampLight.intensity = Mathf.Lerp(_lightMaximumIntensity * _lightPower, _lightMinimumIntensity, phase);
         _lampMaterial.SetFloat("_EmissionLevel", Mathf.Lerp(_lampMaximumEmission * _lightPower, _lampMinimumEmission, phase));
+        _lampAttackZoneMaterial.SetFloat("_Alpha", Mathf.Lerp(1, 0, phase));
     }
     
     private void PerformCooldownState(float currentPower)

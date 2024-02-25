@@ -48,7 +48,6 @@ public class FlyMovementEnterState: EnemyMovementBaseState
         float distancePhase = 1 - (_endPos - Position).magnitude / _initialDistance;
         Vector3 cameraDirection = (_cameraPosition - Position).normalized;
         Depth = cameraDirection * (_depthDirection * Mathf.Lerp(Position.y * _depthMultiplier, Position.y, distancePhase));
-        Debug.Log(State);
     }
     
     public override void CheckForStateChange()

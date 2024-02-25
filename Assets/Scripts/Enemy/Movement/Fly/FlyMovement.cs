@@ -73,7 +73,6 @@ public class FlyMovement : EnemyMovement
     
     public override void TriggerFall()
     {
-        Debug.Log("TriggerFall");
         _isCollided = true;
         SwitchState();
     }
@@ -82,7 +81,6 @@ public class FlyMovement : EnemyMovement
     {
         if (_currentState.State == EnemyStates.Attack || _currentState.State == EnemyStates.Fall)
         {
-            Debug.Log("TriggerDeath");
             _isDead = true;
             SwitchState();
         }
@@ -103,8 +101,6 @@ public class FlyMovement : EnemyMovement
         return spawnPosition;
     }
   
-
-
     public override void SwitchState()
     {
         EnemyMovementBaseState newState = _currentState;

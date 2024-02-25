@@ -8,12 +8,13 @@ public class LampAttackModel : MonoBehaviour
     [SerializeField] private int _attackPower;
     [SerializeField] private float _attackDuration;
     [SerializeField] private float _fullCooldownTime;
+    [SerializeField] private float _attackDistance;
     
     private LampStates _lampState = LampStates.Neutral;
     
     private float _prevTime;
     
-    public static event Action<int, float, float> OnLampAttack;
+    public static event Action<int, float, float, float> OnLampAttack;
     public static event Action<float> OnLampCurrentPowerChanged;
 
 
@@ -72,7 +73,7 @@ public class LampAttackModel : MonoBehaviour
     {
         if (_lampState != LampStates.Attack)
         {
-            OnLampAttack?.Invoke(_attackPower, _currentPower, _attackDuration);
+            OnLampAttack?.Invoke(_attackPower, _currentPower, _attackDuration, _attackDistance);
             _lampState = LampStates.Attack;
             _prevTime = Time.time;
         }

@@ -31,7 +31,6 @@ public class FlyMovementFallState: EnemyMovementBaseState
         
         _bounceForce = _bounceForce * _dragAmount;
         _gravityForce = _gravityForce + Vector3.down * (_gravityForceMagnitude * Time.deltaTime);
-        Debug.Log(State);
     }
 
     public override void ExitState()
