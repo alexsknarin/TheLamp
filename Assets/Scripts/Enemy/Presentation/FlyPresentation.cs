@@ -1,24 +1,16 @@
 using UnityEngine;
 
-[RequireComponent(typeof(PreAttackFlash))]
-[RequireComponent(typeof(FlyMovement))]
-public class FlyPresentation : MonoBehaviour
+public class FlyPresentation : EnemyPresentation
 {
-    private IPreAttackStateProvider _preAttackStateProvider;
-    private PreAttackFlash _preAttackFlash;
-
-    private void OnEnable()
+    [SerializeField] private PreAttackFlash _preAttackFlash;
+   
+    public override void PreAttackStart()
     {
-        _preAttackFlash = GetComponent<PreAttackFlash>();
-        _preAttackStateProvider = GetComponent<FlyMovement>();
-        
-        _preAttackStateProvider.OnPreAttackStart += _preAttackFlash.PreAttackStart;
-        _preAttackStateProvider.OnPreAttackEnd += _preAttackFlash.PreAttackEnd;
+        _preAttackFlash.PreAttackStart();
     }
     
-    private void OnDisable()
+    public override void PreAttackEnd()
     {
-        _preAttackStateProvider.OnPreAttackStart -= _preAttackFlash.PreAttackStart;
-        _preAttackStateProvider.OnPreAttackEnd -= _preAttackFlash.PreAttackEnd;
+        _preAttackFlash.PreAttackEnd();
     }
 }

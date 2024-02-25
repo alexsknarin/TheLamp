@@ -33,38 +33,16 @@ public class FlyMovement : EnemyMovement
     private FlyMovementPreAttackState _preAttackState;    
     private FlyMovementFallState _fallState;
     
-    
-    
     private Vector3 _prevPosition2d; //Debug
     private Vector3 _prevPosSmooth; //Debug
     private Vector3 _position2d;
     private Vector3 _position;
     
     // Events
-    public event Action OnPreAttackStart;
-    public event Action OnPreAttackEnd;
+    // public event Action OnPreAttackStart;
+    // public event Action OnPreAttackEnd;
 
-    // private void Start()
-    // {
-    //     Init();
-    // }
-    
-    public void StartAttack()
-    {
-        if(_currentState.State == EnemyStates.Patrol)
-        {
-            SwitchState();
-        }
-    }
-    
-    private Vector3 GenerateSpawnPosition(int direction)
-    {
-        Vector3 spawnPosition = (Vector3)(Random.insideUnitCircle * _spawnAreaSize) + _spawnAreaCenter;
-        spawnPosition.x *= direction;
-        return spawnPosition;
-    }
-
-    public void Init()
+    public override void Initialize()
     {
         _sideDirection = RandomDirection.Generate();
         _depthDirection = RandomDirection.Generate();
@@ -86,11 +64,41 @@ public class FlyMovement : EnemyMovement
         transform.position = _position2d;
     }
     
+    public void StartAttack()
+    {
+        if(_currentState.State == EnemyStates.Patrol)
+        {
+            SwitchState();
+        }
+    }
+    
+    private Vector3 GenerateSpawnPosition(int direction)
+    {
+        Vector3 spawnPosition = (Vector3)(Random.insideUnitCircle * _spawnAreaSize) + _spawnAreaCenter;
+        spawnPosition.x *= direction;
+        return spawnPosition;
+    }
+  
     private void Spawn()
     {
         _position2d = GenerateSpawnPosition(-_sideDirection);
     }
-    
+
+    public override void TriggerFall()
+    {
+        throw new NotImplementedException();
+    }
+
+    public override void TriggerDeath()
+    {
+        throw new NotImplementedException();
+    }
+
+    public override void TriggerAttack()
+    {
+        StartAttack();
+    }
+
     public override void SwitchState()
     {
         EnemyMovementBaseState newState = _currentState.State switch
@@ -116,13 +124,17 @@ public class FlyMovement : EnemyMovement
     
     private EnemyMovementBaseState StartPreAttackState()
     {
-        OnPreAttackStart?.Invoke();
+        // OnPreAttackStart?.Invoke();
+        OnPreAttackStartInvoke();
+        Debug.Log("Start PreAttack");
         return _preAttackState;
     }
     
     private EnemyMovementBaseState StartAttackState()
     {
-        OnPreAttackEnd?.Invoke();
+        OnPreAttackEndInvoke();
+        // OnPreAttackEnd?.Invoke();
+        Debug.Log("Stop PreAttack");
         return _attackState;
     }
     
