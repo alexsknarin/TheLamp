@@ -4,6 +4,7 @@ using UnityEngine;
 
 public abstract class EnemyMovement : MonoBehaviour, IStateMachineOwner, IInitializable
 {
+    public EnemyStates MovementState { get; protected set; }
     public event Action OnPreAttackStart;
     public event Action OnPreAttackEnd;
 

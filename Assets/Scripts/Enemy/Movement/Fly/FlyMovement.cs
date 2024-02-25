@@ -108,6 +108,7 @@ public class FlyMovement : EnemyMovement
         };
         
         _currentState = newState;
+        MovementState = _currentState.State;
         _movementStateMachine.SetState(_currentState, _position2d, _sideDirection, _depthDirection);
     }
 
@@ -130,8 +131,6 @@ public class FlyMovement : EnemyMovement
         return _attackState;
     }
     
-    
-
     private void Update()
     {   
         _prevPosition2d = _position2d;

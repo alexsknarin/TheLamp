@@ -22,7 +22,7 @@ public class Enemy : MonoBehaviour, IInitializable
     
     public void Attack()
     {
-        _enemyMovement.TriggerAttack();
+        _enemyMovement.TriggerAttack();    
     }
     
     public void Initialize()
