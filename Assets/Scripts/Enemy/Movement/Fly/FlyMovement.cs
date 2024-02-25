@@ -32,11 +32,16 @@ public class FlyMovement : EnemyMovement
     private FlyMovementAttackState _attackState;
     private FlyMovementPreAttackState _preAttackState;    
     private FlyMovementFallState _fallState;
+    private FlyMovementDeathState _deathState;
     
     private Vector3 _prevPosition2d; //Debug
     private Vector3 _prevPosSmooth; //Debug
     private Vector3 _position2d;
     private Vector3 _position;
+    
+    // State parameters
+    private bool _isDead = false;
+    private bool _isCollided = false;
     
     public override void Initialize()
     {
@@ -50,6 +55,7 @@ public class FlyMovement : EnemyMovement
         _preAttackState = new FlyMovementPreAttackState(this, _speed, _radius, _verticalAmplitude);
         _attackState = new FlyMovementAttackState(this, _speed, _radius, _verticalAmplitude);
         _fallState = new FlyMovementFallState(this, _speed, _radius, _verticalAmplitude);
+        _deathState = new FlyMovementDeathState(this, _speed, _radius, _verticalAmplitude);
         
         Spawn();
         
@@ -60,14 +66,38 @@ public class FlyMovement : EnemyMovement
         transform.position = _position2d;
     }
     
-    public void StartAttack()
+    private void Spawn()
     {
+        _position2d = GenerateSpawnPosition(-_sideDirection);
+    }
+    
+    public override void TriggerFall()
+    {
+        Debug.Log("TriggerFall");
+        _isCollided = true;
+        SwitchState();
+    }
+
+    public override void TriggerDeath()
+    {
+        Debug.Log("TriggerDeath");
+        _isDead = true;
+        if(_currentState.State == EnemyStates.Attack)
+        {
+            SwitchState();
+        }
+
+    }
+
+    public override void TriggerAttack()
+    {
+        // TODO: here needs to be a delayed attack logic - attack at specific time amd attack tokens
         if(_currentState.State == EnemyStates.Patrol)
         {
             SwitchState();
         }
     }
-    
+   
     private Vector3 GenerateSpawnPosition(int direction)
     {
         Vector3 spawnPosition = (Vector3)(Random.insideUnitCircle * _spawnAreaSize) + _spawnAreaCenter;
@@ -75,62 +105,61 @@ public class FlyMovement : EnemyMovement
         return spawnPosition;
     }
   
-    private void Spawn()
-    {
-        _position2d = GenerateSpawnPosition(-_sideDirection);
-    }
 
-    public override void TriggerFall()
-    {
-        throw new NotImplementedException();
-    }
-
-    public override void TriggerDeath()
-    {
-        throw new NotImplementedException();
-    }
-
-    public override void TriggerAttack()
-    {
-        StartAttack();
-    }
 
     public override void SwitchState()
     {
-        EnemyMovementBaseState newState = _currentState.State switch
+        EnemyMovementBaseState newState = _currentState;
+        switch (_currentState.State)
         {
-            EnemyStates.Enter => _patrolState,
-            EnemyStates.Patrol => StartPreAttackState(),
-            EnemyStates.PreAttack => StartAttackState(),
-            EnemyStates.Attack => _fallState,
-            EnemyStates.Fall => ReturnToPatrol(),
-            _ => throw new ArgumentOutOfRangeException()
-        };
-        
+            case EnemyStates.Enter:
+                newState = _patrolState;
+                break;
+            case EnemyStates.Patrol:
+                OnPreAttackStartInvoke();
+                newState = _preAttackState;
+                break;
+            case EnemyStates.PreAttack:
+                OnPreAttackEndInvoke();
+                newState = _attackState;
+                break;
+            case EnemyStates.Attack:
+                if (_isCollided && !_isDead)
+                {
+                    newState = _fallState;
+                    _isCollided = false;
+                    break;
+                }
+                else if (_isDead)
+                {
+                    newState = _deathState;
+                    _isDead = false;
+                    break;
+                }
+                break;
+            case EnemyStates.Fall:
+                if (_isDead)
+                {
+                    newState = _deathState;
+                    _isDead = false;
+                    break;
+                }
+                else
+                {
+                    _sideDirection = -(int)Mathf.Sign(_position2d.x);
+                    newState = _enterState;
+                    break;
+                }
+            case EnemyStates.Death:
+                gameObject.SetActive(false);
+                break;
+        }
+
         _currentState = newState;
         MovementState = _currentState.State;
         _movementStateMachine.SetState(_currentState, _position2d, _sideDirection, _depthDirection);
     }
 
-    // Transition Handlers
-    private EnemyMovementBaseState ReturnToPatrol()
-    {
-        _sideDirection = -(int)Mathf.Sign(_position2d.x);
-        return _enterState;
-    }
-    
-    private EnemyMovementBaseState StartPreAttackState()
-    {
-        OnPreAttackStartInvoke();
-        return _preAttackState;
-    }
-    
-    private EnemyMovementBaseState StartAttackState()
-    {
-        OnPreAttackEndInvoke();
-        return _attackState;
-    }
-    
     private void Update()
     {   
         _prevPosition2d = _position2d;
@@ -174,7 +203,6 @@ public class FlyMovement : EnemyMovement
         }
         
         _movementStateMachine.CheckForStateChange();
-        
         
         Debug.DrawLine(_prevPosition2d, _prevPosition2d + (_position2d-_prevPosition2d).normalized*0.02f, Color.cyan, 5f);
         Debug.DrawLine(_prevPosSmooth, _prevPosSmooth + (transform.position-_prevPosSmooth).normalized*0.02f, Color.yellow, 5f);
