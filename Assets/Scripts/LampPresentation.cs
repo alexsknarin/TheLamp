@@ -67,6 +67,7 @@ public class LampPresentation : MonoBehaviour
         _attackDuration = attackDuration;
         _prevTime = Time.time;
         _isAttack = true;
+        _lampAttackZoneObject.transform.localScale = Vector3.one * (attackDistance * 2);
     }
     
     private void PerformAttack()
@@ -82,7 +83,7 @@ public class LampPresentation : MonoBehaviour
         }
         _lampLight.intensity = Mathf.Lerp(_lightMaximumIntensity * _lightPower, _lightMinimumIntensity, phase);
         _lampMaterial.SetFloat("_EmissionLevel", Mathf.Lerp(_lampMaximumEmission * _lightPower, _lampMinimumEmission, phase));
-        _lampAttackZoneMaterial.SetFloat("_Alpha", Mathf.Lerp(1, 0, phase));
+        _lampAttackZoneMaterial.SetFloat("_Alpha", Mathf.Lerp(_lightPower, 0, phase));
     }
     
     private void PerformCooldownState(float currentPower)

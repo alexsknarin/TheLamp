@@ -43,6 +43,9 @@ public class FlyMovement : EnemyMovement
     private bool _isDead = false;
     private bool _isCollided = false;
     
+    // Debug
+    [SerializeField] private EnemyStates _stateDebug;
+    
     public override void Initialize()
     {
         _sideDirection = RandomDirection.Generate();
@@ -73,8 +76,11 @@ public class FlyMovement : EnemyMovement
     
     public override void TriggerFall()
     {
-        _isCollided = true;
-        SwitchState();
+        if(_currentState.State == EnemyStates.Attack)
+        {
+            _isCollided = true;
+            SwitchState();
+        }
     }
 
     public override void TriggerDeath()
@@ -200,6 +206,8 @@ public class FlyMovement : EnemyMovement
         
         Debug.DrawLine(_prevPosition2d, _prevPosition2d + (_position2d-_prevPosition2d).normalized*0.02f, Color.cyan, 5f);
         Debug.DrawLine(_prevPosSmooth, _prevPosSmooth + (transform.position-_prevPosSmooth).normalized*0.02f, Color.yellow, 5f);
+        
+        _stateDebug = _currentState.State;
 
     }
 

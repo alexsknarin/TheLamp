@@ -54,7 +54,7 @@ public class EnemyManager : MonoBehaviour
         {
             float random = Random.Range(0f, 1f);
            
-            if (random > 0.95f)
+            if (random > 0.973f)
             {
                 _fly.Attack();
             }
