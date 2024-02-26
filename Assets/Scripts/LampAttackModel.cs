@@ -1,7 +1,8 @@
 using System;
+using Unity.VisualScripting;
 using UnityEngine;
 
-public class LampAttackModel : MonoBehaviour
+public class LampAttackModel : MonoBehaviour, IInitializable
 {
     [SerializeField] private float _currentPower;
     [SerializeField] private float _maxPower;
@@ -42,13 +43,13 @@ public class LampAttackModel : MonoBehaviour
                 break;
         }
     }
-
-    public void Init()
+    
+    public void Initialize()
     {
         _currentPower = _maxPower;
         _lampState = LampStates.Neutral;
     }
-    
+   
     private void UpdateAttackPower()
     {
         if (_currentPower < 0.3f)
@@ -116,5 +117,6 @@ public class LampAttackModel : MonoBehaviour
         UpdateAttackPower();
         _lampState = LampStates.Neutral;
     }
+
 
 }

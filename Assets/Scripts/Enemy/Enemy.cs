@@ -12,21 +12,33 @@ public class Enemy : MonoBehaviour, IInitializable
 
     private void OnEnable()
     {
-        _enemyMovement.OnPreAttackStart += _enemyPresentation.PreAttackStart;
+        _enemyMovement.OnPreAttackStart += PreAttack;
         _enemyMovement.OnPreAttackEnd += _enemyPresentation.PreAttackEnd;
-        _enemyCollisionHandler.OnCollidedWithLamp += _enemyMovement.TriggerFall;
+        _enemyCollisionHandler.OnCollidedWithLamp += Fall;
     }
     
     private void OnDisable()
     {
-        _enemyMovement.OnPreAttackStart += _enemyPresentation.PreAttackStart;
+        _enemyMovement.OnPreAttackStart += PreAttack;
         _enemyMovement.OnPreAttackEnd += _enemyPresentation.PreAttackEnd;
-        _enemyCollisionHandler.OnCollidedWithLamp -= _enemyMovement.TriggerFall;
+        _enemyCollisionHandler.OnCollidedWithLamp -= Fall;
     }
     
     public void Attack()
     {
-        _enemyMovement.TriggerAttack();    
+        _enemyMovement.TriggerAttack();
+    }
+    
+    private void PreAttack()
+    {
+        _enemyCollisionHandler.EnableCollider();        
+        _enemyPresentation.PreAttackStart();
+    }
+    
+    private void Fall()
+    {
+        _enemyCollisionHandler.DisableCollider();
+        _enemyMovement.TriggerFall();
     }
     
     public void RecieveDamage(int damage)

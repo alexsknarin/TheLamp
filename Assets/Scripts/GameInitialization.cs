@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class GameInitialization : MonoBehaviour
 {
-    [SerializeField] private LampAttackModel _lampAttackModel;
+    [SerializeField] private Lamp _lamp;
 
     // Start is called before the first frame update
     void Start()
     {
-        _lampAttackModel.Init();        
+        _lamp.Initialize();   
     }
 
 }

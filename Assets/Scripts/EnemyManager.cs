@@ -8,6 +8,8 @@ public class EnemyManager : MonoBehaviour
     [SerializeField] private GameObject _flyEnemyPrefab;
     private Enemy _fly;
     private bool _isAttacking = false;
+    
+    public static event Action OnEnemyDamaged;
 
     private void OnEnable()
     {
@@ -44,6 +46,7 @@ public class EnemyManager : MonoBehaviour
         if(currentEnemyPosition.magnitude < attackDistance)
         {
             _fly.RecieveDamage(attackPower);
+            OnEnemyDamaged?.Invoke();
         }
         
     }

@@ -22,7 +22,7 @@ GameObject:
   - component: {fileID: 7817356703110805646}
   m_Layer: 0
   m_Name: Fly
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -166,6 +166,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d537c5304ee1e444af888f1d766f6e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _collider2D: {fileID: 2958326787295917010}
 --- !u!114 &5065817594616091563
 MonoBehaviour:
   m_ObjectHideFlags: 0

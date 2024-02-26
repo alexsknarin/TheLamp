@@ -1299,7 +1299,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 31947360c76e1cb4c8cb0006fa6ff47f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _lampAttackModel: {fileID: 1934066245}
+  _lamp: {fileID: 1934066246}
 --- !u!114 &1818435502
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1410,8 +1410,10 @@ GameObject:
   - component: {fileID: 1934066239}
   - component: {fileID: 1934066242}
   - component: {fileID: 1934066243}
-  - component: {fileID: 1934066244}
+  - component: {fileID: 1934066246}
   - component: {fileID: 1934066245}
+  - component: {fileID: 1934066244}
+  - component: {fileID: 1934066247}
   m_Layer: 0
   m_Name: LampObject
   m_TagString: Lamp
@@ -1562,6 +1564,7 @@ MonoBehaviour:
   _lampAttackZoneObject: {fileID: 594908871}
   _lightAttackFadeDuration: 0.15
   _lightRegenerateDuration: 2
+  _lightDamageDuration: 0.2
 --- !u!114 &1934066245
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1580,6 +1583,35 @@ MonoBehaviour:
   _attackDuration: 0.15
   _fullCooldownTime: 2
   _attackDistance: 0.65
+--- !u!114 &1934066246
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1934066237}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2e45411fb5fea2b4ea6f6e142983f945, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _lampAttackModel: {fileID: 1934066245}
+  _lampPresentation: {fileID: 1934066244}
+  _lampCollisionHandler: {fileID: 1934066247}
+  _maxHealth: 10
+  _currentHealth: 0
+--- !u!114 &1934066247
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1934066237}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 310b7910620344949affd2c122029b71, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1953907372
 GameObject:
   m_ObjectHideFlags: 0

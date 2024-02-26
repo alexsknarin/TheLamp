@@ -9,12 +9,15 @@ public class LampPresentation : MonoBehaviour
     private Material _lampAttackZoneMaterial;
     [SerializeField] private float _lightAttackFadeDuration;
     [SerializeField] private float _lightRegenerateDuration;
+    [SerializeField] private float _lightDamageDuration;
     private LampStates _lampState = LampStates.Neutral;
     
     private float _lightPower = 1f;
     private float _attackDuration = 1f;
-    private float _prevTime;
+    private float _prevTimeAttack;
     private bool _isAttack = false;
+    private float _prevTimeDamage;
+    private bool _isDamage = false;
     
     private readonly float _lightNeutralIntensity = 22;
     private readonly float _lampNeutralEmission = 1f;
@@ -52,6 +55,10 @@ public class LampPresentation : MonoBehaviour
         {
             PerformAttack();
         }
+        if (_isDamage)
+        {
+            PerformDamage();            
+        }
     }
 
     private void ResetLightNeutralState()
@@ -65,14 +72,14 @@ public class LampPresentation : MonoBehaviour
         _lampMaterial.SetFloat("_attackPower", 0f);
         _lightPower = Mathf.Pow(currentPower, 2f);
         _attackDuration = attackDuration;
-        _prevTime = Time.time;
+        _prevTimeAttack = Time.time;
         _isAttack = true;
         _lampAttackZoneObject.transform.localScale = Vector3.one * (attackDistance * 2);
     }
     
     private void PerformAttack()
     {
-        float phase = (Time.time - _prevTime) / _attackDuration;
+        float phase = (Time.time - _prevTimeAttack) / _attackDuration;
         if (phase > 1)
         {
             _isAttack = false;
@@ -91,5 +98,27 @@ public class LampPresentation : MonoBehaviour
         _lampLight.intensity = Mathf.Lerp(_lightMinimumIntensity, _lightNeutralIntensity, currentPower);
         _lampMaterial.SetFloat("_EmissionLevel", Mathf.Lerp(_lampMinimumEmission, _lampNeutralEmission, currentPower));
         _lampMaterial.SetFloat("_attackPower", currentPower);
+    }
+    
+    public void StartDamageState()
+    {
+        _lampMaterial.SetFloat("_Damage", 1f);
+        _isDamage = true;
+        _prevTimeDamage = Time.time;
+    }
+    
+    private void PerformDamage()
+    {
+        if (_isDamage)
+        {
+            float phase = (Time.time - _prevTimeDamage) / _lightDamageDuration;
+            if (phase > 1)
+            {
+                _isDamage = false;
+                _lampMaterial.SetFloat("_Damage", 0f);
+                return;
+            }
+            _lampMaterial.SetFloat("_Damage", Mathf.Lerp(1f, 0f, phase));
+        }
     }
 }
