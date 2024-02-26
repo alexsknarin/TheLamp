@@ -14,6 +14,8 @@ public class Lamp : MonoBehaviour, IInitializable
     [SerializeField] private int _currentHealth;
     private bool _isAttackSuccess = false;
     
+    public static event Action OnLampDamaged;
+    
     // 
     private float _damageAssessmentDuration = 0.1f;
     private float _prevTime;
@@ -70,6 +72,7 @@ public class Lamp : MonoBehaviour, IInitializable
                     _isAssessingDamage = false;
                     _currentHealth--;
                     _lampPresentation.StartDamageState();
+                    OnLampDamaged?.Invoke();
                     if (_currentHealth <= 0)
                     {
                         Debug.Log("Game Over");
