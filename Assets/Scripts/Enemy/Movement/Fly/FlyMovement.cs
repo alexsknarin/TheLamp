@@ -89,7 +89,7 @@ public class FlyMovement : EnemyMovement
         {
             _isDead = true;
             SwitchState();
-        }
+        } 
     }
 
     public override void TriggerAttack()

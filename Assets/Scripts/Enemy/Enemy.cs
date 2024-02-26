@@ -31,12 +31,17 @@ public class Enemy : MonoBehaviour, IInitializable
     
     public void RecieveDamage(int damage)
     {
-        // _currentHealth -= damage;
-        // if (_currentHealth <= 0)
-        // {
-        //     _enemyMovement.TriggerDeath();
-        // }
-        Debug.Log("Recieved Damage: " + damage.ToString());
+        _currentHealth -= damage;
+        if (_currentHealth > 0)
+        {
+            _enemyPresentation.DamageFlash();
+        }
+        else
+        {
+            _currentHealth = 0;
+            _enemyMovement.TriggerDeath();
+            _enemyPresentation.DeathFlash();
+        }
     }
     
     public void Initialize()

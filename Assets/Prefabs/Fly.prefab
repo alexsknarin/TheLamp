@@ -13,11 +13,13 @@ GameObject:
   - component: {fileID: 1816857364915761492}
   - component: {fileID: 2958326787295917010}
   - component: {fileID: 2982327228787334969}
+  - component: {fileID: 3228203652779467274}
   - component: {fileID: 5065817594616091563}
   - component: {fileID: 8229054006275703212}
   - component: {fileID: 1890363464832327224}
   - component: {fileID: 3761459566154285035}
-  - component: {fileID: 3228203652779467274}
+  - component: {fileID: -8830587213577271671}
+  - component: {fileID: 7817356703110805646}
   m_Layer: 0
   m_Name: Fly
   m_TagString: Untagged
@@ -152,6 +154,18 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &3228203652779467274
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4916559101719392861}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d537c5304ee1e444af888f1d766f6e5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &5065817594616091563
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -164,7 +178,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6bc5045abc006447b7038591cae55e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _maxHealth: 5
+  _maxHealth: 3
   _currentHealth: 0
   _enemyMovement: {fileID: 8229054006275703212}
   _enemyPresentation: {fileID: 1890363464832327224}
@@ -192,6 +206,7 @@ MonoBehaviour:
   _isSmoothDampEnabled: 1
   _smoothTime: 0.12
   _isDepthEnabled: 1
+  _stateDebug: 0
 --- !u!114 &1890363464832327224
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -205,6 +220,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _preAttackFlash: {fileID: 3761459566154285035}
+  _damageFlash: {fileID: -8830587213577271671}
+  _deathFlash: {fileID: 7817356703110805646}
 --- !u!114 &3761459566154285035
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -218,7 +235,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _meshRenderer: {fileID: 1816857364915761492}
---- !u!114 &3228203652779467274
+--- !u!114 &-8830587213577271671
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -227,6 +244,22 @@ MonoBehaviour:
   m_GameObject: {fileID: 4916559101719392861}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7d537c5304ee1e444af888f1d766f6e5, type: 3}
+  m_Script: {fileID: 11500000, guid: 82b48caa50618aa45b9af6764f270329, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _meshRenderer: {fileID: 1816857364915761492}
+  _duration: 0.3
+--- !u!114 &7817356703110805646
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4916559101719392861}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e8cdd3d044552e4f816511262c284c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _meshRenderer: {fileID: 1816857364915761492}
+  _duration: 0.5
