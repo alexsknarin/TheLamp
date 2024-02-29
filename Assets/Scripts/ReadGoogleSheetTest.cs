@@ -12,7 +12,7 @@ public class ReadGoogleSheetTest : MonoBehaviour
 
     IEnumerator LoadSheetData()
     {
-        UnityWebRequest www = UnityWebRequest.Get("https://sheets.googleapis.com/v4/spreadsheets/1m_MzdQxi0d-f-TbDgvYGiN5OfjoJGgDTMzX2N5Ci8BY/values/Sheet1?key=AIzaSyCesP8iY_CsymaobmUcWUGS_kvOUuNO_7s");
+        UnityWebRequest www = UnityWebRequest.Get("_");
         yield return www.SendWebRequest();
         if (www.result == UnityWebRequest.Result.ConnectionError || www.result== UnityWebRequest.Result.ProtocolError)
         {

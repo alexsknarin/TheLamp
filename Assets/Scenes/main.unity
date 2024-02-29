@@ -888,50 +888,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1520408097
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1520408099}
-  - component: {fileID: 1520408098}
-  m_Layer: 0
-  m_Name: GoogleSheetTest
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1520408098
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1520408097}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3989a098d0c3e9b4cbd333594b1c2757, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!4 &1520408099
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1520408097}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1569626931
 GameObject:
   m_ObjectHideFlags: 0
@@ -1345,6 +1301,7 @@ GameObject:
   - component: {fileID: 1818435500}
   - component: {fileID: 1818435501}
   - component: {fileID: 1818435502}
+  - component: {fileID: 1818435503}
   m_Layer: 0
   m_Name: Game
   m_TagString: Untagged
@@ -1392,6 +1349,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _lamp: {fileID: 1934066246}
+  _googleSheetsDataReader: {fileID: 1818435503}
+  _enemyManager: {fileID: 1818435502}
 --- !u!114 &1818435502
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1406,6 +1365,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _flyEnemyPrefab: {fileID: 4916559101719392861, guid: fb0c5c6a78e6cfa4b9c5530e8ae2c067,
     type: 3}
+  _googleSheetsDataReader: {fileID: 1818435503}
+--- !u!114 &1818435503
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1818435498}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e1513354e463ec84ab3132f1e9139ab9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _sheetId: 1m_MzdQxi0d-f-TbDgvYGiN5OfjoJGgDTMzX2N5Ci8BY
+  _sheetName: Sheet1
+  _apiKey: AIzaSyCesP8iY_CsymaobmUcWUGS_kvOUuNO_7s
 --- !u!1 &1853209500
 GameObject:
   m_ObjectHideFlags: 0
@@ -1887,4 +1862,3 @@ SceneRoots:
   - {fileID: 1010942023}
   - {fileID: 1853209504}
   - {fileID: 1953907376}
-  - {fileID: 1520408099}

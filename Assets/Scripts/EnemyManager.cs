@@ -1,13 +1,17 @@
 using System;
+using Unity.VisualScripting;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public class EnemyManager : MonoBehaviour
+public class EnemyManager : MonoBehaviour,IInitializable
 {
     [Header("------ Enemy Prefabs -------")]
     [SerializeField] private GameObject _flyEnemyPrefab;
+    [SerializeField] private GoogleSheetsDataReader _googleSheetsDataReader;
+    private SpawnQueueGenerator _spawnQueueGenerator;
     private Enemy _fly;
     private bool _isAttacking = false;
+    private bool _isInitialized = false;
     
     public static event Action OnEnemyDamaged;
 
@@ -20,11 +24,34 @@ public class EnemyManager : MonoBehaviour
     {
         LampAttackModel.OnLampAttack -= LampAttack;
     }
-
-    private void Start()
+    
+    public void Initialize()
     {
         Init();
+        Debug.Log("Enemy Manager initialized");
+        _spawnQueueGenerator = new SpawnQueueGenerator(_googleSheetsDataReader.SheetData);
+        var tmp = _spawnQueueGenerator.Generate();
+        
+        // Check SpawnQueueGenerator.cs for the implementation of the Generate method
+        int spawnCount = tmp.Count();
+        for (int i=0; i<spawnCount; i++)
+        {
+            string result = "Wave: " + (i+1).ToString() + " ";
+            var wave = tmp.Get(i);
+            for(int j=0; j<wave.Count(); j++)
+            {
+                result += wave.Get(j).ToString() + " ";
+            }
+            
+            Debug.Log(result);
+        }
+        
+        
+        
+        
+        _isInitialized = true;
     }
+    
 
     public void Init()
     {
@@ -53,14 +80,19 @@ public class EnemyManager : MonoBehaviour
 
     private void Update()
     {
-        if(!_isAttacking)
+        if (_isInitialized)
         {
-            float random = Random.Range(0f, 1f);
-           
-            if (random > 0.973f)
+            if(!_isAttacking)
             {
-                _fly.Attack();
-            }
+                float random = Random.Range(0f, 1f);
+           
+                if (random > 0.973f)
+                {
+                    _fly.Attack();
+                }
+            }    
         }
     }
+
+
 }
