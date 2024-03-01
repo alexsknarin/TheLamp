@@ -1365,7 +1365,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _flyEnemyPrefab: {fileID: 4916559101719392861, guid: fb0c5c6a78e6cfa4b9c5530e8ae2c067,
     type: 3}
-  _googleSheetsDataReader: {fileID: 1818435503}
+  _spawnQueueDataCache: {fileID: 11400000, guid: beab91cd3dcd8c44b88194a9986f9a99,
+    type: 2}
 --- !u!114 &1818435503
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1381,6 +1382,9 @@ MonoBehaviour:
   _sheetId: 1m_MzdQxi0d-f-TbDgvYGiN5OfjoJGgDTMzX2N5Ci8BY
   _sheetName: Sheet1
   _apiKey: AIzaSyCesP8iY_CsymaobmUcWUGS_kvOUuNO_7s
+  _useCachedSpawnData: 1
+  _spawnQueueDataCache: {fileID: 11400000, guid: beab91cd3dcd8c44b88194a9986f9a99,
+    type: 2}
 --- !u!1 &1853209500
 GameObject:
   m_ObjectHideFlags: 0

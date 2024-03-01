@@ -7,7 +7,7 @@ public class EnemyManager : MonoBehaviour,IInitializable
 {
     [Header("------ Enemy Prefabs -------")]
     [SerializeField] private GameObject _flyEnemyPrefab;
-    [SerializeField] private GoogleSheetsDataReader _googleSheetsDataReader;
+    [SerializeField] private SpawnQueueData _spawnQueueDataCache;
     private SpawnQueueGenerator _spawnQueueGenerator;
     private Enemy _fly;
     private bool _isAttacking = false;
@@ -27,9 +27,8 @@ public class EnemyManager : MonoBehaviour,IInitializable
     
     public void Initialize()
     {
-        Init();
         Debug.Log("Enemy Manager initialized");
-        _spawnQueueGenerator = new SpawnQueueGenerator(_googleSheetsDataReader.SheetData);
+        _spawnQueueGenerator = new SpawnQueueGenerator(_spawnQueueDataCache.Data);
         var tmp = _spawnQueueGenerator.Generate();
         
         // Check SpawnQueueGenerator.cs for the implementation of the Generate method
@@ -42,20 +41,11 @@ public class EnemyManager : MonoBehaviour,IInitializable
             {
                 result += wave.Get(j).ToString() + " ";
             }
-            
             Debug.Log(result);
         }
-        
-        
-        
-        
         _isInitialized = true;
-    }
-    
-
-    public void Init()
-    {
-        SpawnEnemy();    
+        
+        SpawnEnemy();
     }
     
     public void SpawnEnemy()

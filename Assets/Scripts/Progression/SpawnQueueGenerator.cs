@@ -9,7 +9,6 @@ public class SpawnQueueGenerator
     public SpawnQueueGenerator(string data)
     {
         _data = data;
-        Debug.Log(_data);
     }
     
     public SpawnQueue Generate()
@@ -26,7 +25,6 @@ public class SpawnQueueGenerator
             int ladybugCount = jsonObject[2][i][4].AsInt;
             int totalEnemies = flyCount + mothCount + fireflyCount + ladybugCount;
             
-            // Debug.Log("Fly: " + flyCount.ToString() + " Moth: " + mothCount.ToString() + " Firefly: " + fireflyCount.ToString() + " Ladybug: " + ladybugCount.ToString());
             for (int j = 0; j < totalEnemies; j++)
             {
                 int randomSelection = Random.Range(0, 4);

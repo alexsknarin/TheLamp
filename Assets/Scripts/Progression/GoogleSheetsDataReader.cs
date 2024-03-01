@@ -9,6 +9,8 @@ public class GoogleSheetsDataReader : MonoBehaviour, IInitializable
     [SerializeField] private string _sheetId;
     [SerializeField] private string _sheetName;
     [SerializeField] private string _apiKey;
+    [SerializeField] private bool _useCachedSpawnData;
+    [SerializeField] private SpawnQueueData _spawnQueueDataCache;
     private string _sheetData;
     public string SheetData => _sheetData;
     
@@ -16,7 +18,14 @@ public class GoogleSheetsDataReader : MonoBehaviour, IInitializable
 
     public void Initialize()
     {
-        StartCoroutine(LoadSheetData());
+        if (_useCachedSpawnData)
+        {
+            OnDataLoaded?.Invoke();
+        }
+        else
+        {
+            StartCoroutine(LoadSheetData());    
+        }
     }
     
     IEnumerator LoadSheetData()
@@ -31,6 +40,7 @@ public class GoogleSheetsDataReader : MonoBehaviour, IInitializable
         else
         {
             _sheetData = www.downloadHandler.text;
+            _spawnQueueDataCache.Data = _sheetData;
             OnDataLoaded?.Invoke();
         }
     }
