@@ -24,13 +24,13 @@ public class Lamp : MonoBehaviour, IInitializable
     private void OnEnable()
     {
         _lampCollisionHandler.OnLampCollidedEnemy += AssessDamage;
-        EnemyManager.OnEnemyDamaged += AttackSuccessConfirm;
+        Enemy.OnEnemyDamaged += AttackSuccessConfirm;
     }
     
     private void OnDisable()
     {
         _lampCollisionHandler.OnLampCollidedEnemy -= AssessDamage;
-        EnemyManager.OnEnemyDamaged += AttackSuccessConfirm;
+        Enemy.OnEnemyDamaged += AttackSuccessConfirm;
     }
 
     public void Initialize()
