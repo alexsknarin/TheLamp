@@ -151,7 +151,7 @@ public class EnemyManager : MonoBehaviour,IInitializable
                 }
             }
             
-            if(_enemies.Count > 0)
+            if(_enemiesReadyToAttack.Count > 0)
             {
                 float attackPhase = (Time.time - _attackPrevTime) / _attackDelay;
                 if (attackPhase > 1)

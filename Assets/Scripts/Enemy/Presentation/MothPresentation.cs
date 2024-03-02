@@ -1,24 +1,28 @@
 using UnityEngine;
 
-[RequireComponent(typeof(PreAttackFlash))]
-[RequireComponent(typeof(MothMovement))]
-public class MothPresentation : MonoBehaviour
+public class MothPresentation : EnemyPresentation
 {
-    private IPreAttackStateProvider _preAttackStateProvider;
-    private PreAttackFlash _preAttackFlash;
+    [SerializeField] private PreAttackFlash _preAttackFlash;
+    [SerializeField] private DamageFlash _damageFlash;
+    [SerializeField] private DeathFlash _deathFlash;
 
-    private void OnEnable()
+    public override void PreAttackStart()
     {
-        _preAttackFlash = GetComponent<PreAttackFlash>();
-        _preAttackStateProvider = GetComponent<MothMovement>();
-        
-        _preAttackStateProvider.OnPreAttackStart += _preAttackFlash.PreAttackStart;
-        _preAttackStateProvider.OnPreAttackEnd += _preAttackFlash.PreAttackEnd;
+        _preAttackFlash.PreAttackStart();
     }
     
-    private void OnDisable()
+    public override void PreAttackEnd()
     {
-        _preAttackStateProvider.OnPreAttackStart -= _preAttackFlash.PreAttackStart;
-        _preAttackStateProvider.OnPreAttackEnd -= _preAttackFlash.PreAttackEnd;
+        _preAttackFlash.PreAttackEnd();
+    }
+    
+    public override void DamageFlash()
+    {
+        _damageFlash.Perform();
+    }
+    
+    public override void DeathFlash()
+    {
+        _deathFlash.Perform();
     }
 }

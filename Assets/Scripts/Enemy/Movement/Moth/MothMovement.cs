@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public class MothMovement : MonoBehaviour, IStateMachineOwner, IPreAttackStateProvider
+public class MothMovement : EnemyMovement
 {
     [Header("-- Movement Settings --")]
     [SerializeField] private float _speed;
@@ -28,18 +28,50 @@ public class MothMovement : MonoBehaviour, IStateMachineOwner, IPreAttackStatePr
     private MothMovementPreAttackState _preAttackState;
     private MothMovementAttackState _attackState;
     private MothMovementFallState _fallState;
+    private MothMovementDeathState _deathState;
     
     private Vector3 _prevPosition2d; //Debug
     private Vector3 _position2d;
     private Vector3 _position;
     
+    // State parameters
+    private bool _isDead = false;
+    private bool _isCollided = false;
+    private bool _isAttacking = false;
+    
     // Events
     public event Action OnPreAttackStart;
     public event Action OnPreAttackEnd;
+    
+    // Debug
+    [SerializeField] private EnemyStates _stateDebug;
 
-    private void Start()
+    
+    public override void Initialize()
     {
-        Init();
+        _sideDirection = RandomDirection.Generate();
+        _depthDirection = RandomDirection.Generate();
+        
+        _movementStateMachine = new EnemyMovementStateMachine();
+        _patrolState  = new MothMovementPatrolState(this, _speed, _radius, _verticalAmplitude);
+        _enterState = new MothMovementEnterState(this, _speed, _radius, _verticalAmplitude);
+        _hoverState = new MothMovementHoverState(this, _speed, _radius, _verticalAmplitude);
+        _preAttackState = new MothMovementPreAttackState(this, _speed, _radius, _verticalAmplitude);
+        _attackState = new MothMovementAttackState(this, _speed, _radius, _verticalAmplitude);
+        _fallState = new MothMovementFallState(this, _speed, _radius, _verticalAmplitude);
+        _deathState = new MothMovementDeathState(this, _speed, _radius, _verticalAmplitude);
+        
+        Spawn();
+       
+        _currentState = _enterState;
+        _movementStateMachine.SetState(_currentState, _position2d, _sideDirection, 1);
+        _position2d = _currentState.Position;
+        transform.position = _position2d;
+    }
+    
+    private void Spawn()
+    {
+        _position2d = GenerateSpawnPosition(_sideDirection, _spawnXPos, _spawnYPosMin, _spawnYPosMax);
     }
     
     private Vector3 GenerateSpawnPosition(int direction, float xPos, float yPosMin, float yPosMax)
@@ -61,55 +93,97 @@ public class MothMovement : MonoBehaviour, IStateMachineOwner, IPreAttackStatePr
             return spawnPositionTopBottom;
         }
     }
-    
-    private void Spawn()
+   
+    public override void TriggerFall()
     {
-        _position2d = GenerateSpawnPosition(_sideDirection, _spawnXPos, _spawnYPosMin, _spawnYPosMax);
+        if(_currentState.State == EnemyStates.Attack)
+        {
+            _isCollided = true;
+            SwitchState();
+        }
     }
 
-    private void Init()
+    public override void TriggerDeath()
     {
-        _sideDirection = RandomDirection.Generate();
-        _depthDirection = RandomDirection.Generate();
-        
-        _movementStateMachine = new EnemyMovementStateMachine();
-        _patrolState  = new MothMovementPatrolState(this, _speed, _radius, _verticalAmplitude);
-        _enterState = new MothMovementEnterState(this, _speed, _radius, _verticalAmplitude);
-        _hoverState = new MothMovementHoverState(this, _speed, _radius, _verticalAmplitude);
-        _preAttackState = new MothMovementPreAttackState(this, _speed, _radius, _verticalAmplitude);
-        _attackState = new MothMovementAttackState(this, _speed, _radius, _verticalAmplitude);
-        _fallState = new MothMovementFallState(this, _speed, _radius, _verticalAmplitude);
-        
-        Spawn();
-       
-        _currentState = _enterState;
-        _movementStateMachine.SetState(_currentState, _position2d, _sideDirection, 1);
-        _position2d = _currentState.Position;
-        transform.position = _position2d;
-    }
-    
-    // Extract to the Interface
-    public void SwitchState()
-    {
-        EnemyMovementBaseState newState = _currentState.State switch
+        if (_currentState.State == EnemyStates.Attack || _currentState.State == EnemyStates.Fall)
         {
-            EnemyStates.Enter => _hoverState,
-            EnemyStates.Hover => _patrolState,
-            EnemyStates.Patrol => _hoverState,
-            EnemyStates.PreAttack => startAttackState(),
-            EnemyStates.Attack => _fallState,
-            EnemyStates.Fall => _hoverState,
-            _ => throw new ArgumentOutOfRangeException()
-        };
-        
-        _currentState = newState;
-        _movementStateMachine.SetState(_currentState, _position2d, _sideDirection, _depthDirection);
+            _isDead = true;
+            SwitchState();
+        } 
+    }
+
+    public override void TriggerAttack()
+    {
+        if(_currentState.State == EnemyStates.Hover)
+        {
+            _isAttacking = true;
+            SwitchState();
+        }
     }
     
-    private EnemyMovementBaseState startAttackState()
+    public override void SwitchState()
     {
-        OnPreAttackEnd?.Invoke();
-        return _attackState;
+        EnemyMovementBaseState newState = _currentState;
+        switch (_currentState.State)
+        {
+            case EnemyStates.Enter:
+                newState = _hoverState;
+                break;
+            case EnemyStates.Hover:
+                if (_isAttacking)
+                {
+                    OnPreAttackStartInvoke();
+                    newState = _preAttackState;
+                    _isAttacking = false;
+                }
+                else
+                {
+                    newState = _patrolState;
+                }
+                break;
+            case EnemyStates.PreAttack:
+                OnPreAttackEndInvoke();
+                newState = _attackState;
+                break;
+            case EnemyStates.Patrol:
+                newState = _hoverState;
+                break;
+            case EnemyStates.Attack:
+                if (_isCollided && !_isDead)
+                {
+                    newState = _fallState;
+                    _isCollided = false;
+                    break;
+                }
+                else if (_isDead)
+                {
+                    newState = _deathState;
+                    _isDead = false;
+                    break;
+                }
+                break;
+            case EnemyStates.Fall:
+                if (_isDead)
+                {
+                    newState = _deathState;
+                    _isDead = false;
+                    break;
+                }
+                else
+                {
+                    _sideDirection = -(int)Mathf.Sign(_position2d.x);
+                    newState = _hoverState;
+                    break;
+                }
+            case EnemyStates.Death:
+                gameObject.SetActive(false);
+                break;
+        }
+
+        _currentState = newState;
+        State = _currentState.State;
+        _movementStateMachine.SetState(_currentState, _position2d, _sideDirection, _depthDirection);
+        OnStateChangeInvoke();
     }
     
     private void Update()
@@ -132,16 +206,6 @@ public class MothMovement : MonoBehaviour, IStateMachineOwner, IPreAttackStatePr
         transform.position = _position;
         
         Debug.DrawLine(_prevPosition2d, _prevPosition2d + (_position2d-_prevPosition2d).normalized*0.02f, Color.cyan, 5f);
-        
-        // if(Input.GetKeyDown(KeyCode.Space))
-        // {
-        //     if (_currentState.State == EnemyStates.Hover)
-        //     {
-        //         _currentState = _preAttackState;
-        //         _movementStateMachine.SetState(_currentState, _position2d, _sideDirection, _depthDirection);
-        //         OnPreAttackStart?.Invoke();
-        //     }
-        // }
     }
     
     private void OnTriggerEnter2D(Collider2D other)

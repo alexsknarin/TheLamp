@@ -74,6 +74,13 @@ public class FlyMovement : EnemyMovement
         _position2d = GenerateSpawnPosition(-_sideDirection);
     }
     
+    private Vector3 GenerateSpawnPosition(int direction)
+    {
+        Vector3 spawnPosition = (Vector3)(Random.insideUnitCircle * _spawnAreaSize) + _spawnAreaCenter;
+        spawnPosition.x *= direction;
+        return spawnPosition;
+    }
+    
     public override void TriggerFall()
     {
         if(_currentState.State == EnemyStates.Attack)
@@ -100,12 +107,7 @@ public class FlyMovement : EnemyMovement
         }
     }
    
-    private Vector3 GenerateSpawnPosition(int direction)
-    {
-        Vector3 spawnPosition = (Vector3)(Random.insideUnitCircle * _spawnAreaSize) + _spawnAreaCenter;
-        spawnPosition.x *= direction;
-        return spawnPosition;
-    }
+
   
     public override void SwitchState()
     {

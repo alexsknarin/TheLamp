@@ -41,6 +41,20 @@ public class Enemy : MonoBehaviour, IInitializable
                 ReadyToAttack = true;
             }
         }
+        if(_enemyType == EnemyTypes.Moth && _enemyMovement.State == EnemyStates.Patrol)
+        {
+            if(transform.position.y < 0.0f )
+            {
+                ReadyToAttack = true;
+            }
+            else
+            {
+                if(Mathf.Abs(transform.position.x) > 0.7f)
+                {
+                    ReadyToAttack = true;
+                }
+            }
+        }
         else if (_enemyType == EnemyTypes.Moth && _enemyMovement.State == EnemyStates.Hover)
         {
             ReadyToAttack = true;
