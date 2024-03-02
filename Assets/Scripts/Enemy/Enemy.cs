@@ -36,7 +36,10 @@ public class Enemy : MonoBehaviour, IInitializable
     {
         if(_enemyType == EnemyTypes.Fly && _enemyMovement.State == EnemyStates.Patrol)
         {
-            ReadyToAttack = true;
+            if(transform.position.y < 0.92f)
+            {
+                ReadyToAttack = true;
+            }
         }
         else if (_enemyType == EnemyTypes.Moth && _enemyMovement.State == EnemyStates.Hover)
         {

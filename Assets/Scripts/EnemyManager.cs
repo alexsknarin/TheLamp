@@ -23,6 +23,7 @@ public class EnemyManager : MonoBehaviour,IInitializable
     [SerializeField] private float _spawnDelay;
     
     private List<Enemy> _enemies;
+    private List<Enemy> _enemiesReadyToAttack;
     private bool _isWaveInitialized = false;
     
     private float _attackDelay;
@@ -64,6 +65,7 @@ public class EnemyManager : MonoBehaviour,IInitializable
         //     }
         // }
         _enemies = new List<Enemy>();
+        _enemiesReadyToAttack = new List<Enemy>();
     }
     
     private void StartWave()
@@ -139,12 +141,22 @@ public class EnemyManager : MonoBehaviour,IInitializable
             // TODO: make it respect current state
             // List of enemies that are ready to attack
             
+            // Check ReadyToAttack
+            _enemiesReadyToAttack.Clear();
+            foreach (var enemy in _enemies)
+            {
+                if (enemy.ReadyToAttack)
+                {
+                    _enemiesReadyToAttack.Add(enemy);
+                }
+            }
+            
             if(_enemies.Count > 0)
             {
                 float attackPhase = (Time.time - _attackPrevTime) / _attackDelay;
                 if (attackPhase > 1)
                 {
-                    var attackingEnemy = _enemies[Random.Range(0, _enemies.Count)];
+                    var attackingEnemy = _enemiesReadyToAttack[Random.Range(0, _enemiesReadyToAttack.Count)];
                     attackingEnemy.Attack();
                     _attackPrevTime = Time.time;
                     _attackDelay = Random.Range(2f, 5f);
