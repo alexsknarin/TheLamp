@@ -4,9 +4,10 @@ using UnityEngine;
 
 public abstract class EnemyMovement : MonoBehaviour, IStateMachineOwner, IInitializable
 {
-    public EnemyStates MovementState { get; protected set; }
+    public EnemyStates State { get; protected set; }
     public event Action OnPreAttackStart;
     public event Action OnPreAttackEnd;
+    public event Action OnStateChange; 
 
     public abstract void TriggerFall();
     public abstract void TriggerDeath();
@@ -22,5 +23,10 @@ public abstract class EnemyMovement : MonoBehaviour, IStateMachineOwner, IInitia
     protected virtual void OnPreAttackEndInvoke()
     {
         OnPreAttackEnd?.Invoke();
+    }
+    
+    protected virtual void OnStateChangeInvoke()
+    {
+        OnStateChange?.Invoke();
     }
 }

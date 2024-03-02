@@ -4,11 +4,13 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour, IInitializable
 {
+    [SerializeField] private EnemyTypes _enemyType;
     [SerializeField] private int _maxHealth;
     [SerializeField] private int _currentHealth;
     [SerializeField] private EnemyMovement _enemyMovement;
     [SerializeField] private EnemyPresentation _enemyPresentation;
     [SerializeField] private EnemyCollisionHandler _enemyCollisionHandler;
+    public bool ReadyToAttack { get; private set; }
     public static event Action<Enemy> OnEnemyDeath;
     public static event Action OnEnemyDamaged;
 
@@ -16,16 +18,34 @@ public class Enemy : MonoBehaviour, IInitializable
     {
         _enemyMovement.OnPreAttackStart += PreAttack;
         _enemyMovement.OnPreAttackEnd += _enemyPresentation.PreAttackEnd;
+        _enemyMovement.OnStateChange += UpdateAttackAvailability;
         _enemyCollisionHandler.OnCollidedWithLamp += Fall;
         LampAttackModel.OnLampAttack += HandleLampAttack;
     }
     
     private void OnDisable()
     {
-        _enemyMovement.OnPreAttackStart += PreAttack;
-        _enemyMovement.OnPreAttackEnd += _enemyPresentation.PreAttackEnd;
+        _enemyMovement.OnPreAttackStart -= PreAttack;
+        _enemyMovement.OnPreAttackEnd -= _enemyPresentation.PreAttackEnd;
+        _enemyMovement.OnStateChange -= UpdateAttackAvailability;
         _enemyCollisionHandler.OnCollidedWithLamp -= Fall;
         LampAttackModel.OnLampAttack -= HandleLampAttack;
+    }
+    
+    private void UpdateAttackAvailability()
+    {
+        if(_enemyType == EnemyTypes.Fly && _enemyMovement.State == EnemyStates.Patrol)
+        {
+            ReadyToAttack = true;
+        }
+        else if (_enemyType == EnemyTypes.Moth && _enemyMovement.State == EnemyStates.Hover)
+        {
+            ReadyToAttack = true;
+        }
+        else
+        {
+            ReadyToAttack = false;
+        }
     }
     
     public void Attack()
@@ -79,13 +99,6 @@ public class Enemy : MonoBehaviour, IInitializable
     {
         _enemyMovement.Initialize();
         _currentHealth = _maxHealth;
-    }
-
-    private void Update()
-    {
-        if(Input.GetKeyDown(KeyCode.LeftControl))
-        {
-            _enemyMovement.TriggerDeath();
-        }
+        ReadyToAttack = false;
     }
 }

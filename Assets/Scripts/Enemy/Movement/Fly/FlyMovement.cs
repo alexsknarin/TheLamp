@@ -156,8 +156,9 @@ public class FlyMovement : EnemyMovement
         }
 
         _currentState = newState;
-        MovementState = _currentState.State;
+        State = _currentState.State;
         _movementStateMachine.SetState(_currentState, _position2d, _sideDirection, _depthDirection);
+        OnStateChangeInvoke();
     }
 
     private void Update()
