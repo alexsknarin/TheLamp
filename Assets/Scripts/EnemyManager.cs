@@ -16,9 +16,13 @@ public class EnemyManager : MonoBehaviour,IInitializable
     [SerializeField] private GameObject _mothEnemyPrefab;
     [SerializeField] private GameObject _ladybugEnemyPrefab;
     [SerializeField] private GameObject _fireflyEnemyPrefab;
-    [Header("------ FX Prefabs -------")]
+    [Header("------ Explosions -------")]
     [SerializeField] private FireflyExplosion _fireflyExplosion;
     [SerializeField] private float _fireflyExplosionRadius;
+    [SerializeField] private float _explosionDuration;
+    private Enemy _explosionSource;
+    private Vector3 _explosionPosition;
+    private bool _isExplosionActive = false;
     [Header("---- Waves Generation ------")]
     [SerializeField] private int _enemiesOnScreen;
     [Header("")]
@@ -39,6 +43,7 @@ public class EnemyManager : MonoBehaviour,IInitializable
     private bool _isAttacking;
     
     private float _prevTime;
+    private float _prevExplosionTime;
     
     public static event Action<int> OnWavePrepared;
     public static event Action OnWaveStarted;
@@ -47,7 +52,7 @@ public class EnemyManager : MonoBehaviour,IInitializable
     private void OnEnable()
     {
         Enemy.OnEnemyDeactivated += UpdateEnemiesOnScreen;
-        Enemy.OnEnemyDeactivated += ExplodeEnemyOnDeath;
+        Enemy.OnEnemyDeactivated += StartExplodeEnemyOnDeath;
         LampAttackModel.OnLampAttack += LampAttack;
         PlayerInputHandler.OnPlayerAttack += StartWave;
     }
@@ -55,7 +60,7 @@ public class EnemyManager : MonoBehaviour,IInitializable
     private void OnDisable()
     {
         Enemy.OnEnemyDeactivated -= UpdateEnemiesOnScreen;
-        Enemy.OnEnemyDeactivated -= ExplodeEnemyOnDeath;
+        Enemy.OnEnemyDeactivated -= StartExplodeEnemyOnDeath;
         LampAttackModel.OnLampAttack -= LampAttack;
         PlayerInputHandler.OnPlayerAttack -= StartWave;
     }
@@ -143,24 +148,31 @@ public class EnemyManager : MonoBehaviour,IInitializable
         _enemiesKilled++;
     }
 
-    private void ExplodeEnemyOnDeath(Enemy explosionSource)
+    private void StartExplodeEnemyOnDeath(Enemy explosionSource)
     {
         if(explosionSource.EnemyType != EnemyTypes.Firefly)
         {
             return;
         }
-        
-        _fireflyExplosion.Perform(explosionSource.transform.position, _fireflyExplosionRadius * 2);
+        _explosionSource = explosionSource;
+        _explosionPosition = explosionSource.transform.position;
+        _fireflyExplosion.Perform(_explosionPosition, _fireflyExplosionRadius * 2);
         OnFireflyExplosion?.Invoke();
+        _prevExplosionTime = Time.time;
+        _isExplosionActive = true;
+    }
+    
+    private void PerformExplosion()
+    {
         foreach (var enemy in _enemies)
         {
-            if (enemy == explosionSource)
+            if (enemy == _explosionSource)
             {
                 continue;
             }
             Vector3 enemyPosition2d = enemy.transform.position;
             enemyPosition2d.z = 0;
-            Vector3 explosionPosition2d = explosionSource.transform.position;
+            Vector3 explosionPosition2d = _explosionPosition;
             explosionPosition2d.z = 0;
             
             if((explosionPosition2d - enemyPosition2d).magnitude < _fireflyExplosionRadius)
@@ -215,8 +227,6 @@ public class EnemyManager : MonoBehaviour,IInitializable
                 }   
             }
             
-            Debug.Log("Enemies Ready To Attack: " + _enemiesReadyToAttack.Count);
-
             if (_enemiesReadyToAttack.Count > 0)
             {
                 if (_isAttacking == true)
@@ -229,6 +239,18 @@ public class EnemyManager : MonoBehaviour,IInitializable
                 }
             }
 
+            if (_isExplosionActive)
+            {
+                float explosionPhase = (Time.time - _prevExplosionTime) / _explosionDuration;
+                if (explosionPhase > 1)
+                {
+                    _isExplosionActive = false;
+                }
+                else
+                {
+                    PerformExplosion();
+                }
+            }
 
             if (_enemiesKilled == _enemiesInWave)
             {

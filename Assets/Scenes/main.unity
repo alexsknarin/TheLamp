@@ -1453,8 +1453,9 @@ MonoBehaviour:
     type: 3}
   _fireflyExplosion: {fileID: 1402077385}
   _fireflyExplosionRadius: 0.8
+  _explosionDuration: 0.1
   _enemiesOnScreen: 5
-  _startAtWave: 37
+  _startAtWave: 0
   _currentWave: 0
   _spawnDelay: 1
 --- !u!114 &1818435503
