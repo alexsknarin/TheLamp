@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class DamageFlash : MonoBehaviour
+public class DamageFlash : MonoBehaviour, IInitializable
 {
     [SerializeField] private MeshRenderer _meshRenderer;
     [SerializeField] private float _duration = 0.5f;
@@ -8,10 +8,10 @@ public class DamageFlash : MonoBehaviour
     private bool _isActive = false;
     private float _prevTime;
     
-    private void Start()
-    {
-        _material = _meshRenderer.material;
-    }
+    // private void Start()
+    // {
+    //     _material = _meshRenderer.material;
+    // }
     
     public void Perform()
     {
@@ -34,5 +34,12 @@ public class DamageFlash : MonoBehaviour
             _material.SetFloat("_AttackSemaphore", 1-phase);
             _material.SetFloat("_Damage", 9f);
         }
+    }
+    
+    public void Initialize()
+    {
+        _material = _meshRenderer.material;
+        _material.SetFloat("_AttackSemaphore", 0f);
+        _material.SetFloat("_Damage", 1f);
     }
 }

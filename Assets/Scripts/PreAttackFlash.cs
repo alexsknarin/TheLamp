@@ -1,14 +1,14 @@
 using UnityEngine;
 
-public class PreAttackFlash : MonoBehaviour
+public class PreAttackFlash : MonoBehaviour, IInitializable
 {
     [SerializeField] private MeshRenderer _meshRenderer;
     private Material _material;
     
-    private void Start()
-    {
-        _material = _meshRenderer.material;
-    }
+    // private void Start()
+    // {
+    //     _material = _meshRenderer.material;
+    // }
 
     public void PreAttackStart()
     {
@@ -18,5 +18,11 @@ public class PreAttackFlash : MonoBehaviour
     public void PreAttackEnd()
     {
         _material.SetFloat("_AttackSemaphore", 0f);   
+    }
+
+    public void Initialize()
+    {
+        _material = _meshRenderer.material;
+        _material.SetFloat("_AttackSemaphore", 0f);
     }
 }

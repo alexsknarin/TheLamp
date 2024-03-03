@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -16,6 +15,8 @@ public class EnemyManager : MonoBehaviour,IInitializable
     [SerializeField] private GameObject _mothEnemyPrefab;
     [SerializeField] private GameObject _ladybugEnemyPrefab;
     [SerializeField] private GameObject _fireflyEnemyPrefab;
+    [SerializeField] private EnemyPool _enemyPool;
+
     [Header("------ Explosions -------")]
     [SerializeField] private FireflyExplosion _fireflyExplosion;
     [SerializeField] private float _fireflyExplosionRadius;
@@ -103,25 +104,27 @@ public class EnemyManager : MonoBehaviour,IInitializable
     public void SpawnEnemy(int enemyIndex)
     {
         EnemyTypes enemyType = _enemyQueue.Get(enemyIndex);
-        GameObject prefab = null;
-
-        switch (enemyType)
-        {
-            case EnemyTypes.Fly:
-                prefab = _flyEnemyPrefab;
-                break;
-            case EnemyTypes.Moth:
-                prefab = _mothEnemyPrefab;
-                break;
-            case EnemyTypes.Ladybug:
-                prefab = _ladybugEnemyPrefab;
-                break;
-            case EnemyTypes.Firefly:
-                prefab = _fireflyEnemyPrefab;
-                break;
-        }
-        var enemyObject = Instantiate(prefab, transform.position, Quaternion.identity);
-        var enemy = enemyObject.gameObject.GetComponent<Enemy>();
+        // GameObject prefab = null;
+        //
+        // switch (enemyType)
+        // {
+        //     case EnemyTypes.Fly:
+        //         prefab = _flyEnemyPrefab;
+        //         break;
+        //     case EnemyTypes.Moth:
+        //         prefab = _mothEnemyPrefab;
+        //         break;
+        //     case EnemyTypes.Ladybug:
+        //         prefab = _ladybugEnemyPrefab;
+        //         break;
+        //     case EnemyTypes.Firefly:
+        //         prefab = _fireflyEnemyPrefab;
+        //         break;
+        // }
+        // var enemyObject = Instantiate(prefab, transform.position, Quaternion.identity);
+        // var enemy = enemyObject.gameObject.GetComponent<Enemy>();
+        
+        var enemy = _enemyPool.Get(enemyType);
         enemy.Initialize();
         _enemies.Add(enemy);        
     }
@@ -195,7 +198,6 @@ public class EnemyManager : MonoBehaviour,IInitializable
                     if(_enemies.Count < _enemiesOnScreen)
                     {
                         _prevTime = Time.time;
-                        Debug.Log(_enemyQueue.Get(_currentSpawnEnemyIndex));
                         SpawnEnemy(_currentSpawnEnemyIndex);
                         _enemiesAvailable--;
                         _currentSpawnEnemyIndex++;

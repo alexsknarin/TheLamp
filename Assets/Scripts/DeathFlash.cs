@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class DeathFlash : MonoBehaviour
+public class DeathFlash : MonoBehaviour, IInitializable
 {
     [SerializeField] private MeshRenderer _meshRenderer;
     [SerializeField] private float _duration = 0.5f;
@@ -37,5 +37,12 @@ public class DeathFlash : MonoBehaviour
             _material.SetFloat("_Damage", 4f);
             _material.SetFloat("_DeathFade", phase);
         }
+    }
+
+    public void Initialize()
+    {
+        _material.SetFloat("_DeathFade", 0f);
+        _material.SetFloat("_AttackSemaphore", 0f);
+        _material.SetFloat("_Damage", 1f);
     }
 }

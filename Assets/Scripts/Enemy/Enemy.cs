@@ -1,6 +1,6 @@
 using System;
-using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Pool;
 
 public class Enemy : MonoBehaviour, IInitializable
 {
@@ -10,8 +10,15 @@ public class Enemy : MonoBehaviour, IInitializable
     [SerializeField] private int _currentHealth;
     [SerializeField] private EnemyMovement _enemyMovement;
     [SerializeField] private EnemyPresentation _enemyPresentation;
+    private IInitializable _enemyPresentationInitializer;
     [SerializeField] private EnemyCollisionHandler _enemyCollisionHandler;
     public bool ReadyToAttack { get; private set; }
+    private IObjectPool<Enemy> _objectPool;
+    public IObjectPool<Enemy> ObjectPool
+    {
+        set => _objectPool = value;
+    }
+
     public static event Action<Enemy> OnEnemyDeath;
     public static event Action<Enemy> OnEnemyDeactivated;
     public static event Action OnEnemyDamaged;
@@ -37,6 +44,8 @@ public class Enemy : MonoBehaviour, IInitializable
     public void Initialize()
     {
         _enemyMovement.Initialize();
+        _enemyPresentationInitializer = _enemyPresentation;
+        _enemyPresentationInitializer.Initialize();
         _currentHealth = _maxHealth;
         ReadyToAttack = false;
     }
@@ -110,6 +119,7 @@ public class Enemy : MonoBehaviour, IInitializable
     private void OnDeactivated()
     {
         OnEnemyDeactivated?.Invoke(this);
-        gameObject.SetActive(false);
+        _objectPool.Release(this);
+        // gameObject.SetActive(false);
     }
 }

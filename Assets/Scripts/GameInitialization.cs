@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class GameInitialization : MonoBehaviour
@@ -8,6 +5,7 @@ public class GameInitialization : MonoBehaviour
     [SerializeField] private Lamp _lamp;
     [SerializeField] private GoogleSheetsDataReader _googleSheetsDataReader;
     [SerializeField] private EnemyManager _enemyManager;
+    [SerializeField] private EnemyPool _enemyPool;
 
     private void OnEnable()
     {
@@ -23,6 +21,7 @@ public class GameInitialization : MonoBehaviour
     void Start()
     {
         _lamp.Initialize(); 
+        _enemyPool.Initialize();
         _googleSheetsDataReader.Initialize();
     }
     
