@@ -13,6 +13,9 @@ public class EnemyManager : MonoBehaviour,IInitializable
     
     [Header("------ Enemy Prefabs -------")]
     [SerializeField] private GameObject _flyEnemyPrefab;
+    [SerializeField] private GameObject _mothEnemyPrefab;
+    [SerializeField] private GameObject _ladybugEnemyPrefab;
+    [SerializeField] private GameObject _fireflyEnemyPrefab;
     [Header("---- Waves Generation ------")]
     [SerializeField] private int _enemiesOnScreen;
     [Header("")]
@@ -20,6 +23,7 @@ public class EnemyManager : MonoBehaviour,IInitializable
     private int _enemiesInWave;
     private int _enemiesAvailable;
     private int _enemiesKilled;
+    private int _currentSpawnEnemyIndex;
     [SerializeField] private float _spawnDelay;
     
     private List<Enemy> _enemies;
@@ -52,18 +56,6 @@ public class EnemyManager : MonoBehaviour,IInitializable
     {
         _spawnQueueGenerator = new SpawnQueueGenerator(_spawnQueueDataCache.Data);
         _spawnQueue = _spawnQueueGenerator.Generate();
-        
-        // Check SpawnQueueGenerator.cs for the implementation of the Generate method
-        // int spawnCount = _spawnQueue.Count();
-        // for (int i=0; i<spawnCount; i++)
-        // {
-        //     string result = "Wave: " + (i+1).ToString() + " ";
-        //     var wave = tmp.Get(i);
-        //     for(int j=0; j<wave.Count(); j++)
-        //     {
-        //         result += wave.Get(j).ToString() + " ";
-        //     }
-        // }
         _enemies = new List<Enemy>();
         _enemiesReadyToAttack = new List<Enemy>();
     }
@@ -79,6 +71,7 @@ public class EnemyManager : MonoBehaviour,IInitializable
     
     private void SetupWave(int waveNum)
     {
+        _currentSpawnEnemyIndex = 0;
         _enemyQueue = _spawnQueue.Get(waveNum);
         _enemiesInWave = _enemyQueue.Count();
         _enemiesAvailable = _enemiesInWave;
@@ -93,9 +86,27 @@ public class EnemyManager : MonoBehaviour,IInitializable
         _isWaveInitialized = true;
     }
     
-    public void SpawnEnemy()
+    public void SpawnEnemy(int enemyIndex)
     {
-        var enemyObject = Instantiate(_flyEnemyPrefab, transform.position, Quaternion.identity);
+        EnemyTypes enemyType = _enemyQueue.Get(enemyIndex);
+        GameObject prefab = null;
+
+        switch (enemyType)
+        {
+            case EnemyTypes.Fly:
+                prefab = _flyEnemyPrefab;
+                break;
+            case EnemyTypes.Moth:
+                prefab = _mothEnemyPrefab;
+                break;
+            case EnemyTypes.Ladybug:
+                prefab = _ladybugEnemyPrefab;
+                break;
+            case EnemyTypes.Firefly:
+                prefab = _fireflyEnemyPrefab;
+                break;
+        }
+        var enemyObject = Instantiate(prefab, transform.position, Quaternion.identity);
         var enemy = enemyObject.gameObject.GetComponent<Enemy>();
         enemy.Initialize();
         _enemies.Add(enemy);        
@@ -128,8 +139,10 @@ public class EnemyManager : MonoBehaviour,IInitializable
                     if(_enemies.Count < _enemiesOnScreen)
                     {
                         _prevTime = Time.time;
-                        SpawnEnemy();
+                        Debug.Log(_enemyQueue.Get(_currentSpawnEnemyIndex));
+                        SpawnEnemy(_currentSpawnEnemyIndex);
                         _enemiesAvailable--;
+                        _currentSpawnEnemyIndex++;
                     }
                     else
                     {
@@ -137,9 +150,6 @@ public class EnemyManager : MonoBehaviour,IInitializable
                     }
                 }    
             }
-            
-            // TODO: make it respect current state
-            // List of enemies that are ready to attack
             
             // Check ReadyToAttack
             _enemiesReadyToAttack.Clear();

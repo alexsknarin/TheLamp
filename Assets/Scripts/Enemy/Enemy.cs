@@ -48,7 +48,7 @@ public class Enemy : MonoBehaviour, IInitializable
                 ReadyToAttack = true;
             }
         }
-        if(_enemyType == EnemyTypes.Moth && _enemyMovement.State == EnemyStates.Patrol)
+        else if(_enemyType == EnemyTypes.Moth && _enemyMovement.State == EnemyStates.Patrol)
         {
             if(transform.position.y < 0.0f )
             {
