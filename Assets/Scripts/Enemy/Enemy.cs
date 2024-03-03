@@ -41,7 +41,7 @@ public class Enemy : MonoBehaviour, IInitializable
     
     private void UpdateAttackAvailability()
     {
-        if(_enemyType == EnemyTypes.Fly && _enemyMovement.State == EnemyStates.Patrol)
+        if((_enemyType == EnemyTypes.Fly || _enemyType == EnemyTypes.Firefly) && _enemyMovement.State == EnemyStates.Patrol)
         {
             if(transform.position.y < 0.92f)
             {

@@ -121,9 +121,11 @@ public class EnemyManager : MonoBehaviour,IInitializable
     {
         _enemies.Remove(enemy);
         _enemiesKilled++;
-        Debug.Log("--------------------------");
-        Debug.Log("Enemies killed: " + _enemiesKilled);
-        Debug.Log("Enemies in wave: " + _enemiesInWave);
+    }
+
+    private void ExplodeEnemyOnDeath()
+    {
+        
     }
 
     private void Update()
