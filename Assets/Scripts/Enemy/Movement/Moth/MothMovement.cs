@@ -110,11 +110,8 @@ public class MothMovement : EnemyMovement
 
     public override void TriggerAttack()
     {
-        if(_currentState.State == EnemyStates.Hover)
-        {
-            _isAttacking = true;
-            SwitchState();
-        }
+        _isAttacking = true;
+        SwitchState();
     }
     
     public override void SwitchState()

@@ -102,14 +102,9 @@ public class FlyMovement : EnemyMovement
 
     public override void TriggerAttack()
     {
-        if(_currentState.State == EnemyStates.Patrol)
-        {
-            SwitchState();
-        }
+        SwitchState();
     }
    
-
-  
     public override void SwitchState()
     {
         EnemyMovementBaseState newState = _currentState;

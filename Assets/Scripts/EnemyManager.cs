@@ -36,6 +36,7 @@ public class EnemyManager : MonoBehaviour,IInitializable
     
     private float _attackDelay;
     private float _attackPrevTime;
+    private bool _isAttacking;
     
     private float _prevTime;
     
@@ -204,21 +205,33 @@ public class EnemyManager : MonoBehaviour,IInitializable
                 }
             }
             
-            if(_enemiesReadyToAttack.Count > 0)
+            // Attack delay
+            if (!_isAttacking)
             {
                 float attackPhase = (Time.time - _attackPrevTime) / _attackDelay;
                 if (attackPhase > 1)
                 {
+                    _isAttacking = true;
+                }   
+            }
+            
+            Debug.Log("Enemies Ready To Attack: " + _enemiesReadyToAttack.Count);
+
+            if (_enemiesReadyToAttack.Count > 0)
+            {
+                if (_isAttacking == true)
+                {
                     var attackingEnemy = _enemiesReadyToAttack[Random.Range(0, _enemiesReadyToAttack.Count)];
                     attackingEnemy.Attack();
                     _attackPrevTime = Time.time;
-                    _attackDelay = Random.Range(2f, 5f);
+                    _attackDelay = Random.Range(1.5f, 4f); // TODO: Aggression level
+                    _isAttacking = false;
                 }
             }
 
+
             if (_enemiesKilled == _enemiesInWave)
             {
-                Debug.Log("Wave finished");
                 _isWaveInitialized = false;
                 _currentWave++;
                 OnWavePrepared?.Invoke(_currentWave+1);

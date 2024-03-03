@@ -28,7 +28,6 @@ public class ReadGoogleSheetTest : MonoBehaviour
                 var itemJsonObject = JSON.Parse(item.ToString());
                 if (i > 0)
                 {
-                    // Debug.Log(itemJsonObject[0].ToString());
                     Debug.Log("Fly: " + itemJsonObject[0][1].ToString().Replace("\"", "") +
                                   " Moth: " + itemJsonObject[0][2].ToString().Replace("\"", "") + 
                                  " Firefly: " + itemJsonObject[0][3].ToString().Replace("\"", ""));

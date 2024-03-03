@@ -75,7 +75,6 @@ public class Lamp : MonoBehaviour, IInitializable
                     OnLampDamaged?.Invoke();
                     if (_currentHealth <= 0)
                     {
-                        Debug.Log("Game Over");
                     }
                 }
             }    

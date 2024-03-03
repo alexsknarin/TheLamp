@@ -50,7 +50,7 @@ public class Enemy : MonoBehaviour, IInitializable
                 ReadyToAttack = true;
             }
         }
-        else if(_enemyType == EnemyTypes.Moth && _enemyMovement.State == EnemyStates.Patrol)
+        else if(_enemyType == EnemyTypes.Moth && _enemyMovement.State == EnemyStates.Hover)
         {
             if(transform.position.y < 0.0f )
             {
@@ -63,10 +63,6 @@ public class Enemy : MonoBehaviour, IInitializable
                     ReadyToAttack = true;
                 }
             }
-        }
-        else if (_enemyType == EnemyTypes.Moth && _enemyMovement.State == EnemyStates.Hover)
-        {
-            ReadyToAttack = true;
         }
         else
         {

@@ -173,7 +173,6 @@ public class LadybugMovement : EnemyMovement
         if(_currentState.State != EnemyStates.Stick && other.CompareTag("StickTrigger"))
         {
             SwitchState();
-            Debug.Log("Triggered Stick");
         }
     }
 }

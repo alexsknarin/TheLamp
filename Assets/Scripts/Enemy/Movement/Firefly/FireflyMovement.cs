@@ -102,10 +102,7 @@ public class FireflyMovement : EnemyMovement
 
     public override void TriggerAttack()
     {
-        if(_currentState.State == EnemyStates.Patrol)
-        {
-            SwitchState();
-        }
+        SwitchState();
     }
   
     public override void SwitchState()
