@@ -93,11 +93,11 @@ public class FlyMovement : EnemyMovement
 
     public override void TriggerDeath()
     {
-        if (_currentState.State == EnemyStates.Attack || _currentState.State == EnemyStates.Fall)
+        if(_currentState.State != EnemyStates.Death)
         {
             _isDead = true;
             SwitchState();
-        } 
+        }
     }
 
     public override void TriggerAttack()
@@ -116,16 +116,43 @@ public class FlyMovement : EnemyMovement
         switch (_currentState.State)
         {
             case EnemyStates.Enter:
-                newState = _patrolState;
-                break;
+                if (_isDead)
+                {
+                    newState = _deathState;
+                    _isDead = false;
+                    break;
+                }
+                else
+                {
+                    newState = _patrolState;
+                    break;    
+                }
             case EnemyStates.Patrol:
-                OnPreAttackStartInvoke();
-                newState = _preAttackState;
-                break;
+                if (_isDead)
+                {
+                    newState = _deathState;
+                    _isDead = false;
+                    break;
+                }
+                else
+                {
+                    OnPreAttackStartInvoke();
+                    newState = _preAttackState;
+                    break;    
+                }
             case EnemyStates.PreAttack:
-                OnPreAttackEndInvoke();
-                newState = _attackState;
-                break;
+                if (_isDead)
+                {
+                    newState = _deathState;
+                    _isDead = false;
+                    break;
+                }
+                else
+                {
+                    OnPreAttackEndInvoke();
+                    newState = _attackState;
+                    break;    
+                }
             case EnemyStates.Attack:
                 if (_isCollided && !_isDead)
                 {
@@ -139,7 +166,10 @@ public class FlyMovement : EnemyMovement
                     _isDead = false;
                     break;
                 }
-                break;
+                else
+                {
+                    break;    
+                }
             case EnemyStates.Fall:
                 if (_isDead)
                 {
@@ -154,7 +184,7 @@ public class FlyMovement : EnemyMovement
                     break;
                 }
             case EnemyStates.Death:
-                    gameObject.SetActive(false);
+                OnEnemyDeactivatedInvoke();
                 break;
         }
 

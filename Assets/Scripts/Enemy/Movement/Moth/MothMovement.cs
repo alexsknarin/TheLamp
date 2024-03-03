@@ -101,7 +101,7 @@ public class MothMovement : EnemyMovement
 
     public override void TriggerDeath()
     {
-        if (_currentState.State == EnemyStates.Attack || _currentState.State == EnemyStates.Fall)
+        if(_currentState.State != EnemyStates.Death)
         {
             _isDead = true;
             SwitchState();
@@ -123,27 +123,62 @@ public class MothMovement : EnemyMovement
         switch (_currentState.State)
         {
             case EnemyStates.Enter:
-                newState = _hoverState;
-                break;
+                if (_isDead)
+                {
+                    newState = _deathState;
+                    _isDead = false;
+                    break;
+                }
+                else
+                {
+                    newState = _hoverState;
+                    break;
+                }
+                
             case EnemyStates.Hover:
-                if (_isAttacking)
+                if (_isDead)
+                {
+                    newState = _deathState;
+                    _isDead = false;
+                    break;
+                }
+                else if (_isAttacking)
                 {
                     OnPreAttackStartInvoke();
                     newState = _preAttackState;
                     _isAttacking = false;
+                    break;
                 }
                 else
                 {
                     newState = _patrolState;
+                    break;
                 }
-                break;
             case EnemyStates.PreAttack:
-                OnPreAttackEndInvoke();
-                newState = _attackState;
-                break;
+                if (_isDead)
+                {
+                    newState = _deathState;
+                    _isDead = false;
+                    break;
+                }
+                else
+                {
+                    OnPreAttackEndInvoke();
+                    newState = _attackState;
+                    break;
+                }
             case EnemyStates.Patrol:
-                newState = _hoverState;
-                break;
+                if (_isDead)
+                {
+                    newState = _deathState;
+                    _isDead = false;
+                    break;
+                }
+                else
+                {
+                    newState = _hoverState;
+                    break;    
+                }
             case EnemyStates.Attack:
                 if (_isCollided && !_isDead)
                 {
@@ -157,7 +192,10 @@ public class MothMovement : EnemyMovement
                     _isDead = false;
                     break;
                 }
-                break;
+                else
+                {
+                    break;    
+                }
             case EnemyStates.Fall:
                 if (_isDead)
                 {
@@ -172,7 +210,7 @@ public class MothMovement : EnemyMovement
                     break;
                 }
             case EnemyStates.Death:
-                gameObject.SetActive(false);
+                OnEnemyDeactivatedInvoke();
                 break;
         }
 

@@ -74,7 +74,7 @@ public class LadybugMovement : EnemyMovement
     }
     public override void TriggerDeath()
     {
-        if (_currentState.State == EnemyStates.Stick)
+        if(_currentState.State != EnemyStates.Death)
         {
             _isDead = true;
             SwitchState();
@@ -90,17 +90,44 @@ public class LadybugMovement : EnemyMovement
         switch (_currentState.State)
         {
             case EnemyStates.Patrol:
-                OnPreAttackStartInvoke();
-                newState = _preAttackState;
-                break;
+                if (_isDead)
+                {
+                    newState = _deathState;
+                    _isDead = false;
+                    break;
+                }
+                else
+                {
+                    OnPreAttackStartInvoke();
+                    newState = _preAttackState;
+                    break;    
+                }
             case EnemyStates.PreAttack:
-                OnPreAttackEndInvoke();
-                newState = _attackState;
-                break;
+                if (_isDead)
+                {
+                    newState = _deathState;
+                    _isDead = false;
+                    break;
+                }
+                else
+                {
+                    OnPreAttackEndInvoke();
+                    newState = _attackState;
+                    break;    
+                }
             case EnemyStates.Attack:
-                newState = _stickState;
-                _isCollided = false;
-                break;
+                if (_isDead)
+                {
+                    newState = _deathState;
+                    _isDead = false;
+                    break;
+                }
+                else
+                {
+                    newState = _stickState;
+                    _isCollided = false;
+                    break;    
+                }
             case EnemyStates.Stick:
                 if (_isDead)
                 {
@@ -109,7 +136,7 @@ public class LadybugMovement : EnemyMovement
                 }
                 break;
             case EnemyStates.Death:
-                gameObject.SetActive(false);
+                OnEnemyDeactivatedInvoke();
                 break;
         }
 

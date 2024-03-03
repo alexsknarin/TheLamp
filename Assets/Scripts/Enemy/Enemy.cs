@@ -23,7 +23,6 @@ public class Enemy : MonoBehaviour, IInitializable
         _enemyMovement.OnStateChange += UpdateAttackAvailability;
         _enemyMovement.OnEnemyDeactivated += OnDeactivated;
         _enemyCollisionHandler.OnCollidedWithLamp += Fall;
-        LampAttackModel.OnLampAttack += HandleLampAttack;
     }
     
     private void OnDisable()
@@ -33,7 +32,6 @@ public class Enemy : MonoBehaviour, IInitializable
         _enemyMovement.OnStateChange -= UpdateAttackAvailability;
         _enemyMovement.OnEnemyDeactivated -= OnDeactivated;
         _enemyCollisionHandler.OnCollidedWithLamp -= Fall;
-        LampAttackModel.OnLampAttack -= HandleLampAttack;
     }
     
     public void Initialize()
@@ -75,7 +73,7 @@ public class Enemy : MonoBehaviour, IInitializable
             ReadyToAttack = false;
         }
     }
-    
+   
     public void Attack()
     {
         _enemyMovement.TriggerAttack();
@@ -95,26 +93,13 @@ public class Enemy : MonoBehaviour, IInitializable
             _enemyMovement.TriggerFall();    
         }
     }
-    
-    private void HandleLampAttack(int attackPower, float currentPower, float attackDuration, float attackDistance)
-    {
-        if (gameObject.activeInHierarchy)
-        {
-            Vector3 current2dPosition = transform.position;
-            current2dPosition.z = 0;
-            if(current2dPosition.magnitude < attackDistance && attackPower > 0)
-            {
-                RecieveDamage(attackPower);
-                OnEnemyDamaged?.Invoke();
-            }
-        }
-    }
-    
-    public void RecieveDamage(int damage)
+
+    public void ReceiveDamage(int damage)
     {
         _currentHealth -= damage;
         if (_currentHealth > 0)
         {
+            OnEnemyDamaged?.Invoke();
             _enemyPresentation.DamageFlash();
         }
         else
@@ -129,5 +114,6 @@ public class Enemy : MonoBehaviour, IInitializable
     private void OnDeactivated()
     {
         OnEnemyDeactivated?.Invoke(this);
+        gameObject.SetActive(false);
     }
 }

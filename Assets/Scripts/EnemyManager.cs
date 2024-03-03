@@ -18,6 +18,7 @@ public class EnemyManager : MonoBehaviour,IInitializable
     [SerializeField] private GameObject _fireflyEnemyPrefab;
     [Header("------ FX Prefabs -------")]
     [SerializeField] private FireflyExplosion _fireflyExplosion;
+    [SerializeField] private float _fireflyExplosionRadius;
     [Header("---- Waves Generation ------")]
     [SerializeField] private int _enemiesOnScreen;
     [Header("")]
@@ -44,7 +45,7 @@ public class EnemyManager : MonoBehaviour,IInitializable
     
     private void OnEnable()
     {
-        Enemy.OnEnemyDeath += UpdateEnemiesOnScreen;
+        Enemy.OnEnemyDeactivated += UpdateEnemiesOnScreen;
         Enemy.OnEnemyDeactivated += ExplodeEnemyOnDeath;
         LampAttackModel.OnLampAttack += LampAttack;
         PlayerInputHandler.OnPlayerAttack += StartWave;
@@ -52,7 +53,7 @@ public class EnemyManager : MonoBehaviour,IInitializable
     
     private void OnDisable()
     {
-        Enemy.OnEnemyDeath -= UpdateEnemiesOnScreen;
+        Enemy.OnEnemyDeactivated -= UpdateEnemiesOnScreen;
         Enemy.OnEnemyDeactivated -= ExplodeEnemyOnDeath;
         LampAttackModel.OnLampAttack -= LampAttack;
         PlayerInputHandler.OnPlayerAttack -= StartWave;
@@ -121,7 +122,18 @@ public class EnemyManager : MonoBehaviour,IInitializable
 
     private void LampAttack(int attackPower, float currentPower, float attackDuration, float attackDistance)
     {
- 
+        foreach (var enemy in _enemies)
+        {
+            if (enemy.gameObject.activeInHierarchy)
+            {
+                Vector3 current2dPosition = enemy.transform.position;
+                current2dPosition.z = 0;
+                if(current2dPosition.magnitude < attackDistance && attackPower > 0)
+                {
+                    enemy.ReceiveDamage(attackPower);
+                }
+            }
+        }
     }
     
     private void UpdateEnemiesOnScreen(Enemy enemy)
@@ -130,10 +142,31 @@ public class EnemyManager : MonoBehaviour,IInitializable
         _enemiesKilled++;
     }
 
-    private void ExplodeEnemyOnDeath(Enemy enemy)
+    private void ExplodeEnemyOnDeath(Enemy explosionSource)
     {
-        _fireflyExplosion.Perform(enemy.transform.position);
+        if(explosionSource.EnemyType != EnemyTypes.Firefly)
+        {
+            return;
+        }
+        
+        _fireflyExplosion.Perform(explosionSource.transform.position, _fireflyExplosionRadius * 2);
         OnFireflyExplosion?.Invoke();
+        foreach (var enemy in _enemies)
+        {
+            if (enemy == explosionSource)
+            {
+                continue;
+            }
+            Vector3 enemyPosition2d = enemy.transform.position;
+            enemyPosition2d.z = 0;
+            Vector3 explosionPosition2d = explosionSource.transform.position;
+            explosionPosition2d.z = 0;
+            
+            if((explosionPosition2d - enemyPosition2d).magnitude < _fireflyExplosionRadius)
+            {
+                enemy.ReceiveDamage(100);
+            }
+        }
     }
 
     private void Update()

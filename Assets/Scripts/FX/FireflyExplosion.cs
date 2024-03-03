@@ -10,21 +10,21 @@ public class FireflyExplosion : MonoBehaviour
     private bool _isActive;
     private float _prevTime;
     private float _phase;
-    private float _baseScale;
+    private float _baseScale = 1;
     
     void Awake()
     {
-        _baseScale = transform.localScale.x;
         _material = _meshRenderer.material;
     }
     
-    public void Perform(Vector3 position)
+    public void Perform(Vector3 position, float radius)
     {
         transform.position = position;
         gameObject.SetActive(true);
         _prevTime = Time.time;
         _isActive = true;
         _material.SetFloat("_ExplosionPhase", 0);
+        _baseScale = radius;
     }
 
     // Update is called once per frame
