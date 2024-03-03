@@ -19,6 +19,7 @@ public class EnemyManager : MonoBehaviour,IInitializable
     [Header("---- Waves Generation ------")]
     [SerializeField] private int _enemiesOnScreen;
     [Header("")]
+    [SerializeField] private int _startAtWave = 0;
     [SerializeField] private int _currentWave = 1;
     private int _enemiesInWave;
     private int _enemiesAvailable;
@@ -58,6 +59,7 @@ public class EnemyManager : MonoBehaviour,IInitializable
         _spawnQueue = _spawnQueueGenerator.Generate();
         _enemies = new List<Enemy>();
         _enemiesReadyToAttack = new List<Enemy>();
+        _currentWave = _startAtWave;
     }
     
     private void StartWave()
