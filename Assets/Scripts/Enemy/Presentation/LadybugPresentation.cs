@@ -1,31 +1,29 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(DeathIndication))]
-public class LadybugPresentation : MonoBehaviour
+public class LadybugPresentation : EnemyPresentation
 {
-    private IDeathStateProvider _deathStateProvider;
-    private IPreAttackStateProvider _preAttackStateProvider;
-    private DeathIndication _deathIndication;
-    private PreAttackFlash _preAttackFlash;
-
-    private void OnEnable()
+    [SerializeField] private PreAttackFlash _preAttackFlash;
+    [SerializeField] private DamageFlash _damageFlash;
+    [SerializeField] private DeathFlash _deathFlash;
+    
+   
+    public override void PreAttackStart()
     {
-        _deathIndication = GetComponent<DeathIndication>();
-        _deathStateProvider = GetComponent<LadybugMovement>();
-        _preAttackStateProvider = GetComponent<LadybugMovement>();
-        _preAttackFlash = GetComponent<PreAttackFlash>();
-        
-        _deathStateProvider.OnDeath += _deathIndication.Perform;
-        _preAttackStateProvider.OnPreAttackStart += _preAttackFlash.PreAttackStart;
-        _preAttackStateProvider.OnPreAttackEnd += _preAttackFlash.PreAttackEnd;
+        _preAttackFlash.PreAttackStart();
     }
     
-    private void OnDisable()
+    public override void PreAttackEnd()
     {
-        _deathStateProvider.OnDeath -= _deathIndication.Perform;
-        _preAttackStateProvider.OnPreAttackStart -= _preAttackFlash.PreAttackStart;
-        _preAttackStateProvider.OnPreAttackEnd -= _preAttackFlash.PreAttackEnd;
+        _preAttackFlash.PreAttackEnd();
+    }
+    
+    public override void DamageFlash()
+    {
+        _damageFlash.Perform();
+    }
+    
+    public override void DeathFlash()
+    {
+        _deathFlash.Perform();
     }
 }

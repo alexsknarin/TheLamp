@@ -32,6 +32,13 @@ public class Enemy : MonoBehaviour, IInitializable
         LampAttackModel.OnLampAttack -= HandleLampAttack;
     }
     
+    public void Initialize()
+    {
+        _enemyMovement.Initialize();
+        _currentHealth = _maxHealth;
+        ReadyToAttack = false;
+    }
+    
     private void UpdateAttackAvailability()
     {
         if(_enemyType == EnemyTypes.Fly && _enemyMovement.State == EnemyStates.Patrol)
@@ -78,8 +85,11 @@ public class Enemy : MonoBehaviour, IInitializable
     
     private void Fall()
     {
-        _enemyCollisionHandler.DisableCollider();
-        _enemyMovement.TriggerFall();
+        if (_enemyType != EnemyTypes.Ladybug)
+        {
+            _enemyCollisionHandler.DisableCollider();
+            _enemyMovement.TriggerFall();    
+        }
     }
     
     private void HandleLampAttack(int attackPower, float currentPower, float attackDuration, float attackDistance)
@@ -88,7 +98,7 @@ public class Enemy : MonoBehaviour, IInitializable
         {
             Vector3 current2dPosition = transform.position;
             current2dPosition.z = 0;
-            if(current2dPosition.magnitude < attackDistance)
+            if(current2dPosition.magnitude < attackDistance && attackPower > 0)
             {
                 RecieveDamage(attackPower);
                 OnEnemyDamaged?.Invoke();
@@ -110,12 +120,5 @@ public class Enemy : MonoBehaviour, IInitializable
             _enemyPresentation.DeathFlash();
             OnEnemyDeath?.Invoke(this);
         }
-    }
-    
-    public void Initialize()
-    {
-        _enemyMovement.Initialize();
-        _currentHealth = _maxHealth;
-        ReadyToAttack = false;
     }
 }

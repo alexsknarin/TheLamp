@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public class LadybugMovement : MonoBehaviour, IStateMachineOwner, IPreAttackStateProvider, IDeathStateProvider
+public class LadybugMovement : EnemyMovement
 {
     [Header("-- Movement Settings --")]
     [SerializeField] private float _speed;
@@ -19,48 +19,45 @@ public class LadybugMovement : MonoBehaviour, IStateMachineOwner, IPreAttackStat
     private LadybugMovementAttackState _attackState;
     private LadybugMovementStickState _stickState;
     private LadybugMovementFallState _fallState;
+    private LadybugMovementDeathState _deathState;
     
     private int _sideDirection;
     private int _depthDirection;
     private Vector3 _position2d;
     private Vector3 _prevPosition2d;
     
-
-    public event Action OnPreAttackStart;
-    public event Action OnPreAttackEnd;
-    public event Action OnDeath;
+    // State parameters
+    private bool _isDead = false;
+    private bool _isCollided = false;
     
-    public void SwitchState()
+    // Debug
+    [SerializeField] private EnemyStates _stateDebug;
+    
+    public override void Initialize()
     {
-        EnemyMovementBaseState newState = _currentState.State switch
-        {
-            EnemyStates.Patrol => StartPreAttackState(),
-            EnemyStates.PreAttack => StartAttackState(),
-            EnemyStates.Attack => _stickState,
-            EnemyStates.Stick => _fallState,
-            EnemyStates.Fall => _patrolState,
-            _ => throw new ArgumentOutOfRangeException()
-        };
+        _sideDirection = RandomDirection.Generate();
+        _depthDirection = RandomDirection.Generate();
         
-        _currentState = newState;
-        _movementStateMachine.SetState(_currentState, _position2d, _sideDirection, _depthDirection);
-    }
-    
-    private EnemyMovementBaseState StartPreAttackState()
-    {
-        OnPreAttackStart?.Invoke();
-        return _preAttackState;
-    }
-    
-    private EnemyMovementBaseState StartAttackState()
-    {
-        OnPreAttackEnd?.Invoke();
-        return _attackState;
-    }
+        _movementStateMachine = new EnemyMovementStateMachine();
+        _patrolState  = new LadybugMovementPatrolState(this, _speed, _radius, _verticalAmplitude);
+        _preAttackState = new LadybugMovementPreAttackState(this, _speed, _radius, _verticalAmplitude);
+        _attackState = new LadybugMovementAttackState(this, _speed, _radius, _verticalAmplitude);
+        _stickState = new LadybugMovementStickState(this, _speed, _radius, _verticalAmplitude);
+        _fallState = new LadybugMovementFallState(this, _speed, _radius, _verticalAmplitude);
+        _deathState = new LadybugMovementDeathState(this, _speed, _radius, _verticalAmplitude);
 
-    private void Start()
+        Spawn();
+       
+        _currentState = _patrolState;
+        
+        _movementStateMachine.SetState(_currentState, _position2d, _sideDirection, 1);
+        _position2d = _currentState.Position;
+        transform.position = _position2d;
+    }
+    
+    private void Spawn()
     {
-        Init();
+        _position2d = GenerateSpawnPosition(_radius);
     }
     
     private Vector3 GenerateSpawnPosition(float distance)
@@ -72,31 +69,56 @@ public class LadybugMovement : MonoBehaviour, IStateMachineOwner, IPreAttackStat
         return spawnPosition;
     }
     
-    private void Spawn()
+    public override void TriggerFall()
     {
-        _position2d = GenerateSpawnPosition(_radius);
     }
-
-    private void Init()
+    public override void TriggerDeath()
     {
-        _sideDirection = RandomDirection.Generate();
-        _depthDirection = RandomDirection.Generate();
-        
-        _movementStateMachine = new EnemyMovementStateMachine();
-        _patrolState  = new LadybugMovementPatrolState(this, _speed, _radius, _verticalAmplitude);
-        _preAttackState = new LadybugMovementPreAttackState(this, _speed, _radius, _verticalAmplitude);
-        _attackState = new LadybugMovementAttackState(this, _speed, _radius, _verticalAmplitude);
-        _stickState = new LadybugMovementStickState(this, _speed, _radius, _verticalAmplitude);
-        _fallState = new LadybugMovementFallState(this, _speed, _radius, _verticalAmplitude);
-
-        Spawn();
-       
-        _currentState = _patrolState;
-        _movementStateMachine.SetState(_currentState, _position2d, _sideDirection, 1);
-        _position2d = _currentState.Position;
-        transform.position = _position2d;
+        if (_currentState.State == EnemyStates.Stick)
+        {
+            _isDead = true;
+            SwitchState();
+        }
     }
+    public override void TriggerAttack()
+    {
+    }
+    
+    public override void SwitchState()
+    {
+        EnemyMovementBaseState newState = _currentState;
+        switch (_currentState.State)
+        {
+            case EnemyStates.Patrol:
+                OnPreAttackStartInvoke();
+                newState = _preAttackState;
+                break;
+            case EnemyStates.PreAttack:
+                OnPreAttackEndInvoke();
+                newState = _attackState;
+                break;
+            case EnemyStates.Attack:
+                newState = _stickState;
+                _isCollided = false;
+                break;
+            case EnemyStates.Stick:
+                if (_isDead)
+                {
+                    newState = _deathState;
+                    _isDead = false;
+                }
+                break;
+            case EnemyStates.Death:
+                gameObject.SetActive(false);
+                break;
+        }
 
+        _currentState = newState;
+        State = _currentState.State;
+        _movementStateMachine.SetState(_currentState, _position2d, _sideDirection, _depthDirection);
+        OnStateChangeInvoke();
+    }
+    
     private void Update()
     {
         _prevPosition2d = _position2d;
@@ -116,14 +138,15 @@ public class LadybugMovement : MonoBehaviour, IStateMachineOwner, IPreAttackStat
         
 
         Debug.DrawLine(_prevPosition2d, _prevPosition2d + (_position2d-_prevPosition2d).normalized*0.02f, Color.cyan, 5f);
+        _stateDebug = _currentState.State;
     }
-    
     
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if(_currentState.State == EnemyStates.Attack && other.CompareTag("LadybugStickTrigger"))
+        if(_currentState.State != EnemyStates.Stick && other.CompareTag("StickTrigger"))
         {
             SwitchState();
+            Debug.Log("Triggered Stick");
         }
     }
 }
