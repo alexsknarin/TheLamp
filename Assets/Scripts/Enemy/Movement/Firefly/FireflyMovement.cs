@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public class FlyMovement : EnemyMovement
+public class FireflyMovement : EnemyMovement
 {
     [Header("-- Movement Settings --")]
     [SerializeField] private float _speed;
@@ -33,7 +33,7 @@ public class FlyMovement : EnemyMovement
     private FlyMovementAttackState _attackState;
     private FlyMovementPreAttackState _preAttackState;    
     private FlyMovementFallState _fallState;
-    private FlyMovementDeathState _deathState;
+    private FireflyMovementDeathState _deathState;
     
     private Vector3 _prevPosition2d; //Debug
     private Vector3 _prevPosSmooth; //Debug
@@ -59,7 +59,7 @@ public class FlyMovement : EnemyMovement
         _preAttackState = new FlyMovementPreAttackState(this, _speed, _radius, _verticalAmplitude);
         _attackState = new FlyMovementAttackState(this, _speed, _radius, _verticalAmplitude);
         _fallState = new FlyMovementFallState(this, _speed, _radius, _verticalAmplitude);
-        _deathState = new FlyMovementDeathState(this, _speed, _radius, _verticalAmplitude);
+        _deathState = new FireflyMovementDeathState(this, _speed, _radius, _verticalAmplitude);
         
         Spawn();
         
@@ -154,7 +154,8 @@ public class FlyMovement : EnemyMovement
                     break;
                 }
             case EnemyStates.Death:
-                    gameObject.SetActive(false);
+                OnEnemyDeactivatedInvoke();
+                gameObject.SetActive(false);
                 break;
         }
 

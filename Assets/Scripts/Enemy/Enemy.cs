@@ -5,6 +5,7 @@ using UnityEngine;
 public class Enemy : MonoBehaviour, IInitializable
 {
     [SerializeField] private EnemyTypes _enemyType;
+    public EnemyTypes EnemyType => _enemyType;
     [SerializeField] private int _maxHealth;
     [SerializeField] private int _currentHealth;
     [SerializeField] private EnemyMovement _enemyMovement;
@@ -12,6 +13,7 @@ public class Enemy : MonoBehaviour, IInitializable
     [SerializeField] private EnemyCollisionHandler _enemyCollisionHandler;
     public bool ReadyToAttack { get; private set; }
     public static event Action<Enemy> OnEnemyDeath;
+    public static event Action<Enemy> OnEnemyDeactivated;
     public static event Action OnEnemyDamaged;
 
     private void OnEnable()
@@ -19,6 +21,7 @@ public class Enemy : MonoBehaviour, IInitializable
         _enemyMovement.OnPreAttackStart += PreAttack;
         _enemyMovement.OnPreAttackEnd += _enemyPresentation.PreAttackEnd;
         _enemyMovement.OnStateChange += UpdateAttackAvailability;
+        _enemyMovement.OnEnemyDeactivated += OnDeactivated;
         _enemyCollisionHandler.OnCollidedWithLamp += Fall;
         LampAttackModel.OnLampAttack += HandleLampAttack;
     }
@@ -28,6 +31,7 @@ public class Enemy : MonoBehaviour, IInitializable
         _enemyMovement.OnPreAttackStart -= PreAttack;
         _enemyMovement.OnPreAttackEnd -= _enemyPresentation.PreAttackEnd;
         _enemyMovement.OnStateChange -= UpdateAttackAvailability;
+        _enemyMovement.OnEnemyDeactivated -= OnDeactivated;
         _enemyCollisionHandler.OnCollidedWithLamp -= Fall;
         LampAttackModel.OnLampAttack -= HandleLampAttack;
     }
@@ -120,5 +124,10 @@ public class Enemy : MonoBehaviour, IInitializable
             _enemyPresentation.DeathFlash();
             OnEnemyDeath?.Invoke(this);
         }
+    }
+    
+    private void OnDeactivated()
+    {
+        OnEnemyDeactivated?.Invoke(this);
     }
 }

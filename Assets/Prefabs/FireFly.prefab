@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 8013951508211455414}
   - component: {fileID: 5749198432677622028}
   - component: {fileID: 5128008993713504180}
-  - component: {fileID: 3318508643354661339}
+  - component: {fileID: -3368359052859184378}
   - component: {fileID: 8268739167994926853}
   - component: {fileID: 8308141419049835553}
   - component: {fileID: 6570308566199440075}
@@ -182,10 +182,10 @@ MonoBehaviour:
   _enemyType: 2
   _maxHealth: 3
   _currentHealth: 0
-  _enemyMovement: {fileID: 3318508643354661339}
+  _enemyMovement: {fileID: -3368359052859184378}
   _enemyPresentation: {fileID: 8268739167994926853}
   _enemyCollisionHandler: {fileID: 5749198432677622028}
---- !u!114 &3318508643354661339
+--- !u!114 &-3368359052859184378
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -194,7 +194,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 6725678087143964638}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 27789f57ef32ec34b8812f685cc64514, type: 3}
+  m_Script: {fileID: 11500000, guid: b59b37321c1974144b0dcedd28082bca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _speed: 3
@@ -203,10 +203,10 @@ MonoBehaviour:
   _spawnAreaSize: 0.5
   _spawnAreaCenter: {x: 3.6, y: -2.6, z: 0}
   _isNoiseEnabled: 1
-  _noiseFrequency: 4.3
-  _noiseAmplitude: 0.22
+  _noiseFrequency: 4.5
+  _noiseAmplitude: 0.3
   _isSmoothDampEnabled: 1
-  _smoothTime: 0.12
+  _smoothTime: 0.13
   _isDepthEnabled: 1
   _stateDebug: 0
 --- !u!114 &8268739167994926853

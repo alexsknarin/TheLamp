@@ -16,6 +16,8 @@ public class EnemyManager : MonoBehaviour,IInitializable
     [SerializeField] private GameObject _mothEnemyPrefab;
     [SerializeField] private GameObject _ladybugEnemyPrefab;
     [SerializeField] private GameObject _fireflyEnemyPrefab;
+    [Header("------ FX Prefabs -------")]
+    [SerializeField] private FireflyExplosion _fireflyExplosion;
     [Header("---- Waves Generation ------")]
     [SerializeField] private int _enemiesOnScreen;
     [Header("")]
@@ -38,10 +40,12 @@ public class EnemyManager : MonoBehaviour,IInitializable
     
     public static event Action<int> OnWavePrepared;
     public static event Action OnWaveStarted;
+    public static event Action OnFireflyExplosion;
     
     private void OnEnable()
     {
         Enemy.OnEnemyDeath += UpdateEnemiesOnScreen;
+        Enemy.OnEnemyDeactivated += ExplodeEnemyOnDeath;
         LampAttackModel.OnLampAttack += LampAttack;
         PlayerInputHandler.OnPlayerAttack += StartWave;
     }
@@ -49,6 +53,7 @@ public class EnemyManager : MonoBehaviour,IInitializable
     private void OnDisable()
     {
         Enemy.OnEnemyDeath -= UpdateEnemiesOnScreen;
+        Enemy.OnEnemyDeactivated -= ExplodeEnemyOnDeath;
         LampAttackModel.OnLampAttack -= LampAttack;
         PlayerInputHandler.OnPlayerAttack -= StartWave;
     }
@@ -67,7 +72,7 @@ public class EnemyManager : MonoBehaviour,IInitializable
         if (!_isWaveInitialized)
         {
             OnWaveStarted?.Invoke();
-            SetupWave(_currentWave);    
+            SetupWave(_currentWave);
         }
     }
     
@@ -125,9 +130,10 @@ public class EnemyManager : MonoBehaviour,IInitializable
         _enemiesKilled++;
     }
 
-    private void ExplodeEnemyOnDeath()
+    private void ExplodeEnemyOnDeath(Enemy enemy)
     {
-        
+        _fireflyExplosion.Perform(enemy.transform.position);
+        OnFireflyExplosion?.Invoke();
     }
 
     private void Update()
@@ -186,6 +192,4 @@ public class EnemyManager : MonoBehaviour,IInitializable
             }
         }
     }
-
-
 }

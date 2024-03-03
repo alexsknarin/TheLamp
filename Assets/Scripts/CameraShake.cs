@@ -16,6 +16,7 @@ public class CameraShake : MonoBehaviour
     private bool _isPaused;
     private bool _isDamageable = true;
     private bool _isGameOver = false;
+    private float _shakeAmplitudeMultiplier = 1.0f;
     
     private void Start()
     {
@@ -36,26 +37,37 @@ public class CameraShake : MonoBehaviour
     
     private void OnEnable()
     {
-        Lamp.OnLampDamaged += StartShake;
+        Lamp.OnLampDamaged += StartDamageShake;
+        EnemyManager.OnFireflyExplosion += StartExplosionShake;
     }
 
     private void OnDisable()
     {
-        Lamp.OnLampDamaged -= StartShake;
+        Lamp.OnLampDamaged -= StartDamageShake;
+        EnemyManager.OnFireflyExplosion -= StartExplosionShake;
     }
     
-    private void StartShake()
+    private void StartDamageShake()
     {
         _prevTime = Time.time;
         _isShaking = true;
         _isDamageable = false;
+        _shakeAmplitudeMultiplier = 1.0f;
+    }
+    
+    private void StartExplosionShake()
+    {
+        _prevTime = Time.time;
+        _isShaking = true;
+        _isDamageable = false;
+        _shakeAmplitudeMultiplier = 2.5f;
     }
     
     private void PerformShake()
     {
         if (Time.time - _prevTime < _shakeDuration)
         {
-            float shakeMask = _shakeProfileCurve.Evaluate((Time.time - _prevTime) / _shakeDuration);
+            float shakeMask = _shakeProfileCurve.Evaluate((Time.time - _prevTime) / _shakeDuration) * _shakeAmplitudeMultiplier;
             transform.position = Vector3.Lerp(_originalPos, _originalPos + (Vector3)(Random.insideUnitCircle * _shakeAmplitude), shakeMask);            
         }
         else
