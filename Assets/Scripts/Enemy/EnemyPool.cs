@@ -32,21 +32,21 @@ public class EnemyPool : MonoBehaviour, IInitializable
     private Enemy CreateMoth()
     {
         Enemy enemyInstance = Instantiate(_mothPrefab);
-        enemyInstance.ObjectPool = _flyPool;
+        enemyInstance.ObjectPool = _mothPool;
         return enemyInstance;
     }
     
     private Enemy CreateLadybug()
     {
         Enemy enemyInstance = Instantiate(_ladybugPrefab);
-        enemyInstance.ObjectPool = _flyPool;
+        enemyInstance.ObjectPool = _ladybugPool;
         return enemyInstance;
     }
     
     private Enemy CreateFirefly()
     {
         Enemy enemyInstance = Instantiate(_fireflyPrefab);
-        enemyInstance.ObjectPool = _flyPool;
+        enemyInstance.ObjectPool = _fireflyPool;
         return enemyInstance;
     }
 

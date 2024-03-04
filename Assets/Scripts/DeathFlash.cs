@@ -8,11 +8,6 @@ public class DeathFlash : MonoBehaviour, IInitializable
     private bool _isActive = false;
     private float _prevTime;
     
-    private void Start()
-    {
-        _material = _meshRenderer.material;
-    }
-    
     public void Perform()
     {
         _isActive = true;
@@ -41,6 +36,8 @@ public class DeathFlash : MonoBehaviour, IInitializable
 
     public void Initialize()
     {
+        _isActive = false;
+        _material = _meshRenderer.material;
         _material.SetFloat("_DeathFade", 0f);
         _material.SetFloat("_AttackSemaphore", 0f);
         _material.SetFloat("_Damage", 1f);
