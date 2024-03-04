@@ -52,14 +52,8 @@ public class Enemy : MonoBehaviour, IInitializable
     
     private void UpdateAttackAvailability()
     {
-        if((_enemyType == EnemyTypes.Fly || _enemyType == EnemyTypes.Firefly) && _enemyMovement.State == EnemyStates.Patrol)
-        {
-            if(transform.position.y < 0.92f)
-            {
-                ReadyToAttack = true;
-            }
-        }
-        else if(_enemyType == EnemyTypes.Moth && _enemyMovement.State == EnemyStates.Hover)
+        if((_enemyType == EnemyTypes.Moth && _enemyMovement.State == EnemyStates.Hover) || 
+          ((_enemyType == EnemyTypes.Fly || _enemyType == EnemyTypes.Firefly) && _enemyMovement.State == EnemyStates.Patrol))
         {
             if(transform.position.y < 0.0f )
             {
@@ -67,7 +61,7 @@ public class Enemy : MonoBehaviour, IInitializable
             }
             else
             {
-                if(Mathf.Abs(transform.position.x) > 0.7f)
+                if(Mathf.Abs(transform.position.x) > 0.74f)
                 {
                     ReadyToAttack = true;
                 }
