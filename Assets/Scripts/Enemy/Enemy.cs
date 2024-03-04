@@ -59,12 +59,20 @@ public class Enemy : MonoBehaviour, IInitializable
             {
                 ReadyToAttack = true;
             }
-            else
+            else if (transform.position.y > 0.0f)
             {
-                if(Mathf.Abs(transform.position.x) > 0.74f)
+                if (Mathf.Abs(transform.position.x) > 0.95f)
                 {
                     ReadyToAttack = true;
                 }
+                else
+                {
+                    ReadyToAttack = false;    
+                }
+            }
+            else
+            {
+                ReadyToAttack = false;
             }
         }
         else
