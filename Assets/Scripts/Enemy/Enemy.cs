@@ -27,7 +27,6 @@ public class Enemy : MonoBehaviour, IInitializable
     {
         _enemyMovement.OnPreAttackStart += PreAttack;
         _enemyMovement.OnPreAttackEnd += _enemyPresentation.PreAttackEnd;
-        _enemyMovement.OnStateChange += UpdateAttackAvailability;
         _enemyMovement.OnEnemyDeactivated += OnDeactivated;
         _enemyCollisionHandler.OnCollidedWithLamp += Fall;
     }
@@ -36,7 +35,6 @@ public class Enemy : MonoBehaviour, IInitializable
     {
         _enemyMovement.OnPreAttackStart -= PreAttack;
         _enemyMovement.OnPreAttackEnd -= _enemyPresentation.PreAttackEnd;
-        _enemyMovement.OnStateChange -= UpdateAttackAvailability;
         _enemyMovement.OnEnemyDeactivated -= OnDeactivated;
         _enemyCollisionHandler.OnCollidedWithLamp -= Fall;
     }
@@ -50,7 +48,7 @@ public class Enemy : MonoBehaviour, IInitializable
         ReadyToAttack = false;
     }
     
-    private void UpdateAttackAvailability()
+    public void UpdateAttackAvailability()
     {
         if((_enemyType == EnemyTypes.Moth && _enemyMovement.State == EnemyStates.Hover) || 
           ((_enemyType == EnemyTypes.Fly || _enemyType == EnemyTypes.Firefly) && _enemyMovement.State == EnemyStates.Patrol))
@@ -61,7 +59,7 @@ public class Enemy : MonoBehaviour, IInitializable
             }
             else if (transform.position.y > 0.0f)
             {
-                if (Mathf.Abs(transform.position.x) > 0.95f)
+                if (Mathf.Abs(transform.position.x) > 0.7f && transform.position.y <0.85f)
                 {
                     ReadyToAttack = true;
                 }
@@ -90,6 +88,7 @@ public class Enemy : MonoBehaviour, IInitializable
     {
         _enemyCollisionHandler.EnableCollider();        
         _enemyPresentation.PreAttackStart();
+        ReadyToAttack = false;
     }
     
     private void Fall()

@@ -213,6 +213,7 @@ public class EnemyManager : MonoBehaviour,IInitializable
             _enemiesReadyToAttack.Clear();
             foreach (var enemy in _enemies)
             {
+                enemy.UpdateAttackAvailability();
                 if (enemy.ReadyToAttack)
                 {
                     _enemiesReadyToAttack.Add(enemy);
