@@ -108,11 +108,13 @@ public class Enemy : MonoBehaviour, IInitializable
         {
             OnEnemyDamaged?.Invoke();
             _enemyPresentation.DamageFlash();
+            _enemyMovement.TriggerFall();
         }
         else
         {
             _currentHealth = 0;
             _enemyMovement.TriggerDeath();
+            _enemyCollisionHandler.DisableCollider();
             _enemyPresentation.DeathFlash();
             OnEnemyDeath?.Invoke(this);
         }

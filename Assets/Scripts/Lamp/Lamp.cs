@@ -13,7 +13,7 @@ public class Lamp : MonoBehaviour, IInitializable
     public static event Action OnLampDamaged;
     
     // 
-    private float _damageAssessmentDuration = 0.1f;
+    private float _damageAssessmentDuration = 0.12f;
     private float _prevTime;
     private bool _isAssessingDamage = false;
 
@@ -41,8 +41,9 @@ public class Lamp : MonoBehaviour, IInitializable
     }
 
     // REMAKE with async or coroutine
-    private void AssessDamage()
+    private void AssessDamage(Enemy enemy)
     {
+        // TODO: different damage behaviour for different enemies
         if (!_isAssessingDamage)
         {
             _prevTime = Time.time;

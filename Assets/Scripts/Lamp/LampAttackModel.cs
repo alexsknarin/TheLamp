@@ -21,11 +21,13 @@ public class LampAttackModel : MonoBehaviour, IInitializable
     private void OnEnable()
     {
         PlayerInputHandler.OnPlayerAttack += StartAttackState;
+        Lamp.OnLampDamaged += HandleDamageWithCooldown;
     }
     
     private void OnDisable()
     {
         PlayerInputHandler.OnPlayerAttack -= StartAttackState;
+        Lamp.OnLampDamaged -= HandleDamageWithCooldown;
     }
     
     private void Update()
@@ -82,11 +84,21 @@ public class LampAttackModel : MonoBehaviour, IInitializable
     private void PerformAttackState()
     {
         float phase = (Time.time - _prevTime) / _attackDuration;
+        if (phase < 0.3f)
+        {
+            OnLampAttack?.Invoke(_attackPower, _currentPower, _attackDuration, _attackDistance);
+        }
         if (phase > 1) 
         {
             StartCooldownState();
         }
         // TODO: Make Attack work over time
+    }
+    
+    private void HandleDamageWithCooldown()
+    {
+        StartCooldownState();
+        _prevTime = Time.time;
     }
     
     private void StartCooldownState()
