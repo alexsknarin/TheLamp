@@ -122,6 +122,5 @@ public class Enemy : MonoBehaviour, IInitializable
     {
         OnEnemyDeactivated?.Invoke(this);
         _objectPool.Release(this);
-        // gameObject.SetActive(false);
     }
 }
