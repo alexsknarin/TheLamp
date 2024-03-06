@@ -104,26 +104,6 @@ public class EnemyManager : MonoBehaviour,IInitializable
     public void SpawnEnemy(int enemyIndex)
     {
         EnemyTypes enemyType = _enemyQueue.Get(enemyIndex);
-        // GameObject prefab = null;
-        //
-        // switch (enemyType)
-        // {
-        //     case EnemyTypes.Fly:
-        //         prefab = _flyEnemyPrefab;
-        //         break;
-        //     case EnemyTypes.Moth:
-        //         prefab = _mothEnemyPrefab;
-        //         break;
-        //     case EnemyTypes.Ladybug:
-        //         prefab = _ladybugEnemyPrefab;
-        //         break;
-        //     case EnemyTypes.Firefly:
-        //         prefab = _fireflyEnemyPrefab;
-        //         break;
-        // }
-        // var enemyObject = Instantiate(prefab, transform.position, Quaternion.identity);
-        // var enemy = enemyObject.gameObject.GetComponent<Enemy>();
-        
         var enemy = _enemyPool.Get(enemyType);
         enemy.Initialize();
         _enemies.Add(enemy);        

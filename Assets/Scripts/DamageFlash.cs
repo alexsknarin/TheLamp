@@ -8,11 +8,6 @@ public class DamageFlash : MonoBehaviour, IInitializable
     private bool _isActive = false;
     private float _prevTime;
     
-    // private void Start()
-    // {
-    //     _material = _meshRenderer.material;
-    // }
-    
     public void Perform()
     {
         _isActive = true;

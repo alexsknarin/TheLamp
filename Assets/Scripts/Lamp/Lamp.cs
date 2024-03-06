@@ -13,7 +13,7 @@ public class Lamp : MonoBehaviour, IInitializable
     public static event Action OnLampDamaged;
     
     // 
-    private float _damageAssessmentDuration = 0.12f;
+    [SerializeField] private float _damageAssessmentDuration = 0.12f;
     private float _prevTime;
     private bool _isAssessingDamage = false;
 
@@ -21,12 +21,14 @@ public class Lamp : MonoBehaviour, IInitializable
     {
         _lampCollisionHandler.OnLampCollidedEnemy += AssessDamage;
         Enemy.OnEnemyDamaged += AttackSuccessConfirm;
+        Enemy.OnEnemyDeath += AttackSuccessConfirm;
     }
     
     private void OnDisable()
     {
         _lampCollisionHandler.OnLampCollidedEnemy -= AssessDamage;
         Enemy.OnEnemyDamaged += AttackSuccessConfirm;
+        Enemy.OnEnemyDeath -= AttackSuccessConfirm;
     }
 
     public void Initialize()
@@ -35,7 +37,7 @@ public class Lamp : MonoBehaviour, IInitializable
         _currentHealth = _maxHealth;
     }
 
-    private void AttackSuccessConfirm()
+    private void AttackSuccessConfirm(Enemy enemy)
     {
         _isAttackSuccess = true;
     }

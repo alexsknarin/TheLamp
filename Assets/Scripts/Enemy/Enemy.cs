@@ -18,10 +18,11 @@ public class Enemy : MonoBehaviour, IInitializable
     {
         set => _objectPool = value;
     }
+    
 
     public static event Action<Enemy> OnEnemyDeath;
     public static event Action<Enemy> OnEnemyDeactivated;
-    public static event Action OnEnemyDamaged;
+    public static event Action<Enemy> OnEnemyDamaged;
 
     private void OnEnable()
     {
@@ -103,9 +104,10 @@ public class Enemy : MonoBehaviour, IInitializable
     public void ReceiveDamage(int damage)
     {
         _currentHealth -= damage;
+
         if (_currentHealth > 0)
         {
-            OnEnemyDamaged?.Invoke();
+            OnEnemyDamaged?.Invoke(this);
             _enemyPresentation.DamageFlash();
             _enemyMovement.TriggerFall();
         }
@@ -116,9 +118,9 @@ public class Enemy : MonoBehaviour, IInitializable
             _enemyCollisionHandler.DisableCollider();
             _enemyPresentation.DeathFlash();
             OnEnemyDeath?.Invoke(this);
-        }
+        }    
     }
-    
+
     private void OnDeactivated()
     {
         OnEnemyDeactivated?.Invoke(this);

@@ -7,6 +7,7 @@ public class LampAttackModel : MonoBehaviour, IInitializable
     [SerializeField] private float _maxPower;
     [SerializeField] private int _attackPower;
     [SerializeField] private float _attackDuration;
+    [SerializeField] private float _attackDamageDurationFraction;     
     [SerializeField] private float _fullCooldownTime;
     [SerializeField] private float _attackDistance;
     
@@ -84,15 +85,14 @@ public class LampAttackModel : MonoBehaviour, IInitializable
     private void PerformAttackState()
     {
         float phase = (Time.time - _prevTime) / _attackDuration;
-        if (phase < 0.3f)
-        {
-            OnLampAttack?.Invoke(_attackPower, _currentPower, _attackDuration, _attackDistance);
-        }
+        // if (phase < _attackDamageDurationFraction)
+        // {
+        //     OnLampAttack?.Invoke(_attackPower, _currentPower, _attackDuration, _attackDistance);
+        // }
         if (phase > 1) 
         {
             StartCooldownState();
         }
-        // TODO: Make Attack work over time
     }
     
     private void HandleDamageWithCooldown()

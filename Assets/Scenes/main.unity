@@ -1857,8 +1857,9 @@ MonoBehaviour:
   _maxPower: 1
   _attackPower: 3
   _attackDuration: 0.15
+  _attackDamageDurationFraction: 0.12
   _fullCooldownTime: 2
-  _attackDistance: 0.78
+  _attackDistance: 0.65
 --- !u!114 &1934066246
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1876,6 +1877,7 @@ MonoBehaviour:
   _lampCollisionHandler: {fileID: 1934066247}
   _maxHealth: 10
   _currentHealth: 0
+  _damageAssessmentDuration: 0.091
 --- !u!114 &1934066247
 MonoBehaviour:
   m_ObjectHideFlags: 0
