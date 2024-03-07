@@ -20,6 +20,7 @@ public class Lamp : MonoBehaviour, IInitializable
     private void OnEnable()
     {
         _lampCollisionHandler.OnLampCollidedEnemy += AssessDamage;
+        _lampCollisionHandler.OnExitLampCollisionEnemy += EnemyExitCollisionHandle;
         Enemy.OnEnemyDamaged += AttackSuccessConfirm;
         Enemy.OnEnemyDeath += AttackSuccessConfirm;
     }
@@ -27,6 +28,7 @@ public class Lamp : MonoBehaviour, IInitializable
     private void OnDisable()
     {
         _lampCollisionHandler.OnLampCollidedEnemy -= AssessDamage;
+        _lampCollisionHandler.OnExitLampCollisionEnemy -= EnemyExitCollisionHandle;
         Enemy.OnEnemyDamaged += AttackSuccessConfirm;
         Enemy.OnEnemyDeath -= AttackSuccessConfirm;
     }
@@ -45,11 +47,23 @@ public class Lamp : MonoBehaviour, IInitializable
     // REMAKE with async or coroutine
     private void AssessDamage(Enemy enemy)
     {
-        // TODO: different damage behaviour for different enemies
+        if (enemy.EnemyType == EnemyTypes.Ladybug)
+        {
+            _lampAttackModel.AddAttackBlocker();
+            return;
+        }
         if (!_isAssessingDamage)
         {
             _prevTime = Time.time;
             _isAssessingDamage = true;
+        }
+    }
+    
+    private void EnemyExitCollisionHandle(Enemy enemy)
+    {
+        if (enemy.EnemyType == EnemyTypes.Ladybug)
+        {
+            _lampAttackModel.RemoveAttackBlocker();    
         }
     }
     

@@ -10,12 +10,14 @@ public class LampAttackModel : MonoBehaviour, IInitializable
     [SerializeField] private float _attackDamageDurationFraction;     
     [SerializeField] private float _fullCooldownTime;
     [SerializeField] private float _attackDistance;
+    [SerializeField] private int _attackBlockers = 0;
     
     private LampStates _lampState = LampStates.Neutral;
     
     private float _prevTime;
     
     public static event Action<int, float, float, float> OnLampAttack;
+    public static event Action<int, float, float, float> OnLampBlockedAttack;
     public static event Action<float> OnLampCurrentPowerChanged;
 
 
@@ -44,6 +46,16 @@ public class LampAttackModel : MonoBehaviour, IInitializable
                 PerformCooldownState();
                 break;
         }
+    }
+    
+    public void AddAttackBlocker()
+    {
+        _attackBlockers++;
+    }
+    
+    public void RemoveAttackBlocker()
+    {
+        _attackBlockers--;
     }
     
     public void Initialize()
@@ -76,7 +88,14 @@ public class LampAttackModel : MonoBehaviour, IInitializable
     {
         if (_lampState != LampStates.Attack)
         {
-            OnLampAttack?.Invoke(_attackPower, _currentPower, _attackDuration, _attackDistance);
+            if (_attackBlockers <= 0)
+            {
+                OnLampAttack?.Invoke(_attackPower, _currentPower, _attackDuration, _attackDistance);
+            }
+            else
+            {
+                OnLampBlockedAttack?.Invoke(_attackPower, _currentPower, _attackDuration, _attackDistance);
+            }
             _lampState = LampStates.Attack;
             _prevTime = Time.time;
         }
@@ -85,10 +104,6 @@ public class LampAttackModel : MonoBehaviour, IInitializable
     private void PerformAttackState()
     {
         float phase = (Time.time - _prevTime) / _attackDuration;
-        // if (phase < _attackDamageDurationFraction)
-        // {
-        //     OnLampAttack?.Invoke(_attackPower, _currentPower, _attackDuration, _attackDistance);
-        // }
         if (phase > 1) 
         {
             StartCooldownState();

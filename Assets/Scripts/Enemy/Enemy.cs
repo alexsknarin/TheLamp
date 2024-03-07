@@ -18,7 +18,6 @@ public class Enemy : MonoBehaviour, IInitializable
     {
         set => _objectPool = value;
     }
-    
 
     public static event Action<Enemy> OnEnemyDeath;
     public static event Action<Enemy> OnEnemyDeactivated;

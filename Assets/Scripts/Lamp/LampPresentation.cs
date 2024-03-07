@@ -17,6 +17,7 @@ public class LampPresentation : MonoBehaviour
     private bool _isAttack = false;
     private float _prevTimeDamage;
     private bool _isDamage = false;
+    private bool _isBlockedAttack = false;
     
     private readonly float _lightNeutralIntensity = 22;
     private readonly float _lampNeutralEmission = 1f;
@@ -32,12 +33,14 @@ public class LampPresentation : MonoBehaviour
     {
         LampAttackModel.OnLampAttack += StartAttackState;
         LampAttackModel.OnLampCurrentPowerChanged += PerformCooldownState;
+        LampAttackModel.OnLampBlockedAttack += StartBlockedAttackState;
     }
 
     private void OnDisable()
     {
         LampAttackModel.OnLampAttack -= StartAttackState;
         LampAttackModel.OnLampCurrentPowerChanged -= PerformCooldownState;
+        LampAttackModel.OnLampBlockedAttack -= StartBlockedAttackState;
     }
 
    
@@ -76,6 +79,17 @@ public class LampPresentation : MonoBehaviour
         _lampAttackZoneObject.transform.localScale = Vector3.one * (attackDistance * 2);
     }
     
+    private void StartBlockedAttackState(int attackPower, float currentPower, float attackDuration, float attackDistance)
+    {
+        _isBlockedAttack = true;
+        _lampMaterial.SetFloat("_attackPower", 0f);
+        _lightPower = Mathf.Pow(currentPower, 2f);
+        _attackDuration = attackDuration;
+        _prevTimeAttack = Time.time;
+        _isAttack = true;
+        _lampAttackZoneObject.transform.localScale = Vector3.one * (attackDistance * 2);
+    }
+    
     private void PerformAttack()
     {
         float phase = (Time.time - _prevTimeAttack) / _attackDuration;
@@ -85,11 +99,15 @@ public class LampPresentation : MonoBehaviour
             _lampLight.intensity = _lightMinimumIntensity;
             _lampMaterial.SetFloat("_EmissionLevel", _lampMinimumEmission);
             _lampAttackZoneMaterial.SetFloat("_Alpha", 0);
+            _isBlockedAttack = false;
             return;
         }
-        _lampLight.intensity = Mathf.Lerp(_lightMaximumIntensity * _lightPower, _lightMinimumIntensity, phase);
-        _lampMaterial.SetFloat("_EmissionLevel", Mathf.Lerp(_lampMaximumEmission * _lightPower, _lampMinimumEmission, phase));
-        _lampAttackZoneMaterial.SetFloat("_Alpha", Mathf.Lerp(_lightPower, 0, phase));
+        if(!_isBlockedAttack)
+        {
+            _lampLight.intensity = Mathf.Lerp(_lightMaximumIntensity * _lightPower, _lightMinimumIntensity, phase);
+            _lampMaterial.SetFloat("_EmissionLevel", Mathf.Lerp(_lampMaximumEmission * _lightPower, _lampMinimumEmission, phase));
+            _lampAttackZoneMaterial.SetFloat("_Alpha", Mathf.Lerp(_lightPower, 0, phase));
+        }
     }
     
     private void PerformCooldownState(float currentPower)

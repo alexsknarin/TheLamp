@@ -3,7 +3,8 @@ using UnityEngine;
 public class LadybugPresentation : EnemyPresentation
 {
     [SerializeField] private PreAttackFlash _preAttackFlash;
-    [SerializeField] private DamageFlash _damageFlash;
+    // [SerializeField] private DamageFlash _damageFlash;
+    [SerializeField] private LadybugDamageFlash _damageFlash;
     [SerializeField] private DeathFlash _deathFlash;
     
    

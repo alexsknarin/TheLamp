@@ -55,6 +55,7 @@ public class EnemyManager : MonoBehaviour,IInitializable
         Enemy.OnEnemyDeactivated += UpdateEnemiesOnScreen;
         Enemy.OnEnemyDeactivated += StartExplodeEnemyOnDeath;
         LampAttackModel.OnLampAttack += LampAttack;
+        LampAttackModel.OnLampBlockedAttack += LampBlockedAttack;
         PlayerInputHandler.OnPlayerAttack += StartWave;
     }
     
@@ -63,6 +64,7 @@ public class EnemyManager : MonoBehaviour,IInitializable
         Enemy.OnEnemyDeactivated -= UpdateEnemiesOnScreen;
         Enemy.OnEnemyDeactivated -= StartExplodeEnemyOnDeath;
         LampAttackModel.OnLampAttack -= LampAttack;
+        LampAttackModel.OnLampBlockedAttack -= LampBlockedAttack;
         PlayerInputHandler.OnPlayerAttack -= StartWave;
     }
     
@@ -118,6 +120,22 @@ public class EnemyManager : MonoBehaviour,IInitializable
                 Vector3 current2dPosition = enemy.transform.position;
                 current2dPosition.z = 0;
                 if(current2dPosition.magnitude < attackDistance && attackPower > 0)
+                {
+                    enemy.ReceiveDamage(attackPower);
+                }
+            }
+        }
+    }
+    
+    private void LampBlockedAttack(int attackPower, float currentPower, float attackDuration, float attackDistance)
+    {
+        foreach (var enemy in _enemies)
+        {
+            if (enemy.gameObject.activeInHierarchy)
+            {
+                Vector3 current2dPosition = enemy.transform.position;
+                current2dPosition.z = 0;
+                if(current2dPosition.magnitude < attackDistance && attackPower > 0 && enemy.EnemyType == EnemyTypes.Ladybug)
                 {
                     enemy.ReceiveDamage(attackPower);
                 }

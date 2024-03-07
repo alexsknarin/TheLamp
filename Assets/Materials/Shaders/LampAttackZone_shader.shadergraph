@@ -8,6 +8,9 @@
         },
         {
             "m_Id": "3dbfdf8f743840fa9e3bb024e084bb80"
+        },
+        {
+            "m_Id": "efb699c7d2184622bc720cd4172d18e3"
         }
     ],
     "m_Keywords": [],
@@ -56,6 +59,9 @@
         },
         {
             "m_Id": "01de6b0a41904fd8b4f5bc4fe9aead65"
+        },
+        {
+            "m_Id": "df4e18e512974008925cb879e0771fa1"
         }
     ],
     "m_GroupDatas": [],
@@ -155,6 +161,20 @@
             "m_InputSlot": {
                 "m_Node": {
                     "m_Id": "f9304786339c49299e2fcd327b2d3bbd"
+                },
+                "m_SlotId": 1
+            }
+        },
+        {
+            "m_OutputSlot": {
+                "m_Node": {
+                    "m_Id": "df4e18e512974008925cb879e0771fa1"
+                },
+                "m_SlotId": 0
+            },
+            "m_InputSlot": {
+                "m_Node": {
+                    "m_Id": "0af4ee3d0fd04fcf8b07b0345324f883"
                 },
                 "m_SlotId": 1
             }
@@ -1284,6 +1304,21 @@
 
 {
     "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot",
+    "m_ObjectId": "95bcfd53c4f04c8ba8acf36fd62f64c6",
+    "m_Id": 0,
+    "m_DisplayName": "FresnelGamma",
+    "m_SlotType": 1,
+    "m_Hidden": false,
+    "m_ShaderOutputName": "Out",
+    "m_StageCapability": 3,
+    "m_Value": 0.0,
+    "m_DefaultValue": 0.0,
+    "m_Labels": []
+}
+
+{
+    "m_SGVersion": 0,
     "m_Type": "UnityEditor.ShaderGraph.Vector4MaterialSlot",
     "m_ObjectId": "a5bd420018244b068d274f03d02483f4",
     "m_Id": 0,
@@ -1451,8 +1486,47 @@
         },
         {
             "m_Id": "3dbfdf8f743840fa9e3bb024e084bb80"
+        },
+        {
+            "m_Id": "efb699c7d2184622bc720cd4172d18e3"
         }
     ]
+}
+
+{
+    "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.PropertyNode",
+    "m_ObjectId": "df4e18e512974008925cb879e0771fa1",
+    "m_Group": {
+        "m_Id": ""
+    },
+    "m_Name": "Property",
+    "m_DrawState": {
+        "m_Expanded": true,
+        "m_Position": {
+            "serializedVersion": "2",
+            "x": -1436.0,
+            "y": 644.6666870117188,
+            "width": 0.0,
+            "height": 0.0
+        }
+    },
+    "m_Slots": [
+        {
+            "m_Id": "95bcfd53c4f04c8ba8acf36fd62f64c6"
+        }
+    ],
+    "synonyms": [],
+    "m_Precision": 0,
+    "m_PreviewExpanded": true,
+    "m_DismissedVersion": 0,
+    "m_PreviewMode": 0,
+    "m_CustomColors": {
+        "m_SerializableColors": []
+    },
+    "m_Property": {
+        "m_Id": "efb699c7d2184622bc720cd4172d18e3"
+    }
 }
 
 {
@@ -1548,6 +1622,34 @@
         "e31": 0.0,
         "e32": 0.0,
         "e33": 1.0
+    }
+}
+
+{
+    "m_SGVersion": 1,
+    "m_Type": "UnityEditor.ShaderGraph.Internal.Vector1ShaderProperty",
+    "m_ObjectId": "efb699c7d2184622bc720cd4172d18e3",
+    "m_Guid": {
+        "m_GuidSerialized": "f1172879-ef14-4077-98dc-8145b4dc9211"
+    },
+    "m_Name": "FresnelGamma",
+    "m_DefaultRefNameVersion": 1,
+    "m_RefNameGeneratedByDisplayName": "FresnelGamma",
+    "m_DefaultReferenceName": "_FresnelGamma",
+    "m_OverrideReferenceName": "",
+    "m_GeneratePropertyBlock": true,
+    "m_UseCustomSlotLabel": false,
+    "m_CustomSlotLabel": "",
+    "m_DismissedVersion": 0,
+    "m_Precision": 0,
+    "overrideHLSLDeclaration": false,
+    "hlslDeclarationOverride": 0,
+    "m_Hidden": false,
+    "m_Value": 3.4700000286102297,
+    "m_FloatType": 0,
+    "m_RangeValues": {
+        "x": 0.0,
+        "y": 1.0
     }
 }
 
