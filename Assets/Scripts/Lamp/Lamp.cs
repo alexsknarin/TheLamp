@@ -41,7 +41,10 @@ public class Lamp : MonoBehaviour, IInitializable
 
     private void AttackSuccessConfirm(Enemy enemy)
     {
-        _isAttackSuccess = true;
+        if(enemy.EnemyType != EnemyTypes.Ladybug)
+        {
+            _isAttackSuccess = true;
+        }
     }
 
     // REMAKE with async or coroutine

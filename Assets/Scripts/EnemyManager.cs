@@ -119,7 +119,7 @@ public class EnemyManager : MonoBehaviour,IInitializable
             {
                 Vector3 current2dPosition = enemy.transform.position;
                 current2dPosition.z = 0;
-                if(current2dPosition.magnitude < attackDistance && attackPower > 0)
+                if(current2dPosition.magnitude < attackDistance && attackPower > 0 && enemy.EnemyType != EnemyTypes.Ladybug)
                 {
                     enemy.ReceiveDamage(attackPower);
                 }
