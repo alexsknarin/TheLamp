@@ -241,7 +241,7 @@ MonoBehaviour:
   m_VolumeTrigger: {fileID: 0}
   m_VolumeFrameworkUpdateModeOption: 2
   m_RenderPostProcessing: 1
-  m_Antialiasing: 0
+  m_Antialiasing: 2
   m_AntialiasingQuality: 2
   m_StopNaN: 0
   m_Dithering: 0
@@ -1547,8 +1547,8 @@ MonoBehaviour:
   _fireflyExplosion: {fileID: 1402077385}
   _fireflyExplosionRadius: 0.8
   _explosionDuration: 0.1
-  _enemiesOnScreen: 5
-  _startAtWave: 23
+  _enemiesOnScreen: 4
+  _startAtWave: 0
   _currentWave: 0
   _spawnDelay: 1
 --- !u!114 &1818435503
@@ -1566,7 +1566,7 @@ MonoBehaviour:
   _sheetId: 1m_MzdQxi0d-f-TbDgvYGiN5OfjoJGgDTMzX2N5Ci8BY
   _sheetName: Sheet1
   _apiKey: AIzaSyCesP8iY_CsymaobmUcWUGS_kvOUuNO_7s
-  _useCachedSpawnData: 0
+  _useCachedSpawnData: 1
   _spawnQueueDataCache: {fileID: 11400000, guid: beab91cd3dcd8c44b88194a9986f9a99,
     type: 2}
 --- !u!114 &1818435504
@@ -1860,6 +1860,7 @@ MonoBehaviour:
   _attackDamageDurationFraction: 0.12
   _fullCooldownTime: 2
   _attackDistance: 0.68
+  _attackBlockers: 0
 --- !u!114 &1934066246
 MonoBehaviour:
   m_ObjectHideFlags: 0
