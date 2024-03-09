@@ -157,7 +157,7 @@ public class EnemyManager : MonoBehaviour,IInitializable
         }
         _explosionSource = explosionSource;
         _explosionPosition = explosionSource.transform.position;
-        _fireflyExplosion.Perform(_explosionPosition, _fireflyExplosionRadius * 2);
+        _fireflyExplosion.StartPerform(_explosionPosition, _fireflyExplosionRadius * 2);
         OnFireflyExplosion?.Invoke();
         _prevExplosionTime = Time.time;
         _isExplosionActive = true;

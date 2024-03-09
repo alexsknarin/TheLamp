@@ -101,8 +101,8 @@ GameObject:
   - component: {fileID: 4117935667472646368}
   - component: {fileID: 2554923996394591702}
   - component: {fileID: 454837011142885043}
-  - component: {fileID: 2858276551893859201}
   - component: {fileID: 1168591479674629291}
+  - component: {fileID: 2858276551893859201}
   m_Layer: 0
   m_Name: Ladybug
   m_TagString: Enemy
@@ -315,20 +315,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _meshRenderer: {fileID: 2622930312740272112}
---- !u!114 &2858276551893859201
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8854400779814498794}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9e8cdd3d044552e4f816511262c284c2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _meshRenderer: {fileID: 2622930312740272112}
-  _duration: 0.5
 --- !u!114 &1168591479674629291
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -343,4 +329,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _meshRenderer: {fileID: 2622930312740272112}
   _attackZone: {fileID: 7780212110066376743}
+  _duration: 0.5
+--- !u!114 &2858276551893859201
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8854400779814498794}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e8cdd3d044552e4f816511262c284c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _meshRenderer: {fileID: 2622930312740272112}
   _duration: 0.5

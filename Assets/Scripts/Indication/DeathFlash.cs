@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class DeathFlash : MonoBehaviour, IInitializable
+public class DeathFlash : DamageIndication
 {
     [SerializeField] private MeshRenderer _meshRenderer;
     [SerializeField] private float _duration = 0.5f;
@@ -8,7 +8,7 @@ public class DeathFlash : MonoBehaviour, IInitializable
     private bool _isActive = false;
     private float _prevTime;
     
-    public void Perform()
+    public override void StartPerform()
     {
         _isActive = true;
         _prevTime = Time.time;
@@ -34,7 +34,7 @@ public class DeathFlash : MonoBehaviour, IInitializable
         }
     }
 
-    public void Initialize()
+    public override void Initialize()
     {
         _isActive = false;
         _material = _meshRenderer.material;

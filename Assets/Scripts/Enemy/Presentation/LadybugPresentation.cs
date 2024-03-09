@@ -3,9 +3,8 @@ using UnityEngine;
 public class LadybugPresentation : EnemyPresentation
 {
     [SerializeField] private PreAttackFlash _preAttackFlash;
-    // [SerializeField] private DamageFlash _damageFlash;
-    [SerializeField] private LadybugDamageFlash _damageFlash;
-    [SerializeField] private DeathFlash _deathFlash;
+    [SerializeField] private DamageIndication _damageFlash;
+    [SerializeField] private DamageIndication _deathFlash;
     
    
     public override void PreAttackStart()
@@ -20,21 +19,18 @@ public class LadybugPresentation : EnemyPresentation
     
     public override void DamageFlash()
     {
-        _damageFlash.Perform();
+        _damageFlash.StartPerform();
     }
     
     public override void DeathFlash()
     {
-        _deathFlash.Perform();
+        _deathFlash.StartPerform();
     }
     
     public override void Initialize()
     {
-        IInitializable _preAttackFlashInit = _preAttackFlash;
-        IInitializable _damageFlashInit = _damageFlash;
-        IInitializable _deathFlashInit = _deathFlash;
-        _preAttackFlashInit.Initialize();
-        _damageFlashInit.Initialize();
-        _deathFlashInit.Initialize();
+        _preAttackFlash.Initialize();
+        _damageFlash.Initialize();
+        _deathFlash.Initialize();
     }
 }

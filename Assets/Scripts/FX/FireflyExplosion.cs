@@ -17,7 +17,7 @@ public class FireflyExplosion : MonoBehaviour
         _material = _meshRenderer.material;
     }
     
-    public void Perform(Vector3 position, float radius)
+    public void StartPerform(Vector3 position, float radius)
     {
         transform.position = position;
         gameObject.SetActive(true);

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class LadybugDamageFlash : MonoBehaviour, IInitializable
+public class LadybugDamageFlash : DamageIndication
 {
     [SerializeField] private MeshRenderer _meshRenderer;
     [SerializeField] private MeshRenderer _attackZone;
@@ -11,7 +11,7 @@ public class LadybugDamageFlash : MonoBehaviour, IInitializable
     private bool _isActive = false;
     private float _prevTime;
     
-    public void Perform()
+    public override void StartPerform()
     {
         _isActive = true;
         _prevTime = Time.time;
@@ -36,7 +36,7 @@ public class LadybugDamageFlash : MonoBehaviour, IInitializable
         }
     }
     
-    public void Initialize()
+    public override void Initialize()
     {
         _bodyMaterial = _meshRenderer.material;
         _attackZoneMaterial = _attackZone.material;

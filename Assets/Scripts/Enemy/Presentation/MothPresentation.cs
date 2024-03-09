@@ -18,23 +18,18 @@ public class MothPresentation : EnemyPresentation
     
     public override void DamageFlash()
     {
-        _damageFlash.Perform();
+        _damageFlash.StartPerform();
     }
     
     public override void DeathFlash()
     {
-        _deathFlash.Perform();
+        _deathFlash.StartPerform();
     }
     
     public override void Initialize()
     {
-        IInitializable _preAttackFlashInit = _preAttackFlash;
-        IInitializable _damageFlashInit = _damageFlash;
-        IInitializable _deathFlashInit = _deathFlash;
-        _preAttackFlashInit.Initialize();
-        _damageFlashInit.Initialize();
-        _deathFlashInit.Initialize();
-
+        _preAttackFlash.Initialize();
+        _damageFlash.Initialize();
+        _deathFlash.Initialize();
     }
-    
 }

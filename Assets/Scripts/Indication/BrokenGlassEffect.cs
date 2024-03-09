@@ -14,15 +14,15 @@ public class BrokenGlassEffect : MonoBehaviour
 
     private void OnEnable()
     {
-        Lamp.OnLampDamaged += Perform;
+        Lamp.OnLampDamaged += StartPerform;
     }
     
     private void OnDisable()
     {
-        Lamp.OnLampDamaged -= Perform;
+        Lamp.OnLampDamaged -= StartPerform;
     }
     
-    private void Perform()
+    private void StartPerform()
     {
         _isActive = true;
         _prevTime = Time.time;

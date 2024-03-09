@@ -15,8 +15,8 @@ GameObject:
   - component: {fileID: 2836968421273079393}
   - component: {fileID: 175129488326048145}
   - component: {fileID: 3291430470506879424}
-  - component: {fileID: 1049907910270298076}
   - component: {fileID: 5183674563390223914}
+  - component: {fileID: 1049907910270298076}
   - component: {fileID: 593347267894582958}
   - component: {fileID: 2048019365804953742}
   - component: {fileID: 909013809244515297}
@@ -185,21 +185,6 @@ MonoBehaviour:
   _enemyMovement: {fileID: 5183674563390223914}
   _enemyPresentation: {fileID: 1049907910270298076}
   _enemyCollisionHandler: {fileID: 175129488326048145}
---- !u!114 &1049907910270298076
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6202721331199203244}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ba4a520e94cb6764788e60e92e64a109, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _preAttackFlash: {fileID: 593347267894582958}
-  _damageFlash: {fileID: 2048019365804953742}
-  _deathFlash: {fileID: 909013809244515297}
 --- !u!114 &5183674563390223914
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -220,6 +205,21 @@ MonoBehaviour:
   _spawnYPosMax: 3.1
   _isDepthEnabled: 1
   _stateDebug: 0
+--- !u!114 &1049907910270298076
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6202721331199203244}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba4a520e94cb6764788e60e92e64a109, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _preAttackFlash: {fileID: 593347267894582958}
+  _damageFlash: {fileID: 2048019365804953742}
+  _deathFlash: {fileID: 909013809244515297}
 --- !u!114 &593347267894582958
 MonoBehaviour:
   m_ObjectHideFlags: 0
