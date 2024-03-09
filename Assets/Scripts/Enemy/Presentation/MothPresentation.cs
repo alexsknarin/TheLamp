@@ -5,6 +5,7 @@ public class MothPresentation : EnemyPresentation
     [SerializeField] private PreAttackFlash _preAttackFlash;
     [SerializeField] private DamageFlash _damageFlash;
     [SerializeField] private DeathFlash _deathFlash;
+    [SerializeField] private HealthIndication _healthIndication;
 
     public override void PreAttackStart()
     {
@@ -25,11 +26,17 @@ public class MothPresentation : EnemyPresentation
     {
         _deathFlash.StartPerform();
     }
-    
+
+    public override void HealthUpdate(int currentHealth, int maxHealth)
+    {
+        _healthIndication.Refresh(currentHealth, maxHealth);
+    }
+
     public override void Initialize()
     {
         _preAttackFlash.Initialize();
         _damageFlash.Initialize();
         _deathFlash.Initialize();
+        _healthIndication.Initialize();
     }
 }

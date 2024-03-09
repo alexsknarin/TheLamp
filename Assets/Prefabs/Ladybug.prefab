@@ -103,6 +103,7 @@ GameObject:
   - component: {fileID: 454837011142885043}
   - component: {fileID: 1168591479674629291}
   - component: {fileID: 2858276551893859201}
+  - component: {fileID: -2824885218992742472}
   m_Layer: 0
   m_Name: Ladybug
   m_TagString: Enemy
@@ -302,6 +303,7 @@ MonoBehaviour:
   _preAttackFlash: {fileID: 454837011142885043}
   _damageFlash: {fileID: 1168591479674629291}
   _deathFlash: {fileID: 2858276551893859201}
+  _healthIndication: {fileID: -2824885218992742472}
 --- !u!114 &454837011142885043
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -344,3 +346,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _meshRenderer: {fileID: 2622930312740272112}
   _duration: 0.5
+--- !u!114 &-2824885218992742472
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8854400779814498794}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c80910c756ff15447bcf47d84e0824bf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _meshRenderer: {fileID: 2622930312740272112}

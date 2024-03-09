@@ -108,6 +108,7 @@ public class Enemy : MonoBehaviour, IInitializable
         {
             OnEnemyDamaged?.Invoke(this);
             _enemyPresentation.DamageFlash();
+            _enemyPresentation.HealthUpdate(_currentHealth, _maxHealth);
             _enemyMovement.TriggerFall();
         }
         else

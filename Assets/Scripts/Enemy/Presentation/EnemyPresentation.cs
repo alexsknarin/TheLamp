@@ -6,5 +6,6 @@ public abstract class EnemyPresentation : MonoBehaviour, IInitializable
     public abstract void PreAttackEnd();
     public abstract void DamageFlash();
     public abstract void DeathFlash();
+    public abstract void HealthUpdate(int currentHealth, int maxHealth);
     public abstract void Initialize();
 }

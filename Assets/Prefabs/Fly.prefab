@@ -20,6 +20,7 @@ GameObject:
   - component: {fileID: 3761459566154285035}
   - component: {fileID: -8830587213577271671}
   - component: {fileID: 7817356703110805646}
+  - component: {fileID: 1285661723372835164}
   m_Layer: 0
   m_Name: Fly
   m_TagString: Enemy
@@ -224,6 +225,7 @@ MonoBehaviour:
   _preAttackFlash: {fileID: 3761459566154285035}
   _damageFlash: {fileID: -8830587213577271671}
   _deathFlash: {fileID: 7817356703110805646}
+  _healthIndication: {fileID: 1285661723372835164}
 --- !u!114 &3761459566154285035
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -265,3 +267,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _meshRenderer: {fileID: 1816857364915761492}
   _duration: 0.5
+--- !u!114 &1285661723372835164
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4916559101719392861}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c80910c756ff15447bcf47d84e0824bf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _meshRenderer: {fileID: 1816857364915761492}
