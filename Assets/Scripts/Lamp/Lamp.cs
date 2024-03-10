@@ -12,14 +12,13 @@ public class Lamp : MonoBehaviour, IInitializable
     
     public static event Action OnLampDamaged;
     
-    // 
     [SerializeField] private float _damageAssessmentDuration = 0.12f;
     private float _prevTime;
     private bool _isAssessingDamage = false;
 
     private void OnEnable()
     {
-        _lampCollisionHandler.OnLampCollidedEnemy += AssessDamage;
+        _lampCollisionHandler.OnLampCollidedEnemy += StartAssessForDamage;
         _lampCollisionHandler.OnExitLampCollisionEnemy += EnemyExitCollisionHandle;
         Enemy.OnEnemyDamaged += AttackSuccessConfirm;
         Enemy.OnEnemyDeath += AttackSuccessConfirm;
@@ -27,7 +26,7 @@ public class Lamp : MonoBehaviour, IInitializable
     
     private void OnDisable()
     {
-        _lampCollisionHandler.OnLampCollidedEnemy -= AssessDamage;
+        _lampCollisionHandler.OnLampCollidedEnemy -= StartAssessForDamage;
         _lampCollisionHandler.OnExitLampCollisionEnemy -= EnemyExitCollisionHandle;
         Enemy.OnEnemyDamaged += AttackSuccessConfirm;
         Enemy.OnEnemyDeath -= AttackSuccessConfirm;
@@ -48,7 +47,7 @@ public class Lamp : MonoBehaviour, IInitializable
     }
 
     // REMAKE with async or coroutine
-    private void AssessDamage(Enemy enemy)
+    private void StartAssessForDamage(Enemy enemy)
     {
         if (enemy.EnemyType == EnemyTypes.Ladybug)
         {

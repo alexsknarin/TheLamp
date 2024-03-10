@@ -3,21 +3,27 @@ using UnityEngine;
 public class PreAttackFlash : MonoBehaviour, IInitializable
 {
     [SerializeField] private MeshRenderer _meshRenderer;
-    private Material _material;
+    [SerializeField] private TrailRenderer _trailRenderer;
+    private Material _bodyMaterial;
+    private Material _trailMaterial;
     
     public void PreAttackStart()
     {
-        _material.SetFloat("_AttackSemaphore", 1f);
+        _bodyMaterial.SetFloat("_AttackSemaphore", 1f);
+        _trailMaterial.SetFloat("_EmissionMultipler", 1f);
     }
     
     public void PreAttackEnd()
     {
-        _material.SetFloat("_AttackSemaphore", 0f);   
+        _bodyMaterial.SetFloat("_AttackSemaphore", 0f);   
+        _trailMaterial.SetFloat("_EmissionMultipler", 0f);
     }
 
     public void Initialize()
     {
-        _material = _meshRenderer.material;
-        _material.SetFloat("_AttackSemaphore", 0f);
+        _bodyMaterial = _meshRenderer.material;
+        _trailMaterial = _trailRenderer.material;
+        _bodyMaterial.SetFloat("_AttackSemaphore", 0f);
+        _trailMaterial.SetFloat("_EmissionMultipler", 0f);
     }
 }

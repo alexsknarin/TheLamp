@@ -123,6 +123,37 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &30557019
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 30557020}
+  m_Layer: 0
+  m_Name: '|--------------------------------|'
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &30557020
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 30557019}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &330585543
 GameObject:
   m_ObjectHideFlags: 0
@@ -1389,6 +1420,37 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   _meshRenderer: {fileID: 1402077382}
+--- !u!1 &1449376468
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1449376469}
+  m_Layer: 0
+  m_Name: '|--------------------------------|'
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1449376469
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1449376468}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1516445176
 GameObject:
   m_ObjectHideFlags: 0
@@ -1535,20 +1597,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _spawnQueueDataCache: {fileID: 11400000, guid: beab91cd3dcd8c44b88194a9986f9a99,
     type: 2}
-  _flyEnemyPrefab: {fileID: 4916559101719392861, guid: fb0c5c6a78e6cfa4b9c5530e8ae2c067,
-    type: 3}
-  _mothEnemyPrefab: {fileID: 6202721331199203244, guid: c997318186f1bda4f852c425e75498e5,
-    type: 3}
-  _ladybugEnemyPrefab: {fileID: 8854400779814498794, guid: 6e04665d54889b4419c7eefc9f74ce61,
-    type: 3}
-  _fireflyEnemyPrefab: {fileID: 6725678087143964638, guid: 30693d0a7256f2e4fa015da56e117fa3,
-    type: 3}
   _enemyPool: {fileID: 1818435504}
   _fireflyExplosion: {fileID: 1402077385}
   _fireflyExplosionRadius: 0.8
   _explosionDuration: 0.1
   _enemiesOnScreen: 4
-  _startAtWave: 30
+  _startAtWave: 4
   _currentWave: 0
   _spawnDelay: 1
 --- !u!114 &1818435503
@@ -1979,10 +2033,12 @@ SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 1818435499}
+  - {fileID: 1449376469}
   - {fileID: 1934066241}
   - {fileID: 724839853}
   - {fileID: 594908874}
   - {fileID: 815775905}
+  - {fileID: 30557020}
   - {fileID: 330585546}
   - {fileID: 410087041}
   - {fileID: 832575519}
