@@ -61,7 +61,4 @@ public class FlyMovementEnterState: EnemyMovementBaseState
     public override void ExitState()
     {
     }
-    
-
-
 }

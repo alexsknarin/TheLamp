@@ -5,6 +5,7 @@ public class EnemyCollisionHandler : MonoBehaviour
 {
     [SerializeField] private Collider2D _collider2D;
     public event Action OnCollidedWithLamp;
+    public event Action OnCollidedWithStickZone;
     
     public void DisableCollider()
     {
@@ -21,6 +22,11 @@ public class EnemyCollisionHandler : MonoBehaviour
         if (other.CompareTag("Lamp"))
         {
             OnCollidedWithLamp?.Invoke();
+        }
+
+        if (other.CompareTag("StickTrigger"))
+        {
+            OnCollidedWithStickZone?.Invoke();
         }
     }
 }

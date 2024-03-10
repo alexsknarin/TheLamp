@@ -19,12 +19,12 @@ public class MothPresentation : EnemyPresentation
     
     public override void DamageFlash()
     {
-        _damageFlash.StartPerform();
+        _damageFlash.Play();
     }
     
     public override void DeathFlash()
     {
-        _deathFlash.StartPerform();
+        _deathFlash.Play();
     }
 
     public override void HealthUpdate(int currentHealth, int maxHealth)

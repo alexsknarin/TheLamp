@@ -8,7 +8,7 @@ public class DeathFlash : DamageIndication
     private bool _isActive = false;
     private float _prevTime;
     
-    public override void StartPerform()
+    public override void Play()
     {
         _isActive = true;
         _prevTime = Time.time;

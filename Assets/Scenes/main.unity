@@ -787,7 +787,7 @@ GameObject:
   - component: {fileID: 815775904}
   - component: {fileID: 815775903}
   m_Layer: 0
-  m_Name: LampStickTrigger
+  m_Name: LampStickZone
   m_TagString: StickTrigger
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1548,7 +1548,7 @@ MonoBehaviour:
   _fireflyExplosionRadius: 0.8
   _explosionDuration: 0.1
   _enemiesOnScreen: 4
-  _startAtWave: 0
+  _startAtWave: 30
   _currentWave: 0
   _spawnDelay: 1
 --- !u!114 &1818435503

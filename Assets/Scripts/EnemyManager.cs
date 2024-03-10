@@ -11,10 +11,6 @@ public class EnemyManager : MonoBehaviour,IInitializable
     private EnemyQueue _enemyQueue;
     
     [Header("------ Enemy Prefabs -------")]
-    [SerializeField] private GameObject _flyEnemyPrefab;
-    [SerializeField] private GameObject _mothEnemyPrefab;
-    [SerializeField] private GameObject _ladybugEnemyPrefab;
-    [SerializeField] private GameObject _fireflyEnemyPrefab;
     [SerializeField] private EnemyPool _enemyPool;
 
     [Header("------ Explosions -------")]
@@ -233,7 +229,7 @@ public class EnemyManager : MonoBehaviour,IInitializable
                 if (_isAttacking == true)
                 {
                     var attackingEnemy = _enemiesReadyToAttack[Random.Range(0, _enemiesReadyToAttack.Count)];
-                    attackingEnemy.Attack();
+                    attackingEnemy.AttackStart();
                     _attackPrevTime = Time.time;
                     _attackDelay = Random.Range(1.5f, 4f); // TODO: Aggression level
                     _isAttacking = false;

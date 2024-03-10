@@ -23,7 +23,6 @@ public class FireflyMovement : EnemyMovement
     [SerializeField] bool _isDepthEnabled;
     private int _depthDirection;
     
-    
     // Movement Stats
     private EnemyMovementStateMachine _movementStateMachine;
     private EnemyMovementBaseState _currentState;
@@ -103,7 +102,11 @@ public class FireflyMovement : EnemyMovement
     {
         SwitchState();
     }
-  
+
+    public override void TriggerStick()
+    {
+    }
+
     public override void SwitchState()
     {
         EnemyMovementBaseState newState = _currentState;
@@ -237,13 +240,5 @@ public class FireflyMovement : EnemyMovement
         
         _stateDebug = _currentState.State;
 
-    }
-
-    private void OnTriggerEnter2D(Collider2D other)
-    {
-        if(_currentState.State == EnemyStates.Attack)
-        {
-            SwitchState();
-        }
     }
 }

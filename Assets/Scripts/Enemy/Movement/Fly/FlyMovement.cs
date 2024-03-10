@@ -103,7 +103,11 @@ public class FlyMovement : EnemyMovement
     {
         SwitchState();
     }
-   
+
+    public override void TriggerStick()
+    {
+    }
+    
     public override void SwitchState()
     {
         EnemyMovementBaseState newState = _currentState;
@@ -236,14 +240,5 @@ public class FlyMovement : EnemyMovement
         Debug.DrawLine(_prevPosSmooth, _prevPosSmooth + (transform.position-_prevPosSmooth).normalized*0.02f, Color.yellow, 5f);
         
         _stateDebug = _currentState.State;
-
-    }
-
-    private void OnTriggerEnter2D(Collider2D other)
-    {
-        if(_currentState.State == EnemyStates.Attack)
-        {
-            SwitchState();
-        }
     }
 }

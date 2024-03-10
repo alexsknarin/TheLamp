@@ -110,7 +110,11 @@ public class MothMovement : EnemyMovement
         _isAttacking = true;
         SwitchState();
     }
-    
+
+    public override void TriggerStick()
+    {
+    }
+
     public override void SwitchState()
     {
         EnemyMovementBaseState newState = _currentState;
@@ -235,13 +239,5 @@ public class MothMovement : EnemyMovement
         
         Debug.DrawLine(_prevPosition2d, _prevPosition2d + (_position2d-_prevPosition2d).normalized*0.02f, Color.cyan, 5f);
         _stateDebug = _currentState.State;
-    }
-    
-    private void OnTriggerEnter2D(Collider2D other)
-    {
-        if(_currentState.State == EnemyStates.Attack)
-        {
-            SwitchState();
-        }
     }
 }

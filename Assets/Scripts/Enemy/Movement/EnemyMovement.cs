@@ -6,12 +6,13 @@ public abstract class EnemyMovement : MonoBehaviour, IStateMachineOwner, IInitia
     public EnemyStates State { get; protected set; }
     public event Action OnPreAttackStart;
     public event Action OnPreAttackEnd;
-    public event Action OnStateChange; 
+    public event Action OnStateChanged; 
     public event Action OnEnemyDeactivated; 
 
     public abstract void TriggerFall();
     public abstract void TriggerDeath();
     public abstract void TriggerAttack();
+    public abstract void TriggerStick();
     public abstract void SwitchState();
     public abstract void Initialize();
 
@@ -27,7 +28,7 @@ public abstract class EnemyMovement : MonoBehaviour, IStateMachineOwner, IInitia
     
     protected virtual void OnStateChangeInvoke()
     {
-        OnStateChange?.Invoke();
+        OnStateChanged?.Invoke();
     }
     
     protected virtual void OnEnemyDeactivatedInvoke()

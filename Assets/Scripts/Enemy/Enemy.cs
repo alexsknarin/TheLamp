@@ -25,18 +25,20 @@ public class Enemy : MonoBehaviour, IInitializable
 
     private void OnEnable()
     {
-        _enemyMovement.OnPreAttackStart += PreAttack;
+        _enemyMovement.OnPreAttackStart += PreAttackStart;
         _enemyMovement.OnPreAttackEnd += _enemyPresentation.PreAttackEnd;
         _enemyMovement.OnEnemyDeactivated += OnDeactivated;
-        _enemyCollisionHandler.OnCollidedWithLamp += Fall;
+        _enemyCollisionHandler.OnCollidedWithLamp += FallStart;
+        _enemyCollisionHandler.OnCollidedWithStickZone += StickStart;
     }
     
     private void OnDisable()
     {
-        _enemyMovement.OnPreAttackStart -= PreAttack;
+        _enemyMovement.OnPreAttackStart -= PreAttackStart;
         _enemyMovement.OnPreAttackEnd -= _enemyPresentation.PreAttackEnd;
         _enemyMovement.OnEnemyDeactivated -= OnDeactivated;
-        _enemyCollisionHandler.OnCollidedWithLamp -= Fall;
+        _enemyCollisionHandler.OnCollidedWithLamp -= FallStart;
+        _enemyCollisionHandler.OnCollidedWithStickZone -= StickStart;
     }
     
     public void Initialize()
@@ -79,25 +81,30 @@ public class Enemy : MonoBehaviour, IInitializable
         }
     }
    
-    public void Attack()
+    public void AttackStart()
     {
         _enemyMovement.TriggerAttack();
     }
     
-    private void PreAttack()
+    private void PreAttackStart()
     {
         _enemyCollisionHandler.EnableCollider();        
         _enemyPresentation.PreAttackStart();
         ReadyToAttack = false;
     }
     
-    private void Fall()
+    private void FallStart()
     {
+        _enemyMovement.TriggerFall();
         if (_enemyType != EnemyTypes.Ladybug)
         {
-            _enemyCollisionHandler.DisableCollider();
-            _enemyMovement.TriggerFall();    
+            _enemyCollisionHandler.DisableCollider();          // NOT ELEGANT    
         }
+    }
+
+    private void StickStart()
+    {
+        _enemyMovement.TriggerStick();
     }
 
     public void ReceiveDamage(int damage)
