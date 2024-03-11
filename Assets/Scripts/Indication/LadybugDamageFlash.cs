@@ -1,10 +1,12 @@
 using UnityEngine;
+using UnityEngine.VFX;
 
 public class LadybugDamageFlash : DamageIndication
 {
     [SerializeField] private MeshRenderer _meshRenderer;
     [SerializeField] private MeshRenderer _attackZone;
     [SerializeField] private float _duration = 0.5f;
+    [SerializeField] private VisualEffect _damageParticles;
     
     private Material _bodyMaterial;
     private Material _attackZoneMaterial;
@@ -15,6 +17,10 @@ public class LadybugDamageFlash : DamageIndication
     {
         _isActive = true;
         _prevTime = Time.time;
+        
+        Vector3 direction = transform.position.normalized;
+        _damageParticles.SetVector3("Direction", direction);
+        _damageParticles.SendEvent("OnDamage");
     }
 
     void Update()

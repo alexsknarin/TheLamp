@@ -10,7 +10,7 @@ public class PreAttackFlash : MonoBehaviour, IInitializable
     public void PreAttackStart()
     {
         _bodyMaterial.SetFloat("_AttackSemaphore", 1f);
-        _trailMaterial.SetFloat("_EmissionMultipler", 1f);
+        _trailMaterial.SetFloat("_EmissionMultipler", .1f);
     }
     
     public void PreAttackEnd()

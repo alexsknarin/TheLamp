@@ -1,9 +1,11 @@
 using UnityEngine;
+using UnityEngine.VFX;
 
 public class DamageFlash : DamageIndication
 {
     [SerializeField] private MeshRenderer _meshRenderer;
     [SerializeField] private float _duration = 0.5f;
+    [SerializeField] private VisualEffect _damageParticles;
     private Material _material;
     private bool _isActive = false;
     private float _prevTime;
@@ -12,6 +14,9 @@ public class DamageFlash : DamageIndication
     {
         _isActive = true;
         _prevTime = Time.time;
+        Vector3 direction = transform.position.normalized;
+        _damageParticles.SetVector3("Direction", direction);
+        _damageParticles.SendEvent("OnDamage");
     }
 
     void Update()

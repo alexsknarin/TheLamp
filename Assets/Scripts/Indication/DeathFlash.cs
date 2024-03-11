@@ -1,9 +1,11 @@
 using UnityEngine;
+using UnityEngine.VFX;
 
 public class DeathFlash : DamageIndication
 {
     [SerializeField] private MeshRenderer _meshRenderer;
     [SerializeField] private float _duration = 0.5f;
+    [SerializeField] private VisualEffect _deathParticles;
     private Material _material;
     private bool _isActive = false;
     private float _prevTime;
@@ -15,6 +17,7 @@ public class DeathFlash : DamageIndication
         _material.SetFloat("_DeathFade", 0);
         _material.SetFloat("_AttackSemaphore", 0);
         _material.SetFloat("_Damage", 1f);
+        _deathParticles.SendEvent("OnDeathStart");
     }
 
     void Update()
@@ -27,6 +30,7 @@ public class DeathFlash : DamageIndication
                 _isActive = false;
                 _material.SetFloat("_DeathFade", 1f);
                 _material.SetFloat("_Damage", 1f);
+                _deathParticles.SendEvent("OnDeathStart");
                 return;
             }
             _material.SetFloat("_Damage", 4f);

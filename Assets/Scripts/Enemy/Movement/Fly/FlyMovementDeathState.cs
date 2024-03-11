@@ -38,7 +38,7 @@ public class FlyMovementDeathState: EnemyMovementBaseState
     
     public override void CheckForStateChange()
     {
-        if (Position.y < -4f)
+        if (Position.y < -6f)
         {
             _owner.SwitchState();
         }
