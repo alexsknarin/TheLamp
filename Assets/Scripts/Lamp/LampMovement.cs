@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public enum LampMotionState
@@ -10,75 +7,71 @@ public enum LampMotionState
     Force
 }
 
-public class LampMovement : MonoBehaviour
+public class LampMovement : MonoBehaviour, IInitializable
 {
     [Header("|---- Force ----|")]
-    [SerializeField] private float _forceMagnitude;
-    
+    [SerializeField] private float _forceMaxMagnitude;
     [Header("|---- Swing ----|")]
     [SerializeField] private float _swingAmplitude;
     [SerializeField] private float _swingFrequency;
     [SerializeField] private float _swingAttenuationDuration;
+    [SerializeField] private Vector3 _swingAimPoint;
+    private float _swingDurationNormalized;
     [SerializeField] private AnimationCurve _swingAttenuationCurve;
-    
     [SerializeField] private LampMotionState _lampMotionState = LampMotionState.Idle;
-    
-    
+   
     // Force
-    private bool _isForceApplied = false;
     private float _forcePhase;
-    private float _prevForcePhase;
-    
     // Swing
     private float _swingShift;
-    
-    private Vector3 _newPos;
     private float _currentCenter;
+    private int _velocityDirection;
     private float _prevTime;
+    private float _deviationAngle = 0;
+    private Vector3 _prevPos;
+    private Vector3 _newPos;
     
-    
-    
-    
-    
-    private 
-    
-    // TMP
-    Camera _camera;
+    private float _forceDirection;
 
-    private int _forceDirection;
-
-    // Start is called before the first frame update
-    void Start()
+    public void Initialize()
     {
-        _camera = Camera.main;
         _newPos = transform.position;
-        _prevTime = Time.time;
+        _deviationAngle = 0;
     }
     
-    private void AddForce(int direction)
+    public void AddForce(float force)
     {
-        _isForceApplied = true;
-        _forceDirection = direction;
-        _currentCenter = _newPos.x;
-        _prevTime = Time.time;
-        _lampMotionState = LampMotionState.Force;
-        _forcePhase = 0;
+        if(_lampMotionState == LampMotionState.Idle)
+        {
+            _forceDirection = force;
+            _currentCenter = _newPos.x;
+            _prevTime = Time.time;
+            _lampMotionState = LampMotionState.Force;
+            _forcePhase = 0;
+            _swingDurationNormalized = _swingAttenuationDuration;
+        }
+        else if (_velocityDirection == (int)Mathf.Sign(force))
+        {
+            _forceDirection = force;
+            _currentCenter = _newPos.x;
+            _prevTime = Time.time;
+            _lampMotionState = LampMotionState.Force;
+            _forcePhase = 0;
+        }
+        else
+        {
+            StartSwing();
+        }
     }
     
     private void ApplyForce()
     {
-        if (_isForceApplied)
+        _forcePhase = Mathf.Sin((Time.time - _prevTime) * _swingFrequency );
+        _newPos.x = _currentCenter + _forceDirection * _forcePhase * _forceMaxMagnitude;
+        CompensateRotation(_newPos);
+        if (_forcePhase > 0.95f)
         {
-            _prevForcePhase = _forcePhase;
-            
-            _forcePhase = Mathf.Sin((Time.time - _prevTime) * _swingFrequency );
-            
-            if (_forcePhase > 0.1f && _forcePhase < _prevForcePhase)
-            {
-                StartSwing();
-                
-            }
-            _newPos.x = _currentCenter + _forceDirection * _forcePhase * _forceMagnitude;
+            StartSwing();
         }
     }
     
@@ -86,6 +79,7 @@ public class LampMovement : MonoBehaviour
     {
         _currentCenter = 0;
         _swingAmplitude = Mathf.Abs(_newPos.x);
+        _swingDurationNormalized = (_swingAttenuationDuration * _swingAmplitude) / _forceMaxMagnitude;
         _prevTime = Time.time;
         
         if(_newPos.x > 0)
@@ -102,29 +96,39 @@ public class LampMovement : MonoBehaviour
 
     private void ApplySwing()
     {
-        float attenuationPhase = (Time.time - _prevTime) / _swingAttenuationDuration;
+        float attenuationPhase = (Time.time - _prevTime) / _swingDurationNormalized;
         _newPos.x = Mathf.Sin((Time.time - _prevTime + _swingShift) * _swingFrequency) * _swingAmplitude * _swingAttenuationCurve.Evaluate(attenuationPhase);
+        CompensateRotation(_newPos);
+        if (attenuationPhase > 1)
+        {
+            _lampMotionState = LampMotionState.Idle;
+        }
     }
 
-    // Update is called once per frame
+    private void CompensateRotation(Vector3 pos)
+    {
+        Vector3 aimDirection = _swingAimPoint - pos;
+        _deviationAngle = Mathf.Acos(Vector3.Dot(aimDirection.normalized, Vector3.up));
+        if (pos.x > 0)
+        {
+            _deviationAngle *= -1;
+        }
+    }
+
+    private void ApplyIdle()
+    {
+        _newPos.x = 0f;
+        _deviationAngle = 0;
+    }
+    
     void Update()
     {
-        if (Input.GetMouseButtonDown(0))
-        {
-            Vector3 mousePos = Input.mousePosition;
-            if (mousePos.x > 540)
-            {
-                AddForce(-1);
-            }
-            else
-            {
-                AddForce(1);
-            }
-        }
+        _prevPos = _newPos;
 
         switch (_lampMotionState)
         {
             case LampMotionState.Idle:
+                ApplyIdle();
                 break;
             case LampMotionState.Swing:
                 ApplySwing();
@@ -133,12 +137,11 @@ public class LampMovement : MonoBehaviour
                 ApplyForce();
                 break;
         }
-
+        
+        _velocityDirection = (int)Mathf.Sign(_newPos.x - _prevPos.x);
         transform.position = _newPos;
-
         
         
-
-        // transform.position = _newPos;
+        transform.localRotation = Quaternion.Euler(0, 0, -_deviationAngle * Mathf.Rad2Deg);
     }
 }
