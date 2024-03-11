@@ -17,11 +17,11 @@ public class LadybugMovementStickState: EnemyMovementBaseState
         
         Vector3 cameraDirection = (_cameraPosition - Position).normalized;
         Depth = cameraDirection * 0.3f;
+        Position = currentPosition;
     }
     
     public override void ExecuteState(Vector3 currentPosition)
     {
-        Position = currentPosition;
     }
 
     public override void ExitState()

@@ -59,6 +59,7 @@ public class Lamp : MonoBehaviour, IInitializable
         if (enemy.EnemyType == EnemyTypes.Ladybug)
         {
             _lampAttackModel.AddAttackBlocker();
+            enemy.transform.parent = transform;
             return;
         }
         if (!_isAssessingDamage)
@@ -72,7 +73,8 @@ public class Lamp : MonoBehaviour, IInitializable
     {
         if (enemy.EnemyType == EnemyTypes.Ladybug)
         {
-            _lampAttackModel.RemoveAttackBlocker();    
+            _lampAttackModel.RemoveAttackBlocker();
+            enemy.transform.parent = null;
         }
     }
     

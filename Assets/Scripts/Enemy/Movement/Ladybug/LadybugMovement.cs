@@ -156,23 +156,26 @@ public class LadybugMovement : EnemyMovement
     
     private void Update()
     {
-        _prevPosition2d = _position2d;
-        _currentState.ExecuteState(_position2d);
-        _position2d = _currentState.Position;
-        
-        Vector3 position = _position2d;
-        
-        // Add Depth
-        if (_isDepthEnabled)
+        if (_currentState.State != EnemyStates.Stick)
         {
-            position = _position2d + _currentState.Depth;
-        }
-        
-        _movementStateMachine.CheckForStateChange();
-        transform.position = position;
-        
+            _prevPosition2d = _position2d;
+            _currentState.ExecuteState(_position2d);
+            _position2d = _currentState.Position;
 
-        Debug.DrawLine(_prevPosition2d, _prevPosition2d + (_position2d-_prevPosition2d).normalized*0.02f, Color.cyan, 5f);
-        _stateDebug = _currentState.State;
+            Vector3 position = _position2d;
+
+            // Add Depth
+            if (_isDepthEnabled)
+            {
+                position = _position2d + _currentState.Depth;
+            }
+
+            _movementStateMachine.CheckForStateChange();
+            transform.position = position;
+
+            Debug.DrawLine(_prevPosition2d, _prevPosition2d + (_position2d - _prevPosition2d).normalized * 0.02f,
+                Color.cyan, 5f);
+            _stateDebug = _currentState.State;
+        }
     }
 }
