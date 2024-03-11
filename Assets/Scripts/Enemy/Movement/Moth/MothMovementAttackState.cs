@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class MothMovementAttackState: EnemyMovementBaseState
@@ -7,6 +8,7 @@ public class MothMovementAttackState: EnemyMovementBaseState
     private float _acceleratedSpeed = 1f;
     private float _noiseFrequency = 13f;
     private float _noiseAmplitude = 0.08f;
+    private float _maxDistance = 0.5f;
     public MothMovementAttackState(IStateMachineOwner owner, float speed, float radius, float verticalAmplitude) : base()
     {
         _speed = speed;
@@ -20,6 +22,7 @@ public class MothMovementAttackState: EnemyMovementBaseState
     {
         _sideDirection = sideDirection;
         _acceleratedSpeed = 1f;
+        _maxDistance = currentPosition.magnitude;
     }
     
     public override void ExecuteState(Vector3 currentPosition)
@@ -31,7 +34,9 @@ public class MothMovementAttackState: EnemyMovementBaseState
         
         // Add noise
         Vector3 trajectoryNoise = TrajectoryNoise.Generate(_noiseFrequency);
-        Position = newPosition + trajectoryNoise * _noiseAmplitude;
+        float noiseAttenuation = Mathf.Clamp((currentPosition.magnitude - 0.65f) / (_maxDistance - 0.65f) * 1.5f - 0.5f , 0, 1); 
+        
+        Position = newPosition + trajectoryNoise * (_noiseAmplitude * noiseAttenuation);
 
         Vector3 cameraDirection = (_cameraPosition - Position).normalized;
         Depth = cameraDirection * (0.2f * _depthDecrement);

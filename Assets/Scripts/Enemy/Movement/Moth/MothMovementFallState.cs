@@ -8,7 +8,7 @@ public class MothMovementFallState: EnemyMovementBaseState
     private float _gravityForceMagnitude = .2f;
     private float _dragAmount = 0.94f;
     private float _noiseFrequency = 7f;
-    private float _noiseAmplitude = 0.035f;
+    private float _noiseAmplitude = 0.015f;
 
     public MothMovementFallState(IStateMachineOwner owner, float speed, float radius, float verticalAmplitude) : base()
     {
