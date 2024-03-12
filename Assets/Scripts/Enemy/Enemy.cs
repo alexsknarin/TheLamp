@@ -54,6 +54,7 @@ public class Enemy : MonoBehaviour, IInitializable
         ReadyToAttack = false;
         ReadyToCollide = false;
         ReadyToLampDamage = false;
+        ReceivedLampAttack = false;
     }
     
     public void UpdateAttackAvailability()
@@ -94,6 +95,7 @@ public class Enemy : MonoBehaviour, IInitializable
     
     private void PreAttackStart()
     {
+        ReceivedLampAttack = false;
         _enemyPresentation.PreAttackStart();
         ReadyToAttack = false;
         ReadyToCollide = true;
@@ -118,11 +120,8 @@ public class Enemy : MonoBehaviour, IInitializable
     
     public void HandleExitingAttackExitZone()
     {
-        if (_isCollidedWithLamp)
-        {
-            ReadyToLampDamage = false;
-            _isCollidedWithLamp = false;
-        }
+        ReadyToLampDamage = false;
+        _isCollidedWithLamp = false;
     }
     
     public void HandleCollisionWithStickZone()
@@ -136,6 +135,7 @@ public class Enemy : MonoBehaviour, IInitializable
 
         if (_currentHealth > 0)
         {
+            ReceivedLampAttack = true;
             _enemyPresentation.DamageFlash();
             _enemyPresentation.HealthUpdate(_currentHealth, _maxHealth);
             OnEnemyDamaged?.Invoke(this);
@@ -143,7 +143,8 @@ public class Enemy : MonoBehaviour, IInitializable
         }
         else
         {
-            _currentHealth = 0;
+            ReceivedLampAttack = true;
+            _currentHealth = 0; 
             _enemyMovement.TriggerDeath();
             OnEnemyDeath?.Invoke(this);
             _enemyPresentation.DeathFlash();

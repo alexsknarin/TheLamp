@@ -8,6 +8,7 @@ public class Lamp : MonoBehaviour, IInitializable
     [SerializeField] private LampCollisionHandler _lampCollisionHandler;
     [SerializeField] private LampMovement _lampMovement;
     [SerializeField] private StickZoneCollisionHandler _stickZoneCollisionHandler;
+    [SerializeField] private AttackExitZoneCollisionHandler _attackExitZoneCollisionHandler;    
     [SerializeField] private int _maxHealth;
     [SerializeField] private int _currentHealth;
     private bool _isAttackSuccess = false;
@@ -19,22 +20,23 @@ public class Lamp : MonoBehaviour, IInitializable
     
     public static event Action OnLampDamaged;
     
-    
     private void OnEnable()
     {
-        _lampCollisionHandler.OnLampCollidedEnemy += StartAssessForDamage;
+        _lampCollisionHandler.OnLampCollidedEnemy += RegisterPotentialDamage;
         _lampCollisionHandler.OnExitLampCollisionEnemy += EnemyExitCollisionHandle;
-       _stickZoneCollisionHandler.OnCollidedWithStickyEnemy += StickyEnemyEnterCollisionHandle;
+        _stickZoneCollisionHandler.OnCollidedWithStickyEnemy += StickyEnemyEnterCollisionHandle;
+        _attackExitZoneCollisionHandler.OnExitAttackExitZone += AssessDamage;
         Enemy.OnEnemyDamaged += AttackSuccessConfirm;
         Enemy.OnEnemyDeath += AttackSuccessConfirm;
     }
     
     private void OnDisable()
     {
-        _lampCollisionHandler.OnLampCollidedEnemy -= StartAssessForDamage;
+        _lampCollisionHandler.OnLampCollidedEnemy -= RegisterPotentialDamage;
         _lampCollisionHandler.OnExitLampCollisionEnemy -= EnemyExitCollisionHandle;
         _stickZoneCollisionHandler.OnCollidedWithStickyEnemy -= StickyEnemyEnterCollisionHandle;
-        Enemy.OnEnemyDamaged += AttackSuccessConfirm;
+        _attackExitZoneCollisionHandler.OnExitAttackExitZone -= AssessDamage;
+        Enemy.OnEnemyDamaged -= AttackSuccessConfirm;
         Enemy.OnEnemyDeath -= AttackSuccessConfirm;
     }
 
@@ -70,60 +72,41 @@ public class Lamp : MonoBehaviour, IInitializable
         }
     }
     
-    private void StartAssessForDamage(Enemy enemy)
+    private void RegisterPotentialDamage(Enemy enemy)
     {
-        Debug.Log("Start assess for damage");
-        // _enemyType = enemy.EnemyType;
-        // _enemyPosition = enemy.transform.position;
-        //
-        // if (enemy.EnemyType == EnemyTypes.Ladybug)
-        // {
-        //     _lampAttackModel.AddAttackBlocker();
-        //     return;
-        // }
-        // if (!_isAssessingDamage)
-        // {
-        //     _prevTime = Time.time;
-        //     _isAssessingDamage = true;
-        // }
+        _enemyType = enemy.EnemyType;
+        _enemyPosition = enemy.transform.position;
+        if (!_isAssessingDamage)
+        {
+            _isAssessingDamage = true;
+        }
     }
     
-    public void HandleDamage()
+    public void AssessDamage(Enemy enemy)
     {
-        // if (_isAssessingDamage)
-        // {
-        //     float assessmentPhase = (Time.time - _prevTime) / _damageAssessmentDuration;
-        //     if (assessmentPhase > 1)
-        //     {
-        //         if (_isAttackSuccess)
-        //         {
-        //             _isAttackSuccess = false;
-        //             _isAssessingDamage = false;
-        //         }
-        //         else
-        //         {
-        //             _isAttackSuccess = false;
-        //             _isAssessingDamage = false;
-        //             _currentHealth--;
-        //             _lampPresentation.StartDamageState();
-        //             OnLampDamaged?.Invoke();
-        //             MoveLamp();
-        //             if (_currentHealth <= 0)
-        //             {
-        //             }
-        //         }
-        //     }    
-        // }
+        if (_isAssessingDamage)
+        {
+            if (enemy.ReceivedLampAttack)
+            {
+                _isAssessingDamage = false;
+            }
+            else
+            {
+                _isAssessingDamage = false;
+                _currentHealth--;
+                _lampPresentation.StartDamageState();
+                OnLampDamaged?.Invoke();
+                MoveLamp();
+                if (_currentHealth <= 0)
+                {
+                }
+            }
+        }
     }
     
     private void MoveLamp()
     {
         float attackDirection = -(_enemyPosition - transform.position).x * 2;
         _lampMovement.AddForce(attackDirection);
-    }
-
-    private void Update()
-    {
-        HandleDamage();
     }
 }

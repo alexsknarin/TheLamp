@@ -10,4 +10,13 @@ public class AttackZoneCollisionHandler : MonoBehaviour
             enemy.HandleEnteringAttackZone();
         }
     }
+    
+    private void OnTriggerExit2D(Collider2D other)
+    {
+        if (other.gameObject.CompareTag("Enemy"))
+        {
+            Enemy enemy = other.GetComponent<Enemy>();
+            enemy.HandleExitingAttackExitZone();
+        }
+    }
 }
