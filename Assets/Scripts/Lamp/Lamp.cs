@@ -52,24 +52,6 @@ public class Lamp : MonoBehaviour, IInitializable
             _isAttackSuccess = true;
         }
     }
-
-    // REMAKE with async or coroutine
-    private void StartAssessForDamage(Enemy enemy)
-    {
-        _enemyType = enemy.EnemyType;
-        _enemyPosition = enemy.transform.position;
-        
-        if (enemy.EnemyType == EnemyTypes.Ladybug)
-        {
-            _lampAttackModel.AddAttackBlocker();
-            return;
-        }
-        if (!_isAssessingDamage)
-        {
-            _prevTime = Time.time;
-            _isAssessingDamage = true;
-        }
-    }
     
     private void StickyEnemyEnterCollisionHandle(Enemy enemy)
     {
@@ -81,7 +63,6 @@ public class Lamp : MonoBehaviour, IInitializable
     
     private void EnemyExitCollisionHandle(Enemy enemy)
     {
-        Debug.Log("Enemy exit collision");
         if (enemy.EnemyType == EnemyTypes.Ladybug)
         {
             _lampAttackModel.RemoveAttackBlocker();
@@ -89,32 +70,50 @@ public class Lamp : MonoBehaviour, IInitializable
         }
     }
     
+    private void StartAssessForDamage(Enemy enemy)
+    {
+        Debug.Log("Start assess for damage");
+        // _enemyType = enemy.EnemyType;
+        // _enemyPosition = enemy.transform.position;
+        //
+        // if (enemy.EnemyType == EnemyTypes.Ladybug)
+        // {
+        //     _lampAttackModel.AddAttackBlocker();
+        //     return;
+        // }
+        // if (!_isAssessingDamage)
+        // {
+        //     _prevTime = Time.time;
+        //     _isAssessingDamage = true;
+        // }
+    }
+    
     public void HandleDamage()
     {
-        if (_isAssessingDamage)
-        {
-            float assessmentPhase = (Time.time - _prevTime) / _damageAssessmentDuration;
-            if (assessmentPhase > 1)
-            {
-                if (_isAttackSuccess)
-                {
-                    _isAttackSuccess = false;
-                    _isAssessingDamage = false;
-                }
-                else
-                {
-                    _isAttackSuccess = false;
-                    _isAssessingDamage = false;
-                    _currentHealth--;
-                    _lampPresentation.StartDamageState();
-                    OnLampDamaged?.Invoke();
-                    MoveLamp();
-                    if (_currentHealth <= 0)
-                    {
-                    }
-                }
-            }    
-        }
+        // if (_isAssessingDamage)
+        // {
+        //     float assessmentPhase = (Time.time - _prevTime) / _damageAssessmentDuration;
+        //     if (assessmentPhase > 1)
+        //     {
+        //         if (_isAttackSuccess)
+        //         {
+        //             _isAttackSuccess = false;
+        //             _isAssessingDamage = false;
+        //         }
+        //         else
+        //         {
+        //             _isAttackSuccess = false;
+        //             _isAssessingDamage = false;
+        //             _currentHealth--;
+        //             _lampPresentation.StartDamageState();
+        //             OnLampDamaged?.Invoke();
+        //             MoveLamp();
+        //             if (_currentHealth <= 0)
+        //             {
+        //             }
+        //         }
+        //     }    
+        // }
     }
     
     private void MoveLamp()

@@ -15,6 +15,8 @@ public class Enemy : MonoBehaviour, IInitializable
     public bool ReadyToAttack { get; private set; }
     public bool ReadyToCollide { get; private set; }
     public bool ReadyToLampDamage { get; private set; }
+    public bool ReceivedLampAttack { get; private set; }
+    
     private bool _isCollidedWithLamp = false;
 
     private IObjectPool<Enemy> _objectPool;
@@ -23,6 +25,8 @@ public class Enemy : MonoBehaviour, IInitializable
         set => _objectPool = value;
     }
 
+    public bool ready;
+    
     public static event Action<Enemy> OnEnemyDeath;
     public static event Action<Enemy> OnEnemyDeactivated;
     public static event Action<Enemy> OnEnemyDamaged;
@@ -97,8 +101,11 @@ public class Enemy : MonoBehaviour, IInitializable
     
     public void HandleEnteringAttackZone()
     {
-        _isCollidedWithLamp = false;
-        ReadyToLampDamage = true;
+        if (_enemyMovement.State == EnemyStates.Attack || _enemyType == EnemyTypes.Ladybug)
+        {
+            _isCollidedWithLamp = false;
+            ReadyToLampDamage = true;    
+        }
     }
     
     public void HandleCollisionWithLamp()
@@ -132,15 +139,11 @@ public class Enemy : MonoBehaviour, IInitializable
             _enemyPresentation.DamageFlash();
             _enemyPresentation.HealthUpdate(_currentHealth, _maxHealth);
             OnEnemyDamaged?.Invoke(this);
-            ReadyToLampDamage = false;
-            _isCollidedWithLamp = false;
             _enemyMovement.TriggerFall();
         }
         else
         {
             _currentHealth = 0;
-            ReadyToLampDamage = false;
-            _isCollidedWithLamp = false;
             _enemyMovement.TriggerDeath();
             OnEnemyDeath?.Invoke(this);
             _enemyPresentation.DeathFlash();
@@ -151,5 +154,10 @@ public class Enemy : MonoBehaviour, IInitializable
     {
         OnEnemyDeactivated?.Invoke(this);
         _objectPool.Release(this);
+    }
+
+    private void Update()
+    {
+        ready = ReadyToAttack;
     }
 }
