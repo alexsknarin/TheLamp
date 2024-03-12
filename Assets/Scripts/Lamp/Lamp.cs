@@ -11,11 +11,7 @@ public class Lamp : MonoBehaviour, IInitializable
     [SerializeField] private AttackExitZoneCollisionHandler _attackExitZoneCollisionHandler;    
     [SerializeField] private int _maxHealth;
     [SerializeField] private int _currentHealth;
-    private bool _isAttackSuccess = false;
-    [SerializeField] private float _damageAssessmentDuration = 0.12f;
-    private float _prevTime;
     private bool _isAssessingDamage = false;
-    private EnemyTypes _enemyType;
     private Vector3 _enemyPosition;
     
     public static event Action OnLampDamaged;
@@ -26,8 +22,6 @@ public class Lamp : MonoBehaviour, IInitializable
         _lampCollisionHandler.OnExitLampCollisionEnemy += EnemyExitCollisionHandle;
         _stickZoneCollisionHandler.OnCollidedWithStickyEnemy += StickyEnemyEnterCollisionHandle;
         _attackExitZoneCollisionHandler.OnExitAttackExitZone += AssessDamage;
-        Enemy.OnEnemyDamaged += AttackSuccessConfirm;
-        Enemy.OnEnemyDeath += AttackSuccessConfirm;
     }
     
     private void OnDisable()
@@ -36,8 +30,6 @@ public class Lamp : MonoBehaviour, IInitializable
         _lampCollisionHandler.OnExitLampCollisionEnemy -= EnemyExitCollisionHandle;
         _stickZoneCollisionHandler.OnCollidedWithStickyEnemy -= StickyEnemyEnterCollisionHandle;
         _attackExitZoneCollisionHandler.OnExitAttackExitZone -= AssessDamage;
-        Enemy.OnEnemyDamaged -= AttackSuccessConfirm;
-        Enemy.OnEnemyDeath -= AttackSuccessConfirm;
     }
 
     public void Initialize()
@@ -46,15 +38,7 @@ public class Lamp : MonoBehaviour, IInitializable
         _lampMovement.Initialize();
         _currentHealth = _maxHealth;
     }
-
-    private void AttackSuccessConfirm(Enemy enemy)
-    {
-        if(enemy.EnemyType != EnemyTypes.Ladybug)
-        {
-            _isAttackSuccess = true;
-        }
-    }
-    
+  
     private void StickyEnemyEnterCollisionHandle(Enemy enemy)
     {
         _enemyPosition = enemy.transform.position;
@@ -74,7 +58,6 @@ public class Lamp : MonoBehaviour, IInitializable
     
     private void RegisterPotentialDamage(Enemy enemy)
     {
-        _enemyType = enemy.EnemyType;
         _enemyPosition = enemy.transform.position;
         if (!_isAssessingDamage)
         {

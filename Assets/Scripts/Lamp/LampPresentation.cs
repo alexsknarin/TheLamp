@@ -6,10 +6,7 @@ public class LampPresentation : MonoBehaviour
     private Material _lampMaterial;
     [SerializeField] private GameObject _lampAttackZoneObject;
     private Material _lampAttackZoneMaterial;
-    [SerializeField] private float _lightAttackFadeDuration;
-    [SerializeField] private float _lightRegenerateDuration;
     [SerializeField] private float _lightDamageDuration;
-    private LampStates _lampState = LampStates.Neutral;
     
     private float _lightPower = 1f;
     private float _attackDuration = 1f;

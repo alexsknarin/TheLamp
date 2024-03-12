@@ -13,7 +13,6 @@ public class CameraShake : MonoBehaviour
     private float _prevTime;
     private bool _isShaking;
     private bool _isPaused;
-    private bool _isDamageable = true;
     private bool _isGameOver = false;
     private float _shakeAmplitudeMultiplier = 1.0f;
     
@@ -50,7 +49,6 @@ public class CameraShake : MonoBehaviour
     {
         _prevTime = Time.time;
         _isShaking = true;
-        _isDamageable = false;
         _shakeAmplitudeMultiplier = 1.0f;
     }
     
@@ -58,7 +56,6 @@ public class CameraShake : MonoBehaviour
     {
         _prevTime = Time.time;
         _isShaking = true;
-        _isDamageable = false;
         _shakeAmplitudeMultiplier = 2.5f;
     }
     

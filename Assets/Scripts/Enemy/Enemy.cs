@@ -17,8 +17,6 @@ public class Enemy : MonoBehaviour, IInitializable
     public bool ReadyToLampDamage { get; private set; }
     public bool ReceivedLampAttack { get; private set; }
     
-    private bool _isCollidedWithLamp = false;
-
     private IObjectPool<Enemy> _objectPool;
     public IObjectPool<Enemy> ObjectPool
     {
@@ -105,7 +103,6 @@ public class Enemy : MonoBehaviour, IInitializable
     {
         if (_enemyMovement.State == EnemyStates.Attack || _enemyType == EnemyTypes.Ladybug)
         {
-            _isCollidedWithLamp = false;
             ReadyToLampDamage = true;    
         }
     }
@@ -115,13 +112,11 @@ public class Enemy : MonoBehaviour, IInitializable
         _enemyMovement.TriggerFall();
         ReadyToCollide = false;
         ReadyToLampDamage = true;
-        _isCollidedWithLamp = true;
     }
     
     public void HandleExitingAttackExitZone()
     {
         ReadyToLampDamage = false;
-        _isCollidedWithLamp = false;
     }
     
     public void HandleCollisionWithStickZone()

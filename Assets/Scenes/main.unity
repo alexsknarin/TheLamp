@@ -2613,7 +2613,7 @@ MonoBehaviour:
   _fireflyExplosionRadius: 0.8
   _explosionDuration: 0.1
   _enemiesOnScreen: 4
-  _startAtWave: 30
+  _startAtWave: 0
   _currentWave: 0
   _spawnDelay: 1
 --- !u!114 &1818435503
@@ -2912,8 +2912,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _lampLight: {fileID: 724839852}
   _lampAttackZoneObject: {fileID: 1464268261}
-  _lightAttackFadeDuration: 0.15
-  _lightRegenerateDuration: 2
   _lightDamageDuration: 0.2
 --- !u!114 &1934066245
 MonoBehaviour:
@@ -2957,7 +2955,6 @@ MonoBehaviour:
   _attackExitZoneCollisionHandler: {fileID: 452042971}
   _maxHealth: 10
   _currentHealth: 0
-  _damageAssessmentDuration: 0.093
 --- !u!114 &1934066247
 MonoBehaviour:
   m_ObjectHideFlags: 0
