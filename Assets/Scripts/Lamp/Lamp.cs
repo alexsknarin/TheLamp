@@ -7,6 +7,7 @@ public class Lamp : MonoBehaviour, IInitializable
     [SerializeField] private LampPresentation _lampPresentation;
     [SerializeField] private LampCollisionHandler _lampCollisionHandler;
     [SerializeField] private LampMovement _lampMovement;
+    [SerializeField] private StickZoneCollisionHandler _stickZoneCollisionHandler;
     [SerializeField] private int _maxHealth;
     [SerializeField] private int _currentHealth;
     private bool _isAttackSuccess = false;
@@ -23,6 +24,7 @@ public class Lamp : MonoBehaviour, IInitializable
     {
         _lampCollisionHandler.OnLampCollidedEnemy += StartAssessForDamage;
         _lampCollisionHandler.OnExitLampCollisionEnemy += EnemyExitCollisionHandle;
+       _stickZoneCollisionHandler.OnCollidedWithStickyEnemy += StickyEnemyEnterCollisionHandle;
         Enemy.OnEnemyDamaged += AttackSuccessConfirm;
         Enemy.OnEnemyDeath += AttackSuccessConfirm;
     }
@@ -31,6 +33,7 @@ public class Lamp : MonoBehaviour, IInitializable
     {
         _lampCollisionHandler.OnLampCollidedEnemy -= StartAssessForDamage;
         _lampCollisionHandler.OnExitLampCollisionEnemy -= EnemyExitCollisionHandle;
+        _stickZoneCollisionHandler.OnCollidedWithStickyEnemy -= StickyEnemyEnterCollisionHandle;
         Enemy.OnEnemyDamaged += AttackSuccessConfirm;
         Enemy.OnEnemyDeath -= AttackSuccessConfirm;
     }
@@ -55,11 +58,10 @@ public class Lamp : MonoBehaviour, IInitializable
     {
         _enemyType = enemy.EnemyType;
         _enemyPosition = enemy.transform.position;
-
+        
         if (enemy.EnemyType == EnemyTypes.Ladybug)
         {
             _lampAttackModel.AddAttackBlocker();
-            enemy.transform.parent = transform;
             return;
         }
         if (!_isAssessingDamage)
@@ -69,8 +71,17 @@ public class Lamp : MonoBehaviour, IInitializable
         }
     }
     
+    private void StickyEnemyEnterCollisionHandle(Enemy enemy)
+    {
+        _enemyPosition = enemy.transform.position;
+        _lampAttackModel.AddAttackBlocker();
+        enemy.transform.parent = transform;
+        MoveLamp();
+    }
+    
     private void EnemyExitCollisionHandle(Enemy enemy)
     {
+        Debug.Log("Enemy exit collision");
         if (enemy.EnemyType == EnemyTypes.Ladybug)
         {
             _lampAttackModel.RemoveAttackBlocker();

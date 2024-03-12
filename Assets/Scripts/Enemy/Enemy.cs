@@ -13,6 +13,10 @@ public class Enemy : MonoBehaviour, IInitializable
     private IInitializable _enemyPresentationInitializer;
     [SerializeField] private EnemyCollisionHandler _enemyCollisionHandler;
     public bool ReadyToAttack { get; private set; }
+    public bool ReadyToCollide { get; private set; }
+    public bool ReadyToLampDamage { get; private set; }
+    private bool _isCollidedWithLamp = false;
+
     private IObjectPool<Enemy> _objectPool;
     public IObjectPool<Enemy> ObjectPool
     {
@@ -28,8 +32,6 @@ public class Enemy : MonoBehaviour, IInitializable
         _enemyMovement.OnPreAttackStart += PreAttackStart;
         _enemyMovement.OnPreAttackEnd += _enemyPresentation.PreAttackEnd;
         _enemyMovement.OnEnemyDeactivated += OnDeactivated;
-        _enemyCollisionHandler.OnCollidedWithLamp += FallStart;
-        _enemyCollisionHandler.OnCollidedWithStickZone += StickStart;
     }
     
     private void OnDisable()
@@ -37,8 +39,6 @@ public class Enemy : MonoBehaviour, IInitializable
         _enemyMovement.OnPreAttackStart -= PreAttackStart;
         _enemyMovement.OnPreAttackEnd -= _enemyPresentation.PreAttackEnd;
         _enemyMovement.OnEnemyDeactivated -= OnDeactivated;
-        _enemyCollisionHandler.OnCollidedWithLamp -= FallStart;
-        _enemyCollisionHandler.OnCollidedWithStickZone -= StickStart;
     }
     
     public void Initialize()
@@ -48,6 +48,8 @@ public class Enemy : MonoBehaviour, IInitializable
         _enemyPresentationInitializer.Initialize();
         _currentHealth = _maxHealth;
         ReadyToAttack = false;
+        ReadyToCollide = false;
+        ReadyToLampDamage = false;
     }
     
     public void UpdateAttackAvailability()
@@ -88,21 +90,35 @@ public class Enemy : MonoBehaviour, IInitializable
     
     private void PreAttackStart()
     {
-        _enemyCollisionHandler.EnableCollider();        
         _enemyPresentation.PreAttackStart();
         ReadyToAttack = false;
+        ReadyToCollide = true;
     }
     
-    private void FallStart()
+    public void HandleEnteringAttackZone()
+    {
+        _isCollidedWithLamp = false;
+        ReadyToLampDamage = true;
+    }
+    
+    public void HandleCollisionWithLamp()
     {
         _enemyMovement.TriggerFall();
-        if (_enemyType != EnemyTypes.Ladybug)
+        ReadyToCollide = false;
+        ReadyToLampDamage = true;
+        _isCollidedWithLamp = true;
+    }
+    
+    public void HandleExitingAttackExitZone()
+    {
+        if (_isCollidedWithLamp)
         {
-            _enemyCollisionHandler.DisableCollider();          // NOT ELEGANT    
+            ReadyToLampDamage = false;
+            _isCollidedWithLamp = false;
         }
     }
-
-    private void StickStart()
+    
+    public void HandleCollisionWithStickZone()
     {
         _enemyMovement.TriggerStick();
     }
@@ -116,14 +132,17 @@ public class Enemy : MonoBehaviour, IInitializable
             _enemyPresentation.DamageFlash();
             _enemyPresentation.HealthUpdate(_currentHealth, _maxHealth);
             OnEnemyDamaged?.Invoke(this);
+            ReadyToLampDamage = false;
+            _isCollidedWithLamp = false;
             _enemyMovement.TriggerFall();
         }
         else
         {
             _currentHealth = 0;
+            ReadyToLampDamage = false;
+            _isCollidedWithLamp = false;
             _enemyMovement.TriggerDeath();
             OnEnemyDeath?.Invoke(this);
-            _enemyCollisionHandler.DisableCollider();
             _enemyPresentation.DeathFlash();
         }    
     }

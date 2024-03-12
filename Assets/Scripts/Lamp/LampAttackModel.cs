@@ -3,13 +3,15 @@ using UnityEngine;
 
 public class LampAttackModel : MonoBehaviour, IInitializable
 {
+    [SerializeField] private CircleCollider2D _attackZone;
+    [SerializeField] private CircleCollider2D _attackExitZone;
     [SerializeField] private float _currentPower;
     [SerializeField] private float _maxPower;
     [SerializeField] private int _attackPower;
     [SerializeField] private float _attackDuration;
-    [SerializeField] private float _attackDamageDurationFraction;     
     [SerializeField] private float _fullCooldownTime;
     [SerializeField] private float _attackDistance;
+    [SerializeField] private float _attackExitDistance;
     [SerializeField] private int _attackBlockers = 0;
     
     private LampStates _lampState = LampStates.Neutral;
@@ -62,6 +64,8 @@ public class LampAttackModel : MonoBehaviour, IInitializable
     {
         _currentPower = _maxPower;
         _lampState = LampStates.Neutral;
+        _attackZone.radius = _attackDistance;
+        _attackExitZone.radius = _attackExitDistance;
     }
    
     private void UpdateAttackPower()

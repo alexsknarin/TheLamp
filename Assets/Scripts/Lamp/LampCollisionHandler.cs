@@ -10,13 +10,18 @@ public class LampCollisionHandler : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Enemy"))
         {
-            OnLampCollidedEnemy?.Invoke(other.GetComponent<Enemy>());
+            Enemy enemy = other.GetComponent<Enemy>();
+            if(enemy.ReadyToCollide)
+            {
+                enemy.HandleCollisionWithLamp();
+                OnLampCollidedEnemy?.Invoke(other.GetComponent<Enemy>()); 
+            }
         }
     }
     
     private void OnTriggerExit2D(Collider2D other)
     {
-        if (other.gameObject.CompareTag("Enemy"))
+        if (other.gameObject.CompareTag("StickyEnemy"))
         {
             OnExitLampCollisionEnemy?.Invoke(other.GetComponent<Enemy>());
         }
