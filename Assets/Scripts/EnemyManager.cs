@@ -113,19 +113,24 @@ public class EnemyManager : MonoBehaviour,IInitializable
         {
             if (enemy.gameObject.activeInHierarchy && enemy.ReadyToLampDamage)
             {
-                enemy.ReceiveDamage(attackPower);
+                if (attackPower > 0)
+                {
+                    enemy.ReceiveDamage(attackPower);    
+                }
             }
         }
     }
     
     private void LampBlockedAttack(int attackPower, float currentPower, float attackDuration, float attackDistance)
     {
-        Debug.Log("Lamp blocked attack");
         foreach (var enemy in _enemies)
         {
             if (enemy.gameObject.activeInHierarchy && enemy.ReadyToLampDamage && enemy.EnemyType == EnemyTypes.Ladybug)
             {
-                enemy.ReceiveDamage(attackPower);
+                if (attackPower > 0)
+                {
+                    enemy.ReceiveDamage(attackPower);
+                }
             }
         }
     }
