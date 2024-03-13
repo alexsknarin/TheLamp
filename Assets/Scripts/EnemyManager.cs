@@ -111,13 +111,11 @@ public class EnemyManager : MonoBehaviour,IInitializable
     {
         foreach (var enemy in _enemies)
         {
-            if (enemy.gameObject.activeInHierarchy)
+            if (enemy.gameObject.activeInHierarchy && enemy.ReadyToLampDamage)
             {
-                Vector3 current2dPosition = enemy.transform.position;
-                current2dPosition.z = 0;
-                if(current2dPosition.magnitude < attackDistance && attackPower > 0 && enemy.EnemyType != EnemyTypes.Ladybug)
+                if (attackPower > 0)
                 {
-                    enemy.ReceiveDamage(attackPower);
+                    enemy.ReceiveDamage(attackPower);    
                 }
             }
         }
@@ -127,11 +125,9 @@ public class EnemyManager : MonoBehaviour,IInitializable
     {
         foreach (var enemy in _enemies)
         {
-            if (enemy.gameObject.activeInHierarchy)
+            if (enemy.gameObject.activeInHierarchy && enemy.ReadyToLampDamage && enemy.EnemyType == EnemyTypes.Ladybug)
             {
-                Vector3 current2dPosition = enemy.transform.position;
-                current2dPosition.z = 0;
-                if(current2dPosition.magnitude < attackDistance && attackPower > 0 && enemy.EnemyType == EnemyTypes.Ladybug)
+                if (attackPower > 0)
                 {
                     enemy.ReceiveDamage(attackPower);
                 }

@@ -13,12 +13,18 @@ public class Enemy : MonoBehaviour, IInitializable
     private IInitializable _enemyPresentationInitializer;
     [SerializeField] private EnemyCollisionHandler _enemyCollisionHandler;
     public bool ReadyToAttack { get; private set; }
+    public bool ReadyToCollide { get; private set; }
+    public bool ReadyToLampDamage { get; private set; }
+    public bool ReceivedLampAttack { get; private set; }
+    
     private IObjectPool<Enemy> _objectPool;
     public IObjectPool<Enemy> ObjectPool
     {
         set => _objectPool = value;
     }
 
+    public bool ready;
+    
     public static event Action<Enemy> OnEnemyDeath;
     public static event Action<Enemy> OnEnemyDeactivated;
     public static event Action<Enemy> OnEnemyDamaged;
@@ -28,8 +34,6 @@ public class Enemy : MonoBehaviour, IInitializable
         _enemyMovement.OnPreAttackStart += PreAttackStart;
         _enemyMovement.OnPreAttackEnd += _enemyPresentation.PreAttackEnd;
         _enemyMovement.OnEnemyDeactivated += OnDeactivated;
-        _enemyCollisionHandler.OnCollidedWithLamp += FallStart;
-        _enemyCollisionHandler.OnCollidedWithStickZone += StickStart;
     }
     
     private void OnDisable()
@@ -37,8 +41,6 @@ public class Enemy : MonoBehaviour, IInitializable
         _enemyMovement.OnPreAttackStart -= PreAttackStart;
         _enemyMovement.OnPreAttackEnd -= _enemyPresentation.PreAttackEnd;
         _enemyMovement.OnEnemyDeactivated -= OnDeactivated;
-        _enemyCollisionHandler.OnCollidedWithLamp -= FallStart;
-        _enemyCollisionHandler.OnCollidedWithStickZone -= StickStart;
     }
     
     public void Initialize()
@@ -48,6 +50,9 @@ public class Enemy : MonoBehaviour, IInitializable
         _enemyPresentationInitializer.Initialize();
         _currentHealth = _maxHealth;
         ReadyToAttack = false;
+        ReadyToCollide = false;
+        ReadyToLampDamage = false;
+        ReceivedLampAttack = false;
     }
     
     public void UpdateAttackAvailability()
@@ -88,21 +93,33 @@ public class Enemy : MonoBehaviour, IInitializable
     
     private void PreAttackStart()
     {
-        _enemyCollisionHandler.EnableCollider();        
+        ReceivedLampAttack = false;
         _enemyPresentation.PreAttackStart();
         ReadyToAttack = false;
+        ReadyToCollide = true;
     }
     
-    private void FallStart()
+    public void HandleEnteringAttackZone()
     {
-        _enemyMovement.TriggerFall();
-        if (_enemyType != EnemyTypes.Ladybug)
+        if (_enemyMovement.State == EnemyStates.Attack || _enemyType == EnemyTypes.Ladybug)
         {
-            _enemyCollisionHandler.DisableCollider();          // NOT ELEGANT    
+            ReadyToLampDamage = true;    
         }
     }
-
-    private void StickStart()
+    
+    public void HandleCollisionWithLamp()
+    {
+        _enemyMovement.TriggerFall();
+        ReadyToCollide = false;
+        ReadyToLampDamage = true;
+    }
+    
+    public void HandleExitingAttackExitZone()
+    {
+        ReadyToLampDamage = false;
+    }
+    
+    public void HandleCollisionWithStickZone()
     {
         _enemyMovement.TriggerStick();
     }
@@ -113,6 +130,7 @@ public class Enemy : MonoBehaviour, IInitializable
 
         if (_currentHealth > 0)
         {
+            ReceivedLampAttack = true;
             _enemyPresentation.DamageFlash();
             _enemyPresentation.HealthUpdate(_currentHealth, _maxHealth);
             OnEnemyDamaged?.Invoke(this);
@@ -120,10 +138,10 @@ public class Enemy : MonoBehaviour, IInitializable
         }
         else
         {
-            _currentHealth = 0;
+            ReceivedLampAttack = true;
+            _currentHealth = 0; 
             _enemyMovement.TriggerDeath();
             OnEnemyDeath?.Invoke(this);
-            _enemyCollisionHandler.DisableCollider();
             _enemyPresentation.DeathFlash();
         }    
     }
@@ -132,5 +150,10 @@ public class Enemy : MonoBehaviour, IInitializable
     {
         OnEnemyDeactivated?.Invoke(this);
         _objectPool.Release(this);
+    }
+
+    private void Update()
+    {
+        ready = ReadyToAttack;
     }
 }
