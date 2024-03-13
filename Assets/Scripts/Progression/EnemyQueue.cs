@@ -3,6 +3,8 @@ using System.Collections.Generic;
 public class EnemyQueue
 {
     private List<EnemyTypes> _enemies;
+    public int MaxEnemiesOnScreen { get; set; }
+    public int AggressionLevel { get; set; }
     
     public EnemyQueue()
     {

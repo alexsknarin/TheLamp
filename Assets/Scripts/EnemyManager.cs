@@ -21,7 +21,10 @@ public class EnemyManager : MonoBehaviour,IInitializable
     private Vector3 _explosionPosition;
     private bool _isExplosionActive = false;
     [Header("---- Waves Generation ------")]
-    [SerializeField] private int _enemiesOnScreen;
+    [SerializeField] private int _maxEnemiesOnScreen;
+    [SerializeField] private int _aggresionLevel;
+    [SerializeField] private float _maxAggressionLevel;
+    private float _aggressionLevelNormalized;
     [Header("")]
     [SerializeField] private int _startAtWave = 0;
     [SerializeField] private int _currentWave = 1;
@@ -90,7 +93,10 @@ public class EnemyManager : MonoBehaviour,IInitializable
         _enemiesAvailable = _enemiesInWave;
         _enemiesKilled = 0;
         _prevTime = Time.time;
-        
+        _maxEnemiesOnScreen = _enemyQueue.MaxEnemiesOnScreen;
+        _aggresionLevel = _enemyQueue.AggressionLevel;  
+        _aggressionLevelNormalized = _aggresionLevel / _maxAggressionLevel;
+
         // Attack
         _attackDelay = _spawnDelay + 2f;
         _attackPrevTime = Time.time;
@@ -185,7 +191,7 @@ public class EnemyManager : MonoBehaviour,IInitializable
                 float phase = (Time.time - _prevTime) / _spawnDelay;
                 if (phase > 1)
                 {
-                    if(_enemies.Count < _enemiesOnScreen)
+                    if(_enemies.Count < _maxEnemiesOnScreen)
                     {
                         _prevTime = Time.time;
                         SpawnEnemy(_currentSpawnEnemyIndex);
@@ -227,7 +233,10 @@ public class EnemyManager : MonoBehaviour,IInitializable
                     var attackingEnemy = _enemiesReadyToAttack[Random.Range(0, _enemiesReadyToAttack.Count)];
                     attackingEnemy.AttackStart();
                     _attackPrevTime = Time.time;
-                    _attackDelay = Random.Range(1.5f, 4f); // TODO: Aggression level
+                    _attackDelay = Random.Range(
+                        Mathf.Lerp(1.5f, 0.8f, _aggressionLevelNormalized),
+                        Mathf.Lerp(4.1f, 1.8f, _aggressionLevelNormalized)
+                        );
                     _isAttacking = false;
                 }
             }
