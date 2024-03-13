@@ -540,7 +540,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d537c5304ee1e444af888f1d766f6e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _collider2D: {fileID: 2771667605870528048}
 --- !u!114 &5128008993713504180
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -559,6 +558,7 @@ MonoBehaviour:
   _enemyMovement: {fileID: -3368359052859184378}
   _enemyPresentation: {fileID: 8268739167994926853}
   _enemyCollisionHandler: {fileID: 5749198432677622028}
+  ready: 0
 --- !u!114 &-3368359052859184378
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -643,6 +643,7 @@ MonoBehaviour:
   _meshRenderer: {fileID: 3345426907105900161}
   _duration: 0.5
   _deathParticles: {fileID: 1498972623410805291}
+  _damageParticles: {fileID: 3999719824722867732}
 --- !u!114 &3400746756151041414
 MonoBehaviour:
   m_ObjectHideFlags: 0

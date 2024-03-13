@@ -24,7 +24,10 @@ public class SpawnQueueGenerator
             int fireflyCount = jsonObject[2][i][3].AsInt;
             int ladybugCount = jsonObject[2][i][4].AsInt;
             int totalEnemies = flyCount + mothCount + fireflyCount + ladybugCount;
-            
+            int maxOnScreen = jsonObject[2][i][5].AsInt;
+            int AggressionLevel = jsonObject[2][i][6].AsInt;
+            enemyQueue.MaxEnemiesOnScreen = maxOnScreen;
+            enemyQueue.AggressionLevel = AggressionLevel;
             for (int j = 0; j < totalEnemies; j++)
             {
                 int randomSelection = Random.Range(0, 4);

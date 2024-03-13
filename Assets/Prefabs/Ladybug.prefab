@@ -642,6 +642,7 @@ MonoBehaviour:
   _enemyMovement: {fileID: 4117935667472646368}
   _enemyPresentation: {fileID: 2554923996394591702}
   _enemyCollisionHandler: {fileID: 1471050290819612185}
+  ready: 0
 --- !u!114 &4117935667472646368
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -721,6 +722,7 @@ MonoBehaviour:
   _meshRenderer: {fileID: 2622930312740272112}
   _duration: 0.5
   _deathParticles: {fileID: 8386568902132981157}
+  _damageParticles: {fileID: 5637656202156335823}
 --- !u!114 &-2824885218992742472
 MonoBehaviour:
   m_ObjectHideFlags: 0

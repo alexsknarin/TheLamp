@@ -6,6 +6,7 @@ public class DeathFlash : DamageIndication
     [SerializeField] private MeshRenderer _meshRenderer;
     [SerializeField] private float _duration = 0.5f;
     [SerializeField] private VisualEffect _deathParticles;
+    [SerializeField] private VisualEffect _damageParticles;
     private Material _material;
     private bool _isActive = false;
     private float _prevTime;
@@ -18,6 +19,7 @@ public class DeathFlash : DamageIndication
         _material.SetFloat("_AttackSemaphore", 0);
         _material.SetFloat("_Damage", 1f);
         _deathParticles.SendEvent("OnDeathStart");
+        _damageParticles.SendEvent("OnDamage");
     }
 
     void Update()
