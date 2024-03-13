@@ -2544,6 +2544,7 @@ GameObject:
   - component: {fileID: 1818435504}
   - component: {fileID: 1818435502}
   - component: {fileID: 1818435503}
+  - component: {fileID: 1818435505}
   m_Layer: 0
   m_Name: Game
   m_TagString: Untagged
@@ -2615,7 +2616,7 @@ MonoBehaviour:
   _maxEnemiesOnScreen: 0
   _aggresionLevel: 0
   _maxAggressionLevel: 6
-  _startAtWave: 0
+  _startAtWave: 30
   _currentWave: 0
   _spawnDelay: 1
 --- !u!114 &1818435503
@@ -2657,6 +2658,19 @@ MonoBehaviour:
   _fireflyPrefab: {fileID: 5128008993713504180, guid: 30693d0a7256f2e4fa015da56e117fa3,
     type: 3}
   _poolSize: 5
+--- !u!114 &1818435505
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1818435498}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef12726ead088e8409d659d6707130fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _enemyDamagePauseTime: 0.075
 --- !u!1 &1853209500
 GameObject:
   m_ObjectHideFlags: 0

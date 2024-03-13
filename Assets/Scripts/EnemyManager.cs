@@ -48,7 +48,8 @@ public class EnemyManager : MonoBehaviour,IInitializable
     public static event Action<int> OnWavePrepared;
     public static event Action OnWaveStarted;
     public static event Action OnFireflyExplosion;
-    
+    public static event Action OnEnemyDamaged; 
+
     private void OnEnable()
     {
         Enemy.OnEnemyDeactivated += UpdateEnemiesOnScreen;
@@ -121,7 +122,8 @@ public class EnemyManager : MonoBehaviour,IInitializable
             {
                 if (attackPower > 0)
                 {
-                    enemy.ReceiveDamage(attackPower);    
+                    enemy.ReceiveDamage(attackPower);
+                    OnEnemyDamaged?.Invoke();    
                 }
             }
         }
@@ -136,6 +138,7 @@ public class EnemyManager : MonoBehaviour,IInitializable
                 if (attackPower > 0)
                 {
                     enemy.ReceiveDamage(attackPower);
+                    OnEnemyDamaged?.Invoke();   
                 }
             }
         }

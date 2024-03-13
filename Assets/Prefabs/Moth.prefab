@@ -124,7 +124,6 @@ GameObject:
   - component: {fileID: 5017825788424395614}
   - component: {fileID: 3983217829074786754}
   - component: {fileID: 2836968421273079393}
-  - component: {fileID: 175129488326048145}
   - component: {fileID: 3291430470506879424}
   - component: {fileID: 5183674563390223914}
   - component: {fileID: 1049907910270298076}
@@ -269,18 +268,6 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.5
---- !u!114 &175129488326048145
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6202721331199203244}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7d537c5304ee1e444af888f1d766f6e5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &3291430470506879424
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -298,7 +285,7 @@ MonoBehaviour:
   _currentHealth: 0
   _enemyMovement: {fileID: 5183674563390223914}
   _enemyPresentation: {fileID: 1049907910270298076}
-  _enemyCollisionHandler: {fileID: 175129488326048145}
+  _enemyCollisionHandler: {fileID: 0}
   ready: 0
 --- !u!114 &5183674563390223914
 MonoBehaviour:
