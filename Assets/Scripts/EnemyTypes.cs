@@ -4,5 +4,6 @@ public enum EnemyTypes
     Moth,
     Firefly,
     Ladybug,
+    Spider,
     None
 }

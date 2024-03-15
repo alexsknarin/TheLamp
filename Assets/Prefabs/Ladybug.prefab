@@ -628,7 +628,6 @@ MonoBehaviour:
   _currentHealth: 0
   _enemyMovement: {fileID: 4117935667472646368}
   _enemyPresentation: {fileID: 2554923996394591702}
-  _enemyCollisionHandler: {fileID: 0}
   ready: 0
 --- !u!114 &4117935667472646368
 MonoBehaviour:
@@ -677,6 +676,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _meshRenderer: {fileID: 2622930312740272112}
+  _enableTrailRenderer: 1
   _trailRenderer: {fileID: 4684402747461492014}
 --- !u!114 &1168591479674629291
 MonoBehaviour:

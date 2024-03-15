@@ -11,7 +11,6 @@ public class Enemy : MonoBehaviour, IInitializable
     [SerializeField] private EnemyMovement _enemyMovement;
     [SerializeField] private EnemyPresentation _enemyPresentation;
     private IInitializable _enemyPresentationInitializer;
-    [SerializeField] private EnemyCollisionHandler _enemyCollisionHandler;
     public bool ReadyToAttack { get; private set; }
     public bool ReadyToCollide { get; private set; }
     public bool ReadyToLampDamage { get; private set; }
@@ -79,6 +78,10 @@ public class Enemy : MonoBehaviour, IInitializable
             {
                 ReadyToAttack = false;
             }
+        }
+        else if (_enemyType == EnemyTypes.Spider && _enemyMovement.State == EnemyStates.Patrol)
+        {
+            ReadyToAttack = true;
         }
         else
         {

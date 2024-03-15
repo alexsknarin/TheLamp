@@ -914,6 +914,37 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _waveText: {fileID: 537243424}
+--- !u!1 &564885923
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 564885924}
+  m_Layer: 0
+  m_Name: '|--------------------------------|'
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &564885924
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 564885923}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &592659931
 GameObject:
   m_ObjectHideFlags: 0
@@ -2545,6 +2576,7 @@ GameObject:
   - component: {fileID: 1818435502}
   - component: {fileID: 1818435503}
   - component: {fileID: 1818435505}
+  - component: {fileID: 1818435506}
   m_Layer: 0
   m_Name: Game
   m_TagString: Untagged
@@ -2616,7 +2648,7 @@ MonoBehaviour:
   _maxEnemiesOnScreen: 0
   _aggresionLevel: 0
   _maxAggressionLevel: 6
-  _startAtWave: 30
+  _startAtWave: 0
   _currentWave: 0
   _spawnDelay: 1
 --- !u!114 &1818435503
@@ -2649,7 +2681,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5dfa96e0952dfb04884e8cca62118031, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _flyPrefab: {fileID: 5065817594616091563, guid: fb0c5c6a78e6cfa4b9c5530e8ae2c067,
+  _flyPrefab: {fileID: 855794049538210572, guid: 29e249a43a6a16b4c8ae5c14da092490,
     type: 3}
   _mothPrefab: {fileID: 3291430470506879424, guid: c997318186f1bda4f852c425e75498e5,
     type: 3}
@@ -2671,6 +2703,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _enemyDamagePauseTime: 0.075
+--- !u!114 &1818435506
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1818435498}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08d8c20ef294cba4aaa224352c244d18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _enemyPrefab: {fileID: 0}
 --- !u!1 &1853209500
 GameObject:
   m_ObjectHideFlags: 0
@@ -3206,6 +3251,7 @@ SceneRoots:
   - {fileID: 1291610353}
   - {fileID: 1516445179}
   - {fileID: 1402077384}
+  - {fileID: 564885924}
   - {fileID: 1481115718}
   - {fileID: 1250781295}
   - {fileID: 592659935}

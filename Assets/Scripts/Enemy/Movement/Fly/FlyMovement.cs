@@ -24,7 +24,7 @@ public class FlyMovement : EnemyMovement
     private int _depthDirection;
     
     
-    // Movement Stats
+    // Movement States
     private EnemyMovementStateMachine _movementStateMachine;
     private EnemyMovementBaseState _currentState;
     private FlyMovementEnterState _enterState;
