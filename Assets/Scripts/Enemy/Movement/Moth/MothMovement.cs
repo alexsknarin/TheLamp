@@ -54,17 +54,12 @@ public class MothMovement : EnemyMovement
         _fallState = new MothMovementFallState(this, _speed, _radius, _verticalAmplitude);
         _deathState = new MothMovementDeathState(this, _speed, _radius, _verticalAmplitude);
         
-        Spawn();
+        _position2d = GenerateSpawnPosition(_sideDirection, _spawnXPos, _spawnYPosMin, _spawnYPosMax);
        
         _currentState = _enterState;
         _movementStateMachine.SetState(_currentState, _position2d, _sideDirection, 1);
         _position2d = _currentState.Position;
         transform.position = _position2d;
-    }
-    
-    private void Spawn()
-    {
-        _position2d = GenerateSpawnPosition(_sideDirection, _spawnXPos, _spawnYPosMin, _spawnYPosMax);
     }
     
     private Vector3 GenerateSpawnPosition(int direction, float xPos, float yPosMin, float yPosMax)

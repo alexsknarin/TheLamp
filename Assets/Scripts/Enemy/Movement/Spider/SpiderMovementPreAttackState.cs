@@ -26,13 +26,15 @@ public class SpiderMovementPreAttackState: EnemyMovementBaseState
     
     public override void EnterState(Vector3 currentPosition, int sideDirection, int depthDirection)
     {
+        _sideDirection = sideDirection;
+        _hangingPoint.x = Mathf.Abs(_hangingPoint.x) * sideDirection;
         Vector3 newPosition = currentPosition;
-        _lastXPosition = currentPosition.x;
         newPosition.x = _hangingPoint.x;
+        _lastXPosition = currentPosition.x;
         Position = newPosition;
         _localTime = 0;
         _acceleratedSpeed = 1f;
-        _sideDirection = sideDirection;
+        Debug.Log("Entered PreAttack State");
     }
     
     public override void ExecuteState(Vector3 currentPosition)

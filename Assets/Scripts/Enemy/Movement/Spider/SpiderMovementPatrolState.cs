@@ -4,6 +4,7 @@ public class SpiderMovementPatrolState: EnemyMovementBaseState
 {
     private Vector3 _hangingPoint; 
     private float _localTime;
+    public override EnemyStates State => EnemyStates.Patrol;
     
     public SpiderMovementPatrolState(IStateMachineOwner owner, float speed, float radius, float verticalAmplitude) : base()
     {
@@ -16,13 +17,13 @@ public class SpiderMovementPatrolState: EnemyMovementBaseState
         _hangingPoint.x = radius;
     }
     
-    public override EnemyStates State => EnemyStates.Patrol;
-
     public override void EnterState(Vector3 currentPosition, int sideDirection, int depthDirection)
     {
+        _sideDirection = sideDirection;
         _hangingPoint.x = Mathf.Abs(_hangingPoint.x) * sideDirection;
         Position = currentPosition;
         _localTime = 0;
+        Debug.Log("Entered Patrol State");
     }
     
     public override void ExecuteState(Vector3 currentPosition)

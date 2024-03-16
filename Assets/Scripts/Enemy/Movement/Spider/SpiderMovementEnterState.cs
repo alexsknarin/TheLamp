@@ -4,7 +4,7 @@ public class SpiderMovementEnterState: EnemyMovementBaseState
 {
     private Vector3 _hangingPoint;
     private float _localTime;
-    
+    public override EnemyStates State => EnemyStates.Enter;
     public SpiderMovementEnterState(IStateMachineOwner owner, float speed, float radius, float verticalAmplitude) : base()
     {
         _speed = speed;
@@ -15,14 +15,13 @@ public class SpiderMovementEnterState: EnemyMovementBaseState
         _hangingPoint = Vector3.up * 5f;
         _hangingPoint.x = radius;
     } 
-
-    public override EnemyStates State => EnemyStates.Enter;
-   
+    
     public override void EnterState(Vector3 currentPosition, int sideDirection, int depthDirection)
     {
         _hangingPoint.x = Mathf.Abs(_hangingPoint.x) * sideDirection;
         Position = currentPosition;
         _localTime = 0;
+        Debug.Log("Entered Enter State");
     }
     
     public override void ExecuteState(Vector3 currentPosition)
@@ -33,8 +32,7 @@ public class SpiderMovementEnterState: EnemyMovementBaseState
         
         float swing = Mathf.Sin(_localTime * 4.1f) * 0.1f * phase + _hangingPoint.x;
         newPosition.x = swing; 
-        
-        
+
         Position = newPosition;
         _localTime += Time.deltaTime;
     }

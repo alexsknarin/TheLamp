@@ -7,9 +7,8 @@ public class SpiderMovementAttackState: EnemyMovementBaseState
     private float _acceleration = 8.7f;
     private float _acceleratedSpeed;
     private float _sideDirection;
-
     public override EnemyStates State => EnemyStates.Attack;
-    
+   
     public SpiderMovementAttackState(IStateMachineOwner owner, float speed, float radius, float verticalAmplitude) : base()
     {
         _speed = speed;
@@ -22,18 +21,18 @@ public class SpiderMovementAttackState: EnemyMovementBaseState
     
     public override void EnterState(Vector3 currentPosition, int sideDirection, int depthDirection)
     {
+        _sideDirection = sideDirection;
+        _hangingPoint.x = Mathf.Abs(_hangingPoint.x) * sideDirection;
         Vector3 newPosition = currentPosition;
         Position = newPosition;
-        _hangingPoint.x = Mathf.Abs(_hangingPoint.x) * sideDirection;
-        
         _acceleratedSpeed = 1f;
-        _sideDirection = sideDirection;
+        Debug.Log("Entered Attack State");
     }
     
     public override void ExecuteState(Vector3 currentPosition)
     {
         Vector3 newPosition = currentPosition;
-        Vector3 direction = -Vector3.right*_sideDirection;
+        Vector3 direction = -Vector3.right * _sideDirection;
         newPosition += direction * (_speed * _acceleratedSpeed * Time.deltaTime);
         
         newPosition = (newPosition - _hangingPoint).normalized * 5f + _hangingPoint;

@@ -59,18 +59,13 @@ public class FireflyMovement : EnemyMovement
         _fallState = new FlyMovementFallState(this, _speed, _radius, _verticalAmplitude);
         _deathState = new FireflyMovementDeathState(this, _speed, _radius, _verticalAmplitude);
         
-        Spawn();
+        _position2d = GenerateSpawnPosition(-_sideDirection);
         
         _currentState = _enterState;
         
         _movementStateMachine.SetState(_currentState, _position2d, _sideDirection, _depthDirection);
         _position2d = _currentState.Position;
         transform.position = _position2d;
-    }
-    
-    private void Spawn()
-    {
-        _position2d = GenerateSpawnPosition(-_sideDirection);
     }
     
     private Vector3 GenerateSpawnPosition(int direction)

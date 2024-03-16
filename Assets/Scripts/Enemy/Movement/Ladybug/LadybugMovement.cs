@@ -45,18 +45,13 @@ public class LadybugMovement : EnemyMovement
         _fallState = new LadybugMovementFallState(this, _speed, _radius, _verticalAmplitude);
         _deathState = new LadybugMovementDeathState(this, _speed, _radius, _verticalAmplitude);
 
-        Spawn();
+        _position2d = GenerateSpawnPosition(_radius);
        
         _currentState = _patrolState;
         
         _movementStateMachine.SetState(_currentState, _position2d, _sideDirection, 1);
         _position2d = _currentState.Position;
         transform.position = _position2d;
-    }
-    
-    private void Spawn()
-    {
-        _position2d = GenerateSpawnPosition(_radius);
     }
     
     private Vector3 GenerateSpawnPosition(float distance)

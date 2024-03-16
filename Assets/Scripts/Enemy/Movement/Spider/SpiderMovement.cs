@@ -34,11 +34,7 @@ public class SpiderMovement : EnemyMovement
     
     public override void Initialize()
     {
-        _sideDirection = RandomDirection.Generate();
-        _xCenter *= _sideDirection;
-        
         _movementStateMachine = new EnemyMovementStateMachine();
-        
         _enterState = new SpiderMovementEnterState(this, _speed, _xCenter, 0);
         _patrolState  = new SpiderMovementPatrolState(this, _speed, _xCenter, 0);
         _preAttackState = new SpiderMovementPreAttackState(this, _speed, _xCenter, 0);
@@ -46,21 +42,20 @@ public class SpiderMovement : EnemyMovement
         _returnState = new SpiderMovementReturnState(this, _speed, _xCenter, 0);
         _deathState = new FlyMovementDeathState(this, _speed, _xCenter, 0);
         
-        Spawn();
+        _sideDirection = RandomDirection.Generate();
+        
+        _position2d = GenerateSpawnPosition(_sideDirection);
+        Debug.Log(_position2d);
         
         _currentState = _enterState;
-        
         _movementStateMachine.SetState(_currentState, _position2d, _sideDirection, 1);
+
         _position2d = _currentState.Position;
-        _position2d.x = _xCenter;
         transform.position = _position2d;
+        
+        _isDead = false;
     }
-    
-    private void Spawn()
-    {
-        _position2d = GenerateSpawnPosition(-_sideDirection);
-    }
-    
+  
     private Vector3 GenerateSpawnPosition(int direction)
     {
         Vector3 spawnPosition = Vector3.up * 5f;
@@ -102,15 +97,40 @@ public class SpiderMovement : EnemyMovement
         switch (_currentState.State)
         {
             case EnemyStates.Enter:
-                newState = _patrolState;
+                if (_isDead)
+                {
+                    newState = _deathState;
+                    _isDead = false;
+                }
+                else
+                {
+                    OnPreAttackStartInvoke();
+                    newState = _preAttackState;
+                }
                 break;
             case EnemyStates.Patrol:
-                OnPreAttackStartInvoke();
-                newState = _preAttackState;
+                if (_isDead)
+                {
+                    newState = _deathState;
+                    _isDead = false;
+                }
+                else
+                {
+                    OnPreAttackStartInvoke();
+                    newState = _preAttackState;
+                }
                 break;
             case EnemyStates.PreAttack:
-                OnPreAttackEndInvoke();
-                newState = _attackState;
+                if (_isDead)
+                {
+                    newState = _deathState;
+                    _isDead = false;
+                }
+                else
+                {
+                    OnPreAttackEndInvoke();
+                    newState = _attackState;
+                }
                 break;
             case EnemyStates.Attack:
                 if (_isDead)
@@ -125,7 +145,16 @@ public class SpiderMovement : EnemyMovement
                 }
                 break;
             case EnemyStates.Return:
-                newState = _patrolState;
+                if (_isDead)
+                {
+                    newState = _deathState;
+                    _isDead = false;
+                }
+                else
+                {
+                    newState = _patrolState;
+                    _isCollided = false;
+                }
                 break;
             case EnemyStates.Death:
                 OnEnemyDeactivatedInvoke();

@@ -10,7 +10,7 @@ public class SpiderMovementReturnState: EnemyMovementBaseState
     private int _returnPhase;
     private Vector3 _initialDirection;
     private float _decceleration = 0.05f;
-
+    public override EnemyStates State => EnemyStates.Return;
     public SpiderMovementReturnState(IStateMachineOwner owner, float speed, float radius, float verticalAmplitude) : base()
     {
         _speed = speed;
@@ -21,14 +21,11 @@ public class SpiderMovementReturnState: EnemyMovementBaseState
         _hangingPoint.x = radius;
     }
     
-    public override EnemyStates State => EnemyStates.Return;
-
     public override void EnterState(Vector3 currentPosition, int sideDirection, int depthDirection)
     {
         _sideDirection = sideDirection;
         _hangingPoint.x = Mathf.Abs(_hangingPoint.x) * sideDirection;
         Position = currentPosition;
-        
         _initialAmplitude = Mathf.Abs(Mathf.Abs(currentPosition.x) - Mathf.Abs(_hangingPoint.x));
         _swingAmplitude = _initialAmplitude;
         _initialDirection = currentPosition.normalized;
@@ -37,6 +34,7 @@ public class SpiderMovementReturnState: EnemyMovementBaseState
         _initialXpos = currentPosition.x;
         _returnPhase = 0;
         _localTime = 0;
+        Debug.Log("Entered Return State");
     }
     
     public override void ExecuteState(Vector3 currentPosition)
