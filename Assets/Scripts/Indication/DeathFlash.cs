@@ -18,6 +18,8 @@ public class DeathFlash : DamageIndication
         _material.SetFloat("_DeathFade", 0);
         _material.SetFloat("_AttackSemaphore", 0);
         _material.SetFloat("_Damage", 1f);
+        Vector3 direction = transform.position.normalized;
+        _damageParticles.SetVector3("Direction", direction);
         _deathParticles.SendEvent("OnDeathStart");
         _damageParticles.SendEvent("OnDamage");
     }
