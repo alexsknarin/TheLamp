@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1452205048600935354}
+  - component: {fileID: 8046858240882090183}
   - component: {fileID: 3249454542607523123}
   m_Layer: 0
   m_Name: SpiderWeb
@@ -16,7 +17,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1452205048600935354
 Transform:
   m_ObjectHideFlags: 0
@@ -32,6 +33,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 6517140100145302485}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8046858240882090183
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2241118784740910479}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a20b5bf2fbbfa0f4cb79756e4967b7e5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _spiderWebLineRenderer: {fileID: 3249454542607523123}
+  _shrinkDuration: 1.6
 --- !u!120 &3249454542607523123
 LineRenderer:
   serializedVersion: 2
@@ -53,7 +68,7 @@ LineRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 0}
+  - {fileID: 2100000, guid: 8ad936bc80c6d1643ac817c4b36bac40, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -79,7 +94,7 @@ LineRenderer:
   - {x: 0, y: 0, z: 1}
   m_Parameters:
     serializedVersion: 3
-    widthMultiplier: 1
+    widthMultiplier: 0.022
     widthCurve:
       serializedVersion: 2
       m_Curve:
@@ -436,7 +451,7 @@ MonoBehaviour:
   _damageFlash: {fileID: 6403251613305155595}
   _deathFlash: {fileID: 5311827651028387244}
   _healthIndication: {fileID: 4006166505389235968}
-  _spiderWebLineRenderer: {fileID: 3249454542607523123}
+  _spiderWeb: {fileID: 8046858240882090183}
 --- !u!114 &7824575938259186109
 MonoBehaviour:
   m_ObjectHideFlags: 0

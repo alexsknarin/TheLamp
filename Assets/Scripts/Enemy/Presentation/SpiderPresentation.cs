@@ -6,7 +6,8 @@ public class SpiderPresentation : EnemyPresentation
     [SerializeField] private DamageFlash _damageFlash;
     [SerializeField] private DeathFlash _deathFlash;
     [SerializeField] private HealthIndication _healthIndication;
-    [SerializeField] private LineRenderer _spiderWebLineRenderer;
+    [SerializeField] private SpiderWebHandler _spiderWeb;
+    
 
     public override void PreAttackStart()
     {
@@ -26,6 +27,7 @@ public class SpiderPresentation : EnemyPresentation
     public override void DeathFlash()
     {
         _deathFlash.Play();
+        _spiderWeb.StartShrink();
     }
 
     public override void HealthUpdate(int currentHealth, int maxHealth)
@@ -39,9 +41,6 @@ public class SpiderPresentation : EnemyPresentation
         _damageFlash.Initialize();
         _deathFlash.Initialize();
         _healthIndication.Initialize();
-    }
-    
-    public void InitializeSpiderWeb(int sideDirection)
-    {
+        _spiderWeb.Initialize();
     }
 }

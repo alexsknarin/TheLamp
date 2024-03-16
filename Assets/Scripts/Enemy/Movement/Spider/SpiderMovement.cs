@@ -52,6 +52,7 @@ public class SpiderMovement : EnemyMovement
         
         _movementStateMachine.SetState(_currentState, _position2d, _sideDirection, 1);
         _position2d = _currentState.Position;
+        _position2d.x = _xCenter;
         transform.position = _position2d;
     }
     
@@ -125,6 +126,9 @@ public class SpiderMovement : EnemyMovement
                 break;
             case EnemyStates.Return:
                 newState = _patrolState;
+                break;
+            case EnemyStates.Death:
+                OnEnemyDeactivatedInvoke();
                 break;
         }
 
