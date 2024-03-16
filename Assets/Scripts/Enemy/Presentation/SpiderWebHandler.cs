@@ -62,7 +62,7 @@ public class SpiderWebHandler : MonoBehaviour
                     newPos.x += Mathf.PerlinNoise1D(newPos.y) * phase * 3;
                     _spiderWebLineRenderer.SetPosition(i, newPos);
                 }
-                _lineMaterial.SetFloat("_Damage", Mathf.Lerp(0f, 0.3f, phase));
+                _lineMaterial.SetFloat("_Damage", Mathf.Lerp(0f, 0.9f, phase));
                 _localTime += Time.deltaTime;
             }
         }

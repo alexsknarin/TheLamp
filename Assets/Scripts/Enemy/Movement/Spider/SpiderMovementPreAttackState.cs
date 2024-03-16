@@ -34,7 +34,6 @@ public class SpiderMovementPreAttackState: EnemyMovementBaseState
         Position = newPosition;
         _localTime = 0;
         _acceleratedSpeed = 1f;
-        Debug.Log("Entered PreAttack State");
     }
     
     public override void ExecuteState(Vector3 currentPosition)

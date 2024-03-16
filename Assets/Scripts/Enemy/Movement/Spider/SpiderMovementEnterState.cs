@@ -21,7 +21,6 @@ public class SpiderMovementEnterState: EnemyMovementBaseState
         _hangingPoint.x = Mathf.Abs(_hangingPoint.x) * sideDirection;
         Position = currentPosition;
         _localTime = 0;
-        Debug.Log("Entered Enter State");
     }
     
     public override void ExecuteState(Vector3 currentPosition)

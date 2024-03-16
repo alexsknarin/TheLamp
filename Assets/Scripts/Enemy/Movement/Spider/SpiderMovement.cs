@@ -45,7 +45,6 @@ public class SpiderMovement : EnemyMovement
         _sideDirection = RandomDirection.Generate();
         
         _position2d = GenerateSpawnPosition(_sideDirection);
-        Debug.Log(_position2d);
         
         _currentState = _enterState;
         _movementStateMachine.SetState(_currentState, _position2d, _sideDirection, 1);
@@ -104,8 +103,7 @@ public class SpiderMovement : EnemyMovement
                 }
                 else
                 {
-                    OnPreAttackStartInvoke();
-                    newState = _preAttackState;
+                    newState = _patrolState;
                 }
                 break;
             case EnemyStates.Patrol:

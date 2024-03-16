@@ -23,7 +23,6 @@ public class SpiderMovementPatrolState: EnemyMovementBaseState
         _hangingPoint.x = Mathf.Abs(_hangingPoint.x) * sideDirection;
         Position = currentPosition;
         _localTime = 0;
-        Debug.Log("Entered Patrol State");
     }
     
     public override void ExecuteState(Vector3 currentPosition)
@@ -37,7 +36,7 @@ public class SpiderMovementPatrolState: EnemyMovementBaseState
         Position = newPosition;
         _localTime += Time.deltaTime;
     }
-    
+
     public override void ExitState()
     {
     }

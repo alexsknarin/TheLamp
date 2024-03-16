@@ -7,10 +7,12 @@ public class EnemyPool : MonoBehaviour, IInitializable
     [SerializeField] private Enemy _mothPrefab;
     [SerializeField] private Enemy _ladybugPrefab;
     [SerializeField] private Enemy _fireflyPrefab;
+    [SerializeField] private Enemy _spiderPrefab;
     private ObjectPool<Enemy> _flyPool;
     private ObjectPool<Enemy> _mothPool;
     private ObjectPool<Enemy> _ladybugPool;
     private ObjectPool<Enemy> _fireflyPool;
+    private ObjectPool<Enemy> _spiderPool;
     [SerializeField] private int _poolSize;
 
 
@@ -20,6 +22,7 @@ public class EnemyPool : MonoBehaviour, IInitializable
         _mothPool = new ObjectPool<Enemy>(CreateMoth, OnGetFromPool, OnReleaseToPool, OnDestroyPooledObject, true, _poolSize, _poolSize);
         _ladybugPool = new ObjectPool<Enemy>(CreateLadybug, OnGetFromPool, OnReleaseToPool, OnDestroyPooledObject, true, _poolSize, _poolSize);
         _fireflyPool = new ObjectPool<Enemy>(CreateFirefly, OnGetFromPool, OnReleaseToPool, OnDestroyPooledObject, true, _poolSize, _poolSize);
+        _spiderPool = new ObjectPool<Enemy>(CreateSpider, OnGetFromPool, OnReleaseToPool, OnDestroyPooledObject, true, _poolSize, _poolSize);
     }
     
     private Enemy CreateFly()
@@ -47,6 +50,13 @@ public class EnemyPool : MonoBehaviour, IInitializable
     {
         Enemy enemyInstance = Instantiate(_fireflyPrefab);
         enemyInstance.ObjectPool = _fireflyPool;
+        return enemyInstance;
+    }
+    
+    private Enemy CreateSpider()
+    {
+        Enemy enemyInstance = Instantiate(_spiderPrefab);
+        enemyInstance.ObjectPool = _spiderPool;
         return enemyInstance;
     }
 
@@ -91,6 +101,12 @@ public class EnemyPool : MonoBehaviour, IInitializable
                 if (_fireflyPool.CountAll <= _poolSize)
                 {
                     return _fireflyPool.Get();
+                }
+                break;
+            case EnemyTypes.Spider:
+                if (_spiderPool.CountAll <= _poolSize)
+                {
+                    return _spiderPool.Get();
                 }
                 break;
         }

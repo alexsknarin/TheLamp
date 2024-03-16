@@ -26,7 +26,6 @@ public class SpiderMovementAttackState: EnemyMovementBaseState
         Vector3 newPosition = currentPosition;
         Position = newPosition;
         _acceleratedSpeed = 1f;
-        Debug.Log("Entered Attack State");
     }
     
     public override void ExecuteState(Vector3 currentPosition)

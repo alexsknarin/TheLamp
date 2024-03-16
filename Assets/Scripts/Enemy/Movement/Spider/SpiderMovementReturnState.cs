@@ -34,7 +34,6 @@ public class SpiderMovementReturnState: EnemyMovementBaseState
         _initialXpos = currentPosition.x;
         _returnPhase = 0;
         _localTime = 0;
-        Debug.Log("Entered Return State");
     }
     
     public override void ExecuteState(Vector3 currentPosition)
