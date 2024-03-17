@@ -3,9 +3,10 @@ using UnityEngine;
 public class FlyMovementAttackState: EnemyMovementBaseState
 {
     public override EnemyStates State => EnemyStates.Attack;
-    private float _acceleration = 0.06f;
+    private float _acceleration = 13.5f;
     private float _depthDecrement = 0.2f;
     private float _acceleratedSpeed = 1f;
+    
     public FlyMovementAttackState(IStateMachineOwner owner, float speed, float radius, float verticalAmplitude) : base()
     {
         _speed = speed;
@@ -25,7 +26,8 @@ public class FlyMovementAttackState: EnemyMovementBaseState
         Vector3 newPosition = currentPosition;
         Vector3 direction = -newPosition.normalized;
         newPosition += direction * (_speed * _acceleratedSpeed * Time.deltaTime);
-        _acceleratedSpeed += _acceleration;
+        _acceleratedSpeed += _acceleration * Time.deltaTime;
+        Debug.Log(Time.deltaTime);
         Position = newPosition;
         
         Vector3 cameraDirection = (_cameraPosition - Position).normalized;
