@@ -43,11 +43,11 @@ public class EnemyManager : MonoBehaviour,IInitializable
     private bool _isWaveInitialized = false;
     
     private float _attackDelay;
-    private float _attackPrevTime;
+    private float _attackLocalTime;
     private bool _isAttacking;
     
-    private float _prevTime;
-    private float _prevExplosionTime;
+    private float _localTime;
+    private float _localExplosionTime;
     
     public static event Action<int> OnWavePrepared;
     public static event Action OnWaveStarted;
@@ -97,14 +97,14 @@ public class EnemyManager : MonoBehaviour,IInitializable
         _enemiesInWave = _enemyQueue.Count();
         _enemiesAvailable = _enemiesInWave;
         _enemiesKilled = 0;
-        _prevTime = Time.time;
+        _localTime = 0;
         _maxEnemiesOnScreen = _enemyQueue.MaxEnemiesOnScreen;
         _aggresionLevel = _enemyQueue.AggressionLevel;  
         _aggressionLevelNormalized = _aggresionLevel / _maxAggressionLevel;
 
         // Attack
         _attackDelay = _spawnDelay + 2f;
-        _attackPrevTime = Time.time;
+        _attackLocalTime = 0;
         // TODO: reading from the spawn queue object
         
         _isWaveInitialized = true;
@@ -168,7 +168,7 @@ public class EnemyManager : MonoBehaviour,IInitializable
         _explosionPosition = explosionSource.transform.position;
         _fireflyExplosion.Play(_explosionPosition, _fireflyExplosionRadius * 2);
         OnFireflyExplosion?.Invoke();
-        _prevExplosionTime = Time.time;
+        _localExplosionTime = 0;
         _isExplosionActive = true;
     }
     
@@ -211,19 +211,19 @@ public class EnemyManager : MonoBehaviour,IInitializable
             // Spawn
             if (_enemiesAvailable > 0)
             {
-                float phase = (Time.time - _prevTime) / _spawnDelay;
+                float phase = (_localTime) / _spawnDelay;
                 if (phase > 1)
                 {
                     if(_enemies.Count < _maxEnemiesOnScreen)
                     {
-                        _prevTime = Time.time;
+                        _localTime = 0;
                         SpawnEnemy(_currentSpawnEnemyIndex);
                         _enemiesAvailable--;
                         _currentSpawnEnemyIndex++;
                     }
                     else
                     {
-                        _prevTime = Time.time;
+                        _localTime = 0;
                     }
                 }    
             }
@@ -242,7 +242,7 @@ public class EnemyManager : MonoBehaviour,IInitializable
             // Attack delay
             if (!_isAttacking)
             {
-                float attackPhase = (Time.time - _attackPrevTime) / _attackDelay;
+                float attackPhase = _attackLocalTime / _attackDelay;
                 if (attackPhase > 1)
                 {
                     _isAttacking = true;
@@ -255,7 +255,7 @@ public class EnemyManager : MonoBehaviour,IInitializable
                 {
                     var attackingEnemy = _enemiesReadyToAttack[Random.Range(0, _enemiesReadyToAttack.Count)];
                     attackingEnemy.AttackStart();
-                    _attackPrevTime = Time.time;
+                    _attackLocalTime = 0;
                     _attackDelay = Random.Range(
                         Mathf.Lerp(1.5f, 0.8f, _aggressionLevelNormalized),
                         Mathf.Lerp(4.1f, 1.8f, _aggressionLevelNormalized)
@@ -266,7 +266,7 @@ public class EnemyManager : MonoBehaviour,IInitializable
 
             if (_isExplosionActive)
             {
-                float explosionPhase = (Time.time - _prevExplosionTime) / _explosionDuration;
+                float explosionPhase = _localExplosionTime / _explosionDuration;
                 if (explosionPhase > 1)
                 {
                     _isExplosionActive = false;
@@ -283,6 +283,10 @@ public class EnemyManager : MonoBehaviour,IInitializable
                 _currentWave++;
                 OnWavePrepared?.Invoke(_currentWave+1);
             }
+            
+            _localTime += Time.deltaTime;
+            _attackLocalTime += Time.deltaTime;
+            _localExplosionTime += Time.deltaTime;
         }
     }
 }

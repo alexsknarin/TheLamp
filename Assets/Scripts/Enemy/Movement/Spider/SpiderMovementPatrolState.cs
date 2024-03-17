@@ -2,10 +2,10 @@ using UnityEngine;
 
 public class SpiderMovementPatrolState: EnemyMovementBaseState
 {
+    public override EnemyStates State => EnemyStates.Patrol;
     private Vector3 _hangingPoint; 
     private float _localTime;
-    public override EnemyStates State => EnemyStates.Patrol;
-    
+
     public SpiderMovementPatrolState(IStateMachineOwner owner, float speed, float radius, float verticalAmplitude) : base()
     {
         _speed = speed;
@@ -35,9 +35,5 @@ public class SpiderMovementPatrolState: EnemyMovementBaseState
         
         Position = newPosition;
         _localTime += Time.deltaTime;
-    }
-
-    public override void ExitState()
-    {
     }
 }

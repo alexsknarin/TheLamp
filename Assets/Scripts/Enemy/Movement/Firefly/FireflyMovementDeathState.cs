@@ -9,7 +9,7 @@ public class FireflyMovementDeathState: EnemyMovementBaseState
     private float _gravityForceMagnitude = .2f;
     private float _dragAmount = 0.94f;
     private float _deathDuration = .32f;
-    private float _prevTime;
+    private float _localTime;
     
     public FireflyMovementDeathState(IStateMachineOwner owner, float speed, float radius, float verticalAmplitude) : base()
     {
@@ -24,15 +24,15 @@ public class FireflyMovementDeathState: EnemyMovementBaseState
         _sideDirection = sideDirection;
         _bounceForce = currentPosition.normalized * _bounceForceMagnitude;
         _gravityForce = Vector3.zero;
-        _prevTime = Time.time;
+        _localTime = 0;
     }
     
     public override void ExecuteState(Vector3 currentPosition)
     {
         Position = currentPosition + _bounceForce * Time.deltaTime + _gravityForce;
-        
         _bounceForce *= _dragAmount;
         _gravityForce += Vector3.down * (_gravityForceMagnitude * Time.deltaTime);
+        _localTime += Time.deltaTime;
     }
 
     public override void ExitState()
@@ -41,7 +41,7 @@ public class FireflyMovementDeathState: EnemyMovementBaseState
     
     public override void CheckForStateChange()
     {
-        float phase = (Time.time - _prevTime) / _deathDuration;
+        float phase = _localTime / _deathDuration;
         if (phase > 1f)
         {
             _owner.SwitchState();

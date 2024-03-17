@@ -15,8 +15,7 @@ public class LampAttackModel : MonoBehaviour, IInitializable
     [SerializeField] private int _attackBlockers = 0;
     
     private LampStates _lampState = LampStates.Neutral;
-    
-    private float _prevTime;
+    private float _localTime;
     
     public static event Action<int, float, float, float> OnLampAttack;
     public static event Action<int, float, float, float> OnLampBlockedAttack;
@@ -101,23 +100,24 @@ public class LampAttackModel : MonoBehaviour, IInitializable
                 OnLampBlockedAttack?.Invoke(_attackPower, _currentPower, _attackDuration, _attackDistance);
             }
             _lampState = LampStates.Attack;
-            _prevTime = Time.time;
+            _localTime = 0;
         }
     }
 
     private void PerformAttackState()
     {
-        float phase = (Time.time - _prevTime) / _attackDuration;
+        float phase = _localTime / _attackDuration;
         if (phase > 1) 
         {
             StartCooldownState();
         }
+        _localTime += Time.deltaTime;
     }
     
     private void HandleDamageWithCooldown()
     {
         StartCooldownState();
-        _prevTime = Time.time;
+        _localTime = 0;
     }
     
     private void StartCooldownState()
@@ -129,7 +129,7 @@ public class LampAttackModel : MonoBehaviour, IInitializable
     
     private void PerformCooldownState()
     {
-        float phase = (Time.time - _prevTime) / _fullCooldownTime;
+        float phase = _localTime / _fullCooldownTime;
         if (phase > 1)
         {
             StartNeutralState();
@@ -138,6 +138,7 @@ public class LampAttackModel : MonoBehaviour, IInitializable
         _currentPower = phase;
         UpdateAttackPower();
         OnLampCurrentPowerChanged?.Invoke(_currentPower);
+        _localTime += Time.deltaTime;
     }
     
     private void StartNeutralState()

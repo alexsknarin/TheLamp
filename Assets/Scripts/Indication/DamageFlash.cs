@@ -8,12 +8,12 @@ public class DamageFlash : DamageIndication
     [SerializeField] private VisualEffect _damageParticles;
     private Material _material;
     private bool _isActive = false;
-    private float _prevTime;
+    private float _localTime;
     
     public override void Play()
     {
         _isActive = true;
-        _prevTime = Time.time;
+        _localTime = 0;
         Vector3 direction = transform.position.normalized;
         _damageParticles.SetVector3("Direction", direction);
         _damageParticles.SendEvent("OnDamage");
@@ -23,7 +23,7 @@ public class DamageFlash : DamageIndication
     {
         if (_isActive)
         {
-            float phase = (Time.time - _prevTime) / _duration;
+            float phase = _localTime / _duration;
             if (phase > 1)
             {
                 _isActive = false;
@@ -33,6 +33,7 @@ public class DamageFlash : DamageIndication
             }
             _material.SetFloat("_AttackSemaphore", 1-phase);
             _material.SetFloat("_Damage", 9f);
+            _localTime += Time.deltaTime;
         }
     }
     

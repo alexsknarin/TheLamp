@@ -26,7 +26,8 @@ public class LampMovement : MonoBehaviour, IInitializable
     private float _swingShift;
     private float _currentCenter;
     private int _velocityDirection;
-    private float _prevTime;
+    private float _localTime;
+    
     private float _deviationAngle = 0;
     private Vector3 _prevPos;
     private Vector3 _newPos;
@@ -45,7 +46,8 @@ public class LampMovement : MonoBehaviour, IInitializable
         {
             _forceDirection = force;
             _currentCenter = _newPos.x;
-            _prevTime = Time.time;
+            _localTime = 0;
+            
             _lampMotionState = LampMotionState.Force;
             _forcePhase = 0;
             _swingDurationNormalized = _swingAttenuationDuration;
@@ -54,7 +56,7 @@ public class LampMovement : MonoBehaviour, IInitializable
         {
             _forceDirection = force;
             _currentCenter = _newPos.x;
-            _prevTime = Time.time;
+            _localTime = 0;
             _lampMotionState = LampMotionState.Force;
             _forcePhase = 0;
         }
@@ -64,11 +66,12 @@ public class LampMovement : MonoBehaviour, IInitializable
         }
     }
     
-    private void ApplyForce()
+    private void PerformApplyForce()
     {
-        _forcePhase = Mathf.Sin((Time.time - _prevTime) * _swingFrequency );
+        _forcePhase = Mathf.Sin((_localTime) * _swingFrequency );
         _newPos.x = _currentCenter + _forceDirection * _forcePhase * _forceMaxMagnitude;
         CompensateRotation(_newPos);
+        _localTime += Time.deltaTime;
         if (_forcePhase > 0.95f)
         {
             StartSwing();
@@ -80,7 +83,7 @@ public class LampMovement : MonoBehaviour, IInitializable
         _currentCenter = 0;
         _swingAmplitude = Mathf.Abs(_newPos.x);
         _swingDurationNormalized = (_swingAttenuationDuration * _swingAmplitude) / _forceMaxMagnitude;
-        _prevTime = Time.time;
+        _localTime = 0;
         
         if(_newPos.x > 0)
         {
@@ -94,15 +97,16 @@ public class LampMovement : MonoBehaviour, IInitializable
         _lampMotionState = LampMotionState.Swing;
     }
 
-    private void ApplySwing()
+    private void PerformSwing()
     {
-        float attenuationPhase = (Time.time - _prevTime) / _swingDurationNormalized;
-        _newPos.x = Mathf.Sin((Time.time - _prevTime + _swingShift) * _swingFrequency) * _swingAmplitude * _swingAttenuationCurve.Evaluate(attenuationPhase);
+        float attenuationPhase = _localTime / _swingDurationNormalized;
+        _newPos.x = Mathf.Sin((_localTime + _swingShift) * _swingFrequency) * _swingAmplitude * _swingAttenuationCurve.Evaluate(attenuationPhase);
         CompensateRotation(_newPos);
         if (attenuationPhase > 1)
         {
             _lampMotionState = LampMotionState.Idle;
         }
+        _localTime += Time.deltaTime;
     }
 
     private void CompensateRotation(Vector3 pos)
@@ -115,7 +119,7 @@ public class LampMovement : MonoBehaviour, IInitializable
         }
     }
 
-    private void ApplyIdle()
+    private void PerformIdle()
     {
         _newPos.x = 0f;
         _deviationAngle = 0;
@@ -128,20 +132,18 @@ public class LampMovement : MonoBehaviour, IInitializable
         switch (_lampMotionState)
         {
             case LampMotionState.Idle:
-                ApplyIdle();
+                PerformIdle();
                 break;
             case LampMotionState.Swing:
-                ApplySwing();
+                PerformSwing();
                 break;
             case LampMotionState.Force:
-                ApplyForce();
+                PerformApplyForce();
                 break;
         }
         
         _velocityDirection = (int)Mathf.Sign(_newPos.x - _prevPos.x);
         transform.position = _newPos;
-        
-        
         transform.localRotation = Quaternion.Euler(0, 0, -_deviationAngle * Mathf.Rad2Deg);
     }
 }

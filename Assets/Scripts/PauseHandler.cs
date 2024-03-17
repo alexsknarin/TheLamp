@@ -4,7 +4,7 @@ using UnityEngine;
 public class PauseHandler : MonoBehaviour
 {
     [SerializeField] private float _enemyDamagePauseTime = 0.1f;
-    private float _prevTime;
+    private float _localTime;
     private bool _isPausedOnEnemyDamage = false;
     
     private void OnEnable()
@@ -20,7 +20,7 @@ public class PauseHandler : MonoBehaviour
     private void OnDamagedEnemyPauseStart()
     {
         Time.timeScale = 0.2f;
-        _prevTime = Time.unscaledTime;
+        _localTime = 0;
         _isPausedOnEnemyDamage = true;
     }
    
@@ -28,12 +28,14 @@ public class PauseHandler : MonoBehaviour
     {
         if (_isPausedOnEnemyDamage)
         {
-            float phase = (Time.unscaledTime - _prevTime) / _enemyDamagePauseTime;
+            float phase = _localTime / _enemyDamagePauseTime;
             if(phase > 1)
             {
                 Time.timeScale = 1f;
                 _isPausedOnEnemyDamage = false;
             }
+
+            _localTime += Time.unscaledDeltaTime;
         }
     }
 }

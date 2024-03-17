@@ -10,9 +10,11 @@ public class LampPresentation : MonoBehaviour
     
     private float _lightPower = 1f;
     private float _attackDuration = 1f;
-    private float _prevTimeAttack;
+    private float _localTimeAttack;
+    
     private bool _isAttack = false;
-    private float _prevTimeDamage;
+    private float _localTimeDamage;
+    
     private bool _isDamage = false;
     private bool _isBlockedAttack = false;
     
@@ -48,18 +50,6 @@ public class LampPresentation : MonoBehaviour
         ResetLightNeutralState();
     }
 
-    private void Update()
-    {
-        if (_isAttack)
-        {
-            PerformAttack();
-        }
-        if (_isDamage)
-        {
-            PerformDamage();            
-        }
-    }
-
     private void ResetLightNeutralState()
     {
         _lampLight.intensity = _lightNeutralIntensity;
@@ -71,7 +61,7 @@ public class LampPresentation : MonoBehaviour
         _lampMaterial.SetFloat("_attackPower", 0f);
         _lightPower = Mathf.Pow(currentPower, 2f);
         _attackDuration = attackDuration;
-        _prevTimeAttack = Time.time;
+        _localTimeAttack = 0;
         _isAttack = true;
         _lampAttackZoneObject.transform.localScale = Vector3.one * (attackDistance * 2);
     }
@@ -82,14 +72,14 @@ public class LampPresentation : MonoBehaviour
         _lampMaterial.SetFloat("_attackPower", 0f);
         _lightPower = Mathf.Pow(currentPower, 2f);
         _attackDuration = attackDuration;
-        _prevTimeAttack = Time.time;
+        _localTimeAttack = 0;
         _isAttack = true;
         _lampAttackZoneObject.transform.localScale = Vector3.one * (attackDistance * 2);
     }
     
     private void PerformAttack()
     {
-        float phase = (Time.time - _prevTimeAttack) / _attackDuration;
+        float phase = _localTimeAttack / _attackDuration;
         if (phase > 1)
         {
             _isAttack = false;
@@ -105,6 +95,7 @@ public class LampPresentation : MonoBehaviour
             _lampMaterial.SetFloat("_EmissionLevel", Mathf.Lerp(_lampMaximumEmission * _lightPower, _lampMinimumEmission, phase));
             _lampAttackZoneMaterial.SetFloat("_Alpha", Mathf.Lerp(_lightPower, 0, phase));
         }
+        _localTimeAttack += Time.deltaTime;
     }
     
     private void PerformCooldownState(float currentPower)
@@ -118,21 +109,31 @@ public class LampPresentation : MonoBehaviour
     {
         _lampMaterial.SetFloat("_Damage", 1f);
         _isDamage = true;
-        _prevTimeDamage = Time.time;
+        _localTimeDamage = 0;
     }
     
     private void PerformDamage()
     {
+        float phase = _localTimeDamage / _lightDamageDuration;
+        if (phase > 1)
+        {
+            _isDamage = false;
+            _lampMaterial.SetFloat("_Damage", 0f);
+            return;
+        }
+        _lampMaterial.SetFloat("_Damage", Mathf.Lerp(1f, 0f, phase));
+        _localTimeDamage += Time.deltaTime;
+    }
+    
+    private void Update()
+    {
+        if (_isAttack)
+        {
+            PerformAttack();
+        }
         if (_isDamage)
         {
-            float phase = (Time.time - _prevTimeDamage) / _lightDamageDuration;
-            if (phase > 1)
-            {
-                _isDamage = false;
-                _lampMaterial.SetFloat("_Damage", 0f);
-                return;
-            }
-            _lampMaterial.SetFloat("_Damage", Mathf.Lerp(1f, 0f, phase));
+            PerformDamage();            
         }
     }
 }

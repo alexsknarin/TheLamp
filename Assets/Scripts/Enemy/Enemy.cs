@@ -166,13 +166,11 @@ public class Enemy : MonoBehaviour, IInitializable
     
     private void OnSpreadFinished()
     {
-        Debug.Log("Spread finished");
         _enemyPresentation.DisableTrail();
     }
     
     private void OnMovementInitialized()
     {
-        Debug.Log("Enemy movement initialized");
         _enemyPresentation.Initialize();
     }
 }

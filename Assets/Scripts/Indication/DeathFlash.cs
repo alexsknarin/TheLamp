@@ -9,12 +9,12 @@ public class DeathFlash : DamageIndication
     [SerializeField] private VisualEffect _damageParticles;
     private Material _material;
     private bool _isActive = false;
-    private float _prevTime;
+    private float _localTime;
     
     public override void Play()
     {
         _isActive = true;
-        _prevTime = Time.time;
+        _localTime = 0;
         _material.SetFloat("_DeathFade", 0);
         _material.SetFloat("_AttackSemaphore", 0);
         _material.SetFloat("_Damage", 1f);
@@ -28,7 +28,7 @@ public class DeathFlash : DamageIndication
     {
         if (_isActive)
         {
-            float phase = (Time.time - _prevTime) / _duration;
+            float phase = _localTime / _duration;
             if (phase > 1)
             {
                 _isActive = false;
@@ -39,6 +39,7 @@ public class DeathFlash : DamageIndication
             }
             _material.SetFloat("_Damage", 4f);
             _material.SetFloat("_DeathFade", phase);
+            _localTime += Time.deltaTime;
         }
     }
 

@@ -34,15 +34,13 @@ public class FlyMovementEnterState: EnemyMovementBaseState
         _enterDirection = (_endPos - currentPosition);
         _initialDistance = _enterDirection.magnitude;
         _enterDirection = _enterDirection.normalized;
-        
-        
+
         Position = currentPosition;
     }
     
     public override void ExecuteState(Vector3 currentPosition)
     {
         Position = currentPosition + _enterDirection * (_speed * Time.deltaTime * (Mathf.PI/2));
-        
         // Depth To Camera
         float distancePhase = 1 - (_endPos - Position).magnitude / _initialDistance;
         Vector3 cameraDirection = (_cameraPosition - Position).normalized;
@@ -51,13 +49,9 @@ public class FlyMovementEnterState: EnemyMovementBaseState
     
     public override void CheckForStateChange()
     {
-        if(Position.x*_sideDirection > Mathf.Abs(_endPos.x))
+        if(Position.x * _sideDirection > Mathf.Abs(_endPos.x))
         {
             _owner.SwitchState();
         }
-    }
-
-    public override void ExitState()
-    {
     }
 }

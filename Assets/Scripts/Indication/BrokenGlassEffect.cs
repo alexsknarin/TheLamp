@@ -9,7 +9,7 @@ public class BrokenGlassEffect : MonoBehaviour
     [SerializeField] private Image _brokenGlassImage;
     private bool _isActive = false;
     private float _duration = 0.25f;
-    private float _prevTime;
+    private float _localTime;
     
 
     private void OnEnable()
@@ -25,14 +25,14 @@ public class BrokenGlassEffect : MonoBehaviour
     private void Play()
     {
         _isActive = true;
-        _prevTime = Time.time;
+        _localTime = 0;
     }
     
     void Update()
     {
         if (_isActive)
         {
-            float phase = (Time.time - _prevTime) / _duration;
+            float phase = _localTime / _duration;
             if(phase > 1)
             {
                 _isActive = false;
@@ -40,7 +40,7 @@ public class BrokenGlassEffect : MonoBehaviour
                 return;
             }
             _brokenGlassImage.color = new Color(1, 1, 1, (1-phase)*0.055f);
+            _localTime += Time.deltaTime;
         }
-        
     }
 }

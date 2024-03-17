@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class SpiderMovementPreAttackState: EnemyMovementBaseState
 {
+    public override EnemyStates State => EnemyStates.PreAttack;
     private Vector3 _hangingPoint;
     private float _localTime;
     private float _acceleration = 9.7f;
@@ -11,8 +12,6 @@ public class SpiderMovementPreAttackState: EnemyMovementBaseState
     private float _swingPhase;
     private float _prevSwingPhase;
 
-    public override EnemyStates State => EnemyStates.PreAttack;
-    
     public SpiderMovementPreAttackState(IStateMachineOwner owner, float speed, float radius, float verticalAmplitude) : base()
     {
         _speed = speed;
@@ -58,9 +57,5 @@ public class SpiderMovementPreAttackState: EnemyMovementBaseState
         {
             _owner.SwitchState();
         }
-    }
-
-    public override void ExitState()
-    {
     }
 }

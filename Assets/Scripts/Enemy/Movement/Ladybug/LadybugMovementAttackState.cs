@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class LadybugMovementAttackState: EnemyMovementBaseState
 {
+    public override EnemyStates State => EnemyStates.Attack;
     public LadybugMovementAttackState(IStateMachineOwner owner, float speed, float radius, float verticalAmplitude) : base()
     {
         _speed = speed;
@@ -9,7 +10,6 @@ public class LadybugMovementAttackState: EnemyMovementBaseState
         _verticalAmplitude = verticalAmplitude;
         _owner = owner;
     }
-    public override EnemyStates State => EnemyStates.Attack;
 
     public override void EnterState(Vector3 currentPosition, int sideDirection, int depthDirection)
     {
@@ -21,14 +21,8 @@ public class LadybugMovementAttackState: EnemyMovementBaseState
         Vector3 newPosition = currentPosition;
         Vector3 direction = -newPosition.normalized;
         newPosition += direction * (_speed * Time.deltaTime);
-        
         Position = newPosition;
-        
         Vector3 cameraDirection = (_cameraPosition - Position).normalized;
         Depth = cameraDirection * 0.3f;
-    }
-
-    public override void ExitState()
-    {
     }
 }

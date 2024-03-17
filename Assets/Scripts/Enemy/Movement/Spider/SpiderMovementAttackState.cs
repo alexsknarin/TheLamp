@@ -2,13 +2,13 @@ using UnityEngine;
 
 public class SpiderMovementAttackState: EnemyMovementBaseState
 {
+    public override EnemyStates State => EnemyStates.Attack;
     private Vector3 _hangingPoint;
     private float _localTime;
     private float _acceleration = 8.7f;
     private float _acceleratedSpeed;
     private float _sideDirection;
-    public override EnemyStates State => EnemyStates.Attack;
-   
+
     public SpiderMovementAttackState(IStateMachineOwner owner, float speed, float radius, float verticalAmplitude) : base()
     {
         _speed = speed;
@@ -38,13 +38,5 @@ public class SpiderMovementAttackState: EnemyMovementBaseState
         
         _acceleratedSpeed += _acceleration*Time.deltaTime;
         Position = newPosition;
-    }
-    
-    public override void CheckForStateChange()
-    {
-    }
-
-    public override void ExitState()
-    {
     }
 }

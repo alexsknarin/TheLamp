@@ -11,12 +11,12 @@ public class LadybugDamageFlash : DamageIndication
     private Material _bodyMaterial;
     private Material _attackZoneMaterial;
     private bool _isActive = false;
-    private float _prevTime;
+    private float _locatTime;
     
     public override void Play()
     {
         _isActive = true;
-        _prevTime = Time.time;
+        _locatTime = 0;
         
         Vector3 direction = transform.position.normalized;
         _damageParticles.SetVector3("Direction", direction);
@@ -27,7 +27,7 @@ public class LadybugDamageFlash : DamageIndication
     {
         if (_isActive)
         {
-            float phase = (Time.time - _prevTime) / _duration;
+            float phase = _locatTime / _duration;
             if (phase > 1)
             {
                 _isActive = false;
@@ -39,6 +39,7 @@ public class LadybugDamageFlash : DamageIndication
             _bodyMaterial.SetFloat("_AttackSemaphore", (1-phase)*0.05f);
             _bodyMaterial.SetFloat("_Damage", 1.25f);
             _attackZoneMaterial.SetFloat("_Alpha", 1-Mathf.Clamp(phase*3f, 0, 1));
+            _locatTime += Time.deltaTime;
         }
     }
     

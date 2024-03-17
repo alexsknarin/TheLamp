@@ -27,14 +27,8 @@ public class FlyMovementAttackState: EnemyMovementBaseState
         Vector3 direction = -newPosition.normalized;
         newPosition += direction * (_speed * _acceleratedSpeed * Time.deltaTime);
         _acceleratedSpeed += _acceleration * Time.deltaTime;
-        Debug.Log(Time.deltaTime);
         Position = newPosition;
-        
         Vector3 cameraDirection = (_cameraPosition - Position).normalized;
         Depth = cameraDirection * (2.5f * _depthDecrement);
-    }
-
-    public override void ExitState()
-    {
     }
 }

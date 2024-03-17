@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class MothMovementDeathState: EnemyMovementBaseState
 {
+    public override EnemyStates State => EnemyStates.Death;
     private Vector3 _bounceForce;
     private Vector3 _gravityForce;
     private float _bounceForceMagnitude = 4f;
@@ -17,8 +18,7 @@ public class MothMovementDeathState: EnemyMovementBaseState
         _verticalAmplitude = verticalAmplitude;
         _owner = owner;
     }
-    public override EnemyStates State => EnemyStates.Death;
-
+  
     public override void EnterState(Vector3 currentPosition, int sideDirection, int depthDirection)
     {
         _sideDirection = sideDirection;
@@ -29,19 +29,13 @@ public class MothMovementDeathState: EnemyMovementBaseState
     public override void ExecuteState(Vector3 currentPosition)
     {
         Position = currentPosition + _bounceForce * Time.deltaTime + _gravityForce;
-        
         // Add noise
         Vector3 trajectoryNoise = TrajectoryNoise.Generate(_noiseFrequency);
         Position += trajectoryNoise * _noiseAmplitude;
-        
         _bounceForce = _bounceForce * _dragAmount;
         _gravityForce = _gravityForce + Vector3.down * (_gravityForceMagnitude * Time.deltaTime);
     }
 
-    public override void ExitState()
-    {
-    }
-    
     public override void CheckForStateChange()
     {
         if (Position.y < -4f)
@@ -49,5 +43,4 @@ public class MothMovementDeathState: EnemyMovementBaseState
             _owner.SwitchState();
         }
     }
-  
 }

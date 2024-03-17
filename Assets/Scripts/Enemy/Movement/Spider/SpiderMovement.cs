@@ -189,8 +189,6 @@ public class SpiderMovement : EnemyMovement
         
         _stateDebug = _currentState.State;
         
-        
-        
         if(Input.GetKeyDown(KeyCode.F))
         {
             if (_currentState.State == EnemyStates.Patrol)

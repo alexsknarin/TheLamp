@@ -8,9 +8,9 @@ public class FireflyExplosion : MonoBehaviour
     [SerializeField] private MeshRenderer _meshRenderer;
     private Material _material;
     private bool _isActive;
-    private float _prevTime;
     private float _phase;
     private float _baseScale = 1;
+    private float _localTime;
     
     void Awake()
     {
@@ -21,18 +21,17 @@ public class FireflyExplosion : MonoBehaviour
     {
         transform.position = position;
         gameObject.SetActive(true);
-        _prevTime = Time.time;
         _isActive = true;
         _material.SetFloat("_ExplosionPhase", 0);
         _baseScale = radius;
+        _localTime = 0;
     }
-
-    // Update is called once per frame
+    
     void Update()
     {
         if (_isActive)
         {
-            _phase = (Time.time - _prevTime) / _duration;
+            _phase = _localTime / _duration;
             if (_phase >= 1)
             {
                 _isActive = false;
@@ -46,7 +45,7 @@ public class FireflyExplosion : MonoBehaviour
                 transform.localScale = scale;
                 _material.SetFloat("_ExplosionPhase", _explosionMaterialCurve.Evaluate(_phase));
             }
-            
-        }    
+            _localTime += Time.deltaTime;
+        }
     }
 }

@@ -3,7 +3,6 @@ using UnityEngine;
 public class LadybugMovementPreAttackState: EnemyMovementBaseState
 {
     public override EnemyStates State => EnemyStates.PreAttack;
-    
     private float _duration = .30f;
     private float _acceleratedSpeed;
     private float _acceleration = 0.93f;

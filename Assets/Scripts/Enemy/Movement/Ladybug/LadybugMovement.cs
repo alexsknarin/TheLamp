@@ -74,7 +74,8 @@ public class LadybugMovement : EnemyMovement
     {
         if(_currentState.State != EnemyStates.Attack && 
            _currentState.State != EnemyStates.PreAttack && 
-           _currentState.State != EnemyStates.Death)
+           _currentState.State != EnemyStates.Death &&
+           _currentState.State != EnemyStates.Stick)
         {
             _currentState = _spreadState;
             _movementStateMachine.SetState(_currentState, _position2d, _sideDirection, _depthDirection);
@@ -186,8 +187,7 @@ public class LadybugMovement : EnemyMovement
             _movementStateMachine.CheckForStateChange();
             transform.position = position;
 
-            Debug.DrawLine(_prevPosition2d, _prevPosition2d + (_position2d - _prevPosition2d).normalized * 0.02f,
-                Color.cyan, 5f);
+            Debug.DrawLine(_prevPosition2d, _prevPosition2d + (_position2d - _prevPosition2d).normalized * 0.02f, Color.cyan, 5f);
             _stateDebug = _currentState.State;
         }
     }

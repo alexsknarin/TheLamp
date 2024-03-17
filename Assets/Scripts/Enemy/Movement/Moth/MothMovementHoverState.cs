@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class MothMovementHoverState: EnemyMovementBaseState
 {
-    private float _prevTime;
+    public override EnemyStates State => EnemyStates.Hover;
     private float _patrolStartOffsetAngle;
     private float _enterTimeOffset; // TMP
     private float _phase;
@@ -16,6 +16,7 @@ public class MothMovementHoverState: EnemyMovementBaseState
     private float _hoverPhase;
     private float _noiseFrequency = 8f;
     private float _noiseAmplitude = 0.29f;
+    private float _localTime;
 
     public MothMovementHoverState(IStateMachineOwner owner, float speed, float radius, float verticalAmplitude) : base()
     {
@@ -25,26 +26,24 @@ public class MothMovementHoverState: EnemyMovementBaseState
         _owner = owner;
     }
     
-    public override EnemyStates State => EnemyStates.Hover;
-
     public override void EnterState(Vector3 currentPosition, int sideDirection, int depthDirection)
     {
         _sideDirection = sideDirection;
         _depthDirection = depthDirection;
-        _prevTime = Time.time;
         _hoverDuration = Random.Range(.5f, 2f);
         _phase = 0;
         Position = currentPosition;
         _hoverCenter = currentPosition;
         _speedFactor = _radius / _hoverRadius;
+        _localTime = 0;
     }
     
     public override void ExecuteState(Vector3 currentPosition)
     {
-        float radiusAdaptPhase = (Time.time - _prevTime) / _moveFromCenterDuration;
+        float radiusAdaptPhase = _localTime / _moveFromCenterDuration;
         float speedNoiseCompensation = Mathf.Lerp(1, _speedNoiseCompensation, radiusAdaptPhase);
         _phase += Time.deltaTime * _speed * _sideDirection * _speedFactor * speedNoiseCompensation;
-        _hoverPhase = (Time.time - _prevTime) / _hoverDuration;
+        _hoverPhase = _localTime / _hoverDuration;
 
         Vector3 circlePosition = _hoverCenter + EnemyMovementPatterns.CircleMotion(0, _hoverRadius, _hoverRadius, 1, _phase);
         
@@ -60,6 +59,8 @@ public class MothMovementHoverState: EnemyMovementBaseState
         // Depth To Camera
         Vector3 cameraDirection = (_cameraPosition - Position).normalized;
         Depth = cameraDirection * _depthMultiplier;
+        
+        _localTime += Time.deltaTime;
     }
     
     public override void CheckForStateChange()
@@ -68,10 +69,5 @@ public class MothMovementHoverState: EnemyMovementBaseState
         {
             _owner.SwitchState();
         }
-    }
-
-    public override void ExitState()
-    {
-
     }
 }

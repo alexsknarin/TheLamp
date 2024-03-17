@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class SpiderMovementReturnState: EnemyMovementBaseState
 {
+    public override EnemyStates State => EnemyStates.Return;
     private Vector3 _hangingPoint;
     private float _localTime;
     private float _initialAmplitude;
@@ -10,7 +11,7 @@ public class SpiderMovementReturnState: EnemyMovementBaseState
     private int _returnPhase;
     private Vector3 _initialDirection;
     private float _decceleration = 0.05f;
-    public override EnemyStates State => EnemyStates.Return;
+    
     public SpiderMovementReturnState(IStateMachineOwner owner, float speed, float radius, float verticalAmplitude) : base()
     {
         _speed = speed;
@@ -74,9 +75,5 @@ public class SpiderMovementReturnState: EnemyMovementBaseState
         {
             _owner.SwitchState();
         }
-    }
-    
-    public override void ExitState()
-    {
     }
 }

@@ -3,7 +3,6 @@ using UnityEngine;
 public class FlyMovementSpreadState: EnemyMovementBaseState
 {
     public override EnemyStates State => EnemyStates.Spread;
-    
     private float _maxDistance = 6.4f;
     private float _acceleratedSpeed;
     private float _acceleration = 5.5f;
@@ -38,9 +37,5 @@ public class FlyMovementSpreadState: EnemyMovementBaseState
         {
             _owner.SwitchState();
         }
-    }
-
-    public override void ExitState()
-    {
     }
 }

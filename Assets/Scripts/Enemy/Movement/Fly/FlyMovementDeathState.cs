@@ -31,11 +31,7 @@ public class FlyMovementDeathState: EnemyMovementBaseState
         _bounceForce = _bounceForce * _dragAmount;
         _gravityForce = _gravityForce + Vector3.down * (_gravityForceMagnitude * Time.deltaTime);
     }
-
-    public override void ExitState()
-    {
-    }
-    
+  
     public override void CheckForStateChange()
     {
         if (Position.y < -6f)

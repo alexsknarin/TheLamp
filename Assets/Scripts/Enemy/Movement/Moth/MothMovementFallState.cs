@@ -1,7 +1,8 @@
 using UnityEngine;
 
 public class MothMovementFallState: EnemyMovementBaseState
-{
+{ 
+    public override EnemyStates State => EnemyStates.Fall;
     private Vector3 _bounceForce;
     private Vector3 _gravityForce;
     private float _bounceForceMagnitude = 4f;
@@ -17,8 +18,7 @@ public class MothMovementFallState: EnemyMovementBaseState
         _verticalAmplitude = verticalAmplitude;
         _owner = owner;
     }
-    public override EnemyStates State => EnemyStates.Fall;
-
+    
     public override void EnterState(Vector3 currentPosition, int sideDirection, int depthDirection)
     {
         _sideDirection = sideDirection;
@@ -37,11 +37,7 @@ public class MothMovementFallState: EnemyMovementBaseState
         _bounceForce = _bounceForce * _dragAmount;
         _gravityForce = _gravityForce + Vector3.down * (_gravityForceMagnitude * Time.deltaTime);
     }
-
-    public override void ExitState()
-    {
-    }
-    
+   
     public override void CheckForStateChange()
     {
         if (Position.y < -_radius * _verticalAmplitude * 1.1)

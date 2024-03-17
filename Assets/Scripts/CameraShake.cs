@@ -10,7 +10,7 @@ public class CameraShake : MonoBehaviour
     [SerializeField] private AnimationCurve _shakeProfileCurve;
     
     private Vector3 _originalPos;
-    private float _prevTime;
+    private float _localTime;
     private bool _isShaking;
     private bool _isPaused;
     private bool _isGameOver = false;
@@ -47,29 +47,29 @@ public class CameraShake : MonoBehaviour
     
     private void StartDamageShake()
     {
-        _prevTime = Time.time;
+        _localTime = 0;
         _isShaking = true;
         _shakeAmplitudeMultiplier = 1.0f;
     }
     
     private void StartExplosionShake()
     {
-        _prevTime = Time.time;
+        _localTime = 0;
         _isShaking = true;
         _shakeAmplitudeMultiplier = 2.5f;
     }
     
     private void PerformShake()
     {
-        if (Time.time - _prevTime < _shakeDuration)
+        if (_localTime < _shakeDuration)
         {
-            float shakeMask = _shakeProfileCurve.Evaluate((Time.time - _prevTime) / _shakeDuration) * _shakeAmplitudeMultiplier;
+            float shakeMask = _shakeProfileCurve.Evaluate(_localTime / _shakeDuration) * _shakeAmplitudeMultiplier;
             transform.position = Vector3.Lerp(_originalPos, _originalPos + (Vector3)(Random.insideUnitCircle * _shakeAmplitude), shakeMask);            
         }
         else
         {
             _isShaking = false;
-        }            
+        }
+        _localTime += Time.deltaTime;
     }
-
 }
