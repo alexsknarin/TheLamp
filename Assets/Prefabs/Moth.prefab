@@ -212,6 +212,7 @@ GameObject:
   - component: {fileID: 2048019365804953742}
   - component: {fileID: 909013809244515297}
   - component: {fileID: 4517575928417763032}
+  - component: {fileID: 7820730893291249506}
   m_Layer: 0
   m_Name: Moth
   m_TagString: Enemy
@@ -354,6 +355,7 @@ MonoBehaviour:
   _damageFlash: {fileID: 2048019365804953742}
   _deathFlash: {fileID: 909013809244515297}
   _healthIndication: {fileID: 4517575928417763032}
+  _trailResetHandler: {fileID: 7820730893291249506}
 --- !u!114 &593347267894582958
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -413,6 +415,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _meshRenderer: {fileID: 1169659995651568926}
+--- !u!114 &7820730893291249506
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6202721331199203244}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 424b1fa2df8938d49b02f73a0967a015, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _trailRenderer: {fileID: 3232621474861105994}
 --- !u!1 &6629993276259797497
 GameObject:
   m_ObjectHideFlags: 0

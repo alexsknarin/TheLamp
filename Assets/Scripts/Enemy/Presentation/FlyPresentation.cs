@@ -6,7 +6,7 @@ public class FlyPresentation : EnemyPresentation
     [SerializeField] private DamageIndication _damageFlash;
     [SerializeField] private DamageIndication _deathFlash;
     [SerializeField] private HealthIndication _healthIndication;
-    
+    [SerializeField] private TrailResetHandler _trailResetHandler;
    
     public override void PreAttackStart()
     {
@@ -39,5 +39,10 @@ public class FlyPresentation : EnemyPresentation
         _damageFlash.Initialize();
         _deathFlash.Initialize();
         _healthIndication.Initialize();
+        _trailResetHandler.Reset();
+    }
+
+    public override void DisableTrail()
+    {
     }
 }

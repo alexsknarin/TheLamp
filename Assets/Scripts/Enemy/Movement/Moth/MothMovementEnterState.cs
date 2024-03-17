@@ -29,14 +29,13 @@ public class MothMovementEnterState: EnemyMovementBaseState
         float a = _radius;
         float b = _radius * _verticalAmplitude;
 
-        float denominator =
-            ((a * b) / (Mathf.Sqrt((a * a) * (Position.y * Position.y) + (b * b) * (Position.x * Position.x)))); 
+        float denominator = ((a * b) / (Mathf.Sqrt((a * a) * (Position.y * Position.y) + (b * b) * (Position.x * Position.x)))); 
         _endPos.x = denominator * Position.x;
         _endPos.y = denominator * Position.y;
        
         _enterDirection = (Vector3.zero - currentPosition).normalized;
         _initialDistance = (_endPos - Position).magnitude;
-        
+        _phase = 1;
     }
     
     public override void ExecuteState(Vector3 currentPosition)
@@ -49,11 +48,12 @@ public class MothMovementEnterState: EnemyMovementBaseState
         float distancePhase = 1 - (_endPos - Position).magnitude / _initialDistance;
         Vector3 cameraDirection = (_cameraPosition - Position).normalized;
         Depth = cameraDirection * (_depthDirection * Mathf.Lerp(Position.y * _depthMultiplier, Position.y, distancePhase));
-
+        
     }
     
     public override void CheckForStateChange()
     {
+        Debug.Log(_phase);
         if(_phase < 0.02f)
         {
             _owner.SwitchState();

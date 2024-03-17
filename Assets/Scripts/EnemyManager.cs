@@ -34,6 +34,10 @@ public class EnemyManager : MonoBehaviour,IInitializable
     private int _currentSpawnEnemyIndex;
     [SerializeField] private float _spawnDelay;
     
+    [Header("---- Debug ------")]
+    [SerializeField] private int _enemiesInWaveCount;
+    [SerializeField] private int _enemiesLeftCount;
+    
     private List<Enemy> _enemies;
     private List<Enemy> _enemiesReadyToAttack;
     private bool _isWaveInitialized = false;
@@ -104,6 +108,10 @@ public class EnemyManager : MonoBehaviour,IInitializable
         // TODO: reading from the spawn queue object
         
         _isWaveInitialized = true;
+        
+        // Debug
+        _enemiesInWaveCount = _enemiesInWave;
+        _enemiesLeftCount = _enemiesInWave;
     }
     
     public void SpawnEnemy(int enemyIndex)
@@ -176,16 +184,28 @@ public class EnemyManager : MonoBehaviour,IInitializable
             enemyPosition2d.z = 0;
             Vector3 explosionPosition2d = _explosionPosition;
             explosionPosition2d.z = 0;
-            
             if((explosionPosition2d - enemyPosition2d).magnitude < _fireflyExplosionRadius)
             {
                 enemy.ReceiveDamage(100);
             }
         }
     }
+    
+    private void SpreadEnemies()
+    {
+        foreach (var enemy in _enemies)
+        {
+            enemy.SpreadStart();
+        }
+    }
 
     private void Update()
     {
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            SpreadEnemies();
+        }
+        
         if (_isWaveInitialized)
         {
             // Spawn

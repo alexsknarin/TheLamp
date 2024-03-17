@@ -6,6 +6,7 @@ public class MothPresentation : EnemyPresentation
     [SerializeField] private DamageFlash _damageFlash;
     [SerializeField] private DeathFlash _deathFlash;
     [SerializeField] private HealthIndication _healthIndication;
+    [SerializeField] private TrailResetHandler _trailResetHandler;
 
     public override void PreAttackStart()
     {
@@ -38,5 +39,10 @@ public class MothPresentation : EnemyPresentation
         _damageFlash.Initialize();
         _deathFlash.Initialize();
         _healthIndication.Initialize();
+        _trailResetHandler.Reset();
+    }
+    
+    public override void DisableTrail()
+    {
     }
 }

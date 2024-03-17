@@ -41,18 +41,19 @@ public class SpiderMovement : EnemyMovement
         _attackState = new SpiderMovementAttackState(this, _speed, _xCenter, 0);
         _returnState = new SpiderMovementReturnState(this, _speed, _xCenter, 0);
         _deathState = new FlyMovementDeathState(this, _speed, _xCenter, 0);
-        
+        MovementSetup();
+    }
+    
+    private void MovementSetup()
+    {
         _sideDirection = RandomDirection.Generate();
-        
         _position2d = GenerateSpawnPosition(_sideDirection);
-        
         _currentState = _enterState;
         _movementStateMachine.SetState(_currentState, _position2d, _sideDirection, 1);
-
         _position2d = _currentState.Position;
         transform.position = _position2d;
-        
         _isDead = false;
+        OnInitializedInvoke();
     }
   
     private Vector3 GenerateSpawnPosition(int direction)
@@ -70,6 +71,10 @@ public class SpiderMovement : EnemyMovement
             _isCollided = true;
             SwitchState();
         }
+    }
+    
+    public override void TriggerSpread()
+    {
     }
 
     public override void TriggerDeath()

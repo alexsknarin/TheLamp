@@ -32,6 +32,7 @@ public class FireflyMovement : EnemyMovement
     private FlyMovementPreAttackState _preAttackState;    
     private FlyMovementFallState _fallState;
     private FireflyMovementDeathState _deathState;
+    private FlyMovementSpreadState _spreadState;
     
     private Vector3 _prevPosition2d; //Debug
     private Vector3 _prevPosSmooth; //Debug
@@ -47,25 +48,29 @@ public class FireflyMovement : EnemyMovement
     
     public override void Initialize()
     {
-        _sideDirection = RandomDirection.Generate();
-        _depthDirection = RandomDirection.Generate();
-        
         _movementStateMachine = new EnemyMovementStateMachine();
-        
         _enterState = new FlyMovementEnterState(this, _speed, _radius, _verticalAmplitude);
         _patrolState  = new FlyMovementPatrolState(this, _speed, _radius, _verticalAmplitude);
         _preAttackState = new FlyMovementPreAttackState(this, _speed, _radius, _verticalAmplitude);
         _attackState = new FlyMovementAttackState(this, _speed, _radius, _verticalAmplitude);
         _fallState = new FlyMovementFallState(this, _speed, _radius, _verticalAmplitude);
         _deathState = new FireflyMovementDeathState(this, _speed, _radius, _verticalAmplitude);
+        _spreadState = new FlyMovementSpreadState(this, _speed, _radius, _verticalAmplitude);
         
+        MovementSetup();
+    }
+    
+    private void MovementSetup()
+    {
+        _sideDirection = RandomDirection.Generate();
+        _depthDirection = RandomDirection.Generate();
         _position2d = GenerateSpawnPosition(-_sideDirection);
         
         _currentState = _enterState;
-        
         _movementStateMachine.SetState(_currentState, _position2d, _sideDirection, _depthDirection);
         _position2d = _currentState.Position;
         transform.position = _position2d;
+        OnInitializedInvoke();
     }
     
     private Vector3 GenerateSpawnPosition(int direction)
@@ -73,6 +78,17 @@ public class FireflyMovement : EnemyMovement
         Vector3 spawnPosition = (Vector3)(Random.insideUnitCircle * _spawnAreaSize) + _spawnAreaCenter;
         spawnPosition.x *= direction;
         return spawnPosition;
+    }
+    
+    public override void TriggerSpread()
+    {
+        if(_currentState.State != EnemyStates.Attack && 
+           _currentState.State != EnemyStates.PreAttack && 
+           _currentState.State != EnemyStates.Death)
+        {
+            _currentState = _spreadState;
+            _movementStateMachine.SetState(_currentState, _position2d, _sideDirection, _depthDirection);
+        }
     }
     
     public override void TriggerFall()
@@ -175,6 +191,10 @@ public class FireflyMovement : EnemyMovement
                     newState = _enterState;
                     break;
                 }
+            case EnemyStates.Spread:
+                OnSpreadFinishedInvoke();
+                MovementSetup();
+                return;
             case EnemyStates.Death:
                 OnEnemyDeactivatedInvoke();
                 break;

@@ -26,6 +26,7 @@ public class MothMovement : EnemyMovement
     private MothMovementAttackState _attackState;
     private MothMovementFallState _fallState;
     private MothMovementDeathState _deathState;
+    private FlyMovementSpreadState _spreadState;
     
     private Vector3 _prevPosition2d; //Debug
     private Vector3 _position2d;
@@ -42,9 +43,6 @@ public class MothMovement : EnemyMovement
     
     public override void Initialize()
     {
-        _sideDirection = RandomDirection.Generate();
-        _depthDirection = RandomDirection.Generate();
-        
         _movementStateMachine = new EnemyMovementStateMachine();
         _patrolState  = new MothMovementPatrolState(this, _speed, _radius, _verticalAmplitude);
         _enterState = new MothMovementEnterState(this, _speed, _radius, _verticalAmplitude);
@@ -53,13 +51,20 @@ public class MothMovement : EnemyMovement
         _attackState = new MothMovementAttackState(this, _speed, _radius, _verticalAmplitude);
         _fallState = new MothMovementFallState(this, _speed, _radius, _verticalAmplitude);
         _deathState = new MothMovementDeathState(this, _speed, _radius, _verticalAmplitude);
-        
+        _spreadState = new FlyMovementSpreadState(this, _speed, _radius, _verticalAmplitude);
+        MovementSetup();
+    }
+
+    private void MovementSetup()
+    {
+        _sideDirection = RandomDirection.Generate();
+        _depthDirection = RandomDirection.Generate();
         _position2d = GenerateSpawnPosition(_sideDirection, _spawnXPos, _spawnYPosMin, _spawnYPosMax);
-       
         _currentState = _enterState;
         _movementStateMachine.SetState(_currentState, _position2d, _sideDirection, 1);
         _position2d = _currentState.Position;
         transform.position = _position2d;
+        OnInitializedInvoke();
     }
     
     private Vector3 GenerateSpawnPosition(int direction, float xPos, float yPosMin, float yPosMax)
@@ -90,7 +95,18 @@ public class MothMovement : EnemyMovement
             SwitchState();
         }
     }
-
+    
+    public override void TriggerSpread()
+    {
+        if(_currentState.State != EnemyStates.Attack && 
+           _currentState.State != EnemyStates.PreAttack && 
+           _currentState.State != EnemyStates.Death)
+        {
+            _currentState = _spreadState;
+            _movementStateMachine.SetState(_currentState, _position2d, _sideDirection, _depthDirection);
+        }
+    }
+    
     public override void TriggerDeath()
     {
         if(_currentState.State != EnemyStates.Death)
@@ -202,6 +218,10 @@ public class MothMovement : EnemyMovement
                     newState = _hoverState;
                     break;
                 }
+            case EnemyStates.Spread:
+                OnSpreadFinishedInvoke();
+                MovementSetup();
+                return;
             case EnemyStates.Death:
                 OnEnemyDeactivatedInvoke();
                 break;

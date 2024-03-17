@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class FireflyMovementDeathState: EnemyMovementBaseState
 {
+    public override EnemyStates State => EnemyStates.Death;
     private Vector3 _bounceForce;
     private Vector3 _gravityForce;
     private float _bounceForceMagnitude = 4f;
@@ -17,8 +18,7 @@ public class FireflyMovementDeathState: EnemyMovementBaseState
         _verticalAmplitude = verticalAmplitude;
         _owner = owner;
     }
-    public override EnemyStates State => EnemyStates.Death;
-
+    
     public override void EnterState(Vector3 currentPosition, int sideDirection, int depthDirection)
     {
         _sideDirection = sideDirection;

@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class FlyMovementDeathState: EnemyMovementBaseState
 {
+    public override EnemyStates State => EnemyStates.Death;
     private Vector3 _bounceForce;
     private Vector3 _gravityForce;
     private float _bounceForceMagnitude = 4f;
@@ -15,7 +16,6 @@ public class FlyMovementDeathState: EnemyMovementBaseState
         _verticalAmplitude = verticalAmplitude;
         _owner = owner;
     }
-    public override EnemyStates State => EnemyStates.Death;
 
     public override void EnterState(Vector3 currentPosition, int sideDirection, int depthDirection)
     {

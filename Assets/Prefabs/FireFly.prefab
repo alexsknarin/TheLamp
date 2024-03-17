@@ -471,6 +471,7 @@ GameObject:
   - component: {fileID: 6570308566199440075}
   - component: {fileID: 7588116580883456783}
   - component: {fileID: 3400746756151041414}
+  - component: {fileID: 5274952298235606640}
   m_Layer: 0
   m_Name: FireFly
   m_TagString: Enemy
@@ -617,6 +618,7 @@ MonoBehaviour:
   _damageFlash: {fileID: 6570308566199440075}
   _deathFlash: {fileID: 7588116580883456783}
   _healthIndication: {fileID: 3400746756151041414}
+  _trailResetHandler: {fileID: 5274952298235606640}
 --- !u!114 &8308141419049835553
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -676,3 +678,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _meshRenderer: {fileID: 8907080290062850579}
+--- !u!114 &5274952298235606640
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6725678087143964638}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 424b1fa2df8938d49b02f73a0967a015, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _trailRenderer: {fileID: 240273179025365513}

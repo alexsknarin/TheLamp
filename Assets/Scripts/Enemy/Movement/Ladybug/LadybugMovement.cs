@@ -17,8 +17,9 @@ public class LadybugMovement : EnemyMovement
     private LadybugMovementPreAttackState _preAttackState;
     private LadybugMovementAttackState _attackState;
     private LadybugMovementStickState _stickState;
-    private LadybugMovementFallState _fallState;
     private LadybugMovementDeathState _deathState;
+    private LadybugMovementSpreadState _spreadState;
+    
     
     private int _sideDirection;
     private int _depthDirection;
@@ -34,24 +35,26 @@ public class LadybugMovement : EnemyMovement
     
     public override void Initialize()
     {
-        _sideDirection = RandomDirection.Generate();
-        _depthDirection = RandomDirection.Generate();
-        
         _movementStateMachine = new EnemyMovementStateMachine();
         _patrolState  = new LadybugMovementPatrolState(this, _speed, _radius, _verticalAmplitude);
         _preAttackState = new LadybugMovementPreAttackState(this, _speed, _radius, _verticalAmplitude);
         _attackState = new LadybugMovementAttackState(this, _speed, _radius, _verticalAmplitude);
         _stickState = new LadybugMovementStickState(this, _speed, _radius, _verticalAmplitude);
-        _fallState = new LadybugMovementFallState(this, _speed, _radius, _verticalAmplitude);
         _deathState = new LadybugMovementDeathState(this, _speed, _radius, _verticalAmplitude);
+        _spreadState = new LadybugMovementSpreadState(this, _speed, _radius, _verticalAmplitude);
+        MovementSetup();
+    }
 
+    private void MovementSetup()
+    {
+        _sideDirection = RandomDirection.Generate();
+        _depthDirection = RandomDirection.Generate();
         _position2d = GenerateSpawnPosition(_radius);
-       
         _currentState = _patrolState;
-        
         _movementStateMachine.SetState(_currentState, _position2d, _sideDirection, 1);
         _position2d = _currentState.Position;
         transform.position = _position2d;
+        OnInitializedInvoke();
     }
     
     private Vector3 GenerateSpawnPosition(float distance)
@@ -65,6 +68,17 @@ public class LadybugMovement : EnemyMovement
     
     public override void TriggerFall()
     {
+    }
+    
+    public override void TriggerSpread()
+    {
+        if(_currentState.State != EnemyStates.Attack && 
+           _currentState.State != EnemyStates.PreAttack && 
+           _currentState.State != EnemyStates.Death)
+        {
+            _currentState = _spreadState;
+            _movementStateMachine.SetState(_currentState, _position2d, _sideDirection, _depthDirection);
+        }
     }
     
     public override void TriggerDeath()
@@ -138,6 +152,10 @@ public class LadybugMovement : EnemyMovement
                     _isDead = false;
                 }
                 break;
+            case EnemyStates.Spread:
+                OnSpreadFinishedInvoke();
+                MovementSetup();
+                return;
             case EnemyStates.Death:
                 OnEnemyDeactivatedInvoke();
                 break;

@@ -43,4 +43,8 @@ public class SpiderPresentation : EnemyPresentation
         _healthIndication.Initialize();
         _spiderWeb.Initialize();
     }
+    
+    public override void DisableTrail()
+    {
+    }
 }

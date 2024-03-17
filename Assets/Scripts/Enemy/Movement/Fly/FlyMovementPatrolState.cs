@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class FlyMovementPatrolState: EnemyMovementBaseState
 {
+    public override EnemyStates State => EnemyStates.Patrol;
     private float _verticalAdaptDuration = 2f; // TODO: Serialized Field
     private float _prevTime;
     private float _patrolStartOffsetAngle;
@@ -16,8 +17,6 @@ public class FlyMovementPatrolState: EnemyMovementBaseState
         _verticalAmplitude = verticalAmplitude;
         _owner = owner;
     }
-    
-    public override EnemyStates State => EnemyStates.Patrol;
 
     public override void EnterState(Vector3 currentPosition, int sideDirection, int depthDirection)
     {

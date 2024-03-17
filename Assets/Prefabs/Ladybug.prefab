@@ -554,6 +554,7 @@ GameObject:
   - component: {fileID: 1168591479674629291}
   - component: {fileID: 2858276551893859201}
   - component: {fileID: -2824885218992742472}
+  - component: {fileID: 180520264667152843}
   m_Layer: 0
   m_Name: Ladybug
   m_TagString: StickyEnemy
@@ -660,7 +661,6 @@ MonoBehaviour:
   _currentHealth: 0
   _enemyMovement: {fileID: 4117935667472646368}
   _enemyPresentation: {fileID: 2554923996394591702}
-  ready: 0
 --- !u!114 &4117935667472646368
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -695,6 +695,7 @@ MonoBehaviour:
   _damageFlash: {fileID: 1168591479674629291}
   _deathFlash: {fileID: 2858276551893859201}
   _healthIndication: {fileID: -2824885218992742472}
+  _trailResetHandler: {fileID: 180520264667152843}
 --- !u!114 &454837011142885043
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -755,3 +756,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _meshRenderer: {fileID: 277322283558329540}
+--- !u!114 &180520264667152843
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8854400779814498794}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 424b1fa2df8938d49b02f73a0967a015, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _trailRenderer: {fileID: 4684402747461492014}

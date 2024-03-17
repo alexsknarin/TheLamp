@@ -8,5 +8,6 @@ public enum EnemyStates
     Return,
     Hover,
     Stick,
-    Death
+    Death,
+    Spread
 }

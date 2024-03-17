@@ -8,4 +8,5 @@ public abstract class EnemyPresentation : MonoBehaviour, IInitializable
     public abstract void DeathFlash();
     public abstract void HealthUpdate(int currentHealth, int maxHealth);
     public abstract void Initialize();
+    public abstract void DisableTrail();
 }

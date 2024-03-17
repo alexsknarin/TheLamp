@@ -10,7 +10,6 @@ public class Enemy : MonoBehaviour, IInitializable
     [SerializeField] private int _currentHealth;
     [SerializeField] private EnemyMovement _enemyMovement;
     [SerializeField] private EnemyPresentation _enemyPresentation;
-    private IInitializable _enemyPresentationInitializer;
     public bool ReadyToAttack { get; private set; }
     public bool ReadyToCollide { get; private set; }
     public bool ReadyToLampDamage { get; private set; }
@@ -22,8 +21,6 @@ public class Enemy : MonoBehaviour, IInitializable
         set => _objectPool = value;
     }
 
-    public bool ready;
-    
     public static event Action<Enemy> OnEnemyDeath;
     public static event Action<Enemy> OnEnemyDeactivated;
     public static event Action<Enemy> OnEnemyDamaged;
@@ -33,6 +30,8 @@ public class Enemy : MonoBehaviour, IInitializable
         _enemyMovement.OnPreAttackStart += PreAttackStart;
         _enemyMovement.OnPreAttackEnd += _enemyPresentation.PreAttackEnd;
         _enemyMovement.OnEnemyDeactivated += OnDeactivated;
+        _enemyMovement.OnSpreadFinished += OnSpreadFinished;
+        _enemyMovement.OnInitialized += OnMovementInitialized;
     }
     
     private void OnDisable()
@@ -40,13 +39,13 @@ public class Enemy : MonoBehaviour, IInitializable
         _enemyMovement.OnPreAttackStart -= PreAttackStart;
         _enemyMovement.OnPreAttackEnd -= _enemyPresentation.PreAttackEnd;
         _enemyMovement.OnEnemyDeactivated -= OnDeactivated;
+        _enemyMovement.OnSpreadFinished -= OnSpreadFinished;
+        _enemyMovement.OnInitialized -= OnMovementInitialized;
     }
     
     public void Initialize()
     {
         _enemyMovement.Initialize();
-        _enemyPresentationInitializer = _enemyPresentation;
-        _enemyPresentationInitializer.Initialize();
         _currentHealth = _maxHealth;
         ReadyToAttack = false;
         ReadyToCollide = false;
@@ -87,6 +86,16 @@ public class Enemy : MonoBehaviour, IInitializable
         {
             ReadyToAttack = false;
         }
+        
+        if(_enemyMovement.State == EnemyStates.Spread)
+        {
+            ReadyToAttack = false;
+        }
+    }
+    
+    public void SpreadStart()
+    {
+        _enemyMovement.TriggerSpread();
     }
    
     public void AttackStart()
@@ -154,9 +163,16 @@ public class Enemy : MonoBehaviour, IInitializable
         OnEnemyDeactivated?.Invoke(this);
         _objectPool.Release(this);
     }
-
-    private void Update()
+    
+    private void OnSpreadFinished()
     {
-        ready = ReadyToAttack;
+        Debug.Log("Spread finished");
+        _enemyPresentation.DisableTrail();
+    }
+    
+    private void OnMovementInitialized()
+    {
+        Debug.Log("Enemy movement initialized");
+        _enemyPresentation.Initialize();
     }
 }
