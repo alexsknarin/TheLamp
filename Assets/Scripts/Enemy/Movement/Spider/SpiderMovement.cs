@@ -44,6 +44,7 @@ public class SpiderMovement : EnemyMovement
     private void MovementSetup()
     {
         _sideDirection = RandomDirection.Generate();
+        SideDirection = _sideDirection;
         _position2d = GenerateSpawnPosition(_sideDirection);
         _currentState = _enterState;
         _movementStateMachine.SetState(_currentState, _position2d, _sideDirection, 1);

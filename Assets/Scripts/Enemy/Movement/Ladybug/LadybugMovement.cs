@@ -48,6 +48,7 @@ public class LadybugMovement : EnemyMovement
     private void MovementSetup()
     {
         _sideDirection = RandomDirection.Generate();
+        SideDirection = _sideDirection;
         _depthDirection = RandomDirection.Generate();
         _position2d = GenerateSpawnPosition(_radius);
         _currentState = _patrolState;

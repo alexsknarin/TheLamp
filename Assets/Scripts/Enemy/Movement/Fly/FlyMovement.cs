@@ -63,6 +63,7 @@ public class FlyMovement : EnemyMovement
     private void MovementSetup()
     {
         _sideDirection = RandomDirection.Generate();
+        SideDirection = _sideDirection;
         _depthDirection = RandomDirection.Generate();
         _position2d = GenerateSpawnPosition(-_sideDirection);
         
@@ -207,6 +208,8 @@ public class FlyMovement : EnemyMovement
         _currentState = newState;
         State = _currentState.State;
         _movementStateMachine.SetState(_currentState, _position2d, _sideDirection, _depthDirection);
+        SideDirection = _sideDirection;
+        Debug.Log(SideDirection);
     }
 
     private void Update()

@@ -58,6 +58,7 @@ public class MothMovement : EnemyMovement
     private void MovementSetup()
     {
         _sideDirection = RandomDirection.Generate();
+        SideDirection = _sideDirection;
         _depthDirection = RandomDirection.Generate();
         _position2d = GenerateSpawnPosition(_sideDirection, _spawnXPos, _spawnYPosMin, _spawnYPosMax);
         _currentState = _enterState;

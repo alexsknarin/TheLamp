@@ -60,41 +60,50 @@ public class Enemy : MonoBehaviour, IInitializable
     
     public void UpdateAttackAvailability()
     {
-        if((_enemyType == EnemyTypes.Moth && _enemyMovement.State == EnemyStates.Hover) || 
-          ((_enemyType == EnemyTypes.Fly || _enemyType == EnemyTypes.Firefly) && _enemyMovement.State == EnemyStates.Patrol))
-        {
-            if(transform.position.y < 0.0f )
-            {
-                ReadyToAttack = true;
-            }
-            else if (transform.position.y > 0.0f)
-            {
-                if (Mathf.Abs(transform.position.x) > 0.7f && transform.position.y <0.85f)
-                {
-                    ReadyToAttack = true;
-                }
-                else
-                {
-                    ReadyToAttack = false;    
-                }
-            }
-            else
-            {
-                ReadyToAttack = false;
-            }
-        }
-        else if (_enemyType == EnemyTypes.Spider && _enemyMovement.State == EnemyStates.Patrol)
-        {
-            ReadyToAttack = true;
-        }
-        else
-        {
-            ReadyToAttack = false;
-        }
+        float x = transform.position.x;
+        float y = transform.position.y;
+        
+        ReadyToAttack = false;
         
         if(_enemyMovement.State == EnemyStates.Spread)
         {
             ReadyToAttack = false;
+            return;
+        }
+        
+        if ((_enemyType == EnemyTypes.Fly || _enemyType == EnemyTypes.Firefly) &&
+            _enemyMovement.State == EnemyStates.Patrol )
+        {
+            if (_enemyMovement.SideDirection < 0)
+            {
+                if ((x < 0 && y < 0.36f) || (x > 0 && y < 1.95f))
+                {
+                    ReadyToAttack = true; 
+                    return;
+                }
+            }
+            if (_enemyMovement.SideDirection > 0)
+            {
+                if ((x > 0 && y < 0.36f) || (x < 0 && y < 2f))
+                {
+                    ReadyToAttack = true; 
+                    return;
+                }
+            }
+        }
+
+        if (_enemyType == EnemyTypes.Moth && _enemyMovement.State == EnemyStates.Hover)
+        {
+            if ((Mathf.Abs(transform.position.x) > 0.7f && transform.position.y <0.85f) || transform.position.y < 0.0f)
+            {
+                ReadyToAttack = true;
+                return;
+            }
+        }
+
+        if (_enemyType == EnemyTypes.Spider && _enemyMovement.State == EnemyStates.Patrol)
+        {
+            ReadyToAttack = true;
         }
     }
     
