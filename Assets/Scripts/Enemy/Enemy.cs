@@ -76,7 +76,7 @@ public class Enemy : MonoBehaviour, IInitializable
         {
             if (_enemyMovement.SideDirection < 0)
             {
-                if ((x < 0 && y < 0.36f) || (x > 0 && y < 1.95f))
+                if ((x < 0 && y < 0.32f) || (x > 0 && y < 1.85f))
                 {
                     ReadyToAttack = true; 
                     return;
