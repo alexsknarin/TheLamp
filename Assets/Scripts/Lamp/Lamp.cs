@@ -15,7 +15,8 @@ public class Lamp : MonoBehaviour, IInitializable
     private Vector3 _enemyPosition;
     
     public static event Action OnLampDamaged;
-    
+    public static event Action<Enemy> OnLampCollidedWithStickyEnemy;
+
     private void OnEnable()
     {
         _lampCollisionHandler.OnLampCollidedEnemy += RegisterPotentialDamage;
@@ -36,6 +37,7 @@ public class Lamp : MonoBehaviour, IInitializable
     {
         _lampAttackModel.Initialize();
         _lampMovement.Initialize();
+        _lampPresentation.Initialize();
         _currentHealth = _maxHealth;
     }
   
@@ -45,6 +47,7 @@ public class Lamp : MonoBehaviour, IInitializable
         _lampAttackModel.AddAttackBlocker();
         enemy.transform.parent = transform;
         MoveLamp();
+        OnLampCollidedWithStickyEnemy?.Invoke(enemy);
     }
     
     private void EnemyExitCollisionHandle(Enemy enemy)

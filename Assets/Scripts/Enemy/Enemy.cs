@@ -11,10 +11,12 @@ public class Enemy : MonoBehaviour, IInitializable
     [SerializeField] private EnemyMovement _enemyMovement;
     [SerializeField] private EnemyPresentation _enemyPresentation;
     
+    public bool IsAttacking { get; private set; }
+    public bool IsStick { get; private set; }
     public bool ReadyToAttack { get; private set; }
     public bool ReadyToCollide { get; private set; }
     public bool ReadyToLampDamage { get; private set; }
-    public bool ReceivedLampAttack { get; private set; }
+    public bool ReceivedLampAttack { get; private set; }    
     
     private IObjectPool<Enemy> _objectPool;
     public IObjectPool<Enemy> ObjectPool
@@ -30,16 +32,20 @@ public class Enemy : MonoBehaviour, IInitializable
     {
         _enemyMovement.OnPreAttackStart += PreAttackStart;
         _enemyMovement.OnPreAttackEnd += _enemyPresentation.PreAttackEnd;
+        _enemyMovement.OnAttackEnd += AttackStatusEnable;
         _enemyMovement.OnEnemyDeactivated += OnDeactivated;
         _enemyMovement.OnMovementReset += OnMovementReset;
+        _enemyMovement.OnStickStart += StickStatusEnable;
     }
     
     private void OnDisable()
     {
         _enemyMovement.OnPreAttackStart -= PreAttackStart;
         _enemyMovement.OnPreAttackEnd -= _enemyPresentation.PreAttackEnd;
+        _enemyMovement.OnAttackEnd -= AttackStatusEnable;
         _enemyMovement.OnEnemyDeactivated -= OnDeactivated;
         _enemyMovement.OnMovementReset -= OnMovementReset;
+        _enemyMovement.OnStickStart -= StickStatusEnable;
     }
     
     public void Initialize()
@@ -51,6 +57,8 @@ public class Enemy : MonoBehaviour, IInitializable
         ReadyToCollide = false;
         ReadyToLampDamage = false;
         ReceivedLampAttack = false;
+        IsAttacking = false;
+        IsStick = false;
     }
     
     private void OnMovementReset()
@@ -123,6 +131,17 @@ public class Enemy : MonoBehaviour, IInitializable
         _enemyPresentation.PreAttackStart();
         ReadyToAttack = false;
         ReadyToCollide = true;
+        IsAttacking = true;
+    }
+    
+    private void AttackStatusEnable()
+    {
+        IsAttacking = false;
+    }
+    
+    private void StickStatusEnable()
+    {
+        IsStick = true;
     }
     
     public void HandleEnteringAttackZone()

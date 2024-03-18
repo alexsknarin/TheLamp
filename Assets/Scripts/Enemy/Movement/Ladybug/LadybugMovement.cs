@@ -140,6 +140,7 @@ public class LadybugMovement : EnemyMovement
                     break;    
                 }
             case EnemyStates.Attack:
+                OnAttackEndInvoke();
                 if (_isDead)
                 {
                     newState = _deathState;
@@ -150,6 +151,7 @@ public class LadybugMovement : EnemyMovement
                 {
                     newState = _stickState;
                     _isCollided = false;
+                    OnStickStartInvoke();
                     break;    
                 }
             case EnemyStates.Stick:

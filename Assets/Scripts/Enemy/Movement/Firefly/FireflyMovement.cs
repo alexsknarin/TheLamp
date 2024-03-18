@@ -171,12 +171,14 @@ public class FireflyMovement : EnemyMovement
                 {
                     newState = _fallState;
                     _isCollided = false;
+                    OnAttackEndInvoke();
                     break;
                 }
                 else if (_isDead)
                 {
                     newState = _deathState;
                     _isDead = false;
+                    OnAttackEndInvoke();
                     break;
                 }
                 else

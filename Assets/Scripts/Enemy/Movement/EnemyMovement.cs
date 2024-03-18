@@ -7,6 +7,8 @@ public abstract class EnemyMovement : MonoBehaviour, IStateMachineOwner, IInitia
     public int SideDirection { get; protected set; }
     public event Action OnPreAttackStart;
     public event Action OnPreAttackEnd;
+    public event Action OnAttackEnd;
+    public event Action OnStickStart;
     public event Action OnEnemyDeactivated; 
     public event Action OnMovementReset;
 
@@ -26,6 +28,16 @@ public abstract class EnemyMovement : MonoBehaviour, IStateMachineOwner, IInitia
     protected virtual void OnPreAttackEndInvoke()
     {
         OnPreAttackEnd?.Invoke();
+    }
+    
+    protected virtual void OnAttackEndInvoke()
+    {
+        OnAttackEnd?.Invoke();
+    }
+    
+    protected virtual void OnStickStartInvoke()
+    {
+        OnStickStart?.Invoke();
     }
    
     protected virtual void OnEnemyDeactivatedInvoke()

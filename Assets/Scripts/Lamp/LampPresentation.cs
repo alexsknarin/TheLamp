@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class LampPresentation : MonoBehaviour
+public class LampPresentation : MonoBehaviour, IInitializable
 {
     [SerializeField] private Light _lampLight;
     private Material _lampMaterial;
@@ -41,9 +41,8 @@ public class LampPresentation : MonoBehaviour
         LampAttackModel.OnLampCurrentPowerChanged -= PerformCooldownState;
         LampAttackModel.OnLampBlockedAttack -= StartBlockedAttackState;
     }
-
-   
-    private void Start()
+    
+    public void Initialize()
     {
         _lampMaterial = GetComponent<MeshRenderer>().sharedMaterial;
         _lampAttackZoneMaterial = _lampAttackZoneObject.GetComponent<MeshRenderer>().material;
@@ -54,6 +53,7 @@ public class LampPresentation : MonoBehaviour
     {
         _lampLight.intensity = _lightNeutralIntensity;
         _lampMaterial.SetFloat("_EmissionLevel", _lampNeutralEmission);
+        _lampMaterial.SetFloat("_Damage", 0f);
     }
     
     private void StartAttackState(int attackPower, float currentPower, float attackDuration, float attackDistance)

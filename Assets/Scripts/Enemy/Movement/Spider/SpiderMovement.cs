@@ -143,11 +143,13 @@ public class SpiderMovement : EnemyMovement
                 {
                     newState = _deathState;
                     _isDead = false;
+                    OnAttackEndInvoke();
                 }
                 else
                 {
                     newState = _returnState;
                     _isCollided = false;
+                    OnAttackEndInvoke();
                 }
                 break;
             case EnemyStates.Return:

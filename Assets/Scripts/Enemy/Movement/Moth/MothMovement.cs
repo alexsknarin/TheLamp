@@ -33,9 +33,9 @@ public class MothMovement : EnemyMovement
     private Vector3 _position;
     
     // State parameters
-    private bool _isDead = false;
-    private bool _isCollided = false;
-    private bool _isAttacking = false;
+    public bool _isDead = false;
+    public bool _isCollided = false;
+    public bool _isAttacking = false;
     
     // Debug
     [SerializeField] private EnemyStates _stateDebug;
@@ -149,7 +149,6 @@ public class MothMovement : EnemyMovement
                     newState = _hoverState;
                     break;
                 }
-                
             case EnemyStates.Hover:
                 if (_isDead)
                 {
@@ -199,16 +198,19 @@ public class MothMovement : EnemyMovement
                 {
                     newState = _fallState;
                     _isCollided = false;
+                    OnAttackEndInvoke();
                     break;
                 }
-                else if (_isDead)
+                else if (_isCollided && _isDead)
                 {
                     newState = _deathState;
                     _isDead = false;
+                    OnAttackEndInvoke();
                     break;
                 }
                 else
                 {
+                    Debug.Log("Missed the fall trigger");
                     break;    
                 }
             case EnemyStates.Fall:

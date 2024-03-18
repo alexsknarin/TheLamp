@@ -172,12 +172,14 @@ public class FlyMovement : EnemyMovement
                 {
                     newState = _fallState;
                     _isCollided = false;
+                    OnAttackEndInvoke();
                     break;
                 }
                 else if (_isDead)
                 {
                     newState = _deathState;
                     _isDead = false;
+                    OnAttackEndInvoke();
                     break;
                 }
                 else
@@ -209,7 +211,6 @@ public class FlyMovement : EnemyMovement
         State = _currentState.State;
         _movementStateMachine.SetState(_currentState, _position2d, _sideDirection, _depthDirection);
         SideDirection = _sideDirection;
-        Debug.Log(SideDirection);
     }
 
     private void Update()

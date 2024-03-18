@@ -40,6 +40,7 @@ public class EnemyManager : MonoBehaviour,IInitializable
     
     private List<Enemy> _enemies;
     private List<Enemy> _enemiesReadyToAttack;
+    private List<Enemy> _ladybugs;
     private bool _isWaveInitialized = false;
     
     private float _attackDelay;
@@ -60,6 +61,7 @@ public class EnemyManager : MonoBehaviour,IInitializable
         Enemy.OnEnemyDeactivated += StartExplodeEnemyOnDeath;
         LampAttackModel.OnLampAttack += LampAttack;
         LampAttackModel.OnLampBlockedAttack += LampBlockedAttack;
+        Lamp.OnLampCollidedWithStickyEnemy += UpdateLadybugsOnScreen;
         PlayerInputHandler.OnPlayerAttack += StartWave;
     }
     
@@ -69,6 +71,7 @@ public class EnemyManager : MonoBehaviour,IInitializable
         Enemy.OnEnemyDeactivated -= StartExplodeEnemyOnDeath;
         LampAttackModel.OnLampAttack -= LampAttack;
         LampAttackModel.OnLampBlockedAttack -= LampBlockedAttack;
+        Lamp.OnLampCollidedWithStickyEnemy -= UpdateLadybugsOnScreen;
         PlayerInputHandler.OnPlayerAttack -= StartWave;
     }
     
@@ -77,6 +80,7 @@ public class EnemyManager : MonoBehaviour,IInitializable
         _spawnQueueGenerator = new SpawnQueueGenerator(_spawnQueueDataCache.Data);
         _spawnQueue = _spawnQueueGenerator.Generate();
         _enemies = new List<Enemy>();
+        _ladybugs = new List<Enemy>();
         _enemiesReadyToAttack = new List<Enemy>();
         _currentWave = _startAtWave;
     }
@@ -112,12 +116,12 @@ public class EnemyManager : MonoBehaviour,IInitializable
         _enemiesLeftCount = _enemiesInWave;
     }
     
-    public void SpawnEnemy(int enemyIndex)
+    public Enemy SpawnEnemy(int enemyIndex)
     {
         EnemyTypes enemyType = _enemyQueue.Get(enemyIndex);
         var enemy = _enemyPool.Get(enemyType);
         enemy.Initialize();
-        _enemies.Add(enemy);        
+        return enemy;
     }
 
     private void LampAttack(int attackPower, float currentPower, float attackDuration, float attackDistance)
@@ -139,7 +143,7 @@ public class EnemyManager : MonoBehaviour,IInitializable
     {
         foreach (var enemy in _enemies)
         {
-            if (enemy.gameObject.activeInHierarchy && enemy.ReadyToLampDamage && enemy.EnemyType == EnemyTypes.Ladybug)
+            if (enemy.gameObject.activeInHierarchy && enemy.ReadyToLampDamage && enemy.IsStick && enemy.EnemyType == EnemyTypes.Ladybug)
             {
                 if (attackPower > 0)
                 {
@@ -154,6 +158,18 @@ public class EnemyManager : MonoBehaviour,IInitializable
     {
         _enemies.Remove(enemy);
         _enemiesKilled++;
+        if (enemy.EnemyType == EnemyTypes.Ladybug)
+        {
+            _ladybugs.Remove(enemy);
+        }
+    }
+    
+    private void UpdateLadybugsOnScreen(Enemy enemy)
+    {
+        if (enemy.EnemyType == EnemyTypes.Ladybug)
+        {
+            _ladybugs.Remove(enemy);    
+        }
     }
 
     private void StartExplodeEnemyOnDeath(Enemy explosionSource)
@@ -215,7 +231,15 @@ public class EnemyManager : MonoBehaviour,IInitializable
                     if(_enemies.Count < _maxEnemiesOnScreen)
                     {
                         _localTime = 0;
-                        SpawnEnemy(_currentSpawnEnemyIndex);
+                        var enemy = SpawnEnemy(_currentSpawnEnemyIndex);
+                        if (enemy != null)
+                        {
+                            _enemies.Add(enemy);
+                            if (enemy.EnemyType == EnemyTypes.Ladybug)
+                            {
+                                _ladybugs.Add(enemy);
+                            }
+                        }
                         _enemiesAvailable--;
                         _currentSpawnEnemyIndex++;
                     }
@@ -281,9 +305,28 @@ public class EnemyManager : MonoBehaviour,IInitializable
                 _currentWave++;
                 OnWavePrepared?.Invoke(_currentWave+1);
             }
+
+            // Check Ladybugs
+            bool isAttackTimerUpdateAllowed = true;
+            if (_ladybugs.Count > 0)
+            {
+                foreach (var ladybug in _ladybugs)
+                {
+                    Vector3 pos = ladybug.transform.position;
+                    pos.z = 0;
+                    if (pos.magnitude < 0.87f || ladybug.IsAttacking)
+                    {
+                        isAttackTimerUpdateAllowed = false;
+                        break;
+                    }
+                }
+            }
             
             _localTime += Time.deltaTime;
-            _attackLocalTime += Time.deltaTime;
+            if(isAttackTimerUpdateAllowed)
+            {
+                _attackLocalTime += Time.deltaTime;
+            }
             _localExplosionTime += Time.deltaTime;
         }
     }
