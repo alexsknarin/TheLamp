@@ -35,7 +35,7 @@ public class MothMovement : EnemyMovement
     // State parameters
     public bool _isDead = false;
     public bool _isCollided = false;
-    public bool _isAttacking = false;
+    public bool _isAttacking = false; // Debug
     
     // Debug
     [SerializeField] private EnemyStates _stateDebug;
@@ -43,6 +43,9 @@ public class MothMovement : EnemyMovement
     
     public override void Initialize()
     {
+        _isDead = false;
+        _isCollided = false;
+        _isAttacking = false;
         _movementStateMachine = new EnemyMovementStateMachine();
         _patrolState  = new MothMovementPatrolState(this, _speed, _radius, _verticalAmplitude);
         _enterState = new MothMovementEnterState(this, _speed, _radius, _verticalAmplitude);
@@ -92,13 +95,16 @@ public class MothMovement : EnemyMovement
             return spawnPositionTopBottom;
         }
     }
+
+    public bool fallTriggered = false;
    
     public override void TriggerFall()
     {
-        if(_currentState.State == EnemyStates.Attack)
+        if (_currentState.State == EnemyStates.Attack)
         {
+            fallTriggered = true;
             _isCollided = true;
-            SwitchState();
+            SwitchState();    
         }
     }
     
@@ -113,6 +119,7 @@ public class MothMovement : EnemyMovement
 
     public override void TriggerAttack()
     {
+        fallTriggered = false;
         _isAttacking = true;
         SwitchState();
     }
@@ -210,7 +217,6 @@ public class MothMovement : EnemyMovement
                 }
                 else
                 {
-                    Debug.Log("Missed the fall trigger");
                     break;    
                 }
             case EnemyStates.Fall:
@@ -260,5 +266,13 @@ public class MothMovement : EnemyMovement
         
         Debug.DrawLine(_prevPosition2d, _prevPosition2d + (_position2d-_prevPosition2d).normalized*0.02f, Color.cyan, 5f);
         _stateDebug = _currentState.State;
+        
+        // Check collision
+        if (transform.position.magnitude < 0.45f)
+        {
+            Debug.Log("Collision Missed: " + gameObject.name);
+            Debug.Break();
+        }
+        
     }
 }

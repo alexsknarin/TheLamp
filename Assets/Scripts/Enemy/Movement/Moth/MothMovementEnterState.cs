@@ -29,6 +29,7 @@ public class MothMovementEnterState: EnemyMovementBaseState
         float b = _radius * _verticalAmplitude;
 
         float denominator = ((a * b) / (Mathf.Sqrt((a * a) * (Position.y * Position.y) + (b * b) * (Position.x * Position.x)))); 
+        _endPos = Vector3.zero;
         _endPos.x = denominator * Position.x;
         _endPos.y = denominator * Position.y;
        
@@ -50,7 +51,7 @@ public class MothMovementEnterState: EnemyMovementBaseState
     
     public override void CheckForStateChange()
     {
-        if(_phase < 0.02f)
+        if(_phase < 0.02f || Position.magnitude < _radius)
         {
             _owner.SwitchState();
         }

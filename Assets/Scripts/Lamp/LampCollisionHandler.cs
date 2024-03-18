@@ -14,7 +14,6 @@ public class LampCollisionHandler : MonoBehaviour
             if(enemy.ReadyToCollide)
             {
                 enemy.HandleCollisionWithLamp();
-                Debug.Log("Lamp collided with enemy " + enemy.EnemyType.ToString());
                 OnLampCollidedEnemy?.Invoke(other.GetComponent<Enemy>()); 
             }
         }

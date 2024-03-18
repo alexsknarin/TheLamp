@@ -30,8 +30,8 @@ public class Enemy : MonoBehaviour, IInitializable
 
     private void OnEnable()
     {
-        _enemyMovement.OnPreAttackStart += PreAttackStart;
-        _enemyMovement.OnPreAttackEnd += _enemyPresentation.PreAttackEnd;
+        _enemyMovement.OnPreAttackStart += OnPreAttackStart;
+        _enemyMovement.OnPreAttackEnd += OnPreAttackEnd;
         _enemyMovement.OnAttackEnd += AttackStatusEnable;
         _enemyMovement.OnEnemyDeactivated += OnDeactivated;
         _enemyMovement.OnMovementReset += OnMovementReset;
@@ -40,8 +40,8 @@ public class Enemy : MonoBehaviour, IInitializable
     
     private void OnDisable()
     {
-        _enemyMovement.OnPreAttackStart -= PreAttackStart;
-        _enemyMovement.OnPreAttackEnd -= _enemyPresentation.PreAttackEnd;
+        _enemyMovement.OnPreAttackStart -= OnPreAttackStart;
+        _enemyMovement.OnPreAttackEnd -= OnPreAttackEnd;
         _enemyMovement.OnAttackEnd -= AttackStatusEnable;
         _enemyMovement.OnEnemyDeactivated -= OnDeactivated;
         _enemyMovement.OnMovementReset -= OnMovementReset;
@@ -125,13 +125,18 @@ public class Enemy : MonoBehaviour, IInitializable
         _enemyMovement.TriggerAttack();
     }
     
-    private void PreAttackStart()
+    private void OnPreAttackStart()
     {
         ReceivedLampAttack = false;
         _enemyPresentation.PreAttackStart();
         ReadyToAttack = false;
-        ReadyToCollide = true;
         IsAttacking = true;
+    }
+    
+    private void OnPreAttackEnd()
+    {
+        _enemyPresentation.PreAttackEnd();
+        ReadyToCollide = true;
     }
     
     private void AttackStatusEnable()
@@ -154,9 +159,9 @@ public class Enemy : MonoBehaviour, IInitializable
     
     public void HandleCollisionWithLamp()
     {
-        _enemyMovement.TriggerFall();
         ReadyToCollide = false;
         ReadyToLampDamage = true;
+        _enemyMovement.TriggerFall();
     }
     
     public void HandleExitingAttackExitZone()

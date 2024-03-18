@@ -48,6 +48,8 @@ public class FireflyMovement : EnemyMovement
     
     public override void Initialize()
     {
+        _isDead = false;
+        _isCollided = false;
         _movementStateMachine = new EnemyMovementStateMachine();
         _enterState = new FlyMovementEnterState(this, _speed, _radius, _verticalAmplitude);
         _patrolState  = new FlyMovementPatrolState(this, _speed, _radius, _verticalAmplitude);

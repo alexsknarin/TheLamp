@@ -1880,10 +1880,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
+  m_ReferenceResolution: {x: 1080, y: 1920}
   m_ScreenMatchMode: 0
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3
@@ -2731,7 +2731,7 @@ MonoBehaviour:
   _maxEnemiesOnScreen: 0
   _aggresionLevel: 0
   _maxAggressionLevel: 6
-  _startAtWave: 30
+  _startAtWave: 0
   _currentWave: 0
   _spawnDelay: 1
   _enemiesInWaveCount: 0
@@ -2751,7 +2751,7 @@ MonoBehaviour:
   _sheetId: 1m_MzdQxi0d-f-TbDgvYGiN5OfjoJGgDTMzX2N5Ci8BY
   _sheetName: Sheet1
   _apiKey: AIzaSyCesP8iY_CsymaobmUcWUGS_kvOUuNO_7s
-  _useCachedSpawnData: 0
+  _useCachedSpawnData: 1
   _spawnQueueDataCache: {fileID: 11400000, guid: beab91cd3dcd8c44b88194a9986f9a99,
     type: 2}
 --- !u!114 &1818435504

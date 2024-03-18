@@ -35,6 +35,8 @@ public class LadybugMovement : EnemyMovement
     
     public override void Initialize()
     {
+        _isDead = false;
+        _isCollided = false;
         _movementStateMachine = new EnemyMovementStateMachine();
         _patrolState  = new LadybugMovementPatrolState(this, _speed, _radius, _verticalAmplitude);
         _preAttackState = new LadybugMovementPreAttackState(this, _speed, _radius, _verticalAmplitude);

@@ -14,10 +14,20 @@ public class EnemyPool : MonoBehaviour, IInitializable
     private ObjectPool<Enemy> _fireflyPool;
     private ObjectPool<Enemy> _spiderPool;
     [SerializeField] private int _poolSize;
+    private int _flyCount;
+    private int _mothCount;
+    private int _ladybugCount;
+    private int _fireflyCount;
+    private int _spiderCount;
 
 
     public void Initialize()
     {
+        _flyCount = 0;
+        _mothCount= 0;
+        _ladybugCount = 0;
+        _fireflyCount = 0;
+        _spiderCount = 0;
         _flyPool = new ObjectPool<Enemy>(CreateFly, OnGetFromPool, OnReleaseToPool, OnDestroyPooledObject, true, _poolSize, _poolSize);
         _mothPool = new ObjectPool<Enemy>(CreateMoth, OnGetFromPool, OnReleaseToPool, OnDestroyPooledObject, true, _poolSize, _poolSize);
         _ladybugPool = new ObjectPool<Enemy>(CreateLadybug, OnGetFromPool, OnReleaseToPool, OnDestroyPooledObject, true, _poolSize, _poolSize);
@@ -29,6 +39,8 @@ public class EnemyPool : MonoBehaviour, IInitializable
     {
         Enemy enemyInstance = Instantiate(_flyPrefab);
         enemyInstance.ObjectPool = _flyPool;
+        enemyInstance.name = "Fly" + _flyCount;
+        _flyCount++;
         return enemyInstance;
     }
     
@@ -36,6 +48,8 @@ public class EnemyPool : MonoBehaviour, IInitializable
     {
         Enemy enemyInstance = Instantiate(_mothPrefab);
         enemyInstance.ObjectPool = _mothPool;
+        enemyInstance.name = "Moth" + _mothCount;
+        _mothCount++;
         return enemyInstance;
     }
     
@@ -43,6 +57,8 @@ public class EnemyPool : MonoBehaviour, IInitializable
     {
         Enemy enemyInstance = Instantiate(_ladybugPrefab);
         enemyInstance.ObjectPool = _ladybugPool;
+        enemyInstance.name = "Ladybug" + _ladybugCount;
+        _ladybugCount++;
         return enemyInstance;
     }
     
@@ -50,6 +66,8 @@ public class EnemyPool : MonoBehaviour, IInitializable
     {
         Enemy enemyInstance = Instantiate(_fireflyPrefab);
         enemyInstance.ObjectPool = _fireflyPool;
+        enemyInstance.name = "Firefly" + _fireflyCount;
+        _fireflyCount++;
         return enemyInstance;
     }
     
@@ -57,6 +75,8 @@ public class EnemyPool : MonoBehaviour, IInitializable
     {
         Enemy enemyInstance = Instantiate(_spiderPrefab);
         enemyInstance.ObjectPool = _spiderPool;
+        enemyInstance.name = "Spider" + _spiderCount;
+        _spiderCount++;
         return enemyInstance;
     }
 

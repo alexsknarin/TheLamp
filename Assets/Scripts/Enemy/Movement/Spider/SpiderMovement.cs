@@ -31,6 +31,8 @@ public class SpiderMovement : EnemyMovement
     
     public override void Initialize()
     {
+        _isDead = false;
+        _isCollided = false;
         _movementStateMachine = new EnemyMovementStateMachine();
         _enterState = new SpiderMovementEnterState(this, _speed, _xCenter, 0);
         _patrolState  = new SpiderMovementPatrolState(this, _speed, _xCenter, 0);
