@@ -45,7 +45,7 @@ public class LampPresentation : MonoBehaviour
    
     private void Start()
     {
-        _lampMaterial = GetComponent<MeshRenderer>().material;
+        _lampMaterial = GetComponent<MeshRenderer>().sharedMaterial;
         _lampAttackZoneMaterial = _lampAttackZoneObject.GetComponent<MeshRenderer>().material;
         ResetLightNeutralState();
     }

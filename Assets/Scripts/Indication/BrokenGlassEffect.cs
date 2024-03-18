@@ -39,7 +39,7 @@ public class BrokenGlassEffect : MonoBehaviour
                 _brokenGlassImage.color = new Color(1, 1, 1, 0);
                 return;
             }
-            _brokenGlassImage.color = new Color(1, 1, 1, (1-phase)*0.055f);
+            _brokenGlassImage.color = new Color(1, 1, 1, (1-phase)*0.35f);
             _localTime += Time.deltaTime;
         }
     }
