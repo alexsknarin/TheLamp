@@ -64,7 +64,12 @@ public class MothMovement : EnemyMovement
         _movementStateMachine.SetState(_currentState, _position2d, _sideDirection, 1);
         _position2d = _currentState.Position;
         transform.position = _position2d;
-        OnInitializedInvoke();
+    }
+    
+    private void MovementReset()
+    {
+        OnMovementResetInvoke();
+        MovementSetup();    
     }
     
     private Vector3 GenerateSpawnPosition(int direction, float xPos, float yPosMin, float yPosMax)
@@ -96,17 +101,6 @@ public class MothMovement : EnemyMovement
         }
     }
     
-    public override void TriggerSpread()
-    {
-        if(_currentState.State != EnemyStates.Attack && 
-           _currentState.State != EnemyStates.PreAttack && 
-           _currentState.State != EnemyStates.Death)
-        {
-            _currentState = _spreadState;
-            _movementStateMachine.SetState(_currentState, _position2d, _sideDirection, _depthDirection);
-        }
-    }
-    
     public override void TriggerDeath()
     {
         if(_currentState.State != EnemyStates.Death)
@@ -120,6 +114,17 @@ public class MothMovement : EnemyMovement
     {
         _isAttacking = true;
         SwitchState();
+    }
+    
+    public override void TriggerSpread()
+    {
+        if(_currentState.State != EnemyStates.Attack && 
+           _currentState.State != EnemyStates.PreAttack && 
+           _currentState.State != EnemyStates.Death)
+        {
+            _currentState = _spreadState;
+            _movementStateMachine.SetState(_currentState, _position2d, _sideDirection, _depthDirection);
+        }
     }
 
     public override void TriggerStick()
@@ -219,8 +224,7 @@ public class MothMovement : EnemyMovement
                     break;
                 }
             case EnemyStates.Spread:
-                OnSpreadFinishedInvoke();
-                MovementSetup();
+                MovementReset();
                 return;
             case EnemyStates.Death:
                 OnEnemyDeactivatedInvoke();
@@ -230,7 +234,6 @@ public class MothMovement : EnemyMovement
         _currentState = newState;
         State = _currentState.State;
         _movementStateMachine.SetState(_currentState, _position2d, _sideDirection, _depthDirection);
-        OnStateChangeInvoke();
     }
     
     private void Update()

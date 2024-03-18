@@ -56,7 +56,6 @@ public class FireflyMovement : EnemyMovement
         _fallState = new FlyMovementFallState(this, _speed, _radius, _verticalAmplitude);
         _deathState = new FireflyMovementDeathState(this, _speed, _radius, _verticalAmplitude);
         _spreadState = new FlyMovementSpreadState(this, _speed, _radius, _verticalAmplitude);
-        
         MovementSetup();
     }
     
@@ -70,7 +69,12 @@ public class FireflyMovement : EnemyMovement
         _movementStateMachine.SetState(_currentState, _position2d, _sideDirection, _depthDirection);
         _position2d = _currentState.Position;
         transform.position = _position2d;
-        OnInitializedInvoke();
+    }
+    
+    private void MovementReset()
+    {
+        OnMovementResetInvoke();
+        MovementSetup();    
     }
     
     private Vector3 GenerateSpawnPosition(int direction)
@@ -78,6 +82,29 @@ public class FireflyMovement : EnemyMovement
         Vector3 spawnPosition = (Vector3)(Random.insideUnitCircle * _spawnAreaSize) + _spawnAreaCenter;
         spawnPosition.x *= direction;
         return spawnPosition;
+    }
+    
+    public override void TriggerFall()
+    {
+        if(_currentState.State == EnemyStates.Attack)
+        {
+            _isCollided = true;
+            SwitchState();
+        }
+    }
+    
+    public override void TriggerDeath()
+    {
+        if(_currentState.State != EnemyStates.Death)
+        {
+            _isDead = true;
+            SwitchState();
+        }
+    }
+    
+    public override void TriggerAttack()
+    {
+        SwitchState();
     }
     
     public override void TriggerSpread()
@@ -89,29 +116,6 @@ public class FireflyMovement : EnemyMovement
             _currentState = _spreadState;
             _movementStateMachine.SetState(_currentState, _position2d, _sideDirection, _depthDirection);
         }
-    }
-    
-    public override void TriggerFall()
-    {
-        if(_currentState.State == EnemyStates.Attack)
-        {
-            _isCollided = true;
-            SwitchState();
-        }
-    }
-
-    public override void TriggerDeath()
-    {
-        if(_currentState.State != EnemyStates.Death)
-        {
-            _isDead = true;
-            SwitchState();
-        }
-    }
-
-    public override void TriggerAttack()
-    {
-        SwitchState();
     }
 
     public override void TriggerStick()
@@ -192,8 +196,7 @@ public class FireflyMovement : EnemyMovement
                     break;
                 }
             case EnemyStates.Spread:
-                OnSpreadFinishedInvoke();
-                MovementSetup();
+                MovementReset();
                 return;
             case EnemyStates.Death:
                 OnEnemyDeactivatedInvoke();
@@ -203,7 +206,6 @@ public class FireflyMovement : EnemyMovement
         _currentState = newState;
         State = _currentState.State;
         _movementStateMachine.SetState(_currentState, _position2d, _sideDirection, _depthDirection);
-        OnStateChangeInvoke();
     }
 
     private void Update()

@@ -318,7 +318,7 @@ MonoBehaviour:
   _currentHealth: 0
   _enemyMovement: {fileID: 5183674563390223914}
   _enemyPresentation: {fileID: 1049907910270298076}
-  ready: 0
+  _collider: {fileID: 2836968421273079393}
 --- !u!114 &5183674563390223914
 MonoBehaviour:
   m_ObjectHideFlags: 0

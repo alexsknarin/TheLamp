@@ -40,10 +40,6 @@ public class LadybugPresentation : EnemyPresentation
         _damageFlash.Initialize();
         _deathFlash.Initialize();
         _healthIndication.Initialize();
-        _trailResetHandler.Reset();
-    }
-    
-    public override void DisableTrail()
-    {
+        _trailResetHandler.Initialize();
     }
 }

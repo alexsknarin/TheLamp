@@ -19,11 +19,8 @@ public class SpiderMovement : EnemyMovement
     private SpiderMovementReturnState _returnState;
     private FlyMovementDeathState _deathState;
     
-    private Vector3 _prevPosition2d; //Debug
-    private Vector3 _prevPosSmooth; //Debug
     private Vector3 _position2d;
-    
-   
+    private Vector3 _prevPosition2d; //Debug
     
     // State parameters
     private bool _isDead = false;
@@ -53,7 +50,12 @@ public class SpiderMovement : EnemyMovement
         _position2d = _currentState.Position;
         transform.position = _position2d;
         _isDead = false;
-        OnInitializedInvoke();
+    }
+    
+    private void MovementReset()
+    {
+        OnMovementResetInvoke();
+        MovementSetup();    
     }
   
     private Vector3 GenerateSpawnPosition(int direction)
@@ -73,10 +75,6 @@ public class SpiderMovement : EnemyMovement
         }
     }
     
-    public override void TriggerSpread()
-    {
-    }
-
     public override void TriggerDeath()
     {
         if(_currentState.State != EnemyStates.Death)
@@ -90,7 +88,11 @@ public class SpiderMovement : EnemyMovement
     {
         SwitchState();
     }
-
+    
+    public override void TriggerSpread()
+    {
+    }
+    
     public override void TriggerStick()
     {
     }
@@ -167,16 +169,12 @@ public class SpiderMovement : EnemyMovement
         _currentState = newState;
         State = _currentState.State;
         _movementStateMachine.SetState(_currentState, _position2d, _sideDirection, 1);
-        OnStateChangeInvoke();
     }
 
     private void Update()
     {   
         _prevPosition2d = _position2d;
         
-        // Debug Only
-        _prevPosSmooth = transform.position;
-       
         _movementStateMachine.Execute(_position2d);
         _position2d = _currentState.Position;
        
@@ -185,17 +183,6 @@ public class SpiderMovement : EnemyMovement
         transform.position = _position2d;
         
         Debug.DrawLine(_prevPosition2d, _prevPosition2d + (_position2d-_prevPosition2d).normalized*0.02f, Color.cyan, 5f);
-        Debug.DrawLine(_prevPosSmooth, _prevPosSmooth + (transform.position-_prevPosSmooth).normalized*0.02f, Color.yellow, 5f);
-        
         _stateDebug = _currentState.State;
-        
-        if(Input.GetKeyDown(KeyCode.F))
-        {
-            if (_currentState.State == EnemyStates.Patrol)
-            {
-                SwitchState();
-            }
-        }
-        
     }
 }

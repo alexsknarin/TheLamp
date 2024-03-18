@@ -10,6 +10,7 @@ public class Enemy : MonoBehaviour, IInitializable
     [SerializeField] private int _currentHealth;
     [SerializeField] private EnemyMovement _enemyMovement;
     [SerializeField] private EnemyPresentation _enemyPresentation;
+    
     public bool ReadyToAttack { get; private set; }
     public bool ReadyToCollide { get; private set; }
     public bool ReadyToLampDamage { get; private set; }
@@ -30,8 +31,7 @@ public class Enemy : MonoBehaviour, IInitializable
         _enemyMovement.OnPreAttackStart += PreAttackStart;
         _enemyMovement.OnPreAttackEnd += _enemyPresentation.PreAttackEnd;
         _enemyMovement.OnEnemyDeactivated += OnDeactivated;
-        _enemyMovement.OnSpreadFinished += OnSpreadFinished;
-        _enemyMovement.OnInitialized += OnMovementInitialized;
+        _enemyMovement.OnMovementReset += OnMovementReset;
     }
     
     private void OnDisable()
@@ -39,18 +39,23 @@ public class Enemy : MonoBehaviour, IInitializable
         _enemyMovement.OnPreAttackStart -= PreAttackStart;
         _enemyMovement.OnPreAttackEnd -= _enemyPresentation.PreAttackEnd;
         _enemyMovement.OnEnemyDeactivated -= OnDeactivated;
-        _enemyMovement.OnSpreadFinished -= OnSpreadFinished;
-        _enemyMovement.OnInitialized -= OnMovementInitialized;
+        _enemyMovement.OnMovementReset -= OnMovementReset;
     }
     
     public void Initialize()
     {
         _enemyMovement.Initialize();
+        _enemyPresentation.Initialize();
         _currentHealth = _maxHealth;
         ReadyToAttack = false;
         ReadyToCollide = false;
         ReadyToLampDamage = false;
         ReceivedLampAttack = false;
+    }
+    
+    private void OnMovementReset()
+    {
+        _enemyPresentation.Initialize();
     }
     
     public void UpdateAttackAvailability()
@@ -162,15 +167,5 @@ public class Enemy : MonoBehaviour, IInitializable
     {
         OnEnemyDeactivated?.Invoke(this);
         _objectPool.Release(this);
-    }
-    
-    private void OnSpreadFinished()
-    {
-        _enemyPresentation.DisableTrail();
-    }
-    
-    private void OnMovementInitialized()
-    {
-        _enemyPresentation.Initialize();
     }
 }

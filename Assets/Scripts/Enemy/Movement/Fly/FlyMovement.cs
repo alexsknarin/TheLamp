@@ -57,7 +57,6 @@ public class FlyMovement : EnemyMovement
         _fallState = new FlyMovementFallState(this, _speed, _radius, _verticalAmplitude);
         _deathState = new FlyMovementDeathState(this, _speed, _radius, _verticalAmplitude);
         _spreadState = new FlyMovementSpreadState(this, _speed, _radius, _verticalAmplitude);
-
         MovementSetup();
     }
 
@@ -71,7 +70,12 @@ public class FlyMovement : EnemyMovement
         _movementStateMachine.SetState(_currentState, _position2d, _sideDirection, _depthDirection);
         _position2d = _currentState.Position;
         transform.position = _position2d;
-        OnInitializedInvoke();
+    }
+
+    private void MovementReset()
+    {
+        OnMovementResetInvoke();
+        MovementSetup();    
     }
     
     private Vector3 GenerateSpawnPosition(int direction)
@@ -90,17 +94,6 @@ public class FlyMovement : EnemyMovement
         }
     }
     
-    public override void TriggerSpread()
-    {
-        if(_currentState.State != EnemyStates.Attack && 
-           _currentState.State != EnemyStates.PreAttack && 
-           _currentState.State != EnemyStates.Death)
-        {
-            _currentState = _spreadState;
-            _movementStateMachine.SetState(_currentState, _position2d, _sideDirection, _depthDirection);
-        }
-    }
-
     public override void TriggerDeath()
     {
         if(_currentState.State != EnemyStates.Death)
@@ -113,6 +106,17 @@ public class FlyMovement : EnemyMovement
     public override void TriggerAttack()
     {
         SwitchState();
+    }
+    
+    public override void TriggerSpread()
+    {
+        if(_currentState.State != EnemyStates.Attack && 
+           _currentState.State != EnemyStates.PreAttack && 
+           _currentState.State != EnemyStates.Death)
+        {
+            _currentState = _spreadState;
+            _movementStateMachine.SetState(_currentState, _position2d, _sideDirection, _depthDirection);
+        }
     }
 
     public override void TriggerStick()
@@ -193,8 +197,7 @@ public class FlyMovement : EnemyMovement
                     break;
                 }
             case EnemyStates.Spread:
-                OnSpreadFinishedInvoke();
-                MovementSetup();
+                MovementReset();
                 return;
             case EnemyStates.Death:
                 OnEnemyDeactivatedInvoke();
@@ -204,7 +207,6 @@ public class FlyMovement : EnemyMovement
         _currentState = newState;
         State = _currentState.State;
         _movementStateMachine.SetState(_currentState, _position2d, _sideDirection, _depthDirection);
-        OnStateChangeInvoke();
     }
 
     private void Update()

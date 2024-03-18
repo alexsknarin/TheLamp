@@ -34,6 +34,14 @@ public class LampAttackModel : MonoBehaviour, IInitializable
         Lamp.OnLampDamaged -= HandleDamageWithCooldown;
     }
     
+    public void Initialize()
+    {
+        _currentPower = _maxPower;
+        _lampState = LampStates.Neutral;
+        _attackZone.radius = _attackDistance;
+        _attackExitZone.radius = _attackExitDistance;
+    }
+    
     private void Update()
     {
         switch (_lampState)
@@ -59,14 +67,6 @@ public class LampAttackModel : MonoBehaviour, IInitializable
         _attackBlockers--;
     }
     
-    public void Initialize()
-    {
-        _currentPower = _maxPower;
-        _lampState = LampStates.Neutral;
-        _attackZone.radius = _attackDistance;
-        _attackExitZone.radius = _attackExitDistance;
-    }
-   
     private void UpdateAttackPower()
     {
         if (_currentPower < 0.3f)
@@ -148,6 +148,4 @@ public class LampAttackModel : MonoBehaviour, IInitializable
         UpdateAttackPower();
         _lampState = LampStates.Neutral;
     }
-
-
 }

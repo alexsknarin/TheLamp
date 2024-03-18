@@ -105,8 +105,6 @@ public class EnemyManager : MonoBehaviour,IInitializable
         // Attack
         _attackDelay = _spawnDelay + 2f;
         _attackLocalTime = 0;
-        // TODO: reading from the spawn queue object
-        
         _isWaveInitialized = true;
         
         // Debug

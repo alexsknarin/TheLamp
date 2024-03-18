@@ -54,7 +54,12 @@ public class LadybugMovement : EnemyMovement
         _movementStateMachine.SetState(_currentState, _position2d, _sideDirection, 1);
         _position2d = _currentState.Position;
         transform.position = _position2d;
-        OnInitializedInvoke();
+    }
+    
+    private void MovementReset()
+    {
+        OnMovementResetInvoke();
+        MovementSetup();    
     }
     
     private Vector3 GenerateSpawnPosition(float distance)
@@ -70,6 +75,18 @@ public class LadybugMovement : EnemyMovement
     {
     }
     
+    public override void TriggerDeath()
+    {
+        if(_currentState.State != EnemyStates.Death)
+        {
+            _isDead = true;
+            SwitchState();
+        }
+    }
+    public override void TriggerAttack()
+    {
+    }
+    
     public override void TriggerSpread()
     {
         if(_currentState.State != EnemyStates.Attack && 
@@ -82,18 +99,6 @@ public class LadybugMovement : EnemyMovement
         }
     }
     
-    public override void TriggerDeath()
-    {
-        if(_currentState.State != EnemyStates.Death)
-        {
-            _isDead = true;
-            SwitchState();
-        }
-    }
-    public override void TriggerAttack()
-    {
-    }
-
     public override void TriggerStick()
     {
         if (_currentState.State != EnemyStates.Stick)
@@ -154,8 +159,7 @@ public class LadybugMovement : EnemyMovement
                 }
                 break;
             case EnemyStates.Spread:
-                OnSpreadFinishedInvoke();
-                MovementSetup();
+                MovementReset();
                 return;
             case EnemyStates.Death:
                 OnEnemyDeactivatedInvoke();
@@ -165,7 +169,6 @@ public class LadybugMovement : EnemyMovement
         _currentState = newState;
         State = _currentState.State;
         _movementStateMachine.SetState(_currentState, _position2d, _sideDirection, _depthDirection);
-        OnStateChangeInvoke();
     }
     
     private void Update()
