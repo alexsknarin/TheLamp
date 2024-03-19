@@ -20,6 +20,7 @@ public class GameInitialization : MonoBehaviour
 
     void Start()
     {
+        Application.targetFrameRate = 60;
         _lamp.Initialize(); 
         _enemyPool.Initialize();
         _googleSheetsDataReader.Initialize();

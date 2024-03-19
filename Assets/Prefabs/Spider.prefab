@@ -94,7 +94,7 @@ LineRenderer:
   - {x: 0, y: 0, z: 1}
   m_Parameters:
     serializedVersion: 3
-    widthMultiplier: 0.022
+    widthMultiplier: 0.032
     widthCurve:
       serializedVersion: 2
       m_Curve:
@@ -420,7 +420,6 @@ MonoBehaviour:
   _currentHealth: 0
   _enemyMovement: {fileID: 7475500628150659992}
   _enemyPresentation: {fileID: 7739623460623399613}
-  _collider: {fileID: 4627610842102158501}
 --- !u!114 &7475500628150659992
 MonoBehaviour:
   m_ObjectHideFlags: 0
