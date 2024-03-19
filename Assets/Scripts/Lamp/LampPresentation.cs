@@ -54,6 +54,7 @@ public class LampPresentation : MonoBehaviour, IInitializable
         _lampLight.intensity = _lightNeutralIntensity;
         _lampMaterial.SetFloat("_EmissionLevel", _lampNeutralEmission);
         _lampMaterial.SetFloat("_Damage", 0f);
+        _lampMaterial.SetFloat("_BlockedMode", 0f);
     }
     
     private void StartAttackState(int attackPower, float currentPower, float attackDuration, float attackDistance)
