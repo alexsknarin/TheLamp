@@ -40,7 +40,7 @@ public class EnemyManager : MonoBehaviour,IInitializable
     
     private List<Enemy> _enemies;
     private List<Enemy> _enemiesReadyToAttack;
-    private List<Enemy> _ladybugs;
+    private List<Enemy> _ladybugsPatroling;
     private bool _isWaveInitialized = false;
     
     private float _attackDelay;
@@ -80,7 +80,7 @@ public class EnemyManager : MonoBehaviour,IInitializable
         _spawnQueueGenerator = new SpawnQueueGenerator(_spawnQueueDataCache.Data);
         _spawnQueue = _spawnQueueGenerator.Generate();
         _enemies = new List<Enemy>();
-        _ladybugs = new List<Enemy>();
+        _ladybugsPatroling = new List<Enemy>();
         _enemiesReadyToAttack = new List<Enemy>();
         _currentWave = _startAtWave;
     }
@@ -160,15 +160,16 @@ public class EnemyManager : MonoBehaviour,IInitializable
         _enemiesKilled++;
         if (enemy.EnemyType == EnemyTypes.Ladybug)
         {
-            _ladybugs.Remove(enemy);
+            _ladybugsPatroling.Remove(enemy);
         }
     }
     
     private void UpdateLadybugsOnScreen(Enemy enemy)
     {
+        // Remove stick ladybug for damageable list
         if (enemy.EnemyType == EnemyTypes.Ladybug)
         {
-            _ladybugs.Remove(enemy);    
+            _ladybugsPatroling.Remove(enemy);    
         }
     }
 
@@ -237,7 +238,7 @@ public class EnemyManager : MonoBehaviour,IInitializable
                             _enemies.Add(enemy);
                             if (enemy.EnemyType == EnemyTypes.Ladybug)
                             {
-                                _ladybugs.Add(enemy);
+                                _ladybugsPatroling.Add(enemy);
                             }
                         }
                         _enemiesAvailable--;
@@ -308,9 +309,9 @@ public class EnemyManager : MonoBehaviour,IInitializable
 
             // Check Ladybugs
             bool isAttackTimerUpdateAllowed = true;
-            if (_ladybugs.Count > 0)
+            if (_ladybugsPatroling.Count > 0)
             {
-                foreach (var ladybug in _ladybugs)
+                foreach (var ladybug in _ladybugsPatroling)
                 {
                     Vector3 pos = ladybug.transform.position;
                     pos.z = 0;

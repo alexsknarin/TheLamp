@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Lamp : MonoBehaviour, IInitializable
@@ -11,6 +12,8 @@ public class Lamp : MonoBehaviour, IInitializable
     [SerializeField] private AttackExitZoneCollisionHandler _attackExitZoneCollisionHandler;    
     [SerializeField] private int _maxHealth;
     [SerializeField] private int _currentHealth;
+    [SerializeField] private int _attackBlokerCount;
+    private List<Enemy> _stickyEnemies;
     private bool _isAssessingDamage = false;
     private Vector3 _enemyPosition;
     
@@ -39,12 +42,21 @@ public class Lamp : MonoBehaviour, IInitializable
         _lampMovement.Initialize();
         _lampPresentation.Initialize();
         _currentHealth = _maxHealth;
+        _stickyEnemies = new List<Enemy>();
+        _attackBlokerCount = 0;
     }
   
     private void StickyEnemyEnterCollisionHandle(Enemy enemy)
     {
         _enemyPosition = enemy.transform.position;
         _lampAttackModel.AddAttackBlocker();
+        _lampPresentation.EnableBlockedMode();
+        if (!_stickyEnemies.Contains(enemy))
+        {
+            _stickyEnemies.Add(enemy);
+            _attackBlokerCount = _stickyEnemies.Count;
+        }
+        
         enemy.transform.parent = transform;
         MoveLamp();
         OnLampCollidedWithStickyEnemy?.Invoke(enemy);
@@ -54,7 +66,17 @@ public class Lamp : MonoBehaviour, IInitializable
     {
         if (enemy.EnemyType == EnemyTypes.Ladybug)
         {
-            _lampAttackModel.RemoveAttackBlocker();
+            if (_stickyEnemies.Contains(enemy))
+            {
+                _stickyEnemies.Remove(enemy);
+                _attackBlokerCount = _stickyEnemies.Count;
+                if( _attackBlokerCount <= 0)
+                {
+                    _attackBlokerCount = 0;
+                    _lampAttackModel.RemoveAttackBlocker();
+                    _lampPresentation.DisableBlockedMode();
+                }    
+            }
             enemy.transform.parent = null;
         }
     }

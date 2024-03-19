@@ -2963,7 +2963,7 @@ MonoBehaviour:
   _maxEnemiesOnScreen: 0
   _aggresionLevel: 0
   _maxAggressionLevel: 6
-  _startAtWave: 8
+  _startAtWave: 25
   _currentWave: 0
   _spawnDelay: 1
   _enemiesInWaveCount: 0
@@ -2998,9 +2998,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5dfa96e0952dfb04884e8cca62118031, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _flyPrefab: {fileID: 8958940323544418024, guid: 6e04665d54889b4419c7eefc9f74ce61,
+  _flyPrefab: {fileID: 5065817594616091563, guid: fb0c5c6a78e6cfa4b9c5530e8ae2c067,
     type: 3}
-  _mothPrefab: {fileID: 8958940323544418024, guid: 6e04665d54889b4419c7eefc9f74ce61,
+  _mothPrefab: {fileID: 3291430470506879424, guid: c997318186f1bda4f852c425e75498e5,
     type: 3}
   _ladybugPrefab: {fileID: 8958940323544418024, guid: 6e04665d54889b4419c7eefc9f74ce61,
     type: 3}
@@ -3315,7 +3315,7 @@ MonoBehaviour:
   _fullCooldownTime: 2
   _attackDistance: 0.68
   _attackExitDistance: 0.55
-  _attackBlockers: 0
+  _isBlockedAttack: 0
 --- !u!114 &1934066246
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3336,6 +3336,7 @@ MonoBehaviour:
   _attackExitZoneCollisionHandler: {fileID: 452042971}
   _maxHealth: 10
   _currentHealth: 0
+  _attackBlokerCount: 0
 --- !u!114 &1934066247
 MonoBehaviour:
   m_ObjectHideFlags: 0

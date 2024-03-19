@@ -57,6 +57,16 @@ public class LampPresentation : MonoBehaviour, IInitializable
         _lampMaterial.SetFloat("_BlockedMode", 0f);
     }
     
+    public void EnableBlockedMode()
+    {
+        _lampMaterial.SetFloat("_BlockedMode", 1f);
+    }
+    
+    public void DisableBlockedMode()
+    {
+        _lampMaterial.SetFloat("_BlockedMode", 0f);
+    }
+    
     private void StartAttackState(int attackPower, float currentPower, float attackDuration, float attackDistance)
     {
         _lampMaterial.SetFloat("_attackPower", 0f);

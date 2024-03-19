@@ -12,8 +12,8 @@ public class LampAttackModel : MonoBehaviour, IInitializable
     [SerializeField] private float _fullCooldownTime;
     [SerializeField] private float _attackDistance;
     [SerializeField] private float _attackExitDistance;
-    [SerializeField] private int _attackBlockers = 0;
-    
+    [SerializeField] private bool _isBlockedAttack = false;
+
     private LampStates _lampState = LampStates.Neutral;
     private float _localTime;
     
@@ -40,6 +40,7 @@ public class LampAttackModel : MonoBehaviour, IInitializable
         _lampState = LampStates.Neutral;
         _attackZone.radius = _attackDistance;
         _attackExitZone.radius = _attackExitDistance;
+        _isBlockedAttack = false;
     }
     
     private void Update()
@@ -59,12 +60,12 @@ public class LampAttackModel : MonoBehaviour, IInitializable
     
     public void AddAttackBlocker()
     {
-        _attackBlockers++;
+        _isBlockedAttack = true;
     }
     
     public void RemoveAttackBlocker()
     {
-        _attackBlockers--;
+        _isBlockedAttack = false;
     }
     
     private void UpdateAttackPower()
@@ -91,13 +92,13 @@ public class LampAttackModel : MonoBehaviour, IInitializable
     {
         if (_lampState != LampStates.Attack)
         {
-            if (_attackBlockers <= 0)
+            if (_isBlockedAttack)
             {
-                OnLampAttack?.Invoke(_attackPower, _currentPower, _attackDuration, _attackDistance);
+                OnLampBlockedAttack?.Invoke(_attackPower, _currentPower, _attackDuration, _attackDistance);
             }
             else
             {
-                OnLampBlockedAttack?.Invoke(_attackPower, _currentPower, _attackDuration, _attackDistance);
+                OnLampAttack?.Invoke(_attackPower, _currentPower, _attackDuration, _attackDistance);
             }
             _lampState = LampStates.Attack;
             _localTime = 0;
