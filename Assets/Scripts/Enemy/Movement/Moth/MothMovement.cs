@@ -266,13 +266,5 @@ public class MothMovement : EnemyMovement
         
         Debug.DrawLine(_prevPosition2d, _prevPosition2d + (_position2d-_prevPosition2d).normalized*0.02f, Color.cyan, 5f);
         _stateDebug = _currentState.State;
-        
-        // Check collision
-        if (transform.position.magnitude < 0.45f)
-        {
-            Debug.Log("Collision Missed: " + gameObject.name);
-            Debug.Break();
-        }
-        
     }
 }
