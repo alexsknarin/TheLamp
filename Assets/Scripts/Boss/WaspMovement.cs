@@ -47,6 +47,7 @@ public class WaspMovement : MonoBehaviour
     [SerializeField] private Collider2D _collider;
     [SerializeField] private Animator _animator;
     [SerializeField] private WaspStates _currentWaspState;
+    private WaspStates _prevWaspState;
     [SerializeField] private Transform _baseTransform;
     private AnimationClipPlayable _currentAnimationClipPlayable;
     
@@ -135,7 +136,6 @@ public class WaspMovement : MonoBehaviour
         
         
         int side = Random.Range(0, 2);
-        Debug.Log(side);
         if (side == 0)
         {
             _currentWaspState = WaspStates.EnterL;
@@ -144,7 +144,7 @@ public class WaspMovement : MonoBehaviour
         {
             _currentWaspState = WaspStates.EnterR;
         }
-        
+
         PlayStateClip(_currentWaspState);
     }
 
@@ -260,6 +260,7 @@ public class WaspMovement : MonoBehaviour
         scale.x = side;
         _baseTransform.localScale = scale;
         clipPlayable.SetTime(0);
+        clipPlayable.SetTime(0); // Unity Bug
         _playableOutput.SetSourcePlayable(clipPlayable);
         _playableGraph.Play();
     }
@@ -319,7 +320,7 @@ public class WaspMovement : MonoBehaviour
                 v = Random.Range(0, 3);
                 if (v == 0)
                 {
-                    _currentWaspState = WaspStates.Attack1_R;    
+                    _currentWaspState = WaspStates.Attack2_R;    
                 }
                 else if(v == 1)
                 {
@@ -334,11 +335,11 @@ public class WaspMovement : MonoBehaviour
                 v = Random.Range(0, 2);
                 if (v == 0)
                 {
-                    _currentWaspState = WaspStates.Attack2_R;    
+                    _currentWaspState = WaspStates.Attack1_R;    
                 }
                 else
                 {
-                    _currentWaspState = WaspStates.Attack4_R;
+                    _currentWaspState = WaspStates.Attack2_R;
                 }
                 break;
             case WaspStates.Attack1_L_Success2:
@@ -401,7 +402,7 @@ public class WaspMovement : MonoBehaviour
                 }
                 break;
             case WaspStates.Attack3_L_Fail1:
-                v = Random.Range(0, 3);
+                v = Random.Range(0, 2);
                 if (v == 0)
                 {
                     _currentWaspState = WaspStates.Attack1_R;    
@@ -409,10 +410,6 @@ public class WaspMovement : MonoBehaviour
                 else if(v == 1)
                 {
                     _currentWaspState = WaspStates.Attack3_R;
-                }
-                else if(v == 2)
-                {
-                    _currentWaspState = WaspStates.Attack4_L;
                 }
                 break;
             case WaspStates.Attack3_L_Success1:
@@ -439,6 +436,17 @@ public class WaspMovement : MonoBehaviour
                 }
                 break;
             case WaspStates.Attack4_L_Fail1:
+                v = Random.Range(0, 2);
+                if (v == 0)
+                {
+                    _currentWaspState = WaspStates.Attack1_L;    
+                }
+                else if(v == 1)
+                {
+                    _currentWaspState = WaspStates.Attack3_L;
+                }
+                break;
+            case WaspStates.Attack4_L_Success1:
                 v = Random.Range(0, 3);
                 if (v == 0)
                 {
@@ -446,15 +454,12 @@ public class WaspMovement : MonoBehaviour
                 }
                 else if(v == 1)
                 {
-                    _currentWaspState = WaspStates.Attack3_R;
+                    _currentWaspState = WaspStates.Attack2_L;
                 }
                 else if(v == 2)
                 {
-                    _currentWaspState = WaspStates.Attack2_L;
+                    _currentWaspState = WaspStates.Attack3_L;
                 }
-                break;
-            case WaspStates.Attack4_L_Success1:
-                _currentWaspState = WaspStates.Attack2_L;    
                 break;
 
             // R
@@ -493,7 +498,7 @@ public class WaspMovement : MonoBehaviour
                 v = Random.Range(0, 3);
                 if (v == 0)
                 {
-                    _currentWaspState = WaspStates.Attack1_L;    
+                    _currentWaspState = WaspStates.Attack2_L;    
                 }
                 else if(v == 1)
                 {
@@ -508,11 +513,11 @@ public class WaspMovement : MonoBehaviour
                 v = Random.Range(0, 2);
                 if (v == 0)
                 {
-                    _currentWaspState = WaspStates.Attack2_L;
+                    _currentWaspState = WaspStates.Attack1_L;
                 }
                 else
                 {
-                    _currentWaspState = WaspStates.Attack4_L;
+                    _currentWaspState = WaspStates.Attack2_L;
                 }
                 break;
             case WaspStates.Attack1_R_Success2:
@@ -575,7 +580,7 @@ public class WaspMovement : MonoBehaviour
                 }
                 break;
             case WaspStates.Attack3_R_Fail1:
-                v = Random.Range(0, 3);
+                v = Random.Range(0, 2);
                 if (v == 0)
                 {
                     _currentWaspState = WaspStates.Attack1_L;    
@@ -583,10 +588,6 @@ public class WaspMovement : MonoBehaviour
                 else if(v == 1)
                 {
                     _currentWaspState = WaspStates.Attack3_L;
-                }
-                else if(v == 2)
-                {
-                    _currentWaspState = WaspStates.Attack4_R;
                 }
                 break;
             case WaspStates.Attack3_R_Success1:
@@ -613,6 +614,17 @@ public class WaspMovement : MonoBehaviour
                 }
                 break;
             case WaspStates.Attack4_R_Fail1:
+                v = Random.Range(0, 2);
+                if (v == 0)
+                {
+                    _currentWaspState = WaspStates.Attack1_R;    
+                }
+                else if(v == 1)
+                {
+                    _currentWaspState = WaspStates.Attack3_R;
+                }
+                break;
+            case WaspStates.Attack4_R_Success1:
                 v = Random.Range(0, 3);
                 if (v == 0)
                 {
@@ -620,129 +632,18 @@ public class WaspMovement : MonoBehaviour
                 }
                 else if(v == 1)
                 {
-                    _currentWaspState = WaspStates.Attack3_L;
+                    _currentWaspState = WaspStates.Attack2_R;
                 }
                 else if(v == 2)
                 {
-                    _currentWaspState = WaspStates.Attack2_R;
-                }
-                break;
-            case WaspStates.Attack4_R_Success1:
-                _currentWaspState = WaspStates.Attack2_R;    
+                    _currentWaspState = WaspStates.Attack3_R;
+                }    
                 break;
         }
         
         PlayStateClip(_currentWaspState);
     }
     
-    private void Update()
-    {
-        /*
-        if (Input.GetKeyDown(KeyCode.Q))
-        {
-            PlayAnimClipPlayable(_waspEnterLPlayable);
-        }
-
-        if (Input.GetKeyDown(KeyCode.W))
-        {
-            PlayAnimClipPlayable(_waspAttackL1Playable);
-            _attackVariant = 0;
-        }
-        
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            PlayAnimClipPlayable(_waspAttackL2Playable);
-            _attackVariant = 1;
-        }
-        
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            PlayAnimClipPlayable(_waspAttackL3Playable);
-            _attackVariant = 2;
-        }
-        
-        if (Input.GetKeyDown(KeyCode.T))
-        {
-            PlayAnimClipPlayable(_waspAttackL4Playable);
-            _attackVariant = 3;
-        }
-        */
-    }
-
-    private void OnTriggerEnter2D(Collider2D other)
-    {
-        /*
-        if(other.gameObject.CompareTag("Lamp"))
-        {
-            if (_attackVariant == 0)
-            {
-                int variant = Random.Range(0, 4);
-                switch (variant)
-                {
-                    case 0:
-                        PlayAnimClipPlayable(_waspAttackL1_Success1Playable);
-                        break;
-                    case 1:
-                        PlayAnimClipPlayable(_waspAttackL1_Success2Playable);
-                        break;
-                    case 2:
-                        PlayAnimClipPlayable(_waspAttackL1_Success3Playable);
-                        break;
-                    case 3:
-                        PlayAnimClipPlayable(_waspAttackL1_Fail1Playable);
-                        break;
-                }
-                _attackVariant = -1;
-            }
-
-            if (_attackVariant == 1)
-            {
-                int variant = Random.Range(0, 2);
-                switch (variant)
-                {
-                    case 0:
-                        PlayAnimClipPlayable(_waspAttackL2_Success1Playable);
-                        break;
-                    case 1:
-                        PlayAnimClipPlayable(_waspAttackL2_Fail1Playable);
-                        break;
-                } 
-                _attackVariant = -1;
-            }
-            
-            if (_attackVariant == 2)
-            {
-                int variant = Random.Range(0, 2);
-                switch (variant)
-                {
-                    case 0:
-                        PlayAnimClipPlayable(_waspAttackL3_Success1Playable);
-                        break;
-                    case 1:
-                        PlayAnimClipPlayable(_waspAttackL3_Fail1Playable);
-                        break;
-                } 
-                _attackVariant = -1;
-            }
-            
-            if (_attackVariant == 3)
-            {
-                int variant = Random.Range(0, 2);
-                switch (variant)
-                {
-                    case 0:
-                        PlayAnimClipPlayable(_waspAttackL4_Success1Playable);
-                        break;
-                    case 1:
-                        PlayAnimClipPlayable(_waspAttackL4_Fail1Playable);
-                        break;
-                }
-                _attackVariant = -1;
-            }
-        }
-        */
-    }
-
     private void OnDisable()
     {
         _playableGraph.Destroy();
