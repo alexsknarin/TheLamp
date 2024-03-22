@@ -4,43 +4,6 @@ using UnityEngine.Animations;
 using UnityEngine.Playables;
 using Random = UnityEngine.Random;
 
-public enum WaspStates
-{
-    EnterL, 
-    Attack1_L,
-    Attack1_L_Fail1,
-    Attack1_L_Success1,
-    Attack1_L_Success2,
-    Attack1_L_Success3,
-    Attack2_L,
-    Attack2_L_Fail1,
-    Attack2_L_Fail2,
-    Attack2_L_Success1,
-    Attack3_L,
-    Attack3_L_Fail1,
-    Attack3_L_Success1,
-    Attack4_L,
-    Attack4_L_Fail1,
-    Attack4_L_Success1,
-    EnterR,
-    Attack1_R,
-    Attack1_R_Fail1,
-    Attack1_R_Success1,
-    Attack1_R_Success2,
-    Attack1_R_Success3,
-    Attack2_R,
-    Attack2_R_Fail1,
-    Attack2_R_Fail2,
-    Attack2_R_Success1,
-    Attack3_R,
-    Attack3_R_Fail1,
-    Attack3_R_Success1,
-    Attack4_R,
-    Attack4_R_Fail1,
-    Attack4_R_Success1
-}
-
-
 [RequireComponent(typeof(Animator))]
 public class WaspMovement : MonoBehaviour
 {
@@ -50,60 +13,33 @@ public class WaspMovement : MonoBehaviour
     private WaspStates _prevWaspState;
     [SerializeField] private Transform _baseTransform;
     private AnimationClipPlayable _currentAnimationClipPlayable;
-    
-    
+    private WaspPlayablesContainer _playablesContainer;
+
     // Enter
     [SerializeField] private AnimationClip _waspEnterL;
-    private AnimationClipPlayable _waspEnterLPlayable;
     
     // Attack 1
     [SerializeField] private AnimationClip _waspAttackL1;
-    private AnimationClipPlayable _waspAttackL1Playable;
-    
     [SerializeField] private AnimationClip _waspAttackL1_Fail1;
-    private AnimationClipPlayable _waspAttackL1_Fail1Playable;
-    
     [SerializeField] private AnimationClip _waspAttackL1_Success1;
-    private AnimationClipPlayable _waspAttackL1_Success1Playable;
-    
     [SerializeField] private AnimationClip _waspAttackL1_Success2;
-    private AnimationClipPlayable _waspAttackL1_Success2Playable;    
-    
     [SerializeField] private AnimationClip _waspAttackL1_Success3;
-    private AnimationClipPlayable _waspAttackL1_Success3Playable;
     
     // Attack 2
     [SerializeField] private AnimationClip _waspAttackL2;
-    private AnimationClipPlayable _waspAttackL2Playable;
-    
     [SerializeField] private AnimationClip _waspAttackL2_Fail1;
-    private AnimationClipPlayable _waspAttackL2_Fail1Playable;
-    
     [SerializeField] private AnimationClip _waspAttackL2_Fail2;
-    private AnimationClipPlayable _waspAttackL2_Fail2Playable;
-    
     [SerializeField] private AnimationClip _waspAttackL2_Success1;
-    private AnimationClipPlayable _waspAttackL2_Success1Playable;
     
     // Attack 3
     [SerializeField] private AnimationClip _waspAttackL3;
-    private AnimationClipPlayable _waspAttackL3Playable;
-    
     [SerializeField] private AnimationClip _waspAttackL3_Fail1;
-    private AnimationClipPlayable _waspAttackL3_Fail1Playable;
-    
     [SerializeField] private AnimationClip _waspAttackL3_Success1;
-    private AnimationClipPlayable _waspAttackL3_Success1Playable;
     
     // Attack 4
     [SerializeField] private AnimationClip _waspAttackL4;
-    private AnimationClipPlayable _waspAttackL4Playable;
-    
     [SerializeField] private AnimationClip _waspAttackL4_Fail1;
-    private AnimationClipPlayable _waspAttackL4_Fail1Playable;
-    
     [SerializeField] private AnimationClip _waspAttackL4_Success1;
-    private AnimationClipPlayable _waspAttackL4_Success1Playable;
     
     
     private PlayableGraph _playableGraph;
@@ -116,24 +52,25 @@ public class WaspMovement : MonoBehaviour
         _playableGraph = PlayableGraph.Create();
         _playableGraph.SetTimeUpdateMode(DirectorUpdateMode.GameTime);
         _playableOutput = AnimationPlayableOutput.Create(_playableGraph, "Animation", _animator);
-        _waspEnterLPlayable = AnimationClipPlayable.Create(_playableGraph, _waspEnterL);
-        _waspAttackL1Playable = AnimationClipPlayable.Create(_playableGraph, _waspAttackL1);
-        _waspAttackL1_Fail1Playable = AnimationClipPlayable.Create(_playableGraph, _waspAttackL1_Fail1);
-        _waspAttackL1_Success1Playable = AnimationClipPlayable.Create(_playableGraph, _waspAttackL1_Success1);
-        _waspAttackL1_Success2Playable = AnimationClipPlayable.Create(_playableGraph, _waspAttackL1_Success2);
-        _waspAttackL1_Success3Playable = AnimationClipPlayable.Create(_playableGraph, _waspAttackL1_Success3);
-        _waspAttackL2Playable = AnimationClipPlayable.Create(_playableGraph, _waspAttackL2);
-        _waspAttackL2_Fail1Playable = AnimationClipPlayable.Create(_playableGraph, _waspAttackL2_Fail1);
-        _waspAttackL2_Fail2Playable = AnimationClipPlayable.Create(_playableGraph, _waspAttackL2_Fail2);
-        _waspAttackL2_Success1Playable = AnimationClipPlayable.Create(_playableGraph, _waspAttackL2_Success1);
-        _waspAttackL3Playable = AnimationClipPlayable.Create(_playableGraph, _waspAttackL3);
-        _waspAttackL3_Fail1Playable = AnimationClipPlayable.Create(_playableGraph, _waspAttackL3_Fail1);
-        _waspAttackL3_Success1Playable = AnimationClipPlayable.Create(_playableGraph, _waspAttackL3_Success1);
-        _waspAttackL4Playable = AnimationClipPlayable.Create(_playableGraph, _waspAttackL4);
-        _waspAttackL4_Fail1Playable = AnimationClipPlayable.Create(_playableGraph, _waspAttackL4_Fail1);
-        _waspAttackL4_Success1Playable = AnimationClipPlayable.Create(_playableGraph, _waspAttackL4_Success1);
         
+        _playablesContainer = new WaspPlayablesContainer(_playableGraph);
         
+        _playablesContainer.AddClip(WaspStates.EnterL, WaspStates.EnterR, _waspEnterL);
+        _playablesContainer.AddClip(WaspStates.Attack1_L, WaspStates.Attack1_R, _waspAttackL1);
+        _playablesContainer.AddClip(WaspStates.Attack1_L_Fail1, WaspStates.Attack1_R_Fail1, _waspAttackL1_Fail1);
+        _playablesContainer.AddClip(WaspStates.Attack1_L_Success1, WaspStates.Attack1_R_Success1, _waspAttackL1_Success1);
+        _playablesContainer.AddClip(WaspStates.Attack1_L_Success2, WaspStates.Attack1_R_Success2, _waspAttackL1_Success2);
+        _playablesContainer.AddClip(WaspStates.Attack1_L_Success3, WaspStates.Attack1_R_Success3, _waspAttackL1_Success3);
+        _playablesContainer.AddClip(WaspStates.Attack2_L, WaspStates.Attack2_R, _waspAttackL2);
+        _playablesContainer.AddClip(WaspStates.Attack2_L_Fail1, WaspStates.Attack2_R_Fail1, _waspAttackL2_Fail1);
+        _playablesContainer.AddClip(WaspStates.Attack2_L_Fail2, WaspStates.Attack2_R_Fail2, _waspAttackL2_Fail2);
+        _playablesContainer.AddClip(WaspStates.Attack2_L_Success1, WaspStates.Attack2_R_Success1, _waspAttackL2_Success1);
+        _playablesContainer.AddClip(WaspStates.Attack3_L, WaspStates.Attack3_R, _waspAttackL3);
+        _playablesContainer.AddClip(WaspStates.Attack3_L_Fail1, WaspStates.Attack3_R_Fail1, _waspAttackL3_Fail1);
+        _playablesContainer.AddClip(WaspStates.Attack3_L_Success1, WaspStates.Attack3_R_Success1, _waspAttackL3_Success1);
+        _playablesContainer.AddClip(WaspStates.Attack4_L, WaspStates.Attack4_R, _waspAttackL4);
+        _playablesContainer.AddClip(WaspStates.Attack4_L_Fail1, WaspStates.Attack4_R_Fail1, _waspAttackL4_Fail1);
+        _playablesContainer.AddClip(WaspStates.Attack4_L_Success1, WaspStates.Attack4_R_Success1, _waspAttackL4_Success1);
         
         int side = Random.Range(0, 2);
         if (side == 0)
@@ -148,114 +85,11 @@ public class WaspMovement : MonoBehaviour
         PlayStateClip(_currentWaspState);
     }
 
-    private AnimationClipPlayable GetAnimationStatePlayable(WaspStates state, ref int side)
-    {
-        switch (state)
-        {
-            case WaspStates.EnterL:
-                side = 1;
-                return _waspEnterLPlayable;
-            case WaspStates.Attack1_L:
-                side = 1;
-                return _waspAttackL1Playable;
-            case WaspStates.Attack1_L_Fail1:
-                side = 1;
-                return _waspAttackL1_Fail1Playable;
-            case WaspStates.Attack1_L_Success1:
-                side = 1;
-                return _waspAttackL1_Success1Playable;
-            case WaspStates.Attack1_L_Success2:
-                side = 1;
-                return _waspAttackL1_Success2Playable;
-            case WaspStates.Attack1_L_Success3:
-                side = 1;
-                return _waspAttackL1_Success3Playable;
-            case WaspStates.Attack2_L:
-                side = 1;
-                return _waspAttackL2Playable;
-            case WaspStates.Attack2_L_Fail1:
-                side = 1;
-                return _waspAttackL2_Fail1Playable;
-            case WaspStates.Attack2_L_Fail2:
-                side = 1;
-                return _waspAttackL2_Fail2Playable;
-            case WaspStates.Attack2_L_Success1:
-                side = 1;
-                return _waspAttackL2_Success1Playable;
-            case WaspStates.Attack3_L:
-                side = 1;
-                return _waspAttackL3Playable;
-            case WaspStates.Attack3_L_Fail1:
-                side = 1;
-                return _waspAttackL3_Fail1Playable;
-            case WaspStates.Attack3_L_Success1:
-                side = 1;
-                return _waspAttackL3_Success1Playable;
-            case WaspStates.Attack4_L:
-                side = 1;
-                return _waspAttackL4Playable;
-            case WaspStates.Attack4_L_Fail1:
-                side = 1;
-                return _waspAttackL4_Fail1Playable;
-            case WaspStates.Attack4_L_Success1:
-                side = 1;
-                return _waspAttackL4_Success1Playable;
-            case WaspStates.EnterR:
-                side = -1;
-                return _waspEnterLPlayable;
-            case WaspStates.Attack1_R:
-                side = -1;
-                return _waspAttackL1Playable;
-            case WaspStates.Attack1_R_Fail1:
-                side = -1;
-                return _waspAttackL1_Fail1Playable;
-            case WaspStates.Attack1_R_Success1:
-                side = -1;
-                return _waspAttackL1_Success1Playable;
-            case WaspStates.Attack1_R_Success2:
-                side = -1;
-                return _waspAttackL1_Success2Playable;
-            case WaspStates.Attack1_R_Success3:
-                side = -1;
-                return _waspAttackL1_Success3Playable;
-            case WaspStates.Attack2_R:
-                side = -1;
-                return _waspAttackL2Playable;
-            case WaspStates.Attack2_R_Fail1:
-                side = -1;
-                return _waspAttackL2_Fail1Playable;
-            case WaspStates.Attack2_R_Fail2:
-                side = -1;
-                return _waspAttackL2_Fail2Playable;
-            case WaspStates.Attack2_R_Success1:
-                side = -1;
-                return _waspAttackL2_Success1Playable;
-            case WaspStates.Attack3_R:
-                side = -1;
-                return _waspAttackL3Playable;
-            case WaspStates.Attack3_R_Fail1:
-                side = -1;
-                return _waspAttackL3_Fail1Playable;
-            case WaspStates.Attack3_R_Success1:
-                side = -1;
-                return _waspAttackL3_Success1Playable;
-            case WaspStates.Attack4_R:
-                side = -1;
-                return _waspAttackL4Playable;
-            case WaspStates.Attack4_R_Fail1:
-                side = -1;
-                return _waspAttackL4_Fail1Playable;
-            case WaspStates.Attack4_R_Success1:
-                side = -1;
-                return _waspAttackL4_Success1Playable;
-        }
-        return _waspEnterLPlayable;
-    }
-    
+
     private void PlayStateClip(WaspStates state)
     {
-        int side = 1;
-        AnimationClipPlayable clipPlayable = GetAnimationStatePlayable(state, ref side);
+        AnimationClipPlayable clipPlayable = _playablesContainer.GetClip(state); 
+        int side = _playablesContainer.GetSideDirection(state);    
         Vector3 scale = _baseTransform.localScale;
         scale.x = side;
         _baseTransform.localScale = scale;
