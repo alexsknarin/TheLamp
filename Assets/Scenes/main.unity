@@ -602,6 +602,52 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  _waspProximityShakeAmplitude: 0.016
+  _waspProximityCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0.6849934
+      outSlope: 0.6849934
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.07864388
+    - serializedVersion: 3
+      time: 0.3453325
+      value: 0.9422986
+      inSlope: 0.7308313
+      outSlope: 0.7308313
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.08478886
+      outWeight: 0.11356936
+    - serializedVersion: 3
+      time: 0.65127236
+      value: 0.9479257
+      inSlope: -0.592473
+      outSlope: -0.592473
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.090806305
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.9987793
+      value: 0.0014038086
+      inSlope: -0.21677527
+      outSlope: -0.21677527
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.119703874
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _waspTransform: {fileID: 1966729913}
+  _waspProximityMaxDistance: -2
+  _waspProximityMinDistance: -5.1
 --- !u!1 &341007278
 GameObject:
   m_ObjectHideFlags: 0
