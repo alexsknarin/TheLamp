@@ -28,7 +28,6 @@ public class CameraShake : MonoBehaviour
     {
         _originalPos = transform.position;
         _shakeDistance = Mathf.Abs(_waspProximityMaxDistance - _waspProximityMinDistance);
-        Debug.Log(_shakeDistance);
         _isShaking = false;
     }
     
