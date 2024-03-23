@@ -1905,89 +1905,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &880188347
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 880188350}
-  - component: {fileID: 880188349}
-  - component: {fileID: 880188348}
-  m_Layer: 0
-  m_Name: Body_1
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!23 &880188348
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 880188347}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 2100000, guid: 5548dd60b6d306949942ee49b621decc, type: 2}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_AdditionalVertexStreams: {fileID: 0}
---- !u!33 &880188349
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 880188347}
-  m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
---- !u!4 &880188350
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 880188347}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0.6201404, y: -0.016667398, z: 0.15944712, w: 0.7679354}
-  m_LocalPosition: {x: -0.8328748, y: 0.09897181, z: -0.13718435}
-  m_LocalScale: {x: 0.25, y: 0.23378865, z: 0.25}
-  m_ConstrainProportionsScale: 1
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &913096742
 GameObject:
   m_ObjectHideFlags: 0
@@ -3338,13 +3255,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1622139081}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.043752164, y: 0.032784335, z: -0.997774, w: 0.038183983}
-  m_LocalPosition: {x: 0.04, y: -11.9, z: -5.35}
+  m_LocalRotation: {x: 0.04376538, y: 0.03276668, z: -0.99778926, w: 0.037781537}
+  m_LocalPosition: {x: -0.01, y: -11.9, z: -5.35}
   m_LocalScale: {x: 1.049601, y: 22.496313, z: 0.09674254}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 3.943, y: -4.876, z: -175.785}
+  m_LocalEulerAnglesHint: {x: 3.939, y: -4.88, z: -175.831}
 --- !u!1 &1682026196
 GameObject:
   m_ObjectHideFlags: 0
@@ -4246,6 +4163,7 @@ MonoBehaviour:
   _baseTransform: {fileID: 190638442}
   _waspEnterL: {fileID: 7400000, guid: 835e9eaf32e437a46a3e6e89c38371b1, type: 2}
   _waspAttackL1: {fileID: 7400000, guid: 79ae7360b93308f4e82753a3e664532c, type: 2}
+  _waspAttackL_Bounce: {fileID: 7400000, guid: c1eea8e49109a4846a63b45f26dc82eb, type: 2}
   _waspAttackL1_Fail1: {fileID: 7400000, guid: 2d999f0853ec20c42a705d6de3c26cc4, type: 2}
   _waspAttackL1_Success1: {fileID: 7400000, guid: 0ef11ff09c2163c44bd194489391f867,
     type: 2}
@@ -4254,15 +4172,21 @@ MonoBehaviour:
   _waspAttackL1_Success3: {fileID: 7400000, guid: 8e4e5a59b924b8545a407aa4ba4e41d5,
     type: 2}
   _waspAttackL2: {fileID: 7400000, guid: 1f27d4375bc0240409badd4c45eece95, type: 2}
+  _waspAttackL2_Bounce: {fileID: 7400000, guid: fdd2ff17114a6444994f4d403e8a8990,
+    type: 2}
   _waspAttackL2_Fail1: {fileID: 7400000, guid: 884ddf293844ce44cb3eab67648d77dc, type: 2}
   _waspAttackL2_Fail2: {fileID: 7400000, guid: de7cbc1577f7fc24cb0283acc0dcc7f6, type: 2}
   _waspAttackL2_Success1: {fileID: 7400000, guid: ee5477926565c1d48844194ae94bbeba,
     type: 2}
   _waspAttackL3: {fileID: 7400000, guid: 9c3346c5526ef1e449e2ab07f20eed5d, type: 2}
+  _waspAttackL3_Bounce: {fileID: 7400000, guid: ae6e588431249214693b0e05eb886b08,
+    type: 2}
   _waspAttackL3_Fail1: {fileID: 7400000, guid: 5caf12e48fa342645959fdb53a56dd10, type: 2}
   _waspAttackL3_Success1: {fileID: 7400000, guid: f1872dd84b76e074dbfbad935aa811d9,
     type: 2}
   _waspAttackL4: {fileID: 7400000, guid: 8b11acc7654d458418ec67ee9592e1a6, type: 2}
+  _waspAttackL4_Bounce: {fileID: 7400000, guid: 56b746c592e67c645968148baa57c859,
+    type: 2}
   _waspAttackL4_Fail1: {fileID: 7400000, guid: 83b94d9c394aec640a6f89a5455bb058, type: 2}
   _waspAttackL4_Success1: {fileID: 7400000, guid: a35cf7ff73288454d94bac43e620ec71,
     type: 2}
@@ -4496,5 +4420,4 @@ SceneRoots:
   - {fileID: 1682026200}
   - {fileID: 2071350934}
   - {fileID: 913096746}
-  - {fileID: 880188350}
   - {fileID: 190638442}
