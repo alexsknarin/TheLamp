@@ -5,7 +5,7 @@ using UnityEngine.Playables;
 using Random = UnityEngine.Random;
 
 [RequireComponent(typeof(Animator))]
-public class WaspMovement : MonoBehaviour
+public class WaspMovement : MonoBehaviour, IInitializable
 {
     [SerializeField] private Collider2D _collider;
     [SerializeField] private Animator _animator;
@@ -50,10 +50,10 @@ public class WaspMovement : MonoBehaviour
     private PlayableOutput _playableOutput;
     
     private int _attackVariant = 0;
-
-    private void Start()
+    
+    public void Initialize()
     {
-        _playableGraph = PlayableGraph.Create();
+    _playableGraph = PlayableGraph.Create();
         _playableGraph.SetTimeUpdateMode(DirectorUpdateMode.GameTime);
         _playableOutput = AnimationPlayableOutput.Create(_playableGraph, "Animation", _animator);
         
@@ -79,7 +79,10 @@ public class WaspMovement : MonoBehaviour
         _playablesContainer.AddClip(WaspStates.Attack4_L_Bounce, WaspStates.Attack4_R_Bounce, _waspAttackL4_Bounce);
         _playablesContainer.AddClip(WaspStates.Attack4_L_Fail1, WaspStates.Attack4_R_Fail1, _waspAttackL4_Fail1);
         _playablesContainer.AddClip(WaspStates.Attack4_L_Success1, WaspStates.Attack4_R_Success1, _waspAttackL4_Success1);
-        
+    }
+
+    public void Play()
+    {
         int side = Random.Range(0, 2);
         if (side == 0)
         {
@@ -92,8 +95,7 @@ public class WaspMovement : MonoBehaviour
 
         PlayStateClip(_currentWaspState);
     }
-
-
+    
     private void PlayStateClip(WaspStates state)
     {
         AnimationClipPlayable clipPlayable = _playablesContainer.GetClip(state); 
