@@ -2,21 +2,14 @@ using System;
 using UnityEngine;
 using UnityEngine.Pool;
 
-public class Enemy : MonoBehaviour, IInitializable
+public class Enemy : EnemyBase
 {
     [SerializeField] private EnemyTypes _enemyType;
-    public EnemyTypes EnemyType => _enemyType;
+    public override EnemyTypes EnemyType => _enemyType;
     [SerializeField] private int _maxHealth;
     [SerializeField] private int _currentHealth;
     [SerializeField] private EnemyMovement _enemyMovement;
     [SerializeField] private EnemyPresentation _enemyPresentation;
-    
-    public bool IsAttacking { get; private set; }
-    public bool IsStick { get; private set; }
-    public bool ReadyToAttack { get; private set; }
-    public bool ReadyToCollide { get; private set; }
-    public bool ReadyToLampDamage { get; private set; }
-    public bool ReceivedLampAttack { get; private set; }    
     
     private IObjectPool<Enemy> _objectPool;
     public IObjectPool<Enemy> ObjectPool
@@ -48,7 +41,7 @@ public class Enemy : MonoBehaviour, IInitializable
         _enemyMovement.OnStickStart -= StickStatusEnable;
     }
     
-    public void Initialize()
+    public override void Initialize()
     {
         _enemyMovement.Initialize();
         _enemyPresentation.Initialize();
@@ -66,7 +59,7 @@ public class Enemy : MonoBehaviour, IInitializable
         _enemyPresentation.Initialize();
     }
     
-    public void UpdateAttackAvailability()
+    public override void UpdateAttackAvailability()
     {
         float x = transform.position.x;
         float y = transform.position.y;
@@ -115,12 +108,12 @@ public class Enemy : MonoBehaviour, IInitializable
         }
     }
     
-    public void SpreadStart()
+    public override void SpreadStart()
     {
         _enemyMovement.TriggerSpread();
     }
    
-    public void AttackStart()
+    public override void AttackStart()
     {
         _enemyMovement.TriggerAttack();
     }
@@ -149,7 +142,7 @@ public class Enemy : MonoBehaviour, IInitializable
         IsStick = true;
     }
     
-    public void HandleEnteringAttackZone()
+    public override void HandleEnteringAttackZone()
     {
         if (_enemyMovement.State == EnemyStates.Attack || _enemyType == EnemyTypes.Ladybug)
         {
@@ -157,24 +150,24 @@ public class Enemy : MonoBehaviour, IInitializable
         }
     }
     
-    public void HandleCollisionWithLamp()
+    public override void HandleCollisionWithLamp()
     {
         ReadyToCollide = false;
         ReadyToLampDamage = true;
         _enemyMovement.TriggerFall();
     }
     
-    public void HandleExitingAttackExitZone()
+    public override void HandleExitingAttackExitZone()
     {
         ReadyToLampDamage = false;
     }
     
-    public void HandleCollisionWithStickZone()
+    public override void HandleCollisionWithStickZone()
     {
         _enemyMovement.TriggerStick();
     }
 
-    public void ReceiveDamage(int damage)
+    public override void ReceiveDamage(int damage)
     {
         _currentHealth -= damage;
 

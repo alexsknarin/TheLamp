@@ -3,12 +3,12 @@ using UnityEngine;
 
 public class AttackExitZoneCollisionHandler : MonoBehaviour
 {
-    public event Action<Enemy> OnExitAttackExitZone; 
+    public event Action<EnemyBase> OnExitAttackExitZone; 
     private void OnTriggerExit2D(Collider2D other)
     {
-        if (other.gameObject.CompareTag("Enemy"))
+        if (other.gameObject.CompareTag("Enemy") || other.gameObject.CompareTag("Boss"))
         {
-            Enemy enemy = other.GetComponent<Enemy>();
+            EnemyBase enemy = other.GetComponent<EnemyBase>();
             OnExitAttackExitZone?.Invoke(enemy);
             enemy.HandleExitingAttackExitZone();
         }

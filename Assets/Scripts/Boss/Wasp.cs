@@ -1,21 +1,48 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class Wasp : MonoBehaviour
+public class Wasp : EnemyBase
 {
     [SerializeField] private WaspMovement _waspMovement;
     [SerializeField] private WaspPresentation _waspPresentation;
     [SerializeField] private int _maxHealth;
     [SerializeField] private int _currentHealth;
-    public bool ReadyToLampDamage { get; private set; }
+    
+    public event Action OnTriggerSpread; 
+
 
     private void OnEnable()
     {
         LampAttackModel.OnLampAttack += LampAttack;
+        _waspMovement.OnWaspAttackStarted += UpdateRecievedLampAttackStatus;
+    }
+    
+    private void OnDisable()
+    {
+        LampAttackModel.OnLampAttack -= LampAttack;
+        _waspMovement.OnWaspAttackStarted -= UpdateRecievedLampAttackStatus;
+    }
+    public virtual void Initialize()
+    {
+        ReceivedLampAttack = false;
+        _currentHealth = _maxHealth;
+        _waspPresentation.Initialize();
+        _waspMovement.Initialize();
     }
 
+    public void Reset()
+    {
+        ReceivedLampAttack = false;
+        _currentHealth = _maxHealth;
+        _waspPresentation.Initialize();
+        _waspMovement.MovementReset();
+    }
+
+    public void Play()
+    {
+        _waspMovement.Play();
+    }
+    
     private void LampAttack(int attackPower, float currentPower, float attackDuration, float attackDistance)
     {
         if (ReadyToLampDamage)
@@ -25,17 +52,27 @@ public class Wasp : MonoBehaviour
         }
     }
     
-    private void Start()
+    public void TriggerSpread()
     {
-        _currentHealth = _maxHealth;
-        _waspPresentation.Initialize();
-        _waspMovement.Initialize();
-        _waspMovement.Play();
+        OnTriggerSpread?.Invoke();
     }
     
-    public void ReceiveDamage(int damage)
+    private void UpdateRecievedLampAttackStatus()
+    {
+        if (ReceivedLampAttack)
+        {
+            ReceivedLampAttack = false;
+        }
+    }
+
+    public override void HandleCollisionWithStickZone()
+    {
+    }
+
+    public override void ReceiveDamage(int damage)
     {
         _currentHealth -= damage;
+        ReceivedLampAttack = true;
         if (_currentHealth > 0)
         {
             float damagePhase = (1 - (float)_currentHealth/_maxHealth) + 0.2f;
@@ -48,18 +85,30 @@ public class Wasp : MonoBehaviour
             _waspPresentation.PlayDeath();
         }    
     }
-    
-    public void HandleEnteringAttackZone()
+
+    public override void UpdateAttackAvailability()
+    {
+    }
+
+    public override void SpreadStart()
+    {
+    }
+
+    public override void AttackStart()
+    {
+    }
+
+    public override void HandleEnteringAttackZone()
     {
         ReadyToLampDamage = true;
     }
     
-    public void HandleCollisionWithLamp()
+    public override void HandleCollisionWithLamp()
     {
      //   
     }
     
-    public void HandleExitingAttackExitZone()
+    public override void HandleExitingAttackExitZone()
     {
         ReadyToLampDamage = false;
     }

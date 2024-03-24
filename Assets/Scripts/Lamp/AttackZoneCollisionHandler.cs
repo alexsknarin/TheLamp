@@ -7,7 +7,7 @@ public class AttackZoneCollisionHandler : MonoBehaviour
         if (other.gameObject.CompareTag("Enemy") 
             || other.gameObject.CompareTag("StickyEnemy"))
         {
-            Enemy enemy = other.GetComponent<Enemy>();
+            EnemyBase enemy = other.GetComponent<EnemyBase>();
             enemy.HandleEnteringAttackZone();
         }
         if (other.gameObject.CompareTag("Boss"))

@@ -3392,7 +3392,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1818435498}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a19cb97880c15834aa6cac48223fb88a, type: 3}
   m_Name: 
@@ -3400,13 +3400,14 @@ MonoBehaviour:
   _spawnQueueDataCache: {fileID: 11400000, guid: beab91cd3dcd8c44b88194a9986f9a99,
     type: 2}
   _enemyPool: {fileID: 1818435504}
+  _waspBoss: {fileID: 1966729921}
   _fireflyExplosion: {fileID: 1402077385}
   _fireflyExplosionRadius: 0.8
   _explosionDuration: 0.1
   _maxEnemiesOnScreen: 0
   _aggresionLevel: 0
   _maxAggressionLevel: 6
-  _startAtWave: 0
+  _startAtWave: 21
   _currentWave: 0
   _spawnDelay: 1
   _enemiesInWaveCount: 0
@@ -3929,6 +3930,18 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 2929489649649167473}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1966729921 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1177802453113491699, guid: db082986f50fad64f90c5d3f0bd3ddf3,
+    type: 3}
+  m_PrefabInstance: {fileID: 2929489649649167473}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1966729912}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d23ee084d2a859141814e9297a884109, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &1966729922
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4160,6 +4173,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: WaspBaseTransform
       objectReference: {fileID: 0}
+    - target: {fileID: 508564934166301182, guid: db082986f50fad64f90c5d3f0bd3ddf3,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1177802453113491699, guid: db082986f50fad64f90c5d3f0bd3ddf3,
         type: 3}
       propertyPath: _waspPresentation
@@ -4169,6 +4187,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Radius
       value: 0.24
+      objectReference: {fileID: 0}
+    - target: {fileID: 4184854209567734099, guid: db082986f50fad64f90c5d3f0bd3ddf3,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.28
+      objectReference: {fileID: 0}
+    - target: {fileID: 4184854209567734099, guid: db082986f50fad64f90c5d3f0bd3ddf3,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.26184326
+      objectReference: {fileID: 0}
+    - target: {fileID: 4184854209567734099, guid: db082986f50fad64f90c5d3f0bd3ddf3,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.28
       objectReference: {fileID: 0}
     - target: {fileID: 6534722627740550364, guid: db082986f50fad64f90c5d3f0bd3ddf3,
         type: 3}
