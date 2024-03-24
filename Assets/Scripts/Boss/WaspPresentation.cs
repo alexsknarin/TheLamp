@@ -71,6 +71,9 @@ public class WaspPresentation : MonoBehaviour, IInitializable
             {
                 _isDead = false;
                 _waspBodyMaterial.SetFloat("_DeathPhase", 1);
+                _damageEmitParticles.SendEvent("OnEndEmit");
+                _damageEmitParticles.SetFloat("Rate", 0);
+                _trailResetHandler.Initialize();
                 return;
             }
             
