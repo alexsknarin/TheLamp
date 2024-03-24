@@ -16,7 +16,8 @@ public class WaspMovement : MonoBehaviour, IInitializable
     private WaspPlayablesContainer _playablesContainer;
     
     public event Action OnWaspAttackStarted;
-    
+    public event Action OnDeathStateEnded;
+
     // Idle
     [SerializeField] private AnimationClip _waspIdle;
     
@@ -157,7 +158,7 @@ public class WaspMovement : MonoBehaviour, IInitializable
     {
         _isDead = true;
     }
-
+    
     private void SwitchState()
     {
         int v = 0;
@@ -657,27 +658,35 @@ public class WaspMovement : MonoBehaviour, IInitializable
                 break;
             case WaspStates.Attack1_L_Death:
                 _currentWaspState = WaspStates.Idle;
+                OnDeathStateEnded?.Invoke();
                 break;
             case WaspStates.Attack2_L_Death:
                 _currentWaspState = WaspStates.Idle;
+                OnDeathStateEnded?.Invoke();
                 break; 
             case WaspStates.Attack3_L_Death:
                 _currentWaspState = WaspStates.Idle;
+                OnDeathStateEnded?.Invoke();
                 break; 
             case WaspStates.Attack4_L_Death:
                 _currentWaspState = WaspStates.Idle;
+                OnDeathStateEnded?.Invoke();
                 break; 
             case WaspStates.Attack1_R_Death:
                 _currentWaspState = WaspStates.Idle;
+                OnDeathStateEnded?.Invoke();
                 break;
             case WaspStates.Attack2_R_Death:
                 _currentWaspState = WaspStates.Idle;
+                OnDeathStateEnded?.Invoke();
                 break; 
             case WaspStates.Attack3_R_Death:
                 _currentWaspState = WaspStates.Idle;
+                OnDeathStateEnded?.Invoke();
                 break; 
             case WaspStates.Attack4_R_Death:
                 _currentWaspState = WaspStates.Idle;
+                OnDeathStateEnded?.Invoke();
                 break;
         }
         

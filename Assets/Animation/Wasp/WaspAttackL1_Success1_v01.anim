@@ -98,6 +98,15 @@ AnimationClip:
         weightedMode: 0
         inWeight: {x: 0.11969916, y: 0.5220641, z: 0.37775323}
         outWeight: {x: 0.33333334, y: 0.33333334, z: 0.33333334}
+      - serializedVersion: 3
+        time: 2.5166667
+        value: {x: 12.6576395, y: -92.256, z: 108.992}
+        inSlope: {x: 0, y: 0, z: 0}
+        outSlope: {x: 0, y: 0, z: 0}
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: {x: 0.33333334, y: 0.33333334, z: 0.33333334}
+        outWeight: {x: 0.33333334, y: 0.33333334, z: 0.33333334}
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
@@ -186,6 +195,15 @@ AnimationClip:
         tangentMode: 0
         weightedMode: 0
         inWeight: {x: 0.099795476, y: 0.18445162, z: 0.31339037}
+        outWeight: {x: 0.33333334, y: 0.33333334, z: 0.33333334}
+      - serializedVersion: 3
+        time: 2.5166667
+        value: {x: -1.3633094, y: -2.957312, z: -10.529202}
+        inSlope: {x: 0, y: -4.4340515, z: -11.904481}
+        outSlope: {x: 0, y: -4.4340515, z: -11.904481}
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: {x: 0.33333334, y: 0.42139044, z: 0.45497644}
         outWeight: {x: 0.33333334, y: 0.33333334, z: 0.33333334}
       m_PreInfinity: 2
       m_PostInfinity: 2
@@ -326,6 +344,15 @@ AnimationClip:
         weightedMode: 0
         inWeight: 0.099795476
         outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 2.5166667
+        value: -1.3633094
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
@@ -418,6 +445,15 @@ AnimationClip:
         tangentMode: 0
         weightedMode: 0
         inWeight: 0.18445162
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 2.5166667
+        value: -2.957312
+        inSlope: -4.4340515
+        outSlope: -4.4340515
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.42139044
         outWeight: 0.33333334
       m_PreInfinity: 2
       m_PostInfinity: 2
@@ -512,6 +548,15 @@ AnimationClip:
         weightedMode: 0
         inWeight: 0.31339037
         outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 2.5166667
+        value: -10.529202
+        inSlope: -11.904481
+        outSlope: -11.904481
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.45497644
+        outWeight: 0.33333334
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
@@ -604,6 +649,15 @@ AnimationClip:
         tangentMode: 0
         weightedMode: 0
         inWeight: 0.11969916
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 2.5166667
+        value: 12.6576395
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
         outWeight: 0.33333334
       m_PreInfinity: 2
       m_PostInfinity: 2
@@ -698,6 +752,15 @@ AnimationClip:
         weightedMode: 0
         inWeight: 0.5220641
         outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 2.5166667
+        value: -92.256
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
@@ -791,6 +854,15 @@ AnimationClip:
         weightedMode: 0
         inWeight: 0.37775323
         outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 2.5166667
+        value: 108.992
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
@@ -855,6 +927,13 @@ AnimationClip:
     messageOptions: 0
   - time: 1.9166666
     functionName: TriggerSpread
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 2.55
+    functionName: ResetTrail
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0

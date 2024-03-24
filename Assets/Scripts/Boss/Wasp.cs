@@ -8,21 +8,24 @@ public class Wasp : EnemyBase
     [SerializeField] private int _maxHealth;
     [SerializeField] private int _currentHealth;
     
-    public event Action OnTriggerSpread; 
+    public event Action OnTriggerSpread;
+    public event Action OnDeath;
 
 
     private void OnEnable()
     {
         LampAttackModel.OnLampAttack += LampAttack;
         _waspMovement.OnWaspAttackStarted += UpdateRecievedLampAttackStatus;
+        _waspMovement.OnDeathStateEnded += HandleDeathMoveStateEnd;
     }
     
     private void OnDisable()
     {
         LampAttackModel.OnLampAttack -= LampAttack;
         _waspMovement.OnWaspAttackStarted -= UpdateRecievedLampAttackStatus;
+        _waspMovement.OnDeathStateEnded -= HandleDeathMoveStateEnd;
     }
-    public virtual void Initialize()
+    public override void Initialize()
     {
         ReceivedLampAttack = false;
         _currentHealth = _maxHealth;
@@ -37,7 +40,7 @@ public class Wasp : EnemyBase
         _waspPresentation.Initialize();
         _waspMovement.MovementReset();
     }
-
+    
     public void Play()
     {
         _waspMovement.Play();
@@ -78,11 +81,13 @@ public class Wasp : EnemyBase
             float damagePhase = (1 - (float)_currentHealth/_maxHealth) + 0.2f;
             damagePhase = Mathf.Clamp(damagePhase, 0, 1);
             _waspPresentation.SetDamage(damagePhase);
+            _waspPresentation.PlayDamageParticles();
         }
         else
         {
             _waspMovement.SetDead();
             _waspPresentation.PlayDeath();
+            _waspPresentation.PlayDamageParticles();
         }    
     }
 
@@ -113,4 +118,13 @@ public class Wasp : EnemyBase
         ReadyToLampDamage = false;
     }
     
+    private void HandleDeathMoveStateEnd()
+    {
+        OnDeath?.Invoke();
+    }
+
+    private void ResetTrail()
+    {
+        _waspPresentation.ResetTrail();
+    }
 }

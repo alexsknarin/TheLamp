@@ -13,8 +13,7 @@ public class EnemyManager : MonoBehaviour,IInitializable
     [Header("------ Enemy Prefabs -------")]
     [SerializeField] private EnemyPool _enemyPool;
     [SerializeField] private Wasp _waspBoss;
-    private bool _isWaspActive = false;
-
+    
     [Header("------ Explosions -------")]
     [SerializeField] private FireflyExplosion _fireflyExplosion;
     [SerializeField] private float _fireflyExplosionRadius;
@@ -52,10 +51,15 @@ public class EnemyManager : MonoBehaviour,IInitializable
     private float _localTime;
     private float _localExplosionTime;
     
+    private bool _isBossActive = false;
+    private int _maxBossCount = 1;
+    private int _currentBossCount = 0;
+    
     public static event Action<int> OnWavePrepared;
     public static event Action OnWaveStarted;
     public static event Action OnFireflyExplosion;
     public static event Action OnEnemyDamaged; 
+    public static event Action OnBossAppear;
 
     private void OnEnable()
     {
@@ -66,6 +70,7 @@ public class EnemyManager : MonoBehaviour,IInitializable
         Lamp.OnLampCollidedWithStickyEnemy += UpdateLadybugsOnScreen;
         PlayerInputHandler.OnPlayerAttack += StartWave;
         _waspBoss.OnTriggerSpread += SpreadEnemies;
+        _waspBoss.OnDeath += HandleBossEnd;
     }
     
     private void OnDisable()
@@ -77,6 +82,7 @@ public class EnemyManager : MonoBehaviour,IInitializable
         Lamp.OnLampCollidedWithStickyEnemy -= UpdateLadybugsOnScreen;
         PlayerInputHandler.OnPlayerAttack -= StartWave;
         _waspBoss.OnTriggerSpread -= SpreadEnemies;
+        _waspBoss.OnDeath -= HandleBossEnd;
     }
     
     public void Initialize()
@@ -86,7 +92,8 @@ public class EnemyManager : MonoBehaviour,IInitializable
         _enemies = new List<EnemyBase>();
         _ladybugsPatroling = new List<EnemyBase>();
         _enemiesReadyToAttack = new List<EnemyBase>();
-        _isWaspActive = false;
+        _isBossActive = false;
+        _currentBossCount = _maxBossCount;
         _waspBoss.Initialize();
         _currentWave = _startAtWave;
     }
@@ -220,6 +227,11 @@ public class EnemyManager : MonoBehaviour,IInitializable
         }
     }
 
+    private void HandleBossEnd()
+    {
+        _isBossActive = false;
+    }
+
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.A))
@@ -256,12 +268,15 @@ public class EnemyManager : MonoBehaviour,IInitializable
                     }
                 }
                 
-                // Wasp Boss Spawn
-                if (_enemies.Count > 3 && !_isWaspActive)
+                // Wasp Boss Spawn TODO: Boss count from the google sheet
+                if (_enemies.Count > 3 && !_isBossActive && _currentBossCount > 0)
                 {
                     _waspBoss.Reset();
                     _waspBoss.Play();
-                    _isWaspActive = true;
+                    _isBossActive = true;
+                    _currentBossCount--;
+                    _attackLocalTime = 0;
+                    OnBossAppear?.Invoke();
                 }
             }
             
@@ -338,7 +353,7 @@ public class EnemyManager : MonoBehaviour,IInitializable
             }
             
             _localTime += Time.deltaTime;
-            if(isAttackTimerUpdateAllowed)
+            if(isAttackTimerUpdateAllowed && !_isBossActive)
             {
                 _attackLocalTime += Time.deltaTime;
             }
