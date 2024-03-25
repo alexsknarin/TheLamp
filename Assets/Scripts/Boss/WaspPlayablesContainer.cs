@@ -26,6 +26,13 @@ public class WaspPlayablesContainer
           
     }
     
+    public void AddSingleStateClip(WaspStates key, AnimationClip clip)
+    {
+        var clipPlayable = AnimationClipPlayable.Create(_playableGraph, clip);
+        _animationClips.Add(key, clipPlayable);
+        _sideDirections.Add(key, 1);
+    }
+    
     public AnimationClipPlayable GetClip(WaspStates state)
     {
         return _animationClips[state];

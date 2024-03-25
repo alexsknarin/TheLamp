@@ -22,7 +22,7 @@ public class FlyMovementSpreadState: EnemyMovementBaseState
         Position = currentPosition;
         _direction = currentPosition.normalized;
         _acceleratedSpeed = 1;
-        _extraDistance = Random.Range(0f, 10f);
+        _extraDistance = Random.Range(50f, 70f);
     }
     
     public override void ExecuteState(Vector3 currentPosition)

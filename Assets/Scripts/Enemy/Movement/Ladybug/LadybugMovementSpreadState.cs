@@ -22,7 +22,7 @@ public class LadybugMovementSpreadState: EnemyMovementBaseState
         Position = currentPosition;
         _direction = currentPosition.normalized;
         _acceleratedSpeed = 1;
-        _extraDistance = Random.Range(0f, 10f);
+        _extraDistance = Random.Range(45f, 65f);
     }
     
     public override void ExecuteState(Vector3 currentPosition)

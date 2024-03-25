@@ -5,7 +5,7 @@ using UnityEngine;
 public class TrailResetHandler : MonoBehaviour, IInitializable
 {
     [SerializeField] private TrailRenderer _trailRenderer;
-    private WaitForSeconds _waitTime = new WaitForSeconds(.2f);
+    private WaitForSeconds _waitTime = new WaitForSeconds(.25f);
     
     private IEnumerator EnableTrail()
     {

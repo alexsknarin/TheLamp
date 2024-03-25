@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -12,12 +13,13 @@ public class EnemyManager : MonoBehaviour,IInitializable
     
     [Header("------ Enemy Prefabs -------")]
     [SerializeField] private EnemyPool _enemyPool;
-
+    [SerializeField] private Wasp _waspBoss;
+    
     [Header("------ Explosions -------")]
     [SerializeField] private FireflyExplosion _fireflyExplosion;
     [SerializeField] private float _fireflyExplosionRadius;
     [SerializeField] private float _explosionDuration;
-    private Enemy _explosionSource;
+    private EnemyBase _explosionSource;
     private Vector3 _explosionPosition;
     private bool _isExplosionActive = false;
     [Header("---- Waves Generation ------")]
@@ -38,9 +40,9 @@ public class EnemyManager : MonoBehaviour,IInitializable
     [SerializeField] private int _enemiesInWaveCount;
     [SerializeField] private int _enemiesLeftCount;
     
-    private List<Enemy> _enemies;
-    private List<Enemy> _enemiesReadyToAttack;
-    private List<Enemy> _ladybugsPatroling;
+    private List<EnemyBase> _enemies;
+    private List<EnemyBase> _enemiesReadyToAttack;
+    private List<EnemyBase> _ladybugsPatroling;
     private bool _isWaveInitialized = false;
     
     private float _attackDelay;
@@ -50,10 +52,16 @@ public class EnemyManager : MonoBehaviour,IInitializable
     private float _localTime;
     private float _localExplosionTime;
     
+    private bool _isBossActive = false;
+    private int _maxBossCount = 1;
+    private int _currentBossCount = 0;
+    
     public static event Action<int> OnWavePrepared;
     public static event Action OnWaveStarted;
     public static event Action OnFireflyExplosion;
     public static event Action OnEnemyDamaged; 
+    public static event Action OnBossAppear;
+    public static event Action OnBossDeath;
 
     private void OnEnable()
     {
@@ -63,6 +71,8 @@ public class EnemyManager : MonoBehaviour,IInitializable
         LampAttackModel.OnLampBlockedAttack += LampBlockedAttack;
         Lamp.OnLampCollidedWithStickyEnemy += UpdateLadybugsOnScreen;
         PlayerInputHandler.OnPlayerAttack += StartWave;
+        _waspBoss.OnTriggerSpread += SpreadEnemies;
+        _waspBoss.OnDeath += HandleBossEnd;
     }
     
     private void OnDisable()
@@ -73,18 +83,36 @@ public class EnemyManager : MonoBehaviour,IInitializable
         LampAttackModel.OnLampBlockedAttack -= LampBlockedAttack;
         Lamp.OnLampCollidedWithStickyEnemy -= UpdateLadybugsOnScreen;
         PlayerInputHandler.OnPlayerAttack -= StartWave;
+        _waspBoss.OnTriggerSpread -= SpreadEnemies;
+        _waspBoss.OnDeath -= HandleBossEnd;
     }
     
     public void Initialize()
     {
         _spawnQueueGenerator = new SpawnQueueGenerator(_spawnQueueDataCache.Data);
         _spawnQueue = _spawnQueueGenerator.Generate();
-        _enemies = new List<Enemy>();
-        _ladybugsPatroling = new List<Enemy>();
-        _enemiesReadyToAttack = new List<Enemy>();
+        _enemies = new List<EnemyBase>();
+        _ladybugsPatroling = new List<EnemyBase>();
+        _enemiesReadyToAttack = new List<EnemyBase>();
+        _isBossActive = false;
+        _currentBossCount = _maxBossCount;
+        _waspBoss.Initialize();
         _currentWave = _startAtWave;
+        
+        // Check all waves
+        // for( int i=1; i<_spawnQueue.Count(); i++)
+        // {
+        //     var enemyQueue = _spawnQueue.Get(i);
+        //     Debug.Log("--------------------------");
+        //     Debug.Log("Wave: " + i.ToString());
+        //     for (int j = 0; j < enemyQueue.Count(); j++)
+        //     {
+        //         Debug.Log("Enemy: " + enemyQueue.Get(j).ToString());   
+        //     }
+        // }
+        
+        OnWavePrepared?.Invoke(_currentWave);
     }
-    
     private void StartWave()
     {
         if (!_isWaveInitialized)
@@ -106,8 +134,12 @@ public class EnemyManager : MonoBehaviour,IInitializable
         _aggresionLevel = _enemyQueue.AggressionLevel;  
         _aggressionLevelNormalized = _aggresionLevel / _maxAggressionLevel;
 
-        // Attack
-        _attackDelay = _spawnDelay + 2f;
+        // Init Attack
+        _attackDelay = Random.Range(
+            Mathf.Lerp(4.5f, 1.8f, _aggressionLevelNormalized),
+            Mathf.Lerp(6.5f, 2.8f, _aggressionLevelNormalized)
+        );
+        
         _attackLocalTime = 0;
         _isWaveInitialized = true;
         
@@ -115,15 +147,26 @@ public class EnemyManager : MonoBehaviour,IInitializable
         _enemiesInWaveCount = _enemiesInWave;
         _enemiesLeftCount = _enemiesInWave;
     }
-    
-    public Enemy SpawnEnemy(int enemyIndex)
+
+    private Enemy SpawnEnemy(EnemyTypes enemyType)
     {
-        EnemyTypes enemyType = _enemyQueue.Get(enemyIndex);
         var enemy = _enemyPool.Get(enemyType);
         enemy.Initialize();
         return enemy;
     }
-
+    
+    private void SpawnBoss(EnemyTypes bossType)
+    {
+        if (bossType == EnemyTypes.Wasp)
+        {
+            _waspBoss.Reset();
+            _waspBoss.Play();
+            _isBossActive = true;
+            _attackLocalTime = 0;
+            OnBossAppear?.Invoke();    
+        }
+    }
+    
     private void LampAttack(int attackPower, float currentPower, float attackDuration, float attackDistance)
     {
         foreach (var enemy in _enemies)
@@ -154,7 +197,7 @@ public class EnemyManager : MonoBehaviour,IInitializable
         }
     }
     
-    private void UpdateEnemiesOnScreen(Enemy enemy)
+    private void UpdateEnemiesOnScreen(EnemyBase enemy)
     {
         _enemies.Remove(enemy);
         _enemiesKilled++;
@@ -164,7 +207,7 @@ public class EnemyManager : MonoBehaviour,IInitializable
         }
     }
     
-    private void UpdateLadybugsOnScreen(Enemy enemy)
+    private void UpdateLadybugsOnScreen(EnemyBase enemy)
     {
         // Remove stick ladybug for damageable list
         if (enemy.EnemyType == EnemyTypes.Ladybug)
@@ -173,7 +216,7 @@ public class EnemyManager : MonoBehaviour,IInitializable
         }
     }
 
-    private void StartExplodeEnemyOnDeath(Enemy explosionSource)
+    private void StartExplodeEnemyOnDeath(EnemyBase explosionSource)
     {
         if(explosionSource.EnemyType != EnemyTypes.Firefly)
         {
@@ -214,6 +257,14 @@ public class EnemyManager : MonoBehaviour,IInitializable
         }
     }
 
+    private void HandleBossEnd()
+    {
+        _isBossActive = false;
+        _enemies.Remove(_waspBoss);
+        _enemiesKilled++;
+        OnBossDeath?.Invoke();
+    }
+
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.A))
@@ -232,13 +283,22 @@ public class EnemyManager : MonoBehaviour,IInitializable
                     if(_enemies.Count < _maxEnemiesOnScreen)
                     {
                         _localTime = 0;
-                        var enemy = SpawnEnemy(_currentSpawnEnemyIndex);
-                        if (enemy != null)
+                        EnemyTypes enemyType = _enemyQueue.Get(_currentSpawnEnemyIndex);
+                        if (enemyType == EnemyTypes.Wasp)
                         {
-                            _enemies.Add(enemy);
-                            if (enemy.EnemyType == EnemyTypes.Ladybug)
+                            SpawnBoss(enemyType);
+                            _enemies.Add(_waspBoss);
+                        }
+                        else
+                        {
+                            var enemy = SpawnEnemy(enemyType);
+                            if (enemy != null)
                             {
-                                _ladybugsPatroling.Add(enemy);
+                                _enemies.Add(enemy);
+                                if (enemy.EnemyType == EnemyTypes.Ladybug)
+                                {
+                                    _ladybugsPatroling.Add(enemy);
+                                }
                             }
                         }
                         _enemiesAvailable--;
@@ -248,7 +308,7 @@ public class EnemyManager : MonoBehaviour,IInitializable
                     {
                         _localTime = 0;
                     }
-                }    
+                }
             }
             
             // Check ReadyToAttack
@@ -280,8 +340,8 @@ public class EnemyManager : MonoBehaviour,IInitializable
                     attackingEnemy.AttackStart();
                     _attackLocalTime = 0;
                     _attackDelay = Random.Range(
-                        Mathf.Lerp(1.5f, 0.8f, _aggressionLevelNormalized),
-                        Mathf.Lerp(4.1f, 1.8f, _aggressionLevelNormalized)
+                        Mathf.Lerp(2.5f, 0.8f, _aggressionLevelNormalized),
+                        Mathf.Lerp(6.1f, 1.8f, _aggressionLevelNormalized)
                         );
                     _isAttacking = false;
                 }
@@ -304,7 +364,7 @@ public class EnemyManager : MonoBehaviour,IInitializable
             {
                 _isWaveInitialized = false;
                 _currentWave++;
-                OnWavePrepared?.Invoke(_currentWave+1);
+                OnWavePrepared?.Invoke(_currentWave);
             }
 
             // Check Ladybugs
@@ -324,11 +384,13 @@ public class EnemyManager : MonoBehaviour,IInitializable
             }
             
             _localTime += Time.deltaTime;
-            if(isAttackTimerUpdateAllowed)
+            if(isAttackTimerUpdateAllowed && !_isBossActive)
             {
                 _attackLocalTime += Time.deltaTime;
             }
             _localExplosionTime += Time.deltaTime;
         }
+        
+        _enemiesLeftCount = _enemies.Count;
     }
 }

@@ -13,12 +13,12 @@ public class Lamp : MonoBehaviour, IInitializable
     [SerializeField] private int _maxHealth;
     [SerializeField] private int _currentHealth;
     [SerializeField] private int _attackBlokerCount;
-    private List<Enemy> _stickyEnemies;
+    private List<EnemyBase> _stickyEnemies;
     private bool _isAssessingDamage = false;
     private Vector3 _enemyPosition;
     
     public static event Action OnLampDamaged;
-    public static event Action<Enemy> OnLampCollidedWithStickyEnemy;
+    public static event Action<EnemyBase> OnLampCollidedWithStickyEnemy;
 
     private void OnEnable()
     {
@@ -42,11 +42,11 @@ public class Lamp : MonoBehaviour, IInitializable
         _lampMovement.Initialize();
         _lampPresentation.Initialize();
         _currentHealth = _maxHealth;
-        _stickyEnemies = new List<Enemy>();
+        _stickyEnemies = new List<EnemyBase>();
         _attackBlokerCount = 0;
     }
   
-    private void StickyEnemyEnterCollisionHandle(Enemy enemy)
+    private void StickyEnemyEnterCollisionHandle(EnemyBase enemy)
     {
         _enemyPosition = enemy.transform.position;
         _lampAttackModel.AddAttackBlocker();
@@ -62,7 +62,7 @@ public class Lamp : MonoBehaviour, IInitializable
         OnLampCollidedWithStickyEnemy?.Invoke(enemy);
     }
     
-    private void EnemyExitCollisionHandle(Enemy enemy)
+    private void EnemyExitCollisionHandle(EnemyBase enemy)
     {
         if (enemy.EnemyType == EnemyTypes.Ladybug)
         {
@@ -81,7 +81,7 @@ public class Lamp : MonoBehaviour, IInitializable
         }
     }
     
-    private void RegisterPotentialDamage(Enemy enemy)
+    private void RegisterPotentialDamage(EnemyBase enemy)
     {
         _enemyPosition = enemy.transform.position;
         if (!_isAssessingDamage)
@@ -90,7 +90,7 @@ public class Lamp : MonoBehaviour, IInitializable
         }
     }
     
-    public void AssessDamage(Enemy enemy)
+    public void AssessDamage(EnemyBase enemy)
     {
         if (_isAssessingDamage)
         {

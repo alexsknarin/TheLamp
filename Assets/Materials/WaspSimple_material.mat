@@ -84,6 +84,7 @@ Material:
     m_Floats:
     - _AlphaClip: 0
     - _AlphaToMask: 0
+    - _AttackSemaphore: 0
     - _Blend: 0
     - _BlendModePreserveSpecular: 1
     - _BumpScale: 1
@@ -91,6 +92,9 @@ Material:
     - _ClearCoatSmoothness: 0
     - _Cull: 2
     - _Cutoff: 0.5
+    - _DamageFlashingFrequency: 24
+    - _DamagePhase: 0
+    - _DeathPhase: 0
     - _DetailAlbedoMapScale: 1
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
@@ -113,9 +117,11 @@ Material:
     - _Surface: 0
     - _WorkflowMode: 1
     - _ZWrite: 1
+    - _isDamaged: 0
     m_Colors:
     - _BaseColor: {r: 0.91823894, g: 0.6373897, b: 0.22234078, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _DamageEmissionColor: {r: 3.482202, g: 0.07655548, b: 0, a: 0}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []
