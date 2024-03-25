@@ -25,7 +25,7 @@ public class EnemyQueue
     {
         return _enemies.Count;
     }
-
+    
     public EnemyTypes Get(int index)
     {
         if (index < _enemies.Count)
@@ -37,4 +37,5 @@ public class EnemyQueue
             return EnemyTypes.None;
         }
     }
+
 }

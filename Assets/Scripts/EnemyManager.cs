@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -60,6 +61,7 @@ public class EnemyManager : MonoBehaviour,IInitializable
     public static event Action OnFireflyExplosion;
     public static event Action OnEnemyDamaged; 
     public static event Action OnBossAppear;
+    public static event Action OnBossDeath;
 
     private void OnEnable()
     {
@@ -96,6 +98,18 @@ public class EnemyManager : MonoBehaviour,IInitializable
         _currentBossCount = _maxBossCount;
         _waspBoss.Initialize();
         _currentWave = _startAtWave;
+        
+        // Check all waves
+        // for( int i=1; i<_spawnQueue.Count(); i++)
+        // {
+        //     var enemyQueue = _spawnQueue.Get(i);
+        //     Debug.Log("--------------------------");
+        //     Debug.Log("Wave: " + i.ToString());
+        //     for (int j = 0; j < enemyQueue.Count(); j++)
+        //     {
+        //         Debug.Log("Enemy: " + enemyQueue.Get(j).ToString());   
+        //     }
+        // }
     }
     
     private void StartWave()
@@ -119,8 +133,12 @@ public class EnemyManager : MonoBehaviour,IInitializable
         _aggresionLevel = _enemyQueue.AggressionLevel;  
         _aggressionLevelNormalized = _aggresionLevel / _maxAggressionLevel;
 
-        // Attack
-        _attackDelay = _spawnDelay + 2f;
+        // Init Attack
+        _attackDelay = Random.Range(
+            Mathf.Lerp(4.5f, 1.8f, _aggressionLevelNormalized),
+            Mathf.Lerp(6.5f, 2.8f, _aggressionLevelNormalized)
+        );
+        
         _attackLocalTime = 0;
         _isWaveInitialized = true;
         
@@ -128,15 +146,26 @@ public class EnemyManager : MonoBehaviour,IInitializable
         _enemiesInWaveCount = _enemiesInWave;
         _enemiesLeftCount = _enemiesInWave;
     }
-    
-    public Enemy SpawnEnemy(int enemyIndex)
+
+    private Enemy SpawnEnemy(EnemyTypes enemyType)
     {
-        EnemyTypes enemyType = _enemyQueue.Get(enemyIndex);
         var enemy = _enemyPool.Get(enemyType);
         enemy.Initialize();
         return enemy;
     }
-
+    
+    private void SpawnBoss(EnemyTypes bossType)
+    {
+        if (bossType == EnemyTypes.Wasp)
+        {
+            _waspBoss.Reset();
+            _waspBoss.Play();
+            _isBossActive = true;
+            _attackLocalTime = 0;
+            OnBossAppear?.Invoke();    
+        }
+    }
+    
     private void LampAttack(int attackPower, float currentPower, float attackDuration, float attackDistance)
     {
         foreach (var enemy in _enemies)
@@ -230,6 +259,9 @@ public class EnemyManager : MonoBehaviour,IInitializable
     private void HandleBossEnd()
     {
         _isBossActive = false;
+        _enemies.Remove(_waspBoss);
+        _enemiesKilled++;
+        OnBossDeath?.Invoke();
     }
 
     private void Update()
@@ -250,13 +282,22 @@ public class EnemyManager : MonoBehaviour,IInitializable
                     if(_enemies.Count < _maxEnemiesOnScreen)
                     {
                         _localTime = 0;
-                        var enemy = SpawnEnemy(_currentSpawnEnemyIndex);
-                        if (enemy != null)
+                        EnemyTypes enemyType = _enemyQueue.Get(_currentSpawnEnemyIndex);
+                        if (enemyType == EnemyTypes.Wasp)
                         {
-                            _enemies.Add(enemy);
-                            if (enemy.EnemyType == EnemyTypes.Ladybug)
+                            SpawnBoss(enemyType);
+                            _enemies.Add(_waspBoss);
+                        }
+                        else
+                        {
+                            var enemy = SpawnEnemy(enemyType);
+                            if (enemy != null)
                             {
-                                _ladybugsPatroling.Add(enemy);
+                                _enemies.Add(enemy);
+                                if (enemy.EnemyType == EnemyTypes.Ladybug)
+                                {
+                                    _ladybugsPatroling.Add(enemy);
+                                }
                             }
                         }
                         _enemiesAvailable--;
@@ -266,17 +307,6 @@ public class EnemyManager : MonoBehaviour,IInitializable
                     {
                         _localTime = 0;
                     }
-                }
-                
-                // Wasp Boss Spawn TODO: Boss count from the google sheet
-                if (_enemies.Count > 3 && !_isBossActive && _currentBossCount > 0)
-                {
-                    _waspBoss.Reset();
-                    _waspBoss.Play();
-                    _isBossActive = true;
-                    _currentBossCount--;
-                    _attackLocalTime = 0;
-                    OnBossAppear?.Invoke();
                 }
             }
             
@@ -309,8 +339,8 @@ public class EnemyManager : MonoBehaviour,IInitializable
                     attackingEnemy.AttackStart();
                     _attackLocalTime = 0;
                     _attackDelay = Random.Range(
-                        Mathf.Lerp(1.5f, 0.8f, _aggressionLevelNormalized),
-                        Mathf.Lerp(4.1f, 1.8f, _aggressionLevelNormalized)
+                        Mathf.Lerp(2.5f, 0.8f, _aggressionLevelNormalized),
+                        Mathf.Lerp(6.1f, 1.8f, _aggressionLevelNormalized)
                         );
                     _isAttacking = false;
                 }
@@ -333,7 +363,7 @@ public class EnemyManager : MonoBehaviour,IInitializable
             {
                 _isWaveInitialized = false;
                 _currentWave++;
-                OnWavePrepared?.Invoke(_currentWave+1);
+                OnWavePrepared?.Invoke(_currentWave);
             }
 
             // Check Ladybugs
@@ -359,5 +389,7 @@ public class EnemyManager : MonoBehaviour,IInitializable
             }
             _localExplosionTime += Time.deltaTime;
         }
+        
+        _enemiesLeftCount = _enemies.Count;
     }
 }

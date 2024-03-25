@@ -15,11 +15,13 @@ public class LightningFlash : MonoBehaviour
     private void OnEnable()
     {
         EnemyManager.OnBossAppear += Play;
+        EnemyManager.OnBossDeath += Play;
     }
     
     private void OnDisable()
     {
         EnemyManager.OnBossAppear -= Play;
+        EnemyManager.OnBossDeath -= Play;
     }
 
 
