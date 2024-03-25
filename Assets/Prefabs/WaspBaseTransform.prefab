@@ -399,7 +399,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _waspMovement: {fileID: 6803922327384547848}
   _waspPresentation: {fileID: 3750980730702618689}
-  _maxHealth: 15
+  _maxHealth: 20
   _currentHealth: 0
 --- !u!114 &6803922327384547848
 MonoBehaviour:
@@ -466,6 +466,7 @@ MonoBehaviour:
   _waspBodyMeshRenderer: {fileID: 1354409274071824548}
   _trailResetHandler: {fileID: 5419566013128690959}
   _damageParticles: {fileID: 4884922188264632051}
+  _damageEmitParticles: {fileID: 2708151639163925383}
   _deathDuration: 1.7
 --- !u!114 &5419566013128690959
 MonoBehaviour:
@@ -626,8 +627,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7664680600365581737}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.4102876, y: -0.08619125, z: 0.1866477, w: 0.8884806}
-  m_LocalPosition: {x: 4.618816, y: -1.3627884, z: -3.7402859}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1.0000001, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

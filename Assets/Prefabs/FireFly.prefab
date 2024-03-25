@@ -573,11 +573,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _enemyType: 2
-  _maxHealth: 3
+  _maxHealth: 4
   _currentHealth: 0
   _enemyMovement: {fileID: -3368359052859184378}
   _enemyPresentation: {fileID: 8268739167994926853}
-  _collider: {fileID: 2771667605870528048}
 --- !u!114 &-3368359052859184378
 MonoBehaviour:
   m_ObjectHideFlags: 0

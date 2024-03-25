@@ -16,6 +16,7 @@ public class WaveStartUi : MonoBehaviour
         EnemyManager.OnWavePrepared -= PrepareWave;
         EnemyManager.OnWaveStarted -= StartWave;
     }
+    
 
     private void PrepareWave(int wave)
     {

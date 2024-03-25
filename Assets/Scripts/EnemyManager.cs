@@ -110,8 +110,9 @@ public class EnemyManager : MonoBehaviour,IInitializable
         //         Debug.Log("Enemy: " + enemyQueue.Get(j).ToString());   
         //     }
         // }
+        
+        OnWavePrepared?.Invoke(_currentWave);
     }
-    
     private void StartWave()
     {
         if (!_isWaveInitialized)
