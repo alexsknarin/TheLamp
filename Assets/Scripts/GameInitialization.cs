@@ -10,24 +10,29 @@ public class GameInitialization : MonoBehaviour
     [SerializeField] private UiManager _uiManager;
     [SerializeField] private PlayerInputHandler _playerInputHandler;
     [SerializeField] private GameStates _currentGameState;
+    [SerializeField] private UGSSetup _ugsSetup;
 
     private void OnEnable()
     {
         _googleSheetsDataReader.OnDataLoaded += InitializeEnemyManager;
-        _uiManager.OnIntroFinished += OnIntoEnded;
+        _uiManager.OnIntroFinished += OnIntroEnded;
+        _ugsSetup.OnConsentAddressed += HandleConsentAddressed;
     }
 
     private void OnDisable()
     {
         _googleSheetsDataReader.OnDataLoaded -= InitializeEnemyManager;
-        _uiManager.OnIntroFinished -= OnIntoEnded;
+        _uiManager.OnIntroFinished -= OnIntroEnded;
+        _ugsSetup.OnConsentAddressed -= HandleConsentAddressed;
     }
     
     private void SwitchGameState()
     {
-        Debug.Log("Switching Game State");
         switch (_currentGameState)
         {
+            case GameStates.ConsentScreen:
+                _currentGameState = GameStates.Loading;
+                break;
             case GameStates.Loading:
                 _currentGameState = GameStates.Intro;
                 _uiManager.PlayIntro();
@@ -37,26 +42,37 @@ public class GameInitialization : MonoBehaviour
                 _playerInputHandler.AllowAttackInput();
                break;
         }
-        Debug.Log(_currentGameState);
-    }
+    }   
 
     void Start()
     {
-        _currentGameState = GameStates.Loading;
+        _currentGameState = GameStates.ConsentScreen;
         Application.targetFrameRate = 60;
         _lamp.Initialize(); 
         _enemyPool.Initialize();
-        _uiManager.Initialize();
         _googleSheetsDataReader.Initialize();
+        _uiManager.Initialize();
+        
+        if (PlayerPrefs.HasKey("dataConsent"))
+        {
+            HandleConsentAddressed();
+        }
     }
+    
+    private void HandleConsentAddressed()
+    {
+        SwitchGameState();
+        _ugsSetup.Setup();
+        SwitchGameState();
+    }
+
     
     private void InitializeEnemyManager()
     {
         _enemyManager.Initialize();
-        SwitchGameState();
     }
     
-    private void OnIntoEnded()
+    private void OnIntroEnded()
     {
         SwitchGameState();
     }

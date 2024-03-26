@@ -11,6 +11,10 @@ public class UiManager : MonoBehaviour, IInitializable
     [SerializeField] private AnimationCurve _cameraAnimationCurve;
     [SerializeField] private float _cameraAnimationDuration;
     [SerializeField] private Image _fadeImage;
+    [SerializeField] private GameObject _analyticsConsentPanel;
+    [SerializeField] private GameObject _analyticsConsentEnableButton;
+    [SerializeField] private GameObject _analyticsConsentDisableButton;
+    [SerializeField] private UGSSetup _ugsSetup;
     
     public event Action OnIntroFinished;
     
@@ -28,6 +32,56 @@ public class UiManager : MonoBehaviour, IInitializable
         _fadeImage.gameObject.SetActive(true);
         _fadeImage.color = _fadeColor1;
         _isIntroPlaying = false;
+        if (PlayerPrefs.HasKey("dataConsent"))
+        {
+            _analyticsConsentPanel.SetActive(false);
+            if(PlayerPrefs.GetInt("dataConsent") == 1)
+            {
+                _analyticsConsentEnableButton.SetActive(false);
+                _analyticsConsentDisableButton.SetActive(true);
+            }
+            else
+            {
+                _analyticsConsentEnableButton.SetActive(true);
+                _analyticsConsentDisableButton.SetActive(false);
+            }
+        }
+        else
+        {
+            _analyticsConsentPanel.SetActive(true);
+            _analyticsConsentEnableButton.SetActive(false);
+            _analyticsConsentDisableButton.SetActive(false);
+        }
+    }
+    
+    public void AllowDataCollection()
+    {
+        _ugsSetup.AllowDataCollection();
+        _analyticsConsentPanel.SetActive(false);
+        _analyticsConsentEnableButton.SetActive(false);
+        _analyticsConsentDisableButton.SetActive(true);
+    }
+    
+    public void RefuseDataCollection()
+    {
+        _ugsSetup.RefuseDataCollection();
+        _analyticsConsentPanel.SetActive(false);
+        _analyticsConsentEnableButton.SetActive(true);
+        _analyticsConsentDisableButton.SetActive(false);
+    }
+    
+    public void EnableDataCollection()
+    {
+        _ugsSetup.StartAnalyticsCollection();
+        _analyticsConsentEnableButton.SetActive(false);
+        _analyticsConsentDisableButton.SetActive(true);
+    }
+    
+    public void DisableDataCollection()
+    {
+        _ugsSetup.StopAnalyticsCollection();
+        _analyticsConsentEnableButton.SetActive(true);
+        _analyticsConsentDisableButton.SetActive(false);
     }
 
     public void PlayIntro()
@@ -62,6 +116,7 @@ public class UiManager : MonoBehaviour, IInitializable
             _localTime += Time.deltaTime;
         }
     }
-
+    
+    
     
 }
