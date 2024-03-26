@@ -390,7 +390,5 @@ public class EnemyManager : MonoBehaviour,IInitializable
             }
             _localExplosionTime += Time.deltaTime;
         }
-        
-        _enemiesLeftCount = _enemies.Count;
     }
 }

@@ -3592,6 +3592,7 @@ GameObject:
   - component: {fileID: 1818435503}
   - component: {fileID: 1818435505}
   - component: {fileID: 1818435506}
+  - component: {fileID: 1818435507}
   m_Layer: 0
   m_Name: Game
   m_TagString: Untagged
@@ -3667,7 +3668,7 @@ MonoBehaviour:
   _maxEnemiesOnScreen: 0
   _aggresionLevel: 0
   _maxAggressionLevel: 6
-  _startAtWave: 9
+  _startAtWave: 0
   _currentWave: 0
   _spawnDelay: 1
   _enemiesInWaveCount: 0
@@ -3687,7 +3688,7 @@ MonoBehaviour:
   _sheetId: 1m_MzdQxi0d-f-TbDgvYGiN5OfjoJGgDTMzX2N5Ci8BY
   _sheetName: Sheet1
   _apiKey: AIzaSyCesP8iY_CsymaobmUcWUGS_kvOUuNO_7s
-  _useCachedSpawnData: 1
+  _useCachedSpawnData: 0
   _spawnQueueDataCache: {fileID: 11400000, guid: beab91cd3dcd8c44b88194a9986f9a99,
     type: 2}
 --- !u!114 &1818435504
@@ -3739,6 +3740,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _enemyPrefab: {fileID: 0}
+--- !u!114 &1818435507
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1818435498}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de064e384353e864d96b0edde5be907f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1853209500
 GameObject:
   m_ObjectHideFlags: 0
