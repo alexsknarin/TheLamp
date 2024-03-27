@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class UiManager : MonoBehaviour, IInitializable
 {
-    [SerializeField] private GameObject _waveStartText;
+    [SerializeField] private WaveText _waveText;
     [SerializeField] private Transform _cameraTransform;
     [SerializeField] private AnimationCurve _cameraAnimationCurve;
     [SerializeField] private float _cameraAnimationDuration;
@@ -28,7 +28,9 @@ public class UiManager : MonoBehaviour, IInitializable
     
     public void Initialize()
     {
-        _waveStartText.gameObject.SetActive(false);
+            _waveText.gameObject.SetActive(true);
+        _waveText.HideWaveText();
+        
         _fadeImage.gameObject.SetActive(true);
         _fadeImage.color = _fadeColor1;
         _isIntroPlaying = false;
@@ -90,6 +92,16 @@ public class UiManager : MonoBehaviour, IInitializable
         _isIntroPlaying = true;
         
     }
+    
+    public void StartPrepare(int wave)
+    {
+        _waveText.ShowWaveText(wave);
+    }
+    
+    public void StartFight()
+    {
+        _waveText.HideWaveText();
+    }
 
     // Update is called once per frame
     void Update()
@@ -105,7 +117,6 @@ public class UiManager : MonoBehaviour, IInitializable
                 _fadeImage.color = _fadeColor1;
                 cameraPosition.z = _cameraEndZPosition;
                 _cameraTransform.position = cameraPosition;
-                _waveStartText.SetActive(true);
                 _fadeImage.gameObject.SetActive(false);
                 OnIntroFinished?.Invoke();
             }
@@ -116,7 +127,4 @@ public class UiManager : MonoBehaviour, IInitializable
             _localTime += Time.deltaTime;
         }
     }
-    
-    
-    
 }

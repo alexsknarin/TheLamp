@@ -29,7 +29,9 @@ public class EnemyManager : MonoBehaviour,IInitializable
     private float _aggressionLevelNormalized;
     [Header("")]
     [SerializeField] private int _startAtWave = 0;
-    [SerializeField] private int _currentWave = 1;
+    [SerializeField] private int _currentWave = 0;
+    public int CurrentWave => _currentWave;
+    
     private int _enemiesInWave;
     private int _enemiesAvailable;
     private int _enemiesKilled;
@@ -56,8 +58,8 @@ public class EnemyManager : MonoBehaviour,IInitializable
     private int _maxBossCount = 1;
     private int _currentBossCount = 0;
     
-    public static event Action<int> OnWavePrepared;
-    public static event Action OnWaveStarted;
+    public static event Action<int> OnWaveStarted;
+    public static event Action<int> OnWaveEnded;
     public static event Action OnFireflyExplosion;
     public static event Action OnEnemyDamaged; 
     public static event Action OnBossAppear;
@@ -70,7 +72,6 @@ public class EnemyManager : MonoBehaviour,IInitializable
         LampAttackModel.OnLampAttack += LampAttack;
         LampAttackModel.OnLampBlockedAttack += LampBlockedAttack;
         Lamp.OnLampCollidedWithStickyEnemy += UpdateLadybugsOnScreen;
-        PlayerInputHandler.OnPlayerAttack += StartWave;
         _waspBoss.OnTriggerSpread += SpreadEnemies;
         _waspBoss.OnDeath += HandleBossEnd;
     }
@@ -82,13 +83,13 @@ public class EnemyManager : MonoBehaviour,IInitializable
         LampAttackModel.OnLampAttack -= LampAttack;
         LampAttackModel.OnLampBlockedAttack -= LampBlockedAttack;
         Lamp.OnLampCollidedWithStickyEnemy -= UpdateLadybugsOnScreen;
-        PlayerInputHandler.OnPlayerAttack -= StartWave;
         _waspBoss.OnTriggerSpread -= SpreadEnemies;
         _waspBoss.OnDeath -= HandleBossEnd;
     }
     
     public void Initialize()
     {
+        _enemyPool.Initialize();
         _spawnQueueGenerator = new SpawnQueueGenerator(_spawnQueueDataCache.Data);
         _spawnQueue = _spawnQueueGenerator.Generate();
         _enemies = new List<EnemyBase>();
@@ -111,14 +112,15 @@ public class EnemyManager : MonoBehaviour,IInitializable
         //     }
         // }
         
-        OnWavePrepared?.Invoke(_currentWave);
+        _isWaveInitialized = false;
     }
-    private void StartWave()
+
+    public void StartWave()
     {
         if (!_isWaveInitialized)
         {
-            OnWaveStarted?.Invoke();
             SetupWave(_currentWave);
+            OnWaveStarted?.Invoke(_currentWave);
         }
     }
     
@@ -267,11 +269,6 @@ public class EnemyManager : MonoBehaviour,IInitializable
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.A))
-        {
-            SpreadEnemies();
-        }
-        
         if (_isWaveInitialized)
         {
             // Spawn
@@ -364,7 +361,7 @@ public class EnemyManager : MonoBehaviour,IInitializable
             {
                 _isWaveInitialized = false;
                 _currentWave++;
-                OnWavePrepared?.Invoke(_currentWave);
+                OnWaveEnded?.Invoke(_currentWave);
             }
 
             // Check Ladybugs

@@ -1,7 +1,8 @@
 public enum GameStates
 {
-    ConsentScreen,
     Loading,
+    ConsentScreen,
     Intro,
-    MainGameLoop
+    Prepare,
+    Fight
 }

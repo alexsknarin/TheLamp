@@ -1595,7 +1595,7 @@ GameObject:
   - component: {fileID: 537243424}
   - component: {fileID: 537243426}
   m_Layer: 5
-  m_Name: WaveStart_Text
+  m_Name: WaveText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3224,7 +3224,7 @@ GameObject:
   - component: {fileID: 1291610350}
   - component: {fileID: 1291610354}
   m_Layer: 5
-  m_Name: Canvas
+  m_Name: MainUi_canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3308,8 +3308,8 @@ RectTransform:
   - {fileID: 2095301581}
   - {fileID: 229163332}
   - {fileID: 1959847706}
-  - {fileID: 1944166816}
   - {fileID: 537243423}
+  - {fileID: 1944166816}
   - {fileID: 214752302}
   - {fileID: 1266635118}
   - {fileID: 988747744}
@@ -3333,7 +3333,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac9dfcca59d74d940ae5eed0ca069c23, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _waveStartText: {fileID: 537243422}
+  _waveText: {fileID: 537243426}
   _cameraTransform: {fileID: 330585546}
   _cameraAnimationCurve:
     serializedVersion: 2
@@ -4807,11 +4807,10 @@ MonoBehaviour:
   _lamp: {fileID: 1934066246}
   _googleSheetsDataReader: {fileID: 1818435503}
   _enemyManager: {fileID: 1818435502}
-  _enemyPool: {fileID: 1818435504}
   _uiManager: {fileID: 1291610354}
   _playerInputHandler: {fileID: 1818435500}
-  _currentGameState: 0
   _ugsSetup: {fileID: 1595482321}
+  _currentGameState: 0
 --- !u!114 &1818435502
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5878,6 +5877,7 @@ SceneRoots:
   m_Roots:
   - {fileID: 1595482320}
   - {fileID: 1818435499}
+  - {fileID: 1291610353}
   - {fileID: 1449376469}
   - {fileID: 1934066241}
   - {fileID: 30557020}
@@ -5886,7 +5886,6 @@ SceneRoots:
   - {fileID: 104458}
   - {fileID: 429388434}
   - {fileID: 832575519}
-  - {fileID: 1291610353}
   - {fileID: 1516445179}
   - {fileID: 1402077384}
   - {fileID: 564885924}
