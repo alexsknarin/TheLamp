@@ -22,7 +22,7 @@ public class BrokenGlassEffect : MonoBehaviour
         Lamp.OnLampDamaged -= Play;
     }
     
-    private void Play()
+    private void Play(EnemyBase enemy)
     {
         _isActive = true;
         _localTime = 0;

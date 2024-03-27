@@ -4458,6 +4458,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1595482320}
   - component: {fileID: 1595482321}
+  - component: {fileID: 1595482322}
   m_Layer: 0
   m_Name: _AnalyticsCollector
   m_TagString: Untagged
@@ -4490,6 +4491,19 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 504890f0bccbe12429963f5fca0a79a7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _collectAnalytics: {fileID: 1595482322}
+--- !u!114 &1595482322
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1595482319}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5326b0212424aa044ad8e795ca99010f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1622139081
@@ -4853,7 +4867,7 @@ MonoBehaviour:
   _sheetId: 1m_MzdQxi0d-f-TbDgvYGiN5OfjoJGgDTMzX2N5Ci8BY
   _sheetName: Sheet1
   _apiKey: AIzaSyCesP8iY_CsymaobmUcWUGS_kvOUuNO_7s
-  _useCachedSpawnData: 0
+  _useCachedSpawnData: 1
   _spawnQueueDataCache: {fileID: 11400000, guid: beab91cd3dcd8c44b88194a9986f9a99,
     type: 2}
 --- !u!114 &1818435504

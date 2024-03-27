@@ -17,7 +17,7 @@ public class Lamp : MonoBehaviour, IInitializable
     private bool _isAssessingDamage = false;
     private Vector3 _enemyPosition;
     
-    public static event Action OnLampDamaged;
+    public static event Action<EnemyBase> OnLampDamaged;
     public static event Action<EnemyBase> OnLampCollidedWithStickyEnemy;
 
     private void OnEnable()
@@ -103,7 +103,7 @@ public class Lamp : MonoBehaviour, IInitializable
                 _isAssessingDamage = false;
                 _currentHealth--;
                 _lampPresentation.StartDamageState();
-                OnLampDamaged?.Invoke();
+                OnLampDamaged?.Invoke(enemy);
                 MoveLamp();
                 if (_currentHealth <= 0)
                 {

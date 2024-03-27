@@ -60,7 +60,7 @@ public class CameraShake : MonoBehaviour
         EnemyManager.OnFireflyExplosion -= StartExplosionShake;
     }
     
-    private void StartDamageShake()
+    private void StartDamageShake(EnemyBase enemy)
     {
         _localTime = 0;
         _isShaking = true;

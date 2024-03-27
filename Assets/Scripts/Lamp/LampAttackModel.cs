@@ -115,7 +115,7 @@ public class LampAttackModel : MonoBehaviour, IInitializable
         _localTime += Time.deltaTime;
     }
     
-    private void HandleDamageWithCooldown()
+    private void HandleDamageWithCooldown(EnemyBase enemy)
     {
         StartCooldownState();
         _localTime = 0;
