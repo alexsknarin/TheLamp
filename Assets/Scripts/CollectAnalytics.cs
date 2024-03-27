@@ -40,7 +40,6 @@ public class CollectAnalytics : MonoBehaviour
         _waveTime = Time.time - _waveTime;
         if (_isReadyToCollect)
         {
-            Debug.Log("Submitting WaveEnd event.");
             Dictionary<string, object> parameters = new Dictionary<string, object>()
             {
                 {"waveNum", wave},
@@ -55,14 +54,12 @@ public class CollectAnalytics : MonoBehaviour
     {
         if (_isReadyToCollect)
         {
-            Debug.Log("Submitting Lamp Damage event.");
-            Debug.Log(enemy.EnemyType.ToString());
             Dictionary<string, object> parameters = new Dictionary<string, object>()
             {
                 {"enemyType", enemy.EnemyType.ToString()}
             };
         
-            AnalyticsService.Instance.CustomData("waveFinished", parameters);
+            AnalyticsService.Instance.CustomData("LampDamaged", parameters);
         }
     }
 }

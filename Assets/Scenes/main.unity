@@ -4847,7 +4847,7 @@ MonoBehaviour:
   _maxEnemiesOnScreen: 0
   _aggresionLevel: 0
   _maxAggressionLevel: 6
-  _startAtWave: 0
+  _startAtWave: 6
   _currentWave: 0
   _spawnDelay: 1
   _enemiesInWaveCount: 0
@@ -5762,8 +5762,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1818435500}
-        m_TargetAssemblyTypeName: PlayerInputHandler, Assembly-CSharp
+      - m_Target: {fileID: 1818435501}
+        m_TargetAssemblyTypeName: Game, Assembly-CSharp
         m_MethodName: ExitGame
         m_Mode: 1
         m_Arguments:

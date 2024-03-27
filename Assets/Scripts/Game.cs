@@ -32,7 +32,6 @@ public class Game : MonoBehaviour
     
     void Start()
     {
-        Debug.Log("Game Started");
         Application.targetFrameRate = 60;
         _currentGameState = GameStates.Loading;
 
@@ -40,13 +39,11 @@ public class Game : MonoBehaviour
         _lamp.Initialize(); 
         _uiManager.Initialize();
         _playerInputHandler.Initialize();
-        Debug.Log("Loaging Google Sheet Data");
         _googleSheetsDataReader.Initialize();
     }
     
     private void InitializeEnemyManager()
     {
-        Debug.Log("GoogleSheet Data Loaded");
         SwitchGameState();
 
         // Initialize enemyManager only after we 100% sure that data was initialized
@@ -108,4 +105,20 @@ public class Game : MonoBehaviour
         }
     }   
 
+    public void ExitGame()
+    {
+#if UNITY_STANDALONE
+        Application.Quit();
+#endif
+        
+#if UNITY_ANDROID
+        Application.Quit();
+#endif
+
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#endif
+    }
+    
+    
 }
