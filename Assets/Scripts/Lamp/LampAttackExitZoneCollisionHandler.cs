@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class AttackExitZoneCollisionHandler : MonoBehaviour
+public class LampAttackExitZoneCollisionHandler : MonoBehaviour
 {
     public event Action<EnemyBase> OnExitAttackExitZone; 
     private void OnTriggerExit2D(Collider2D other)

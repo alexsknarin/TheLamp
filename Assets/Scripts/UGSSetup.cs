@@ -6,10 +6,11 @@ using Unity.Services.Core;
 
 using Unity.Services.Core.Environments;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class UGSSetup : MonoBehaviour
 {
-    [SerializeField] private CollectAnalytics _collectAnalytics;
+    [SerializeField] private AnalyticsCollector _analyticsCollector;
     private bool _isConnecceted = false;
     
     public event Action OnConsentAddressed;
@@ -63,19 +64,19 @@ public class UGSSetup : MonoBehaviour
         {
             AnalyticsService.Instance.StartDataCollection();
             Debug.Log("Consent has been provided. The SDK is now collecting data");
-            _collectAnalytics.AllowDataCollection();
+            _analyticsCollector.AllowDataCollection();
         }
     }
     
     public void StopAnalyticsCollection()
     {
         AnalyticsService.Instance.StopDataCollection();
-        _collectAnalytics.RefuseDataCollection();
+        _analyticsCollector.RefuseDataCollection();
     }
 
     public void StartAnalyticsCollection()
     {
         AnalyticsService.Instance.StartDataCollection();
-        _collectAnalytics.AllowDataCollection();
+        _analyticsCollector.AllowDataCollection();
     }
 }

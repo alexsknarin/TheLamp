@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class StickZoneCollisionHandler : MonoBehaviour
+public class LampStickZoneCollisionHandler : MonoBehaviour
 {
     public event Action<EnemyBase> OnCollidedWithStickyEnemy; 
     private void OnTriggerEnter2D(Collider2D other)

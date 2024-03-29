@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class Lamp : MonoBehaviour, IInitializable
 {
@@ -8,8 +9,8 @@ public class Lamp : MonoBehaviour, IInitializable
     [SerializeField] private LampPresentation _lampPresentation;
     [SerializeField] private LampCollisionHandler _lampCollisionHandler;
     [SerializeField] private LampMovement _lampMovement;
-    [SerializeField] private StickZoneCollisionHandler _stickZoneCollisionHandler;
-    [SerializeField] private AttackExitZoneCollisionHandler _attackExitZoneCollisionHandler;    
+    [SerializeField] private LampStickZoneCollisionHandler _lampStickZoneCollisionHandler;
+    [SerializeField] private LampAttackExitZoneCollisionHandler _lampAttackExitZoneCollisionHandler;    
     [SerializeField] private int _maxHealth;
     [SerializeField] private int _currentHealth;
     [SerializeField] private int _attackBlokerCount;
@@ -24,16 +25,16 @@ public class Lamp : MonoBehaviour, IInitializable
     {
         _lampCollisionHandler.OnLampCollidedEnemy += RegisterPotentialDamage;
         _lampCollisionHandler.OnExitLampCollisionEnemy += EnemyExitCollisionHandle;
-        _stickZoneCollisionHandler.OnCollidedWithStickyEnemy += StickyEnemyEnterCollisionHandle;
-        _attackExitZoneCollisionHandler.OnExitAttackExitZone += AssessDamage;
+        _lampStickZoneCollisionHandler.OnCollidedWithStickyEnemy += StickyEnemyEnterCollisionHandle;
+        _lampAttackExitZoneCollisionHandler.OnExitAttackExitZone += AssessDamage;
     }
     
     private void OnDisable()
     {
         _lampCollisionHandler.OnLampCollidedEnemy -= RegisterPotentialDamage;
         _lampCollisionHandler.OnExitLampCollisionEnemy -= EnemyExitCollisionHandle;
-        _stickZoneCollisionHandler.OnCollidedWithStickyEnemy -= StickyEnemyEnterCollisionHandle;
-        _attackExitZoneCollisionHandler.OnExitAttackExitZone -= AssessDamage;
+        _lampStickZoneCollisionHandler.OnCollidedWithStickyEnemy -= StickyEnemyEnterCollisionHandle;
+        _lampAttackExitZoneCollisionHandler.OnExitAttackExitZone -= AssessDamage;
     }
 
     public void Initialize()

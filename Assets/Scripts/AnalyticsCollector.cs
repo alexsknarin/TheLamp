@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using Unity.Services.Analytics;
 using UnityEngine;
 
-public class CollectAnalytics : MonoBehaviour
+public class AnalyticsCollector : MonoBehaviour
 {
     private bool _isReadyToCollect = false;
     private float _waveTime;

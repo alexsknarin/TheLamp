@@ -4493,7 +4493,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 504890f0bccbe12429963f5fca0a79a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _collectAnalytics: {fileID: 1595482322}
+  _analyticsCollector: {fileID: 1595482322}
 --- !u!114 &1595482322
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5228,8 +5228,8 @@ MonoBehaviour:
   _lampPresentation: {fileID: 1934066244}
   _lampCollisionHandler: {fileID: 1934066247}
   _lampMovement: {fileID: 1934066248}
-  _stickZoneCollisionHandler: {fileID: 815775906}
-  _attackExitZoneCollisionHandler: {fileID: 452042971}
+  _lampStickZoneCollisionHandler: {fileID: 815775906}
+  _lampAttackExitZoneCollisionHandler: {fileID: 452042971}
   _maxHealth: 10
   _currentHealth: 0
   _attackBlokerCount: 0

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class AttackZoneCollisionHandler : MonoBehaviour
+public class LampAttackZoneCollisionHandler : MonoBehaviour
 {
     private void OnTriggerEnter2D(Collider2D other)
     {
