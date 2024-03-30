@@ -7,7 +7,6 @@ public class SpiderMovementAttackState: EnemyMovementBaseState
     private float _localTime;
     private float _acceleration = 8.7f;
     private float _acceleratedSpeed;
-    private float _sideDirection;
 
     public SpiderMovementAttackState(IStateMachineOwner owner, float speed, float radius, float verticalAmplitude) : base()
     {

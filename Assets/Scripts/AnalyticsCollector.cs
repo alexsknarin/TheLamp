@@ -6,12 +6,17 @@ public class AnalyticsCollector : MonoBehaviour
 {
     private bool _isReadyToCollect = false;
     private float _waveTime;
+    private CustomEvent _waveEndEvent;
+    private CustomEvent _lampDamageEvent;
 
     private void OnEnable()
     {
         EnemyManager.OnWaveStarted += StartTimer;
         EnemyManager.OnWaveEnded += SubmitWaveEndEvent;
         Lamp.OnLampDamaged += SubmitLampDamageEvent;
+        
+        _waveEndEvent = new CustomEvent("waveFinished");
+        _lampDamageEvent = new CustomEvent("LampDamaged");
     }
     
     private void OnDisable()
@@ -40,13 +45,11 @@ public class AnalyticsCollector : MonoBehaviour
         _waveTime = Time.time - _waveTime;
         if (_isReadyToCollect)
         {
-            Dictionary<string, object> parameters = new Dictionary<string, object>()
-            {
-                {"waveNum", wave},
-                {"waveTime", _waveTime}
-            };
-        
-            AnalyticsService.Instance.CustomData("waveFinished", parameters);
+            _waveEndEvent.Reset();
+            _waveEndEvent.Add("waveNum", wave);
+            _waveEndEvent.Add("waveTime", _waveTime);
+            AnalyticsService.Instance.RecordEvent(_waveEndEvent);
+            
         }
     }
 
@@ -54,12 +57,9 @@ public class AnalyticsCollector : MonoBehaviour
     {
         if (_isReadyToCollect)
         {
-            Dictionary<string, object> parameters = new Dictionary<string, object>()
-            {
-                {"enemyType", enemy.EnemyType.ToString()}
-            };
-        
-            AnalyticsService.Instance.CustomData("LampDamaged", parameters);
+            _lampDamageEvent.Reset();
+            _lampDamageEvent.Add("enemyType", enemy.EnemyType.ToString());
+            AnalyticsService.Instance.RecordEvent(_lampDamageEvent);
         }
     }
 }

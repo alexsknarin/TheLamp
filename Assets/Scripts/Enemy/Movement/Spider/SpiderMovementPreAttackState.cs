@@ -5,9 +5,8 @@ public class SpiderMovementPreAttackState: EnemyMovementBaseState
     public override EnemyStates State => EnemyStates.PreAttack;
     private Vector3 _hangingPoint;
     private float _localTime;
-    private float _acceleration = 9.7f;
+    private readonly float _acceleration = 9.7f;
     private float _acceleratedSpeed;
-    private float _sideDirection;
     private float _lastXPosition;
     private float _swingPhase;
     private float _prevSwingPhase;
