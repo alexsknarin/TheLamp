@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class Wasp : EnemyBase
+public class Wasp : BossBase
 {
     public override EnemyTypes EnemyType => EnemyTypes.Wasp;
     [SerializeField] private WaspMovement _waspMovement;
@@ -9,10 +9,6 @@ public class Wasp : EnemyBase
     [SerializeField] private int _maxHealth;
     [SerializeField] private int _currentHealth;
     
-    public event Action OnTriggerSpread;
-    public event Action OnDeath;
-
-
     private void OnEnable()
     {
         LampAttackModel.OnLampAttack += LampAttack;
@@ -34,7 +30,7 @@ public class Wasp : EnemyBase
         _waspMovement.Initialize();
     }
 
-    public void Reset()
+    public override void Reset()
     {
         ReceivedLampAttack = false;
         _currentHealth = _maxHealth;
@@ -42,7 +38,7 @@ public class Wasp : EnemyBase
         _waspMovement.MovementReset();
     }
     
-    public void Play()
+    public override void Play()
     {
         _waspMovement.Play();
     }
@@ -58,7 +54,7 @@ public class Wasp : EnemyBase
     
     public void TriggerSpread()
     {
-        OnTriggerSpread?.Invoke();
+        OnTriggerSpreadInvoke();
     }
     
     private void UpdateRecievedLampAttackStatus()
@@ -121,7 +117,7 @@ public class Wasp : EnemyBase
     
     private void HandleDeathMoveStateEnd()
     {
-        OnDeath?.Invoke();
+        OnDeathInvoke();
     }
 
     private void ResetTrail()

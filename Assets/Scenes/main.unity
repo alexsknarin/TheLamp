@@ -4843,11 +4843,11 @@ MonoBehaviour:
   _waspBoss: {fileID: 1966729921}
   _fireflyExplosion: {fileID: 1402077385}
   _fireflyExplosionRadius: 0.8
-  _explosionDuration: 0.1
+  _explosionDuration: 0.22
   _maxEnemiesOnScreen: 0
   _aggresionLevel: 0
   _maxAggressionLevel: 6
-  _startAtWave: 0
+  _startAtWave: 33
   _currentWave: 0
   _spawnDelay: 1
   _enemiesInWaveCount: 0

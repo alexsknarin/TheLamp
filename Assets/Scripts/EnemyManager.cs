@@ -13,7 +13,8 @@ public class EnemyManager : MonoBehaviour,IInitializable
     
     [Header("------ Enemy Prefabs -------")]
     [SerializeField] private EnemyPool _enemyPool;
-    [SerializeField] private Wasp _waspBoss;
+    [SerializeField] private BossBase _waspBoss;
+    private BossBase _currentBoss;
     
     [Header("------ Explosions -------")]
     [SerializeField] private FireflyExplosion _fireflyExplosion;
@@ -22,11 +23,13 @@ public class EnemyManager : MonoBehaviour,IInitializable
     private EnemyBase _explosionSource;
     private Vector3 _explosionPosition;
     private bool _isExplosionActive = false;
+    
     [Header("---- Waves Generation ------")]
     [SerializeField] private int _maxEnemiesOnScreen;
     [SerializeField] private int _aggresionLevel;
     [SerializeField] private float _maxAggressionLevel;
     private float _aggressionLevelNormalized;
+    
     [Header("")]
     [SerializeField] private int _startAtWave = 0;
     [SerializeField] private int _currentWave = 0;
@@ -44,15 +47,18 @@ public class EnemyManager : MonoBehaviour,IInitializable
     
     private List<EnemyBase> _enemies;
     private List<EnemyBase> _enemiesReadyToAttack;
-    private List<EnemyBase> _ladybugsPatroling;
-    private bool _isWaveInitialized = false;
+    private List<EnemyBase> _ladybugsPatrolling;
+    private EnemiesLampAttackHandler _enemiesLampAttackHandler;
+    private EnemiesExplosionHandler _enemiesExplosionHandler;
+
+        private bool _isWaveInitialized = false;
     
     private float _attackDelay;
     private float _attackLocalTime;
     private bool _isAttacking;
     
     private float _localTime;
-    private float _localExplosionTime;
+    private float _explosionLocalTime;
     
     private bool _isBossActive = false;
     private int _maxBossCount = 1;
@@ -72,8 +78,8 @@ public class EnemyManager : MonoBehaviour,IInitializable
         LampAttackModel.OnLampAttack += LampAttack;
         LampAttackModel.OnLampBlockedAttack += LampBlockedAttack;
         Lamp.OnLampCollidedWithStickyEnemy += UpdateLadybugsOnScreen;
-        _waspBoss.OnTriggerSpread += SpreadEnemies;
-        _waspBoss.OnDeath += HandleBossEnd;
+        BossBase.OnTriggerSpread += SpreadEnemies;
+        BossBase.OnDeath += HandleBossEnd;
     }
     
     private void OnDisable()
@@ -83,8 +89,8 @@ public class EnemyManager : MonoBehaviour,IInitializable
         LampAttackModel.OnLampAttack -= LampAttack;
         LampAttackModel.OnLampBlockedAttack -= LampBlockedAttack;
         Lamp.OnLampCollidedWithStickyEnemy -= UpdateLadybugsOnScreen;
-        _waspBoss.OnTriggerSpread -= SpreadEnemies;
-        _waspBoss.OnDeath -= HandleBossEnd;
+        BossBase.OnTriggerSpread -= SpreadEnemies;
+        BossBase.OnDeath -= HandleBossEnd;
     }
     
     public void Initialize()
@@ -93,10 +99,14 @@ public class EnemyManager : MonoBehaviour,IInitializable
         _spawnQueueGenerator = new SpawnQueueGenerator(_spawnQueueDataCache.Data);
         _spawnQueue = _spawnQueueGenerator.Generate();
         _enemies = new List<EnemyBase>();
-        _ladybugsPatroling = new List<EnemyBase>();
+        _ladybugsPatrolling = new List<EnemyBase>();
         _enemiesReadyToAttack = new List<EnemyBase>();
+        _enemiesLampAttackHandler = new EnemiesLampAttackHandler();
+        _enemiesExplosionHandler = new EnemiesExplosionHandler();
+        
         _isBossActive = false;
         _currentBossCount = _maxBossCount;
+        // Init all bosses
         _waspBoss.Initialize();
         _currentWave = _startAtWave;
         
@@ -137,10 +147,7 @@ public class EnemyManager : MonoBehaviour,IInitializable
         _aggressionLevelNormalized = _aggresionLevel / _maxAggressionLevel;
 
         // Init Attack
-        _attackDelay = Random.Range(
-            Mathf.Lerp(4.5f, 1.8f, _aggressionLevelNormalized),
-            Mathf.Lerp(6.5f, 2.8f, _aggressionLevelNormalized)
-        );
+        _attackDelay = GetRandomAttackDelay(4.5f, 1.8f, 6.5f, 2.8f, _aggressionLevelNormalized);
         
         _attackLocalTime = 0;
         _isWaveInitialized = true;
@@ -161,42 +168,23 @@ public class EnemyManager : MonoBehaviour,IInitializable
     {
         if (bossType == EnemyTypes.Wasp)
         {
-            _waspBoss.Reset();
-            _waspBoss.Play();
-            _isBossActive = true;
-            _attackLocalTime = 0;
-            OnBossAppear?.Invoke();    
+            _currentBoss = _waspBoss;
         }
+        _currentBoss.Reset();
+        _currentBoss.Play();
+        _isBossActive = true;
+        _attackLocalTime = 0;
+        OnBossAppear?.Invoke();
     }
     
     private void LampAttack(int attackPower, float currentPower, float attackDuration, float attackDistance)
     {
-        foreach (var enemy in _enemies)
-        {
-            if (enemy.gameObject.activeInHierarchy && enemy.ReadyToLampDamage)
-            {
-                if (attackPower > 0)
-                {
-                    enemy.ReceiveDamage(attackPower);
-                    OnEnemyDamaged?.Invoke();    
-                }
-            }
-        }
+        _enemiesLampAttackHandler.HandleLampAttack(attackPower, currentPower, attackDuration, attackDistance, _enemies);
     }
     
     private void LampBlockedAttack(int attackPower, float currentPower, float attackDuration, float attackDistance)
     {
-        foreach (var enemy in _enemies)
-        {
-            if (enemy.gameObject.activeInHierarchy && enemy.ReadyToLampDamage && enemy.IsStick && enemy.EnemyType == EnemyTypes.Ladybug)
-            {
-                if (attackPower > 0)
-                {
-                    enemy.ReceiveDamage(attackPower);
-                    OnEnemyDamaged?.Invoke();   
-                }
-            }
-        }
+        _enemiesLampAttackHandler.HandleLampBlockedAttack(attackPower, currentPower, attackDuration, attackDistance, _enemies);
     }
     
     private void UpdateEnemiesOnScreen(EnemyBase enemy)
@@ -205,7 +193,7 @@ public class EnemyManager : MonoBehaviour,IInitializable
         _enemiesKilled++;
         if (enemy.EnemyType == EnemyTypes.Ladybug)
         {
-            _ladybugsPatroling.Remove(enemy);
+            _ladybugsPatrolling.Remove(enemy);
         }
     }
     
@@ -214,7 +202,7 @@ public class EnemyManager : MonoBehaviour,IInitializable
         // Remove stick ladybug for damageable list
         if (enemy.EnemyType == EnemyTypes.Ladybug)
         {
-            _ladybugsPatroling.Remove(enemy);    
+            _ladybugsPatrolling.Remove(enemy);    
         }
     }
 
@@ -228,27 +216,8 @@ public class EnemyManager : MonoBehaviour,IInitializable
         _explosionPosition = explosionSource.transform.position;
         _fireflyExplosion.Play(_explosionPosition, _fireflyExplosionRadius * 2);
         OnFireflyExplosion?.Invoke();
-        _localExplosionTime = 0;
+        _explosionLocalTime = 0;
         _isExplosionActive = true;
-    }
-    
-    private void PerformExplosion()
-    {
-        foreach (var enemy in _enemies)
-        {
-            if (enemy == _explosionSource)
-            {
-                continue;
-            }
-            Vector3 enemyPosition2d = enemy.transform.position;
-            enemyPosition2d.z = 0;
-            Vector3 explosionPosition2d = _explosionPosition;
-            explosionPosition2d.z = 0;
-            if((explosionPosition2d - enemyPosition2d).magnitude < _fireflyExplosionRadius)
-            {
-                enemy.ReceiveDamage(100);
-            }
-        }
     }
     
     private void SpreadEnemies()
@@ -262,7 +231,7 @@ public class EnemyManager : MonoBehaviour,IInitializable
     private void HandleBossEnd()
     {
         _isBossActive = false;
-        _enemies.Remove(_waspBoss);
+        _enemies.Remove(_currentBoss);
         _enemiesKilled++;
         OnBossDeath?.Invoke();
     }
@@ -271,121 +240,162 @@ public class EnemyManager : MonoBehaviour,IInitializable
     {
         if (_isWaveInitialized)
         {
-            // Spawn
             if (_enemiesAvailable > 0)
             {
-                float phase = (_localTime) / _spawnDelay;
-                if (phase > 1)
-                {
-                    if(_enemies.Count < _maxEnemiesOnScreen)
-                    {
-                        _localTime = 0;
-                        EnemyTypes enemyType = _enemyQueue.Get(_currentSpawnEnemyIndex);
-                        if (enemyType == EnemyTypes.Wasp)
-                        {
-                            SpawnBoss(enemyType);
-                            _enemies.Add(_waspBoss);
-                        }
-                        else
-                        {
-                            var enemy = SpawnEnemy(enemyType);
-                            if (enemy != null)
-                            {
-                                _enemies.Add(enemy);
-                                if (enemy.EnemyType == EnemyTypes.Ladybug)
-                                {
-                                    _ladybugsPatroling.Add(enemy);
-                                }
-                            }
-                        }
-                        _enemiesAvailable--;
-                        _currentSpawnEnemyIndex++;
-                    }
-                    else
-                    {
-                        _localTime = 0;
-                    }
-                }
+                SpawnEnemies();
             }
-            
-            // Check ReadyToAttack
-            _enemiesReadyToAttack.Clear();
-            foreach (var enemy in _enemies)
-            {
-                enemy.UpdateAttackAvailability();
-                if (enemy.ReadyToAttack)
-                {
-                    _enemiesReadyToAttack.Add(enemy);
-                }
-            }
-            
-            // Attack delay
+
+            UpdateEnemiesReadyToAttack(_enemiesReadyToAttack, _enemies);
+
             if (!_isAttacking)
             {
-                float attackPhase = _attackLocalTime / _attackDelay;
-                if (attackPhase > 1)
-                {
-                    _isAttacking = true;
-                }   
+                DelayAttack();
             }
-            
+
             if (_enemiesReadyToAttack.Count > 0)
             {
                 if (_isAttacking == true)
                 {
-                    var attackingEnemy = _enemiesReadyToAttack[Random.Range(0, _enemiesReadyToAttack.Count)];
-                    attackingEnemy.AttackStart();
-                    _attackLocalTime = 0;
-                    _attackDelay = Random.Range(
-                        Mathf.Lerp(2.5f, 0.8f, _aggressionLevelNormalized),
-                        Mathf.Lerp(6.1f, 1.8f, _aggressionLevelNormalized)
-                        );
-                    _isAttacking = false;
+                    StartEnemyAttack();
                 }
             }
 
             if (_isExplosionActive)
             {
-                float explosionPhase = _localExplosionTime / _explosionDuration;
+                float explosionPhase = _explosionLocalTime / _explosionDuration;
                 if (explosionPhase > 1)
                 {
                     _isExplosionActive = false;
                 }
                 else
                 {
-                    PerformExplosion();
+                    _enemiesExplosionHandler.HandleExplosion(_enemies, _explosionSource, _explosionPosition, _fireflyExplosionRadius);
                 }
             }
-
+            
             if (_enemiesKilled == _enemiesInWave)
             {
                 _isWaveInitialized = false;
                 _currentWave++;
                 OnWaveEnded?.Invoke(_currentWave);
-            }
-
-            // Check Ladybugs
-            bool isAttackTimerUpdateAllowed = true;
-            if (_ladybugsPatroling.Count > 0)
-            {
-                foreach (var ladybug in _ladybugsPatroling)
-                {
-                    Vector3 pos = ladybug.transform.position;
-                    pos.z = 0;
-                    if (pos.magnitude < 0.87f || ladybug.IsAttacking)
-                    {
-                        isAttackTimerUpdateAllowed = false;
-                        break;
-                    }
-                }
+                return;
             }
             
-            _localTime += Time.deltaTime;
-            if(isAttackTimerUpdateAllowed && !_isBossActive)
-            {
-                _attackLocalTime += Time.deltaTime;
-            }
-            _localExplosionTime += Time.deltaTime;
+            // Check if Ladybugs are blocking other enemies from attacking
+            bool isAttackTimerUpdateAllowed = CheckIfAttackTimeUpdateIsAllowed(_ladybugsPatrolling.Count, _ladybugsPatrolling);
+            
+            UpdateTimers(ref _localTime, ref _attackLocalTime, ref _explosionLocalTime, 
+                isAttackTimerUpdateAllowed, _isBossActive);
         }
+    }
+    
+    private void SpawnEnemies()
+    {
+        float phase = (_localTime) / _spawnDelay;
+        if (phase > 1)
+        {
+            if(_enemies.Count < _maxEnemiesOnScreen)
+            {
+                _localTime = 0;
+                EnemyTypes enemyType = _enemyQueue.Get(_currentSpawnEnemyIndex);
+                if (enemyType == EnemyTypes.Wasp)
+                {
+                    SpawnBoss(enemyType);
+                    _enemies.Add(_currentBoss);
+                }
+                else
+                {
+                    var enemy = SpawnEnemy(enemyType);
+                    if (enemy != null)
+                    {
+                        _enemies.Add(enemy);
+                        if (enemy.EnemyType == EnemyTypes.Ladybug)
+                        {
+                            _ladybugsPatrolling.Add(enemy);
+                        }
+                    }
+                }
+                _enemiesAvailable--;
+                _currentSpawnEnemyIndex++;
+            }
+            else
+            {
+                _localTime = 0;
+            }
+        }
+    }
+    
+    private void UpdateEnemiesReadyToAttack(List<EnemyBase> enemiesReadyToAttack, List<EnemyBase> enemies)
+    {
+        enemiesReadyToAttack.Clear();
+        foreach (var enemy in enemies)
+        {
+            enemy.UpdateAttackAvailability();
+            if (enemy.ReadyToAttack)
+            {
+                enemiesReadyToAttack.Add(enemy);
+            }
+        }
+    }
+    
+    private void DelayAttack()
+    {
+        float attackPhase = _attackLocalTime / _attackDelay;
+        if (attackPhase > 1)
+        {
+            _isAttacking = true;
+        }   
+    }
+    
+    private void StartEnemyAttack()
+    {
+        var attackingEnemy = _enemiesReadyToAttack[Random.Range(0, _enemiesReadyToAttack.Count)];
+        attackingEnemy.AttackStart();
+        _attackLocalTime = 0;
+        _attackDelay = GetRandomAttackDelay(2.5f, 0.8f, 6.1f, 1.8f, _aggressionLevelNormalized);
+        _isAttacking = false;
+    }
+    
+    private bool CheckIfAttackTimeUpdateIsAllowed(int ladybugPatrollingCount, List<EnemyBase> ladybugsPatrolling)
+    {
+        if (ladybugPatrollingCount > 0)
+        {
+            foreach (var ladybug in ladybugsPatrolling)
+            {
+                Vector3 pos = ladybug.transform.position;
+                pos.z = 0;
+                // if any Ladybug is at 0.87f distance or close - no enemy attack is allowed
+                if (pos.magnitude < 0.87f || ladybug.IsAttacking)
+                {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+    
+    private void UpdateTimers(ref float localTime, ref float attackLocalTime, ref float explosionLocalTime, 
+        bool isAttackUpdateAllowed, bool isBossActive)
+    {
+        localTime += Time.deltaTime;
+        if(isAttackUpdateAllowed && !isBossActive)
+        {
+            attackLocalTime += Time.deltaTime;
+        }
+        explosionLocalTime += Time.deltaTime;
+    }
+
+    private float GetRandomAttackDelay(float minMin, float minMax, float maxMin, float maxMax, float aggressionLevel)
+    {
+        return Random.Range(
+            Mathf.Lerp(minMin, minMax, aggressionLevel),
+            Mathf.Lerp(maxMin, maxMax, aggressionLevel)
+        );
+    }
+    
+    // Event Handlers
+    private void HandleOnEnemyDamaged()
+    {
+        OnEnemyDamaged?.Invoke();
     }
 }
