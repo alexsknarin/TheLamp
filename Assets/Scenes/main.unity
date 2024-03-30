@@ -4847,9 +4847,10 @@ MonoBehaviour:
   _maxEnemiesOnScreen: 0
   _aggresionLevel: 0
   _maxAggressionLevel: 6
-  _startAtWave: 8
+  _startAtWave: 0
   _currentWave: 0
-  _spawnDelay: 1
+  _spawnDelay: 3
+  _firstEnemySpawnDelay: 0.5
   _enemiesInWaveCount: 0
   _enemiesLeftCount: 0
 --- !u!114 &1818435503
@@ -4865,9 +4866,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _sheetId: 1m_MzdQxi0d-f-TbDgvYGiN5OfjoJGgDTMzX2N5Ci8BY
-  _sheetName: Sheet1
+  _sheetName: Sheet2
   _apiKey: AIzaSyCesP8iY_CsymaobmUcWUGS_kvOUuNO_7s
-  _useCachedSpawnData: 1
+  _useCachedSpawnData: 0
   _spawnQueueDataCache: {fileID: 11400000, guid: beab91cd3dcd8c44b88194a9986f9a99,
     type: 2}
 --- !u!114 &1818435504

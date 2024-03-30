@@ -5,6 +5,8 @@ public class EnemyQueue
     private List<EnemyTypes> _enemies;
     public int MaxEnemiesOnScreen { get; set; }
     public int AggressionLevel { get; set; }
+    public float SpawnDelay { get; set; }
+    public float SpawnDelayAcceleration { get; set; }
     
     public EnemyQueue()
     {

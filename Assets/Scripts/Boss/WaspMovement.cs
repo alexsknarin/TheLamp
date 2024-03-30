@@ -62,8 +62,6 @@ public class WaspMovement : MonoBehaviour, IInitializable
     private PlayableGraph _playableGraph;
     private PlayableOutput _playableOutput;
     
-    private int _attackVariant = 0;
-    
     // State parameters
     private bool _isDamaged = false;
     private bool _isDead = false;

@@ -28,11 +28,12 @@ public class SpawnQueueGenerator
             // Bosses
             int bossWaspCount = jsonObject[2][i][6].AsInt;
             int totalEnemies = flyCount + mothCount + fireflyCount + ladybugCount + spiderCount;
-            int maxOnScreen = jsonObject[2][i][8].AsInt;
-            int AggressionLevel = jsonObject[2][i][9].AsInt;
-            enemyQueue.MaxEnemiesOnScreen = maxOnScreen;
-            enemyQueue.AggressionLevel = AggressionLevel;
-            
+            //Data
+            enemyQueue.MaxEnemiesOnScreen = jsonObject[2][i][10].AsInt;
+            enemyQueue.AggressionLevel = jsonObject[2][i][11].AsInt;
+            enemyQueue.SpawnDelay = jsonObject[2][i][12].AsFloat;
+            enemyQueue.SpawnDelayAcceleration = jsonObject[2][i][13].AsFloat;
+           
             int bossPosition = Random.Range(3, 5);
             
             for (int j = 0; j < totalEnemies; j++)

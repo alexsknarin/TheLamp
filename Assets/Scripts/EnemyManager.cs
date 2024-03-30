@@ -33,13 +33,16 @@ public class EnemyManager : MonoBehaviour,IInitializable
     [Header("")]
     [SerializeField] private int _startAtWave = 0;
     [SerializeField] private int _currentWave = 0;
-    public int CurrentWave => _currentWave;
+    [SerializeField] private float _firstEnemySpawnDelay;
+    [SerializeField] private float _spawnDelay;
+    [SerializeField] private float _spawnDelayAcceleration;
     
+    public int CurrentWave => _currentWave;
     private int _enemiesInWave;
     private int _enemiesAvailable;
     private int _enemiesKilled;
     private int _currentSpawnEnemyIndex;
-    [SerializeField] private float _spawnDelay;
+    
     
     [Header("---- Debug ------")]
     [SerializeField] private int _enemiesInWaveCount;
@@ -145,6 +148,8 @@ public class EnemyManager : MonoBehaviour,IInitializable
         _maxEnemiesOnScreen = _enemyQueue.MaxEnemiesOnScreen;
         _aggresionLevel = _enemyQueue.AggressionLevel;  
         _aggressionLevelNormalized = _aggresionLevel / _maxAggressionLevel;
+        _spawnDelay = _enemyQueue.SpawnDelay;
+        _spawnDelayAcceleration = _enemyQueue.SpawnDelayAcceleration;
 
         // Init Attack
         _attackDelay = GetRandomAttackDelay(4.5f, 1.8f, 6.5f, 2.8f, _aggressionLevelNormalized);
@@ -291,7 +296,26 @@ public class EnemyManager : MonoBehaviour,IInitializable
     
     private void SpawnEnemies()
     {
-        float phase = (_localTime) / _spawnDelay;
+        // TODO: Extract this part to a separate method and run it onece in the beginning of the wave
+        // Check if it is the first enemy in the wave
+        float localSpawnDelay = _spawnDelay;
+        if(_currentSpawnEnemyIndex == 0)
+        {
+            localSpawnDelay = _firstEnemySpawnDelay;
+            _attackLocalTime = 0;
+        }
+        
+        // Apply spawnDelay Acceleration
+        if(_currentSpawnEnemyIndex > 0)
+        {
+            float spawnDelayPhase = (float)(_currentSpawnEnemyIndex-1) / (_enemiesInWave-1);
+            float spawnDelayAcceleration = 1f/Mathf.Lerp(1, _spawnDelayAcceleration, spawnDelayPhase);
+            localSpawnDelay = _spawnDelay * spawnDelayAcceleration;
+        }
+        
+        //-----------------------------------
+        
+        float phase = (_localTime) / localSpawnDelay;
         if (phase > 1)
         {
             if(_enemies.Count < _maxEnemiesOnScreen)
