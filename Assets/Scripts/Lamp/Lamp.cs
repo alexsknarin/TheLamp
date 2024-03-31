@@ -44,7 +44,14 @@ public class Lamp : MonoBehaviour, IInitializable
         _lampMovement.Initialize();
         _lampPresentation.Initialize();
         _currentHealth = _maxHealth;
-        _stickyEnemies = new List<EnemyBase>();
+        if (_stickyEnemies == null)
+        {
+            _stickyEnemies = new List<EnemyBase>();
+        }
+        else
+        {
+            _stickyEnemies.Clear();
+        }
         _attackBlokerCount = 0;
     }
   

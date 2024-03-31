@@ -1,6 +1,6 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -36,7 +36,6 @@ public class EnemyManager : MonoBehaviour,IInitializable
     [SerializeField] private float _firstEnemySpawnDelay;
     [SerializeField] private float _spawnDelay;
     [SerializeField] private float _spawnDelayAcceleration;
-    
     public int CurrentWave => _currentWave;
     private int _enemiesInWave;
     private int _enemiesAvailable;
@@ -46,7 +45,6 @@ public class EnemyManager : MonoBehaviour,IInitializable
     [Header("---- Debug ------")]
     [SerializeField] private int _enemiesInWaveCount;
     [SerializeField] private int _enemiesLeftCount;
-    
     private List<EnemyBase> _enemies;
     private List<EnemyBase> _enemiesReadyToAttack;
     private List<EnemyBase> _ladybugsPatrolling;
@@ -65,7 +63,9 @@ public class EnemyManager : MonoBehaviour,IInitializable
     
     private bool _isBossActive = false;
     private int _maxBossCount = 1;
-    private int _currentBossCount = 0;
+    
+    private WaitForSeconds _waitAfterGameOver = new WaitForSeconds(3.9f);
+    
     
     public static event Action<int> OnWaveStarted;
     public static event Action<int> OnWaveEnded;
@@ -109,7 +109,6 @@ public class EnemyManager : MonoBehaviour,IInitializable
         _enemiesExplosionHandler = new EnemiesExplosionHandler();
         
         _isBossActive = false;
-        _currentBossCount = _maxBossCount;
         // Init all bosses
         _waspBoss.Initialize();
         _currentWave = _startAtWave;
@@ -138,9 +137,40 @@ public class EnemyManager : MonoBehaviour,IInitializable
         }
     }
     
-    public void DoGameOver()
+    public void HandleGameOver()
     {
         _isGameActive = false;
+        // Wait for 5 seconds, call enemies to spread and the return them all to the pool
+        StartCoroutine(SpreadEnemiesAfterGameOver());
+        // Disable boss
+        if (_isBossActive)
+        {
+            _currentBoss.IsGameOver = true;
+        }
+    }
+    
+    private IEnumerator SpreadEnemiesAfterGameOver()
+    {
+        yield return _waitAfterGameOver;
+        SpreadEnemies();
+    }
+
+    public void Restart()
+    {
+        ReturnAllActiveEnemiesToPool();
+        _isGameActive = true;
+        _spawnQueue = _spawnQueueGenerator.Generate();
+        
+        _enemies.Clear();
+        _ladybugsPatrolling.Clear();
+        _enemiesReadyToAttack.Clear();
+        
+        _isBossActive = false;
+        // Init all bosses
+        _waspBoss.Initialize();
+        
+        _currentWave = _startAtWave;
+        _isWaveInitialized = false;
     }
     
     private void SetupWave(int waveNum)
@@ -365,6 +395,14 @@ public class EnemyManager : MonoBehaviour,IInitializable
             {
                 enemiesReadyToAttack.Add(enemy);
             }
+        }
+    }
+    
+    private void ReturnAllActiveEnemiesToPool()
+    {
+        foreach (var enemy in _enemies)
+        {
+            enemy.ReturnToPool();
         }
     }
     

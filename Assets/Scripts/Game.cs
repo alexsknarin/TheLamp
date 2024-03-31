@@ -51,9 +51,16 @@ public class Game : MonoBehaviour
         _lamp.Initialize();
     }
 
-    private void Restart()
+    public void RestartGame()
     {
+        Debug.Log("Restarting Game");
         _isLampDead = false;
+        _currentGameState = GameStates.Loading;
+        _enemyManager.Restart();
+        _uiManager.Initialize();
+        _playerInputHandler.Initialize();
+        _googleSheetsDataReader.Initialize();
+        _lamp.Initialize();
     }
     
     private void InitializeEnemyManager()
@@ -124,7 +131,7 @@ public class Game : MonoBehaviour
                 {
                     _playerInputHandler.DisableAttackInput();
                     _lamp.PlayDeath(_deathDuration);
-                    _enemyManager.DoGameOver();
+                    _enemyManager.HandleGameOver();
                     _uiManager.StartGameOver();
                     _currentGameState = GameStates.GameOver;   
                 }

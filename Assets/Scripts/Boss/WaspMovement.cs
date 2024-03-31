@@ -17,6 +17,7 @@ public class WaspMovement : MonoBehaviour, IInitializable
     
     public event Action OnWaspAttackStarted;
     public event Action OnDeathStateEnded;
+    public event Action OnLeftTheScreen;
 
     // Idle
     [SerializeField] private AnimationClip _waspIdle;
@@ -102,6 +103,7 @@ public class WaspMovement : MonoBehaviour, IInitializable
     public void MovementReset()
     {
         _isDamaged = false;
+        _currentWaspState = WaspStates.Idle;
     }
 
     public void Play()
@@ -129,7 +131,10 @@ public class WaspMovement : MonoBehaviour, IInitializable
         clipPlayable.SetTime(0);
         clipPlayable.SetTime(0); // Unity Bug
         _playableOutput.SetSourcePlayable(clipPlayable);
-        _playableGraph.Play();
+        if (_playableGraph.IsValid())
+        {
+            _playableGraph.Play();    
+        }
     }
     
     public void EnableCollider()
@@ -209,6 +214,7 @@ public class WaspMovement : MonoBehaviour, IInitializable
                 }
                 break;
             case WaspStates.Attack1_L_Fail1:
+                OnLeftTheScreen?.Invoke();
                 v = Random.Range(0, 3);
                 if (v == 0)
                 {
@@ -227,6 +233,7 @@ public class WaspMovement : MonoBehaviour, IInitializable
                 }
                 break;
             case WaspStates.Attack1_L_Success1:
+                OnLeftTheScreen?.Invoke();
                 v = Random.Range(0, 2);
                 if (v == 0)
                 {
@@ -240,10 +247,12 @@ public class WaspMovement : MonoBehaviour, IInitializable
                 }
                 break;
             case WaspStates.Attack1_L_Success2:
+                OnLeftTheScreen?.Invoke();
                 _currentWaspState = WaspStates.Attack4_L;
                 OnWaspAttackStarted?.Invoke();
                 break;
             case WaspStates.Attack1_L_Success3:
+                OnLeftTheScreen?.Invoke();
                 _currentWaspState = WaspStates.Attack2_L;
                 OnWaspAttackStarted?.Invoke();
                 break;
@@ -278,6 +287,7 @@ public class WaspMovement : MonoBehaviour, IInitializable
                 }
                 break;
             case WaspStates.Attack2_L_Fail1:
+                OnLeftTheScreen?.Invoke();
                 v = Random.Range(0, 2);
                 if (v == 0)
                 {
@@ -291,10 +301,12 @@ public class WaspMovement : MonoBehaviour, IInitializable
                 }
                 break;
             case WaspStates.Attack2_L_Fail2:
+                OnLeftTheScreen?.Invoke();
                 _currentWaspState = WaspStates.Attack2_R;
                 OnWaspAttackStarted?.Invoke();
                 break;
             case WaspStates.Attack2_L_Success1:
+                OnLeftTheScreen?.Invoke();
                 v = Random.Range(0, 2);
                 if (v == 0)
                 {
@@ -329,6 +341,7 @@ public class WaspMovement : MonoBehaviour, IInitializable
                 }
                 break;
             case WaspStates.Attack3_L_Fail1:
+                OnLeftTheScreen?.Invoke();
                 v = Random.Range(0, 2);
                 if (v == 0)
                 {
@@ -342,6 +355,7 @@ public class WaspMovement : MonoBehaviour, IInitializable
                 }
                 break;
             case WaspStates.Attack3_L_Success1:
+                OnLeftTheScreen?.Invoke();
                 v = Random.Range(0, 2);
                 if (v == 0)
                 {
@@ -377,6 +391,7 @@ public class WaspMovement : MonoBehaviour, IInitializable
                 }
                 break;
             case WaspStates.Attack4_L_Fail1:
+                OnLeftTheScreen?.Invoke();
                 v = Random.Range(0, 2);
                 if (v == 0)
                 {
@@ -390,6 +405,7 @@ public class WaspMovement : MonoBehaviour, IInitializable
                 }
                 break;
             case WaspStates.Attack4_L_Success1:
+                OnLeftTheScreen?.Invoke();
                 v = Random.Range(0, 3);
                 if (v == 0)
                 {
@@ -456,6 +472,7 @@ public class WaspMovement : MonoBehaviour, IInitializable
                 }
                 break;
             case WaspStates.Attack1_R_Fail1:
+                OnLeftTheScreen?.Invoke();
                 v = Random.Range(0, 3);
                 if (v == 0)
                 {
@@ -474,6 +491,7 @@ public class WaspMovement : MonoBehaviour, IInitializable
                 }
                 break;
             case WaspStates.Attack1_R_Success1:
+                OnLeftTheScreen?.Invoke();
                 v = Random.Range(0, 2);
                 if (v == 0)
                 {
@@ -487,10 +505,12 @@ public class WaspMovement : MonoBehaviour, IInitializable
                 }
                 break;
             case WaspStates.Attack1_R_Success2:
+                OnLeftTheScreen?.Invoke();
                 _currentWaspState = WaspStates.Attack4_R;
                 OnWaspAttackStarted?.Invoke();
                 break;
             case WaspStates.Attack1_R_Success3:
+                OnLeftTheScreen?.Invoke();
                 _currentWaspState = WaspStates.Attack2_R;
                 OnWaspAttackStarted?.Invoke();
                 break;
@@ -525,6 +545,7 @@ public class WaspMovement : MonoBehaviour, IInitializable
                 }
                 break;
             case WaspStates.Attack2_R_Fail1:
+                OnLeftTheScreen?.Invoke();
                 v = Random.Range(0, 2);
                 if (v == 0)
                 {
@@ -538,10 +559,12 @@ public class WaspMovement : MonoBehaviour, IInitializable
                 }
                 break;
             case WaspStates.Attack2_R_Fail2:
+                OnLeftTheScreen?.Invoke();
                 _currentWaspState = WaspStates.Attack2_L;  
                 OnWaspAttackStarted?.Invoke();
                 break;
             case WaspStates.Attack2_R_Success1:
+                OnLeftTheScreen?.Invoke();
                 v = Random.Range(0, 2);
                 if (v == 0)
                 {
@@ -577,6 +600,7 @@ public class WaspMovement : MonoBehaviour, IInitializable
                 }
                 break;
             case WaspStates.Attack3_R_Fail1:
+                OnLeftTheScreen?.Invoke();
                 v = Random.Range(0, 2);
                 if (v == 0)
                 {
@@ -590,6 +614,7 @@ public class WaspMovement : MonoBehaviour, IInitializable
                 }
                 break;
             case WaspStates.Attack3_R_Success1:
+                OnLeftTheScreen?.Invoke();
                 v = Random.Range(0, 2);
                 if (v == 0)
                 {
@@ -624,6 +649,7 @@ public class WaspMovement : MonoBehaviour, IInitializable
                 }
                 break;
             case WaspStates.Attack4_R_Fail1:
+                OnLeftTheScreen?.Invoke();
                 v = Random.Range(0, 2);
                 if (v == 0)
                 {
@@ -637,6 +663,7 @@ public class WaspMovement : MonoBehaviour, IInitializable
                 }
                 break;
             case WaspStates.Attack4_R_Success1:
+                OnLeftTheScreen?.Invoke();
                 v = Random.Range(0, 3);
                 if (v == 0)
                 {

@@ -22,6 +22,7 @@ public class UiManager : MonoBehaviour, IInitializable
     [Header("Game Over")]
     [SerializeField] private GameObject _gameOverPanel;
     [SerializeField] private UiText _gameOverText;
+    [SerializeField] private GameObject _gameOverButtonsGroup;
     
     public event Action OnIntroFinished;
     
@@ -53,6 +54,9 @@ public class UiManager : MonoBehaviour, IInitializable
         _waveText.gameObject.SetActive(true);
         _waveText.DisableText();
         
+        _gameOverPanel.SetActive(false);
+        _gameOverButtonsGroup.SetActive(false);
+
         _fadeImage.gameObject.SetActive(true);
         _fadeImage.color = _fadeColor1;
         _isIntroPlaying = false;
@@ -171,10 +175,11 @@ public class UiManager : MonoBehaviour, IInitializable
 
         if (_isGameOverPlaying)
         {
-            float phase = _localTime / 8f;
+            float phase = _localTime / 5.5f;
             if (phase > 1)
             {
                 _isGameOverPlaying = false;
+                _gameOverButtonsGroup.SetActive(true);
             }
             _fadeImage.color = Color.Lerp(_fadeColor2, _fadeColor1, phase);
             _localTime += Time.deltaTime;

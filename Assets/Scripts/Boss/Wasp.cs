@@ -8,21 +8,26 @@ public class Wasp : BossBase
     [SerializeField] private WaspPresentation _waspPresentation;
     [SerializeField] private int _maxHealth;
     [SerializeField] private int _currentHealth;
-    
+
+
     private void OnEnable()
     {
         _waspMovement.OnWaspAttackStarted += UpdateRecievedLampAttackStatus;
         _waspMovement.OnDeathStateEnded += HandleDeathMoveStateEnd;
+        _waspMovement.OnLeftTheScreen += HandleLeftScreen;
     }
     
     private void OnDisable()
     {
         _waspMovement.OnWaspAttackStarted -= UpdateRecievedLampAttackStatus;
         _waspMovement.OnDeathStateEnded -= HandleDeathMoveStateEnd;
+        _waspMovement.OnLeftTheScreen -= HandleLeftScreen;
     }
     public override void Initialize()
     {
+        gameObject.SetActive(true);
         ReceivedLampAttack = false;
+        IsGameOver = false;
         _currentHealth = _maxHealth;
         _waspPresentation.Initialize();
         _waspMovement.Initialize();
@@ -81,6 +86,10 @@ public class Wasp : BossBase
     {
     }
 
+    public override void ReturnToPool()
+    {
+    }
+
     public override void SpreadStart()
     {
     }
@@ -96,12 +105,21 @@ public class Wasp : BossBase
     
     public override void HandleCollisionWithLamp()
     {
-     //   
     }
     
     public override void HandleExitingAttackExitZone()
     {
         ReadyToLampDamage = false;
+    }
+
+    private void HandleLeftScreen()
+    {
+        if (IsGameOver)
+        {
+            Reset();
+            gameObject.SetActive(false);
+            IsGameOver = false;
+        }
     }
     
     private void HandleDeathMoveStateEnd()

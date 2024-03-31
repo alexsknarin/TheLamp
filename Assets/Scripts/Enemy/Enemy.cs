@@ -189,6 +189,11 @@ public class Enemy : EnemyBase
         }    
     }
 
+    public override void ReturnToPool()
+    {
+        _objectPool.Release(this);
+    }
+    
     private void OnDeactivated()
     {
         OnEnemyDeactivated?.Invoke(this);

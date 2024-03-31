@@ -10,7 +10,7 @@ public class WaspPresentation : MonoBehaviour, IInitializable
     [SerializeField] private VisualEffect _damageParticles;
     [SerializeField] private VisualEffect _damageEmitParticles;
     [SerializeField] private float _deathDuration;
-    
+
     private bool _isDead;
     private bool _isDamaged;
     private Material _waspBodyMaterial;
