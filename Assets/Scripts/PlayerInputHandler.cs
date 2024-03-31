@@ -22,8 +22,14 @@ public class PlayerInputHandler : MonoBehaviour,IInitializable
         _isAttackAllowed = false;
     }
 
-    public void AllowAttackInput()
+    public void EnableAttackInput()
     {
         _isAttackAllowed = true;
     }
+    
+    public void DisableAttackInput()
+    {
+        _isAttackAllowed = false;
+    }
+    
 }

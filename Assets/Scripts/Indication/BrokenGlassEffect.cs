@@ -15,11 +15,13 @@ public class BrokenGlassEffect : MonoBehaviour
     private void OnEnable()
     {
         Lamp.OnLampDamaged += Play;
+        Lamp.OnLampDead += Play;
     }
     
     private void OnDisable()
     {
         Lamp.OnLampDamaged -= Play;
+        Lamp.OnLampDead -= Play;
     }
     
     private void Play(EnemyBase enemy)

@@ -4,5 +4,6 @@ public enum GameStates
     ConsentScreen,
     Intro,
     Prepare,
-    Fight
+    Fight,
+    GameOver
 }

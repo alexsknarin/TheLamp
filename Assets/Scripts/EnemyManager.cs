@@ -43,7 +43,6 @@ public class EnemyManager : MonoBehaviour,IInitializable
     private int _enemiesKilled;
     private int _currentSpawnEnemyIndex;
     
-    
     [Header("---- Debug ------")]
     [SerializeField] private int _enemiesInWaveCount;
     [SerializeField] private int _enemiesLeftCount;
@@ -54,7 +53,8 @@ public class EnemyManager : MonoBehaviour,IInitializable
     private EnemiesLampAttackHandler _enemiesLampAttackHandler;
     private EnemiesExplosionHandler _enemiesExplosionHandler;
 
-        private bool _isWaveInitialized = false;
+    private bool _isWaveInitialized = false;
+    private bool _isGameActive = true;
     
     private float _attackDelay;
     private float _attackLocalTime;
@@ -98,6 +98,7 @@ public class EnemyManager : MonoBehaviour,IInitializable
     
     public void Initialize()
     {
+        _isGameActive = true;
         _enemyPool.Initialize();
         _spawnQueueGenerator = new SpawnQueueGenerator(_spawnQueueDataCache.Data);
         _spawnQueue = _spawnQueueGenerator.Generate();
@@ -135,6 +136,11 @@ public class EnemyManager : MonoBehaviour,IInitializable
             SetupWave(_currentWave);
             OnWaveStarted?.Invoke(_currentWave);
         }
+    }
+    
+    public void DoGameOver()
+    {
+        _isGameActive = false;
     }
     
     private void SetupWave(int waveNum)
@@ -243,7 +249,7 @@ public class EnemyManager : MonoBehaviour,IInitializable
 
     private void Update()
     {
-        if (_isWaveInitialized)
+        if (_isWaveInitialized && _isGameActive)
         {
             if (_enemiesAvailable > 0)
             {

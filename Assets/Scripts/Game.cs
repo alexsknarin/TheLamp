@@ -10,6 +10,11 @@ public class Game : MonoBehaviour
     [SerializeField] private PlayerInputHandler _playerInputHandler;
     [SerializeField] private UGSSetup _ugsSetup;
     [SerializeField] private GameStates _currentGameState;
+    [SerializeField] private float _introDuration;
+    [SerializeField] private float _deathDuration;
+    
+    // State paremeters  
+    private bool _isLampDead = false;
     
 
     private void OnEnable()
@@ -19,6 +24,7 @@ public class Game : MonoBehaviour
         _ugsSetup.OnConsentAddressed += HandleDataConsentAddressed;
         PlayerInputHandler.OnPlayerAttack += HandlePlayerAttackButtonPressed;
         EnemyManager.OnWaveEnded += HandleWaveEnded;
+        Lamp.OnLampDead += HandleLampDead;
     }
 
     private void OnDisable()
@@ -28,18 +34,21 @@ public class Game : MonoBehaviour
         _ugsSetup.OnConsentAddressed -= HandleDataConsentAddressed;
         PlayerInputHandler.OnPlayerAttack -= HandlePlayerAttackButtonPressed;
         EnemyManager.OnWaveEnded -= HandleWaveEnded;
+        Lamp.OnLampDead -= HandleLampDead;
     }
     
     void Start()
     {
         Application.targetFrameRate = 60;
+        _isLampDead = false;
         _currentGameState = GameStates.Loading;
 
         // Init all systems
-        _lamp.Initialize(); 
+        _uiManager.SetIntroDuration(_introDuration);
         _uiManager.Initialize();
         _playerInputHandler.Initialize();
         _googleSheetsDataReader.Initialize();
+        _lamp.Initialize();
     }
     
     private void InitializeEnemyManager()
@@ -76,7 +85,13 @@ public class Game : MonoBehaviour
     {
         SwitchGameState();
     }
-
+    
+    private void HandleLampDead(EnemyBase enemy)
+    {
+        _isLampDead = true;
+        SwitchGameState();
+    }
+   
     private void SwitchGameState()
     {
         switch (_currentGameState)
@@ -87,9 +102,10 @@ public class Game : MonoBehaviour
             case GameStates.ConsentScreen:
                 _currentGameState = GameStates.Intro;
                 _uiManager.PlayIntro();
+                _lamp.PlayIntro(_introDuration);
                 break;
             case GameStates.Intro:
-                _playerInputHandler.AllowAttackInput();
+                _playerInputHandler.EnableAttackInput();
                 _uiManager.StartPrepare(_enemyManager.CurrentWave);
                 _currentGameState = GameStates.Prepare;
                 break;
@@ -99,8 +115,19 @@ public class Game : MonoBehaviour
                 _enemyManager.StartWave();
                 break;
             case GameStates.Fight:
-                _uiManager.StartPrepare(_enemyManager.CurrentWave);
-                _currentGameState = GameStates.Prepare;
+                if (_isLampDead)
+                {
+                    _playerInputHandler.DisableAttackInput();
+                    _lamp.PlayDeath(_deathDuration);
+                    _enemyManager.DoGameOver();
+                    _uiManager.StartGameOver();
+                    _currentGameState = GameStates.GameOver;   
+                }
+                else
+                {
+                    _uiManager.StartPrepare(_enemyManager.CurrentWave);
+                    _currentGameState = GameStates.Prepare;    
+                }
                 break;
         }
     }   

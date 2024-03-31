@@ -2,11 +2,12 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class UiManager : MonoBehaviour, IInitializable
 {
-    [SerializeField] private WaveText _waveText;
+    [SerializeField] private UiText _waveText;
     [SerializeField] private Transform _cameraTransform;
     [SerializeField] private AnimationCurve _cameraAnimationCurve;
     [SerializeField] private float _cameraAnimationDuration;
@@ -15,11 +16,15 @@ public class UiManager : MonoBehaviour, IInitializable
     [SerializeField] private GameObject _analyticsConsentEnableButton;
     [SerializeField] private GameObject _analyticsConsentDisableButton;
     [SerializeField] private UGSSetup _ugsSetup;
+    [Header("Game Over")]
+    [SerializeField] private GameObject _gameOverPanel;
+    [SerializeField] private UiText _gameOverText;
     
     public event Action OnIntroFinished;
     
     private float _localTime;
     private bool _isIntroPlaying = false;
+    private bool _isGameOverPlaying = false;
     
     private Color _fadeColor1 = new Color(0, 0, 0, 1);
     private Color _fadeColor2 = new Color(0, 0, 0, 0);
@@ -28,8 +33,8 @@ public class UiManager : MonoBehaviour, IInitializable
     
     public void Initialize()
     {
-            _waveText.gameObject.SetActive(true);
-        _waveText.HideWaveText();
+        _waveText.gameObject.SetActive(true);
+        _waveText.DisableText();
         
         _fadeImage.gameObject.SetActive(true);
         _fadeImage.color = _fadeColor1;
@@ -54,6 +59,11 @@ public class UiManager : MonoBehaviour, IInitializable
             _analyticsConsentEnableButton.SetActive(false);
             _analyticsConsentDisableButton.SetActive(false);
         }
+    }
+    
+    public void SetIntroDuration(float duration)
+    {
+        _cameraAnimationDuration = duration;
     }
     
     public void AllowDataCollection()
@@ -95,12 +105,23 @@ public class UiManager : MonoBehaviour, IInitializable
     
     public void StartPrepare(int wave)
     {
-        _waveText.ShowWaveText(wave);
+        _waveText.ShowWaveText("Start Wave " + wave.ToString());
     }
     
     public void StartFight()
     {
         _waveText.HideWaveText();
+    }
+
+    public void StartGameOver()
+    {
+        _isGameOverPlaying = true;
+        _localTime = 0;
+        _gameOverPanel.SetActive(true);
+        _gameOverText.ShowWaveText("Game Over");
+        _fadeImage.color = _fadeColor2;
+        _fadeImage.gameObject.SetActive(true);
+        
     }
 
     // Update is called once per frame
@@ -124,6 +145,17 @@ public class UiManager : MonoBehaviour, IInitializable
             cameraPosition.z = Mathf.Lerp(_cameraStartZPosition, _cameraEndZPosition, _cameraAnimationCurve.Evaluate(phase));
             _cameraTransform.position = cameraPosition;
             
+            _localTime += Time.deltaTime;
+        }
+
+        if (_isGameOverPlaying)
+        {
+            float phase = _localTime / 8f;
+            if (phase > 1)
+            {
+                _isGameOverPlaying = false;
+            }
+            _fadeImage.color = Color.Lerp(_fadeColor2, _fadeColor1, phase);
             _localTime += Time.deltaTime;
         }
     }

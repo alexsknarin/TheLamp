@@ -19,6 +19,7 @@ public class Lamp : MonoBehaviour, IInitializable
     private Vector3 _enemyPosition;
     
     public static event Action<EnemyBase> OnLampDamaged;
+    public static event Action<EnemyBase> OnLampDead;
     public static event Action<EnemyBase> OnLampCollidedWithStickyEnemy;
 
     private void OnEnable()
@@ -103,13 +104,17 @@ public class Lamp : MonoBehaviour, IInitializable
             {
                 _isAssessingDamage = false;
                 _currentHealth--;
-                _lampPresentation.StartDamageState();
                 _lampPresentation.UpdateHealthBar((float)_currentHealth / _maxHealth);
-                OnLampDamaged?.Invoke(enemy);
-                MoveLamp();
                 if (_currentHealth <= 0)
                 {
+                    OnLampDead?.Invoke(enemy);
                 }
+                else
+                {
+                    _lampPresentation.StartDamageState();
+                    OnLampDamaged?.Invoke(enemy);    
+                }
+                MoveLamp();
             }
         }
     }
@@ -118,5 +123,15 @@ public class Lamp : MonoBehaviour, IInitializable
     {
         float attackDirection = -(_enemyPosition - transform.position).x * 2;
         _lampMovement.AddForce(attackDirection);
+    }
+    
+    public void PlayIntro(float duration)
+    {
+        _lampPresentation.StartIntroState(duration, 1f); // TODO: support loading health from the last session
+    }
+
+    public void PlayDeath(float duration)
+    {
+        _lampPresentation.StartDeathState(duration);
     }
 }
