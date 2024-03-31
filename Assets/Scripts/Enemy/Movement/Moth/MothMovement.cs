@@ -39,7 +39,6 @@ public class MothMovement : EnemyMovement
     
     // Debug
     [SerializeField] private EnemyStates _stateDebug;
-
     
     public override void Initialize()
     {

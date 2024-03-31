@@ -11,7 +11,10 @@ public class UiManager : MonoBehaviour, IInitializable
     [SerializeField] private Transform _cameraTransform;
     [SerializeField] private AnimationCurve _cameraAnimationCurve;
     [SerializeField] private float _cameraAnimationDuration;
+    [Header("Overlay Inames")]
+    [SerializeField] private BrokenGlassEffect _brokenGlassEffect;
     [SerializeField] private Image _fadeImage;
+    [Header("Analytics")]
     [SerializeField] private GameObject _analyticsConsentPanel;
     [SerializeField] private GameObject _analyticsConsentEnableButton;
     [SerializeField] private GameObject _analyticsConsentDisableButton;
@@ -30,6 +33,20 @@ public class UiManager : MonoBehaviour, IInitializable
     private Color _fadeColor2 = new Color(0, 0, 0, 0);
     private float _cameraStartZPosition = -6.5f;
     private float _cameraEndZPosition = -5.88f;
+    
+    // TODO: find a way to have less events
+    private void OnEnable()
+    {
+        Lamp.OnLampDamaged += HandleLampDamage;
+        Lamp.OnLampDead += HandleLampDamage;
+    }
+    
+    private void OnDisable()
+    {
+        Lamp.OnLampDamaged -= HandleLampDamage;
+        Lamp.OnLampDead -= HandleLampDamage;
+    }
+    
     
     public void Initialize()
     {
@@ -121,7 +138,11 @@ public class UiManager : MonoBehaviour, IInitializable
         _gameOverText.ShowWaveText("Game Over");
         _fadeImage.color = _fadeColor2;
         _fadeImage.gameObject.SetActive(true);
-        
+    }
+
+    private void HandleLampDamage(EnemyBase enemy)
+    {
+        _brokenGlassEffect.Play();
     }
 
     // Update is called once per frame

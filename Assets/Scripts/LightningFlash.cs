@@ -23,8 +23,7 @@ public class LightningFlash : MonoBehaviour
         EnemyManager.OnBossAppear -= Play;
         EnemyManager.OnBossDeath -= Play;
     }
-
-
+    
     private void Start()
     {
         _light.enabled = false;

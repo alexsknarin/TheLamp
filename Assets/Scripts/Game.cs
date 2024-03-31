@@ -37,7 +37,7 @@ public class Game : MonoBehaviour
         Lamp.OnLampDead -= HandleLampDead;
     }
     
-    void Start()
+    private void Start()
     {
         Application.targetFrameRate = 60;
         _isLampDead = false;
@@ -49,6 +49,11 @@ public class Game : MonoBehaviour
         _playerInputHandler.Initialize();
         _googleSheetsDataReader.Initialize();
         _lamp.Initialize();
+    }
+
+    private void Restart()
+    {
+        _isLampDead = false;
     }
     
     private void InitializeEnemyManager()

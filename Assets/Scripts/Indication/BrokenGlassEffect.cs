@@ -11,20 +11,7 @@ public class BrokenGlassEffect : MonoBehaviour
     private float _duration = 0.25f;
     private float _localTime;
     
-
-    private void OnEnable()
-    {
-        Lamp.OnLampDamaged += Play;
-        Lamp.OnLampDead += Play;
-    }
-    
-    private void OnDisable()
-    {
-        Lamp.OnLampDamaged -= Play;
-        Lamp.OnLampDead -= Play;
-    }
-    
-    private void Play(EnemyBase enemy)
+    public void Play()
     {
         _isActive = true;
         _localTime = 0;

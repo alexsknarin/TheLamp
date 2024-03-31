@@ -24,6 +24,20 @@ public class CameraShake : MonoBehaviour
     private bool _isGameOver = false;
     private float _shakeAmplitudeMultiplier = 1.0f;
     
+    private void OnEnable()
+    {
+        Lamp.OnLampDamaged += StartDamageShake;
+        Lamp.OnLampDead += StartDamageShake;
+        EnemyManager.OnFireflyExplosion += StartExplosionShake;
+    }
+
+    private void OnDisable()
+    {
+        Lamp.OnLampDamaged -= StartDamageShake;
+        Lamp.OnLampDead -= StartDamageShake;
+        EnemyManager.OnFireflyExplosion -= StartExplosionShake;
+    }
+    
     private void Start()
     {
         _originalPos = transform.position;
@@ -46,20 +60,6 @@ public class CameraShake : MonoBehaviour
             float shakephase = Mathf.Abs(_waspTransform.position.z - _waspProximityMaxDistance) / _shakeDistance;
             transform.position = Vector3.Lerp(_originalPos, _originalPos + (Vector3)(Random.insideUnitCircle * _waspProximityShakeAmplitude), shakephase);   
         }
-    }
-    
-    private void OnEnable()
-    {
-        Lamp.OnLampDamaged += StartDamageShake;
-        Lamp.OnLampDead += StartDamageShake;
-        EnemyManager.OnFireflyExplosion += StartExplosionShake;
-    }
-
-    private void OnDisable()
-    {
-        Lamp.OnLampDamaged -= StartDamageShake;
-        Lamp.OnLampDead -= StartDamageShake;
-        EnemyManager.OnFireflyExplosion -= StartExplosionShake;
     }
     
     private void StartDamageShake(EnemyBase enemy)

@@ -11,14 +11,12 @@ public class Wasp : BossBase
     
     private void OnEnable()
     {
-        LampAttackModel.OnLampAttack += LampAttack;
         _waspMovement.OnWaspAttackStarted += UpdateRecievedLampAttackStatus;
         _waspMovement.OnDeathStateEnded += HandleDeathMoveStateEnd;
     }
     
     private void OnDisable()
     {
-        LampAttackModel.OnLampAttack -= LampAttack;
         _waspMovement.OnWaspAttackStarted -= UpdateRecievedLampAttackStatus;
         _waspMovement.OnDeathStateEnded -= HandleDeathMoveStateEnd;
     }
@@ -42,16 +40,7 @@ public class Wasp : BossBase
     {
         _waspMovement.Play();
     }
-    
-    private void LampAttack(int attackPower, float currentPower, float attackDuration, float attackDistance)
-    {
-        if (ReadyToLampDamage)
-        {
-            ReceiveDamage(attackPower);
-            _waspMovement.SetDamaged();
-        }
-    }
-    
+
     public void TriggerSpread()
     {
         OnTriggerSpreadInvoke();
