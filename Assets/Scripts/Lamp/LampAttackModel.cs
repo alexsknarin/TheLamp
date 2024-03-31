@@ -58,6 +58,16 @@ public class LampAttackModel : MonoBehaviour, IInitializable
         }
     }
     
+    public void UpdateCooldownTime(float newCooldownTime)
+    {
+        _fullCooldownTime = newCooldownTime;
+    }
+    
+    public void HandleLampDeath()
+    {
+        StartNeutralState();
+    }
+    
     public void AddAttackBlocker()
     {
         _isBlockedAttack = true;

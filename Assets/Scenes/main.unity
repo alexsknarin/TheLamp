@@ -6098,9 +6098,11 @@ MonoBehaviour:
   _lampMovement: {fileID: 1934066248}
   _lampStickZoneCollisionHandler: {fileID: 815775906}
   _lampAttackExitZoneCollisionHandler: {fileID: 452042971}
+  _attackBlokerCount: 0
   _maxHealth: 5
   _currentHealth: 0
-  _attackBlokerCount: 0
+  _initialColldownTime: 2
+  _currentColldownTime: 0
 --- !u!114 &1934066247
 MonoBehaviour:
   m_ObjectHideFlags: 0

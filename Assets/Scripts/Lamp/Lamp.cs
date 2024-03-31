@@ -11,9 +11,13 @@ public class Lamp : MonoBehaviour, IInitializable
     [SerializeField] private LampMovement _lampMovement;
     [SerializeField] private LampStickZoneCollisionHandler _lampStickZoneCollisionHandler;
     [SerializeField] private LampAttackExitZoneCollisionHandler _lampAttackExitZoneCollisionHandler;    
+    [SerializeField] private int _attackBlokerCount;
+    [Header("Lamp Stats")]
     [SerializeField] private int _maxHealth;
     [SerializeField] private int _currentHealth;
-    [SerializeField] private int _attackBlokerCount;
+    [SerializeField] private float _initialColldownTime;
+    [SerializeField] private float _currentColldownTime;
+    
     private List<EnemyBase> _stickyEnemies;
     private bool _isAssessingDamage = false;
     private Vector3 _enemyPosition;
@@ -40,7 +44,9 @@ public class Lamp : MonoBehaviour, IInitializable
 
     public void Initialize()
     {
+        _currentColldownTime = _initialColldownTime;
         _lampAttackModel.Initialize();
+        _lampAttackModel.UpdateCooldownTime(_currentColldownTime);
         _lampMovement.Initialize();
         _lampPresentation.Initialize();
         _currentHealth = _maxHealth;
@@ -114,6 +120,7 @@ public class Lamp : MonoBehaviour, IInitializable
                 _lampPresentation.UpdateHealthBar((float)_currentHealth / _maxHealth);
                 if (_currentHealth <= 0)
                 {
+                    _lampAttackModel.HandleLampDeath();
                     OnLampDead?.Invoke(enemy);
                 }
                 else

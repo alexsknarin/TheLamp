@@ -2,5 +2,6 @@ enum LampStates
 {
     Neutral,
     Attack,
-    Cooldown
+    Cooldown,
+    Gameover
 }
