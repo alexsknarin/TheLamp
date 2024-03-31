@@ -33,9 +33,35 @@ public class SpawnQueueGenerator
             enemyQueue.AggressionLevel = jsonObject[2][i][11].AsInt;
             enemyQueue.SpawnDelay = jsonObject[2][i][12].AsFloat;
             enemyQueue.SpawnDelayAcceleration = jsonObject[2][i][13].AsFloat;
-           
-            int bossPosition = Random.Range(3, 5);
             
+            // Introduce a new enemy
+            string enemyIntro = jsonObject[2][i][14];
+            if ( !string.IsNullOrEmpty(enemyIntro))
+            {
+                EnemyTypes firstEnemyType = (EnemyTypes)System.Enum.Parse(typeof(EnemyTypes), enemyIntro);
+                enemyQueue.Add(firstEnemyType);
+                switch (firstEnemyType)
+                {
+                    case EnemyTypes.Fly:
+                        flyCount--;
+                        break;
+                    case EnemyTypes.Firefly:
+                        fireflyCount--;
+                        break;
+                    case EnemyTypes.Moth:
+                        mothCount--;
+                        break;
+                    case EnemyTypes.Ladybug:
+                        ladybugCount--;
+                        break;
+                    case EnemyTypes.Spider:
+                        spiderCount--;
+                        break;
+                }
+                totalEnemies--;
+            }
+            
+            int bossPosition = Random.Range(3, 5);
             for (int j = 0; j < totalEnemies; j++)
             {
                 if(j == bossPosition && bossWaspCount > 0)

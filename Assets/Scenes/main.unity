@@ -4847,10 +4847,11 @@ MonoBehaviour:
   _maxEnemiesOnScreen: 0
   _aggresionLevel: 0
   _maxAggressionLevel: 6
-  _startAtWave: 0
+  _startAtWave: 27
   _currentWave: 0
-  _spawnDelay: 3
   _firstEnemySpawnDelay: 0.5
+  _spawnDelay: 1
+  _spawnDelayAcceleration: 1
   _enemiesInWaveCount: 0
   _enemiesLeftCount: 0
 --- !u!114 &1818435503
