@@ -104,6 +104,7 @@ public class Lamp : MonoBehaviour, IInitializable
                 _isAssessingDamage = false;
                 _currentHealth--;
                 _lampPresentation.StartDamageState();
+                _lampPresentation.UpdateHealthBar((float)_currentHealth / _maxHealth);
                 OnLampDamaged?.Invoke(enemy);
                 MoveLamp();
                 if (_currentHealth <= 0)

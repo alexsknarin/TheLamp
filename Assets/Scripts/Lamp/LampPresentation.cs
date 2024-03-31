@@ -7,6 +7,10 @@ public class LampPresentation : MonoBehaviour, IInitializable
     [SerializeField] private GameObject _lampAttackZoneObject;
     private Material _lampAttackZoneMaterial;
     [SerializeField] private float _lightDamageDuration;
+    [Header("HealthBar")]
+    [SerializeField] private MeshRenderer _healthBarMeshRenderer;
+    [SerializeField] private Transform _healthBarTransform;
+    private Material _healthBarMaterial;    
     
     private float _lightPower = 1f;
     private float _attackDuration = 1f;
@@ -47,6 +51,17 @@ public class LampPresentation : MonoBehaviour, IInitializable
         _lampMaterial = GetComponent<MeshRenderer>().sharedMaterial;
         _lampAttackZoneMaterial = _lampAttackZoneObject.GetComponent<MeshRenderer>().material;
         ResetLightNeutralState();
+        _healthBarMaterial = _healthBarMeshRenderer.material;
+        _healthBarMaterial.SetFloat("_Health", 1f);
+        _healthBarTransform.localScale = Vector3.one;
+    }
+    
+    public void UpdateHealthBar(float health)
+    {
+        _healthBarMaterial.SetFloat("_Health", health);
+        Vector3 scale = Vector3.one;
+        scale.x = health;
+        _healthBarTransform.localScale = scale;
     }
 
     private void ResetLightNeutralState()
