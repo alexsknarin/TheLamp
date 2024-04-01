@@ -20,6 +20,7 @@ public class LampStatsManager : MonoBehaviour, IInitializable
     public int UpgradePoints => _upgradePoints;
     
     public event Action OnHealthChange;
+    public event Action OnHealthUpgraded;
     public event Action OnCooldownChange;
 
     private void OnEnable()
@@ -65,6 +66,7 @@ public class LampStatsManager : MonoBehaviour, IInitializable
             {
                 _maxHealth++;
                 _currentHealth++;
+                OnHealthUpgraded?.Invoke();
             }
             OnHealthChange?.Invoke();
         }

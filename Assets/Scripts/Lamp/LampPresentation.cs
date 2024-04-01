@@ -16,6 +16,9 @@ public class LampPresentation : MonoBehaviour, IInitializable
     [SerializeField] private AnimationCurve _introAnimationCurve;
     [Header("Death")]
     [SerializeField] private AnimationCurve _deathAnimationCurve;
+    private bool _isHealthBarUpgrading = false;
+    private float _healthBarUpgradeLocalTime;
+    private float _healthBarUpgradeDuration = .8f;
     
     
     private float _lightPower = 1f;
@@ -71,6 +74,7 @@ public class LampPresentation : MonoBehaviour, IInitializable
         _healthBarTransform.localScale = Vector3.one;
         
         // arrange before the intro
+        _isHealthBarUpgrading = false;
         UpdateHealthBar(0f, 0);
         _lampLight.intensity = 0;
         _lampMaterial.SetFloat("_EnableAnimation", 0);
@@ -92,6 +96,25 @@ public class LampPresentation : MonoBehaviour, IInitializable
         Vector3 scale = Vector3.one;
         scale.x = normalizedHealth;
         _healthBarTransform.localScale = scale;
+    }
+    
+    public void UpgradeHealthBar()
+    {
+        _isHealthBarUpgrading = true;
+        _healthBarUpgradeLocalTime = 0;
+    }
+    
+    private void PerformHealthBarUpgrade()
+    {
+        float phase = _healthBarUpgradeLocalTime / _healthBarUpgradeDuration;
+        if (phase > 1)
+        {
+            _isHealthBarUpgrading = false;
+            _healthBarMaterial.SetFloat("_HealthUpgrade", 0);
+            return;
+        }
+        _healthBarMaterial.SetFloat("_HealthUpgrade", Mathf.Sin(phase * Mathf.PI));
+        _healthBarUpgradeLocalTime += Time.deltaTime;
     }
 
     private void ResetLightNeutralState()
@@ -262,6 +285,10 @@ public class LampPresentation : MonoBehaviour, IInitializable
         if (_isDeath)
         {
             PerformDeath();
+        }
+        if (_isHealthBarUpgrading)
+        {
+            PerformHealthBarUpgrade();
         }
     }
 }

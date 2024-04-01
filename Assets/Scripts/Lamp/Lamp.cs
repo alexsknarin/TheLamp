@@ -29,8 +29,9 @@ public class Lamp : MonoBehaviour, IInitializable
         _lampCollisionHandler.OnExitLampCollisionEnemy += EnemyExitCollisionHandle;
         _lampStickZoneCollisionHandler.OnCollidedWithStickyEnemy += StickyEnemyEnterCollisionHandle;
         _lampAttackExitZoneCollisionHandler.OnExitAttackExitZone += AssessDamage;
-        _lampStatsManager.OnHealthChange += HandleUpgradeHealth;
+        _lampStatsManager.OnHealthChange += HandleUpdateHealth;
         _lampStatsManager.OnCooldownChange += HandleUpgradeCooldown;
+        _lampStatsManager.OnHealthUpgraded += HandleUpgradeHealth;
     }
     
     private void OnDisable()
@@ -39,8 +40,9 @@ public class Lamp : MonoBehaviour, IInitializable
         _lampCollisionHandler.OnExitLampCollisionEnemy -= EnemyExitCollisionHandle;
         _lampStickZoneCollisionHandler.OnCollidedWithStickyEnemy -= StickyEnemyEnterCollisionHandle;
         _lampAttackExitZoneCollisionHandler.OnExitAttackExitZone -= AssessDamage;
-        _lampStatsManager.OnHealthChange -= HandleUpgradeHealth;
+        _lampStatsManager.OnHealthChange -= HandleUpdateHealth;
         _lampStatsManager.OnCooldownChange -= HandleUpgradeCooldown;
+        _lampStatsManager.OnHealthUpgraded -= HandleUpgradeHealth;
     }
 
     public void Initialize()
@@ -133,10 +135,17 @@ public class Lamp : MonoBehaviour, IInitializable
         }
     }
     
-    private void HandleUpgradeHealth()
+    private void HandleUpdateHealth()
     {
         _lampPresentation.UpdateHealthBar(_lampStatsManager.NormalizedHealth, _lampStatsManager.CurrentHealth);
     }
+    
+    private void HandleUpgradeHealth()
+    {
+        _lampPresentation.UpdateHealthBar(_lampStatsManager.NormalizedHealth, _lampStatsManager.CurrentHealth);
+        _lampPresentation.UpgradeHealthBar();
+    }
+        
     
     private void HandleUpgradeCooldown()
     {
