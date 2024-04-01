@@ -15,6 +15,8 @@ public class UiManager : MonoBehaviour, IInitializable
     [SerializeField] private LampStatsManager _lampStatsManager;
     [SerializeField] private GameObject _upgradeButtonsPanel;
     [SerializeField] private UiUpgradePoints _uiUpgradePoints;
+    [SerializeField] private GameObject _upgradeHintsPanel;
+    private bool _isUpgradeHintsPanelShown = false;
     [Header("Overlay Images")]
     [SerializeField] private BrokenGlassEffect _brokenGlassEffect;
     [SerializeField] private Image _fadeImage;
@@ -59,6 +61,7 @@ public class UiManager : MonoBehaviour, IInitializable
         _waveText.DisableText();
         
         _upgradeButtonsPanel.SetActive(false);
+        _isUpgradeHintsPanelShown = false;
         
         _gameOverPanel.SetActive(false);
         _gameOverButtonsGroup.SetActive(false);
@@ -138,6 +141,16 @@ public class UiManager : MonoBehaviour, IInitializable
         {
             _upgradeButtonsPanel.SetActive(true); // Add Animation
             _uiUpgradePoints.ShowUpgradePoints(_lampStatsManager.UpgradePoints);
+            
+            if (!_isUpgradeHintsPanelShown)
+            {
+                _upgradeHintsPanel.SetActive(true);
+                _isUpgradeHintsPanelShown = true;
+            }
+            else
+            {
+                _upgradeHintsPanel.SetActive(false);
+            }
         }
     }
     
