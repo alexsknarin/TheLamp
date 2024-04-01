@@ -117,7 +117,7 @@ public class Lamp : MonoBehaviour, IInitializable
             {
                 _isAssessingDamage = false;
                 _lampStatsManager.DecreaseCurrentHealth(1); // Difference based on enemy type
-                _lampPresentation.UpdateHealthBar(_lampStatsManager.NormalizedHealth);
+                _lampPresentation.UpdateHealthBar(_lampStatsManager.NormalizedHealth, _lampStatsManager.CurrentHealth);
                 if (_lampStatsManager.CurrentHealth <= 0)
                 {
                     _lampAttackModel.HandleLampDeath();
@@ -135,7 +135,7 @@ public class Lamp : MonoBehaviour, IInitializable
     
     private void HandleUpgradeHealth()
     {
-        _lampPresentation.UpdateHealthBar(_lampStatsManager.NormalizedHealth);
+        _lampPresentation.UpdateHealthBar(_lampStatsManager.NormalizedHealth, _lampStatsManager.CurrentHealth);
     }
     
     private void HandleUpgradeCooldown()

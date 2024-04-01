@@ -71,17 +71,26 @@ public class LampPresentation : MonoBehaviour, IInitializable
         _healthBarTransform.localScale = Vector3.one;
         
         // arrange before the intro
-        UpdateHealthBar(0f);
+        UpdateHealthBar(0f, 0);
         _lampLight.intensity = 0;
         _lampMaterial.SetFloat("_EnableAnimation", 0);
         _lampMaterial.SetFloat("_attackPower", 0);
     }
     
-    public void UpdateHealthBar(float health)
+    public void UpdateHealthBar(float normalizedHealth, int actualHealth)
     {
-        _healthBarMaterial.SetFloat("_Health", health);
+        _healthBarMaterial.SetFloat("_Health", normalizedHealth);
+        if (actualHealth == 1)
+        {
+            _healthBarMaterial.SetInt("_isLastHealth", 1);    
+        }
+        else
+        {
+            _healthBarMaterial.SetInt("_isLastHealth", 0);
+        }
+        
         Vector3 scale = Vector3.one;
-        scale.x = health;
+        scale.x = normalizedHealth;
         _healthBarTransform.localScale = scale;
     }
 
@@ -169,7 +178,7 @@ public class LampPresentation : MonoBehaviour, IInitializable
             _lampMaterial.SetFloat("_EnableAnimation", 1);
             _lampMaterial.SetFloat("_attackPower", 1);
             _lampLight.intensity = _lightNeutralIntensity;
-            UpdateHealthBar(_initialHealth);
+            UpdateHealthBar(_initialHealth, 2);
             return;
         }
         float phaseAnimated = _introAnimationCurve.Evaluate(phase);
@@ -178,7 +187,7 @@ public class LampPresentation : MonoBehaviour, IInitializable
         float lightIntensity = Mathf.Lerp(0, _lightNeutralIntensity, phaseAnimated);
         float health = Mathf.Lerp(0, _initialHealth, phaseAnimated);
         
-        UpdateHealthBar(health);
+        UpdateHealthBar(health, 2);
         _lampMaterial.SetFloat("_EnableAnimation", enablePhase);
         _lampMaterial.SetFloat("_attackPower", attackPowerPhase);
         _lampLight.intensity = lightIntensity;
@@ -201,7 +210,7 @@ public class LampPresentation : MonoBehaviour, IInitializable
             _lampMaterial.SetFloat("_EnableAnimation", 0);
             _lampMaterial.SetFloat("_attackPower", 0);
             _lampLight.intensity = 0;
-            UpdateHealthBar(0);
+            UpdateHealthBar(0, 0);
             return;
         }
         
