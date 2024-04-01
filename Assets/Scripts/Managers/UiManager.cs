@@ -39,13 +39,13 @@ public class UiManager : MonoBehaviour, IInitializable
     private void OnEnable()
     {
         Lamp.OnLampDamaged += HandleLampDamage;
-        Lamp.OnLampDead += HandleLampDamage;
+        Lamp.OnLampDead += HandleLampDeath;
     }
     
     private void OnDisable()
     {
         Lamp.OnLampDamaged -= HandleLampDamage;
-        Lamp.OnLampDead -= HandleLampDamage;
+        Lamp.OnLampDead -= HandleLampDeath;
     }
     
     
@@ -146,7 +146,12 @@ public class UiManager : MonoBehaviour, IInitializable
 
     private void HandleLampDamage(EnemyBase enemy)
     {
-        _brokenGlassEffect.Play();
+        _brokenGlassEffect.Play(BrokenGlassEventTypes.Damage);
+    }
+    
+    private void HandleLampDeath(EnemyBase enemy)
+    {
+        _brokenGlassEffect.Play(BrokenGlassEventTypes.Death);
     }
 
     // Update is called once per frame

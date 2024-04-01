@@ -13,10 +13,7 @@ public class Lamp : MonoBehaviour, IInitializable
     [SerializeField] private LampAttackExitZoneCollisionHandler _lampAttackExitZoneCollisionHandler;    
     [SerializeField] private int _attackBlokerCount;
     [Header("Lamp Stats")]
-    [SerializeField] private int _maxHealth;
-    [SerializeField] private int _currentHealth;
-    [SerializeField] private float _initialColldownTime;
-    [SerializeField] private float _currentColldownTime;
+    [SerializeField] private LampStatsManager _lampStatsManager;
     
     private List<EnemyBase> _stickyEnemies;
     private bool _isAssessingDamage = false;
@@ -44,12 +41,11 @@ public class Lamp : MonoBehaviour, IInitializable
 
     public void Initialize()
     {
-        _currentColldownTime = _initialColldownTime;
+        _lampStatsManager.Initialize();
         _lampAttackModel.Initialize();
-        _lampAttackModel.UpdateCooldownTime(_currentColldownTime);
+        _lampAttackModel.UpdateCooldownTime(_lampStatsManager.CurrentColldownTime);
         _lampMovement.Initialize();
         _lampPresentation.Initialize();
-        _currentHealth = _maxHealth;
         if (_stickyEnemies == null)
         {
             _stickyEnemies = new List<EnemyBase>();
@@ -116,9 +112,9 @@ public class Lamp : MonoBehaviour, IInitializable
             else
             {
                 _isAssessingDamage = false;
-                _currentHealth--;
-                _lampPresentation.UpdateHealthBar((float)_currentHealth / _maxHealth);
-                if (_currentHealth <= 0)
+                _lampStatsManager.UpdateCurrentHealth(-1);
+                _lampPresentation.UpdateHealthBar(_lampStatsManager.NormalizedHealth);
+                if (_lampStatsManager.CurrentHealth <= 0)
                 {
                     _lampAttackModel.HandleLampDeath();
                     OnLampDead?.Invoke(enemy);

@@ -8,11 +8,22 @@ public class BrokenGlassEffect : MonoBehaviour
 {
     [SerializeField] private Image _brokenGlassImage;
     private bool _isActive = false;
-    private float _duration = 0.25f;
+    private readonly float _damageDuration = 0.25f;
+    private readonly float _deathDuration = 0.75f;
+    private float _currentDuration;
     private float _localTime;
     
-    public void Play()
+    public void Play(BrokenGlassEventTypes eventType)
     {
+        switch (eventType)
+        {
+            case BrokenGlassEventTypes.Damage:
+                _currentDuration = _damageDuration;
+                break;
+            case BrokenGlassEventTypes.Death:
+                _currentDuration = _deathDuration;
+                break;
+        }
         _isActive = true;
         _localTime = 0;
     }
@@ -21,7 +32,7 @@ public class BrokenGlassEffect : MonoBehaviour
     {
         if (_isActive)
         {
-            float phase = _localTime / _duration;
+            float phase = _localTime / _currentDuration;
             if(phase > 1)
             {
                 _isActive = false;
