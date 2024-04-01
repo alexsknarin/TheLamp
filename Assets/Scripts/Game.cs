@@ -9,9 +9,11 @@ public class Game : MonoBehaviour
     [SerializeField] private UiManager _uiManager;
     [SerializeField] private PlayerInputHandler _playerInputHandler;
     [SerializeField] private UGSSetup _ugsSetup;
+    [SerializeField] private ScoresManager _scoresManager;
     [SerializeField] private GameStates _currentGameState;
     [SerializeField] private float _introDuration;
     [SerializeField] private float _deathDuration;
+    
     
     // State paremeters  
     private bool _isLampDead = false;
@@ -48,18 +50,19 @@ public class Game : MonoBehaviour
         _uiManager.Initialize();
         _playerInputHandler.Initialize();
         _googleSheetsDataReader.Initialize();
+        _scoresManager.Initialize();
         _lamp.Initialize();
     }
 
     public void RestartGame()
     {
-        Debug.Log("Restarting Game");
         _isLampDead = false;
         _currentGameState = GameStates.Loading;
         _enemyManager.Restart();
         _uiManager.Initialize();
         _playerInputHandler.Initialize();
         _googleSheetsDataReader.Initialize();
+        _scoresManager.Initialize();
         _lamp.Initialize();
     }
     

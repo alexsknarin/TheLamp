@@ -1,0 +1,62 @@
+using System;
+using UnityEngine;
+
+public class ScoresManager : MonoBehaviour, IInitializable
+{
+    [Header("Score per enemy prices")] 
+    [SerializeField] private int _flyScorePrice;
+    [SerializeField] private int _fireflyScorePrice;
+    [SerializeField] private int _mothScorePrice;
+    [SerializeField] private int _ladybugScorePrice;
+    [SerializeField] private int _spiderScorePrice;
+    [SerializeField] private int _waspsScorePrice;
+    [SerializeField] private int _currentScore;
+    public int CurretScore => _currentScore;
+    
+    public static event Action<int> OnScoreChange;
+
+    private void OnEnable()
+    {
+         EnemyBase.OnEnemyDeath += CollectScore;
+         EnemyManager.OnBossDeath += CollectScore;
+    }
+    
+    private void OnDisable()
+    {
+        EnemyBase.OnEnemyDeath -= CollectScore;
+        EnemyManager.OnBossDeath += CollectScore;
+    }
+
+
+    public void Initialize()
+    {
+        _currentScore = 0;
+        // Later make it read from file
+    }
+    
+    private void CollectScore(EnemyBase enemy)
+    {
+        switch (enemy.EnemyType)
+        {
+            case  EnemyTypes.Fly:
+                _currentScore += _flyScorePrice;
+                break;
+            case EnemyTypes.Firefly:
+                _currentScore += _fireflyScorePrice;
+                break;
+            case EnemyTypes.Moth:
+                _currentScore += _mothScorePrice;
+                break;
+            case EnemyTypes.Ladybug:
+                _currentScore += _ladybugScorePrice;
+                break;
+            case EnemyTypes.Spider:
+                _currentScore += _spiderScorePrice;
+                break;
+            case EnemyTypes.Wasp:
+                _currentScore += _waspsScorePrice;
+                break;
+        }
+        OnScoreChange?.Invoke(_currentScore);
+    }
+}

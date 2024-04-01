@@ -29,7 +29,7 @@ public class LightningFlash : MonoBehaviour
         _light.enabled = false;
     }
 
-    private void Play()
+    private void Play(EnemyBase enemy)
     {
         _light.enabled = true;
         _light.intensity = 0;

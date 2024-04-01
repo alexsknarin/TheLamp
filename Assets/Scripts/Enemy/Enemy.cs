@@ -17,7 +17,6 @@ public class Enemy : EnemyBase
         set => _objectPool = value;
     }
 
-    public static event Action<Enemy> OnEnemyDeath;
     public static event Action<Enemy> OnEnemyDeactivated;
     public static event Action<Enemy> OnEnemyDamaged;
 
@@ -184,7 +183,7 @@ public class Enemy : EnemyBase
             ReceivedLampAttack = true;
             _currentHealth = 0; 
             _enemyMovement.TriggerDeath();
-            OnEnemyDeath?.Invoke(this);
+            OnEnemyDeathInvoke(this);
             _enemyPresentation.DeathFlash();
         }    
     }

@@ -29,6 +29,8 @@ public class Lamp : MonoBehaviour, IInitializable
         _lampCollisionHandler.OnExitLampCollisionEnemy += EnemyExitCollisionHandle;
         _lampStickZoneCollisionHandler.OnCollidedWithStickyEnemy += StickyEnemyEnterCollisionHandle;
         _lampAttackExitZoneCollisionHandler.OnExitAttackExitZone += AssessDamage;
+        _lampStatsManager.OnHealthChange += HandleUpgradeHealth;
+        _lampStatsManager.OnCooldownChange += HandleUpgradeCooldown;
     }
     
     private void OnDisable()
@@ -37,6 +39,8 @@ public class Lamp : MonoBehaviour, IInitializable
         _lampCollisionHandler.OnExitLampCollisionEnemy -= EnemyExitCollisionHandle;
         _lampStickZoneCollisionHandler.OnCollidedWithStickyEnemy -= StickyEnemyEnterCollisionHandle;
         _lampAttackExitZoneCollisionHandler.OnExitAttackExitZone -= AssessDamage;
+        _lampStatsManager.OnHealthChange -= HandleUpgradeHealth;
+        _lampStatsManager.OnCooldownChange -= HandleUpgradeCooldown;
     }
 
     public void Initialize()
@@ -100,8 +104,8 @@ public class Lamp : MonoBehaviour, IInitializable
             _isAssessingDamage = true;
         }
     }
-    
-    public void AssessDamage(EnemyBase enemy)
+
+    private void AssessDamage(EnemyBase enemy)
     {
         if (_isAssessingDamage)
         {
@@ -112,7 +116,7 @@ public class Lamp : MonoBehaviour, IInitializable
             else
             {
                 _isAssessingDamage = false;
-                _lampStatsManager.UpdateCurrentHealth(-1);
+                _lampStatsManager.DecreaseCurrentHealth(1); // Difference based on enemy type
                 _lampPresentation.UpdateHealthBar(_lampStatsManager.NormalizedHealth);
                 if (_lampStatsManager.CurrentHealth <= 0)
                 {
@@ -127,6 +131,16 @@ public class Lamp : MonoBehaviour, IInitializable
                 MoveLamp();
             }
         }
+    }
+    
+    private void HandleUpgradeHealth()
+    {
+        _lampPresentation.UpdateHealthBar(_lampStatsManager.NormalizedHealth);
+    }
+    
+    private void HandleUpgradeCooldown()
+    {
+        _lampAttackModel.UpgradeCooldownTime(_lampStatsManager.CurrentColldownTime);
     }
     
     private void MoveLamp()

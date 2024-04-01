@@ -10,10 +10,18 @@ public class PlayerInputHandler : MonoBehaviour,IInitializable
     {
         if (_isAttackAllowed)
         {
-            if (Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0))
+            if (Input.GetKeyDown(KeyCode.Space))
             {
                 OnPlayerAttack?.Invoke();
             }    
+        }
+    }
+    
+    public void HandleAttackButtonPress()
+    {
+        if (_isAttackAllowed)
+        {
+            OnPlayerAttack?.Invoke();
         }
     }
 

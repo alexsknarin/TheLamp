@@ -43,8 +43,8 @@ public class LampPresentation : MonoBehaviour, IInitializable
     private readonly float _lightMinimumIntensity = 0.1f;
     private readonly float _lampMinimumEmission = 0.01f;
     
-    private readonly float _lightMaximumIntensity = 90;
-    private readonly float _lampMaximumEmission = 30f;
+    private readonly float _lightMaximumIntensity = 130;
+    private readonly float _lampMaximumEmission = 35f;
     
     
     private void OnEnable()

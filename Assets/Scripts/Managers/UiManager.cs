@@ -11,7 +11,11 @@ public class UiManager : MonoBehaviour, IInitializable
     [SerializeField] private Transform _cameraTransform;
     [SerializeField] private AnimationCurve _cameraAnimationCurve;
     [SerializeField] private float _cameraAnimationDuration;
-    [Header("Overlay Inames")]
+    [Header("Upgrade Panel")]
+    [SerializeField] private LampStatsManager _lampStatsManager;
+    [SerializeField] private GameObject _upgradeButtonsPanel;
+    [SerializeField] private UiUpgradePoints _uiUpgradePoints;
+    [Header("Overlay Images")]
     [SerializeField] private BrokenGlassEffect _brokenGlassEffect;
     [SerializeField] private Image _fadeImage;
     [Header("Analytics")]
@@ -53,6 +57,8 @@ public class UiManager : MonoBehaviour, IInitializable
     {
         _waveText.gameObject.SetActive(true);
         _waveText.DisableText();
+        
+        _upgradeButtonsPanel.SetActive(false);
         
         _gameOverPanel.SetActive(false);
         _gameOverButtonsGroup.SetActive(false);
@@ -127,11 +133,41 @@ public class UiManager : MonoBehaviour, IInitializable
     public void StartPrepare(int wave)
     {
         _waveText.ShowWaveText("Start Wave " + wave.ToString());
+        // CHeck if upgrades are available
+        if (_lampStatsManager.UpgradePoints > 0)
+        {
+            _upgradeButtonsPanel.SetActive(true); // Add Animation
+            _uiUpgradePoints.ShowUpgradePoints(_lampStatsManager.UpgradePoints);
+        }
     }
     
     public void StartFight()
     {
         _waveText.HideWaveText();
+        _upgradeButtonsPanel.SetActive(false); // Add Animation
+    }
+    
+    public void HandleUpgradeButtonClick(int upgradeType)
+    {
+        if(upgradeType == 0)
+        {
+            // Upgrade Health
+            _lampStatsManager.UpgradeHealth();
+        }
+        else if (upgradeType == 1)
+        {
+            // Upgrade Cooldown
+            _lampStatsManager.UpgradeCooldown();
+        }
+        
+        if (_lampStatsManager.UpgradePoints == 0)
+        {
+            _upgradeButtonsPanel.SetActive(false);
+        }
+        else
+        {
+            _uiUpgradePoints.ShowUpgradePoints(_lampStatsManager.UpgradePoints);
+        }
     }
 
     public void StartGameOver()
@@ -152,6 +188,11 @@ public class UiManager : MonoBehaviour, IInitializable
     private void HandleLampDeath(EnemyBase enemy)
     {
         _brokenGlassEffect.Play(BrokenGlassEventTypes.Death);
+    }
+    
+    public void ShowUpgradeButtons()
+    {
+        _upgradeButtonsPanel.SetActive(true);
     }
 
     // Update is called once per frame

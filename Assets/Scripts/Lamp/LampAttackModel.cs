@@ -24,7 +24,7 @@ public class LampAttackModel : MonoBehaviour, IInitializable
 
     private void OnEnable()
     {
-        PlayerInputHandler.OnPlayerAttack += StartAttackState;
+        PlayerInputHandler.OnPlayerAttack += StartAttackState; // Possibly move to Lamp????
         Lamp.OnLampDamaged += HandleDamageWithCooldown;
     }
     
@@ -61,6 +61,14 @@ public class LampAttackModel : MonoBehaviour, IInitializable
     public void UpdateCooldownTime(float newCooldownTime)
     {
         _fullCooldownTime = newCooldownTime;
+        
+    }
+    
+    public void UpgradeCooldownTime(float newCooldownTime)
+    {
+        _fullCooldownTime = newCooldownTime;
+        StartCooldownState();
+        _localTime = 0;
     }
     
     public void HandleLampDeath()

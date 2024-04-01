@@ -71,8 +71,8 @@ public class EnemyManager : MonoBehaviour,IInitializable
     public static event Action<int> OnWaveEnded;
     public static event Action OnFireflyExplosion;
     public static event Action OnEnemyDamaged; 
-    public static event Action OnBossAppear;
-    public static event Action OnBossDeath;
+    public static event Action<EnemyBase> OnBossAppear;
+    public static event Action<EnemyBase> OnBossDeath;
 
     private void OnEnable()
     {
@@ -215,7 +215,7 @@ public class EnemyManager : MonoBehaviour,IInitializable
         _currentBoss.Play();
         _isBossActive = true;
         _attackLocalTime = 0;
-        OnBossAppear?.Invoke();
+        OnBossAppear?.Invoke(_currentBoss);
     }
     
     private void LampAttack(int attackPower, float currentPower, float attackDuration, float attackDistance)
@@ -271,10 +271,10 @@ public class EnemyManager : MonoBehaviour,IInitializable
 
     private void HandleBossEnd()
     {
+        OnBossDeath?.Invoke(_currentBoss);
         _isBossActive = false;
         _enemies.Remove(_currentBoss);
         _enemiesKilled++;
-        OnBossDeath?.Invoke();
     }
 
     private void Update()

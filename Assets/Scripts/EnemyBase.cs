@@ -3,6 +3,7 @@ using UnityEngine;
 
 public abstract class EnemyBase : MonoBehaviour, IInitializable
 {
+    public static event Action<EnemyBase> OnEnemyDeath;
     public virtual EnemyTypes EnemyType { get; protected set; }
     public bool IsAttacking { get; protected set; }
     public bool IsStick { get; protected set; }
@@ -24,4 +25,9 @@ public abstract class EnemyBase : MonoBehaviour, IInitializable
     public abstract void ReceiveDamage(int damage);
     public abstract void UpdateAttackAvailability();
     public abstract void ReturnToPool();
+    
+    protected virtual void OnEnemyDeathInvoke(EnemyBase enemy)
+    {
+        OnEnemyDeath?.Invoke(enemy);
+    }
 }
