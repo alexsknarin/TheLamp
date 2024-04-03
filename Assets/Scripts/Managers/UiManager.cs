@@ -1,8 +1,5 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class UiManager : MonoBehaviour, IInitializable
@@ -10,7 +7,6 @@ public class UiManager : MonoBehaviour, IInitializable
     [SerializeField] private UiText _waveText;
     [SerializeField] private Transform _cameraTransform;
     [SerializeField] private AnimationCurve _cameraAnimationCurve;
-    [SerializeField] private float _cameraAnimationDuration;
     [Header("Upgrade Panel")]
     [SerializeField] private LampStatsManager _lampStatsManager;
     [SerializeField] private GameObject _upgradeButtonsPanel;
@@ -25,7 +21,13 @@ public class UiManager : MonoBehaviour, IInitializable
     [SerializeField] private GameObject _analyticsConsentEnableButton;
     [SerializeField] private GameObject _analyticsConsentDisableButton;
     [SerializeField] private UGSSetup _ugsSetup;
+    [Header("Animation:")]
+    [Header("Intro")]
+    [SerializeField] private UiIntroAnimation _uiIntroAnimation;
+    [SerializeField] private float _introDuration;
     [Header("Game Over")]
+    [SerializeField] private UiGameOverAnimation _uiGameOverAnimation;
+    [SerializeField] private float _gameOverDuration;
     [SerializeField] private GameObject _gameOverPanel;
     [SerializeField] private UiText _gameOverText;
     [SerializeField] private GameObject _gameOverButtonsGroup;
@@ -46,12 +48,14 @@ public class UiManager : MonoBehaviour, IInitializable
     {
         Lamp.OnLampDamaged += HandleLampDamage;
         Lamp.OnLampDead += HandleLampDeath;
+        _uiIntroAnimation.OnOnFinished += OnIntroFinishedHandler;
     }
     
     private void OnDisable()
     {
         Lamp.OnLampDamaged -= HandleLampDamage;
         Lamp.OnLampDead -= HandleLampDeath;
+        _uiIntroAnimation.OnOnFinished -= OnIntroFinishedHandler;
     }
     
     
@@ -93,7 +97,7 @@ public class UiManager : MonoBehaviour, IInitializable
     
     public void SetIntroDuration(float duration)
     {
-        _cameraAnimationDuration = duration;
+        _introDuration = duration;
     }
     
     public void AllowDataCollection()
@@ -128,9 +132,12 @@ public class UiManager : MonoBehaviour, IInitializable
 
     public void PlayIntro()
     {
-        _localTime = 0;
-        _isIntroPlaying = true;
-        
+        _uiIntroAnimation.Play(_introDuration);
+    }
+
+    private void OnIntroFinishedHandler()
+    {
+        OnIntroFinished?.Invoke();
     }
     
     public void StartPrepare(int wave)
@@ -185,12 +192,9 @@ public class UiManager : MonoBehaviour, IInitializable
 
     public void StartGameOver()
     {
-        _isGameOverPlaying = true;
-        _localTime = 0;
         _gameOverPanel.SetActive(true);
         _gameOverText.ShowWaveText("Game Over");
-        _fadeImage.color = _fadeColor2;
-        _fadeImage.gameObject.SetActive(true);
+        _uiGameOverAnimation.Play(_gameOverDuration);
     }
 
     private void HandleLampDamage(EnemyBase enemy)
@@ -206,42 +210,5 @@ public class UiManager : MonoBehaviour, IInitializable
     public void ShowUpgradeButtons()
     {
         _upgradeButtonsPanel.SetActive(true);
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        if (_isIntroPlaying)
-        {
-            float phase = _localTime / _cameraAnimationDuration;
-            Vector3 cameraPosition = _cameraTransform.position;
-            if (phase > 1)
-            {
-                _isIntroPlaying = false;
-                _localTime = 0;
-                _fadeImage.color = _fadeColor1;
-                cameraPosition.z = _cameraEndZPosition;
-                _cameraTransform.position = cameraPosition;
-                _fadeImage.gameObject.SetActive(false);
-                OnIntroFinished?.Invoke();
-            }
-            _fadeImage.color = Color.Lerp(_fadeColor1, _fadeColor2, phase);
-            cameraPosition.z = Mathf.Lerp(_cameraStartZPosition, _cameraEndZPosition, _cameraAnimationCurve.Evaluate(phase));
-            _cameraTransform.position = cameraPosition;
-            
-            _localTime += Time.deltaTime;
-        }
-
-        if (_isGameOverPlaying)
-        {
-            float phase = _localTime / 5.5f;
-            if (phase > 1)
-            {
-                _isGameOverPlaying = false;
-                _gameOverButtonsGroup.SetActive(true);
-            }
-            _fadeImage.color = Color.Lerp(_fadeColor2, _fadeColor1, phase);
-            _localTime += Time.deltaTime;
-        }
     }
 }

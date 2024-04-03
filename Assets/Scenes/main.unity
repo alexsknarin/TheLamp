@@ -4328,6 +4328,8 @@ GameObject:
   - component: {fileID: 1291610352}
   - component: {fileID: 1291610351}
   - component: {fileID: 1291610350}
+  - component: {fileID: 1291610355}
+  - component: {fileID: 1291610356}
   - component: {fileID: 1291610354}
   m_Layer: 5
   m_Name: MainUi_canvas
@@ -4468,7 +4470,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  _cameraAnimationDuration: 4
   _lampStatsManager: {fileID: 1934066249}
   _upgradeButtonsPanel: {fileID: 1256375426}
   _uiUpgradePoints: {fileID: 896500833}
@@ -4479,9 +4480,65 @@ MonoBehaviour:
   _analyticsConsentEnableButton: {fileID: 1959847705}
   _analyticsConsentDisableButton: {fileID: 229163331}
   _ugsSetup: {fileID: 1595482321}
+  _uiIntroAnimation: {fileID: 1291610355}
+  _introDuration: 4
+  _uiGameOverAnimation: {fileID: 1291610356}
+  _gameOverDuration: 5.5
   _gameOverPanel: {fileID: 1889387872}
   _gameOverText: {fileID: 1969879652}
   _gameOverButtonsGroup: {fileID: 610558093}
+--- !u!114 &1291610355
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1291610349}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0fa41487c8fa28c41b6bca1df7393d2d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _fadeImage: {fileID: 1944166817}
+  _cameraTransform: {fileID: 330585546}
+  _cameraAnimationCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 1.3750154
+      outSlope: 1.3750154
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.073141485
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+--- !u!114 &1291610356
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1291610349}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 57d4d9239c2b2be4591139bd7b506749, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _gameOverButtonsGroup: {fileID: 610558093}
+  _fadeImage: {fileID: 1944166817}
 --- !u!1 &1333464425
 GameObject:
   m_ObjectHideFlags: 0
