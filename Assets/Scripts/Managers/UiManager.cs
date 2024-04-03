@@ -12,7 +12,6 @@ public class UiManager : MonoBehaviour, IInitializable
     [SerializeField] private GameObject _upgradeButtonsPanel;
     [SerializeField] private UiUpgradePoints _uiUpgradePoints;
     [SerializeField] private GameObject _upgradeHintsPanel;
-    private bool _isUpgradeHintsPanelShown = false;
     [Header("Overlay Images")]
     [SerializeField] private BrokenGlassEffect _brokenGlassEffect;
     [SerializeField] private Image _fadeImage;
@@ -25,6 +24,10 @@ public class UiManager : MonoBehaviour, IInitializable
     [Header("Intro")]
     [SerializeField] private UiIntroAnimation _uiIntroAnimation;
     [SerializeField] private float _introDuration;
+    [Header("Prepare")]
+    [SerializeField] private UiStartPrepareAnimation _uiStartPrepareAnimation;
+    [Header("Fight")]
+    [SerializeField] private UiStartFightAnimation _uiStartFightAnimation;
     [Header("Game Over")]
     [SerializeField] private UiGameOverAnimation _uiGameOverAnimation;
     [SerializeField] private float _gameOverDuration;
@@ -63,10 +66,7 @@ public class UiManager : MonoBehaviour, IInitializable
     {
         _waveText.gameObject.SetActive(true);
         _waveText.DisableText();
-        
         _upgradeButtonsPanel.SetActive(false);
-        _isUpgradeHintsPanelShown = false;
-        
         _gameOverPanel.SetActive(false);
         _gameOverButtonsGroup.SetActive(false);
 
@@ -142,29 +142,12 @@ public class UiManager : MonoBehaviour, IInitializable
     
     public void StartPrepare(int wave)
     {
-        _waveText.ShowWaveText("Start Wave " + wave.ToString());
-        // CHeck if upgrades are available
-        if (_lampStatsManager.UpgradePoints > 0)
-        {
-            _upgradeButtonsPanel.SetActive(true); // Add Animation
-            _uiUpgradePoints.ShowUpgradePoints(_lampStatsManager.UpgradePoints);
-            
-            if (!_isUpgradeHintsPanelShown)
-            {
-                _upgradeHintsPanel.SetActive(true);
-                _isUpgradeHintsPanelShown = true;
-            }
-            else
-            {
-                _upgradeHintsPanel.SetActive(false);
-            }
-        }
+        _uiStartPrepareAnimation.Play(1f, wave, _lampStatsManager);
     }
     
     public void StartFight()
     {
-        _waveText.HideWaveText();
-        _upgradeButtonsPanel.SetActive(false); // Add Animation
+        _uiStartFightAnimation.Play(1f);
     }
     
     public void HandleUpgradeButtonClick(int upgradeType)

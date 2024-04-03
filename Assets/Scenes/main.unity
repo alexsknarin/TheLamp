@@ -4330,6 +4330,8 @@ GameObject:
   - component: {fileID: 1291610350}
   - component: {fileID: 1291610355}
   - component: {fileID: 1291610356}
+  - component: {fileID: 1291610357}
+  - component: {fileID: 1291610358}
   - component: {fileID: 1291610354}
   m_Layer: 5
   m_Name: MainUi_canvas
@@ -4482,6 +4484,8 @@ MonoBehaviour:
   _ugsSetup: {fileID: 1595482321}
   _uiIntroAnimation: {fileID: 1291610355}
   _introDuration: 4
+  _uiStartPrepareAnimation: {fileID: 1291610357}
+  _uiStartFightAnimation: {fileID: 1291610358}
   _uiGameOverAnimation: {fileID: 1291610356}
   _gameOverDuration: 5.5
   _gameOverPanel: {fileID: 1889387872}
@@ -4539,6 +4543,36 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _gameOverButtonsGroup: {fileID: 610558093}
   _fadeImage: {fileID: 1944166817}
+--- !u!114 &1291610357
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1291610349}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 33d0b0ecbf1c32547931a2670d55a4e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _waveText: {fileID: 537243426}
+  _upgradeButtonsPanel: {fileID: 1256375426}
+  _uiUpgradePoints: {fileID: 896500833}
+  _upgradeHintsPanel: {fileID: 1368674107}
+--- !u!114 &1291610358
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1291610349}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2bc1b5b02cee6594b8e900dd7061e10b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _waveText: {fileID: 537243426}
+  _upgradeButtonsPanel: {fileID: 1256375426}
 --- !u!1 &1333464425
 GameObject:
   m_ObjectHideFlags: 0
