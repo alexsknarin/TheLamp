@@ -6,6 +6,10 @@ public class UiGameOverAnimation : MonoBehaviour
 {
     [SerializeField] private GameObject _gameOverButtonsGroup;
     [SerializeField] private Image _fadeImage;
+    [SerializeField] private GameObject _gameOverPanel;
+    [SerializeField] private UiText _gameOverText;
+    
+    
     private bool _isPlaying = false;
     private float _localTime;
     private float _duration = 5.5f;
@@ -20,6 +24,9 @@ public class UiGameOverAnimation : MonoBehaviour
         _isPlaying = true;
         _fadeImage.color = _fadeColor2;
         _fadeImage.gameObject.SetActive(true);
+        
+        _gameOverPanel.SetActive(true);
+        _gameOverText.ShowWaveText("Game Over");
     }
 
     void Update()

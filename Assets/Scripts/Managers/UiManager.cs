@@ -175,8 +175,6 @@ public class UiManager : MonoBehaviour, IInitializable
 
     public void StartGameOver()
     {
-        _gameOverPanel.SetActive(true);
-        _gameOverText.ShowWaveText("Game Over");
         _uiGameOverAnimation.Play(_gameOverDuration);
     }
 
