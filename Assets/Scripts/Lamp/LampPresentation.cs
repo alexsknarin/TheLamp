@@ -7,38 +7,17 @@ public class LampPresentation : MonoBehaviour, IInitializable
     private Material _lampMaterial;
     [SerializeField] private GameObject _lampAttackZoneObject;
     private Material _lampAttackZoneMaterial;
-    [SerializeField] private float _lightDamageDuration;
     [Header("HealthBar")]
-    [SerializeField] private MeshRenderer _healthBarMeshRenderer;
-    [SerializeField] private Transform _healthBarTransform;
-    private Material _healthBarMaterial;
+    [SerializeField] private LampHealthBar _lampHealthBar;
     [Header("Intro")]
-    [SerializeField] private AnimationCurve _introAnimationCurve;
+    [SerializeField] private LampIntroAnimation _lampIntroAnimation;
     [Header("Death")]
-    [SerializeField] private AnimationCurve _deathAnimationCurve;
-    private bool _isHealthBarUpgrading = false;
-    private float _healthBarUpgradeLocalTime;
-    private float _healthBarUpgradeDuration = .8f;
-    
-    
-    private float _lightPower = 1f;
-    private float _attackDuration = 1f;
-    private float _localTimeAttack;
-    
-    private bool _isIntro = false;
-    private float _introDuration;
-    private float _localTimeIntro;
-    private float _initialHealth;
-    
-    private bool _isAttack = false;
-    private float _localTimeDamage;
-    
-    private bool _isDamage = false;
-    private bool _isBlockedAttack = false;
-
-    private float _deathStateDuration;
-    private bool _isDeath = false;
-    private float _localTimeDeath;
+    [SerializeField] private LampDeathAnimation _lampDeathAnimation;
+    [Header("Damage")]
+    [SerializeField] private LampDamageAnimation _lampDamageAnimation;
+    [SerializeField] private float _lightDamageDuration;
+    [Header("Attack")]
+    [SerializeField] private LampAttackAnimation _lampAttackAnimation;
     
     private readonly float _lightNeutralIntensity = 22;
     private readonly float _lampNeutralEmission = 1f;
@@ -69,13 +48,14 @@ public class LampPresentation : MonoBehaviour, IInitializable
         _lampMaterial = GetComponent<MeshRenderer>().sharedMaterial;
         _lampAttackZoneMaterial = _lampAttackZoneObject.GetComponent<MeshRenderer>().material;
         ResetLightNeutralState();
-        _healthBarMaterial = _healthBarMeshRenderer.material;
-        _healthBarMaterial.SetFloat("_Health", 1f);
-        _healthBarTransform.localScale = Vector3.one;
-        
+        _lampHealthBar.Initialize();
+        _lampIntroAnimation.Initialize();
+        _lampDeathAnimation.Initialize();
+        _lampDamageAnimation.Initialize();
+        _lampAttackAnimation.Initialize();
+
         // arrange before the intro
-        _isHealthBarUpgrading = false;
-        UpdateHealthBar(0f, 0);
+        _lampHealthBar.UpdateHealth(0, 0);
         _lampLight.intensity = 0;
         _lampMaterial.SetFloat("_EnableAnimation", 0);
         _lampMaterial.SetFloat("_attackPower", 0);
@@ -83,38 +63,12 @@ public class LampPresentation : MonoBehaviour, IInitializable
     
     public void UpdateHealthBar(float normalizedHealth, int actualHealth)
     {
-        _healthBarMaterial.SetFloat("_Health", normalizedHealth);
-        if (actualHealth == 1)
-        {
-            _healthBarMaterial.SetInt("_isLastHealth", 1);    
-        }
-        else
-        {
-            _healthBarMaterial.SetInt("_isLastHealth", 0);
-        }
-        
-        Vector3 scale = Vector3.one;
-        scale.x = normalizedHealth;
-        _healthBarTransform.localScale = scale;
+        _lampHealthBar.UpdateHealth(normalizedHealth, actualHealth);
     }
     
     public void UpgradeHealthBar()
     {
-        _isHealthBarUpgrading = true;
-        _healthBarUpgradeLocalTime = 0;
-    }
-    
-    private void PerformHealthBarUpgrade()
-    {
-        float phase = _healthBarUpgradeLocalTime / _healthBarUpgradeDuration;
-        if (phase > 1)
-        {
-            _isHealthBarUpgrading = false;
-            _healthBarMaterial.SetFloat("_HealthUpgrade", 0);
-            return;
-        }
-        _healthBarMaterial.SetFloat("_HealthUpgrade", Mathf.Sin(phase * Mathf.PI));
-        _healthBarUpgradeLocalTime += Time.deltaTime;
+        _lampHealthBar.PlayUpgrade();
     }
 
     private void ResetLightNeutralState()
@@ -137,44 +91,16 @@ public class LampPresentation : MonoBehaviour, IInitializable
    
     private void StartAttackState(int attackPower, float currentPower, float attackDuration, float attackDistance)
     {
-        _lampMaterial.SetFloat("_attackPower", 0f);
-        _lightPower = Mathf.Pow(currentPower, 2f);
-        _attackDuration = attackDuration;
-        _localTimeAttack = 0;
-        _isAttack = true;
-        _lampAttackZoneObject.transform.localScale = Vector3.one * (attackDistance * 2);
+        _lampAttackAnimation.Play(attackDuration, false, _lightMinimumIntensity, 
+            _lampMinimumEmission, currentPower, _lightMaximumIntensity, 
+            _lampMaximumEmission, attackDistance);
     }
     
     private void StartBlockedAttackState(int attackPower, float currentPower, float attackDuration, float attackDistance)
     {
-        _isBlockedAttack = true;
-        _lampMaterial.SetFloat("_attackPower", 0f);
-        _lightPower = Mathf.Pow(currentPower, 2f);
-        _attackDuration = attackDuration;
-        _localTimeAttack = 0;
-        _isAttack = true;
-        _lampAttackZoneObject.transform.localScale = Vector3.one * (attackDistance * 2);
-    }
-    
-    private void PerformAttack()
-    {
-        float phase = _localTimeAttack / _attackDuration;
-        if (phase > 1)
-        {
-            _isAttack = false;
-            _lampLight.intensity = _lightMinimumIntensity;
-            _lampMaterial.SetFloat("_EmissionLevel", _lampMinimumEmission);
-            _lampAttackZoneMaterial.SetFloat("_Alpha", 0);
-            _isBlockedAttack = false;
-            return;
-        }
-        if(!_isBlockedAttack)
-        {
-            _lampLight.intensity = Mathf.Lerp(_lightMaximumIntensity * _lightPower, _lightMinimumIntensity, phase);
-            _lampMaterial.SetFloat("_EmissionLevel", Mathf.Lerp(_lampMaximumEmission * _lightPower, _lampMinimumEmission, phase));
-            _lampAttackZoneMaterial.SetFloat("_Alpha", Mathf.Lerp(_lightPower, 0, phase));
-        }
-        _localTimeAttack += Time.deltaTime;
+        _lampAttackAnimation.Play(attackDuration, true, _lightMinimumIntensity, 
+            _lampMinimumEmission, currentPower, _lightMaximumIntensity, 
+            _lampMaximumEmission, attackDistance);
     }
     
     private void PerformCooldownState(float currentPower)
@@ -186,109 +112,16 @@ public class LampPresentation : MonoBehaviour, IInitializable
     
     public void StartIntroState(float introDuration, float initialHealth)
     {
-        _isIntro = true;
-        _introDuration = introDuration;
-        _initialHealth = initialHealth;
-        _localTimeIntro = 0;
-    }
-
-    private void PerformIntro()
-    {
-        float phase = _localTimeIntro / _introDuration;
-        if (phase > 1)
-        {
-            _isIntro = false;
-            _lampMaterial.SetFloat("_EnableAnimation", 1);
-            _lampMaterial.SetFloat("_attackPower", 1);
-            _lampLight.intensity = _lightNeutralIntensity;
-            UpdateHealthBar(_initialHealth, 2);
-            return;
-        }
-        float phaseAnimated = _introAnimationCurve.Evaluate(phase);
-        float enablePhase = Mathf.Clamp(phaseAnimated * 1.25f, 0f, 1f);
-        float attackPowerPhase = Mathf.Clamp((phaseAnimated - 0.75f) * 4, 0f, 1f);
-        float lightIntensity = Mathf.Lerp(0, _lightNeutralIntensity, phaseAnimated);
-        float health = Mathf.Lerp(0, _initialHealth, phaseAnimated);
-        
-        UpdateHealthBar(health, 2);
-        _lampMaterial.SetFloat("_EnableAnimation", enablePhase);
-        _lampMaterial.SetFloat("_attackPower", attackPowerPhase);
-        _lampLight.intensity = lightIntensity;
-        _localTimeIntro += Time.deltaTime;
+        _lampIntroAnimation.Play(introDuration, initialHealth, _lightNeutralIntensity);
     }
     
     public void StartDeathState(float deathStateDuration)
     {
-        _deathStateDuration = deathStateDuration;
-        _localTimeDeath = 0;
-        _isDeath = true;
+        _lampDeathAnimation.Play(deathStateDuration, _lightNeutralIntensity);
     }
-
-    private void PerformDeath()
-    {
-        float phase = _localTimeDeath / _deathStateDuration;
-        if (phase > 1)
-        {
-            _isDeath = false;
-            _lampMaterial.SetFloat("_EnableAnimation", 0);
-            _lampMaterial.SetFloat("_attackPower", 0);
-            _lampLight.intensity = 0;
-            UpdateHealthBar(0, 0);
-            return;
-        }
-        
-        float phaseAnimated = _deathAnimationCurve.Evaluate(phase);
-        
-        _lampMaterial.SetFloat("_EnableAnimation", phaseAnimated);
-        _lampMaterial.SetFloat("_attackPower", 0);
-        
-        _lampLight.intensity = Mathf.Lerp(_lightNeutralIntensity, 0f, 1-phaseAnimated);
-        
-        _localTimeDeath += Time.deltaTime;
-    }
-    
     
     public void StartDamageState()
     {
-        _lampMaterial.SetFloat("_Damage", 1f);
-        _isDamage = true;
-        _localTimeDamage = 0;
-    }
-    
-    private void PerformDamage()
-    {
-        float phase = _localTimeDamage / _lightDamageDuration;
-        if (phase > 1)
-        {
-            _isDamage = false;
-            _lampMaterial.SetFloat("_Damage", 0f);
-            return;
-        }
-        _lampMaterial.SetFloat("_Damage", Mathf.Lerp(1f, 0f, phase));
-        _localTimeDamage += Time.deltaTime;
-    }
-    
-    private void Update()
-    {
-        if (_isIntro)
-        {
-            PerformIntro();
-        }
-        if (_isAttack)
-        {
-            PerformAttack();
-        }
-        if (_isDamage)
-        {
-            PerformDamage();            
-        }
-        if (_isDeath)
-        {
-            PerformDeath();
-        }
-        if (_isHealthBarUpgrading)
-        {
-            PerformHealthBarUpgrade();
-        }
+        _lampDamageAnimation.Play(_lightDamageDuration);
     }
 }

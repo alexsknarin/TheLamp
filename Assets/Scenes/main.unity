@@ -3949,6 +3949,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1172575727}
+  - component: {fileID: 1172575728}
   m_Layer: 0
   m_Name: HealthIndicator
   m_TagString: Untagged
@@ -3972,6 +3973,19 @@ Transform:
   - {fileID: 1784175782}
   m_Father: {fileID: 1934066241}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1172575728
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1172575726}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e004f8a82706bc47890f03438f9ac10, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _healthBarMeshRenderer: {fileID: 1784175783}
 --- !u!1 &1197657943
 GameObject:
   m_ObjectHideFlags: 0
@@ -4543,6 +4557,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _gameOverButtonsGroup: {fileID: 610558093}
   _fadeImage: {fileID: 1944166817}
+  _gameOverPanel: {fileID: 1889387872}
+  _gameOverText: {fileID: 1969879652}
 --- !u!114 &1291610357
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5251,7 +5267,7 @@ GameObject:
   - component: {fileID: 1464268263}
   - component: {fileID: 1464268262}
   m_Layer: 0
-  m_Name: AttackZoneUI
+  m_Name: AttackZonePresentation
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7012,9 +7028,13 @@ GameObject:
   - component: {fileID: 1934066247}
   - component: {fileID: 1934066249}
   - component: {fileID: 1934066246}
+  - component: {fileID: 1934066248}
   - component: {fileID: 1934066245}
   - component: {fileID: 1934066244}
-  - component: {fileID: 1934066248}
+  - component: {fileID: 1934066250}
+  - component: {fileID: 1934066251}
+  - component: {fileID: 1934066252}
+  - component: {fileID: 1934066253}
   m_Layer: 0
   m_Name: LampObject
   m_TagString: Lamp
@@ -7174,57 +7194,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _lampLight: {fileID: 724839852}
   _lampAttackZoneObject: {fileID: 1464268261}
+  _lampHealthBar: {fileID: 1172575728}
+  _lampIntroAnimation: {fileID: 1934066250}
+  _lampDeathAnimation: {fileID: 1934066251}
+  _lampDamageAnimation: {fileID: 1934066252}
   _lightDamageDuration: 0.2
-  _healthBarMeshRenderer: {fileID: 1784175783}
-  _healthBarTransform: {fileID: 1172575727}
-  _introAnimationCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0.10216005
-      value: 0
-      inSlope: 0.4091157
-      outSlope: 0.4091157
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0.056645773
-    - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: 1.1137842
-      outSlope: 1.1137842
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  _deathAnimationCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: -1.8298049
-      outSlope: -1.8298049
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0.06720994
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: 0.1119736
-      outSlope: 0.1119736
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.07413565
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
+  _lampAttackAnimation: {fileID: 1934066253}
 --- !u!114 &1934066245
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7342,6 +7317,108 @@ MonoBehaviour:
   _currentUpgradePointThreshold: 5
   _upgradeThesholdInitialIncrement: 5
   _upgradeThesholdIncrement: 0
+--- !u!114 &1934066250
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1934066237}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 16d2c42f943389844a3aa3f68dcccff8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _lampLight: {fileID: 724839852}
+  _animCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0.10216005
+      value: 0
+      inSlope: 0.4091157
+      outSlope: 0.4091157
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.056645773
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 1.1137842
+      outSlope: 1.1137842
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _lampHealthBar: {fileID: 1172575728}
+--- !u!114 &1934066251
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1934066237}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 74fd761792fcec04ebd493bea81ce71a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _lampLight: {fileID: 724839852}
+  _animCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: -1.8298049
+      outSlope: -1.8298049
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.06720994
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0.1119736
+      outSlope: 0.1119736
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.07413565
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _lampHealthBar: {fileID: 1172575728}
+--- !u!114 &1934066252
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1934066237}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa3e924e76f4a0146b2d249e57d4355e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1934066253
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1934066237}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9942e81c6bf4764e842d74be91e1893, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _lampLight: {fileID: 724839852}
+  _lampAttackZoneObject: {fileID: 1464268261}
 --- !u!1 &1944166815
 GameObject:
   m_ObjectHideFlags: 0

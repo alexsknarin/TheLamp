@@ -43,6 +43,7 @@ public class UiManager : MonoBehaviour, IInitializable
     
     private Color _fadeColor1 = new Color(0, 0, 0, 1);
     private Color _fadeColor2 = new Color(0, 0, 0, 0);
+    
     private float _cameraStartZPosition = -6.5f;
     private float _cameraEndZPosition = -5.88f;
     
