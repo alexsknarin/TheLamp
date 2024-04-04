@@ -12,6 +12,8 @@ public class LampStatsManager : MonoBehaviour, IInitializable
     [SerializeField] private int _currentUpgradePointThreshold = 5;
     [SerializeField] private int _upgradeThesholdInitialIncrement = 5;
     [SerializeField] private int _upgradeThesholdIncrement;
+    [SerializeField] private int _level;
+    [SerializeField] private SaveDataContainer _saveDataContainer;
     public int MaxHealth => _maxHealth;
     public int CurrentHealth => _currentHealth;
     public float NormalizedHealth => (float)_currentHealth / _maxHealth;
@@ -36,11 +38,13 @@ public class LampStatsManager : MonoBehaviour, IInitializable
     public void Initialize()
     {
         // Here we will read data from file if there is one
+        _level = 1;
         _currentHealth = _maxHealth;
         _currentColldownTime = _initialCooldownTime;
         _upgradePoints = 0;
         _upgradeThesholdIncrement = _upgradeThesholdInitialIncrement;
         _currentUpgradePointThreshold = _upgradeThesholdInitialIncrement;
+        SaveData();
     }
     
     private void UpdateUpgradePoints(int scores)
@@ -50,6 +54,7 @@ public class LampStatsManager : MonoBehaviour, IInitializable
             _upgradePoints++;
             _currentUpgradePointThreshold += _upgradeThesholdIncrement;
             _upgradeThesholdIncrement++;
+            SaveData();
         }
     }
     
@@ -58,6 +63,7 @@ public class LampStatsManager : MonoBehaviour, IInitializable
         if (_upgradePoints > 0)
         {
             _upgradePoints--;
+            _level++;
             if (_currentHealth < _maxHealth)
             {
                 _currentHealth++;
@@ -69,6 +75,7 @@ public class LampStatsManager : MonoBehaviour, IInitializable
                 OnHealthUpgraded?.Invoke();
             }
             OnHealthChange?.Invoke();
+            SaveData();
         }
     }
     
@@ -76,8 +83,10 @@ public class LampStatsManager : MonoBehaviour, IInitializable
     {
         if (_upgradePoints > 0)
         {
+            _level++;
             _upgradePoints--;
             _currentColldownTime -= _cooldownDecrement;
+            SaveData();
             OnCooldownChange?.Invoke();
         }
     }
@@ -94,5 +103,16 @@ public class LampStatsManager : MonoBehaviour, IInitializable
             // Possibly raise MaxHealth - need testing
             _currentHealth = _maxHealth;
         }
+        _saveDataContainer.Health = _currentHealth;
+    }
+    
+    private void SaveData()
+    {
+        _saveDataContainer.Level = _level;
+        _saveDataContainer.MaxHealth = _maxHealth;
+        _saveDataContainer.Health = _currentHealth;
+        _saveDataContainer.UpgradePoints = _upgradePoints;
+        _saveDataContainer.UpgradePointsThreshold = _currentUpgradePointThreshold;
+        _saveDataContainer.CooldownTime = _currentColldownTime;
     }
 }

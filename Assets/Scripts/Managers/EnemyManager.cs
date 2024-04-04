@@ -50,6 +50,9 @@ public class EnemyManager : MonoBehaviour,IInitializable
     private List<EnemyBase> _ladybugsPatrolling;
     private EnemiesLampAttackHandler _enemiesLampAttackHandler;
     private EnemiesExplosionHandler _enemiesExplosionHandler;
+    
+    [Header("---- Save Data ------")]
+    [SerializeField] private SaveDataContainer _saveDataContainer;
 
     private bool _isWaveInitialized = false;
     private bool _isGameActive = true;
@@ -318,6 +321,7 @@ public class EnemyManager : MonoBehaviour,IInitializable
             {
                 _isWaveInitialized = false;
                 _currentWave++;
+                _saveDataContainer.Wave = _currentWave;
                 OnWaveEnded?.Invoke(_currentWave);
                 return;
             }

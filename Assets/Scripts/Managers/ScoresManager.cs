@@ -11,6 +11,7 @@ public class ScoresManager : MonoBehaviour, IInitializable
     [SerializeField] private int _spiderScorePrice;
     [SerializeField] private int _waspsScorePrice;
     [SerializeField] private int _currentScore;
+    [SerializeField] private SaveDataContainer _saveDataContainer;
     public int CurretScore => _currentScore;
     
     public static event Action<int> OnScoreChange;
@@ -57,6 +58,7 @@ public class ScoresManager : MonoBehaviour, IInitializable
                 _currentScore += _waspsScorePrice;
                 break;
         }
+        _saveDataContainer.CurrentScore = _currentScore;
         OnScoreChange?.Invoke(_currentScore);
     }
 }
