@@ -1143,7 +1143,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1291610354}
         m_TargetAssemblyTypeName: UiManager, Assembly-CSharp
-        m_MethodName: DisableDataCollection
+        m_MethodName: HandleDisableDataCollectionBtn
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3622,7 +3622,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1291610354}
         m_TargetAssemblyTypeName: UiManager, Assembly-CSharp
-        m_MethodName: RefuseDataCollection
+        m_MethodName: HandleNoDataCollectionBtn
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -4674,7 +4674,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1291610354}
         m_TargetAssemblyTypeName: UiManager, Assembly-CSharp
-        m_MethodName: AllowDataCollection
+        m_MethodName: HandleYesDataCollectionBtn
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -7662,7 +7662,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1291610354}
         m_TargetAssemblyTypeName: UiManager, Assembly-CSharp
-        m_MethodName: EnableDataCollection
+        m_MethodName: HandleEnableDataCollectionBtn
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -8171,10 +8171,10 @@ SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 1595482320}
-  - {fileID: 1818435499}
-  - {fileID: 1291610353}
   - {fileID: 1449376469}
+  - {fileID: 1818435499}
   - {fileID: 1934066241}
+  - {fileID: 1291610353}
   - {fileID: 30557020}
   - {fileID: 330585546}
   - {fileID: 410087041}

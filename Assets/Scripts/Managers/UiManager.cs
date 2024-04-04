@@ -101,7 +101,7 @@ public class UiManager : MonoBehaviour, IInitializable
         _introDuration = duration;
     }
     
-    public void AllowDataCollection()
+    public void HandleYesDataCollectionBtn()
     {
         _ugsSetup.AllowDataCollection();
         _analyticsConsentPanel.SetActive(false);
@@ -109,7 +109,7 @@ public class UiManager : MonoBehaviour, IInitializable
         _analyticsConsentDisableButton.SetActive(true);
     }
     
-    public void RefuseDataCollection()
+    public void HandleNoDataCollectionBtn()
     {
         _ugsSetup.RefuseDataCollection();
         _analyticsConsentPanel.SetActive(false);
@@ -117,14 +117,14 @@ public class UiManager : MonoBehaviour, IInitializable
         _analyticsConsentDisableButton.SetActive(false);
     }
     
-    public void EnableDataCollection()
+    public void HandleEnableDataCollectionBtn()
     {
         _ugsSetup.StartAnalyticsCollection();
         _analyticsConsentEnableButton.SetActive(false);
         _analyticsConsentDisableButton.SetActive(true);
     }
     
-    public void DisableDataCollection()
+    public void HandleDisableDataCollectionBtn()
     {
         _ugsSetup.StopAnalyticsCollection();
         _analyticsConsentEnableButton.SetActive(true);
