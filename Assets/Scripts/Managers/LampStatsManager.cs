@@ -37,13 +37,24 @@ public class LampStatsManager : MonoBehaviour, IInitializable
 
     public void Initialize()
     {
+        Debug.Log("LampStatsManager Initialize");
+        _level = _saveDataContainer.Level;
+        _currentHealth = _saveDataContainer.Health;
+        _currentColldownTime = _saveDataContainer.CooldownTime;
+        _upgradePoints = _saveDataContainer.UpgradePoints;
+        _upgradeThesholdIncrement = _saveDataContainer.UpgradeThesholdIncrement;
+        _currentUpgradePointThreshold = _saveDataContainer.UpgradePointsThreshold;
+        
+        
         // Here we will read data from file if there is one
-        _level = 1;
-        _currentHealth = _maxHealth;
-        _currentColldownTime = _initialCooldownTime;
-        _upgradePoints = 0;
-        _upgradeThesholdIncrement = _upgradeThesholdInitialIncrement;
-        _currentUpgradePointThreshold = _upgradeThesholdInitialIncrement;
+        
+        // _level = 1;
+        // _currentHealth = _maxHealth;
+        // _currentColldownTime = _initialCooldownTime;
+        // _upgradePoints = 0;
+        // _upgradeThesholdIncrement = _upgradeThesholdInitialIncrement;
+        // _currentUpgradePointThreshold = _upgradeThesholdInitialIncrement;
+        
         SaveData();
     }
     
@@ -113,6 +124,7 @@ public class LampStatsManager : MonoBehaviour, IInitializable
         _saveDataContainer.Health = _currentHealth;
         _saveDataContainer.UpgradePoints = _upgradePoints;
         _saveDataContainer.UpgradePointsThreshold = _currentUpgradePointThreshold;
+        _saveDataContainer.UpgradeThesholdIncrement = _upgradeThesholdIncrement;
         _saveDataContainer.CooldownTime = _currentColldownTime;
     }
 }

@@ -111,6 +111,9 @@ public class EnemyManager : MonoBehaviour,IInitializable
         _enemiesLampAttackHandler = new EnemiesLampAttackHandler();
         _enemiesExplosionHandler = new EnemiesExplosionHandler();
         
+        // Load Game State Data
+        _startAtWave = _saveDataContainer.Wave;
+        
         _isBossActive = false;
         // Init all bosses
         _waspBoss.Initialize();

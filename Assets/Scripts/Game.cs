@@ -13,6 +13,7 @@ public class Game : MonoBehaviour
     [SerializeField] private GameStates _currentGameState;
     [SerializeField] private float _introDuration;
     [SerializeField] private float _deathDuration;
+    [SerializeField] private SaveLoadManager _saveLoadManager;
     
     
     // State paremeters  
@@ -46,6 +47,10 @@ public class Game : MonoBehaviour
         _currentGameState = GameStates.Loading;
 
         // Init all systems
+        _saveLoadManager.Initialize();
+        // Load game state
+        _saveLoadManager.LoadGame();
+        
         _uiManager.SetIntroDuration(_introDuration);
         _uiManager.Initialize();
         _playerInputHandler.Initialize();
@@ -132,6 +137,7 @@ public class Game : MonoBehaviour
             case GameStates.Fight:
                 if (_isLampDead)
                 {
+                    _saveLoadManager.SaveGame(true);
                     _playerInputHandler.DisableAttackInput();
                     _lamp.PlayDeath(_deathDuration);
                     _enemyManager.HandleGameOver();
@@ -140,6 +146,7 @@ public class Game : MonoBehaviour
                 }
                 else
                 {
+                    _saveLoadManager.SaveGame(false);
                     _uiManager.StartPrepare(_enemyManager.CurrentWave);
                     _currentGameState = GameStates.Prepare;    
                 }

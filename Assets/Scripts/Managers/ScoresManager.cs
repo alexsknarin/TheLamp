@@ -31,8 +31,7 @@ public class ScoresManager : MonoBehaviour, IInitializable
 
     public void Initialize()
     {
-        _currentScore = 0;
-        // Later make it read from file
+        _currentScore = _saveDataContainer.CurrentScore;
     }
     
     private void CollectScore(EnemyBase enemy)
