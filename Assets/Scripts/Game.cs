@@ -7,6 +7,7 @@ public class Game : MonoBehaviour
     [SerializeField] private GoogleSheetsDataReader _googleSheetsDataReader;
     [SerializeField] private EnemyManager _enemyManager;
     [SerializeField] private UiManager _uiManager;
+    [SerializeField] private LampStatsManager _lampStatsManager;
     [SerializeField] private PlayerInputHandler _playerInputHandler;
     [SerializeField] private UGSSetup _ugsSetup;
     [SerializeField] private ScoresManager _scoresManager;
@@ -28,6 +29,8 @@ public class Game : MonoBehaviour
         PlayerInputHandler.OnPlayerAttack += HandlePlayerAttackButtonPressed;
         EnemyManager.OnWaveEnded += HandleWaveEnded;
         Lamp.OnLampDead += HandleLampDead;
+        _lampStatsManager.OnHealthChange += HandleStatsUpgrade;
+        _lampStatsManager.OnCooldownChange += HandleStatsUpgrade;
     }
 
     private void OnDisable()
@@ -38,6 +41,8 @@ public class Game : MonoBehaviour
         PlayerInputHandler.OnPlayerAttack -= HandlePlayerAttackButtonPressed;
         EnemyManager.OnWaveEnded -= HandleWaveEnded;
         Lamp.OnLampDead -= HandleLampDead;
+        _lampStatsManager.OnHealthChange -= HandleStatsUpgrade;
+        _lampStatsManager.OnCooldownChange -= HandleStatsUpgrade;
     }
     
     private void Start()
@@ -61,6 +66,7 @@ public class Game : MonoBehaviour
 
     public void RestartGame()
     {
+        _saveLoadManager.SaveGame(true);
         _isLampDead = false;
         _currentGameState = GameStates.Loading;
         _enemyManager.Restart();
@@ -99,6 +105,11 @@ public class Game : MonoBehaviour
         {
             SwitchGameState();
         }
+    }
+    
+    private void HandleStatsUpgrade()
+    {
+        _saveLoadManager.SaveGame(false);
     }
     
     private void HandleWaveEnded(int waveNumber)
