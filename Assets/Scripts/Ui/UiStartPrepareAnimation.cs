@@ -20,7 +20,7 @@ public class UiStartPrepareAnimation : MonoBehaviour
             _upgradeButtonsPanel.SetActive(true); // Add Animation
             _uiUpgradePoints.ShowUpgradePoints(lampStatsManager.UpgradePoints);
             
-            if (!_isUpgradeHintsPanelShown)
+            if (!_isUpgradeHintsPanelShown && waveNum < 3)
             {
                 _upgradeHintsPanel.SetActive(true);
                 _isUpgradeHintsPanelShown = true;
