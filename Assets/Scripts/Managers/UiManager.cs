@@ -38,15 +38,11 @@ public class UiManager : MonoBehaviour, IInitializable
     public event Action OnIntroFinished;
     
     private float _localTime;
-    private bool _isIntroPlaying = false;
     private bool _isGameOverPlaying = false;
     
     private Color _fadeColor1 = new Color(0, 0, 0, 1);
     private Color _fadeColor2 = new Color(0, 0, 0, 0);
-    
-    private float _cameraStartZPosition = -6.5f;
-    private float _cameraEndZPosition = -5.88f;
-    
+   
     // TODO: find a way to have less events
     private void OnEnable()
     {
@@ -73,7 +69,6 @@ public class UiManager : MonoBehaviour, IInitializable
 
         _fadeImage.gameObject.SetActive(true);
         _fadeImage.color = _fadeColor1;
-        _isIntroPlaying = false;
         if (PlayerPrefs.HasKey("dataConsent"))
         {
             _analyticsConsentPanel.SetActive(false);

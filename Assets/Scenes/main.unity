@@ -6709,6 +6709,7 @@ GameObject:
   - component: {fileID: 1818435506}
   - component: {fileID: 1818435507}
   - component: {fileID: 1818435508}
+  - component: {fileID: 1818435509}
   m_Layer: 0
   m_Name: Game
   m_TagString: Untagged
@@ -6765,6 +6766,7 @@ MonoBehaviour:
   _currentGameState: 0
   _introDuration: 4
   _deathDuration: 2
+  _saveLoadManager: {fileID: 1818435509}
 --- !u!114 &1818435502
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6893,6 +6895,19 @@ MonoBehaviour:
   _spiderScorePrice: 2
   _waspsScorePrice: 5
   _currentScore: 0
+  _saveDataContainer: {fileID: 11400000, guid: 377d55eb1797a24478860b1b98ae759c, type: 2}
+--- !u!114 &1818435509
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1818435498}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5b0ac36f69cec44ba9fcf4de7b48b27, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
   _saveDataContainer: {fileID: 11400000, guid: 377d55eb1797a24478860b1b98ae759c, type: 2}
 --- !u!1 &1853209500
 GameObject:

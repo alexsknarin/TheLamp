@@ -3,9 +3,11 @@
 
 public class LampStatsManager : MonoBehaviour, IInitializable
 {
-    [SerializeField] private int _maxHealth;
+    private int _maxHealth;
+    [Header("Stats displayed for debug purposes")]
+    [Header("Use Default Data asset to change values")]
     [SerializeField] private int _currentHealth;
-    [SerializeField] private float _initialCooldownTime;
+    private float _initialCooldownTime;
     [SerializeField] private float _currentColldownTime;
     [SerializeField] private float _cooldownDecrement;
     [SerializeField] private int _upgradePoints;
@@ -37,24 +39,12 @@ public class LampStatsManager : MonoBehaviour, IInitializable
 
     public void Initialize()
     {
-        Debug.Log("LampStatsManager Initialize");
         _level = _saveDataContainer.Level;
         _currentHealth = _saveDataContainer.Health;
         _currentColldownTime = _saveDataContainer.CooldownTime;
         _upgradePoints = _saveDataContainer.UpgradePoints;
         _upgradeThesholdIncrement = _saveDataContainer.UpgradeThesholdIncrement;
         _currentUpgradePointThreshold = _saveDataContainer.UpgradePointsThreshold;
-        
-        
-        // Here we will read data from file if there is one
-        
-        // _level = 1;
-        // _currentHealth = _maxHealth;
-        // _currentColldownTime = _initialCooldownTime;
-        // _upgradePoints = 0;
-        // _upgradeThesholdIncrement = _upgradeThesholdInitialIncrement;
-        // _currentUpgradePointThreshold = _upgradeThesholdInitialIncrement;
-        
         SaveData();
     }
     

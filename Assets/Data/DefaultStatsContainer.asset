@@ -9,15 +9,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cd670a999879fca48b370e5a51c11b9d, type: 3}
-  m_Name: SaveDataContainer
+  m_Script: {fileID: 11500000, guid: 02724ef954e86d246a54d6ac701bb974, type: 3}
+  m_Name: DefaultStatsContainer
   m_EditorClassIdentifier: 
-  Wave: 0
-  CurrentScore: 0
-  Level: 0
-  UpgradePoints: 0
-  UpgradePointsThreshold: 5
-  UpgradeThesholdIncrement: 5
-  MaxHealth: 8
-  Health: 8
-  CooldownTime: 3
+  _wave: 0
+  _currentScore: 0
+  _level: 0
+  _upgradePoints: 0
+  _upgradePointsThreshold: 5
+  _upgradeThesholdIncrement: 5
+  _maxHealth: 8
+  _health: 8
+  _cooldownTime: 3

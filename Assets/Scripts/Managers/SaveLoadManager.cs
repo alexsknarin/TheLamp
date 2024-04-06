@@ -4,6 +4,7 @@ using UnityEngine;
 public class SaveLoadManager : MonoBehaviour, IInitializable
 {
     [SerializeField] private SaveDataContainer _saveDataContainer;
+    [SerializeField] private DefaultStatsContainer _defaultStatsContainer;
     private SaveData _saveData;
     private string _scoreFolder = "/SaveData/";
     private string _baseFileName = "saveDataFile.json";
@@ -27,15 +28,8 @@ public class SaveLoadManager : MonoBehaviour, IInitializable
         // TODO: Save part of upgrades logic to be implemented here
         if (isGameReset)
         {
-            _saveData.Wave = 0;
-            _saveData.CurrentScore = 0;
-            _saveData.Level = 0;
-            _saveData.UpgradePoints = 0;
-            _saveData.UpgradePointsThreshold = 5;
-            _saveData.UpgradeThesholdIncrement = 5;
-            _saveData.MaxHealth = 8;
-            _saveData.Health = 8;
-            _saveData.CooldownTime = 3f;
+            _saveData = _defaultStatsContainer.GetData();
+            _saveDataContainer.SetData(_saveData);
         }
         string json = JsonUtility.ToJson(_saveData);
         File.WriteAllText(_fullFilePath, json);
@@ -51,16 +45,7 @@ public class SaveLoadManager : MonoBehaviour, IInitializable
         }
         else
         {
-            // TODO: Refactor this. We need the logical way to store default values <------------------------
-            _saveData.Wave = 0;
-            _saveData.CurrentScore = 0;
-            _saveData.Level = 0;
-            _saveData.UpgradePoints = 0;
-            _saveData.UpgradePointsThreshold = 5;
-            _saveData.UpgradeThesholdIncrement = 5;
-            _saveData.MaxHealth = 8;
-            _saveData.Health = 8;
-            _saveData.CooldownTime = 3f;
+            _saveData = _defaultStatsContainer.GetData();
             _saveDataContainer.SetData(_saveData);
         }
     }
