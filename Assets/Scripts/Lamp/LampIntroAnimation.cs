@@ -21,12 +21,6 @@ public class LampIntroAnimation : MonoBehaviour, IInitializable
 
     public void Play(float duration, int currentHealth, int maxHealth, float lightNeutralIntensity)
     {
-        Debug.Log("Play intro animation");
-        Debug.Log("Duration: " + duration);
-        Debug.Log("Current health: " + currentHealth);
-        Debug.Log("Max health: " + maxHealth);
-        Debug.Log("Light neutral intensity: " + lightNeutralIntensity);
-        
         _duration = duration;
         _currentHealthNormalized = (float)currentHealth / maxHealth;
         _lightNeutralIntensity = lightNeutralIntensity;

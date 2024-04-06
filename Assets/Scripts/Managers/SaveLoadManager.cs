@@ -42,8 +42,6 @@ public class SaveLoadManager : MonoBehaviour, IInitializable
             string json = File.ReadAllText(_fullFilePath);
             _saveData = JsonUtility.FromJson<SaveData>(json);
             _saveDataContainer.SetData(_saveData);
-            Debug.Log("-------" + _saveData.MaxHealth.ToString());
-            Debug.Log("-------" + _saveDataContainer.MaxHealth.ToString());
         }
         else
         {

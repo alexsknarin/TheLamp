@@ -47,7 +47,6 @@ public class Lamp : MonoBehaviour, IInitializable
 
     public void Initialize()
     {
-        Debug.Log("Lamp Initialize");
         _lampStatsManager.Initialize();
         _lampAttackModel.Initialize();
         _lampAttackModel.UpdateCooldownTime(_lampStatsManager.CurrentColldownTime);

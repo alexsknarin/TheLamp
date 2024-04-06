@@ -10,6 +10,7 @@ public class Enemy : EnemyBase
     [SerializeField] private int _currentHealth;
     [SerializeField] private EnemyMovement _enemyMovement;
     [SerializeField] private EnemyPresentation _enemyPresentation;
+    private bool _isDead = false;
     
     private IObjectPool<Enemy> _objectPool;
     public IObjectPool<Enemy> ObjectPool
@@ -51,6 +52,7 @@ public class Enemy : EnemyBase
         ReceivedLampAttack = false;
         IsAttacking = false;
         IsStick = false;
+        _isDead = false;
     }
     
     private void OnMovementReset()
@@ -180,11 +182,15 @@ public class Enemy : EnemyBase
         }
         else
         {
-            ReceivedLampAttack = true;
-            _currentHealth = 0; 
-            _enemyMovement.TriggerDeath();
-            OnEnemyDeathInvoke(this);
-            _enemyPresentation.DeathFlash();
+            if (!_isDead)
+            {
+                ReceivedLampAttack = true;
+                _currentHealth = 0; 
+                _enemyMovement.TriggerDeath();
+                OnEnemyDeathInvoke(this);
+                _enemyPresentation.DeathFlash();
+                _isDead = true;
+            }
         }    
     }
 
