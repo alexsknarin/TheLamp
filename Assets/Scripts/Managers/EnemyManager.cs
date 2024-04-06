@@ -31,6 +31,7 @@ public class EnemyManager : MonoBehaviour,IInitializable
     private float _aggressionLevelNormalized;
     
     [Header("")]
+    [SerializeField] private bool _isStartAtWaveTestMode = false;
     [SerializeField] private int _startAtWave = 0;
     [SerializeField] private int _currentWave = 0;
     [SerializeField] private float _firstEnemySpawnDelay;
@@ -112,7 +113,10 @@ public class EnemyManager : MonoBehaviour,IInitializable
         _enemiesExplosionHandler = new EnemiesExplosionHandler();
         
         // Load Game State Data
-        _startAtWave = _saveDataContainer.Wave;
+        if (!_isStartAtWaveTestMode)
+        {
+            _startAtWave = _saveDataContainer.Wave;    
+        }
         
         _isBossActive = false;
         // Init all bosses
