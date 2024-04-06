@@ -11,18 +11,24 @@ public class LampIntroAnimation : MonoBehaviour, IInitializable
     private float _localTime = 0;
     private float _duration;
     
-    private float _initialHealth;
     private float _lightNeutralIntensity;
+    private float _currentHealthNormalized; 
     
     public void Initialize()
     {
         _lampMaterial = GetComponent<MeshRenderer>().sharedMaterial;
     }
 
-    public void Play(float duration, float initialHealth, float lightNeutralIntensity)
+    public void Play(float duration, int currentHealth, int maxHealth, float lightNeutralIntensity)
     {
+        Debug.Log("Play intro animation");
+        Debug.Log("Duration: " + duration);
+        Debug.Log("Current health: " + currentHealth);
+        Debug.Log("Max health: " + maxHealth);
+        Debug.Log("Light neutral intensity: " + lightNeutralIntensity);
+        
         _duration = duration;
-        _initialHealth = initialHealth;
+        _currentHealthNormalized = (float)currentHealth / maxHealth;
         _lightNeutralIntensity = lightNeutralIntensity;
         _isPlaying = true;
         _localTime = 0;
@@ -39,16 +45,17 @@ public class LampIntroAnimation : MonoBehaviour, IInitializable
                 _lampMaterial.SetFloat("_EnableAnimation", 1);
                 _lampMaterial.SetFloat("_attackPower", 1);
                 _lampLight.intensity = _lightNeutralIntensity;
-                _lampHealthBar.UpdateHealth(_initialHealth, 2);
+                _lampHealthBar.UpdateHealth(_currentHealthNormalized, 2);
                 return;
             }
             float phaseAnimated = _animCurve.Evaluate(phase);
             float enablePhase = Mathf.Clamp(phaseAnimated * 1.25f, 0f, 1f);
             float attackPowerPhase = Mathf.Clamp((phaseAnimated - 0.75f) * 4, 0f, 1f);
             float lightIntensity = Mathf.Lerp(0, _lightNeutralIntensity, phaseAnimated);
-            float health = Mathf.Lerp(0, _initialHealth, phaseAnimated);
-        
+            
+            float health = Mathf.Lerp(0, _currentHealthNormalized, phaseAnimated);
             _lampHealthBar.UpdateHealth(health, 2);
+            
             _lampMaterial.SetFloat("_EnableAnimation", enablePhase);
             _lampMaterial.SetFloat("_attackPower", attackPowerPhase);
             _lampLight.intensity = lightIntensity;

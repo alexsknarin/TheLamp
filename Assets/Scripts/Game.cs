@@ -55,13 +55,13 @@ public class Game : MonoBehaviour
         _saveLoadManager.Initialize();
         // Load game state
         _saveLoadManager.LoadGame();
+        _scoresManager.Initialize();
+        _lamp.Initialize();
         
         _uiManager.SetIntroDuration(_introDuration);
         _uiManager.Initialize();
         _playerInputHandler.Initialize();
-        _googleSheetsDataReader.Initialize();
-        _scoresManager.Initialize();
-        _lamp.Initialize();
+        _googleSheetsDataReader.Initialize(); // This Method will trigger InitializeEnemyManager and  Switch State
     }
 
     public void RestartGame()
@@ -72,9 +72,9 @@ public class Game : MonoBehaviour
         _enemyManager.Restart();
         _uiManager.Initialize();
         _playerInputHandler.Initialize();
-        _googleSheetsDataReader.Initialize();
         _scoresManager.Initialize();
         _lamp.Initialize();
+        _googleSheetsDataReader.Initialize(); // This Method will trigger InitializeEnemyManager and  Switch State
     }
     
     private void InitializeEnemyManager()

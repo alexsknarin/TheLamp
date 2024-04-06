@@ -110,9 +110,9 @@ public class LampPresentation : MonoBehaviour, IInitializable
         _lampMaterial.SetFloat("_attackPower", currentPower);
     }
     
-    public void StartIntroState(float introDuration, float initialHealth)
+    public void StartIntroState(float introDuration, int currentHealth, int maxHealth)
     {
-        _lampIntroAnimation.Play(introDuration, initialHealth, _lightNeutralIntensity);
+        _lampIntroAnimation.Play(introDuration, currentHealth, maxHealth, _lightNeutralIntensity);
     }
     
     public void StartDeathState(float deathStateDuration)
