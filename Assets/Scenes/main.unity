@@ -6006,8 +6006,9 @@ MonoBehaviour:
       m_Calls: []
   m_text: "    This game collects game related data that is being used to improve
     the experience. Data consists of ingame events, and player device specs such
-    as device model and screen resolution.\n\n    Data collection could be disabled
-    at any time from the game menu screen.\n\n              Are you ok with it?"
+    as device model and screen resolution. No any personal data is included.\n\n   
+    Data collection could be disabled at any time using \"Disable Data\" button.\n\n             
+    Are you ok with it?"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
