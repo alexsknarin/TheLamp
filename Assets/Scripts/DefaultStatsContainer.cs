@@ -27,4 +27,18 @@ public class DefaultStatsContainer : ScriptableObject
         _data.CooldownTime = _cooldownTime;
         return _data;
     }
+
+    public SaveData GetDataKeepUpgrades(SaveData currentData)
+    {
+        _data.Wave = _wave;
+        _data.CurrentScore = _currentScore;
+        _data.Level = _level;
+        _data.UpgradePoints = _upgradePoints;
+        _data.UpgradePointsThreshold = _upgradePointsThreshold;
+        _data.UpgradeThesholdIncrement = _upgradeThesholdIncrement;
+        _data.MaxHealth = currentData.MaxHealth;
+        _data.Health = _health;
+        _data.CooldownTime = currentData.CooldownTime;
+        return _data;
+    }
 }

@@ -11,15 +11,21 @@ public class Game : MonoBehaviour
     [SerializeField] private PlayerInputHandler _playerInputHandler;
     [SerializeField] private UGSSetup _ugsSetup;
     [SerializeField] private ScoresManager _scoresManager;
+    [SerializeField] private SaveLoadManager _saveLoadManager;
+    [SerializeField] private AdsManager _adsManager;
     [SerializeField] private GameStates _currentGameState;
     [SerializeField] private float _introDuration;
     [SerializeField] private float _deathDuration;
-    [SerializeField] private SaveLoadManager _saveLoadManager;
-    
-    
+
+
     // State paremeters  
     private bool _isLampDead = false;
     
+    private readonly bool GAME_RESET = true;
+    private readonly bool GAME_RUNNING = false;
+    private readonly bool SAVE_UPGRADES = true;
+    private readonly bool DONT_SAVE_UPGRADES = false;
+
 
     private void OnEnable()
     {
@@ -31,6 +37,7 @@ public class Game : MonoBehaviour
         Lamp.OnLampDead += HandleLampDead;
         _lampStatsManager.OnHealthChange += HandleStatsUpgrade;
         _lampStatsManager.OnCooldownChange += HandleStatsUpgrade;
+        _adsManager.OnAdFinished += SaveRewards;
     }
 
     private void OnDisable()
@@ -43,6 +50,7 @@ public class Game : MonoBehaviour
         Lamp.OnLampDead -= HandleLampDead;
         _lampStatsManager.OnHealthChange -= HandleStatsUpgrade;
         _lampStatsManager.OnCooldownChange -= HandleStatsUpgrade;
+        _adsManager.OnAdFinished -= SaveRewards;
     }
     
     private void Start()
@@ -57,6 +65,7 @@ public class Game : MonoBehaviour
         _saveLoadManager.LoadGame();
         _scoresManager.Initialize();
         _lamp.Initialize();
+        _adsManager.Initialize();
         
         _uiManager.SetIntroDuration(_introDuration);
         _uiManager.Initialize();
@@ -64,9 +73,34 @@ public class Game : MonoBehaviour
         _googleSheetsDataReader.Initialize(); // This Method will trigger InitializeEnemyManager and  Switch State
     }
 
-    public void RestartGame()
+    public void RestartGame(int mode)
     {
-        _saveLoadManager.SaveGame(true);
+        
+        if (mode == 0)
+        {
+            // Save Upgrades AFTER add is finished
+            _adsManager.ShowAd();
+        }
+        else
+        {
+            // Don't Save Upgrades
+            _saveLoadManager.SaveGame(GAME_RESET, DONT_SAVE_UPGRADES);
+            
+            _isLampDead = false;
+            _currentGameState = GameStates.Loading;
+            _enemyManager.Restart();
+            _uiManager.Initialize();
+            _playerInputHandler.Initialize();
+            _scoresManager.Initialize();
+            _lamp.Initialize();
+            _googleSheetsDataReader.Initialize(); // This Method will trigger InitializeEnemyManager and  Switch State
+        }
+    }
+    
+    private void SaveRewards()
+    {
+        _saveLoadManager.SaveGame(GAME_RESET, SAVE_UPGRADES);
+        
         _isLampDead = false;
         _currentGameState = GameStates.Loading;
         _enemyManager.Restart();
@@ -109,7 +143,7 @@ public class Game : MonoBehaviour
     
     private void HandleStatsUpgrade()
     {
-        _saveLoadManager.SaveGame(false);
+        _saveLoadManager.SaveGame(GAME_RUNNING, SAVE_UPGRADES);
     }
     
     private void HandleWaveEnded(int waveNumber)
@@ -148,7 +182,7 @@ public class Game : MonoBehaviour
             case GameStates.Fight:
                 if (_isLampDead)
                 {
-                    _saveLoadManager.SaveGame(true);
+                    _saveLoadManager.SaveTempData();
                     _playerInputHandler.DisableAttackInput();
                     _lamp.PlayDeath(_deathDuration);
                     _enemyManager.HandleGameOver();
@@ -157,7 +191,7 @@ public class Game : MonoBehaviour
                 }
                 else
                 {
-                    _saveLoadManager.SaveGame(false);
+                    _saveLoadManager.SaveGame(GAME_RUNNING, SAVE_UPGRADES);
                     _uiManager.StartPrepare(_enemyManager.CurrentWave);
                     _currentGameState = GameStates.Prepare;    
                 }

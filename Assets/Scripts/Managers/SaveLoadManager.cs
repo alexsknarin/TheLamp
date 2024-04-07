@@ -21,15 +21,33 @@ public class SaveLoadManager : MonoBehaviour, IInitializable
         _fullFilePath = Application.persistentDataPath + _scoreFolder + _baseFileName;
     }
     
-    public void SaveGame(bool isGameReset)
+    public void SaveTempData()
     {
+        // Only keep upgrades in memory
         _saveData = _saveDataContainer.GetData();
-        
-        // TODO: Save part of upgrades logic to be implemented here
+        _saveDataContainer.SetData(_defaultStatsContainer.GetData());
+        string json = JsonUtility.ToJson(_defaultStatsContainer.GetData());
+        File.WriteAllText(_fullFilePath, json);
+    }
+    
+    public void SaveGame(bool isGameReset, bool isSaveUpgrades)
+    {
         if (isGameReset)
         {
-            _saveData = _defaultStatsContainer.GetData();
-            _saveDataContainer.SetData(_saveData);
+            if (isSaveUpgrades)
+            {
+                _saveData = _defaultStatsContainer.GetDataKeepUpgrades(_saveData);
+                _saveDataContainer.SetData(_saveData);    
+            }
+            else
+            {
+                _saveData = _defaultStatsContainer.GetData();
+                _saveDataContainer.SetData(_saveData);
+            }
+        }
+        else
+        {
+            _saveData = _saveDataContainer.GetData();    
         }
         string json = JsonUtility.ToJson(_saveData);
         File.WriteAllText(_fullFilePath, json);

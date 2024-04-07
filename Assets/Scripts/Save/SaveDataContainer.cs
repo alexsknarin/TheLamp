@@ -12,7 +12,7 @@ public class SaveDataContainer : ScriptableObject
     public int MaxHealth;
     public int Health;
     public float CooldownTime;
-    private SaveData _saveData;
+    private SaveData _saveData = new SaveData();
 
     public void SetData(SaveData saveData)
     {
