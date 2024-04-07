@@ -37,7 +37,7 @@ public class DefaultStatsContainer : ScriptableObject
         _data.UpgradePointsThreshold = _upgradePointsThreshold;
         _data.UpgradeThesholdIncrement = _upgradeThesholdIncrement;
         _data.MaxHealth = currentData.MaxHealth;
-        _data.Health = _health;
+        _data.Health = currentData.MaxHealth;
         _data.CooldownTime = currentData.CooldownTime;
         return _data;
     }
