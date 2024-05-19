@@ -26,6 +26,7 @@ public class Game : MonoBehaviour
     private readonly bool SAVE_UPGRADES = true;
     private readonly bool DONT_SAVE_UPGRADES = false;
 
+
     private void OnEnable()
     {
         _googleSheetsDataReader.OnDataLoaded += InitializeEnemyManager;
