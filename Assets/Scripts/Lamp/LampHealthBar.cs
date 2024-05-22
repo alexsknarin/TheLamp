@@ -28,9 +28,9 @@ public class LampHealthBar : MonoBehaviour, IInitializable
             _healthBarMaterial.SetInt("_isLastHealth", 0);
         }
         
-        Vector3 scale = Vector3.one;
-        scale.x = normalizedHealth;
-        _healthBarTransform.localScale = scale;
+        Vector3 rotation = Vector3.zero;
+        rotation.y = Mathf.Lerp(109, 0, normalizedHealth);
+        _healthBarTransform.localEulerAngles = rotation;
     }
     
     public void PlayUpgrade()
