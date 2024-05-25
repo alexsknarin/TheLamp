@@ -6,10 +6,10 @@ public class LampCooldown : MonoBehaviour
     [SerializeField] private AnimationCurve _lampCooldownAnimCurve;
     [SerializeField] private AnimationCurve _lampNoiseAmountAnimCurve;
     
-    public void PerformCooldown(float phase, bool isBlockedAttack)
+    public void PerformCooldown(float phase, bool isBlocked)
     {
         _lampEmissionController.Intensity = _lampCooldownAnimCurve.Evaluate(phase);
-        if (isBlockedAttack)
+        if (isBlocked)
         {
             return;    
         }
