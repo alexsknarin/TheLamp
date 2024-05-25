@@ -3,7 +3,12 @@ using UnityEngine;
 public class LampAttackAnimation : MonoBehaviour, IInitializable
 {
     [SerializeField] private Light _lampLight;
+    // NEW LAMP
     [SerializeField] private GameObject _lampAttackZoneObject;
+    [SerializeField] private LampEmissionController _lampEmissionController;
+    [SerializeField] private AnimationCurve _emissionPowerCurve;
+    [SerializeField] private AnimationCurve _attackZonePowerCurve;
+    
     private Material _lampAttackZoneMaterial;
     private Material _lampMaterial;
     private bool _isPlaying = false;
@@ -13,6 +18,7 @@ public class LampAttackAnimation : MonoBehaviour, IInitializable
     private float _lightMinimumIntensity;
     private float _lampMinimumEmission;
     private float _lightPower;
+    private float _attackZonePower;
     private float _lightMaximumIntensity;
     private float _lampMaximumEmission;
 
@@ -33,7 +39,8 @@ public class LampAttackAnimation : MonoBehaviour, IInitializable
         _lampMaximumEmission = lampMaximumEmission;
         
         _lampMaterial.SetFloat("_attackPower", 0f);
-        _lightPower = Mathf.Pow(currentPower, 2f);
+        _lightPower = _emissionPowerCurve.Evaluate(currentPower);
+        _attackZonePower = _attackZonePowerCurve.Evaluate(currentPower);
         _lampAttackZoneObject.transform.localScale = Vector3.one * (attackDistance * 2);
         
         _isPlaying = true;
@@ -51,6 +58,10 @@ public class LampAttackAnimation : MonoBehaviour, IInitializable
                 _isPlaying = false;
                 _lampLight.intensity = _lightMinimumIntensity;
                 _lampMaterial.SetFloat("_EmissionLevel", _lampMinimumEmission);
+                
+                // NEW LAMP
+                
+                _lampEmissionController.Intensity = 0f;
                 _lampAttackZoneMaterial.SetFloat("_Alpha", 0);
                 _isBlockedAttack = false;
                 return;
@@ -59,8 +70,12 @@ public class LampAttackAnimation : MonoBehaviour, IInitializable
             {
                 _lampLight.intensity = Mathf.Lerp(_lightMaximumIntensity * _lightPower, _lightMinimumIntensity, phase);
                 _lampMaterial.SetFloat("_EmissionLevel", Mathf.Lerp(_lampMaximumEmission * _lightPower, _lampMinimumEmission, phase));
-                _lampAttackZoneMaterial.SetFloat("_Alpha", Mathf.Lerp(_lightPower, 0, phase));
+                
+                // NEW LAMP
+                _lampEmissionController.Intensity = Mathf.Lerp(_lightPower, 0, phase);
+                _lampAttackZoneMaterial.SetFloat("_Alpha", Mathf.Lerp(_attackZonePower, 0, phase));
             }
+
             _localTime += Time.deltaTime;    
         }
     }

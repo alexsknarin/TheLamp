@@ -5,6 +5,7 @@ public class LampDeathAnimation : MonoBehaviour, IInitializable
     [SerializeField] private Light _lampLight;
     [SerializeField] private AnimationCurve _animCurve;
     [SerializeField] private LampHealthBar _lampHealthBar;
+    [SerializeField] private LampEmissionController _lampEmissionController;
     private Material _lampMaterial;
     private bool _isPlaying = false;
     private float _duration;
@@ -43,8 +44,11 @@ public class LampDeathAnimation : MonoBehaviour, IInitializable
         
             _lampMaterial.SetFloat("_EnableAnimation", phaseAnimated);
             _lampMaterial.SetFloat("_attackPower", 0);
-        
             _lampLight.intensity = Mathf.Lerp(_lightNeutralIntensity, 0f, 1-phaseAnimated);
+            
+            // NEW LAMP
+            _lampEmissionController.Intensity = phaseAnimated;
+            
         
             _localTime += Time.deltaTime;
         }

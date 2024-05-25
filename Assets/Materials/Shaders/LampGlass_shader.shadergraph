@@ -3272,7 +3272,7 @@
     "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot",
     "m_ObjectId": "3507e248c6054d3d87720db9aba78a2f",
     "m_Id": 0,
-    "m_DisplayName": "Damage",
+    "m_DisplayName": "DamageMix",
     "m_SlotType": 1,
     "m_Hidden": false,
     "m_ShaderOutputName": "Out",
@@ -8614,10 +8614,10 @@
     "m_Guid": {
         "m_GuidSerialized": "0ea8c973-db6c-4c54-82f6-5e78c62b079b"
     },
-    "m_Name": "Damage",
+    "m_Name": "DamageMix",
     "m_DefaultRefNameVersion": 1,
-    "m_RefNameGeneratedByDisplayName": "Damage",
-    "m_DefaultReferenceName": "_Damage",
+    "m_RefNameGeneratedByDisplayName": "DamageMix",
+    "m_DefaultReferenceName": "_DamageMix",
     "m_OverrideReferenceName": "",
     "m_GeneratePropertyBlock": true,
     "m_UseCustomSlotLabel": false,

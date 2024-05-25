@@ -109,11 +109,12 @@ Material:
     - _ClearCoatSmoothness: 0
     - _Cull: 2
     - _Cutoff: 0.5
+    - _DamageMix: 0
     - _DetailAlbedoMapScale: 1
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
     - _DstBlendAlpha: 0
-    - _EmissionStrength: 1
+    - _EmissionStrength: 0.5
     - _EnvironmentReflections: 1
     - _GlossMapScale: 0
     - _Glossiness: 0
@@ -136,9 +137,10 @@ Material:
     m_Colors:
     - _BaseColor: {r: 0.35220122, g: 0.14951934, b: 0.14951934, a: 1}
     - _Color: {r: 0.3522012, g: 0.1495193, b: 0.1495193, a: 1}
+    - _DamageColor: {r: 134.53554, g: 4.2262473, b: 4.2262473, a: 1}
     - _EmissionColor: {r: 77.8743, g: 19.351463, b: 5.1426315, a: 1}
     - _FIlamentDarkColor: {r: 155.74858, g: 3.2617474, b: 3.2617474, a: 0}
-    - _FilamentBrightColor: {r: 77.97622, g: 19.96191, b: 5.458335, a: 0}
+    - _FilamentBrightColor: {r: 606.3928, g: 155.56674, b: 44.447624, a: 0}
     - _FilamentColor: {r: 253.01433, g: 65.439316, b: 18.545546, a: 0}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []

@@ -11,6 +11,8 @@ public class LampPresentation : MonoBehaviour, IInitializable
     [SerializeField] private LampHealthBar _lampHealthBar;
     [Header("Intro")]
     [SerializeField] private LampIntroAnimation _lampIntroAnimation;
+    [Header("Cooldown")]
+    [SerializeField] private LampCooldown _lampCooldown;
     [Header("Death")]
     [SerializeField] private LampDeathAnimation _lampDeathAnimation;
     [Header("Damage")]
@@ -108,6 +110,9 @@ public class LampPresentation : MonoBehaviour, IInitializable
         _lampLight.intensity = Mathf.Lerp(_lightMinimumIntensity, _lightNeutralIntensity, currentPower);
         _lampMaterial.SetFloat("_EmissionLevel", Mathf.Lerp(_lampMinimumEmission, _lampNeutralEmission, currentPower));
         _lampMaterial.SetFloat("_attackPower", currentPower);
+        
+        // NEW LAMP
+        _lampCooldown.PerformCooldown(currentPower);
     }
     
     public void StartIntroState(float introDuration, int currentHealth, int maxHealth)
