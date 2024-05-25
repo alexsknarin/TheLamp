@@ -6,7 +6,10 @@ public class LampPresentation : MonoBehaviour, IInitializable
     [SerializeField] private Light _lampLight;
     private Material _lampMaterial;
     
+    
     [SerializeField] private LampEmissionController _lampEmissionController;
+    [Range(0, 1)]
+    [SerializeField] private float _blockedModeStrength;
     
     [SerializeField] private GameObject _lampAttackZoneObject;
     private Material _lampAttackZoneMaterial;
@@ -88,7 +91,7 @@ public class LampPresentation : MonoBehaviour, IInitializable
     
     public void EnableBlockedMode()
     {
-        _lampMaterial.SetFloat("_BlockedMode", 1f);
+        _lampMaterial.SetFloat("_BlockedMode", _blockedModeStrength);
         _lampEmissionController.BlockedModeMix = 0.9f;
         isBlocked = true;
     }
