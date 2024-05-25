@@ -5,6 +5,9 @@ public class LampPresentation : MonoBehaviour, IInitializable
 {
     [SerializeField] private Light _lampLight;
     private Material _lampMaterial;
+    
+    [SerializeField] private LampEmissionController _lampEmissionController;
+    
     [SerializeField] private GameObject _lampAttackZoneObject;
     private Material _lampAttackZoneMaterial;
     [Header("HealthBar")]
@@ -20,6 +23,8 @@ public class LampPresentation : MonoBehaviour, IInitializable
     [SerializeField] private float _lightDamageDuration;
     [Header("Attack")]
     [SerializeField] private LampAttackAnimation _lampAttackAnimation;
+    
+    private bool isBlocked = false;
     
     private readonly float _lightNeutralIntensity = 22;
     private readonly float _lampNeutralEmission = 1f;
@@ -84,11 +89,15 @@ public class LampPresentation : MonoBehaviour, IInitializable
     public void EnableBlockedMode()
     {
         _lampMaterial.SetFloat("_BlockedMode", 1f);
+        _lampEmissionController.BlockedModeMix = 0.9f;
+        isBlocked = true;
     }
     
     public void DisableBlockedMode()
     {
         _lampMaterial.SetFloat("_BlockedMode", 0f);
+        _lampEmissionController.BlockedModeMix = 0;
+        isBlocked = false;
     }
    
     private void StartAttackState(int attackPower, float currentPower, float attackDuration, float attackDistance)
@@ -112,7 +121,7 @@ public class LampPresentation : MonoBehaviour, IInitializable
         _lampMaterial.SetFloat("_attackPower", currentPower);
         
         // NEW LAMP
-        _lampCooldown.PerformCooldown(currentPower);
+        _lampCooldown.PerformCooldown(currentPower, isBlocked);
     }
     
     public void StartIntroState(float introDuration, int currentHealth, int maxHealth)

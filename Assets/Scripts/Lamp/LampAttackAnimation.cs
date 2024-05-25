@@ -33,6 +33,13 @@ public class LampAttackAnimation : MonoBehaviour, IInitializable
         float attackDistance)
     {
         _isBlockedAttack = isBlockedAttack;
+        if (_isBlockedAttack)
+        {
+            _lampEmissionController.BlockedModeMix = 0.9f;
+        }
+        
+        Debug.Log(_isBlockedAttack);
+        
         _lightMinimumIntensity = lightMinimumIntensity;
         _lampMinimumEmission = lampMinimumEmission;
         _lightMaximumIntensity = lightMaximumIntensity;
@@ -66,11 +73,13 @@ public class LampAttackAnimation : MonoBehaviour, IInitializable
                 _isBlockedAttack = false;
                 return;
             }
-            if(!_isBlockedAttack)
+
+            if (!_isBlockedAttack)
             {
                 _lampLight.intensity = Mathf.Lerp(_lightMaximumIntensity * _lightPower, _lightMinimumIntensity, phase);
-                _lampMaterial.SetFloat("_EmissionLevel", Mathf.Lerp(_lampMaximumEmission * _lightPower, _lampMinimumEmission, phase));
-                
+                _lampMaterial.SetFloat("_EmissionLevel",
+                    Mathf.Lerp(_lampMaximumEmission * _lightPower, _lampMinimumEmission, phase));
+
                 // NEW LAMP
                 _lampEmissionController.Intensity = Mathf.Lerp(_lightPower, 0, phase);
                 _lampAttackZoneMaterial.SetFloat("_Alpha", Mathf.Lerp(_attackZonePower, 0, phase));

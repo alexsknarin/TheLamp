@@ -4,6 +4,7 @@ public class LampDeathAnimation : MonoBehaviour, IInitializable
 {
     [SerializeField] private Light _lampLight;
     [SerializeField] private AnimationCurve _animCurve;
+    [SerializeField] private AnimationCurve _damageAnimCurve;
     [SerializeField] private LampHealthBar _lampHealthBar;
     [SerializeField] private LampEmissionController _lampEmissionController;
     private Material _lampMaterial;
@@ -19,8 +20,13 @@ public class LampDeathAnimation : MonoBehaviour, IInitializable
     
     public void Play(float duration, float lightNeutralIntensity)
     {
-        _duration = duration;
         _lightNeutralIntensity = lightNeutralIntensity;
+        
+        _lampEmissionController.Intensity = 1;
+        _lampEmissionController.IsDamageEnabled = true;
+        _lampEmissionController.DamageMix = 1;
+        
+        _duration = duration;
         _localTime = 0;
         _isPlaying = true;
     }
@@ -36,6 +42,12 @@ public class LampDeathAnimation : MonoBehaviour, IInitializable
                 _lampMaterial.SetFloat("_EnableAnimation", 0);
                 _lampMaterial.SetFloat("_attackPower", 0);
                 _lampLight.intensity = 0;
+                
+                // NEW LAMP
+                _lampEmissionController.Intensity = 0;
+                _lampEmissionController.DamageMix = 0;
+                _lampEmissionController.IsDamageEnabled = false;
+                
                 _lampHealthBar.UpdateHealth(0, 0);
                 return;
             }
@@ -48,7 +60,7 @@ public class LampDeathAnimation : MonoBehaviour, IInitializable
             
             // NEW LAMP
             _lampEmissionController.Intensity = phaseAnimated;
-            
+            _lampEmissionController.DamageMix = _damageAnimCurve.Evaluate(phase);
         
             _localTime += Time.deltaTime;
         }

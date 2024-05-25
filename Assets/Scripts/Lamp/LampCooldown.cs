@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class LampCooldown : MonoBehaviour
@@ -8,9 +6,13 @@ public class LampCooldown : MonoBehaviour
     [SerializeField] private AnimationCurve _lampCooldownAnimCurve;
     [SerializeField] private AnimationCurve _lampNoiseAmountAnimCurve;
     
-    public void PerformCooldown(float phase)
+    public void PerformCooldown(float phase, bool isBlockedAttack)
     {
         _lampEmissionController.Intensity = _lampCooldownAnimCurve.Evaluate(phase);
+        if (isBlockedAttack)
+        {
+            return;    
+        }
         _lampEmissionController.BlockedModeMix = _lampNoiseAmountAnimCurve.Evaluate(phase);
     }
 }
