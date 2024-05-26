@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -32,7 +33,17 @@ public class LadybugMovement : EnemyMovement
     
     // Debug
     [SerializeField] private EnemyStates _stateDebug;
+
+    private void OnEnable()
+    {
+        Lamp.OnLampDead += FallOnLampDestroyed;
+    }
     
+    private void OnDisable()
+    {
+        Lamp.OnLampDead -= FallOnLampDestroyed;
+    }
+
     public override void Initialize()
     {
         _isDead = false;
@@ -77,7 +88,18 @@ public class LadybugMovement : EnemyMovement
     public override void TriggerFall()
     {
     }
-    
+
+    public void FallOnLampDestroyed(EnemyBase enemy)
+    {
+        Debug.Log("Trying to unparent");
+        transform.parent = null;
+        if(_currentState.State == EnemyStates.Stick)
+        {
+            _isDead = true;
+            SwitchState();
+        }
+    }
+
     public override void TriggerDeath()
     {
         if(_currentState.State != EnemyStates.Death)
