@@ -8,7 +8,6 @@ public class LampPresentation : MonoBehaviour, IInitializable
     [SerializeField] private float _blockedModeStrength;
     
     [SerializeField] private GameObject _lampAttackZoneObject;
-    private Material _lampAttackZoneMaterial;
     [Header("HealthBar")]
     [SerializeField] private LampHealthBar _lampHealthBar;
     [Header("Intro")]
@@ -23,6 +22,12 @@ public class LampPresentation : MonoBehaviour, IInitializable
     [Header("Attack")]
     [SerializeField] private LampAttackAnimation _lampAttackAnimation;
     
+    private Vector3 _lastEnemyPosition;
+    public Vector3 LastEnemyPosition
+    {
+        get => _lastEnemyPosition;
+        set => _lastEnemyPosition = value;
+    }
     private bool isBlocked = false;
     
     private void OnEnable()
@@ -41,10 +46,10 @@ public class LampPresentation : MonoBehaviour, IInitializable
     
     public void Initialize()
     {
-        _lampAttackZoneMaterial = _lampAttackZoneObject.GetComponent<MeshRenderer>().material;
         ResetLightNeutralState();
         _lampHealthBar.Initialize();
         _lampAttackAnimation.Initialize();
+        _lampDeathAnimation.Initialize();
 
         // arrange before the intro
         _lampHealthBar.UpdateHealth(0, 0);
@@ -102,7 +107,7 @@ public class LampPresentation : MonoBehaviour, IInitializable
     
     public void StartDeathState(float deathStateDuration)
     {
-        _lampDeathAnimation.Play(deathStateDuration);
+        _lampDeathAnimation.Play(deathStateDuration, _lastEnemyPosition);
     }
     
     public void StartDamageState()

@@ -123,6 +123,7 @@ public class Lamp : MonoBehaviour, IInitializable
                 if (_lampStatsManager.CurrentHealth <= 0)
                 {
                     _lampAttackModel.HandleLampDeath();
+                    _lampPresentation.LastEnemyPosition = enemy.transform.position;
                     OnLampDead?.Invoke(enemy);
                 }
                 else

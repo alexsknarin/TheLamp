@@ -66,10 +66,19 @@ public class LampEmissionController : MonoBehaviour
         _filamentMaterial = materials[0];
         _electrodeMaterial = materials[1];
         _glassTubeMaterial = materials[2];
-        _lampGlassMaterial = _lampGlassMeshRenderer.material;
+        _lampGlassMaterial = _lampGlassMeshRenderer.sharedMaterial;
         _lampSocketAluminiumMaterial = _lampSocketMeshRenderer.materials[0];
     }
-    
+
+    public void HideGlass()
+    {
+        _lampGlassMeshRenderer.gameObject.SetActive(false);
+    }
+
+    public void ShowGlass()
+    {
+        _lampGlassMeshRenderer.gameObject.SetActive(true);
+    }
     
     private void Update()
     {
