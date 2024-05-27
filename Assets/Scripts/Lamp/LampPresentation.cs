@@ -6,8 +6,6 @@ public class LampPresentation : MonoBehaviour, IInitializable
     [SerializeField] private LampEmissionController _lampEmissionController;
     [Range(0, 1)]
     [SerializeField] private float _blockedModeStrength;
-    
-    [SerializeField] private GameObject _lampAttackZoneObject;
     [Header("HealthBar")]
     [SerializeField] private LampHealthBar _lampHealthBar;
     [Header("Intro")]
@@ -58,6 +56,7 @@ public class LampPresentation : MonoBehaviour, IInitializable
     public void UpdateHealthBar(float normalizedHealth, int actualHealth)
     {
         _lampHealthBar.UpdateHealth(normalizedHealth, actualHealth);
+        _lampEmissionController.LampDamageUpdate(new Vector4(1-normalizedHealth, 0, 0, 0));
     }
     
     public void UpgradeHealthBar()

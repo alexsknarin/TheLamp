@@ -12,6 +12,10 @@ public class SaveDataContainer : ScriptableObject
     public int MaxHealth;
     public int Health;
     public float CooldownTime;
+    public int LampDamageWeightRight;
+    public int LampDamageWeightLeft;
+    public int LampDamageWeightBottom;
+    public int LampDamageWeightCount;
     private SaveData _saveData = new SaveData();
 
     public void SetData(SaveData saveData)
@@ -25,6 +29,10 @@ public class SaveDataContainer : ScriptableObject
         MaxHealth = saveData.MaxHealth;
         Health = saveData.Health;
         CooldownTime = saveData.CooldownTime;
+        LampDamageWeightRight = saveData.LampDamageWeightRight;
+        LampDamageWeightLeft = saveData.LampDamageWeightLeft;
+        LampDamageWeightBottom = saveData.LampDamageWeightBottom;
+        LampDamageWeightCount = saveData.LampDamageWeightCount;
     }
     
     public SaveData GetData()
@@ -38,6 +46,10 @@ public class SaveDataContainer : ScriptableObject
         _saveData.MaxHealth = MaxHealth;
         _saveData.Health = Health;
         _saveData.CooldownTime = CooldownTime;
+        _saveData.LampDamageWeightRight = LampDamageWeightRight;
+        _saveData.LampDamageWeightLeft = LampDamageWeightLeft;
+        _saveData.LampDamageWeightBottom = LampDamageWeightBottom;
+        _saveData.LampDamageWeightCount = LampDamageWeightCount;
         return _saveData;
     }
 }

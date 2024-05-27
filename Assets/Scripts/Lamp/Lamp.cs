@@ -118,7 +118,7 @@ public class Lamp : MonoBehaviour, IInitializable
             else
             {
                 _isAssessingDamage = false;
-                _lampStatsManager.DecreaseCurrentHealth(1); // Difference based on enemy type
+                _lampStatsManager.DecreaseCurrentHealth(1, enemy.transform.position.normalized); // Difference based on enemy type
                 _lampPresentation.UpdateHealthBar(_lampStatsManager.NormalizedHealth, _lampStatsManager.CurrentHealth);
                 if (_lampStatsManager.CurrentHealth <= 0)
                 {

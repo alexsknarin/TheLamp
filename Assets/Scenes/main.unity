@@ -533,6 +533,7 @@ MonoBehaviour:
   _lampGlassMeshRenderer: {fileID: 738155935}
   _lampSocketMeshRenderer: {fileID: 1900091331}
   _lampLight: {fileID: 1932584611}
+  _lampDamageWeights: {x: 0, y: 0, z: 0, w: 0}
 --- !u!1 &30557019
 GameObject:
   m_ObjectHideFlags: 0
@@ -7944,7 +7945,7 @@ MonoBehaviour:
   _maxEnemiesOnScreen: 0
   _aggresionLevel: 0
   _maxAggressionLevel: 6
-  _isStartAtWaveTestMode: 1
+  _isStartAtWaveTestMode: 0
   _startAtWave: 20
   _currentWave: 0
   _firstEnemySpawnDelay: 0.5
@@ -8451,7 +8452,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _lampEmissionController: {fileID: 23663153}
   _blockedModeStrength: 0.5
-  _lampAttackZoneObject: {fileID: 1464268261}
   _lampHealthBar: {fileID: 969163317}
   _lampIntroAnimation: {fileID: 1934066250}
   _lampCooldown: {fileID: 1934066254}
@@ -8575,6 +8575,10 @@ MonoBehaviour:
   _upgradeThesholdInitialIncrement: 4
   _upgradeThesholdIncrement: 0
   _level: 0
+  _lampDamageWeightRight: 0
+  _lampDamageWeightLeft: 0
+  _lampDamageWeightBottom: 0
+  _lampDamageWeightCount: 0
   _saveDataContainer: {fileID: 11400000, guid: 377d55eb1797a24478860b1b98ae759c, type: 2}
 --- !u!114 &1934066250
 MonoBehaviour:

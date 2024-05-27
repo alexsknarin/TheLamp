@@ -10,4 +10,8 @@ public class SaveData
     public int MaxHealth;
     public int Health;
     public float CooldownTime;
+    public int LampDamageWeightRight;
+    public int LampDamageWeightLeft;
+    public int LampDamageWeightBottom;
+    public int LampDamageWeightCount;
 }

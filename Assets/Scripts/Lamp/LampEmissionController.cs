@@ -46,7 +46,8 @@ public class LampEmissionController : MonoBehaviour
     private Material _lampSocketAluminiumMaterial;
     [SerializeField] private Light _lampLight;
     
-    
+    [SerializeField] private Vector4 _lampDamageWeights;
+
     private readonly float _lightNeutralIntensity = 22;
     private readonly float _lampNeutralEmission = 1f;
     
@@ -80,8 +81,21 @@ public class LampEmissionController : MonoBehaviour
         _lampGlassMeshRenderer.gameObject.SetActive(true);
     }
     
+    public void LampDamageUpdate(Vector4 damageWeights)
+    {
+        _lampDamageWeights = damageWeights;
+    }
+    
     private void Update()
     {
+        // TODO: EXTRACT TO Event driven methods
+        // Only update when needed
+        
+        _lampGlassMaterial.SetFloat("_CracksAmountR", _lampDamageWeights.x);
+        _lampGlassMaterial.SetFloat("_CracksAmountL", _lampDamageWeights.y);
+        _lampGlassMaterial.SetFloat("_CracksAmountB", _lampDamageWeights.z);
+        
+        
         float blockedNoise = Mathf.PerlinNoise1D(Time.time * _blockedModeNoseFrequency) * 1.35f - 0.35f;
         blockedNoise = Mathf.Clamp01(blockedNoise);
         blockedNoise = Mathf.Lerp(1, blockedNoise, _blockedModeMix);

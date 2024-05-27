@@ -15,6 +15,11 @@ public class LampStatsManager : MonoBehaviour, IInitializable
     [SerializeField] private int _upgradeThesholdInitialIncrement = 5;
     [SerializeField] private int _upgradeThesholdIncrement;
     [SerializeField] private int _level;
+    [SerializeField] private int _lampDamageWeightRight;
+    [SerializeField] private int _lampDamageWeightLeft;
+    [SerializeField] private int _lampDamageWeightBottom;
+    [SerializeField] private int _lampDamageWeightCount;
+    
     [SerializeField] private SaveDataContainer _saveDataContainer;
     public int MaxHealth => _maxHealth;
     public int CurrentHealth => _currentHealth;
@@ -92,7 +97,7 @@ public class LampStatsManager : MonoBehaviour, IInitializable
         }
     }
     
-    public void DecreaseCurrentHealth(int value)
+    public void DecreaseCurrentHealth(int value, Vector3 attackDirection)
     {
         _currentHealth -= value;
         if (_currentHealth <= 0)
@@ -105,6 +110,25 @@ public class LampStatsManager : MonoBehaviour, IInitializable
             _currentHealth = _maxHealth;
         }
         _saveDataContainer.Health = _currentHealth;
+        
+        // Lamp Damage stats update
+        if (attackDirection.x >= 0f && attackDirection.y >= -0.5f)
+        {
+            _lampDamageWeightRight++;
+            _saveDataContainer.LampDamageWeightRight = _lampDamageWeightRight;
+        }
+        else if (attackDirection.x < 0f && attackDirection.y >= -0.5f)
+        {
+            _lampDamageWeightLeft++;
+            _saveDataContainer.LampDamageWeightLeft = _lampDamageWeightLeft;
+        }
+        else if (attackDirection.y < -0.5f)
+        {
+            _lampDamageWeightBottom++;
+            _saveDataContainer.LampDamageWeightBottom = _lampDamageWeightBottom;
+        }
+        _lampDamageWeightCount++;
+        _saveDataContainer.LampDamageWeightCount = _lampDamageWeightCount;
     }
     
     private void SaveData()
