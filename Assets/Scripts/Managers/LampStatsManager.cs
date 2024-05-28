@@ -147,36 +147,50 @@
     
     private void ReduceDamageWeights()
     {
-        int damageDirection = Random.Range(0, 3);
-        if (damageDirection == 0)
+        if(_lampDamageWeightRight == 0 && _lampDamageWeightLeft == 0 && _lampDamageWeightBottom == 0)
         {
-            ReduceDamageWeightExclusively(ref _lampDamageWeightRight, ref _lampDamageWeightLeft, ref _lampDamageWeightBottom);
+            return;
         }
-        else if (damageDirection == 1)
+        
+        if (_lampDamageWeightRight > _lampDamageWeightLeft && _lampDamageWeightRight > _lampDamageWeightBottom)
         {
-            ReduceDamageWeightExclusively(ref _lampDamageWeightLeft, ref _lampDamageWeightRight, ref _lampDamageWeightBottom);
+            _lampDamageWeightRight--;
+            CalculateDamageWeghts();
+            return;
         }
-        else if (damageDirection == 2)
+        else if (_lampDamageWeightLeft > _lampDamageWeightRight && _lampDamageWeightLeft > _lampDamageWeightBottom)
         {
-            ReduceDamageWeightExclusively(ref _lampDamageWeightBottom, ref _lampDamageWeightRight, ref _lampDamageWeightLeft);
+            _lampDamageWeightLeft--;
+            CalculateDamageWeghts();
+            return;
         }
+        else if (_lampDamageWeightBottom > _lampDamageWeightRight && _lampDamageWeightBottom > _lampDamageWeightLeft)
+        {
+            _lampDamageWeightBottom--;
+            CalculateDamageWeghts();
+            return;
+        }
+
+        if (_lampDamageWeightRight == _lampDamageWeightLeft)
+        {
+            _lampDamageWeightRight--;
+            CalculateDamageWeghts();
+            return;
+        }
+        else if (_lampDamageWeightRight == _lampDamageWeightBottom)
+        {
+            _lampDamageWeightBottom--;
+            CalculateDamageWeghts();
+            return;
+        }
+        else if (_lampDamageWeightLeft == _lampDamageWeightBottom)
+        {
+            _lampDamageWeightLeft--;
+            CalculateDamageWeghts();
+            return;
+        }
+
         CalculateDamageWeghts();
-    }
-    
-    private void ReduceDamageWeightExclusively(ref int w1, ref int w2, ref int w3)
-    {
-        if (w1 > 0)
-            w1--;
-        else
-        {
-            if (w2 > 0)
-                w2--;
-            else
-            {
-                if (w3 > 0)
-                    w3--;
-            }
-        }
     }
     
     private void SaveData()
