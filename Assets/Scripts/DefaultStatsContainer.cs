@@ -15,7 +15,6 @@ public class DefaultStatsContainer : ScriptableObject
     [SerializeField] private int _lampDamageWeightRight;
     [SerializeField] private int _lampDamageWeightLeft;
     [SerializeField] private int _lampDamageWeightBottom;
-    [SerializeField] private int _lampDamageWeightCount;
     private SaveData _data = new SaveData();
     
     public SaveData GetData()
@@ -32,7 +31,6 @@ public class DefaultStatsContainer : ScriptableObject
         _data.LampDamageWeightRight = _lampDamageWeightRight;
         _data.LampDamageWeightLeft = _lampDamageWeightLeft;
         _data.LampDamageWeightBottom = _lampDamageWeightBottom;
-        _data.LampDamageWeightCount = _lampDamageWeightCount;
         return _data;
     }
 
@@ -50,7 +48,6 @@ public class DefaultStatsContainer : ScriptableObject
         _data.LampDamageWeightRight = currentData.LampDamageWeightRight;
         _data.LampDamageWeightLeft = currentData.LampDamageWeightLeft;
         _data.LampDamageWeightBottom = currentData.LampDamageWeightBottom;
-        _data.LampDamageWeightCount = currentData.LampDamageWeightCount;
         return _data;
     }
 }

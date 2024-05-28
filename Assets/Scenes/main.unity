@@ -533,7 +533,7 @@ MonoBehaviour:
   _lampGlassMeshRenderer: {fileID: 738155935}
   _lampSocketMeshRenderer: {fileID: 1900091331}
   _lampLight: {fileID: 1932584611}
-  _lampDamageWeights: {x: 0, y: 0, z: 0, w: 0}
+  _lampDamageWeights: {x: 0.06, y: 0, z: 0}
 --- !u!1 &30557019
 GameObject:
   m_ObjectHideFlags: 0
@@ -8578,7 +8578,7 @@ MonoBehaviour:
   _lampDamageWeightRight: 0
   _lampDamageWeightLeft: 0
   _lampDamageWeightBottom: 0
-  _lampDamageWeightCount: 0
+  _damageWeights: {x: 0, y: 0, z: 0}
   _saveDataContainer: {fileID: 11400000, guid: 377d55eb1797a24478860b1b98ae759c, type: 2}
 --- !u!114 &1934066250
 MonoBehaviour:
@@ -8939,6 +8939,7 @@ MonoBehaviour:
   _fracturedGlassObject: {fileID: 1986056729}
   _destructionSpeed: 0.6
   _gravityStartAcceleration: 0.01
+  _rotationSpeed: 2
   _bones:
   - {fileID: 307910713}
   - {fileID: 1589360544}

@@ -15,7 +15,6 @@ public class SaveDataContainer : ScriptableObject
     public int LampDamageWeightRight;
     public int LampDamageWeightLeft;
     public int LampDamageWeightBottom;
-    public int LampDamageWeightCount;
     private SaveData _saveData = new SaveData();
 
     public void SetData(SaveData saveData)
@@ -32,7 +31,6 @@ public class SaveDataContainer : ScriptableObject
         LampDamageWeightRight = saveData.LampDamageWeightRight;
         LampDamageWeightLeft = saveData.LampDamageWeightLeft;
         LampDamageWeightBottom = saveData.LampDamageWeightBottom;
-        LampDamageWeightCount = saveData.LampDamageWeightCount;
     }
     
     public SaveData GetData()
@@ -49,7 +47,6 @@ public class SaveDataContainer : ScriptableObject
         _saveData.LampDamageWeightRight = LampDamageWeightRight;
         _saveData.LampDamageWeightLeft = LampDamageWeightLeft;
         _saveData.LampDamageWeightBottom = LampDamageWeightBottom;
-        _saveData.LampDamageWeightCount = LampDamageWeightCount;
         return _saveData;
     }
 }

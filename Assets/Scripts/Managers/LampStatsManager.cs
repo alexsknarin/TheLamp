@@ -1,7 +1,8 @@
  using System;
  using UnityEngine;
+ using Random = UnityEngine.Random;
 
-public class LampStatsManager : MonoBehaviour, IInitializable
+ public class LampStatsManager : MonoBehaviour, IInitializable
 {
     private int _maxHealth;
     [Header("Stats displayed for debug purposes")]
@@ -18,7 +19,7 @@ public class LampStatsManager : MonoBehaviour, IInitializable
     [SerializeField] private int _lampDamageWeightRight;
     [SerializeField] private int _lampDamageWeightLeft;
     [SerializeField] private int _lampDamageWeightBottom;
-    [SerializeField] private int _lampDamageWeightCount;
+    [SerializeField] private Vector3 _damageWeights;
     
     [SerializeField] private SaveDataContainer _saveDataContainer;
     public int MaxHealth => _maxHealth;
@@ -27,6 +28,7 @@ public class LampStatsManager : MonoBehaviour, IInitializable
     public float InitialCooldownTime => _initialCooldownTime;
     public float CurrentColldownTime => _currentColldownTime;
     public int UpgradePoints => _upgradePoints;
+    public Vector3 DamageWeights => _damageWeights;
     
     public event Action OnHealthChange;
     public event Action OnHealthUpgraded;
@@ -51,6 +53,10 @@ public class LampStatsManager : MonoBehaviour, IInitializable
         _upgradePoints = _saveDataContainer.UpgradePoints;
         _upgradeThesholdIncrement = _saveDataContainer.UpgradeThesholdIncrement;
         _currentUpgradePointThreshold = _saveDataContainer.UpgradePointsThreshold;
+        _lampDamageWeightRight = _saveDataContainer.LampDamageWeightRight;
+        _lampDamageWeightLeft = _saveDataContainer.LampDamageWeightLeft;
+        _lampDamageWeightBottom = _saveDataContainer.LampDamageWeightBottom;
+        CalculateDamageWeghts();
     }
     
     private void UpdateUpgradePoints(int scores)
@@ -73,6 +79,7 @@ public class LampStatsManager : MonoBehaviour, IInitializable
             if (_currentHealth < _maxHealth)
             {
                 _currentHealth++;
+                ReduceDamageWeights();
             }
             else if (_currentHealth == _maxHealth)
             {
@@ -127,8 +134,49 @@ public class LampStatsManager : MonoBehaviour, IInitializable
             _lampDamageWeightBottom++;
             _saveDataContainer.LampDamageWeightBottom = _lampDamageWeightBottom;
         }
-        _lampDamageWeightCount++;
-        _saveDataContainer.LampDamageWeightCount = _lampDamageWeightCount;
+        
+        CalculateDamageWeghts();
+    }
+    
+    private void CalculateDamageWeghts()
+    {
+        _damageWeights.x = (float)_lampDamageWeightRight/_maxHealth;
+        _damageWeights.y = (float)_lampDamageWeightLeft/_maxHealth;
+        _damageWeights.z = (float)_lampDamageWeightBottom/_maxHealth;
+    }
+    
+    private void ReduceDamageWeights()
+    {
+        int damageDirection = Random.Range(0, 3);
+        if (damageDirection == 0)
+        {
+            ReduceDamageWeightExclusively(ref _lampDamageWeightRight, ref _lampDamageWeightLeft, ref _lampDamageWeightBottom);
+        }
+        else if (damageDirection == 1)
+        {
+            ReduceDamageWeightExclusively(ref _lampDamageWeightLeft, ref _lampDamageWeightRight, ref _lampDamageWeightBottom);
+        }
+        else if (damageDirection == 2)
+        {
+            ReduceDamageWeightExclusively(ref _lampDamageWeightBottom, ref _lampDamageWeightRight, ref _lampDamageWeightLeft);
+        }
+        CalculateDamageWeghts();
+    }
+    
+    private void ReduceDamageWeightExclusively(ref int w1, ref int w2, ref int w3)
+    {
+        if (w1 > 0)
+            w1--;
+        else
+        {
+            if (w2 > 0)
+                w2--;
+            else
+            {
+                if (w3 > 0)
+                    w3--;
+            }
+        }
     }
     
     private void SaveData()
@@ -140,5 +188,8 @@ public class LampStatsManager : MonoBehaviour, IInitializable
         _saveDataContainer.UpgradePointsThreshold = _currentUpgradePointThreshold;
         _saveDataContainer.UpgradeThesholdIncrement = _upgradeThesholdIncrement;
         _saveDataContainer.CooldownTime = _currentColldownTime;
+        _saveDataContainer.LampDamageWeightRight = _lampDamageWeightRight;
+        _saveDataContainer.LampDamageWeightLeft = _lampDamageWeightLeft;
+        _saveDataContainer.LampDamageWeightBottom = _lampDamageWeightBottom;
     }
 }

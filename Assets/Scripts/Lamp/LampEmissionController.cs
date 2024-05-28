@@ -46,7 +46,7 @@ public class LampEmissionController : MonoBehaviour
     private Material _lampSocketAluminiumMaterial;
     [SerializeField] private Light _lampLight;
     
-    [SerializeField] private Vector4 _lampDamageWeights;
+    [SerializeField] private Vector3 _lampDamageWeights;
 
     private readonly float _lightNeutralIntensity = 22;
     private readonly float _lampNeutralEmission = 1f;
@@ -81,7 +81,7 @@ public class LampEmissionController : MonoBehaviour
         _lampGlassMeshRenderer.gameObject.SetActive(true);
     }
     
-    public void LampDamageUpdate(Vector4 damageWeights)
+    public void LampDamageUpdate(Vector3 damageWeights)
     {
         _lampDamageWeights = damageWeights;
     }

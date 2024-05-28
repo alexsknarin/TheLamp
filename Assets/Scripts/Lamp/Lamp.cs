@@ -52,6 +52,7 @@ public class Lamp : MonoBehaviour, IInitializable
         _lampAttackModel.UpdateCooldownTime(_lampStatsManager.CurrentColldownTime);
         _lampMovement.Initialize();
         _lampPresentation.Initialize();
+        _lampPresentation.SetDamageWeights(_lampStatsManager.DamageWeights);
         if (_stickyEnemies == null)
         {
             _stickyEnemies = new List<EnemyBase>();
@@ -119,7 +120,7 @@ public class Lamp : MonoBehaviour, IInitializable
             {
                 _isAssessingDamage = false;
                 _lampStatsManager.DecreaseCurrentHealth(1, enemy.transform.position.normalized); // Difference based on enemy type
-                _lampPresentation.UpdateHealthBar(_lampStatsManager.NormalizedHealth, _lampStatsManager.CurrentHealth);
+                _lampPresentation.UpdateHealthBar(_lampStatsManager.NormalizedHealth, _lampStatsManager.CurrentHealth, _lampStatsManager.DamageWeights);
                 if (_lampStatsManager.CurrentHealth <= 0)
                 {
                     _lampAttackModel.HandleLampDeath();
@@ -138,12 +139,12 @@ public class Lamp : MonoBehaviour, IInitializable
     
     private void HandleUpdateHealth()
     {
-        _lampPresentation.UpdateHealthBar(_lampStatsManager.NormalizedHealth, _lampStatsManager.CurrentHealth);
+        _lampPresentation.UpdateHealthBar(_lampStatsManager.NormalizedHealth, _lampStatsManager.CurrentHealth, _lampStatsManager.DamageWeights);
     }
     
     private void HandleUpgradeHealth()
     {
-        _lampPresentation.UpdateHealthBar(_lampStatsManager.NormalizedHealth, _lampStatsManager.CurrentHealth);
+        _lampPresentation.UpdateHealthBar(_lampStatsManager.NormalizedHealth, _lampStatsManager.CurrentHealth, _lampStatsManager.DamageWeights);
         _lampPresentation.UpgradeHealthBar();
     }
         

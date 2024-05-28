@@ -14,6 +14,7 @@ public class LampDeathAnimation : MonoBehaviour
     [SerializeField] private GameObject _fracturedGlassObject;
     [SerializeField] private float _destructionSpeed;
     [SerializeField] private float _gravityStartAcceleration = 0.01f;
+    [SerializeField] private float _rotationSpeed = 1f;
     private float _gravityAcceleration;
     [SerializeField] private Transform[] _bones;
     
@@ -55,7 +56,7 @@ public class LampDeathAnimation : MonoBehaviour
         for (int i = 0; i < _bones.Length; i++)
         {
             _boneDirections[i] = _bones[i].position.normalized;
-            _boneRotations[i] = Random.Range(-270, 270);
+            _boneRotations[i] = Random.Range(-270, 270) * _rotationSpeed;
             _boneSpeeds[i] = Random.Range(0.9f, 1.9f);
         }
         _lampEmissionController.ShowGlass();

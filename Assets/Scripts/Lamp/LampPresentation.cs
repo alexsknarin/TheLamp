@@ -53,10 +53,15 @@ public class LampPresentation : MonoBehaviour, IInitializable
         _lampHealthBar.UpdateHealth(0, 0);
     }
     
-    public void UpdateHealthBar(float normalizedHealth, int actualHealth)
+    public void UpdateHealthBar(float normalizedHealth, int actualHealth, Vector3 damageWeights)
     {
         _lampHealthBar.UpdateHealth(normalizedHealth, actualHealth);
-        _lampEmissionController.LampDamageUpdate(new Vector4(1-normalizedHealth, 0, 0, 0));
+        SetDamageWeights(damageWeights);
+    }
+    
+    public void SetDamageWeights(Vector3 damageWeights)
+    {
+        _lampEmissionController.LampDamageUpdate(damageWeights);
     }
     
     public void UpgradeHealthBar()

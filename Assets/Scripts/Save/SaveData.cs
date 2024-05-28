@@ -13,5 +13,4 @@ public class SaveData
     public int LampDamageWeightRight;
     public int LampDamageWeightLeft;
     public int LampDamageWeightBottom;
-    public int LampDamageWeightCount;
 }
