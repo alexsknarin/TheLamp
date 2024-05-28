@@ -13,11 +13,13 @@ public class LampIntroAnimation : MonoBehaviour
     private float _localTime = 0;
     private float _duration;
     
+    private int _currentHealth;
     private float _currentHealthNormalized; 
     
     public void Play(float duration, int currentHealth, int maxHealth)
     {
         _duration = duration;
+        _currentHealth = currentHealth;
         _currentHealthNormalized = (float)currentHealth / maxHealth;
         _isPlaying = true;
         _localTime = 0;
@@ -31,7 +33,7 @@ public class LampIntroAnimation : MonoBehaviour
             if (phase > 1)
             {
                 _isPlaying = false;
-                _lampHealthBar.UpdateHealth(_currentHealthNormalized, 2);
+                _lampHealthBar.UpdateHealth(_currentHealthNormalized, _currentHealth);
                 _lampEmissionController.Intensity = _lampIntensityAnimCurve.Evaluate(1);
                 _lampEmissionController.BlockedModeMix = _lampNoiseAmountAnimCurve.Evaluate(1);
                 
