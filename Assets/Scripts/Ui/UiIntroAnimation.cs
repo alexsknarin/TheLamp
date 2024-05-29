@@ -1,6 +1,5 @@
 using System;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class UiIntroAnimation : MonoBehaviour
 {
@@ -14,7 +13,7 @@ public class UiIntroAnimation : MonoBehaviour
     private float _localTime;
     private bool _isPlaying;
 
-    public event Action OnOnFinished;
+    public event Action OnIntroFinished;
 
     // Update is called once per frame
     
@@ -39,7 +38,7 @@ public class UiIntroAnimation : MonoBehaviour
                 cameraPosition.z = _cameraEndZPosition;
                 _cameraTransform.position = cameraPosition;
                 _colorAdjustments.postExposure.Override(0);
-                OnOnFinished?.Invoke();
+                OnIntroFinished?.Invoke();
             }
             _colorAdjustments.postExposure.Override(Mathf.Lerp(-8, 0, phase));
             cameraPosition.z = Mathf.Lerp(_cameraStartZPosition, _cameraEndZPosition, _cameraAnimationCurve.Evaluate(phase));

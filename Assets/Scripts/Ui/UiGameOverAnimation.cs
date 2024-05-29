@@ -1,13 +1,13 @@
-
+using System;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class UiGameOverAnimation : MonoBehaviour
 {
-    [SerializeField] private GameObject _gameOverButtonsGroup;
     [SerializeField] private GameObject _gameOverPanel;
     [SerializeField] private UiText _gameOverText;
     private UnityEngine.Rendering.Universal.ColorAdjustments _colorAdjustments;
+
+    public event Action OnGameOverAnimationFinished;
 
     private bool _isPlaying = false;
     private float _localTime;
@@ -32,7 +32,7 @@ public class UiGameOverAnimation : MonoBehaviour
             if (phase > 1)
             {
                 _isPlaying = false;
-                _gameOverButtonsGroup.SetActive(true);
+                OnGameOverAnimationFinished?.Invoke();
             }
             _colorAdjustments.postExposure.Override(Mathf.Lerp(0, -10, phase));
             _localTime += Time.deltaTime;
