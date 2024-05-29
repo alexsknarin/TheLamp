@@ -10283,6 +10283,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: WaspBaseTransform
       objectReference: {fileID: 0}
+    - target: {fileID: 762533772972292265, guid: db082986f50fad64f90c5d3f0bd3ddf3,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1177802453113491699, guid: db082986f50fad64f90c5d3f0bd3ddf3,
         type: 3}
       propertyPath: _maxHealth
