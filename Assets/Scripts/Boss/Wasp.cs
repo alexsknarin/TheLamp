@@ -44,6 +44,7 @@ public class Wasp : BossBase
     public override void Play()
     {
         _waspMovement.Play();
+        _waspPresentation.ResetTrail();
     }
 
     public void TriggerSpread()

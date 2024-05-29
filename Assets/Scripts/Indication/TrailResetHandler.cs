@@ -9,6 +9,7 @@ public class TrailResetHandler : MonoBehaviour, IInitializable
     private IEnumerator EnableTrail()
     {
         yield return _waitTime;
+        _trailRenderer.gameObject.SetActive(true);
         _trailRenderer.emitting = true;
     }
 

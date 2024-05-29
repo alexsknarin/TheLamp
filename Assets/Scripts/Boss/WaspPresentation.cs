@@ -35,7 +35,7 @@ public class WaspPresentation : MonoBehaviour, IInitializable
         _damageEmitParticles.SendEvent("OnEndEmit");
         _damageEmitParticles.SetFloat("Rate", 0);
     }
-    
+   
     public void SetDamage(float damage)
     {
         _waspBodyMaterial.SetFloat("_DamagePhase", damage);
