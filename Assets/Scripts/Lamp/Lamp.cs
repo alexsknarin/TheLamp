@@ -11,7 +11,7 @@ public class Lamp : MonoBehaviour, IInitializable
     [SerializeField] private LampMovement _lampMovement;
     [SerializeField] private LampStickZoneCollisionHandler _lampStickZoneCollisionHandler;
     [SerializeField] private LampAttackExitZoneCollisionHandler _lampAttackExitZoneCollisionHandler;    
-    [SerializeField] private int _attackBlokerCount;
+    [SerializeField] private int _attackBlockerCount;
     [Header("Lamp Stats")]
     [SerializeField] private LampStatsManager _lampStatsManager;
     
@@ -48,11 +48,9 @@ public class Lamp : MonoBehaviour, IInitializable
     public void Initialize()
     {
         _lampStatsManager.Initialize();
-        _lampAttackModel.Initialize();
-        _lampAttackModel.UpdateCooldownTime(_lampStatsManager.CurrentColldownTime);
+        _lampAttackModel.Initialize(_lampStatsManager.CurrentColldownTime);
         _lampMovement.Initialize();
-        _lampPresentation.Initialize();
-        _lampPresentation.SetDamageWeights(_lampStatsManager.DamageWeights);
+        _lampPresentation.Initialize(_lampStatsManager.DamageWeights);
         if (_stickyEnemies == null)
         {
             _stickyEnemies = new List<EnemyBase>();
@@ -61,7 +59,7 @@ public class Lamp : MonoBehaviour, IInitializable
         {
             _stickyEnemies.Clear();
         }
-        _attackBlokerCount = 0;
+        _attackBlockerCount = 0;
     }
   
     private void StickyEnemyEnterCollisionHandle(EnemyBase enemy)
@@ -72,7 +70,7 @@ public class Lamp : MonoBehaviour, IInitializable
         if (!_stickyEnemies.Contains(enemy))
         {
             _stickyEnemies.Add(enemy);
-            _attackBlokerCount = _stickyEnemies.Count;
+            _attackBlockerCount = _stickyEnemies.Count;
         }
         
         enemy.transform.parent = transform;
@@ -87,10 +85,10 @@ public class Lamp : MonoBehaviour, IInitializable
             if (_stickyEnemies.Contains(enemy))
             {
                 _stickyEnemies.Remove(enemy);
-                _attackBlokerCount = _stickyEnemies.Count;
-                if( _attackBlokerCount <= 0)
+                _attackBlockerCount = _stickyEnemies.Count;
+                if( _attackBlockerCount <= 0)
                 {
-                    _attackBlokerCount = 0;
+                    _attackBlockerCount = 0;
                     _lampAttackModel.RemoveAttackBlocker();
                     _lampPresentation.DisableBlockedMode();
                 }    
@@ -119,7 +117,7 @@ public class Lamp : MonoBehaviour, IInitializable
             else
             {
                 _isAssessingDamage = false;
-                _lampStatsManager.DecreaseCurrentHealth(1, enemy.transform.position.normalized); // Difference based on enemy type
+                _lampStatsManager.DecreaseCurrentHealth(1, enemy.transform.position.normalized);
                 _lampPresentation.UpdateHealthBar(_lampStatsManager.NormalizedHealth, _lampStatsManager.CurrentHealth, _lampStatsManager.DamageWeights);
                 if (_lampStatsManager.CurrentHealth <= 0)
                 {

@@ -533,7 +533,6 @@ MonoBehaviour:
   _lampGlassMeshRenderer: {fileID: 738155935}
   _lampSocketMeshRenderer: {fileID: 1900091331}
   _lampLight: {fileID: 1932584611}
-  _lampDamageWeights: {x: 0.06, y: 0, z: 0}
 --- !u!1 &30557019
 GameObject:
   m_ObjectHideFlags: 0
@@ -8337,8 +8336,8 @@ GameObject:
   - component: {fileID: 1934066242}
   - component: {fileID: 1934066243}
   - component: {fileID: 1934066247}
-  - component: {fileID: 1934066249}
   - component: {fileID: 1934066246}
+  - component: {fileID: 1934066249}
   - component: {fileID: 1934066248}
   - component: {fileID: 1934066245}
   - component: {fileID: 1934066244}
@@ -8499,7 +8498,7 @@ MonoBehaviour:
   _lampMovement: {fileID: 1934066248}
   _lampStickZoneCollisionHandler: {fileID: 815775906}
   _lampAttackExitZoneCollisionHandler: {fileID: 452042971}
-  _attackBlokerCount: 0
+  _attackBlockerCount: 0
   _lampStatsManager: {fileID: 1934066249}
 --- !u!114 &1934066247
 MonoBehaviour:
@@ -10321,13 +10320,13 @@ SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 1595482320}
-  - {fileID: 1449376469}
   - {fileID: 1818435499}
   - {fileID: 1665985693}
+  - {fileID: 1449376469}
   - {fileID: 1934066241}
   - {fileID: 1037585458}
-  - {fileID: 1291610353}
   - {fileID: 30557020}
+  - {fileID: 1291610353}
   - {fileID: 330585546}
   - {fileID: 410087041}
   - {fileID: 104458}

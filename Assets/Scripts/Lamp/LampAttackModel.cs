@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class LampAttackModel : MonoBehaviour, IInitializable
+public class LampAttackModel : MonoBehaviour
 {
     [SerializeField] private CircleCollider2D _attackZone;
     [SerializeField] private CircleCollider2D _attackExitZone;
@@ -34,13 +34,14 @@ public class LampAttackModel : MonoBehaviour, IInitializable
         Lamp.OnLampDamaged -= HandleDamageWithCooldown;
     }
     
-    public void Initialize()
+    public void Initialize(float currentCooldownTime)
     {
         _currentPower = _maxPower;
         _lampState = LampStates.Neutral;
         _attackZone.radius = _attackDistance;
         _attackExitZone.radius = _attackExitDistance;
         _isBlockedAttack = false;
+        _fullCooldownTime = currentCooldownTime;
     }
     
     private void Update()
@@ -56,12 +57,6 @@ public class LampAttackModel : MonoBehaviour, IInitializable
                 PerformCooldownState();
                 break;
         }
-    }
-    
-    public void UpdateCooldownTime(float newCooldownTime)
-    {
-        _fullCooldownTime = newCooldownTime;
-        
     }
     
     public void UpgradeCooldownTime(float newCooldownTime)

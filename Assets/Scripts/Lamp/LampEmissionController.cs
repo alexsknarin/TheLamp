@@ -45,8 +45,6 @@ public class LampEmissionController : MonoBehaviour
     [SerializeField] private MeshRenderer _lampSocketMeshRenderer;
     private Material _lampSocketAluminiumMaterial;
     [SerializeField] private Light _lampLight;
-    
-    [SerializeField] private Vector3 _lampDamageWeights;
 
     private readonly float _lightNeutralIntensity = 22;
     private readonly float _lampNeutralEmission = 1f;
@@ -83,24 +81,23 @@ public class LampEmissionController : MonoBehaviour
     
     public void LampDamageUpdate(Vector3 damageWeights)
     {
-        _lampDamageWeights = damageWeights;
+        _lampGlassMaterial.SetFloat("_CracksAmountR", damageWeights.x);
+        _lampGlassMaterial.SetFloat("_CracksAmountL", damageWeights.y);
+        _lampGlassMaterial.SetFloat("_CracksAmountB", damageWeights.z);
     }
     
     private void Update()
     {
-        // TODO: EXTRACT TO Event driven methods
-        // Only update when needed
+        float blockedNoise = 1;
+        float intensity = _intensity;
+        if (_blockedModeMix > 0)
+        {
+            blockedNoise = Mathf.PerlinNoise1D(Time.time * _blockedModeNoseFrequency) * 1.35f - 0.35f;
+            blockedNoise = Mathf.Clamp01(blockedNoise);
+            blockedNoise = Mathf.Lerp(1, blockedNoise, _blockedModeMix);
+            intensity = _intensity * blockedNoise;
+        }
         
-        _lampGlassMaterial.SetFloat("_CracksAmountR", _lampDamageWeights.x);
-        _lampGlassMaterial.SetFloat("_CracksAmountL", _lampDamageWeights.y);
-        _lampGlassMaterial.SetFloat("_CracksAmountB", _lampDamageWeights.z);
-        
-        
-        float blockedNoise = Mathf.PerlinNoise1D(Time.time * _blockedModeNoseFrequency) * 1.35f - 0.35f;
-        blockedNoise = Mathf.Clamp01(blockedNoise);
-        blockedNoise = Mathf.Lerp(1, blockedNoise, _blockedModeMix);
-        
-        float intensity = _intensity * blockedNoise;
         _filamentMaterial.SetFloat("_EmissionStrength", intensity * 0.4f);
         _electrodeMaterial.SetFloat("_EmissionStrength", intensity*1.6f);
         _glassTubeMaterial.SetFloat("_EdgeEmissionStrength", intensity*1.6f);

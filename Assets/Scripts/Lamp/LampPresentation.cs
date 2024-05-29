@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.Rendering;
 
-public class LampPresentation : MonoBehaviour, IInitializable
+public class LampPresentation : MonoBehaviour
 {
     [SerializeField] private LampEmissionController _lampEmissionController;
     [Range(0, 1)]
@@ -42,7 +42,7 @@ public class LampPresentation : MonoBehaviour, IInitializable
         LampAttackModel.OnLampBlockedAttack -= StartBlockedAttackState;
     }
     
-    public void Initialize()
+    public void Initialize(Vector3 damageWeights)
     {
         ResetLightNeutralState();
         _lampHealthBar.Initialize();
@@ -51,16 +51,12 @@ public class LampPresentation : MonoBehaviour, IInitializable
 
         // arrange before the intro
         _lampHealthBar.UpdateHealth(0, 0);
+        _lampEmissionController.LampDamageUpdate(damageWeights);
     }
     
     public void UpdateHealthBar(float normalizedHealth, int actualHealth, Vector3 damageWeights)
     {
         _lampHealthBar.UpdateHealth(normalizedHealth, actualHealth);
-        SetDamageWeights(damageWeights);
-    }
-    
-    public void SetDamageWeights(Vector3 damageWeights)
-    {
         _lampEmissionController.LampDamageUpdate(damageWeights);
     }
     

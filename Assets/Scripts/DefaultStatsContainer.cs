@@ -45,9 +45,9 @@ public class DefaultStatsContainer : ScriptableObject
         _data.MaxHealth = currentData.MaxHealth;
         _data.Health = currentData.MaxHealth;
         _data.CooldownTime = currentData.CooldownTime;
-        _data.LampDamageWeightRight = currentData.LampDamageWeightRight;
-        _data.LampDamageWeightLeft = currentData.LampDamageWeightLeft;
-        _data.LampDamageWeightBottom = currentData.LampDamageWeightBottom;
+        _data.LampDamageWeightRight = 0;
+        _data.LampDamageWeightLeft = 0;
+        _data.LampDamageWeightBottom = 0;
         return _data;
     }
 }
