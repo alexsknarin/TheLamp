@@ -38,6 +38,7 @@ public class UiManager : MonoBehaviour, IInitializable
     private UnityEngine.Rendering.Universal.ColorAdjustments _colorAdjustments;
     
     public event Action OnIntroFinished;
+    public event Action OnGameoverFinished; 
     
     private float _localTime;
     private bool _isGameOverPlaying = false;
@@ -47,14 +48,16 @@ public class UiManager : MonoBehaviour, IInitializable
     {
         Lamp.OnLampDamaged += HandleLampDamage;
         Lamp.OnLampDead += HandleLampDeath;
-        _uiIntroAnimation.OnOnFinished += OnIntroFinishedHandler;
+        _uiIntroAnimation.OnIntroFinished += OnIntroFinishedHandler;
+        _uiGameOverAnimation.OnGameOverAnimationFinished += HandleGameoverAnimationFinished;
     }
     
     private void OnDisable()
     {
         Lamp.OnLampDamaged -= HandleLampDamage;
         Lamp.OnLampDead -= HandleLampDeath;
-        _uiIntroAnimation.OnOnFinished -= OnIntroFinishedHandler;
+        _uiIntroAnimation.OnIntroFinished -= OnIntroFinishedHandler;
+        _uiGameOverAnimation.OnGameOverAnimationFinished -= HandleGameoverAnimationFinished;
     }
     
     
@@ -190,5 +193,11 @@ public class UiManager : MonoBehaviour, IInitializable
     public void ShowUpgradeButtons()
     {
         _upgradeButtonsPanel.SetActive(true);
+    }
+    
+    private void HandleGameoverAnimationFinished()
+    {
+        _gameOverButtonsGroup.SetActive(true);
+        OnGameoverFinished?.Invoke();
     }
 }

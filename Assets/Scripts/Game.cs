@@ -38,6 +38,7 @@ public class Game : MonoBehaviour
         _lampStatsManager.OnHealthChange += HandleStatsUpgrade;
         _lampStatsManager.OnCooldownChange += HandleStatsUpgrade;
         _adsManager.OnAdFinished += SaveRewards;
+        _uiManager.OnGameoverFinished += HandleGameoverUiAnimationFinished;
     }
 
     private void OnDisable()
@@ -51,6 +52,7 @@ public class Game : MonoBehaviour
         _lampStatsManager.OnHealthChange -= HandleStatsUpgrade;
         _lampStatsManager.OnCooldownChange -= HandleStatsUpgrade;
         _adsManager.OnAdFinished -= SaveRewards;
+        _uiManager.OnGameoverFinished -= HandleGameoverUiAnimationFinished;
     }
     
     private void Start()
@@ -156,6 +158,11 @@ public class Game : MonoBehaviour
         _isLampDead = true;
         SwitchGameState();
     }
+    
+    private void HandleGameoverUiAnimationFinished()
+    {
+        _enemyManager.DeactivateAllEnemies();
+    }
    
     private void SwitchGameState()
     {
@@ -197,7 +204,7 @@ public class Game : MonoBehaviour
                 }
                 break;
         }
-    }   
+    }
 
     public void ExitGame()
     {

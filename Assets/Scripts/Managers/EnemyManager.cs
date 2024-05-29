@@ -159,6 +159,11 @@ public class EnemyManager : MonoBehaviour,IInitializable
         }
     }
     
+    public void DeactivateAllEnemies()
+    {
+        ReturnAllActiveEnemiesToPool();    
+    }
+    
     private IEnumerator SpreadEnemiesAfterGameOver()
     {
         yield return _waitAfterGameOver;
