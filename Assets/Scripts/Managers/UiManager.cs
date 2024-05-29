@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.Rendering;
 using UnityEngine.UI;
 
 public class UiManager : MonoBehaviour, IInitializable
@@ -14,7 +15,6 @@ public class UiManager : MonoBehaviour, IInitializable
     [SerializeField] private GameObject _upgradeHintsPanel;
     [Header("Overlay Images")]
     [SerializeField] private BrokenGlassEffect _brokenGlassEffect;
-    [SerializeField] private Image _fadeImage;
     [Header("Analytics")]
     [SerializeField] private GameObject _analyticsConsentPanel;
     [SerializeField] private GameObject _analyticsConsentEnableButton;
@@ -34,15 +34,14 @@ public class UiManager : MonoBehaviour, IInitializable
     [SerializeField] private GameObject _gameOverPanel;
     [SerializeField] private UiText _gameOverText;
     [SerializeField] private GameObject _gameOverButtonsGroup;
+    [SerializeField] private Volume _postProcessingVolume;
+    private UnityEngine.Rendering.Universal.ColorAdjustments _colorAdjustments;
     
     public event Action OnIntroFinished;
     
     private float _localTime;
     private bool _isGameOverPlaying = false;
     
-    private Color _fadeColor1 = new Color(0, 0, 0, 1);
-    private Color _fadeColor2 = new Color(0, 0, 0, 0);
-   
     // TODO: find a way to have less events
     private void OnEnable()
     {
@@ -61,14 +60,18 @@ public class UiManager : MonoBehaviour, IInitializable
     
     public void Initialize()
     {
+        VolumeProfile volumeProfile = _postProcessingVolume.profile;
+        if(!volumeProfile) throw new System.NullReferenceException(nameof(UnityEngine.Rendering.VolumeProfile));
+        // You can leave this variable out of your function, so you can reuse it throughout your class.
+        if(!volumeProfile.TryGet(out _colorAdjustments)) throw new System.NullReferenceException(nameof(_colorAdjustments));
+        _colorAdjustments.postExposure.Override(-15);
+
         _waveText.gameObject.SetActive(true);
         _waveText.DisableText();
         _upgradeButtonsPanel.SetActive(false);
         _gameOverPanel.SetActive(false);
         _gameOverButtonsGroup.SetActive(false);
 
-        _fadeImage.gameObject.SetActive(true);
-        _fadeImage.color = _fadeColor1;
         if (PlayerPrefs.HasKey("dataConsent"))
         {
             _analyticsConsentPanel.SetActive(false);
@@ -128,7 +131,7 @@ public class UiManager : MonoBehaviour, IInitializable
 
     public void PlayIntro()
     {
-        _uiIntroAnimation.Play(_introDuration);
+        _uiIntroAnimation.Play(_introDuration, _colorAdjustments);
     }
 
     private void OnIntroFinishedHandler()
@@ -171,7 +174,7 @@ public class UiManager : MonoBehaviour, IInitializable
 
     public void StartGameOver()
     {
-        _uiGameOverAnimation.Play(_gameOverDuration);
+        _uiGameOverAnimation.Play(_gameOverDuration, _colorAdjustments);
     }
 
     private void HandleLampDamage(EnemyBase enemy)

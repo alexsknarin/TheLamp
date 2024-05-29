@@ -4,9 +4,9 @@ using UnityEngine.UI;
 
 public class UiIntroAnimation : MonoBehaviour
 {
-    [SerializeField] private Image _fadeImage;
     [SerializeField] private Transform _cameraTransform;
     [SerializeField] private AnimationCurve _cameraAnimationCurve;
+    private UnityEngine.Rendering.Universal.ColorAdjustments _colorAdjustments;
     private float _duration;
 
     private float _cameraStartZPosition = -6.5f;
@@ -14,19 +14,16 @@ public class UiIntroAnimation : MonoBehaviour
     private float _localTime;
     private bool _isPlaying;
 
-    private Color _fadeColor1 = new Color(0, 0, 0, 1);
-    private Color _fadeColor2 = new Color(0, 0, 0, 0);
-
     public event Action OnOnFinished;
 
     // Update is called once per frame
     
-    public void Play(float duration)
+    public void Play(float duration, UnityEngine.Rendering.Universal.ColorAdjustments colorAdjustments)
     {
         _duration = duration;
         _localTime = 0;
         _isPlaying = true;
-        _fadeImage.gameObject.SetActive(true);
+        _colorAdjustments = colorAdjustments;
     }
     
     void Update()
@@ -39,13 +36,12 @@ public class UiIntroAnimation : MonoBehaviour
             {
                 _isPlaying = false;
                 _localTime = 0;
-                _fadeImage.color = _fadeColor1;
                 cameraPosition.z = _cameraEndZPosition;
                 _cameraTransform.position = cameraPosition;
-                _fadeImage.gameObject.SetActive(false);
+                _colorAdjustments.postExposure.Override(0);
                 OnOnFinished?.Invoke();
             }
-            _fadeImage.color = Color.Lerp(_fadeColor1, _fadeColor2, phase);
+            _colorAdjustments.postExposure.Override(Mathf.Lerp(-8, 0, phase));
             cameraPosition.z = Mathf.Lerp(_cameraStartZPosition, _cameraEndZPosition, _cameraAnimationCurve.Evaluate(phase));
             _cameraTransform.position = cameraPosition;
             _localTime += Time.deltaTime;
