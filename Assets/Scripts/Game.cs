@@ -14,6 +14,7 @@ public class Game : MonoBehaviour
     [SerializeField] private SaveLoadManager _saveLoadManager;
     [SerializeField] private AdsManager _adsManager;
     [SerializeField] private GameStates _currentGameState;
+    [SerializeField] private bool _skipIntro;
     [SerializeField] private float _introDuration;
     [SerializeField] private float _deathDuration;
 
@@ -58,6 +59,12 @@ public class Game : MonoBehaviour
     private void Start()
     {
         Application.targetFrameRate = 60;
+        
+        if (_skipIntro)
+        {
+            _introDuration = 0.001f;
+        }
+        
         _isLampDead = false;
         _currentGameState = GameStates.Loading;
 
