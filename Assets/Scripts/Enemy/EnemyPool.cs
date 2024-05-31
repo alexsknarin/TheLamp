@@ -3,17 +3,20 @@ using UnityEngine.Pool;
 
 public class EnemyPool : MonoBehaviour, IInitializable
 {
+    [SerializeField] private Enemy _mothlingPrefab;
     [SerializeField] private Enemy _flyPrefab;
     [SerializeField] private Enemy _mothPrefab;
     [SerializeField] private Enemy _ladybugPrefab;
     [SerializeField] private Enemy _fireflyPrefab;
     [SerializeField] private Enemy _spiderPrefab;
+    private ObjectPool<Enemy> _mothlingPool;
     private ObjectPool<Enemy> _flyPool;
     private ObjectPool<Enemy> _mothPool;
     private ObjectPool<Enemy> _ladybugPool;
     private ObjectPool<Enemy> _fireflyPool;
     private ObjectPool<Enemy> _spiderPool;
     [SerializeField] private int _poolSize;
+    private int _mothlingCount;
     private int _flyCount;
     private int _mothCount;
     private int _ladybugCount;
@@ -25,14 +28,25 @@ public class EnemyPool : MonoBehaviour, IInitializable
     {
         _flyCount = 0;
         _mothCount= 0;
+        _mothlingCount= 0;
         _ladybugCount = 0;
         _fireflyCount = 0;
         _spiderCount = 0;
+        _mothlingPool = new ObjectPool<Enemy>(CreateMothling, OnGetFromPool, OnReleaseToPool, OnDestroyPooledObject, true, _poolSize, _poolSize);
         _flyPool = new ObjectPool<Enemy>(CreateFly, OnGetFromPool, OnReleaseToPool, OnDestroyPooledObject, true, _poolSize, _poolSize);
         _mothPool = new ObjectPool<Enemy>(CreateMoth, OnGetFromPool, OnReleaseToPool, OnDestroyPooledObject, true, _poolSize, _poolSize);
         _ladybugPool = new ObjectPool<Enemy>(CreateLadybug, OnGetFromPool, OnReleaseToPool, OnDestroyPooledObject, true, _poolSize, _poolSize);
         _fireflyPool = new ObjectPool<Enemy>(CreateFirefly, OnGetFromPool, OnReleaseToPool, OnDestroyPooledObject, true, _poolSize, _poolSize);
         _spiderPool = new ObjectPool<Enemy>(CreateSpider, OnGetFromPool, OnReleaseToPool, OnDestroyPooledObject, true, _poolSize, _poolSize);
+    }
+    
+    private Enemy CreateMothling()
+    {
+        Enemy enemyInstance = Instantiate(_mothlingPrefab);
+        enemyInstance.ObjectPool = _mothlingPool;
+        enemyInstance.name = "Mothling" + _mothlingCount;
+        _mothlingCount++;
+        return enemyInstance;
     }
     
     private Enemy CreateFly()
@@ -99,6 +113,12 @@ public class EnemyPool : MonoBehaviour, IInitializable
     {
         switch (enemyType)
         {
+            case EnemyTypes.Mothling:
+                if (_mothlingPool.CountAll <= _poolSize)
+                {
+                    return _mothlingPool.Get();
+                }
+                break;
             case EnemyTypes.Fly:
                 if (_flyPool.CountAll <= _poolSize)
                 {
