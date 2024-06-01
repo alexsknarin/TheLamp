@@ -4,6 +4,7 @@ using UnityEngine;
 public class ScoresManager : MonoBehaviour, IInitializable
 {
     [Header("Score per enemy prices")] 
+    [SerializeField] private int _mothlingScorePrice;
     [SerializeField] private int _flyScorePrice;
     [SerializeField] private int _fireflyScorePrice;
     [SerializeField] private int _mothScorePrice;
@@ -38,6 +39,9 @@ public class ScoresManager : MonoBehaviour, IInitializable
     {
         switch (enemy.EnemyType)
         {
+            case EnemyTypes.Mothling:
+                _currentScore += _mothlingScorePrice;
+                break;
             case  EnemyTypes.Fly:
                 _currentScore += _flyScorePrice;
                 break;

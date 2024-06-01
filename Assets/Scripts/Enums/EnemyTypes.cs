@@ -6,5 +6,6 @@ public enum EnemyTypes
     Ladybug,
     Spider,
     Wasp,
+    Mothling,
     None
 }

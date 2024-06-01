@@ -94,6 +94,15 @@ public class Enemy : EnemyBase
             }
         }
 
+        if (_enemyType == EnemyTypes.Mothling && _enemyMovement.State == EnemyStates.Patrol)
+        {
+            if ((y < 0.0f) || (Mathf.Abs(x) > 1.1f && y > 0.0f))
+            {
+                ReadyToAttack = true;
+                return;
+            }
+        }
+
         if (_enemyType == EnemyTypes.Moth && _enemyMovement.State == EnemyStates.Hover)
         {
             if ((Mathf.Abs(transform.position.x) > 0.7f && transform.position.y <0.85f) || transform.position.y < 0.0f)

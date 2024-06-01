@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class LampIntroAnimation : MonoBehaviour
@@ -5,17 +6,23 @@ public class LampIntroAnimation : MonoBehaviour
     [SerializeField] private AnimationCurve _animCurve;
     [SerializeField] private LampHealthBar _lampHealthBar;
     [SerializeField] private LampEmissionController _lampEmissionController;
+    [SerializeField] private MeshRenderer _lampAttackZoneRenderer;
     [SerializeField] private AnimationCurve _lampIntensityAnimCurve;
     [SerializeField] private AnimationCurve _lampNoiseAmountAnimCurve;
-    
-    
+    private Material _lampAttackZoneMaterial;
+
     private bool _isPlaying = false;
     private float _localTime = 0;
     private float _duration;
     
     private int _currentHealth;
-    private float _currentHealthNormalized; 
-    
+    private float _currentHealthNormalized;
+
+    private void Awake()
+    {
+        _lampAttackZoneMaterial = _lampAttackZoneRenderer.material;
+    }
+
     public void Play(float duration, int currentHealth, int maxHealth)
     {
         _duration = duration;
@@ -23,6 +30,7 @@ public class LampIntroAnimation : MonoBehaviour
         _currentHealthNormalized = (float)currentHealth / maxHealth;
         _isPlaying = true;
         _localTime = 0;
+        _lampAttackZoneRenderer.transform.localScale = Vector3.one * (2 * 0.68f);
     }
     
     void Update()
@@ -44,6 +52,7 @@ public class LampIntroAnimation : MonoBehaviour
             _lampHealthBar.UpdateHealth(health, 2);
             _lampEmissionController.Intensity = _lampIntensityAnimCurve.Evaluate(phase);
             _lampEmissionController.BlockedModeMix = _lampNoiseAmountAnimCurve.Evaluate(phase);
+            _lampAttackZoneMaterial.SetFloat("_Alpha", Mathf.Lerp(0, 0.005f, _lampIntensityAnimCurve.Evaluate(phase)));
             
             _localTime += Time.deltaTime;    
         }
