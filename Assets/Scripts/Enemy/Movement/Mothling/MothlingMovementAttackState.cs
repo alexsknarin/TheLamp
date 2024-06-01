@@ -3,14 +3,12 @@ using UnityEngine;
 public class MothlingMovementAttackState: EnemyMovementBaseState
 {
     public override EnemyStates State => EnemyStates.Attack;
-    private float _acceleration = 1.5f;
-    private float _depthDecrement = 0.2f;
-    private float _acceleratedSpeed = 1f;
+    private readonly float DEPTH_DECREMENT = 0.2f;
     private float _startDistance;
     
     public MothlingMovementAttackState(IStateMachineOwner owner, float speed, float radius, float verticalAmplitude) : base()
     {
-        _speed = speed;
+        _speed = speed * 1.1f;
         _radius = radius;
         _verticalAmplitude = verticalAmplitude;
         _owner = owner;
@@ -19,7 +17,6 @@ public class MothlingMovementAttackState: EnemyMovementBaseState
     public override void EnterState(Vector3 currentPosition, int sideDirection, int depthDirection)
     {
         _sideDirection = sideDirection;
-        _acceleratedSpeed = 1f;
         _startDistance = currentPosition.magnitude - 0.65f;
     }
     
@@ -27,12 +24,11 @@ public class MothlingMovementAttackState: EnemyMovementBaseState
     {
         Vector3 newPosition = currentPosition;
         Vector3 direction = -newPosition.normalized;
-        newPosition += direction * (_speed * _acceleratedSpeed * Time.deltaTime);
-        _acceleratedSpeed += _acceleration * Time.deltaTime;
+        newPosition += direction * (_speed * Time.deltaTime);
         Position = newPosition;
         
         Vector3 cameraDirection = (_cameraPosition - Position).normalized;
         float attackProximityGradient = Mathf.Clamp((Position.magnitude - 0.65f) / _startDistance, 0.5f, 1.0f);
-        Depth = cameraDirection * (1.1f * _depthDecrement * attackProximityGradient);
+        Depth = cameraDirection * (1.1f * DEPTH_DECREMENT * attackProximityGradient);
     }
 }
