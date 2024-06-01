@@ -8768,6 +8768,7 @@ MonoBehaviour:
     m_RotationOrder: 4
   _lampHealthBar: {fileID: 969163317}
   _lampEmissionController: {fileID: 23663153}
+  _lampAttackZoneRenderer: {fileID: 1464268262}
   _lampIntensityAnimCurve:
     serializedVersion: 2
     m_Curve:
@@ -9144,7 +9145,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _lampAttackZoneObject: {fileID: 1464268261}
-  _lampAttackZoneExtraSize: 0.22
   _lampEmissionController: {fileID: 23663153}
   _emissionPowerCurve:
     serializedVersion: 2
@@ -9507,6 +9507,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  _lampAttackZoneRenderer: {fileID: 1464268262}
 --- !u!1 &1944166815
 GameObject:
   m_ObjectHideFlags: 0
