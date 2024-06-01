@@ -8092,7 +8092,7 @@ MonoBehaviour:
   _maxEnemiesOnScreen: 0
   _aggresionLevel: 0
   _maxAggressionLevel: 6
-  _isStartAtWaveTestMode: 1
+  _isStartAtWaveTestMode: 0
   _startAtWave: 7
   _currentWave: 0
   _firstEnemySpawnDelay: 0.5
@@ -9144,6 +9144,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _lampAttackZoneObject: {fileID: 1464268261}
+  _lampAttackZoneExtraSize: 0.22
   _lampEmissionController: {fileID: 23663153}
   _emissionPowerCurve:
     serializedVersion: 2

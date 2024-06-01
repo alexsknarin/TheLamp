@@ -101,9 +101,9 @@ Material:
     - _BumpScale: 1
     - _ClearCoatMask: 0
     - _ClearCoatSmoothness: 0
-    - _CracksAmountB: 0.375
-    - _CracksAmountL: 0.25
-    - _CracksAmountR: 0.25
+    - _CracksAmountB: 0
+    - _CracksAmountL: 0.125
+    - _CracksAmountR: 0
     - _CracksAmountR_1: 0
     - _CracksAmountR_2: 0
     - _Cull: 2
@@ -117,7 +117,7 @@ Material:
     - _EdgeEmission: 0.739
     - _EdgeEmissionPower: 6.11
     - _EdgeEmissionStrength: 1.54
-    - _EmissionStrength: 1.5260876
+    - _EmissionStrength: 1.5433245
     - _EnvironmentReflections: 1
     - _GlassIOR: -0.21
     - _GlossMapScale: 0
