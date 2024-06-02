@@ -86,6 +86,19 @@ public class LampEmissionController : MonoBehaviour
         _lampGlassMaterial.SetFloat("_CracksAmountB", damageWeights.z);
     }
     
+    public void LampImpactDamageUpdate(LampImpactPointsData impactPointsData)
+    {
+        _lampGlassMaterial.SetFloat("_ImpactPoint01Strength", impactPointsData.ImpactPoint01Strength);
+        _lampGlassMaterial.SetFloat("_ImpactPoint01LocalAngle", impactPointsData.ImpactPoint01LocalAngle);
+        _lampGlassMaterial.SetFloat("_ImpactPoint01GlobalAngle", impactPointsData.ImpactPoint01GlobalAngle);
+        _lampGlassMaterial.SetFloat("_ImpactPoint02Strength", impactPointsData.ImpactPoint02Strength);
+        _lampGlassMaterial.SetFloat("_ImpactPoint02LocalAngle", impactPointsData.ImpactPoint02LocalAngle);
+        _lampGlassMaterial.SetFloat("_ImpactPoint02GlobalAngle", impactPointsData.ImpactPoint02GlobalAngle);
+        _lampGlassMaterial.SetFloat("_ImpactPoint03Strength", impactPointsData.ImpactPoint03Strength);
+        _lampGlassMaterial.SetFloat("_ImpactPoint03LocalAngle", impactPointsData.ImpactPoint03LocalAngle);
+        _lampGlassMaterial.SetFloat("_ImpactPoint03GlobalAngle", impactPointsData.ImpactPoint03GlobalAngle);
+    }
+    
     private void Update()
     {
         float blockedNoise = 1;

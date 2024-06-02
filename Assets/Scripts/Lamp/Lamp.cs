@@ -50,7 +50,7 @@ public class Lamp : MonoBehaviour, IInitializable
         _lampStatsManager.Initialize();
         _lampAttackModel.Initialize(_lampStatsManager.CurrentColldownTime);
         _lampMovement.Initialize();
-        _lampPresentation.Initialize(_lampStatsManager.DamageWeights);
+        _lampPresentation.Initialize(_lampStatsManager.DamageWeights, _lampStatsManager.LampImpactPointsData);
         if (_stickyEnemies == null)
         {
             _stickyEnemies = new List<EnemyBase>();
@@ -117,8 +117,14 @@ public class Lamp : MonoBehaviour, IInitializable
             else
             {
                 _isAssessingDamage = false;
-                _lampStatsManager.DecreaseCurrentHealth(1, enemy.transform.position.normalized);
-                _lampPresentation.UpdateHealthBar(_lampStatsManager.NormalizedHealth, _lampStatsManager.CurrentHealth, _lampStatsManager.DamageWeights);
+                Vector3 impactPoint = enemy.transform.position.normalized;
+                _lampStatsManager.DecreaseCurrentHealth(1, impactPoint);
+                _lampPresentation.UpdateHealthBar(
+                    _lampStatsManager.NormalizedHealth, 
+                    _lampStatsManager.CurrentHealth, 
+                    _lampStatsManager.DamageWeights,
+                    _lampStatsManager.LampImpactPointsData
+                    );
                 if (_lampStatsManager.CurrentHealth <= 0)
                 {
                     _lampAttackModel.HandleLampDeath();
@@ -137,12 +143,22 @@ public class Lamp : MonoBehaviour, IInitializable
     
     private void HandleUpdateHealth()
     {
-        _lampPresentation.UpdateHealthBar(_lampStatsManager.NormalizedHealth, _lampStatsManager.CurrentHealth, _lampStatsManager.DamageWeights);
+        _lampPresentation.UpdateHealthBar(
+            _lampStatsManager.NormalizedHealth, 
+            _lampStatsManager.CurrentHealth, 
+            _lampStatsManager.DamageWeights,
+            _lampStatsManager.LampImpactPointsData
+        );
     }
     
     private void HandleUpgradeHealth()
     {
-        _lampPresentation.UpdateHealthBar(_lampStatsManager.NormalizedHealth, _lampStatsManager.CurrentHealth, _lampStatsManager.DamageWeights);
+        _lampPresentation.UpdateHealthBar(
+            _lampStatsManager.NormalizedHealth, 
+            _lampStatsManager.CurrentHealth, 
+            _lampStatsManager.DamageWeights,
+            _lampStatsManager.LampImpactPointsData
+        );
         _lampPresentation.UpgradeHealthBar();
     }
         

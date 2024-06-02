@@ -1,4 +1,4 @@
- using System;
+     using System;
  using UnityEngine;
  using Random = UnityEngine.Random;
 
@@ -16,12 +16,17 @@
     [SerializeField] private int _upgradeThesholdInitialIncrement = 5;
     [SerializeField] private int _upgradeThesholdIncrement;
     [SerializeField] private int _level;
+    [Header("Damage")]
     [SerializeField] private int _lampDamageWeightRight;
     [SerializeField] private int _lampDamageWeightLeft;
     [SerializeField] private int _lampDamageWeightBottom;
     [SerializeField] private Vector3 _damageWeights;
-    
+    [Header("Impact")]
+    [SerializeField] private LampImpactPointsData _lampImpactPointsData;
+    public LampImpactPointsData LampImpactPointsData => _lampImpactPointsData;
+    [Header("Save Data")]
     [SerializeField] private SaveDataContainer _saveDataContainer;
+    
     public int MaxHealth => _maxHealth;
     public int CurrentHealth => _currentHealth;
     public float NormalizedHealth => (float)_currentHealth / _maxHealth;
@@ -46,6 +51,7 @@
 
     public void Initialize()
     {
+        _lampImpactPointsData = new LampImpactPointsData(); // Add Read from SaveData
         _level = _saveDataContainer.Level;
         _currentHealth = _saveDataContainer.Health;
         _maxHealth = _saveDataContainer.MaxHealth;
@@ -134,8 +140,64 @@
             _lampDamageWeightBottom++;
             _saveDataContainer.LampDamageWeightBottom = _lampDamageWeightBottom;
         }
-        
         CalculateDamageWeghts();
+        
+        // Calculate Impact points
+        _lampImpactPointsData.ImpactLastPointNumber++;
+        if (_lampImpactPointsData.ImpactLastPointNumber > 6)
+        {
+            _lampImpactPointsData.ImpactLastPointNumber = 1;
+        }
+        float impactRandomLocalAngle = Random.Range(0, 6.2832f);
+        
+        float impactGlobalAngle = Mathf.Acos(attackDirection.x);
+        if (attackDirection.y < 0)
+        {
+            impactGlobalAngle = Mathf.PI * 2 - impactGlobalAngle;
+        }
+
+        switch (_lampImpactPointsData.ImpactLastPointNumber)
+        {
+            case 1:
+                _lampImpactPointsData.ImpactPoint01Strength = 1f;
+                _lampImpactPointsData.ImpactPoint01LocalAngle = impactRandomLocalAngle;
+                _lampImpactPointsData.ImpactPoint01GlobalAngle = impactGlobalAngle;
+                break;
+            case 2:
+                _lampImpactPointsData.ImpactPoint02Strength = 1f;
+                _lampImpactPointsData.ImpactPoint01Strength = 0.66f;
+                _lampImpactPointsData.ImpactPoint02LocalAngle = impactRandomLocalAngle;
+                _lampImpactPointsData.ImpactPoint02GlobalAngle = impactGlobalAngle;
+                break;
+            case 3:
+                _lampImpactPointsData.ImpactPoint03Strength = 1f;
+                _lampImpactPointsData.ImpactPoint02Strength = 0.66f;
+                _lampImpactPointsData.ImpactPoint01Strength = 0.33f;
+                _lampImpactPointsData.ImpactPoint03LocalAngle = impactRandomLocalAngle;
+                _lampImpactPointsData.ImpactPoint03GlobalAngle = impactGlobalAngle;
+                break;
+            case 4: 
+                _lampImpactPointsData.ImpactPoint03Strength = 0.66f;
+                _lampImpactPointsData.ImpactPoint02Strength = 0.33f;
+                _lampImpactPointsData.ImpactPoint01Strength = 1f;
+                _lampImpactPointsData.ImpactPoint01LocalAngle = impactRandomLocalAngle;
+                _lampImpactPointsData.ImpactPoint01GlobalAngle = impactGlobalAngle;
+                break;
+            case 5:
+                _lampImpactPointsData.ImpactPoint03Strength = 0.33f;
+                _lampImpactPointsData.ImpactPoint02Strength = 1f;
+                _lampImpactPointsData.ImpactPoint01Strength = 0.66f;
+                _lampImpactPointsData.ImpactPoint02LocalAngle = impactRandomLocalAngle;
+                _lampImpactPointsData.ImpactPoint02GlobalAngle = impactGlobalAngle;
+                break;
+            case 6:
+                _lampImpactPointsData.ImpactPoint03Strength = 1f;
+                _lampImpactPointsData.ImpactPoint02Strength = 0.66f;
+                _lampImpactPointsData.ImpactPoint01Strength = 0.33f;
+                _lampImpactPointsData.ImpactPoint03LocalAngle = impactRandomLocalAngle;
+                _lampImpactPointsData.ImpactPoint03GlobalAngle = impactGlobalAngle;
+                break;
+        }
     }
     
     private void CalculateDamageWeghts()
@@ -189,8 +251,9 @@
             CalculateDamageWeghts();
             return;
         }
-
+        _lampImpactPointsData.Reset();
         CalculateDamageWeghts();
+        
     }
     
     private void SaveData()

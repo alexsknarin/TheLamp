@@ -3061,10 +3061,10 @@
     "m_Guid": {
         "m_GuidSerialized": "14baf1f2-3854-42e3-a6dd-155c13eb74f3"
     },
-    "m_Name": "DamagePoint02Strength",
+    "m_Name": "ImpactPoint02Strength",
     "m_DefaultRefNameVersion": 1,
-    "m_RefNameGeneratedByDisplayName": "DamagePoint02Strength",
-    "m_DefaultReferenceName": "_DamagePoint02Strength",
+    "m_RefNameGeneratedByDisplayName": "ImpactPoint02Strength",
+    "m_DefaultReferenceName": "_ImpactPoint02Strength",
     "m_OverrideReferenceName": "",
     "m_GeneratePropertyBlock": true,
     "m_UseCustomSlotLabel": false,
@@ -4918,10 +4918,10 @@
     "m_Guid": {
         "m_GuidSerialized": "905f3070-e6e4-4529-aa17-7db69970a253"
     },
-    "m_Name": "DamagePoint03LocalAngle",
+    "m_Name": "ImpactPoint03LocalAngle",
     "m_DefaultRefNameVersion": 1,
-    "m_RefNameGeneratedByDisplayName": "DamagePoint03LocalAngle",
-    "m_DefaultReferenceName": "_DamagePoint03LocalAngle",
+    "m_RefNameGeneratedByDisplayName": "ImpactPoint03LocalAngle",
+    "m_DefaultReferenceName": "_ImpactPoint03LocalAngle",
     "m_OverrideReferenceName": "",
     "m_GeneratePropertyBlock": true,
     "m_UseCustomSlotLabel": false,
@@ -4935,7 +4935,7 @@
     "m_FloatType": 1,
     "m_RangeValues": {
         "x": 0.0,
-        "y": 360.0
+        "y": 6.283199787139893
     }
 }
 
@@ -5360,10 +5360,10 @@
     "m_Guid": {
         "m_GuidSerialized": "c756c4b8-e930-4a88-a938-1f67c988c19b"
     },
-    "m_Name": "DamagePoint01LocalAngle",
+    "m_Name": "ImpactPoint01LocalAngle",
     "m_DefaultRefNameVersion": 1,
-    "m_RefNameGeneratedByDisplayName": "DamagePoint01LocalAngle",
-    "m_DefaultReferenceName": "_DamagePoint01LocalAngle",
+    "m_RefNameGeneratedByDisplayName": "ImpactPoint01LocalAngle",
+    "m_DefaultReferenceName": "_ImpactPoint01LocalAngle",
     "m_OverrideReferenceName": "",
     "m_GeneratePropertyBlock": true,
     "m_UseCustomSlotLabel": false,
@@ -5377,7 +5377,7 @@
     "m_FloatType": 1,
     "m_RangeValues": {
         "x": 0.0,
-        "y": 360.0
+        "y": 6.283199787139893
     }
 }
 
@@ -5653,7 +5653,7 @@
     "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot",
     "m_ObjectId": "27d37ea2bc7b4f6c82ccf7b64184d92e",
     "m_Id": 0,
-    "m_DisplayName": "DamagePoint02LocalAngle",
+    "m_DisplayName": "ImpactPoint02LocalAngle",
     "m_SlotType": 1,
     "m_Hidden": false,
     "m_ShaderOutputName": "Out",
@@ -6572,7 +6572,7 @@
     "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot",
     "m_ObjectId": "34f2cd79bdbb4cccb6ecec72ec4e7e67",
     "m_Id": 0,
-    "m_DisplayName": "DamagePoint01LocalAngle",
+    "m_DisplayName": "ImpactPoint01LocalAngle",
     "m_SlotType": 1,
     "m_Hidden": false,
     "m_ShaderOutputName": "Out",
@@ -6800,7 +6800,7 @@
     "m_CustomColors": {
         "m_SerializableColors": []
     },
-    "m_Unit": 1
+    "m_Unit": 0
 }
 
 {
@@ -6994,7 +6994,7 @@
     "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot",
     "m_ObjectId": "3a98de7bc92e4b0c8c2eacd9720bb3e0",
     "m_Id": 0,
-    "m_DisplayName": "DamagePoint02GlobalAngle",
+    "m_DisplayName": "ImpactPoint02GlobalAngle",
     "m_SlotType": 1,
     "m_Hidden": false,
     "m_ShaderOutputName": "Out",
@@ -7407,10 +7407,10 @@
     "m_Guid": {
         "m_GuidSerialized": "1d41d19e-16be-4568-be7d-7d0914f98232"
     },
-    "m_Name": "DamagePoint03Strength",
+    "m_Name": "ImpactPoint03Strength",
     "m_DefaultRefNameVersion": 1,
-    "m_RefNameGeneratedByDisplayName": "DamagePoint03Strength",
-    "m_DefaultReferenceName": "_DamagePoint03Strength",
+    "m_RefNameGeneratedByDisplayName": "ImpactPoint03Strength",
+    "m_DefaultReferenceName": "_ImpactPoint03Strength",
     "m_OverrideReferenceName": "",
     "m_GeneratePropertyBlock": true,
     "m_UseCustomSlotLabel": false,
@@ -8464,10 +8464,10 @@
     "m_Guid": {
         "m_GuidSerialized": "c3fb1399-6397-46e0-9b62-97ab7b0057f4"
     },
-    "m_Name": "DamagePoint03GlobalAngle",
+    "m_Name": "ImpactPoint03GlobalAngle",
     "m_DefaultRefNameVersion": 1,
-    "m_RefNameGeneratedByDisplayName": "DamagePoint03GlobalAngle",
-    "m_DefaultReferenceName": "_DamagePoint03GlobalAngle",
+    "m_RefNameGeneratedByDisplayName": "ImpactPoint03GlobalAngle",
+    "m_DefaultReferenceName": "_ImpactPoint03GlobalAngle",
     "m_OverrideReferenceName": "",
     "m_GeneratePropertyBlock": true,
     "m_UseCustomSlotLabel": false,
@@ -8481,7 +8481,7 @@
     "m_FloatType": 1,
     "m_RangeValues": {
         "x": 0.0,
-        "y": 360.0
+        "y": 6.283199787139893
     }
 }
 
@@ -8701,7 +8701,7 @@
     "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot",
     "m_ObjectId": "52ba8b7f2c0c4f40b6ca315526558897",
     "m_Id": 0,
-    "m_DisplayName": "DamagePoint02Strength",
+    "m_DisplayName": "ImpactPoint02Strength",
     "m_SlotType": 1,
     "m_Hidden": false,
     "m_ShaderOutputName": "Out",
@@ -8742,10 +8742,10 @@
     "m_Guid": {
         "m_GuidSerialized": "e2b7333f-089e-4f94-8431-3783c869fa88"
     },
-    "m_Name": "DamagePoint02GlobalAngle",
+    "m_Name": "ImpactPoint02GlobalAngle",
     "m_DefaultRefNameVersion": 1,
-    "m_RefNameGeneratedByDisplayName": "DamagePoint02GlobalAngle",
-    "m_DefaultReferenceName": "_DamagePoint02GlobalAngle",
+    "m_RefNameGeneratedByDisplayName": "ImpactPoint02GlobalAngle",
+    "m_DefaultReferenceName": "_ImpactPoint02GlobalAngle",
     "m_OverrideReferenceName": "",
     "m_GeneratePropertyBlock": true,
     "m_UseCustomSlotLabel": false,
@@ -8759,7 +8759,7 @@
     "m_FloatType": 1,
     "m_RangeValues": {
         "x": 0.0,
-        "y": 360.0
+        "y": 6.283199787139893
     }
 }
 
@@ -9877,7 +9877,7 @@
     "m_CustomColors": {
         "m_SerializableColors": []
     },
-    "m_Unit": 1
+    "m_Unit": 0
 }
 
 {
@@ -9909,7 +9909,7 @@
     "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot",
     "m_ObjectId": "65abd7ce4b7d40caac1aab6768dc6a65",
     "m_Id": 0,
-    "m_DisplayName": "DamagePoint03LocalAngle",
+    "m_DisplayName": "ImpactPoint03LocalAngle",
     "m_SlotType": 1,
     "m_Hidden": false,
     "m_ShaderOutputName": "Out",
@@ -10202,10 +10202,10 @@
     "m_Guid": {
         "m_GuidSerialized": "492a4cdb-2df8-47c2-8653-a15b853ab2cc"
     },
-    "m_Name": "DamagePoint01Strength",
+    "m_Name": "ImpactPoint01Strength",
     "m_DefaultRefNameVersion": 1,
-    "m_RefNameGeneratedByDisplayName": "DamagePoint01Strength",
-    "m_DefaultReferenceName": "_DamagePoint01Strength",
+    "m_RefNameGeneratedByDisplayName": "ImpactPoint01Strength",
+    "m_DefaultReferenceName": "_ImpactPoint01Strength",
     "m_OverrideReferenceName": "",
     "m_GeneratePropertyBlock": true,
     "m_UseCustomSlotLabel": false,
@@ -10420,8 +10420,8 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": -11928.0009765625,
-            "y": 12488.0,
+            "x": -11936.0,
+            "y": 12489.333984375,
             "width": 222.6669921875,
             "height": 36.0
         }
@@ -10515,10 +10515,10 @@
     "m_Guid": {
         "m_GuidSerialized": "74795e86-3ae4-4efc-a2af-b2a5ddf30bb0"
     },
-    "m_Name": "DamagePoint02LocalAngle",
+    "m_Name": "ImpactPoint02LocalAngle",
     "m_DefaultRefNameVersion": 1,
-    "m_RefNameGeneratedByDisplayName": "DamagePoint02LocalAngle",
-    "m_DefaultReferenceName": "_DamagePoint02LocalAngle",
+    "m_RefNameGeneratedByDisplayName": "ImpactPoint02LocalAngle",
+    "m_DefaultReferenceName": "_ImpactPoint02LocalAngle",
     "m_OverrideReferenceName": "",
     "m_GeneratePropertyBlock": true,
     "m_UseCustomSlotLabel": false,
@@ -10532,7 +10532,7 @@
     "m_FloatType": 1,
     "m_RangeValues": {
         "x": 0.0,
-        "y": 360.0
+        "y": 6.283199787139893
     }
 }
 
@@ -10541,7 +10541,7 @@
     "m_Type": "UnityEditor.ShaderGraph.Texture2DMaterialSlot",
     "m_ObjectId": "6f69f25e424a45908413520873777edc",
     "m_Id": 0,
-    "m_DisplayName": "DamageImpactPontMap",
+    "m_DisplayName": "ImpactPontMap",
     "m_SlotType": 1,
     "m_Hidden": false,
     "m_ShaderOutputName": "Out",
@@ -10820,7 +10820,7 @@
     "m_CustomColors": {
         "m_SerializableColors": []
     },
-    "m_Unit": 1
+    "m_Unit": 0
 }
 
 {
@@ -13713,7 +13713,7 @@
     "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot",
     "m_ObjectId": "99088d4d24c5474ca8eb605c964f538f",
     "m_Id": 0,
-    "m_DisplayName": "DamagePoint01Strength",
+    "m_DisplayName": "ImpactPoint01Strength",
     "m_SlotType": 1,
     "m_Hidden": false,
     "m_ShaderOutputName": "Out",
@@ -15053,7 +15053,7 @@
     "m_CustomColors": {
         "m_SerializableColors": []
     },
-    "m_Unit": 1
+    "m_Unit": 0
 }
 
 {
@@ -15198,10 +15198,10 @@
     "m_Guid": {
         "m_GuidSerialized": "61e36fb3-bd3b-4a07-9298-a72cd3c84d1d"
     },
-    "m_Name": "DamagePoint01GlobalAngle",
+    "m_Name": "ImpactPoint01GlobalAngle",
     "m_DefaultRefNameVersion": 1,
-    "m_RefNameGeneratedByDisplayName": "DamagePoint01GlobalAngle",
-    "m_DefaultReferenceName": "_DamagePoint01GlobalAngle",
+    "m_RefNameGeneratedByDisplayName": "ImpactPoint01GlobalAngle",
+    "m_DefaultReferenceName": "_ImpactPoint01GlobalAngle",
     "m_OverrideReferenceName": "",
     "m_GeneratePropertyBlock": true,
     "m_UseCustomSlotLabel": false,
@@ -15215,7 +15215,7 @@
     "m_FloatType": 1,
     "m_RangeValues": {
         "x": 0.0,
-        "y": 360.0
+        "y": 6.283199787139893
     }
 }
 
@@ -18127,7 +18127,7 @@
     "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot",
     "m_ObjectId": "de506994ed20483ab16989e917a7c55f",
     "m_Id": 0,
-    "m_DisplayName": "DamagePoint01GlobalAngle",
+    "m_DisplayName": "ImpactPoint01GlobalAngle",
     "m_SlotType": 1,
     "m_Hidden": false,
     "m_ShaderOutputName": "Out",
@@ -18648,7 +18648,7 @@
     "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot",
     "m_ObjectId": "e4da2f6a30004a05ad9c1d97f15ce8b1",
     "m_Id": 0,
-    "m_DisplayName": "DamagePoint03Strength",
+    "m_DisplayName": "ImpactPoint03Strength",
     "m_SlotType": 1,
     "m_Hidden": false,
     "m_ShaderOutputName": "Out",
@@ -19042,10 +19042,10 @@
     "m_Guid": {
         "m_GuidSerialized": "e3a444b3-653e-40d8-838f-e18cb4e55f86"
     },
-    "m_Name": "DamageImpactPontMap",
+    "m_Name": "ImpactPontMap",
     "m_DefaultRefNameVersion": 1,
-    "m_RefNameGeneratedByDisplayName": "DamageImpactPontMap",
-    "m_DefaultReferenceName": "_DamageImpactPontMap",
+    "m_RefNameGeneratedByDisplayName": "ImpactPontMap",
+    "m_DefaultReferenceName": "_ImpactPontMap",
     "m_OverrideReferenceName": "",
     "m_GeneratePropertyBlock": true,
     "m_UseCustomSlotLabel": false,
@@ -19583,7 +19583,7 @@
     "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot",
     "m_ObjectId": "f43e1ca38c704b78a1e2f13940070de8",
     "m_Id": 0,
-    "m_DisplayName": "DamagePoint03GlobalAngle",
+    "m_DisplayName": "ImpactPoint03GlobalAngle",
     "m_SlotType": 1,
     "m_Hidden": false,
     "m_ShaderOutputName": "Out",
@@ -19653,9 +19653,9 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": -11590.6669921875,
-            "y": 12328.0009765625,
-            "width": 209.3330078125,
+            "x": -11588.0,
+            "y": 12328.666015625,
+            "width": 209.333984375,
             "height": 364.0
         }
     },
@@ -19681,7 +19681,7 @@
     "m_CustomColors": {
         "m_SerializableColors": []
     },
-    "m_Unit": 1
+    "m_Unit": 0
 }
 
 {
@@ -20130,7 +20130,7 @@
     "m_CustomColors": {
         "m_SerializableColors": []
     },
-    "m_Unit": 1
+    "m_Unit": 0
 }
 
 {
