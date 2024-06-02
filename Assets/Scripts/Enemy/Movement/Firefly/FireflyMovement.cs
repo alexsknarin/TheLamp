@@ -28,7 +28,7 @@ public class FireflyMovement : EnemyMovement
     private EnemyMovementBaseState _currentState;
     private FlyMovementEnterState _enterState;
     private FlyMovementPatrolState _patrolState;
-    private FlyMovementAttackState _attackState;
+    private FireflyMovementAttackState _attackState;
     private FlyMovementPreAttackState _preAttackState;    
     private FlyMovementFallState _fallState;
     private FireflyMovementDeathState _deathState;
@@ -54,7 +54,7 @@ public class FireflyMovement : EnemyMovement
         _enterState = new FlyMovementEnterState(this, _speed, _radius, _verticalAmplitude);
         _patrolState  = new FlyMovementPatrolState(this, _speed, _radius, _verticalAmplitude);
         _preAttackState = new FlyMovementPreAttackState(this, _speed, _radius, _verticalAmplitude);
-        _attackState = new FlyMovementAttackState(this, _speed, _radius, _verticalAmplitude);
+        _attackState = new FireflyMovementAttackState(this, _speed, _radius, _verticalAmplitude);
         _fallState = new FlyMovementFallState(this, _speed, _radius, _verticalAmplitude);
         _deathState = new FireflyMovementDeathState(this, _speed, _radius, _verticalAmplitude);
         _spreadState = new FlyMovementSpreadState(this, _speed, _radius, _verticalAmplitude);
