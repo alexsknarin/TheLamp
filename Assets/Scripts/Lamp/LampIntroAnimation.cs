@@ -31,6 +31,7 @@ public class LampIntroAnimation : MonoBehaviour
         _isPlaying = true;
         _localTime = 0;
         _lampAttackZoneRenderer.transform.localScale = Vector3.one * (2 * 0.68f);
+        _lampAttackZoneRenderer.gameObject.SetActive(true);
     }
     
     void Update()

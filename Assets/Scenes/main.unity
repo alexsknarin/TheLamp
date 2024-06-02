@@ -8729,6 +8729,17 @@ MonoBehaviour:
   _lampDamageWeightLeft: 0
   _lampDamageWeightBottom: 0
   _damageWeights: {x: 0, y: 0, z: 0}
+  _lampImpactPointsData:
+    ImpactLastPointNumber: 0
+    ImpactPoint01Strength: 0
+    ImpactPoint01LocalAngle: 0
+    ImpactPoint01GlobalAngle: 0
+    ImpactPoint02Strength: 0
+    ImpactPoint02LocalAngle: 0
+    ImpactPoint02GlobalAngle: 0
+    ImpactPoint03Strength: 0
+    ImpactPoint03LocalAngle: 0
+    ImpactPoint03GlobalAngle: 0
   _saveDataContainer: {fileID: 11400000, guid: 377d55eb1797a24478860b1b98ae759c, type: 2}
 --- !u!114 &1934066250
 MonoBehaviour:
@@ -9086,6 +9097,7 @@ MonoBehaviour:
     m_RotationOrder: 4
   _lampHealthBar: {fileID: 969163317}
   _lampEmissionController: {fileID: 23663153}
+  _lampAttackZoneObject: {fileID: 1464268261}
   _fracturedGlassBaseObject: {fileID: 1565536643}
   _fracturedGlassObject: {fileID: 1986056729}
   _destructionSpeed: 0.6
