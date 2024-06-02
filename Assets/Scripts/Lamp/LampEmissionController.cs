@@ -5,7 +5,7 @@ using UnityEngine;
 public class LampEmissionController : MonoBehaviour
 {
     [Range(0f, 10f)]
-    [SerializeField] public float _intensity;
+    [SerializeField] public float _intensity = 0;
     public float Intensity
     {
         set => _intensity = value;

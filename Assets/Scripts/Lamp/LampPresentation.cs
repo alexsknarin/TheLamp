@@ -69,7 +69,7 @@ public class LampPresentation : MonoBehaviour
 
     private void ResetLightNeutralState()
     {
-        _lampEmissionController.Intensity = 1;
+        _lampEmissionController.Intensity = 0;
         _lampEmissionController.BlockedModeMix = 0;
         _lampEmissionController.DamageMix = 0;
         _lampEmissionController.IsDamageEnabled = false;

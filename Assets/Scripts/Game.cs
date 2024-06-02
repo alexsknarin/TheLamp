@@ -64,7 +64,6 @@ public class Game : MonoBehaviour
         {
             _introDuration = 0.001f;
         }
-        
         _isLampDead = false;
         _currentGameState = GameStates.Loading;
 
@@ -75,7 +74,7 @@ public class Game : MonoBehaviour
         _scoresManager.Initialize();
         _lamp.Initialize();
         _adsManager.Initialize();
-        
+
         _uiManager.SetIntroDuration(_introDuration);
         _uiManager.Initialize();
         _playerInputHandler.Initialize();
