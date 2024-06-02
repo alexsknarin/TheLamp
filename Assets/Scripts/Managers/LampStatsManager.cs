@@ -103,6 +103,7 @@
                 _currentHealth++;
                 OnHealthUpgraded?.Invoke();
             }
+            _lampImpactPointsData.Reset();
             SaveData();
             OnHealthChange?.Invoke();
         }
@@ -296,9 +297,7 @@
             return;
         }
         
-        _lampImpactPointsData.Reset();
         CalculateDamageWeghts();
-        
     }
     
     private void SaveData()
