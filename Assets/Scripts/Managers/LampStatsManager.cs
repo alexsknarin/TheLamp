@@ -22,7 +22,7 @@
     [SerializeField] private int _lampDamageWeightBottom;
     [SerializeField] private Vector3 _damageWeights;
     [Header("Impact")]
-    [SerializeField] private LampImpactPointsData _lampImpactPointsData;
+    [SerializeField] private LampImpactPointsData _lampImpactPointsData = new LampImpactPointsData();
     public LampImpactPointsData LampImpactPointsData => _lampImpactPointsData;
     [Header("Save Data")]
     [SerializeField] private SaveDataContainer _saveDataContainer;
@@ -51,7 +51,7 @@
 
     public void Initialize()
     {
-        _lampImpactPointsData = new LampImpactPointsData(); // Add Read from SaveData
+         // Add Read from SaveData
         _level = _saveDataContainer.Level;
         _currentHealth = _saveDataContainer.Health;
         _maxHealth = _saveDataContainer.MaxHealth;
@@ -63,6 +63,16 @@
         _lampDamageWeightLeft = _saveDataContainer.LampDamageWeightLeft;
         _lampDamageWeightBottom = _saveDataContainer.LampDamageWeightBottom;
         CalculateDamageWeghts();
+        _lampImpactPointsData.ImpactLastPointNumber = _saveDataContainer.ImpactLastPointNumber;
+        _lampImpactPointsData.ImpactPoint01Strength = _saveDataContainer.ImpactPoint01Strength;
+        _lampImpactPointsData.ImpactPoint01LocalAngle = _saveDataContainer.ImpactPoint01LocalAngle;
+        _lampImpactPointsData.ImpactPoint01GlobalAngle = _saveDataContainer.ImpactPoint01GlobalAngle;
+        _lampImpactPointsData.ImpactPoint02Strength = _saveDataContainer.ImpactPoint02Strength;
+        _lampImpactPointsData.ImpactPoint02LocalAngle = _saveDataContainer.ImpactPoint02LocalAngle;
+        _lampImpactPointsData.ImpactPoint02GlobalAngle = _saveDataContainer.ImpactPoint02GlobalAngle;
+        _lampImpactPointsData.ImpactPoint03Strength = _saveDataContainer.ImpactPoint03Strength;
+        _lampImpactPointsData.ImpactPoint03LocalAngle = _saveDataContainer.ImpactPoint03LocalAngle;
+        _lampImpactPointsData.ImpactPoint03GlobalAngle = _saveDataContainer.ImpactPoint03GlobalAngle;
     }
     
     private void UpdateUpgradePoints(int scores)
@@ -148,8 +158,9 @@
         {
             _lampImpactPointsData.ImpactLastPointNumber = 1;
         }
-        float impactRandomLocalAngle = Random.Range(0, 6.2832f);
+        _saveDataContainer.ImpactLastPointNumber = _lampImpactPointsData.ImpactLastPointNumber;
         
+        float impactRandomLocalAngle = Random.Range(0, 6.2832f);
         float impactGlobalAngle = Mathf.Acos(attackDirection.x);
         if (attackDirection.y < 0)
         {
@@ -162,12 +173,21 @@
                 _lampImpactPointsData.ImpactPoint01Strength = 1f;
                 _lampImpactPointsData.ImpactPoint01LocalAngle = impactRandomLocalAngle;
                 _lampImpactPointsData.ImpactPoint01GlobalAngle = impactGlobalAngle;
+                // Save data
+                _saveDataContainer.ImpactPoint01Strength = _lampImpactPointsData.ImpactPoint01Strength;
+                _saveDataContainer.ImpactPoint01LocalAngle = _lampImpactPointsData.ImpactPoint01LocalAngle;
+                _saveDataContainer.ImpactPoint01GlobalAngle = _lampImpactPointsData.ImpactPoint01GlobalAngle;
                 break;
             case 2:
                 _lampImpactPointsData.ImpactPoint02Strength = 1f;
                 _lampImpactPointsData.ImpactPoint01Strength = 0.66f;
                 _lampImpactPointsData.ImpactPoint02LocalAngle = impactRandomLocalAngle;
                 _lampImpactPointsData.ImpactPoint02GlobalAngle = impactGlobalAngle;
+                // Save data
+                _saveDataContainer.ImpactPoint01Strength = _lampImpactPointsData.ImpactPoint01Strength;
+                _saveDataContainer.ImpactPoint02Strength = _lampImpactPointsData.ImpactPoint02Strength;
+                _saveDataContainer.ImpactPoint02LocalAngle = _lampImpactPointsData.ImpactPoint02LocalAngle;
+                _saveDataContainer.ImpactPoint02GlobalAngle = _lampImpactPointsData.ImpactPoint02GlobalAngle;
                 break;
             case 3:
                 _lampImpactPointsData.ImpactPoint03Strength = 1f;
@@ -175,6 +195,12 @@
                 _lampImpactPointsData.ImpactPoint01Strength = 0.33f;
                 _lampImpactPointsData.ImpactPoint03LocalAngle = impactRandomLocalAngle;
                 _lampImpactPointsData.ImpactPoint03GlobalAngle = impactGlobalAngle;
+                // Save data
+                _saveDataContainer.ImpactPoint01Strength = _lampImpactPointsData.ImpactPoint01Strength;
+                _saveDataContainer.ImpactPoint02Strength = _lampImpactPointsData.ImpactPoint02Strength;
+                _saveDataContainer.ImpactPoint03Strength = _lampImpactPointsData.ImpactPoint03Strength;
+                _saveDataContainer.ImpactPoint03LocalAngle = _lampImpactPointsData.ImpactPoint03LocalAngle;
+                _saveDataContainer.ImpactPoint03GlobalAngle = _lampImpactPointsData.ImpactPoint03GlobalAngle;
                 break;
             case 4: 
                 _lampImpactPointsData.ImpactPoint03Strength = 0.66f;
@@ -182,6 +208,12 @@
                 _lampImpactPointsData.ImpactPoint01Strength = 1f;
                 _lampImpactPointsData.ImpactPoint01LocalAngle = impactRandomLocalAngle;
                 _lampImpactPointsData.ImpactPoint01GlobalAngle = impactGlobalAngle;
+                // Save data
+                _saveDataContainer.ImpactPoint01Strength = _lampImpactPointsData.ImpactPoint01Strength;
+                _saveDataContainer.ImpactPoint02Strength = _lampImpactPointsData.ImpactPoint02Strength;
+                _saveDataContainer.ImpactPoint03Strength = _lampImpactPointsData.ImpactPoint03Strength;
+                _saveDataContainer.ImpactPoint01LocalAngle = _lampImpactPointsData.ImpactPoint01LocalAngle;
+                _saveDataContainer.ImpactPoint01GlobalAngle = _lampImpactPointsData.ImpactPoint01GlobalAngle;
                 break;
             case 5:
                 _lampImpactPointsData.ImpactPoint03Strength = 0.33f;
@@ -189,6 +221,12 @@
                 _lampImpactPointsData.ImpactPoint01Strength = 0.66f;
                 _lampImpactPointsData.ImpactPoint02LocalAngle = impactRandomLocalAngle;
                 _lampImpactPointsData.ImpactPoint02GlobalAngle = impactGlobalAngle;
+                // Save data
+                _saveDataContainer.ImpactPoint01Strength = _lampImpactPointsData.ImpactPoint01Strength;
+                _saveDataContainer.ImpactPoint02Strength = _lampImpactPointsData.ImpactPoint02Strength;
+                _saveDataContainer.ImpactPoint03Strength = _lampImpactPointsData.ImpactPoint03Strength;
+                _saveDataContainer.ImpactPoint02LocalAngle = _lampImpactPointsData.ImpactPoint02LocalAngle;
+                _saveDataContainer.ImpactPoint02GlobalAngle = _lampImpactPointsData.ImpactPoint02GlobalAngle;
                 break;
             case 6:
                 _lampImpactPointsData.ImpactPoint03Strength = 1f;
@@ -196,6 +234,12 @@
                 _lampImpactPointsData.ImpactPoint01Strength = 0.33f;
                 _lampImpactPointsData.ImpactPoint03LocalAngle = impactRandomLocalAngle;
                 _lampImpactPointsData.ImpactPoint03GlobalAngle = impactGlobalAngle;
+                // Save data
+                _saveDataContainer.ImpactPoint01Strength = _lampImpactPointsData.ImpactPoint01Strength;
+                _saveDataContainer.ImpactPoint02Strength = _lampImpactPointsData.ImpactPoint02Strength;
+                _saveDataContainer.ImpactPoint03Strength = _lampImpactPointsData.ImpactPoint03Strength;
+                _saveDataContainer.ImpactPoint03LocalAngle = _lampImpactPointsData.ImpactPoint03LocalAngle;
+                _saveDataContainer.ImpactPoint03GlobalAngle = _lampImpactPointsData.ImpactPoint03GlobalAngle;
                 break;
         }
     }
@@ -251,6 +295,7 @@
             CalculateDamageWeghts();
             return;
         }
+        
         _lampImpactPointsData.Reset();
         CalculateDamageWeghts();
         
@@ -268,5 +313,17 @@
         _saveDataContainer.LampDamageWeightRight = _lampDamageWeightRight;
         _saveDataContainer.LampDamageWeightLeft = _lampDamageWeightLeft;
         _saveDataContainer.LampDamageWeightBottom = _lampDamageWeightBottom;
+        
+        _saveDataContainer.ImpactLastPointNumber = _lampImpactPointsData.ImpactLastPointNumber;
+        _saveDataContainer.ImpactPoint01Strength = _lampImpactPointsData.ImpactPoint01Strength;
+        _saveDataContainer.ImpactPoint01LocalAngle = _lampImpactPointsData.ImpactPoint01LocalAngle;
+        _saveDataContainer.ImpactPoint01GlobalAngle = _lampImpactPointsData.ImpactPoint01GlobalAngle;
+        _saveDataContainer.ImpactPoint02Strength = _lampImpactPointsData.ImpactPoint02Strength;
+        _saveDataContainer.ImpactPoint02LocalAngle = _lampImpactPointsData.ImpactPoint02LocalAngle;
+        _saveDataContainer.ImpactPoint02GlobalAngle = _lampImpactPointsData.ImpactPoint02GlobalAngle;
+        _saveDataContainer.ImpactPoint03Strength = _lampImpactPointsData.ImpactPoint03Strength;
+        _saveDataContainer.ImpactPoint03LocalAngle = _lampImpactPointsData.ImpactPoint03LocalAngle;
+        _saveDataContainer.ImpactPoint03GlobalAngle = _lampImpactPointsData.ImpactPoint03GlobalAngle;
+
     }
 }

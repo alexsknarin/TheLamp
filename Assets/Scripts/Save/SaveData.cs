@@ -10,7 +10,22 @@ public class SaveData
     public int MaxHealth;
     public int Health;
     public float CooldownTime;
+    
     public int LampDamageWeightRight;
     public int LampDamageWeightLeft;
     public int LampDamageWeightBottom;
+
+    public int ImpactLastPointNumber;
+    
+    public float ImpactPoint01Strength;
+    public float ImpactPoint01LocalAngle;
+    public float ImpactPoint01GlobalAngle;
+    
+    public float ImpactPoint02Strength;
+    public float ImpactPoint02LocalAngle;
+    public float ImpactPoint02GlobalAngle;
+    
+    public float ImpactPoint03Strength;
+    public float ImpactPoint03LocalAngle;
+    public float ImpactPoint03GlobalAngle;
 }

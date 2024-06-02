@@ -110,8 +110,8 @@ Material:
     - _ClearCoatMask: 0
     - _ClearCoatSmoothness: 0
     - _CracksAmountB: 0.125
-    - _CracksAmountL: 0.125
-    - _CracksAmountR: 0
+    - _CracksAmountL: 0
+    - _CracksAmountR: 0.125
     - _CracksAmountR_1: 0
     - _CracksAmountR_2: 0
     - _Cull: 2
@@ -134,18 +134,18 @@ Material:
     - _EdgeEmission: 0.739
     - _EdgeEmissionPower: 6.11
     - _EdgeEmissionStrength: 1.54
-    - _EmissionStrength: 0.2548352
+    - _EmissionStrength: 1.5436249
     - _EnvironmentReflections: 1
     - _GlassIOR: -0.21
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
     - _GlowEmissionStrength: 11.7
-    - _ImpactPoint01GlobalAngle: 0.2863608
-    - _ImpactPoint01LocalAngle: 0.59894747
+    - _ImpactPoint01GlobalAngle: 6.2831855
+    - _ImpactPoint01LocalAngle: 3.7574022
     - _ImpactPoint01Strength: 0.66
-    - _ImpactPoint02GlobalAngle: NaN
-    - _ImpactPoint02LocalAngle: 5.614952
+    - _ImpactPoint02GlobalAngle: 4.5872364
+    - _ImpactPoint02LocalAngle: 4.765001
     - _ImpactPoint02Strength: 1
     - _ImpactPoint03GlobalAngle: 0
     - _ImpactPoint03LocalAngle: 0
