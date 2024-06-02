@@ -42,7 +42,7 @@ public class LampPresentation : MonoBehaviour
         LampAttackModel.OnLampBlockedAttack -= StartBlockedAttackState;
     }
     
-    public void Initialize(Vector3 damageWeights)
+    public void Initialize(Vector3 damageWeights, LampImpactPointsData impactPointsData)
     {
         ResetLightNeutralState();
         _lampHealthBar.Initialize();
@@ -52,12 +52,14 @@ public class LampPresentation : MonoBehaviour
         // arrange before the intro
         _lampHealthBar.UpdateHealth(0, 0);
         _lampEmissionController.LampDamageUpdate(damageWeights);
+        _lampEmissionController.LampImpactDamageUpdate(impactPointsData);
     }
     
-    public void UpdateHealthBar(float normalizedHealth, int actualHealth, Vector3 damageWeights)
+    public void UpdateHealthBar(float normalizedHealth, int actualHealth, Vector3 damageWeights, LampImpactPointsData impactPointsData)
     {
         _lampHealthBar.UpdateHealth(normalizedHealth, actualHealth);
         _lampEmissionController.LampDamageUpdate(damageWeights);
+        _lampEmissionController.LampImpactDamageUpdate(impactPointsData);
     }
     
     public void UpgradeHealthBar()
@@ -67,7 +69,7 @@ public class LampPresentation : MonoBehaviour
 
     private void ResetLightNeutralState()
     {
-        _lampEmissionController.Intensity = 1;
+        _lampEmissionController.Intensity = 0;
         _lampEmissionController.BlockedModeMix = 0;
         _lampEmissionController.DamageMix = 0;
         _lampEmissionController.IsDamageEnabled = false;

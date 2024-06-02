@@ -8,6 +8,7 @@ public class LampDeathAnimation : MonoBehaviour
     [SerializeField] private AnimationCurve _damageAnimCurve;
     [SerializeField] private LampHealthBar _lampHealthBar;
     [SerializeField] private LampEmissionController _lampEmissionController;
+    [SerializeField] private GameObject _lampAttackZoneObject;
     
     [Header("Fractured Glass")]
     [SerializeField] private GameObject _fracturedGlassBaseObject;
@@ -68,6 +69,8 @@ public class LampDeathAnimation : MonoBehaviour
     
     public void Play(float duration, Vector3 enemyPosition)
     {
+        _lampAttackZoneObject.SetActive(false);
+        
         _lampEmissionController.Intensity = 1;
         _lampEmissionController.IsDamageEnabled = true;
         _lampEmissionController.DamageMix = 1;

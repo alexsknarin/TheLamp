@@ -40,6 +40,10 @@ Material:
         m_Texture: {fileID: 2800000, guid: 20f20899f13242f41b54381daab08bbd, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _DamageImpactPontMap:
+        m_Texture: {fileID: 2800000, guid: 6f8f6a7eb13e4394484d3c40e2cb8679, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _DetailAlbedoMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -58,6 +62,10 @@ Material:
         m_Offset: {x: 0, y: 0}
     - _EmissionMap:
         m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ImpactPontMap:
+        m_Texture: {fileID: 2800000, guid: 6f8f6a7eb13e4394484d3c40e2cb8679, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
@@ -101,7 +109,7 @@ Material:
     - _BumpScale: 1
     - _ClearCoatMask: 0
     - _ClearCoatSmoothness: 0
-    - _CracksAmountB: 0
+    - _CracksAmountB: 0.11111111
     - _CracksAmountL: 0
     - _CracksAmountR: 0
     - _CracksAmountR_1: 0
@@ -109,6 +117,15 @@ Material:
     - _Cull: 2
     - _Cutoff: 0.5
     - _DamageMix: 0
+    - _DamagePoint01GlobalAngle: 0
+    - _DamagePoint01LocalAngle: 0
+    - _DamagePoint01Strength: 0
+    - _DamagePoint02GlobalAngle: 0
+    - _DamagePoint02LocalAngle: 0
+    - _DamagePoint02Strength: 0
+    - _DamagePoint03GlobalAngle: 0
+    - _DamagePoint03LocalAngle: 0
+    - _DamagePoint03Strength: 0
     - _DetailAlbedoMapScale: 1
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
@@ -117,15 +134,25 @@ Material:
     - _EdgeEmission: 0.739
     - _EdgeEmissionPower: 6.11
     - _EdgeEmissionStrength: 1.54
-    - _EmissionStrength: 1.562414
+    - _EmissionStrength: 1.5148047
     - _EnvironmentReflections: 1
     - _GlassIOR: -0.21
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
     - _GlowEmissionStrength: 11.7
+    - _ImpactPoint01GlobalAngle: 5.743738
+    - _ImpactPoint01LocalAngle: 0.9011087
+    - _ImpactPoint01Strength: 1
+    - _ImpactPoint02GlobalAngle: 0
+    - _ImpactPoint02LocalAngle: 0
+    - _ImpactPoint02Strength: 0
+    - _ImpactPoint03GlobalAngle: 0
+    - _ImpactPoint03LocalAngle: 0
+    - _ImpactPoint03Strength: 0
     - _Metallic: 0
     - _OcclusionStrength: 1
+    - _PamagePoint01LocalAngle: 0
     - _Parallax: 0.005
     - _QueueControl: 0
     - _QueueOffset: 0
