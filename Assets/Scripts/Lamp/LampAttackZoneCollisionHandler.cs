@@ -12,7 +12,7 @@ public class LampAttackZoneCollisionHandler : MonoBehaviour
         }
         if (other.gameObject.CompareTag("Boss"))
         {
-            other.GetComponent<Wasp>().HandleEnteringAttackZone();
+            other.GetComponent<BossBase>().HandleEnteringAttackZone();
         }
     }
     
@@ -25,7 +25,7 @@ public class LampAttackZoneCollisionHandler : MonoBehaviour
         }
         if (other.gameObject.CompareTag("Boss"))
         {
-            other.GetComponent<Wasp>().HandleExitingAttackExitZone();
+            other.GetComponent<BossBase>().HandleExitingAttackExitZone();
         }
         
     }
