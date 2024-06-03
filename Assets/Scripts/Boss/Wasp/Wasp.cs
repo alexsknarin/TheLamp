@@ -14,6 +14,7 @@ public class Wasp : BossBase
         _waspMovement.OnBossAttackStarted += UpdateRecievedLampAttackStatus;
         _waspMovement.OnDeathStateEnded += HandleDeathMoveStateEnd;
         _waspMovement.OnLeftTheScreen += HandleLeftScreen;
+        Lamp.OnLampDead += HandleLampDead;
     }
     
     private void OnDisable()
@@ -21,6 +22,7 @@ public class Wasp : BossBase
         _waspMovement.OnBossAttackStarted -= UpdateRecievedLampAttackStatus;
         _waspMovement.OnDeathStateEnded -= HandleDeathMoveStateEnd;
         _waspMovement.OnLeftTheScreen -= HandleLeftScreen;
+        Lamp.OnLampDead -= HandleLampDead;
     }
     public override void Initialize()
     {
@@ -29,7 +31,6 @@ public class Wasp : BossBase
         _currentHealth = _maxHealth;
         _waspPresentation.Initialize();
         _waspMovement.Initialize();
-        gameObject.SetActive(false);
     }
 
     public override void Reset()
@@ -42,7 +43,6 @@ public class Wasp : BossBase
     
     public override void Play()
     {
-        gameObject.SetActive(true);
         _waspMovement.Play();
         _waspPresentation.ResetTrail();
         _waspPresentation.Initialize();
@@ -63,7 +63,7 @@ public class Wasp : BossBase
 
     public override void HandleCollisionWithStickZone()
     {
-    }
+    }   
 
     public override void ReceiveDamage(int damage)
     {
@@ -109,9 +109,13 @@ public class Wasp : BossBase
         if (IsGameOver)
         {
             Reset();
-            gameObject.SetActive(false);
             IsGameOver = false;
         }
+    }
+    
+    private void HandleLampDead(EnemyBase enemy)
+    {
+        _waspMovement.SetLampDestroyed();
     }
     
     private void HandleDeathMoveStateEnd()

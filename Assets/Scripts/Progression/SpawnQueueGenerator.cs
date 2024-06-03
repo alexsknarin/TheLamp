@@ -28,6 +28,7 @@ public class SpawnQueueGenerator
             int spiderCount = jsonObject[2][i][6].AsInt;
             // Bosses
             int bossWaspCount = jsonObject[2][i][7].AsInt;
+            int bossMegamothlingCount = jsonObject[2][i][8].AsInt;
             int totalEnemies = mothlingCount + flyCount + mothCount + fireflyCount + ladybugCount + spiderCount;
             //Data
             enemyQueue.MaxEnemiesOnScreen = jsonObject[2][i][10].AsInt;
@@ -66,12 +67,24 @@ public class SpawnQueueGenerator
             }
             
             int bossPosition = Random.Range(3, 5);
+            if (bossMegamothlingCount > 0)
+            {
+                bossPosition = 0;
+            }
             for (int j = 0; j < totalEnemies; j++)
             {
-                if(j == bossPosition && bossWaspCount > 0)
+                if(j == bossPosition)
                 {
-                    enemyQueue.Add(EnemyTypes.Wasp);
-                    bossWaspCount--;
+                    if (bossWaspCount > 0)
+                    {
+                        enemyQueue.Add(EnemyTypes.Wasp);
+                        bossWaspCount--;
+                    }
+                    else if (bossMegamothlingCount > 0)
+                    {
+                        enemyQueue.Add(EnemyTypes.Megamothling);
+                        bossMegamothlingCount--;
+                    }
                 }
                 else
                 {

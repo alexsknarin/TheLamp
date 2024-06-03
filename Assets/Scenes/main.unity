@@ -8082,7 +8082,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1818435498}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a19cb97880c15834aa6cac48223fb88a, type: 3}
   m_Name: 
@@ -8091,6 +8091,7 @@ MonoBehaviour:
     type: 2}
   _enemyPool: {fileID: 1818435504}
   _waspBoss: {fileID: 1966729921}
+  _megamothlingBoss: {fileID: 455450631368144087}
   _fireflyExplosion: {fileID: 1402077385}
   _fireflyExplosionRadius: 0.8
   _explosionDuration: 0.22
@@ -8098,7 +8099,7 @@ MonoBehaviour:
   _aggresionLevel: 0
   _maxAggressionLevel: 6
   _isStartAtWaveTestMode: 1
-  _startAtWave: 11
+  _startAtWave: 2
   _currentWave: 0
   _firstEnemySpawnDelay: 0.5
   _spawnDelay: 1
@@ -8169,12 +8170,12 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1818435498}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 08d8c20ef294cba4aaa224352c244d18, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _enemyPrefab: {fileID: 1966729921}
+  _enemyPrefab: {fileID: 0}
 --- !u!114 &1818435507
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8200,6 +8201,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _mothlingScorePrice: 1
+  _megamothlingScorePrice: 6
   _flyScorePrice: 2
   _fireflyScorePrice: 3
   _mothScorePrice: 3
@@ -10480,6 +10482,18 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9db76073115006346a2830d6a3cb2b06, type: 3}
+--- !u!114 &455450631368144087 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4738129040682902317, guid: 9db76073115006346a2830d6a3cb2b06,
+    type: 3}
+  m_PrefabInstance: {fileID: 455450631368144086}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4059483228dbeef4f8ff831eaac8c910, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &2929489649649167473
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10569,6 +10583,6 @@ SceneRoots:
   - {fileID: 1402077384}
   - {fileID: 564885924}
   - {fileID: 2929489649649167473}
-  - {fileID: 458789824}
-  - {fileID: 1054230590}
   - {fileID: 455450631368144086}
+  - {fileID: 1054230590}
+  - {fileID: 458789824}

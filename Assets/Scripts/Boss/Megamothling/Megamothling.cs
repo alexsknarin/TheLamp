@@ -47,7 +47,6 @@ public class Megamothling : BossBase
         IsAttacking = false;
         IsStick = false;
         _isDead = false;
-        gameObject.SetActive(false);
     }
     
     private void OnMovementReset()
@@ -170,7 +169,6 @@ public class Megamothling : BossBase
 
     public override void Play()
     {
-        gameObject.SetActive(true);
         _enemyPresentation.ResetTrail();
         _enemyMovement.Play();
     }
@@ -178,6 +176,6 @@ public class Megamothling : BossBase
     private void HandleDeathMoveStateEnd()
     {
         OnDeathInvoke();
-        gameObject.SetActive(false);
+        _enemyMovement.MovementReset();
     }
 }

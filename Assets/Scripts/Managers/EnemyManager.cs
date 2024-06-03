@@ -13,7 +13,9 @@ public class EnemyManager : MonoBehaviour,IInitializable
     
     [Header("------ Enemy Prefabs -------")]
     [SerializeField] private EnemyPool _enemyPool;
+    [Header("------ Boss Prefabs -------")]
     [SerializeField] private BossBase _waspBoss;
+    [SerializeField] private BossBase _megamothlingBoss;
     private BossBase _currentBoss;
     
     [Header("------ Explosions -------")]
@@ -121,6 +123,7 @@ public class EnemyManager : MonoBehaviour,IInitializable
         _isBossActive = false;
         // Init all bosses
         _waspBoss.Initialize();
+        _megamothlingBoss.Initialize();
         _currentWave = _startAtWave;
         
         // Check all waves
@@ -226,7 +229,11 @@ public class EnemyManager : MonoBehaviour,IInitializable
         {
             _currentBoss = _waspBoss;
         }
-        _currentBoss.Reset();
+        else if (bossType == EnemyTypes.Megamothling)
+        {
+            _currentBoss = _megamothlingBoss;
+        }
+        // _currentBoss.Reset();
         _currentBoss.Play();
         _isBossActive = true;
         _attackLocalTime = 0;
@@ -379,6 +386,11 @@ public class EnemyManager : MonoBehaviour,IInitializable
                     SpawnBoss(enemyType);
                     _enemies.Add(_currentBoss);
                 }
+                else if (enemyType == EnemyTypes.Megamothling)
+                {
+                    SpawnBoss(enemyType);
+                    _enemies.Add(_currentBoss);
+                }
                 else
                 {
                     var enemy = SpawnEnemy(enemyType);
@@ -416,9 +428,16 @@ public class EnemyManager : MonoBehaviour,IInitializable
     
     private void ReturnAllActiveEnemiesToPool()
     {
+        // Enemies
         foreach (var enemy in _enemies)
         {
             enemy.ReturnToPool();
+        }
+        
+        // Bosses
+        if (_isBossActive)
+        {
+            _currentBoss.Reset();
         }
     }
     
@@ -434,6 +453,21 @@ public class EnemyManager : MonoBehaviour,IInitializable
     private void StartEnemyAttack()
     {
         var attackingEnemy = _enemiesReadyToAttack[Random.Range(0, _enemiesReadyToAttack.Count)];
+
+        // MEGAMOTHLING:
+        // I attacks alongside other enemies but it should be
+        // Priortized to attack more ofthen
+        // IN this case twice as often
+        
+        if (_currentBoss.EnemyType == EnemyTypes.Megamothling)
+        {
+            int megamothlingAttackChance = Random.Range(0, 2);
+            if (megamothlingAttackChance == 0)
+            {
+                attackingEnemy = _currentBoss;
+            }
+        }
+        
         attackingEnemy.AttackStart();
         _attackLocalTime = 0;
         _attackDelay = GetRandomAttackDelay(2.5f, 0.8f, 6.1f, 1.8f, _aggressionLevelNormalized);
@@ -462,7 +496,7 @@ public class EnemyManager : MonoBehaviour,IInitializable
         bool isAttackUpdateAllowed, bool isBossActive)
     {
         localTime += Time.deltaTime;
-        if(isAttackUpdateAllowed && !isBossActive)
+        if(isAttackUpdateAllowed && (!isBossActive || _currentBoss.EnemyType == EnemyTypes.Megamothling))
         {
             attackLocalTime += Time.deltaTime;
         }
