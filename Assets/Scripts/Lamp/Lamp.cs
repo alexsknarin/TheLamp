@@ -14,6 +14,8 @@ public class Lamp : MonoBehaviour, IInitializable
     [SerializeField] private int _attackBlockerCount;
     [Header("Lamp Stats")]
     [SerializeField] private LampStatsManager _lampStatsManager;
+    [Header("Debug/Testing")]
+    [SerializeField] private bool _isInvincible;
     
     private List<EnemyBase> _stickyEnemies;
     private bool _isAssessingDamage = false;
@@ -118,7 +120,10 @@ public class Lamp : MonoBehaviour, IInitializable
             {
                 _isAssessingDamage = false;
                 Vector3 impactPoint = enemy.transform.position.normalized;
-                _lampStatsManager.DecreaseCurrentHealth(1, impactPoint);
+                if (!_isInvincible)
+                {
+                    _lampStatsManager.DecreaseCurrentHealth(1, impactPoint);    
+                }
                 _lampPresentation.UpdateHealthBar(
                     _lampStatsManager.NormalizedHealth, 
                     _lampStatsManager.CurrentHealth, 

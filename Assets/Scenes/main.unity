@@ -1945,6 +1945,43 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  _megamothlingProximityShakeAmplitude: 0.0095
+  _megamothlingProximityCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 9.067239
+      outSlope: 9.067239
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.052562077
+      value: 0.4765929
+      inSlope: 4.2830486
+      outSlope: 4.2830486
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.99645996
+      value: 0.003566742
+      inSlope: -0.110135816
+      outSlope: -0.110135816
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.12034895
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _megamothlingTransform: {fileID: 455450631368144097}
+  _megamothlingProximityMaxDistance: -0.5
+  _megamothlingProximityMinDistance: -6
   _waspProximityShakeAmplitude: 0.016
   _waspProximityCurve:
     serializedVersion: 2
@@ -8658,6 +8695,7 @@ MonoBehaviour:
   _lampAttackExitZoneCollisionHandler: {fileID: 452042971}
   _attackBlockerCount: 0
   _lampStatsManager: {fileID: 1934066249}
+  _isInvincible: 1
 --- !u!114 &1934066247
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10494,6 +10532,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4059483228dbeef4f8ff831eaac8c910, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!4 &455450631368144097 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 9117976817519763160, guid: 9db76073115006346a2830d6a3cb2b06,
+    type: 3}
+  m_PrefabInstance: {fileID: 455450631368144086}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2929489649649167473
 PrefabInstance:
   m_ObjectHideFlags: 0

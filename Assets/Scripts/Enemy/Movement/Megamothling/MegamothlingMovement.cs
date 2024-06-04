@@ -221,6 +221,7 @@ public class MegamothlingMovement : EnemyMovement
                 MovementReset();
                 return;
             case EnemyStates.Death:
+                newState = _patrolState;
                 OnDeathStateEnded?.Invoke();
                 break;
         }

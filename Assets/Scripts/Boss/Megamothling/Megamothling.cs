@@ -177,5 +177,6 @@ public class Megamothling : BossBase
     {
         OnDeathInvoke();
         _enemyMovement.MovementReset();
+        _enemyPresentation.Initialize();
     }
 }
