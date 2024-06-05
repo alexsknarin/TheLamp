@@ -1945,6 +1945,43 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  _megamothlingProximityShakeAmplitude: 0.0095
+  _megamothlingProximityCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 9.067239
+      outSlope: 9.067239
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.052562077
+      value: 0.4765929
+      inSlope: 4.2830486
+      outSlope: 4.2830486
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.99645996
+      value: 0.003566742
+      inSlope: -0.110135816
+      outSlope: -0.110135816
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.12034895
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _megamothlingTransform: {fileID: 455450631368144097}
+  _megamothlingProximityMaxDistance: -0.5
+  _megamothlingProximityMinDistance: -6
   _waspProximityShakeAmplitude: 0.016
   _waspProximityCurve:
     serializedVersion: 2
@@ -8072,7 +8109,7 @@ MonoBehaviour:
   _saveLoadManager: {fileID: 1818435509}
   _adsManager: {fileID: 1665985692}
   _currentGameState: 0
-  _skipIntro: 0
+  _skipIntro: 1
   _introDuration: 4
   _deathDuration: 3
 --- !u!114 &1818435502
@@ -8091,6 +8128,7 @@ MonoBehaviour:
     type: 2}
   _enemyPool: {fileID: 1818435504}
   _waspBoss: {fileID: 1966729921}
+  _megamothlingBoss: {fileID: 455450631368144087}
   _fireflyExplosion: {fileID: 1402077385}
   _fireflyExplosionRadius: 0.8
   _explosionDuration: 0.22
@@ -8098,7 +8136,7 @@ MonoBehaviour:
   _aggresionLevel: 0
   _maxAggressionLevel: 6
   _isStartAtWaveTestMode: 0
-  _startAtWave: 7
+  _startAtWave: 2
   _currentWave: 0
   _firstEnemySpawnDelay: 0.5
   _spawnDelay: 1
@@ -8200,6 +8238,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _mothlingScorePrice: 1
+  _megamothlingScorePrice: 6
   _flyScorePrice: 2
   _fireflyScorePrice: 3
   _mothScorePrice: 3
@@ -8656,6 +8695,7 @@ MonoBehaviour:
   _lampAttackExitZoneCollisionHandler: {fileID: 452042971}
   _attackBlockerCount: 0
   _lampStatsManager: {fileID: 1934066249}
+  _isInvincible: 1
 --- !u!114 &1934066247
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10412,6 +10452,92 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2095301580}
   m_CullTransparentMesh: 1
+--- !u!1001 &455450631368144086
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 625279308698616341, guid: 9db76073115006346a2830d6a3cb2b06,
+        type: 3}
+      propertyPath: m_Name
+      value: Megamothling
+      objectReference: {fileID: 0}
+    - target: {fileID: 9117976817519763160, guid: 9db76073115006346a2830d6a3cb2b06,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -5
+      objectReference: {fileID: 0}
+    - target: {fileID: 9117976817519763160, guid: 9db76073115006346a2830d6a3cb2b06,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 9117976817519763160, guid: 9db76073115006346a2830d6a3cb2b06,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9117976817519763160, guid: 9db76073115006346a2830d6a3cb2b06,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9117976817519763160, guid: 9db76073115006346a2830d6a3cb2b06,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9117976817519763160, guid: 9db76073115006346a2830d6a3cb2b06,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9117976817519763160, guid: 9db76073115006346a2830d6a3cb2b06,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9117976817519763160, guid: 9db76073115006346a2830d6a3cb2b06,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9117976817519763160, guid: 9db76073115006346a2830d6a3cb2b06,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9117976817519763160, guid: 9db76073115006346a2830d6a3cb2b06,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 9db76073115006346a2830d6a3cb2b06, type: 3}
+--- !u!114 &455450631368144087 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4738129040682902317, guid: 9db76073115006346a2830d6a3cb2b06,
+    type: 3}
+  m_PrefabInstance: {fileID: 455450631368144086}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4059483228dbeef4f8ff831eaac8c910, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &455450631368144097 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 9117976817519763160, guid: 9db76073115006346a2830d6a3cb2b06,
+    type: 3}
+  m_PrefabInstance: {fileID: 455450631368144086}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2929489649649167473
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10424,31 +10550,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: WaspBaseTransform
-      objectReference: {fileID: 0}
-    - target: {fileID: 762533772972292265, guid: db082986f50fad64f90c5d3f0bd3ddf3,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1177802453113491699, guid: db082986f50fad64f90c5d3f0bd3ddf3,
-        type: 3}
-      propertyPath: _maxHealth
-      value: 24
-      objectReference: {fileID: 0}
-    - target: {fileID: 6534722627740550364, guid: db082986f50fad64f90c5d3f0bd3ddf3,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -20
-      objectReference: {fileID: 0}
-    - target: {fileID: 6534722627740550364, guid: db082986f50fad64f90c5d3f0bd3ddf3,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6534722627740550364, guid: db082986f50fad64f90c5d3f0bd3ddf3,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7141382224798320509, guid: db082986f50fad64f90c5d3f0bd3ddf3,
         type: 3}
@@ -10526,5 +10627,6 @@ SceneRoots:
   - {fileID: 1402077384}
   - {fileID: 564885924}
   - {fileID: 2929489649649167473}
-  - {fileID: 458789824}
+  - {fileID: 455450631368144086}
   - {fileID: 1054230590}
+  - {fileID: 458789824}

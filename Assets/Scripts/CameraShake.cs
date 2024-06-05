@@ -9,12 +9,22 @@ public class CameraShake : MonoBehaviour
     [SerializeField] private float _shakeDuration;
     [SerializeField] private AnimationCurve _shakeProfileCurve;
     [Header("Enemy proximity shake settings")]
+    [Header("Megamothling")]
+    [SerializeField] private float _megamothlingProximityShakeAmplitude;
+    [SerializeField] private AnimationCurve _megamothlingProximityCurve;
+    [SerializeField] private Transform _megamothlingTransform;
+    [SerializeField] private float _megamothlingProximityMaxDistance;
+    [SerializeField] private float _megamothlingProximityMinDistance;
+    
+    [Header("Wasp")]
     [SerializeField] private float _waspProximityShakeAmplitude;
     [SerializeField] private AnimationCurve _waspProximityCurve;
     [SerializeField] private Transform _waspTransform;
     [SerializeField] private float _waspProximityMaxDistance;
     [SerializeField] private float _waspProximityMinDistance;
-    private float _shakeDistance;
+    
+    private float _waspShakeDistance;
+    private float _megamothlingShakeDistance;
     private bool _isWaspNearby;
 
     private Vector3 _originalPos;
@@ -41,7 +51,8 @@ public class CameraShake : MonoBehaviour
     private void Start()
     {
         _originalPos = transform.position;
-        _shakeDistance = Mathf.Abs(_waspProximityMaxDistance - _waspProximityMinDistance);
+        _waspShakeDistance = Mathf.Abs(_waspProximityMaxDistance - _waspProximityMinDistance);
+        _megamothlingShakeDistance = Mathf.Abs(_megamothlingProximityMaxDistance - _megamothlingProximityMinDistance);
         _isShaking = false;
     }
     
@@ -57,9 +68,16 @@ public class CameraShake : MonoBehaviour
         
         if (_waspTransform.position.z < _waspProximityMaxDistance)
         {
-            float shakephase = Mathf.Abs(_waspTransform.position.z - _waspProximityMaxDistance) / _shakeDistance;
+            float shakephase = Mathf.Abs(_waspTransform.position.z - _waspProximityMaxDistance) / _waspShakeDistance;
             transform.position = Vector3.Lerp(_originalPos, _originalPos + (Vector3)(Random.insideUnitCircle * _waspProximityShakeAmplitude), shakephase);   
         }
+        
+        if (_megamothlingTransform.position.z < _megamothlingProximityMaxDistance)
+        {
+            float shakephase = Mathf.Abs(_megamothlingTransform.position.z - _megamothlingProximityMaxDistance) / _megamothlingShakeDistance;
+            transform.position = Vector3.Lerp(_originalPos, _originalPos + (Vector3)(Random.insideUnitCircle * _megamothlingProximityShakeAmplitude), shakephase);   
+        }
+        
     }
     
     private void StartDamageShake(EnemyBase enemy)

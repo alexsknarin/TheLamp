@@ -19,6 +19,7 @@ public class DeathFlash : DamageIndication
         _material.SetFloat("_AttackSemaphore", 0);
         _material.SetFloat("_Damage", 1f);
         Vector3 direction = transform.position.normalized;
+        _deathParticles.gameObject.SetActive(true);
         _damageParticles.SetVector3("Direction", direction);
         _deathParticles.SendEvent("OnDeathStart");
         _damageParticles.SendEvent("OnDamage");
@@ -35,6 +36,7 @@ public class DeathFlash : DamageIndication
                 _material.SetFloat("_DeathFade", 1f);
                 _material.SetFloat("_Damage", 1f);
                 _deathParticles.SendEvent("OnDeathStart");
+                // _deathParticles.gameObject.SetActive(false);
                 return;
             }
             _material.SetFloat("_Damage", 4f);
@@ -50,5 +52,6 @@ public class DeathFlash : DamageIndication
         _material.SetFloat("_DeathFade", 0f);
         _material.SetFloat("_AttackSemaphore", 0f);
         _material.SetFloat("_Damage", 1f);
+        _deathParticles.gameObject.SetActive(false);
     }
 }

@@ -15,7 +15,7 @@ public class WaspMovement : MonoBehaviour, IInitializable
     private AnimationClipPlayable _currentAnimationClipPlayable;
     private WaspPlayablesContainer _playablesContainer;
     
-    public event Action OnWaspAttackStarted;
+    public event Action OnBossAttackStarted;
     public event Action OnDeathStateEnded;
     public event Action OnLeftTheScreen;
 
@@ -64,9 +64,11 @@ public class WaspMovement : MonoBehaviour, IInitializable
     // State parameters
     private bool _isDamaged = false;
     private bool _isDead = false;
+    private bool _isLampDestroyed = false;
     
     public void Initialize()
     {
+        _isLampDestroyed = false;
         _playableGraph = PlayableGraph.Create();
         _playableGraph.SetTimeUpdateMode(DirectorUpdateMode.GameTime);
         _playableOutput = AnimationPlayableOutput.Create(_playableGraph, "Animation", _animator);
@@ -102,6 +104,7 @@ public class WaspMovement : MonoBehaviour, IInitializable
 
     public void MovementReset()
     {
+        _isLampDestroyed = false;
         _isDamaged = false;
         _currentWaspState = WaspStates.Idle;
     }
@@ -162,6 +165,11 @@ public class WaspMovement : MonoBehaviour, IInitializable
         _isDead = true;
     }
     
+    public void SetLampDestroyed()
+    {
+        _isLampDestroyed = true;
+    }
+    
     private void SwitchState()
     {
         int v = 0;
@@ -176,7 +184,7 @@ public class WaspMovement : MonoBehaviour, IInitializable
                 else
                 {
                     _currentWaspState = WaspStates.Attack3_L;
-                    OnWaspAttackStarted?.Invoke();
+                    OnBossAttackStarted?.Invoke();
                 }
                 break;
             // Attack1_L
@@ -214,47 +222,67 @@ public class WaspMovement : MonoBehaviour, IInitializable
                 }
                 break;
             case WaspStates.Attack1_L_Fail1:
+                if (_isLampDestroyed)
+                {
+                    _currentWaspState = WaspStates.Idle;
+                    break;
+                }
                 OnLeftTheScreen?.Invoke();
                 v = Random.Range(0, 3);
                 if (v == 0)
                 {
                     _currentWaspState = WaspStates.Attack2_R;
-                    OnWaspAttackStarted?.Invoke();
+                    OnBossAttackStarted?.Invoke();
                 }
                 else if(v == 1)
                 {
                     _currentWaspState = WaspStates.Attack3_R;
-                    OnWaspAttackStarted?.Invoke();
+                    OnBossAttackStarted?.Invoke();
                 }
                 else if(v == 2)
                 {
                     _currentWaspState = WaspStates.Attack4_L;
-                    OnWaspAttackStarted?.Invoke();
+                    OnBossAttackStarted?.Invoke();
                 }
                 break;
             case WaspStates.Attack1_L_Success1:
+                if (_isLampDestroyed)
+                {
+                    _currentWaspState = WaspStates.Idle;
+                    break;
+                }
                 OnLeftTheScreen?.Invoke();
                 v = Random.Range(0, 2);
                 if (v == 0)
                 {
                     _currentWaspState = WaspStates.Attack1_R;
-                    OnWaspAttackStarted?.Invoke();
+                    OnBossAttackStarted?.Invoke();
                 }
                 else
                 {
                     _currentWaspState = WaspStates.Attack2_R;
-                    OnWaspAttackStarted?.Invoke();
+                    OnBossAttackStarted?.Invoke();
                 }
                 break;
             case WaspStates.Attack1_L_Success2:
+                if (_isLampDestroyed)
+                {
+                    _currentWaspState = WaspStates.Idle;
+                    break;
+                }
                 OnLeftTheScreen?.Invoke();
                 _currentWaspState = WaspStates.Attack4_L;
-                OnWaspAttackStarted?.Invoke();
+                OnBossAttackStarted?.Invoke();
                 break;
             case WaspStates.Attack1_L_Success3:
+                if (_isLampDestroyed)
+                {
+                    _currentWaspState = WaspStates.Idle;
+                    break;
+                }
                 OnLeftTheScreen?.Invoke();
                 _currentWaspState = WaspStates.Attack2_L;
-                OnWaspAttackStarted?.Invoke();
+                OnBossAttackStarted?.Invoke();
                 break;
             // Attack2_L
             case WaspStates.Attack2_L:
@@ -287,36 +315,51 @@ public class WaspMovement : MonoBehaviour, IInitializable
                 }
                 break;
             case WaspStates.Attack2_L_Fail1:
+                if (_isLampDestroyed)
+                {
+                    _currentWaspState = WaspStates.Idle;
+                    break;
+                }
                 OnLeftTheScreen?.Invoke();
                 v = Random.Range(0, 2);
                 if (v == 0)
                 {
                     _currentWaspState = WaspStates.Attack1_R;
-                    OnWaspAttackStarted?.Invoke();
+                    OnBossAttackStarted?.Invoke();
                 }
                 else
                 {
                     _currentWaspState = WaspStates.Attack3_R;
-                    OnWaspAttackStarted?.Invoke();
+                    OnBossAttackStarted?.Invoke();
                 }
                 break;
             case WaspStates.Attack2_L_Fail2:
+                if (_isLampDestroyed)
+                {
+                    _currentWaspState = WaspStates.Idle;
+                    break;
+                }
                 OnLeftTheScreen?.Invoke();
                 _currentWaspState = WaspStates.Attack2_R;
-                OnWaspAttackStarted?.Invoke();
+                OnBossAttackStarted?.Invoke();
                 break;
             case WaspStates.Attack2_L_Success1:
+                if (_isLampDestroyed)
+                {
+                    _currentWaspState = WaspStates.Idle;
+                    break;
+                }
                 OnLeftTheScreen?.Invoke();
                 v = Random.Range(0, 2);
                 if (v == 0)
                 {
                     _currentWaspState = WaspStates.Attack2_L;
-                    OnWaspAttackStarted?.Invoke();
+                    OnBossAttackStarted?.Invoke();
                 }
                 else
                 {
                     _currentWaspState = WaspStates.Attack4_L;
-                    OnWaspAttackStarted?.Invoke();
+                    OnBossAttackStarted?.Invoke();
                 }
                 break;
             // Attack3_L
@@ -334,6 +377,7 @@ public class WaspMovement : MonoBehaviour, IInitializable
                 {
                     _isDamaged = false;
                     _currentWaspState = WaspStates.Attack3_L_Fail1;
+                    
                 }
                 else
                 {
@@ -341,31 +385,41 @@ public class WaspMovement : MonoBehaviour, IInitializable
                 }
                 break;
             case WaspStates.Attack3_L_Fail1:
+                if (_isLampDestroyed)
+                {
+                    _currentWaspState = WaspStates.Idle;
+                    break;
+                }
                 OnLeftTheScreen?.Invoke();
                 v = Random.Range(0, 2);
                 if (v == 0)
                 {
                     _currentWaspState = WaspStates.Attack1_R;  
-                    OnWaspAttackStarted?.Invoke();
+                    OnBossAttackStarted?.Invoke();
                 }
                 else if(v == 1)
                 {
                     _currentWaspState = WaspStates.Attack3_R;
-                    OnWaspAttackStarted?.Invoke();
+                    OnBossAttackStarted?.Invoke();
                 }
                 break;
             case WaspStates.Attack3_L_Success1:
+                if (_isLampDestroyed)
+                {
+                    _currentWaspState = WaspStates.Idle;
+                    break;
+                }
                 OnLeftTheScreen?.Invoke();
                 v = Random.Range(0, 2);
                 if (v == 0)
                 {
                     _currentWaspState = WaspStates.Attack1_L; 
-                    OnWaspAttackStarted?.Invoke();
+                    OnBossAttackStarted?.Invoke();
                 }
                 else
                 {
                     _currentWaspState = WaspStates.Attack3_L;
-                    OnWaspAttackStarted?.Invoke();
+                    OnBossAttackStarted?.Invoke();
                 }
                 break;
             // Attack4_L
@@ -391,36 +445,46 @@ public class WaspMovement : MonoBehaviour, IInitializable
                 }
                 break;
             case WaspStates.Attack4_L_Fail1:
+                if (_isLampDestroyed)
+                {
+                    _currentWaspState = WaspStates.Idle;
+                    break;
+                }
                 OnLeftTheScreen?.Invoke();
                 v = Random.Range(0, 2);
                 if (v == 0)
                 {
                     _currentWaspState = WaspStates.Attack1_L;    
-                    OnWaspAttackStarted?.Invoke();
+                    OnBossAttackStarted?.Invoke();
                 }
                 else if(v == 1)
                 {
                     _currentWaspState = WaspStates.Attack3_L;
-                    OnWaspAttackStarted?.Invoke();
+                    OnBossAttackStarted?.Invoke();
                 }
                 break;
             case WaspStates.Attack4_L_Success1:
+                if (_isLampDestroyed)
+                {
+                    _currentWaspState = WaspStates.Idle;
+                    break;
+                }
                 OnLeftTheScreen?.Invoke();
                 v = Random.Range(0, 3);
                 if (v == 0)
                 {
                     _currentWaspState = WaspStates.Attack1_R;  
-                    OnWaspAttackStarted?.Invoke();
+                    OnBossAttackStarted?.Invoke();
                 }
                 else if(v == 1)
                 {
                     _currentWaspState = WaspStates.Attack2_L;
-                    OnWaspAttackStarted?.Invoke();
+                    OnBossAttackStarted?.Invoke();
                 }
                 else if(v == 2)
                 {
                     _currentWaspState = WaspStates.Attack3_L;
-                    OnWaspAttackStarted?.Invoke();
+                    OnBossAttackStarted?.Invoke();
                 }
                 break;
 
@@ -430,12 +494,12 @@ public class WaspMovement : MonoBehaviour, IInitializable
                 if (v == 0)
                 {
                     _currentWaspState = WaspStates.Attack1_R;   
-                    OnWaspAttackStarted?.Invoke();
+                    OnBossAttackStarted?.Invoke();
                 }
                 else
                 {
                     _currentWaspState = WaspStates.Attack3_R;
-                    OnWaspAttackStarted?.Invoke();
+                    OnBossAttackStarted?.Invoke();
                 }
                 break;
             // Attack1_R
@@ -472,47 +536,67 @@ public class WaspMovement : MonoBehaviour, IInitializable
                 }
                 break;
             case WaspStates.Attack1_R_Fail1:
+                if (_isLampDestroyed)
+                {
+                    _currentWaspState = WaspStates.Idle;
+                    break;
+                }
                 OnLeftTheScreen?.Invoke();
                 v = Random.Range(0, 3);
                 if (v == 0)
                 {
                     _currentWaspState = WaspStates.Attack2_L;   
-                    OnWaspAttackStarted?.Invoke();
+                    OnBossAttackStarted?.Invoke();
                 }
                 else if(v == 1)
                 {
                     _currentWaspState = WaspStates.Attack3_L;
-                    OnWaspAttackStarted?.Invoke();
+                    OnBossAttackStarted?.Invoke();
                 }
                 else if(v == 2)
                 {
                     _currentWaspState = WaspStates.Attack4_R;
-                    OnWaspAttackStarted?.Invoke();
+                    OnBossAttackStarted?.Invoke();
                 }
                 break;
             case WaspStates.Attack1_R_Success1:
+                if (_isLampDestroyed)
+                {
+                    _currentWaspState = WaspStates.Idle;
+                    break;
+                }
                 OnLeftTheScreen?.Invoke();
                 v = Random.Range(0, 2);
                 if (v == 0)
                 {
                     _currentWaspState = WaspStates.Attack1_L;
-                    OnWaspAttackStarted?.Invoke();
+                    OnBossAttackStarted?.Invoke();
                 }
                 else
                 {
                     _currentWaspState = WaspStates.Attack2_L;
-                    OnWaspAttackStarted?.Invoke();
+                    OnBossAttackStarted?.Invoke();
                 }
                 break;
             case WaspStates.Attack1_R_Success2:
+                if (_isLampDestroyed)
+                {
+                    _currentWaspState = WaspStates.Idle;
+                    break;
+                }
                 OnLeftTheScreen?.Invoke();
                 _currentWaspState = WaspStates.Attack4_R;
-                OnWaspAttackStarted?.Invoke();
+                OnBossAttackStarted?.Invoke();
                 break;
             case WaspStates.Attack1_R_Success3:
+                if (_isLampDestroyed)
+                {
+                    _currentWaspState = WaspStates.Idle;
+                    break;
+                }
                 OnLeftTheScreen?.Invoke();
                 _currentWaspState = WaspStates.Attack2_R;
-                OnWaspAttackStarted?.Invoke();
+                OnBossAttackStarted?.Invoke();
                 break;
             // Attack2_R
             case WaspStates.Attack2_R:
@@ -545,36 +629,51 @@ public class WaspMovement : MonoBehaviour, IInitializable
                 }
                 break;
             case WaspStates.Attack2_R_Fail1:
+                if (_isLampDestroyed)
+                {
+                    _currentWaspState = WaspStates.Idle;
+                    break;
+                }
                 OnLeftTheScreen?.Invoke();
                 v = Random.Range(0, 2);
                 if (v == 0)
                 {
                     _currentWaspState = WaspStates.Attack1_L; 
-                    OnWaspAttackStarted?.Invoke();
+                    OnBossAttackStarted?.Invoke();
                 }
                 else
                 {
                     _currentWaspState = WaspStates.Attack3_L;
-                    OnWaspAttackStarted?.Invoke();
+                    OnBossAttackStarted?.Invoke();
                 }
                 break;
             case WaspStates.Attack2_R_Fail2:
+                if (_isLampDestroyed)
+                {
+                    _currentWaspState = WaspStates.Idle;
+                    break;
+                }
                 OnLeftTheScreen?.Invoke();
                 _currentWaspState = WaspStates.Attack2_L;  
-                OnWaspAttackStarted?.Invoke();
+                OnBossAttackStarted?.Invoke();
                 break;
             case WaspStates.Attack2_R_Success1:
+                if (_isLampDestroyed)
+                {
+                    _currentWaspState = WaspStates.Idle;
+                    break;
+                }
                 OnLeftTheScreen?.Invoke();
                 v = Random.Range(0, 2);
                 if (v == 0)
                 {
                     _currentWaspState = WaspStates.Attack2_R;
-                    OnWaspAttackStarted?.Invoke();
+                    OnBossAttackStarted?.Invoke();
                 }
                 else
                 {
                     _currentWaspState = WaspStates.Attack4_R;
-                    OnWaspAttackStarted?.Invoke();
+                    OnBossAttackStarted?.Invoke();
                 }
                 break;
             // Attack3_R
@@ -600,31 +699,41 @@ public class WaspMovement : MonoBehaviour, IInitializable
                 }
                 break;
             case WaspStates.Attack3_R_Fail1:
+                if (_isLampDestroyed)
+                {
+                    _currentWaspState = WaspStates.Idle;
+                    break;
+                }
                 OnLeftTheScreen?.Invoke();
                 v = Random.Range(0, 2);
                 if (v == 0)
                 {
                     _currentWaspState = WaspStates.Attack1_L;    
-                    OnWaspAttackStarted?.Invoke();
+                    OnBossAttackStarted?.Invoke();
                 }
                 else if(v == 1)
                 {
                     _currentWaspState = WaspStates.Attack3_L;
-                    OnWaspAttackStarted?.Invoke();
+                    OnBossAttackStarted?.Invoke();
                 }
                 break;
             case WaspStates.Attack3_R_Success1:
+                if (_isLampDestroyed)
+                {
+                    _currentWaspState = WaspStates.Idle;
+                    break;
+                }
                 OnLeftTheScreen?.Invoke();
                 v = Random.Range(0, 2);
                 if (v == 0)
                 {
                     _currentWaspState = WaspStates.Attack1_R; 
-                    OnWaspAttackStarted?.Invoke();
+                    OnBossAttackStarted?.Invoke();
                 }
                 else
                 {
                     _currentWaspState = WaspStates.Attack3_R;
-                    OnWaspAttackStarted?.Invoke();
+                    OnBossAttackStarted?.Invoke();
                 }
                 break;
             // Attack4_R
@@ -649,36 +758,46 @@ public class WaspMovement : MonoBehaviour, IInitializable
                 }
                 break;
             case WaspStates.Attack4_R_Fail1:
+                if (_isLampDestroyed)
+                {
+                    _currentWaspState = WaspStates.Idle;
+                    break;
+                }
                 OnLeftTheScreen?.Invoke();
                 v = Random.Range(0, 2);
                 if (v == 0)
                 {
                     _currentWaspState = WaspStates.Attack1_R;   
-                    OnWaspAttackStarted?.Invoke();
+                    OnBossAttackStarted?.Invoke();
                 }
                 else if(v == 1)
                 {
                     _currentWaspState = WaspStates.Attack3_R;
-                    OnWaspAttackStarted?.Invoke();
+                    OnBossAttackStarted?.Invoke();
                 }
                 break;
             case WaspStates.Attack4_R_Success1:
+                if (_isLampDestroyed)
+                {
+                    _currentWaspState = WaspStates.Idle;
+                    break;
+                }
                 OnLeftTheScreen?.Invoke();
                 v = Random.Range(0, 3);
                 if (v == 0)
                 {
                     _currentWaspState = WaspStates.Attack1_L;   
-                    OnWaspAttackStarted?.Invoke();
+                    OnBossAttackStarted?.Invoke();
                 }
                 else if(v == 1)
                 {
                     _currentWaspState = WaspStates.Attack2_R;
-                    OnWaspAttackStarted?.Invoke();
+                    OnBossAttackStarted?.Invoke();
                 }
                 else if(v == 2)
                 {
                     _currentWaspState = WaspStates.Attack3_R;
-                    OnWaspAttackStarted?.Invoke();
+                    OnBossAttackStarted?.Invoke();
                 }    
                 break;
             case WaspStates.Attack1_L_Death:
@@ -720,6 +839,17 @@ public class WaspMovement : MonoBehaviour, IInitializable
     
     private void OnDisable()
     {
-        _playableGraph.Destroy();
+        if (_playableGraph.IsValid())
+        {
+            _playableGraph.Destroy();    
+        }
+    }
+
+    private void OnDestroy()
+    {
+        if (_playableGraph.IsValid())
+        {
+            _playableGraph.Destroy();    
+        }
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -25,6 +26,7 @@ public class WaspPresentation : MonoBehaviour, IInitializable
     
     public void Initialize()
     {
+        _waspBodyMeshRenderer.gameObject.SetActive(true);
         _localTime = 0;
         _isDead = false;
         _waspBodyMaterial = _waspBodyMeshRenderer.material;
@@ -54,7 +56,13 @@ public class WaspPresentation : MonoBehaviour, IInitializable
         _damageEmitParticles.SendEvent("OnStartEmit");
         _damageEmitParticles.SetFloat("Rate", 35);
     }
-    
+
+    public void Reset()
+    {
+        _waspBodyMeshRenderer.gameObject.SetActive(false);
+        _trailResetHandler.Initialize();
+    }
+
     public void ResetTrail()
     {
         _trailResetHandler.Initialize();

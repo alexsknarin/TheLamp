@@ -9,23 +9,23 @@ public class Wasp : BossBase
     [SerializeField] private int _maxHealth;
     [SerializeField] private int _currentHealth;
 
-
     private void OnEnable()
     {
-        _waspMovement.OnWaspAttackStarted += UpdateRecievedLampAttackStatus;
+        _waspMovement.OnBossAttackStarted += UpdateRecievedLampAttackStatus;
         _waspMovement.OnDeathStateEnded += HandleDeathMoveStateEnd;
         _waspMovement.OnLeftTheScreen += HandleLeftScreen;
+        Lamp.OnLampDead += HandleLampDead;
     }
     
     private void OnDisable()
     {
-        _waspMovement.OnWaspAttackStarted -= UpdateRecievedLampAttackStatus;
+        _waspMovement.OnBossAttackStarted -= UpdateRecievedLampAttackStatus;
         _waspMovement.OnDeathStateEnded -= HandleDeathMoveStateEnd;
         _waspMovement.OnLeftTheScreen -= HandleLeftScreen;
+        Lamp.OnLampDead -= HandleLampDead;
     }
     public override void Initialize()
     {
-        gameObject.SetActive(true);
         ReceivedLampAttack = false;
         IsGameOver = false;
         _currentHealth = _maxHealth;
@@ -45,6 +45,7 @@ public class Wasp : BossBase
     {
         _waspMovement.Play();
         _waspPresentation.ResetTrail();
+        _waspPresentation.Initialize();
     }
 
     public void TriggerSpread()
@@ -62,7 +63,7 @@ public class Wasp : BossBase
 
     public override void HandleCollisionWithStickZone()
     {
-    }
+    }   
 
     public override void ReceiveDamage(int damage)
     {
@@ -98,19 +99,9 @@ public class Wasp : BossBase
     public override void AttackStart()
     {
     }
-
-    public override void HandleEnteringAttackZone()
-    {
-        ReadyToLampDamage = true;
-    }
     
     public override void HandleCollisionWithLamp()
     {
-    }
-    
-    public override void HandleExitingAttackExitZone()
-    {
-        ReadyToLampDamage = false;
     }
 
     private void HandleLeftScreen()
@@ -118,14 +109,19 @@ public class Wasp : BossBase
         if (IsGameOver)
         {
             Reset();
-            gameObject.SetActive(false);
             IsGameOver = false;
         }
+    }
+    
+    private void HandleLampDead(EnemyBase enemy)
+    {
+        _waspMovement.SetLampDestroyed();
     }
     
     private void HandleDeathMoveStateEnd()
     {
         OnDeathInvoke();
+        _waspPresentation.Reset();
     }
 
     private void ResetTrail()

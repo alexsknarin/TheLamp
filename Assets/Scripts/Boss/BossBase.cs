@@ -17,4 +17,14 @@ public abstract class BossBase : EnemyBase
     {
         OnDeath?.Invoke();
     }
+    
+    public override void HandleEnteringAttackZone()
+    {
+        ReadyToLampDamage = true;
+    }
+    
+    public override void HandleExitingAttackExitZone()
+    {
+        ReadyToLampDamage = false;
+    }
 }
