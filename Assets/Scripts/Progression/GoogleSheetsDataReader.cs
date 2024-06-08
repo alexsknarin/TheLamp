@@ -35,6 +35,8 @@ public class GoogleSheetsDataReader : MonoBehaviour, IInitializable
         if (www.result == UnityWebRequest.Result.ConnectionError || www.result== UnityWebRequest.Result.ProtocolError)
         {
             Debug.Log("Connection ERROR: " + www.error);
+            _sheetData = "";
+            OnDataLoaded?.Invoke();
         }
         else
         {

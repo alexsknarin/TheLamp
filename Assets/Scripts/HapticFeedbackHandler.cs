@@ -3,10 +3,14 @@ using CandyCoded.HapticFeedback;
 #endif
 
 using System;
+using System.Collections;
 using UnityEngine;
 
 public class HapticFeedbackHandler : MonoBehaviour
 {
+    private bool _isDamageVibrationDisabled = true;
+    private WaitForSeconds _vibrationDuration = new WaitForSeconds(0.2f);
+    
     private void OnEnable()
     {
         PlayerInputHandler.OnPlayerAttack += PerformTouchHaptic;
@@ -23,10 +27,19 @@ public class HapticFeedbackHandler : MonoBehaviour
         EnemyManager.OnFireflyExplosion -= PerformExplosionVibration;
     }
 
+    private IEnumerator DisableHaptic()
+    {
+        yield return _vibrationDuration;
+        _isDamageVibrationDisabled = true;
+    }
+
     private void PerformTouchHaptic()
     {
 #if UNITY_ANDROID
-        HapticFeedback.HeavyFeedback();
+        if (_isDamageVibrationDisabled)
+        {
+            HapticFeedback.HeavyFeedback();    
+        }
 #endif
     }
     
@@ -34,6 +47,8 @@ public class HapticFeedbackHandler : MonoBehaviour
     {
 #if UNITY_ANDROID
         Handheld.Vibrate();
+        _isDamageVibrationDisabled = false;
+        StartCoroutine(DisableHaptic());
 #endif
     }
     
@@ -41,6 +56,8 @@ public class HapticFeedbackHandler : MonoBehaviour
     {
 #if UNITY_ANDROID
         Handheld.Vibrate();
+        _isDamageVibrationDisabled = false;
+        StartCoroutine(DisableHaptic());
 #endif
     }
 }
