@@ -67,6 +67,14 @@ public class LampEmissionController : MonoBehaviour
         _lampSocketAluminiumMaterial = _lampSocketMeshRenderer.materials[0];
     }
 
+    public void Initialize()
+    {
+        _filamentMaterial.SetFloat("_DamageMix", 0);
+        _electrodeMaterial.SetFloat("_DamageMix", 0);
+        _glassTubeMaterial.SetFloat("_DamageMix", 0);
+        _lampGlassMaterial.SetFloat("_DamageMix", 0);
+    }
+
     public void HideGlass()
     {
         _lampGlassMeshRenderer.gameObject.SetActive(false);

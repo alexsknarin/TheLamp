@@ -44,7 +44,9 @@ public class LampPresentation : MonoBehaviour
     
     public void Initialize(Vector3 damageWeights, LampImpactPointsData impactPointsData)
     {
+        
         ResetLightNeutralState();
+        _lampEmissionController.Initialize();
         _lampHealthBar.Initialize();
         _lampAttackAnimation.Initialize();
         _lampDeathAnimation.Initialize();
