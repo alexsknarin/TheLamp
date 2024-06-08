@@ -8,7 +8,7 @@ public class UiIntroAnimation : MonoBehaviour
     private UnityEngine.Rendering.Universal.ColorAdjustments _colorAdjustments;
     private float _duration;
 
-    private float _cameraStartZPosition = -6.5f;
+    private float _cameraStartZPosition = -7.1f;
     private float _cameraEndZPosition = -5.88f;
     private float _localTime;
     private bool _isPlaying;
