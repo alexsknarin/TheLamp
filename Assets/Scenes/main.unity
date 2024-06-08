@@ -8136,7 +8136,7 @@ MonoBehaviour:
   _aggresionLevel: 0
   _maxAggressionLevel: 6
   _isStartAtWaveTestMode: 0
-  _startAtWave: 2
+  _startAtWave: 4
   _currentWave: 0
   _firstEnemySpawnDelay: 0.5
   _spawnDelay: 1
@@ -8695,7 +8695,7 @@ MonoBehaviour:
   _lampAttackExitZoneCollisionHandler: {fileID: 452042971}
   _attackBlockerCount: 0
   _lampStatsManager: {fileID: 1934066249}
-  _isInvincible: 1
+  _isInvincible: 0
 --- !u!114 &1934066247
 MonoBehaviour:
   m_ObjectHideFlags: 0

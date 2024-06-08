@@ -133,12 +133,13 @@ Material:
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
-    - _BaseColor: {r: 0.8553459, g: 0.6639882, b: 0.1855938, a: 1}
+    - _BaseColor: {r: 0.9811321, g: 0.79281926, b: 0.3239586, a: 1}
     - _Color: {r: 1, g: 0.75877017, b: 0.16666654, a: 1}
     - _EmissionColor: {r: 2.958679, g: 0.077452384, b: 0.030980991, a: 1}
     - _HealthColor: {r: 1.0592738, g: 0.017198756, b: 0, a: 1}
     - _RimLightColor: {r: 0.48427665, g: 0.3137795, b: 0.24213827, a: 0}
     - _SelfEmissin: {r: 0.44025147, g: 0.38885418, b: 0.029073149, a: 0}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
+    - _SpecularTint: {r: 1, g: 0.9218042, b: 0.5251572, a: 0}
     - _TMP: {r: 0.36477977, g: 0.36477977, b: 0.36477977, a: 0}
   m_BuildTextureStacks: []

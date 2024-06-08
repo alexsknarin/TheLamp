@@ -255,10 +255,21 @@ public class MegamothlingMovement : EnemyMovement
             Vector3 trajectoryNoise1 = TrajectoryNoise.Generate(_noise1Frequency);
             Vector3 trajectoryNoise2 = TrajectoryNoise.Generate(_noise2Frequency);
             
-            if (_position2d.magnitude < 0.8f)
+            if (_currentState.State == EnemyStates.Attack)
             {
-                trajectoryNoise1 = Vector3.zero;
-                trajectoryNoise2 = Vector3.zero;
+                float noiseMultiplier = 0.5f;
+                if (_position2d.magnitude < 0.8f)
+                {
+                    noiseMultiplier = 0.001f;
+                }   
+                trajectoryNoise1 *= noiseMultiplier;
+                trajectoryNoise2 *= noiseMultiplier;
+            }
+
+            if (State == EnemyStates.Death)
+            {
+                trajectoryNoise1 *= 0.1f;
+                trajectoryNoise2 *= 0.25f;
             }
            
             _position = _position2d + trajectoryNoise1 * _noise1Amplitude + trajectoryNoise2 * _noise2Amplitude;
@@ -270,9 +281,19 @@ public class MegamothlingMovement : EnemyMovement
             _position += _currentState.Depth;
         }
         
-        transform.position = _position;
+        // Add SmoothDamp
+        if (_isSmoothDampEnabled)
+        {
+            transform.position = Vector3.SmoothDamp(transform.position, _position, ref _velocity, _smoothTime);
+        }
+        else
+        {
+            transform.position = _position;
+        }
+        
         _movementStateMachine.CheckForStateChange();
         Debug.DrawLine(_prevPosition, _prevPosition + (_position-_prevPosition).normalized*0.02f, Color.cyan, 5f);
+        Debug.DrawLine(_prevPosSmooth, _prevPosSmooth + (transform.position-_prevPosSmooth).normalized*0.02f, Color.yellow, 5f);
         _stateDebug = _currentState.State;
     }
 }

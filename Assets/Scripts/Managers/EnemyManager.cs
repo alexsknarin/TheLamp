@@ -459,7 +459,7 @@ public class EnemyManager : MonoBehaviour,IInitializable
         // Priortized to attack more ofthen
         // IN this case twice as often
         
-        if (_isBossActive && (_currentBoss.EnemyType == EnemyTypes.Megamothling))
+        if (_isBossActive && (_currentBoss.EnemyType == EnemyTypes.Megamothling) && _currentBoss.ReadyToAttack)
         {
             int megamothlingAttackChance = Random.Range(0, 2);
             if (megamothlingAttackChance == 0)
