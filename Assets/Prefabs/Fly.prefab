@@ -475,14 +475,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 27789f57ef32ec34b8812f685cc64514, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _speed: 3
-  _radius: 1.4
+  _speed: 1.82
+  _radius: 1.35
   _verticalAmplitude: 1.2
   _spawnAreaSize: 0.5
   _spawnAreaCenter: {x: 3.6, y: -2.6, z: 0}
   _isNoiseEnabled: 1
   _noiseFrequency: 4.3
-  _noiseAmplitude: 0.22
+  _noiseAmplitude: 0.2
   _isSmoothDampEnabled: 1
   _smoothTime: 0.12
   _isDepthEnabled: 1
