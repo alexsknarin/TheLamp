@@ -4,7 +4,7 @@ using UnityEngine.VFX;
 public class DeathFlash : DamageIndication
 {
     [SerializeField] private MeshRenderer _meshRenderer;
-    [SerializeField] private float _duration = 0.5f;
+    [SerializeField] private float _duration = 1.7f;
     [SerializeField] private VisualEffect _deathParticles;
     [SerializeField] private VisualEffect _damageParticles;
     private Material _material;

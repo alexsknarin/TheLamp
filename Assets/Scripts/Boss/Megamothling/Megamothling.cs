@@ -12,9 +12,6 @@ public class Megamothling : BossBase
     [SerializeField] private MegamothlingPresentation _enemyPresentation;
     private bool _isDead = false;
 
-    public static event Action<Enemy> OnEnemyDeactivated;
-    public static event Action<Enemy> OnEnemyDamaged;
-
     private void OnEnable()
     {
         _enemyMovement.OnPreAttackStart += OnPreAttackStart;
@@ -63,7 +60,7 @@ public class Megamothling : BossBase
         
         if (_enemyType == EnemyTypes.Megamothling && _enemyMovement.State == EnemyStates.Patrol)
         {
-            if ((y < 0.0f) || (Mathf.Abs(x) > 1.1f && y > 0.0f))
+            if ((y < 0.0f) || (Mathf.Abs(x) > 2.1f && y > 0.0f))
             {
                 ReadyToAttack = true;
             }

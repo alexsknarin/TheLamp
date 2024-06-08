@@ -260,6 +260,11 @@ public class MegamothlingMovement : EnemyMovement
                 trajectoryNoise1 = Vector3.zero;
                 trajectoryNoise2 = Vector3.zero;
             }
+
+            if (State == EnemyStates.Death)
+            {
+                trajectoryNoise1 *= 0.1f;
+            }
            
             _position = _position2d + trajectoryNoise1 * _noise1Amplitude + trajectoryNoise2 * _noise2Amplitude;
         }

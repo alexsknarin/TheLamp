@@ -8,7 +8,7 @@ public class MegamothlingMovementDeathState: EnemyMovementBaseState
     private float _bounceForceMagnitude = 2f;
     private float _gravityForceMagnitude = .2f;
     private float _dragAmount = 0.94f;
-    private float _duration = 3f;
+    private float _duration = 1.7f;
     private float _localTime;
     
     public MegamothlingMovementDeathState(IStateMachineOwner owner, float speed, float radius, float verticalAmplitude) : base()
