@@ -23,8 +23,16 @@ public class CameraShake : MonoBehaviour
     [SerializeField] private float _waspProximityMaxDistance;
     [SerializeField] private float _waspProximityMinDistance;
     
+    [Header("Megabeetle")]
+    [SerializeField] private float _megabeetleProximityShakeAmplitude;
+    [SerializeField] private AnimationCurve _megabeetleProximityCurve;
+    [SerializeField] private Transform _megabeetleTransform;
+    [SerializeField] private float _megabeetleProximityMaxDistance;
+    [SerializeField] private float _megabeetleProximityMinDistance;
+    
     private float _waspShakeDistance;
     private float _megamothlingShakeDistance;
+    private float _megabeetleShakeDistance;
     private bool _isWaspNearby;
 
     private Vector3 _originalPos;
@@ -53,6 +61,7 @@ public class CameraShake : MonoBehaviour
         _originalPos = transform.position;
         _waspShakeDistance = Mathf.Abs(_waspProximityMaxDistance - _waspProximityMinDistance);
         _megamothlingShakeDistance = Mathf.Abs(_megamothlingProximityMaxDistance - _megamothlingProximityMinDistance);
+        _megabeetleShakeDistance = Mathf.Abs(_megabeetleProximityMaxDistance - _megabeetleProximityMinDistance);
         _isShaking = false;
     }
     
@@ -76,6 +85,12 @@ public class CameraShake : MonoBehaviour
         {
             float shakephase = Mathf.Abs(_megamothlingTransform.position.z - _megamothlingProximityMaxDistance) / _megamothlingShakeDistance;
             transform.position = Vector3.Lerp(_originalPos, _originalPos + (Vector3)(Random.insideUnitCircle * _megamothlingProximityShakeAmplitude), shakephase);   
+        }
+        
+        if (_megabeetleTransform.position.z < _megabeetleProximityMaxDistance)
+        {
+            float shakephase = Mathf.Abs(_megabeetleTransform.position.z - _megabeetleProximityMaxDistance) / _megabeetleShakeDistance;
+            transform.position = Vector3.Lerp(_originalPos, _originalPos + (Vector3)(Random.insideUnitCircle * _megabeetleProximityShakeAmplitude), shakephase);   
         }
         
     }

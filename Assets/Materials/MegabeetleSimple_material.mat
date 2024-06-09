@@ -1,5 +1,18 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-362467877632356930
+MonoBehaviour:
+  m_ObjectHideFlags: 11
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0353a89b1f911e48b9e16bdc9f2e058, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  version: 7
 --- !u!21 &2100000
 Material:
   serializedVersion: 8
@@ -7,14 +20,14 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Lamp_GlassTransparent_material
-  m_Shader: {fileID: -6465566751694194690, guid: afe5e28e02ec6b84ab7e02551d416682,
+  m_Name: MegabeetleSimple_material
+  m_Shader: {fileID: -6465566751694194690, guid: f0d8a3b57475fde4eae94e232b71dbc0,
     type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
   m_InvalidKeywords: []
-  m_LightmapFlags: 4
+  m_LightmapFlags: 2
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
@@ -32,18 +45,6 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _CenterGlowMask:
-        m_Texture: {fileID: 2800000, guid: e9ec0c67758fb2d46b7b84e660f76a96, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _CracksMask:
-        m_Texture: {fileID: 2800000, guid: 20f20899f13242f41b54381daab08bbd, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _DamageImpactPontMap:
-        m_Texture: {fileID: 2800000, guid: 6f8f6a7eb13e4394484d3c40e2cb8679, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
     - _DetailAlbedoMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -56,16 +57,8 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _DirtMap:
-        m_Texture: {fileID: 2800000, guid: 5c98c07be3fefd5429d1624038327203, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
     - _EmissionMap:
         m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _ImpactPontMap:
-        m_Texture: {fileID: 2800000, guid: 6f8f6a7eb13e4394484d3c40e2cb8679, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
@@ -104,60 +97,34 @@ Material:
     m_Floats:
     - _AlphaClip: 0
     - _AlphaToMask: 0
+    - _AttackSemaphor: 0
+    - _AttackSemaphore: 0
     - _Blend: 0
     - _BlendModePreserveSpecular: 1
     - _BumpScale: 1
     - _ClearCoatMask: 0
     - _ClearCoatSmoothness: 0
-    - _CracksAmountB: 0
-    - _CracksAmountL: 0
-    - _CracksAmountR: 0
-    - _CracksAmountR_1: 0
-    - _CracksAmountR_2: 0
     - _Cull: 2
     - _Cutoff: 0.5
-    - _DamageMix: 0
-    - _DamagePoint01GlobalAngle: 0
-    - _DamagePoint01LocalAngle: 0
-    - _DamagePoint01Strength: 0
-    - _DamagePoint02GlobalAngle: 0
-    - _DamagePoint02LocalAngle: 0
-    - _DamagePoint02Strength: 0
-    - _DamagePoint03GlobalAngle: 0
-    - _DamagePoint03LocalAngle: 0
-    - _DamagePoint03Strength: 0
+    - _Damage: 1
+    - _DeathFade: 0
     - _DetailAlbedoMapScale: 1
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
     - _DstBlendAlpha: 0
-    - _EdgeDirtEmission: 0.935
-    - _EdgeEmission: 0.739
-    - _EdgeEmissionPower: 6.11
-    - _EdgeEmissionStrength: 1.54
-    - _EmissionStrength: 0.98074096
     - _EnvironmentReflections: 1
-    - _GlassIOR: -0.21
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
-    - _GlowEmissionStrength: 11.7
-    - _ImpactPoint01GlobalAngle: 0
-    - _ImpactPoint01LocalAngle: 0
-    - _ImpactPoint01Strength: 0
-    - _ImpactPoint02GlobalAngle: 0
-    - _ImpactPoint02LocalAngle: 0
-    - _ImpactPoint02Strength: 0
-    - _ImpactPoint03GlobalAngle: 0
-    - _ImpactPoint03LocalAngle: 0
-    - _ImpactPoint03Strength: 0
-    - _Metallic: 0
+    - _Health: 1
+    - _Metallic: 0.136
     - _OcclusionStrength: 1
-    - _PamagePoint01LocalAngle: 0
     - _Parallax: 0.005
     - _QueueControl: 0
     - _QueueOffset: 0
     - _ReceiveShadows: 1
-    - _Smoothness: 0.5
+    - _RimLightCurve: 3.73
+    - _Smoothness: 0.75
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
@@ -166,23 +133,13 @@ Material:
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
-    - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
-    - _Color: {r: 1, g: 1, b: 1, a: 1}
-    - _DamageColor: {r: 8.932279, g: 0, b: 0, a: 1}
-    - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _LightEmissionColor: {r: 0.9559748, g: 0.31482676, b: 0.08116753, a: 1}
+    - _BaseColor: {r: 0, g: 0, b: 0, a: 1}
+    - _Color: {r: 1, g: 0.75877017, b: 0.16666654, a: 1}
+    - _EmissionColor: {r: 2.9586787, g: 0.04647131, b: 0.11358887, a: 1}
+    - _HealthColor: {r: 0.6520595, g: 0.010734459, b: 0, a: 0}
+    - _RimLightColor: {r: 0.64779866, g: 0.50665, b: 0.31167665, a: 1}
+    - _SelfEmissin: {r: 0, g: 0, b: 0, a: 0}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
+    - _SpecularTint: {r: 0.60062885, g: 0.8541716, b: 1, a: 0}
+    - _TMP: {r: 0.259, g: 0.259, b: 0.259, a: 0}
   m_BuildTextureStacks: []
---- !u!114 &9108830626324274294
-MonoBehaviour:
-  m_ObjectHideFlags: 11
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d0353a89b1f911e48b9e16bdc9f2e058, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  version: 7

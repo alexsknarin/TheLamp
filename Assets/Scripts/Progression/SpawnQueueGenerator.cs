@@ -31,13 +31,13 @@ public class SpawnQueueGenerator
             int bossMegamothlingCount = jsonObject[2][i][8].AsInt;
             int totalEnemies = mothlingCount + flyCount + mothCount + fireflyCount + ladybugCount + spiderCount;
             //Data
-            enemyQueue.MaxEnemiesOnScreen = jsonObject[2][i][10].AsInt;
-            enemyQueue.AggressionLevel = jsonObject[2][i][11].AsInt;
-            enemyQueue.SpawnDelay = jsonObject[2][i][12].AsFloat;
-            enemyQueue.SpawnDelayAcceleration = jsonObject[2][i][13].AsFloat;
+            enemyQueue.MaxEnemiesOnScreen = jsonObject[2][i][14].AsInt;
+            enemyQueue.AggressionLevel = jsonObject[2][i][15].AsInt;
+            enemyQueue.SpawnDelay = jsonObject[2][i][16].AsFloat;
+            enemyQueue.SpawnDelayAcceleration = jsonObject[2][i][17].AsFloat;
             
             // Introduce a new enemy
-            string enemyIntro = (jsonObject[2][i][14]).ToString().Replace("\"", "");
+            string enemyIntro = (jsonObject[2][i][18]).ToString().Replace("\"", "");
             if ( !string.IsNullOrEmpty(enemyIntro))
             {
                 EnemyTypes firstEnemyType = (EnemyTypes)System.Enum.Parse(typeof(EnemyTypes), enemyIntro);

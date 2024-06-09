@@ -9,8 +9,7 @@ public class LampStickZoneCollisionHandler : MonoBehaviour
         if (other.gameObject.CompareTag("StickyEnemy"))
         {
             EnemyBase enemy = other.GetComponent<EnemyBase>();
-            enemy.HandleCollisionWithStickZone();
-            OnCollidedWithStickyEnemy?.Invoke(other.GetComponent<EnemyBase>());
+            OnCollidedWithStickyEnemy?.Invoke(enemy);
         }
     }
 }
