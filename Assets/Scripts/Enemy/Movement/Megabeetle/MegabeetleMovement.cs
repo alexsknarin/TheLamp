@@ -15,13 +15,14 @@ public class MegabeetleMovement : EnemyMovement
     private EnemyMovementStateMachine _movementStateMachine;
     private EnemyMovementBaseState _currentState;
     private MegabeetleMovementEnterState _enterState;
-    private LadybugMovementPatrolState _patrolState;
+    private MegabeetleMovementPatrolState _patrolState;
     private LadybugMovementPreAttackState _preAttackState;
     private LadybugMovementAttackState _attackState;
     private MegabeetleMovementStickState _stickState;
     private MegabeetleMovementStickPreAttackState _stickPreAttackState;
     private MegabeetleMovementStickAttackState _stickAttackState;
     private MegabeetleMovementStickLandingState _stickLandingState;
+    private MegabeetleMovementFallState _fallState;
     private LadybugMovementDeathState _deathState;
     private LadybugMovementSpreadState _spreadState;
     
@@ -34,6 +35,7 @@ public class MegabeetleMovement : EnemyMovement
     // State parameters
     private bool _isDead = false;
     private bool _isCollided = false;
+    private bool _isFalling = false;
     
     // Debug
     [SerializeField] private EnemyStates _stateDebug;
@@ -52,15 +54,18 @@ public class MegabeetleMovement : EnemyMovement
     {
         _isDead = false;
         _isCollided = false;
+        _isFalling = false;
+        
         _movementStateMachine = new EnemyMovementStateMachine();
         _enterState = new MegabeetleMovementEnterState(this, _speed, _radius, _verticalAmplitude);
-        _patrolState  = new LadybugMovementPatrolState(this, _speed, _radius, _verticalAmplitude);
+        _patrolState  = new MegabeetleMovementPatrolState(this, _speed, _radius, _verticalAmplitude);
         _preAttackState = new LadybugMovementPreAttackState(this, _speed, _radius, _verticalAmplitude);
         _attackState = new LadybugMovementAttackState(this, _speed, _radius, _verticalAmplitude);
         _stickLandingState = new MegabeetleMovementStickLandingState(this, _speed, _radius, _verticalAmplitude);
         _stickState = new MegabeetleMovementStickState(this, _speed, _radius, _verticalAmplitude);
         _stickPreAttackState = new MegabeetleMovementStickPreAttackState(this, _speed, _radius, _verticalAmplitude);
         _stickAttackState = new MegabeetleMovementStickAttackState(this, _speed, _radius, _verticalAmplitude);
+        _fallState = new MegabeetleMovementFallState(this, _speed, _radius, _verticalAmplitude);
         _deathState = new LadybugMovementDeathState(this, _speed, _radius, _verticalAmplitude);
         _spreadState = new LadybugMovementSpreadState(this, _speed, _radius, _verticalAmplitude);
         MovementSetup();
@@ -142,6 +147,7 @@ public class MegabeetleMovement : EnemyMovement
 
     public override void SwitchState()
     {
+        Debug.Log("Current side Direction: " + _sideDirection.ToString());
         EnemyMovementBaseState newState = _currentState;
         switch (_currentState.State)
         {
@@ -205,7 +211,15 @@ public class MegabeetleMovement : EnemyMovement
                 {
                     newState = _deathState;
                     _isDead = false;
-                    break;
+                }
+                else if (_isFalling)
+                {
+                    newState = _fallState;
+                    transform.parent = null;
+                    _position2d = transform.position;
+                    _isCollided = false;
+                    _isFalling = false;
+                    _sideDirection = RandomDirection.Generate();
                 }
                 else
                 {
@@ -213,13 +227,23 @@ public class MegabeetleMovement : EnemyMovement
                     _position2d = transform.localPosition;
                     _isCollided = false;
                     OnStickStartInvoke();
-                    break;    
+                        
                 }
+                break;
             case EnemyStates.Stick:
                 if (_isDead)
                 {
                     newState = _deathState;
                     _isDead = false;
+                }
+                else if (_isFalling)
+                {
+                    newState = _fallState;
+                    transform.parent = null;
+                    _position2d = transform.position;
+                    _isCollided = false;
+                    _isFalling = false;
+                    _sideDirection = RandomDirection.Generate();
                 }
                 else
                 {
@@ -234,6 +258,15 @@ public class MegabeetleMovement : EnemyMovement
                     newState = _deathState;
                     _isDead = false;
                 }
+                else if (_isFalling)
+                {
+                    newState = _fallState;
+                    transform.parent = null;
+                    _position2d = transform.position;
+                    _isCollided = false;
+                    _isFalling = false;
+                    _sideDirection = RandomDirection.Generate();
+                }
                 else
                 {
                     newState = _stickAttackState;
@@ -247,12 +280,24 @@ public class MegabeetleMovement : EnemyMovement
                     newState = _deathState;
                     _isDead = false;
                 }
+                else if (_isFalling)
+                {
+                    newState = _fallState;
+                    transform.parent = null;
+                    _position2d = transform.position;
+                    _isCollided = false;
+                    _isFalling = false;
+                    _sideDirection = RandomDirection.Generate();
+                }
                 else
                 {
                     newState = _stickState;
                     _position2d = transform.localPosition;
                     _isCollided = false;
                 }
+                break;
+            case EnemyStates.Fall:
+                newState = _patrolState;
                 break;
             case EnemyStates.Spread:
                 MovementReset();
@@ -269,6 +314,16 @@ public class MegabeetleMovement : EnemyMovement
     
     private void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Z))
+        {
+            if (_currentState.State != EnemyStates.Fall)
+            {
+                _isFalling = true;
+                SwitchState();
+            }
+        }
+        
+        
         if ((_currentState.State != EnemyStates.Stick) &&
             (_currentState.State != EnemyStates.StickLanding))
         {

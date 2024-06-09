@@ -3,7 +3,7 @@ using UnityEngine;
 public class MegabeetleMovementStickLandingState: EnemyMovementBaseState
 {
     public override EnemyStates State => EnemyStates.StickLanding;
-    private float _duration = .15f;
+    private float _duration = .491f;
     private float _phase;
     private float _localTime;
     private Vector3 _startPosition;

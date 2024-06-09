@@ -30,7 +30,7 @@ public class MegabeetleMovementStickAttackState: EnemyMovementBaseState
     public override void ExecuteState(Vector3 currentPosition)
     {
         _phase  = _localTime / _duration;
-        Position = Vector3.Lerp(_startPosition, _endPosition, Mathf.Pow(_phase, 2f));
+        Position = Vector3.Lerp(_startPosition, _endPosition, Mathf.Pow(_phase, 2.6f));
         _localTime += Time.deltaTime;
     }
     
