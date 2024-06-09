@@ -10,5 +10,7 @@ public enum EnemyStates
     Stick,
     Death,
     Spread,
-    StickLanding
+    StickLanding,
+    StickPreAttack,
+    StickAttack
 }

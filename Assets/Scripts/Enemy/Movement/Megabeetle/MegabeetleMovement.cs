@@ -18,7 +18,9 @@ public class MegabeetleMovement : EnemyMovement
     private LadybugMovementPatrolState _patrolState;
     private LadybugMovementPreAttackState _preAttackState;
     private LadybugMovementAttackState _attackState;
-    private LadybugMovementStickState _stickState;
+    private MegabeetleMovementStickState _stickState;
+    private MegabeetleMovementStickPreAttackState _stickPreAttackState;
+    private MegabeetleMovementStickAttackState _stickAttackState;
     private MegabeetleMovementStickLandingState _stickLandingState;
     private LadybugMovementDeathState _deathState;
     private LadybugMovementSpreadState _spreadState;
@@ -56,7 +58,9 @@ public class MegabeetleMovement : EnemyMovement
         _preAttackState = new LadybugMovementPreAttackState(this, _speed, _radius, _verticalAmplitude);
         _attackState = new LadybugMovementAttackState(this, _speed, _radius, _verticalAmplitude);
         _stickLandingState = new MegabeetleMovementStickLandingState(this, _speed, _radius, _verticalAmplitude);
-        _stickState = new LadybugMovementStickState(this, _speed, _radius, _verticalAmplitude);
+        _stickState = new MegabeetleMovementStickState(this, _speed, _radius, _verticalAmplitude);
+        _stickPreAttackState = new MegabeetleMovementStickPreAttackState(this, _speed, _radius, _verticalAmplitude);
+        _stickAttackState = new MegabeetleMovementStickAttackState(this, _speed, _radius, _verticalAmplitude);
         _deathState = new LadybugMovementDeathState(this, _speed, _radius, _verticalAmplitude);
         _spreadState = new LadybugMovementSpreadState(this, _speed, _radius, _verticalAmplitude);
         MovementSetup();
@@ -82,7 +86,6 @@ public class MegabeetleMovement : EnemyMovement
     
     private Vector3 GenerateSpawnPosition(float distance, int direction)
     {
-        Debug.Log("Generating spawn position: " + distance.ToString() + " " + direction.ToString());
         Vector3 spawnPosition = Vector3.zero;
         spawnPosition.x = distance;
         Quaternion rotation = Quaternion.Euler(0, 0, -Random.Range(22, 49));
@@ -97,7 +100,6 @@ public class MegabeetleMovement : EnemyMovement
 
     public void FallOnLampDestroyed(EnemyBase enemy)
     {
-        Debug.Log("Trying to unparent");
         transform.parent = null;
         if(_currentState.State == EnemyStates.Stick)
         {
@@ -132,7 +134,6 @@ public class MegabeetleMovement : EnemyMovement
     
     public override void TriggerStick()
     {
-        Debug.Log("Boss: Stick Triggered");
         if (_currentState.State != EnemyStates.Stick)
         {
             SwitchState();
@@ -193,7 +194,6 @@ public class MegabeetleMovement : EnemyMovement
                 }
                 else
                 {
-                    Debug.Log("Switching to stick landing");
                     newState = _stickLandingState;
                     _position2d = transform.localPosition;
                     _isCollided = false;
@@ -209,21 +209,49 @@ public class MegabeetleMovement : EnemyMovement
                 }
                 else
                 {
-                    Debug.Log("Switching to stick");
                     newState = _stickState;
                     _position2d = transform.localPosition;
                     _isCollided = false;
                     OnStickStartInvoke();
                     break;    
                 }
-            
-            //--------------
-            
             case EnemyStates.Stick:
                 if (_isDead)
                 {
                     newState = _deathState;
                     _isDead = false;
+                }
+                else
+                {
+                    newState = _stickPreAttackState;
+                    _position2d = transform.localPosition;
+                    _isCollided = false;
+                }
+                break;
+            case EnemyStates.StickPreAttack:
+                if (_isDead)
+                {
+                    newState = _deathState;
+                    _isDead = false;
+                }
+                else
+                {
+                    newState = _stickAttackState;
+                    _position2d = transform.localPosition;
+                    _isCollided = false;
+                }
+                break;
+            case EnemyStates.StickAttack:
+                if (_isDead)
+                {
+                    newState = _deathState;
+                    _isDead = false;
+                }
+                else
+                {
+                    newState = _stickState;
+                    _position2d = transform.localPosition;
+                    _isCollided = false;
                 }
                 break;
             case EnemyStates.Spread:
@@ -241,8 +269,8 @@ public class MegabeetleMovement : EnemyMovement
     
     private void Update()
     {
-        if (_currentState.State != EnemyStates.Stick &&
-            _currentState.State != EnemyStates.StickLanding)
+        if ((_currentState.State != EnemyStates.Stick) &&
+            (_currentState.State != EnemyStates.StickLanding))
         {
             _prevPosition2d = _position2d;
             _currentState.ExecuteState(_position2d);
@@ -262,7 +290,10 @@ public class MegabeetleMovement : EnemyMovement
             Debug.DrawLine(_prevPosition2d, _prevPosition2d + (_position2d - _prevPosition2d).normalized * 0.02f, Color.cyan, 5f);   
         }
         
-        if (_currentState.State == EnemyStates.StickLanding)
+        if ((_currentState.State == EnemyStates.StickLanding) ||
+            (_currentState.State == EnemyStates.Stick) ||
+            (_currentState.State == EnemyStates.StickPreAttack) ||
+            (_currentState.State == EnemyStates.StickAttack))
         {
             _prevPosition2d = _position2d;
             _currentState.ExecuteState(_position2d);

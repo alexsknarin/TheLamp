@@ -91,7 +91,6 @@ public class LadybugMovement : EnemyMovement
 
     public void FallOnLampDestroyed(EnemyBase enemy)
     {
-        Debug.Log("Trying to unparent");
         transform.parent = null;
         if(_currentState.State == EnemyStates.Stick)
         {

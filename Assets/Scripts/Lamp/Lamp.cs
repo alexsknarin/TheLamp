@@ -76,7 +76,6 @@ public class Lamp : MonoBehaviour, IInitializable
         }
         
         enemy.transform.parent = transform;
-        Debug.Log("Lamp : collided with sticky enemy - parented to lamp");
         enemy.HandleCollisionWithStickZone();
         MoveLamp();
         OnLampCollidedWithStickyEnemy?.Invoke(enemy);
