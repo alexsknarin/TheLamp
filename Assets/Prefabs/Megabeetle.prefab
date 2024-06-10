@@ -547,9 +547,9 @@ GameObject:
   - component: {fileID: 63842585345263973}
   - component: {fileID: 7360221584060591130}
   - component: {fileID: 5388342705411227899}
-  - component: {fileID: 8958940323544418024}
+  - component: {fileID: 6281014532624352872}
   - component: {fileID: 1362534363766813855}
-  - component: {fileID: 2554923996394591702}
+  - component: {fileID: 5095011763847777903}
   - component: {fileID: 454837011142885043}
   - component: {fileID: 1168591479674629291}
   - component: {fileID: 2858276551893859201}
@@ -644,7 +644,7 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.3
---- !u!114 &8958940323544418024
+--- !u!114 &6281014532624352872
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -653,14 +653,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 8854400779814498794}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e6bc5045abc006447b7038591cae55e6, type: 3}
+  m_Script: {fileID: 11500000, guid: b522bcce2f66dc446b27d21ab6816f39, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _enemyType: 8
-  _maxHealth: 8
+  _maxHealth: 1
   _currentHealth: 0
+  _healthToFallThreshold: 8
   _enemyMovement: {fileID: 1362534363766813855}
-  _enemyPresentation: {fileID: 2554923996394591702}
+  _enemyPresentation: {fileID: 5095011763847777903}
 --- !u!114 &1362534363766813855
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -673,13 +674,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b5b11db87f3ea54688bfd2fd077c25d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _speed: 2.3
-  _radius: 3.6
+  _speed: 2.4
+  _radius: 4
   _verticalAmplitude: 1.2
   _isSmoothDampEnabled: 0
   _isDepthEnabled: 1
+  _sideDirection: 0
   _stateDebug: 0
---- !u!114 &2554923996394591702
+--- !u!114 &5095011763847777903
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -688,7 +690,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 8854400779814498794}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 04ee26263296a024fa641d7fcb8978af, type: 3}
+  m_Script: {fileID: 11500000, guid: b18421647685f994b9b5e566ef2149c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _preAttackFlash: {fileID: 454837011142885043}

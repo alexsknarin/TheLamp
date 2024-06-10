@@ -23,10 +23,9 @@ public class LampAttackZoneCollisionHandler : MonoBehaviour
             Enemy enemy = other.GetComponent<Enemy>();
             enemy.HandleExitingAttackExitZone();
         }
-        if (other.gameObject.CompareTag("Boss"))
+        if (other.gameObject.CompareTag("Boss") || other.gameObject.CompareTag("StickyEnemy"))
         {
             other.GetComponent<BossBase>().HandleExitingAttackExitZone();
         }
-        
     }
 }

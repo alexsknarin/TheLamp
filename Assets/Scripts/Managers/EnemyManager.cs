@@ -16,6 +16,7 @@ public class EnemyManager : MonoBehaviour,IInitializable
     [Header("------ Boss Prefabs -------")]
     [SerializeField] private BossBase _waspBoss;
     [SerializeField] private BossBase _megamothlingBoss;
+    [SerializeField] private BossBase _megabeetleBoss;
     private BossBase _currentBoss;
     
     [Header("------ Explosions -------")]
@@ -124,6 +125,7 @@ public class EnemyManager : MonoBehaviour,IInitializable
         // Init all bosses
         _waspBoss.Initialize();
         _megamothlingBoss.Initialize();
+        _megabeetleBoss.Initialize();
         _currentWave = _startAtWave;
         
         // Check all waves
@@ -214,6 +216,15 @@ public class EnemyManager : MonoBehaviour,IInitializable
         // Debug
         _enemiesInWaveCount = _enemiesInWave;
         _enemiesLeftCount = _enemiesInWave;
+        
+        //
+        // var enemyQueue = _enemyQueue;
+        // Debug.Log("--------------------------");
+        // Debug.Log("Wave: 30");
+        // for (int j = 0; j < enemyQueue.Count(); j++)
+        // {
+        //     Debug.Log("Enemy: " + enemyQueue.Get(j).ToString());   
+        // }
     }
 
     private Enemy SpawnEnemy(EnemyTypes enemyType)
@@ -232,6 +243,10 @@ public class EnemyManager : MonoBehaviour,IInitializable
         else if (bossType == EnemyTypes.Megamothling)
         {
             _currentBoss = _megamothlingBoss;
+        }
+        else if (bossType == EnemyTypes.Megabeetle)
+        {
+            _currentBoss = _megabeetleBoss;
         }
         // _currentBoss.Reset();
         _currentBoss.Play();
@@ -381,12 +396,9 @@ public class EnemyManager : MonoBehaviour,IInitializable
             {
                 _localTime = 0;
                 EnemyTypes enemyType = _enemyQueue.Get(_currentSpawnEnemyIndex);
-                if (enemyType == EnemyTypes.Wasp)
-                {
-                    SpawnBoss(enemyType);
-                    _enemies.Add(_currentBoss);
-                }
-                else if (enemyType == EnemyTypes.Megamothling)
+                if (enemyType == EnemyTypes.Wasp ||
+                    enemyType == EnemyTypes.Megamothling ||
+                    enemyType == EnemyTypes.Megabeetle)
                 {
                     SpawnBoss(enemyType);
                     _enemies.Add(_currentBoss);
@@ -459,7 +471,9 @@ public class EnemyManager : MonoBehaviour,IInitializable
         // Priortized to attack more ofthen
         // IN this case twice as often
         
-        if (_isBossActive && (_currentBoss.EnemyType == EnemyTypes.Megamothling) && _currentBoss.ReadyToAttack)
+        if (_isBossActive && 
+            (_currentBoss.EnemyType == EnemyTypes.Megamothling) && 
+            _currentBoss.ReadyToAttack)
         {
             int megamothlingAttackChance = Random.Range(0, 2);
             if (megamothlingAttackChance == 0)
@@ -467,7 +481,7 @@ public class EnemyManager : MonoBehaviour,IInitializable
                 attackingEnemy = _currentBoss;
             }
         }
-        
+       
         attackingEnemy.AttackStart();
         _attackLocalTime = 0;
         _attackDelay = GetRandomAttackDelay(2.5f, 0.8f, 6.1f, 1.8f, _aggressionLevelNormalized);
@@ -496,7 +510,8 @@ public class EnemyManager : MonoBehaviour,IInitializable
         bool isAttackUpdateAllowed, bool isBossActive)
     {
         localTime += Time.deltaTime;
-        if(isAttackUpdateAllowed && (!isBossActive || _currentBoss.EnemyType == EnemyTypes.Megamothling))
+        if(isAttackUpdateAllowed && 
+           (!isBossActive || (_currentBoss.EnemyType == EnemyTypes.Megamothling || _currentBoss.EnemyType == EnemyTypes.Megabeetle)))
         {
             attackLocalTime += Time.deltaTime;
         }

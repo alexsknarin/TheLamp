@@ -23,7 +23,7 @@ public class MegabeetleMovement : EnemyMovement
     private MegabeetleMovementStickAttackState _stickAttackState;
     private MegabeetleMovementStickLandingState _stickLandingState;
     private MegabeetleMovementFallState _fallState;
-    private LadybugMovementDeathState _deathState;
+    private MegabeetleMovementDeathState _deathState;
     private LadybugMovementSpreadState _spreadState;
     
     
@@ -32,10 +32,13 @@ public class MegabeetleMovement : EnemyMovement
     private Vector3 _position2d;
     private Vector3 _prevPosition2d;
     
+    private readonly Vector3 IDLE_POSITION = new Vector3(-0f, -4.5f, 0); 
+    
     // State parameters
     private bool _isDead = false;
     private bool _isCollided = false;
     private bool _isFalling = false;
+    private bool _isPlaying = false;
     
     // Debug
     [SerializeField] private EnemyStates _stateDebug;
@@ -66,11 +69,15 @@ public class MegabeetleMovement : EnemyMovement
         _stickPreAttackState = new MegabeetleMovementStickPreAttackState(this, _speed, _radius, _verticalAmplitude);
         _stickAttackState = new MegabeetleMovementStickAttackState(this, _speed, _radius, _verticalAmplitude);
         _fallState = new MegabeetleMovementFallState(this, _speed, _radius, _verticalAmplitude);
-        _deathState = new LadybugMovementDeathState(this, _speed, _radius, _verticalAmplitude);
+        _deathState = new MegabeetleMovementDeathState(this, _speed, _radius, _verticalAmplitude);
         _spreadState = new LadybugMovementSpreadState(this, _speed, _radius, _verticalAmplitude);
+    }
+    
+    public void Play()
+    {
         MovementSetup();
     }
-
+   
     private void MovementSetup()
     {
         _sideDirection = RandomDirection.Generate();
@@ -81,12 +88,14 @@ public class MegabeetleMovement : EnemyMovement
         _movementStateMachine.SetState(_currentState, _position2d, _sideDirection, 1);
         _position2d = _currentState.Position;
         transform.position = _position2d;
+        _isPlaying = true;
     }
     
-    private void MovementReset()
+    public void MovementReset()
     {
-        OnMovementResetInvoke();
-        MovementSetup();    
+       OnMovementResetInvoke();
+       _isPlaying = false;
+       transform.position = IDLE_POSITION;
     }
     
     private Vector3 GenerateSpawnPosition(float distance, int direction)
@@ -101,6 +110,11 @@ public class MegabeetleMovement : EnemyMovement
     
     public override void TriggerFall()
     {
+        if(_currentState.State != EnemyStates.Fall)
+        {
+            _isFalling = true;
+            SwitchState();
+        }
     }
 
     public void FallOnLampDestroyed(EnemyBase enemy)
@@ -147,7 +161,6 @@ public class MegabeetleMovement : EnemyMovement
 
     public override void SwitchState()
     {
-        Debug.Log("Current side Direction: " + _sideDirection.ToString());
         EnemyMovementBaseState newState = _currentState;
         switch (_currentState.State)
         {
@@ -314,15 +327,10 @@ public class MegabeetleMovement : EnemyMovement
     
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Z))
+        if(!_isPlaying)
         {
-            if (_currentState.State != EnemyStates.Fall)
-            {
-                _isFalling = true;
-                SwitchState();
-            }
+            return;
         }
-        
         
         if ((_currentState.State != EnemyStates.Stick) &&
             (_currentState.State != EnemyStates.StickLanding))
