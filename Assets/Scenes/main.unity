@@ -8528,13 +8528,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _mothlingScorePrice: 1
-  _megamothlingScorePrice: 6
+  _megamothlingScorePrice: 10
   _flyScorePrice: 2
   _fireflyScorePrice: 3
   _mothScorePrice: 3
   _ladybugScorePrice: 4
   _spiderScorePrice: 3
-  _waspsScorePrice: 10
+  _waspsScorePrice: 25
+  _megabeetleScorePrice: 10
   _currentScore: 0
   _saveDataContainer: {fileID: 11400000, guid: 377d55eb1797a24478860b1b98ae759c, type: 2}
 --- !u!114 &1818435509

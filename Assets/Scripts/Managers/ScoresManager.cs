@@ -12,6 +12,7 @@ public class ScoresManager : MonoBehaviour, IInitializable
     [SerializeField] private int _ladybugScorePrice;
     [SerializeField] private int _spiderScorePrice;
     [SerializeField] private int _waspsScorePrice;
+    [SerializeField] private int _megabeetleScorePrice;
     [SerializeField] private int _currentScore;
     [SerializeField] private SaveDataContainer _saveDataContainer;
     public int CurretScore => _currentScore;
@@ -21,13 +22,13 @@ public class ScoresManager : MonoBehaviour, IInitializable
     private void OnEnable()
     {
          EnemyBase.OnEnemyDeath += CollectScore;
-         EnemyManager.OnBossDeath += CollectScore;
+         // EnemyManager.OnBossDeath += CollectScore;
     }
     
     private void OnDisable()
     {
         EnemyBase.OnEnemyDeath -= CollectScore;
-        EnemyManager.OnBossDeath += CollectScore;
+        // EnemyManager.OnBossDeath += CollectScore;
     }
 
 
@@ -38,6 +39,8 @@ public class ScoresManager : MonoBehaviour, IInitializable
     
     private void CollectScore(EnemyBase enemy)
     {
+        Debug.Log("Killed: " + enemy.EnemyType.ToString());
+        
         switch (enemy.EnemyType)
         {
             case EnemyTypes.Mothling:
@@ -63,6 +66,9 @@ public class ScoresManager : MonoBehaviour, IInitializable
                 break;
             case EnemyTypes.Wasp:
                 _currentScore += _waspsScorePrice;
+                break;
+            case EnemyTypes.Megabeetle:
+                _currentScore += _megabeetleScorePrice;
                 break;
         }
         _saveDataContainer.CurrentScore = _currentScore;

@@ -77,6 +77,8 @@
     
     private void UpdateUpgradePoints(int scores)
     {
+        //properly calculate big numbers
+        
         if (scores >= _currentUpgradePointThreshold)
         {
             _upgradePoints++;

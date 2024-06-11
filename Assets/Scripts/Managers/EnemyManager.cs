@@ -308,6 +308,7 @@ public class EnemyManager : MonoBehaviour,IInitializable
 
     private void HandleBossEnd()
     {
+        Debug.Log("Handle Boss End");
         OnBossDeath?.Invoke(_currentBoss);
         _isBossActive = false;
         _enemies.Remove(_currentBoss);
