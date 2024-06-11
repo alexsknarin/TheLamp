@@ -122,7 +122,10 @@ public class MegabeetleMovement : EnemyMovement
     public void FallOnLampDestroyed(EnemyBase enemy)
     {
         transform.parent = null;
-        if(_currentState.State == EnemyStates.Stick)
+        if(_currentState.State == EnemyStates.StickLanding ||
+           _currentState.State == EnemyStates.Stick || 
+           _currentState.State == EnemyStates.StickAttack || 
+           _currentState.State == EnemyStates.StickPreAttack)
         {
             _isDead = true;
             SwitchState();
@@ -133,7 +136,7 @@ public class MegabeetleMovement : EnemyMovement
     {
         if(_currentState.State != EnemyStates.Death)
         {
-            _isDead = true;
+            _isFalling = true;
             SwitchState();
         }
     }

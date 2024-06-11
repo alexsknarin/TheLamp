@@ -5051,6 +5051,16 @@ PrefabInstance:
       propertyPath: _duration
       value: 2.3
       objectReference: {fileID: 0}
+    - target: {fileID: 6281014532624352872, guid: b7287b02b66117d41a9878933f72b080,
+        type: 3}
+      propertyPath: _maxHealth
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 6281014532624352872, guid: b7287b02b66117d41a9878933f72b080,
+        type: 3}
+      propertyPath: _healthToFallThreshold
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 8854400779814498794, guid: b7287b02b66117d41a9878933f72b080,
         type: 3}
       propertyPath: m_Name
@@ -8528,14 +8538,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _mothlingScorePrice: 1
-  _megamothlingScorePrice: 10
+  _megamothlingScorePrice: 15
   _flyScorePrice: 2
   _fireflyScorePrice: 3
   _mothScorePrice: 3
   _ladybugScorePrice: 4
   _spiderScorePrice: 3
   _waspsScorePrice: 25
-  _megabeetleScorePrice: 10
+  _megabeetleScorePrice: 50
   _currentScore: 0
   _saveDataContainer: {fileID: 11400000, guid: 377d55eb1797a24478860b1b98ae759c, type: 2}
 --- !u!114 &1818435509
