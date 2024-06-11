@@ -5041,6 +5041,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1362534363766813855, guid: b7287b02b66117d41a9878933f72b080,
+        type: 3}
+      propertyPath: IDLE_POSITION.y
+      value: -4.5
+      objectReference: {fileID: 0}
     - target: {fileID: 2858276551893859201, guid: b7287b02b66117d41a9878933f72b080,
         type: 3}
       propertyPath: _duration

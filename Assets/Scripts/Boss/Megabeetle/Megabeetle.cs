@@ -22,6 +22,7 @@ public class Megabeetle : BossBase
         _enemyMovement.OnEnemyDeactivated += OnDeactivated;
         _enemyMovement.OnMovementReset += OnMovementReset;
         _enemyMovement.OnStickStart += StickStatusEnable;
+        _enemyMovement.OnDeathStateEnded += HandleDeathMoveStateEnd;
     }
     
     private void OnDisable()
@@ -32,6 +33,7 @@ public class Megabeetle : BossBase
         _enemyMovement.OnEnemyDeactivated -= OnDeactivated;
         _enemyMovement.OnMovementReset -= OnMovementReset;
         _enemyMovement.OnStickStart -= StickStatusEnable;
+        _enemyMovement.OnDeathStateEnded -= HandleDeathMoveStateEnd;
     }
     
     public override void Initialize()
@@ -169,5 +171,12 @@ public class Megabeetle : BossBase
     
     private void OnDeactivated()
     {
+    }
+    
+    private void HandleDeathMoveStateEnd()
+    {
+        OnDeathInvoke();
+        _enemyMovement.MovementReset();
+        _enemyPresentation.Initialize();
     }
 }

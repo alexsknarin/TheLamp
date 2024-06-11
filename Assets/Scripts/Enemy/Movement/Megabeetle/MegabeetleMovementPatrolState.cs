@@ -37,11 +37,7 @@ public class MegabeetleMovementPatrolState: EnemyMovementBaseState
         horizontalVector.x *= _sideDirection;
         _patrolStartOffsetAngle = Mathf.Acos(Vector3.Dot(horizontalVector.normalized, currentPosition.normalized));
         _patrolStartOffsetAngle *= Mathf.Sign(currentPosition.y);
-        
-        // if (_sideDirection < 0)
-        // {
-        //     _patrolStartOffsetAngle = Mathf.PI - _patrolStartOffsetAngle;
-        // }
+
     }
     
     public override void ExecuteState(Vector3 currentPosition)

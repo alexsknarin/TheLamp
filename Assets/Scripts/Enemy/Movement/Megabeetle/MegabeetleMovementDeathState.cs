@@ -11,6 +11,7 @@ public class MegabeetleMovementDeathState: EnemyMovementBaseState
     private float _gravityForceMagnitude = .17f;
     private float _dragAmount = 0.9f;
     private float _gravityDecreaseAmount = 0.2f;
+    private Vector3 IDLE_POSITION = new Vector3(0f, -4.5f, 0f); 
     
     public MegabeetleMovementDeathState(IStateMachineOwner owner, float speed, float radius, float verticalAmplitude) : base()
     {
@@ -38,14 +39,19 @@ public class MegabeetleMovementDeathState: EnemyMovementBaseState
         _gravityForce = _gravityForce + Vector3.down * (_gravityForceMagnitude * Time.deltaTime);
         
         _localTime += Time.deltaTime;
+        
+        if (_phase > 1f)
+        {
+            Position = IDLE_POSITION;
+        }
     }
     
     public override void CheckForStateChange()
     {
-        // if (Position.y < -4f)
-        // {
-        //     _owner.SwitchState();
-        // }
+        if (_phase > 1f)
+        {
+            _owner.SwitchState();
+        }
     }
   
 }

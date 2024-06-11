@@ -32,13 +32,15 @@ public class MegabeetleMovement : EnemyMovement
     private Vector3 _position2d;
     private Vector3 _prevPosition2d;
     
-    private readonly Vector3 IDLE_POSITION = new Vector3(-0f, -4.5f, 0); 
+    [SerializeField] private Vector3 IDLE_POSITION; 
     
     // State parameters
     private bool _isDead = false;
     private bool _isCollided = false;
     private bool _isFalling = false;
     private bool _isPlaying = false;
+    
+    public event Action OnDeathStateEnded;
     
     // Debug
     [SerializeField] private EnemyStates _stateDebug;
@@ -93,9 +95,9 @@ public class MegabeetleMovement : EnemyMovement
     
     public void MovementReset()
     {
-       OnMovementResetInvoke();
        _isPlaying = false;
        transform.position = IDLE_POSITION;
+       OnMovementResetInvoke();
     }
     
     private Vector3 GenerateSpawnPosition(float distance, int direction)
@@ -316,9 +318,10 @@ public class MegabeetleMovement : EnemyMovement
                 MovementReset();
                 return;
             case EnemyStates.Death:
-                OnEnemyDeactivatedInvoke();
-                break;
+                OnDeathStateEnded?.Invoke();
+                return;
         }
+        
         _currentState = newState;
         State = _currentState.State;
         _stateDebug = _currentState.State;
@@ -349,8 +352,11 @@ public class MegabeetleMovement : EnemyMovement
 
             _movementStateMachine.CheckForStateChange();
             transform.position = position;
-
-            Debug.DrawLine(_prevPosition2d, _prevPosition2d + (_position2d - _prevPosition2d).normalized * 0.02f, Color.cyan, 5f);   
+            
+            Debug.Log("ssvsvsvs-------------");
+            Debug.Log(transform.position);
+            
+            Debug.DrawLine(_prevPosition2d, _prevPosition2d + (_position2d - _prevPosition2d).normalized * 0.02f, Color.cyan, 5f);
         }
         
         if ((_currentState.State == EnemyStates.StickLanding) ||
@@ -361,7 +367,7 @@ public class MegabeetleMovement : EnemyMovement
             _prevPosition2d = _position2d;
             _currentState.ExecuteState(_position2d);
             _position2d = _currentState.Position;
-            
+
             _movementStateMachine.CheckForStateChange();
             transform.localPosition = _position2d;
             
