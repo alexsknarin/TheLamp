@@ -12,5 +12,6 @@ public enum EnemyStates
     Spread,
     StickLanding,
     StickPreAttack,
-    StickAttack
+    StickAttack,
+    StickPreAttackPause
 }

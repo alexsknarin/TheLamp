@@ -139,6 +139,7 @@ public class Megabeetle : BossBase
     {
         _currentHealth -= damage;
         _currentHealthToFall += damage;
+        
         if (_currentHealth > 0)
         {
             ReceivedLampAttack = true;
@@ -154,6 +155,7 @@ public class Megabeetle : BossBase
         {
             if (!_isDead)
             {
+                Debug.Log("Megabeetle is dead");
                 ReceivedLampAttack = true;
                 _currentHealth = 0; 
                 _enemyMovement.TriggerDeath();

@@ -20,6 +20,7 @@ public class MegabeetleMovement : EnemyMovement
     private LadybugMovementAttackState _attackState;
     private MegabeetleMovementStickState _stickState;
     private MegabeetleMovementStickPreAttackState _stickPreAttackState;
+    private MegabeetleMovementStickPreAttackPauseState _stickPreAttackPauseState;
     private MegabeetleMovementStickAttackState _stickAttackState;
     private MegabeetleMovementStickLandingState _stickLandingState;
     private MegabeetleMovementFallState _fallState;
@@ -69,6 +70,7 @@ public class MegabeetleMovement : EnemyMovement
         _stickLandingState = new MegabeetleMovementStickLandingState(this, _speed, _radius, _verticalAmplitude);
         _stickState = new MegabeetleMovementStickState(this, _speed, _radius, _verticalAmplitude);
         _stickPreAttackState = new MegabeetleMovementStickPreAttackState(this, _speed, _radius, _verticalAmplitude);
+        _stickPreAttackPauseState = new MegabeetleMovementStickPreAttackPauseState(this, _speed, _radius, _verticalAmplitude);
         _stickAttackState = new MegabeetleMovementStickAttackState(this, _speed, _radius, _verticalAmplitude);
         _fallState = new MegabeetleMovementFallState(this, _speed, _radius, _verticalAmplitude);
         _deathState = new MegabeetleMovementDeathState(this, _speed, _radius, _verticalAmplitude);
@@ -127,7 +129,7 @@ public class MegabeetleMovement : EnemyMovement
            _currentState.State == EnemyStates.StickAttack || 
            _currentState.State == EnemyStates.StickPreAttack)
         {
-            _isDead = true;
+            _isFalling = true;
             SwitchState();
         }
     }
@@ -136,7 +138,7 @@ public class MegabeetleMovement : EnemyMovement
     {
         if(_currentState.State != EnemyStates.Death)
         {
-            _isFalling = true;
+            _isDead = true;
             SwitchState();
         }
     }
@@ -287,6 +289,32 @@ public class MegabeetleMovement : EnemyMovement
                 }
                 else
                 {
+                    OnPreAttackStartInvoke();
+                    newState = _stickPreAttackPauseState;
+                    _position2d = transform.localPosition;
+                    _isCollided = false;
+                }
+                break;
+            case EnemyStates.StickPreAttackPause:
+                if (_isDead)
+                {
+                    OnPreAttackEndInvoke();
+                    newState = _deathState;
+                    _isDead = false;
+                }
+                else if (_isFalling)
+                {
+                    OnPreAttackEndInvoke();
+                    newState = _fallState;
+                    transform.parent = null;
+                    _position2d = transform.position;
+                    _isCollided = false;
+                    _isFalling = false;
+                    _sideDirection = RandomDirection.Generate();
+                }
+                else
+                {
+                    OnPreAttackEndInvoke();
                     newState = _stickAttackState;
                     _position2d = transform.localPosition;
                     _isCollided = false;
