@@ -68,15 +68,20 @@ public class SpawnQueueGenerator
                 totalEnemies--;
             }
             
-            int bossPosition = Random.Range(3, 5);
-            if (bossMegamothlingCount > 0)
+            if (bossMegabeetleCount + bossMegamothlingCount + bossWaspCount > 0)
             {
-                bossPosition = 0;
+                totalEnemies++;
             }
-            if (bossMegabeetleCount > 0)
+
+            int bossPosition = 0;
+            if (bossWaspCount > 0)
             {
-                bossPosition = 0;
+                if (totalEnemies > 4)
+                {
+                    bossPosition = Random.Range(3, totalEnemies);
+                }
             }
+            
             for (int j = 0; j < totalEnemies; j++)
             {
                 if(j == bossPosition)
