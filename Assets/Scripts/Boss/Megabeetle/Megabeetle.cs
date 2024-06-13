@@ -14,6 +14,8 @@ public class Megabeetle : BossBase
     [SerializeField] private MegabeetlePresentation _enemyPresentation;
     private bool _isDead = false;
     
+    public static Action<EnemyBase> OnStickAttacked;
+    
     private void OnEnable()
     {
         _enemyMovement.OnPreAttackStart += OnPreAttackStart;
@@ -23,6 +25,7 @@ public class Megabeetle : BossBase
         _enemyMovement.OnMovementReset += OnMovementReset;
         _enemyMovement.OnStickStart += StickStatusEnable;
         _enemyMovement.OnDeathStateEnded += HandleDeathMoveStateEnd;
+        _enemyMovement.OnStickAttackStateEnded += HandleStickAttack;
     }
     
     private void OnDisable()
@@ -34,6 +37,7 @@ public class Megabeetle : BossBase
         _enemyMovement.OnMovementReset -= OnMovementReset;
         _enemyMovement.OnStickStart -= StickStatusEnable;
         _enemyMovement.OnDeathStateEnded -= HandleDeathMoveStateEnd;
+        _enemyMovement.OnStickAttackStateEnded += HandleStickAttack;
     }
     
     public override void Initialize()
@@ -155,7 +159,6 @@ public class Megabeetle : BossBase
         {
             if (!_isDead)
             {
-                Debug.Log("Megabeetle is dead");
                 ReceivedLampAttack = true;
                 _currentHealth = 0; 
                 _enemyMovement.TriggerDeath();
@@ -180,5 +183,10 @@ public class Megabeetle : BossBase
         OnDeathInvoke();
         _enemyMovement.MovementReset();
         _enemyPresentation.Initialize();
+    }
+    
+    private void HandleStickAttack()
+    {
+        OnStickAttacked?.Invoke(this);
     }
 }

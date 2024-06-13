@@ -5059,7 +5059,7 @@ PrefabInstance:
     - target: {fileID: 6281014532624352872, guid: b7287b02b66117d41a9878933f72b080,
         type: 3}
       propertyPath: _healthToFallThreshold
-      value: 5
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 8854400779814498794, guid: b7287b02b66117d41a9878933f72b080,
         type: 3}
@@ -8996,7 +8996,7 @@ MonoBehaviour:
   _lampAttackExitZoneCollisionHandler: {fileID: 452042971}
   _attackBlockerCount: 0
   _lampStatsManager: {fileID: 1934066249}
-  _isInvincible: 0
+  _isInvincible: 1
 --- !u!114 &1934066247
 MonoBehaviour:
   m_ObjectHideFlags: 0

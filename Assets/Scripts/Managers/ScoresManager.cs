@@ -39,8 +39,6 @@ public class ScoresManager : MonoBehaviour, IInitializable
     
     private void CollectScore(EnemyBase enemy)
     {
-        Debug.Log("Killed: " + enemy.EnemyType.ToString());
-        
         switch (enemy.EnemyType)
         {
             case EnemyTypes.Mothling:

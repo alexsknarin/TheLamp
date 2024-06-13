@@ -36,7 +36,7 @@ public class MegabeetleMovementStickAttackState: EnemyMovementBaseState
     
     public override void CheckForStateChange()
     {
-        if (_phase > 1)
+        if (_phase > 1.0f)
         {
             _owner.SwitchState();
         }

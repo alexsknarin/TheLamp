@@ -42,6 +42,7 @@ public class MegabeetleMovement : EnemyMovement
     private bool _isPlaying = false;
     
     public event Action OnDeathStateEnded;
+    public event Action OnStickAttackStateEnded;
     
     // Debug
     [SerializeField] private EnemyStates _stateDebug;
@@ -337,6 +338,7 @@ public class MegabeetleMovement : EnemyMovement
                 }
                 else
                 {
+                    OnStickAttackStateEnded?.Invoke();
                     newState = _stickState;
                     _position2d = transform.localPosition;
                     _isCollided = false;
@@ -366,40 +368,34 @@ public class MegabeetleMovement : EnemyMovement
             return;
         }
         
-        if ((_currentState.State != EnemyStates.Stick) &&
-            (_currentState.State != EnemyStates.StickLanding))
-        {
-            _prevPosition2d = _position2d;
-            _currentState.ExecuteState(_position2d);
-            _position2d = _currentState.Position;
-
-            Vector3 position = _position2d;
-            
-            // Add Depth
-            if (_isDepthEnabled)
-            {
-                position = _position2d + _currentState.Depth;
-            }
-
-            _movementStateMachine.CheckForStateChange();
-            transform.position = position;
-            
-            Debug.DrawLine(_prevPosition2d, _prevPosition2d + (_position2d - _prevPosition2d).normalized * 0.02f, Color.cyan, 5f);
-        }
+        _prevPosition2d = _position2d;
+        _currentState.ExecuteState(_position2d);
+        _position2d = _currentState.Position;
         
         if ((_currentState.State == EnemyStates.StickLanding) ||
             (_currentState.State == EnemyStates.Stick) ||
             (_currentState.State == EnemyStates.StickPreAttack) ||
-            (_currentState.State == EnemyStates.StickAttack))
+            (_currentState.State == EnemyStates.StickAttack) ||
+            (_currentState.State == EnemyStates.StickPreAttackPause))
         {
-            _prevPosition2d = _position2d;
-            _currentState.ExecuteState(_position2d);
-            _position2d = _currentState.Position;
-
-            _movementStateMachine.CheckForStateChange();
             transform.localPosition = _position2d;
-            
+            _movementStateMachine.CheckForStateChange();
+           
             Debug.DrawLine(_prevPosition2d, _prevPosition2d + (_position2d - _prevPosition2d).normalized * 0.02f, Color.cyan, 5f);
+            return;
         }
+        
+        Vector3 position = _position2d;
+        // Add Depth
+        if (_isDepthEnabled)
+        {
+            position = _position2d + _currentState.Depth;
+        }
+
+        transform.position = position;
+        _movementStateMachine.CheckForStateChange();
+        
+        Debug.DrawLine(_prevPosition2d, _prevPosition2d + (_position2d - _prevPosition2d).normalized * 0.02f, Color.cyan, 5f);
+        
     }
 }
