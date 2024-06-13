@@ -69,7 +69,12 @@ public class LampMovement : MonoBehaviour, IInitializable
     private void PerformApplyForce()
     {
         _forcePhase = Mathf.Sin((_localTime) * _swingFrequency );
+        float prevX = _newPos.x;
         _newPos.x = _currentCenter + _forceDirection * _forcePhase * _forceMaxMagnitude;
+        if (float.IsNaN(_newPos.x))
+        {
+            _newPos.x = prevX;
+        }
         CompensateRotation(_newPos);
         _localTime += Time.deltaTime;
         if (_forcePhase > 0.95f)
@@ -100,7 +105,12 @@ public class LampMovement : MonoBehaviour, IInitializable
     private void PerformSwing()
     {
         float attenuationPhase = _localTime / _swingDurationNormalized;
+        float prevX = _newPos.x;
         _newPos.x = Mathf.Sin((_localTime + _swingShift) * _swingFrequency) * _swingAmplitude * _swingAttenuationCurve.Evaluate(attenuationPhase);
+        if (float.IsNaN(_newPos.x))
+        {
+            _newPos.x = prevX;
+        }
         CompensateRotation(_newPos);
         if (attenuationPhase > 1)
         {
