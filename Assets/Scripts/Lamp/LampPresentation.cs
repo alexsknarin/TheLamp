@@ -85,11 +85,14 @@ public class LampPresentation : MonoBehaviour
         _lampAttackZoneObject.SetActive(false);
     }
     
-    public void DisableBlockedMode()
+    public void DisableBlockedMode(bool isDead)
     {
         _lampEmissionController.BlockedModeMix = 0;
         isBlocked = false;
-        _lampAttackZoneObject.SetActive(true);
+        if (!isDead)
+        {
+            _lampAttackZoneObject.SetActive(true);
+        }
     }
    
     private void StartAttackState(int attackPower, float currentPower, float attackDuration, float attackDistance)

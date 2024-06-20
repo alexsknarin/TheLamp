@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -69,7 +70,7 @@ public class LampDeathAnimation : MonoBehaviour
     
     public void Play(float duration, Vector3 enemyPosition)
     {
-        _lampAttackZoneObject.SetActive(false);
+        StartCoroutine(DisableAttackZone());
         
         _lampEmissionController.Intensity = 1;
         _lampEmissionController.IsDamageEnabled = true;
@@ -98,6 +99,12 @@ public class LampDeathAnimation : MonoBehaviour
         _duration = duration;
         _localTime = 0;
         _isPlaying = true;
+    }
+    
+    private IEnumerator DisableAttackZone()
+    {
+        yield return null;
+        _lampAttackZoneObject.SetActive(false);
     }
     
     void Update()

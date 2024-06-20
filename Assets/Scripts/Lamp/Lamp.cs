@@ -104,7 +104,7 @@ public class Lamp : MonoBehaviour, IInitializable
                 {
                     _attackBlockerCount = 0;
                     _lampAttackModel.RemoveAttackBlocker();
-                    _lampPresentation.DisableBlockedMode();
+                    _lampPresentation.DisableBlockedMode(_isDead);
                 }    
             }
             enemy.transform.parent = null;
@@ -161,7 +161,6 @@ public class Lamp : MonoBehaviour, IInitializable
             _lampAttackModel.HandleLampDeath();
             _lampPresentation.LastEnemyPosition = enemy.transform.position;
             _isDead = true;
-            Debug.Log("Lamp Dead ------------------ <<<<");
             OnLampDead?.Invoke(enemy);
         }
         else
