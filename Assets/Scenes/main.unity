@@ -5054,7 +5054,7 @@ PrefabInstance:
     - target: {fileID: 6281014532624352872, guid: b7287b02b66117d41a9878933f72b080,
         type: 3}
       propertyPath: _maxHealth
-      value: 50
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 6281014532624352872, guid: b7287b02b66117d41a9878933f72b080,
         type: 3}
@@ -8435,7 +8435,7 @@ MonoBehaviour:
   _maxEnemiesOnScreen: 0
   _aggresionLevel: 0
   _maxAggressionLevel: 6
-  _isStartAtWaveTestMode: 1
+  _isStartAtWaveTestMode: 0
   _startAtWave: 30
   _currentWave: 0
   _firstEnemySpawnDelay: 0.5
@@ -9069,6 +9069,7 @@ MonoBehaviour:
   _upgradePoints: 0
   _currentUpgradePointThreshold: 5
   _upgradeThesholdInitialIncrement: 4
+  _scoresAccountedForUpgrade: 0
   _upgradeThesholdIncrement: 0
   _level: 0
   _lampDamageWeightRight: 0
