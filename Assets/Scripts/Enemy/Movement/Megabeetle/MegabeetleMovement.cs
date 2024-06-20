@@ -40,6 +40,7 @@ public class MegabeetleMovement : EnemyMovement
     private bool _isDead = false;
     private bool _isCollided = false;
     private bool _isFalling = false;
+    private bool _isSpreading = false;
     private bool _isPlaying = false;
     
     public event Action OnDeathStateEnded;
@@ -63,6 +64,7 @@ public class MegabeetleMovement : EnemyMovement
         _isDead = false;
         _isCollided = false;
         _isFalling = false;
+        _isSpreading = false;
         
         _movementStateMachine = new EnemyMovementStateMachine();
         _enterState = new MegabeetleMovementEnterState(this, _speed, _radius, _verticalAmplitude);
@@ -134,12 +136,23 @@ public class MegabeetleMovement : EnemyMovement
         {
             StartCoroutine(FallDelayedStart());
         }
+        else
+        {
+            StartCoroutine(SpreadDelayedStart());
+        }
     }
 
     private IEnumerator FallDelayedStart()
     {
         yield return null;
         _isFalling = true;
+        SwitchState();
+    }
+    
+    private IEnumerator SpreadDelayedStart()
+    {
+        yield return null;
+        _isSpreading = true;
         SwitchState();
     }
 
@@ -175,25 +188,34 @@ public class MegabeetleMovement : EnemyMovement
                     _isDead = false;
                     break;
                 }
+                else if (_isSpreading)
+                {
+                    _isSpreading = false;
+                    newState = _spreadState;
+                }
                 else
                 {
                     OnPreAttackStartInvoke();
                     newState = _preAttackState;
-                    break;    
                 }
+                break;
             case EnemyStates.Patrol:
                 if (_isDead)
                 {
                     newState = _deathState;
                     _isDead = false;
-                    break;
+                }
+                else if (_isSpreading)
+                {
+                    _isSpreading = false;
+                    newState = _spreadState;
                 }
                 else
                 {
                     OnPreAttackStartInvoke();
                     newState = _preAttackState;
-                    break;    
                 }
+                break;
             case EnemyStates.PreAttack:
                 if (_isDead)
                 {
@@ -201,19 +223,29 @@ public class MegabeetleMovement : EnemyMovement
                     _isDead = false;
                     break;
                 }
+                else if (_isSpreading)
+                {
+                    _isSpreading = false;
+                    newState = _spreadState;
+                }
                 else
                 {
                     OnPreAttackEndInvoke();
                     newState = _attackState;
-                    break;    
+                       
                 }
+                break; 
             case EnemyStates.Attack:
                 OnAttackEndInvoke();
                 if (_isDead)
                 {
                     newState = _deathState;
                     _isDead = false;
-                    break;
+                }
+                else if (_isSpreading)
+                {
+                    _isSpreading = false;
+                    newState = _spreadState;
                 }
                 else
                 {
@@ -221,8 +253,8 @@ public class MegabeetleMovement : EnemyMovement
                     _position2d = transform.localPosition;
                     _isCollided = false;
                     OnStickStartInvoke();
-                    break;    
                 }
+                break;
             case EnemyStates.StickLanding:
                 if (_isDead)
                 {
