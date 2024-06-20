@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -128,11 +129,18 @@ public class MegabeetleMovement : EnemyMovement
         if(_currentState.State == EnemyStates.StickLanding ||
            _currentState.State == EnemyStates.Stick || 
            _currentState.State == EnemyStates.StickAttack || 
-           _currentState.State == EnemyStates.StickPreAttack)
+           _currentState.State == EnemyStates.StickPreAttack ||
+           _currentState.State == EnemyStates.StickPreAttackPause)
         {
-            _isFalling = true;
-            SwitchState();
+            StartCoroutine(FallDelayedStart());
         }
+    }
+
+    private IEnumerator FallDelayedStart()
+    {
+        yield return null;
+        _isFalling = true;
+        SwitchState();
     }
 
     public override void TriggerDeath()
@@ -143,21 +151,9 @@ public class MegabeetleMovement : EnemyMovement
             SwitchState();
         }
     }
-    public override void TriggerAttack()
-    {
-    }
+    public override void TriggerAttack(){}
     
-    public override void TriggerSpread()
-    {
-        if(_currentState.State != EnemyStates.Attack && 
-           _currentState.State != EnemyStates.PreAttack && 
-           _currentState.State != EnemyStates.Death &&
-           _currentState.State != EnemyStates.Stick)
-        {
-            _currentState = _spreadState;
-            _movementStateMachine.SetState(_currentState, _position2d, _sideDirection, _depthDirection);
-        }
-    }
+    public override void TriggerSpread(){}
     
     public override void TriggerStick()
     {
@@ -355,6 +351,7 @@ public class MegabeetleMovement : EnemyMovement
                 return;
         }
         
+       
         _currentState = newState;
         State = _currentState.State;
         _stateDebug = _currentState.State;
@@ -367,7 +364,7 @@ public class MegabeetleMovement : EnemyMovement
         {
             return;
         }
-        
+
         _prevPosition2d = _position2d;
         _currentState.ExecuteState(_position2d);
         _position2d = _currentState.Position;

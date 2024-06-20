@@ -19,6 +19,7 @@ public class Lamp : MonoBehaviour, IInitializable
     
     private List<EnemyBase> _stickyEnemies;
     private bool _isAssessingDamage = false;
+    private bool _isDead = false;
     private Vector3 _enemyPosition;
     
     public static event Action<EnemyBase> OnLampDamaged;
@@ -53,6 +54,7 @@ public class Lamp : MonoBehaviour, IInitializable
 
     public void Initialize()
     {
+        _isDead = false;
         _lampStatsManager.Initialize();
         _lampAttackModel.Initialize(_lampStatsManager.CurrentColldownTime);
         _lampMovement.Initialize();
@@ -136,21 +138,30 @@ public class Lamp : MonoBehaviour, IInitializable
     
     private void ApplyDamage(EnemyBase enemy)
     {
+        if (_isDead)
+        {
+            return;
+        }
+        
         Vector3 impactPoint = enemy.transform.position.normalized;
         if (!_isInvincible)
         {
             _lampStatsManager.DecreaseCurrentHealth(1, impactPoint);    
         }
+        
         _lampPresentation.UpdateHealthBar(
             _lampStatsManager.NormalizedHealth, 
             _lampStatsManager.CurrentHealth, 
             _lampStatsManager.DamageWeights,
             _lampStatsManager.LampImpactPointsData
         );
+        
         if (_lampStatsManager.CurrentHealth <= 0)
         {
             _lampAttackModel.HandleLampDeath();
             _lampPresentation.LastEnemyPosition = enemy.transform.position;
+            _isDead = true;
+            Debug.Log("Lamp Dead ------------------ <<<<");
             OnLampDead?.Invoke(enemy);
         }
         else
