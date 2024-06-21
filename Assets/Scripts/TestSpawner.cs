@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class TestSpawner : MonoBehaviour
 {
-    [SerializeField] private BossBase _enemyPrefab;
+    [SerializeField] private EnemyBase _enemyPrefab;
 
     private void OnEnable()
     {
@@ -24,18 +24,19 @@ public class TestSpawner : MonoBehaviour
 
     private void HandleBossEnd()
     {
-        _enemyPrefab.Reset();
+        // _enemyPrefab.Reset();
     }
 
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.A))
         {
-            _enemyPrefab.Play();
+            _enemyPrefab.Initialize();
+            // _enemyPrefab.Play();
         }
         if (Input.GetKeyDown(KeyCode.B))
         {
-            _enemyPrefab.Reset();
+            // _enemyPrefab.Reset();
         }
         if (Input.GetKeyDown(KeyCode.S))
         {

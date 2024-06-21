@@ -26,7 +26,9 @@ public class EnemiesLampAttackHandler
     {
         foreach (var enemy in enemies)
         {
-            if (enemy.gameObject.activeInHierarchy && enemy.ReadyToLampDamage && enemy.IsStick && enemy.EnemyType == EnemyTypes.Ladybug)
+            if (enemy.gameObject.activeInHierarchy && 
+                enemy.ReadyToLampDamage && enemy.IsStick && 
+                (enemy.EnemyType == EnemyTypes.Ladybug || enemy.EnemyType == EnemyTypes.Megabeetle))
             {
                 if (attackPower > 0)
                 {

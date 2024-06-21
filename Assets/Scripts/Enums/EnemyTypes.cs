@@ -8,5 +8,6 @@ public enum EnemyTypes
     Wasp,
     Mothling,
     Megamothling,
+    Megabeetle,
     None
 }

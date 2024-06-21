@@ -19,6 +19,7 @@ public class Lamp : MonoBehaviour, IInitializable
     
     private List<EnemyBase> _stickyEnemies;
     private bool _isAssessingDamage = false;
+    private bool _isDead = false;
     private Vector3 _enemyPosition;
     
     public static event Action<EnemyBase> OnLampDamaged;
@@ -34,6 +35,8 @@ public class Lamp : MonoBehaviour, IInitializable
         _lampStatsManager.OnHealthChange += HandleUpdateHealth;
         _lampStatsManager.OnCooldownChange += HandleUpgradeCooldown;
         _lampStatsManager.OnHealthUpgraded += HandleUpgradeHealth;
+        
+        Megabeetle.OnStickAttacked += HandleStickAttack;
     }
     
     private void OnDisable()
@@ -45,10 +48,13 @@ public class Lamp : MonoBehaviour, IInitializable
         _lampStatsManager.OnHealthChange -= HandleUpdateHealth;
         _lampStatsManager.OnCooldownChange -= HandleUpgradeCooldown;
         _lampStatsManager.OnHealthUpgraded -= HandleUpgradeHealth;
+        
+        Megabeetle.OnStickAttacked += HandleStickAttack;
     }
 
     public void Initialize()
     {
+        _isDead = false;
         _lampStatsManager.Initialize();
         _lampAttackModel.Initialize(_lampStatsManager.CurrentColldownTime);
         _lampMovement.Initialize();
@@ -63,6 +69,11 @@ public class Lamp : MonoBehaviour, IInitializable
         }
         _attackBlockerCount = 0;
     }
+    
+    public void PlayDeath(float duration)
+    {
+        _lampPresentation.StartDeathState(duration);
+    }
   
     private void StickyEnemyEnterCollisionHandle(EnemyBase enemy)
     {
@@ -76,13 +87,14 @@ public class Lamp : MonoBehaviour, IInitializable
         }
         
         enemy.transform.parent = transform;
+        enemy.HandleCollisionWithStickZone();
         MoveLamp();
         OnLampCollidedWithStickyEnemy?.Invoke(enemy);
     }
     
     private void EnemyExitCollisionHandle(EnemyBase enemy)
     {
-        if (enemy.EnemyType == EnemyTypes.Ladybug)
+        if (enemy.EnemyType == EnemyTypes.Ladybug || enemy.EnemyType == EnemyTypes.Megabeetle)
         {
             if (_stickyEnemies.Contains(enemy))
             {
@@ -92,7 +104,7 @@ public class Lamp : MonoBehaviour, IInitializable
                 {
                     _attackBlockerCount = 0;
                     _lampAttackModel.RemoveAttackBlocker();
-                    _lampPresentation.DisableBlockedMode();
+                    _lampPresentation.DisableBlockedMode(_isDead);
                 }    
             }
             enemy.transform.parent = null;
@@ -119,31 +131,44 @@ public class Lamp : MonoBehaviour, IInitializable
             else
             {
                 _isAssessingDamage = false;
-                Vector3 impactPoint = enemy.transform.position.normalized;
-                if (!_isInvincible)
-                {
-                    _lampStatsManager.DecreaseCurrentHealth(1, impactPoint);    
-                }
-                _lampPresentation.UpdateHealthBar(
-                    _lampStatsManager.NormalizedHealth, 
-                    _lampStatsManager.CurrentHealth, 
-                    _lampStatsManager.DamageWeights,
-                    _lampStatsManager.LampImpactPointsData
-                    );
-                if (_lampStatsManager.CurrentHealth <= 0)
-                {
-                    _lampAttackModel.HandleLampDeath();
-                    _lampPresentation.LastEnemyPosition = enemy.transform.position;
-                    OnLampDead?.Invoke(enemy);
-                }
-                else
-                {
-                    _lampPresentation.StartDamageState();
-                    OnLampDamaged?.Invoke(enemy);    
-                }
-                MoveLamp();
+                ApplyDamage(enemy);
             }
         }
+    }
+    
+    private void ApplyDamage(EnemyBase enemy)
+    {
+        if (_isDead)
+        {
+            return;
+        }
+        
+        Vector3 impactPoint = enemy.transform.position.normalized;
+        if (!_isInvincible)
+        {
+            _lampStatsManager.DecreaseCurrentHealth(1, impactPoint);    
+        }
+        
+        _lampPresentation.UpdateHealthBar(
+            _lampStatsManager.NormalizedHealth, 
+            _lampStatsManager.CurrentHealth, 
+            _lampStatsManager.DamageWeights,
+            _lampStatsManager.LampImpactPointsData
+        );
+        
+        if (_lampStatsManager.CurrentHealth <= 0)
+        {
+            _lampAttackModel.HandleLampDeath();
+            _lampPresentation.LastEnemyPosition = enemy.transform.position;
+            _isDead = true;
+            OnLampDead?.Invoke(enemy);
+        }
+        else
+        {
+            _lampPresentation.StartDamageState();
+            OnLampDamaged?.Invoke(enemy);    
+        }
+        MoveLamp();
     }
     
     private void HandleUpdateHealth()
@@ -183,9 +208,10 @@ public class Lamp : MonoBehaviour, IInitializable
     {
         _lampPresentation.StartIntroState(duration, _lampStatsManager.CurrentHealth, _lampStatsManager.MaxHealth); // TODO: support loading health from the last session
     }
-
-    public void PlayDeath(float duration)
+    
+    private void HandleStickAttack(EnemyBase enemy)
     {
-        _lampPresentation.StartDeathState(duration);
+        ApplyDamage(enemy);
     }
+    
 }

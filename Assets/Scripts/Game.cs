@@ -55,11 +55,15 @@ public class Game : MonoBehaviour
         _adsManager.OnAdFinished -= SaveRewards;
         _uiManager.OnGameoverFinished -= HandleGameoverUiAnimationFinished;
     }
-    
-    private void Start()
+
+    private void Awake()
     {
         Application.targetFrameRate = 60;
-        
+        Screen.sleepTimeout = SleepTimeout.NeverSleep;
+    }
+
+    private void Start()
+    {
         if (_skipIntro)
         {
             _introDuration = 0.001f;

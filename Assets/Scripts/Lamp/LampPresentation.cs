@@ -4,6 +4,7 @@ using UnityEngine.Rendering;
 public class LampPresentation : MonoBehaviour
 {
     [SerializeField] private LampEmissionController _lampEmissionController;
+    [SerializeField] private GameObject _lampAttackZoneObject;
     [Range(0, 1)]
     [SerializeField] private float _blockedModeStrength;
     [Header("HealthBar")]
@@ -81,12 +82,17 @@ public class LampPresentation : MonoBehaviour
     {
         _lampEmissionController.BlockedModeMix = _blockedModeStrength;
         isBlocked = true;
+        _lampAttackZoneObject.SetActive(false);
     }
     
-    public void DisableBlockedMode()
+    public void DisableBlockedMode(bool isDead)
     {
         _lampEmissionController.BlockedModeMix = 0;
         isBlocked = false;
+        if (!isDead)
+        {
+            _lampAttackZoneObject.SetActive(true);
+        }
     }
    
     private void StartAttackState(int attackPower, float currentPower, float attackDuration, float attackDistance)

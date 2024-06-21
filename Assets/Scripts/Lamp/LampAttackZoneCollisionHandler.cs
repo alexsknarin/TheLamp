@@ -18,15 +18,14 @@ public class LampAttackZoneCollisionHandler : MonoBehaviour
     
     private void OnTriggerExit2D(Collider2D other)
     {
-        if (other.gameObject.CompareTag("Enemy"))
+        if (other.gameObject.CompareTag("Enemy") || other.gameObject.CompareTag("StickyEnemy"))
         {
-            Enemy enemy = other.GetComponent<Enemy>();
+            var enemy = other.GetComponent<EnemyBase>();
             enemy.HandleExitingAttackExitZone();
         }
         if (other.gameObject.CompareTag("Boss"))
         {
             other.GetComponent<BossBase>().HandleExitingAttackExitZone();
         }
-        
     }
 }

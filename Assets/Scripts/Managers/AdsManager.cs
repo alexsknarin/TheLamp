@@ -19,8 +19,6 @@ public class AdsManager : MonoBehaviour, IInitializable
 
     public void Initialize()
     {
-        Debug.Log("... Connecting to Unity Ads Service");
-        Debug.Log("... Preloading ads");
         _fakeAd.gameObject.SetActive(false);
     }
 

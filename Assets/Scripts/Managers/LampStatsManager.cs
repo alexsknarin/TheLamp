@@ -14,6 +14,7 @@
     [SerializeField] private int _upgradePoints;
     [SerializeField] private int _currentUpgradePointThreshold = 5;
     [SerializeField] private int _upgradeThesholdInitialIncrement = 5;
+    [SerializeField] private int _scoresAccountedForUpgrade = 0;
     [SerializeField] private int _upgradeThesholdIncrement;
     [SerializeField] private int _level;
     [Header("Damage")]
@@ -77,11 +78,18 @@
     
     private void UpdateUpgradePoints(int scores)
     {
-        if (scores >= _currentUpgradePointThreshold)
+        int newScores = scores - _scoresAccountedForUpgrade;
+        
+        if (newScores >= _upgradeThesholdIncrement)
         {
-            _upgradePoints++;
-            _currentUpgradePointThreshold += _upgradeThesholdIncrement;
-            _upgradeThesholdIncrement++;
+            while (newScores >= _upgradeThesholdIncrement)
+            {
+                _upgradePoints++;
+                newScores -= _upgradeThesholdIncrement;
+                _currentUpgradePointThreshold += _upgradeThesholdIncrement;
+                _scoresAccountedForUpgrade += _upgradeThesholdIncrement;
+                _upgradeThesholdIncrement++;
+            }
             SaveData();
         }
     }
