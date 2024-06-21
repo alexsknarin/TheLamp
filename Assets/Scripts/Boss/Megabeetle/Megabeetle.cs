@@ -26,6 +26,7 @@ public class Megabeetle : BossBase
         _enemyMovement.OnStickStart += StickStatusEnable;
         _enemyMovement.OnDeathStateEnded += HandleDeathMoveStateEnd;
         _enemyMovement.OnStickAttackStateEnded += HandleStickAttack;
+        _enemyMovement.OnTriggerSpread += MegabeetleTriggerSpread;
     }
     
     private void OnDisable()
@@ -37,9 +38,15 @@ public class Megabeetle : BossBase
         _enemyMovement.OnMovementReset -= OnMovementReset;
         _enemyMovement.OnStickStart -= StickStatusEnable;
         _enemyMovement.OnDeathStateEnded -= HandleDeathMoveStateEnd;
-        _enemyMovement.OnStickAttackStateEnded += HandleStickAttack;
+        _enemyMovement.OnStickAttackStateEnded -= HandleStickAttack;
+        _enemyMovement.OnTriggerSpread -= MegabeetleTriggerSpread;
     }
-    
+
+    private void MegabeetleTriggerSpread()
+    {
+        OnTriggerSpreadInvoke();
+    }
+
     public override void Initialize()
     {
         _enemyMovement.Initialize();

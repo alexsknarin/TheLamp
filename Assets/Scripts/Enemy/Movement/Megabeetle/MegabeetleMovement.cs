@@ -45,6 +45,7 @@ public class MegabeetleMovement : EnemyMovement
     
     public event Action OnDeathStateEnded;
     public event Action OnStickAttackStateEnded;
+    public event Action OnTriggerSpread;
     
     // Debug
     [SerializeField] private EnemyStates _stateDebug;
@@ -214,6 +215,7 @@ public class MegabeetleMovement : EnemyMovement
                 {
                     OnPreAttackStartInvoke();
                     newState = _preAttackState;
+                    OnTriggerSpread?.Invoke();
                 }
                 break;
             case EnemyStates.PreAttack:
@@ -253,6 +255,7 @@ public class MegabeetleMovement : EnemyMovement
                     _position2d = transform.localPosition;
                     _isCollided = false;
                     OnStickStartInvoke();
+                    OnTriggerSpread?.Invoke();
                 }
                 break;
             case EnemyStates.StickLanding:
@@ -319,6 +322,7 @@ public class MegabeetleMovement : EnemyMovement
                 else
                 {
                     OnPreAttackStartInvoke();
+                    OnTriggerSpread?.Invoke();
                     newState = _stickPreAttackPauseState;
                     _position2d = transform.localPosition;
                     _isCollided = false;
@@ -367,6 +371,7 @@ public class MegabeetleMovement : EnemyMovement
                 else
                 {
                     OnStickAttackStateEnded?.Invoke();
+                    OnTriggerSpread?.Invoke();
                     newState = _stickState;
                     _position2d = transform.localPosition;
                     _isCollided = false;
