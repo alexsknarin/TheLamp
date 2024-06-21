@@ -5054,12 +5054,12 @@ PrefabInstance:
     - target: {fileID: 6281014532624352872, guid: b7287b02b66117d41a9878933f72b080,
         type: 3}
       propertyPath: _maxHealth
-      value: 25
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 6281014532624352872, guid: b7287b02b66117d41a9878933f72b080,
         type: 3}
       propertyPath: _healthToFallThreshold
-      value: 10
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 8854400779814498794, guid: b7287b02b66117d41a9878933f72b080,
         type: 3}
@@ -9661,17 +9661,17 @@ MonoBehaviour:
       inWeight: 0.33333334
       outWeight: 0.5541632
     - serializedVersion: 3
-      time: 0.30769768
-      value: 0.36268932
-      inSlope: -2.1496546
-      outSlope: -2.1496546
+      time: 0.30470696
+      value: 0.5181764
+      inSlope: -0.04001982
+      outSlope: 0.1016665
       tangentMode: 1
       weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
+      inWeight: 1
+      outWeight: 1
     - serializedVersion: 3
-      time: 0.32024735
-      value: 0.31927451
+      time: 0.33520097
+      value: 0.32089195
       inSlope: 0.6580151
       outSlope: 0.08265123
       tangentMode: 1
@@ -9697,8 +9697,8 @@ MonoBehaviour:
       inWeight: 0.05733992
       outWeight: 0.33333334
     - serializedVersion: 3
-      time: 0.6166156
-      value: 0.68965364
+      time: 0.6100238
+      value: 0.9070914
       inSlope: 1.0014366
       outSlope: 1.0014366
       tangentMode: 1
@@ -9706,8 +9706,8 @@ MonoBehaviour:
       inWeight: 0.33333334
       outWeight: 0.33333334
     - serializedVersion: 3
-      time: 0.6393569
-      value: 0.63905716
+      time: 0.6489571
+      value: 0.642481
       inSlope: 1.0013088
       outSlope: 0.08471012
       tangentMode: 1
@@ -9733,8 +9733,8 @@ MonoBehaviour:
       inWeight: 0.07015556
       outWeight: 0.33333334
     - serializedVersion: 3
-      time: 0.93311834
-      value: 1.0826392
+      time: 0.9163337
+      value: 1.2561011
       inSlope: 0.5974351
       outSlope: 0.5974351
       tangentMode: 1
