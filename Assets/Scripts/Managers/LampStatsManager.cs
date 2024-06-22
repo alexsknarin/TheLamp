@@ -112,6 +112,7 @@
         _lampDamageWeightRight = _saveDataContainer.LampDamageWeightRight;
         _lampDamageWeightLeft = _saveDataContainer.LampDamageWeightLeft;
         _lampDamageWeightBottom = _saveDataContainer.LampDamageWeightBottom;
+        _scoresAccountedForUpgrade = 0;
         CalculateDamageWeghts();
         _lampImpactPointsData.ImpactLastPointNumber = _saveDataContainer.ImpactLastPointNumber;
         _lampImpactPointsData.ImpactPoint01Strength = _saveDataContainer.ImpactPoint01Strength;
