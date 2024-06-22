@@ -45,7 +45,7 @@ public class LampIntroAnimation : MonoBehaviour
                 _lampHealthBar.UpdateHealth(_currentHealthNormalized, _currentHealth);
                 _lampEmissionController.Intensity = _lampIntensityAnimCurve.Evaluate(1);
                 _lampEmissionController.BlockedModeMix = _lampNoiseAmountAnimCurve.Evaluate(1);
-                
+                _lampAttackZoneMaterial.SetFloat("_Alpha", 0.005f);    
                 return;
             }
             float phaseAnimated = _animCurve.Evaluate(phase);

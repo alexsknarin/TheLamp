@@ -7,7 +7,6 @@ public class FlyMovement : EnemyMovement
     [SerializeField] private float _speed;
     [SerializeField] private float _radius;
     [SerializeField] private float _verticalAmplitude;
-    private int _sideDirection;
     [Header("---- Spawn Settings ----")]
     [SerializeField] private float _spawnAreaSize = 0.5f;
     [SerializeField] private Vector3 _spawnAreaCenter;
@@ -18,9 +17,10 @@ public class FlyMovement : EnemyMovement
     [Header("-- Smooth Damp Settings --")]
     [SerializeField] private bool _isSmoothDampEnabled;
     [SerializeField] private float _smoothTime = .3f;
-    private Vector3 _velocity = Vector3.zero;
     [Header("---- Depth Settings ----")]
     [SerializeField] bool _isDepthEnabled;
+    private int _sideDirection;
+    private Vector3 _velocity = Vector3.zero;
     private int _depthDirection;
     
     

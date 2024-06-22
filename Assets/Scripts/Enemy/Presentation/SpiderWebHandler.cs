@@ -3,13 +3,13 @@ using UnityEngine;
 public class SpiderWebHandler : MonoBehaviour
 {
     [SerializeField] private LineRenderer _spiderWebLineRenderer;
+    [SerializeField] private float _shrinkDuration;
     private Material _lineMaterial;
     private Vector3 _startPoint;
     private Vector3 _endPoint;
     private Vector3 _lastPoint;
     private bool _isShrinking = false;
     private bool _isActive = true; 
-    [SerializeField] private float _shrinkDuration;
     private float _localTime;
     
     public void Initialize()

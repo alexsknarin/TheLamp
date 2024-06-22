@@ -10,8 +10,8 @@ public class WaspMovement : MonoBehaviour, IInitializable
     [SerializeField] private Collider2D _collider;
     [SerializeField] private Animator _animator;
     [SerializeField] private WaspStates _currentWaspState;
-    private WaspStates _prevWaspState;
     [SerializeField] private Transform _baseTransform;
+    private WaspStates _prevWaspState;
     private AnimationClipPlayable _currentAnimationClipPlayable;
     private WaspPlayablesContainer _playablesContainer;
     

@@ -12,6 +12,8 @@ public class DefaultStatsContainer : ScriptableObject
     [SerializeField] private int _maxHealth = 8;
     [SerializeField] private int _health = 8;
     [SerializeField] private float _cooldownTime = 3f;
+    [SerializeField] private float _attackDistance = 0.68f;
+    
     [SerializeField] private int _lampDamageWeightRight;
     [SerializeField] private int _lampDamageWeightLeft;
     [SerializeField] private int _lampDamageWeightBottom;
@@ -43,6 +45,8 @@ public class DefaultStatsContainer : ScriptableObject
         _data.MaxHealth = _maxHealth;
         _data.Health = _health;
         _data.CooldownTime = _cooldownTime;
+        _data.AttackDistance = _attackDistance;
+
         _data.LampDamageWeightRight = _lampDamageWeightRight;
         _data.LampDamageWeightLeft = _lampDamageWeightLeft;
         _data.LampDamageWeightBottom = _lampDamageWeightBottom;
@@ -72,6 +76,7 @@ public class DefaultStatsContainer : ScriptableObject
         _data.MaxHealth = currentData.MaxHealth;
         _data.Health = currentData.MaxHealth;
         _data.CooldownTime = currentData.CooldownTime;
+        _data.AttackDistance = currentData.AttackDistance;
         _data.LampDamageWeightRight = 0;
         _data.LampDamageWeightLeft = 0;
         _data.LampDamageWeightBottom = 0;

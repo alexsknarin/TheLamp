@@ -5,11 +5,11 @@ using UnityEngine.Pool;
 public class Megamothling : BossBase
 {
     [SerializeField] private EnemyTypes _enemyType;
-    public override EnemyTypes EnemyType => _enemyType;
     [SerializeField] private int _maxHealth;
     [SerializeField] private int _currentHealth;
     [SerializeField] private MegamothlingMovement _enemyMovement;
     [SerializeField] private MegamothlingPresentation _enemyPresentation;
+    public override EnemyTypes EnemyType => _enemyType;
     private bool _isDead = false;
 
     private void OnEnable()

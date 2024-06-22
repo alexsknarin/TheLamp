@@ -8,7 +8,6 @@ public class SpiderMovement : EnemyMovement
     [SerializeField] private float _speed;
     private int _sideDirection;
     private float _xCenter = 1.12f;
-
     // Movement States
     private EnemyMovementStateMachine _movementStateMachine;
     private EnemyMovementBaseState _currentState;
@@ -18,7 +17,6 @@ public class SpiderMovement : EnemyMovement
     private SpiderMovementAttackState _attackState;
     private SpiderMovementReturnState _returnState;
     private FlyMovementDeathState _deathState;
-    
     private Vector3 _position2d;
     private Vector3 _prevPosition2d; //Debug
     
