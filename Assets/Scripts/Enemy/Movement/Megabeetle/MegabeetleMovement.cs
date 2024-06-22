@@ -122,18 +122,21 @@ public class MegabeetleMovement : EnemyMovement
 
     public void FallOnLampDestroyed(EnemyBase enemy)
     {
-        transform.parent = null;
-        if(_currentState.State == EnemyStates.StickLanding ||
-           _currentState.State == EnemyStates.Stick || 
-           _currentState.State == EnemyStates.StickAttack || 
-           _currentState.State == EnemyStates.StickPreAttack ||
-           _currentState.State == EnemyStates.StickPreAttackPause)
+        if (_isPlaying)
         {
-            StartCoroutine(FallDelayedStart());
-        }
-        else
-        {
-            StartCoroutine(SpreadDelayedStart());
+            transform.parent = null;
+            if (_currentState.State == EnemyStates.StickLanding ||
+                _currentState.State == EnemyStates.Stick ||
+                _currentState.State == EnemyStates.StickAttack ||
+                _currentState.State == EnemyStates.StickPreAttack ||
+                _currentState.State == EnemyStates.StickPreAttackPause)
+            {
+                StartCoroutine(FallDelayedStart());
+            }
+            else
+            {
+                StartCoroutine(SpreadDelayedStart());
+            }
         }
     }
 
