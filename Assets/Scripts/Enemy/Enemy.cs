@@ -154,7 +154,7 @@ public class Enemy : EnemyBase
     
     public override void HandleEnteringAttackZone()
     {
-        // Debug.Break();
+        Debug.Break();
         if (_enemyMovement.State == EnemyStates.Attack || _enemyType == EnemyTypes.Ladybug)
         {
             ReadyToLampDamage = true;    

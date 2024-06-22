@@ -3,7 +3,7 @@ using UnityEngine;
 public class MothlingMovementAttackState: EnemyMovementBaseState
 {
     public override EnemyStates State => EnemyStates.Attack;
-    private readonly float DEPTH_DECREMENT = 0.2f;
+    private readonly float DEPTH_DECREMENT = 0.42f;
     private float _startDistance;
     
     public MothlingMovementAttackState(IStateMachineOwner owner, float speed, float radius, float verticalAmplitude) : base()
@@ -28,7 +28,11 @@ public class MothlingMovementAttackState: EnemyMovementBaseState
         Position = newPosition;
         
         Vector3 cameraDirection = (_cameraPosition - Position).normalized;
-        float attackProximityGradient = Mathf.Clamp((Position.magnitude - 0.65f) / _startDistance, 0.5f, 1.0f);
+
+        float attackProximityGradient = Mathf.Clamp((Position.magnitude - 0.72f) / _startDistance, 0.0f, 1.0f);
+
+        attackProximityGradient = Mathf.Pow(attackProximityGradient, 1.9f) + 0.1f;
+        
         Depth = cameraDirection * (1.1f * DEPTH_DECREMENT * attackProximityGradient);
     }
 }
