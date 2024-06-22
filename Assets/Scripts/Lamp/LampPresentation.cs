@@ -131,4 +131,9 @@ public class LampPresentation : MonoBehaviour
     {
         _lampAttackDistanceUpgradeAnimation.Play();
     }
+    
+    public void SetAttackDistance(float attackDistance)
+    {
+        _lampAttackZoneObject.transform.localScale = Vector3.one * (attackDistance * 2);
+    }
 }

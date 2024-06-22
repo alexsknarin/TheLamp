@@ -61,6 +61,7 @@ public class Lamp : MonoBehaviour, IInitializable
         _lampAttackModel.Initialize();
         _lampMovement.Initialize();
         _lampPresentation.Initialize(_lampStatsManager.DamageWeights, _lampStatsManager.LampImpactPointsData);
+        _lampPresentation.SetAttackDistance(_lampStatsManager.CurrentAttackDistance);
         if (_stickyEnemies == null)
         {
             _stickyEnemies = new List<EnemyBase>();
@@ -212,6 +213,7 @@ public class Lamp : MonoBehaviour, IInitializable
     
     private void HandleAttackDistanceUpgrade()
     {
+        _lampPresentation.SetAttackDistance(_lampStatsManager.CurrentAttackDistance);
         _lampPresentation.StartAttackDistanceUpgradeState();
     }
 }

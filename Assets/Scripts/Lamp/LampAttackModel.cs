@@ -43,12 +43,13 @@ public class LampAttackModel : MonoBehaviour
     {
         _currentPower = _maxPower;
         _lampState = LampStates.Neutral;
-        _attackZone.radius = _attackDistance;
-        _attackExitZone.radius = _attackExitDistance;
         _isBlockedAttack = false;
         _fullCooldownTime = _lampStatsManager.CurrentCooldownTime;
         _attackDistance = _lampStatsManager.CurrentAttackDistance;
         _attackExitDistance = _attackDistance - 0.1f;
+
+        _attackZone.radius = _attackDistance;
+        _attackExitZone.radius = _attackExitDistance;
     }
     
     private void Update()
@@ -167,8 +168,9 @@ public class LampAttackModel : MonoBehaviour
     {
         _attackDistance = _lampStatsManager.CurrentAttackDistance;
         _attackExitDistance = _attackDistance - 0.1f;
-        // TODO: Start attack distance upgrade animation
-        Debug.Log("Attack distance updated - animation");
+
+        _attackZone.radius = _attackDistance;
+        _attackExitZone.radius = _attackExitDistance;
     }
     
     private void UpdateCooldownTime()
