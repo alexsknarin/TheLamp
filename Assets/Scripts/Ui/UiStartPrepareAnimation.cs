@@ -7,6 +7,7 @@ public class UiStartPrepareAnimation : MonoBehaviour
     [SerializeField] private GameObject _upgradeButtonsPanel;
     [SerializeField] private UiUpgradePoints _uiUpgradePoints;
     [SerializeField] private GameObject _upgradeHintsPanel;
+
     
     private bool _isUpgradeHintsPanelShown = false;
     
@@ -19,8 +20,8 @@ public class UiStartPrepareAnimation : MonoBehaviour
         {
             _upgradeButtonsPanel.SetActive(true); // Add Animation
             _uiUpgradePoints.ShowUpgradePoints(lampStatsManager.UpgradePoints);
-            
-            if (!_isUpgradeHintsPanelShown && waveNum < 3)
+
+            if (!_isUpgradeHintsPanelShown && waveNum < 5)
             {
                 _upgradeHintsPanel.SetActive(true);
                 _isUpgradeHintsPanelShown = true;

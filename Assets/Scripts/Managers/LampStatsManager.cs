@@ -1,5 +1,6 @@
      using System;
  using UnityEngine;
+ using UnityEngine.Serialization;
  using Random = UnityEngine.Random;
 
  public class LampStatsManager : MonoBehaviour, IInitializable
@@ -8,9 +9,12 @@
     [Header("Stats displayed for debug purposes")]
     [Header("Use Default Data asset to change values")]
     [SerializeField] private int _currentHealth;
-    private float _initialCooldownTime;
-    [SerializeField] private float _currentColldownTime;
+    [SerializeField] private int _healthCap = 50;
+    [SerializeField] private float _currentCooldownTime;
+    [SerializeField] private float _cooldownTimeCap = 0.75f;
     [SerializeField] private float _cooldownDecrement;
+    [SerializeField] private float _currentAttackDistance;
+    [SerializeField] private float _attackDistanceCap = 0.82f;
     [SerializeField] private int _upgradePoints;
     [SerializeField] private int _currentUpgradePointThreshold = 5;
     [SerializeField] private int _upgradeThesholdInitialIncrement = 5;
@@ -27,18 +31,62 @@
     public LampImpactPointsData LampImpactPointsData => _lampImpactPointsData;
     [Header("Save Data")]
     [SerializeField] private SaveDataContainer _saveDataContainer;
-    
     public int MaxHealth => _maxHealth;
     public int CurrentHealth => _currentHealth;
     public float NormalizedHealth => (float)_currentHealth / _maxHealth;
     public float InitialCooldownTime => _initialCooldownTime;
-    public float CurrentColldownTime => _currentColldownTime;
+    public float CurrentCooldownTime => _currentCooldownTime;
+    public float CurrentAttackDistance => _currentAttackDistance;
     public int UpgradePoints => _upgradePoints;
     public Vector3 DamageWeights => _damageWeights;
-    
     public event Action OnHealthChange;
     public event Action OnHealthUpgraded;
     public event Action OnCooldownChange;
+    public event Action OnAttackDistanceChange;
+    
+    private float _initialCooldownTime;
+    
+    public UpgradeStatus HealthUpgradeStatus()
+    {
+        if (_currentHealth < _healthCap)
+        {
+            return UpgradeStatus.ReadyForUpgrade;
+        }
+        else
+        {
+            return UpgradeStatus.MaxedOut;
+        }
+    }
+    
+    public UpgradeStatus CooldownUpgradeStatus()
+    {
+        if (_currentCooldownTime > _cooldownTimeCap)
+        {
+            return UpgradeStatus.ReadyForUpgrade;
+        }
+        else
+        {
+            return UpgradeStatus.MaxedOut;
+        }
+    }
+    
+    public UpgradeStatus AttackDistanceUpgradeStatus()
+    {
+        if (_upgradePoints < 2)
+        {
+            return UpgradeStatus.NotEnoughPoints;
+        }
+        
+        if (_currentAttackDistance < _attackDistanceCap)
+        {
+            return UpgradeStatus.ReadyForUpgrade;
+        }
+        else
+        {
+            return UpgradeStatus.MaxedOut;
+        }
+    }
+    
 
     private void OnEnable()
     {
@@ -56,7 +104,8 @@
         _level = _saveDataContainer.Level;
         _currentHealth = _saveDataContainer.Health;
         _maxHealth = _saveDataContainer.MaxHealth;
-        _currentColldownTime = _saveDataContainer.CooldownTime;
+        _currentCooldownTime = _saveDataContainer.CooldownTime;
+        _currentAttackDistance = _saveDataContainer.AttackDistance;
         _upgradePoints = _saveDataContainer.UpgradePoints;
         _upgradeThesholdIncrement = _saveDataContainer.UpgradeThesholdIncrement;
         _currentUpgradePointThreshold = _saveDataContainer.UpgradePointsThreshold;
@@ -123,9 +172,21 @@
         {
             _level++;
             _upgradePoints--;
-            _currentColldownTime -= _cooldownDecrement;
+            _currentCooldownTime -= _cooldownDecrement;
             SaveData();
             OnCooldownChange?.Invoke();
+        }
+    }
+    
+    public void UpgradeAttackDistance()
+    {
+        if (_upgradePoints > 0)
+        {
+            _level++;
+            _upgradePoints -= 2;
+            _currentAttackDistance += 0.01f;
+            SaveData();
+            OnAttackDistanceChange?.Invoke();
         }
     }
     
@@ -316,11 +377,11 @@
         _saveDataContainer.UpgradePoints = _upgradePoints;
         _saveDataContainer.UpgradePointsThreshold = _currentUpgradePointThreshold;
         _saveDataContainer.UpgradeThesholdIncrement = _upgradeThesholdIncrement;
-        _saveDataContainer.CooldownTime = _currentColldownTime;
+        _saveDataContainer.CooldownTime = _currentCooldownTime;
+        _saveDataContainer.AttackDistance = _currentAttackDistance;
         _saveDataContainer.LampDamageWeightRight = _lampDamageWeightRight;
         _saveDataContainer.LampDamageWeightLeft = _lampDamageWeightLeft;
         _saveDataContainer.LampDamageWeightBottom = _lampDamageWeightBottom;
-        
         _saveDataContainer.ImpactLastPointNumber = _lampImpactPointsData.ImpactLastPointNumber;
         _saveDataContainer.ImpactPoint01Strength = _lampImpactPointsData.ImpactPoint01Strength;
         _saveDataContainer.ImpactPoint01LocalAngle = _lampImpactPointsData.ImpactPoint01LocalAngle;

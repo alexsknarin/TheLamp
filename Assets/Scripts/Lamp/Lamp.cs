@@ -33,7 +33,6 @@ public class Lamp : MonoBehaviour, IInitializable
         _lampStickZoneCollisionHandler.OnCollidedWithStickyEnemy += StickyEnemyEnterCollisionHandle;
         _lampAttackExitZoneCollisionHandler.OnExitAttackExitZone += AssessDamage;
         _lampStatsManager.OnHealthChange += HandleUpdateHealth;
-        _lampStatsManager.OnCooldownChange += HandleUpgradeCooldown;
         _lampStatsManager.OnHealthUpgraded += HandleUpgradeHealth;
         
         Megabeetle.OnStickAttacked += HandleStickAttack;
@@ -46,7 +45,6 @@ public class Lamp : MonoBehaviour, IInitializable
         _lampStickZoneCollisionHandler.OnCollidedWithStickyEnemy -= StickyEnemyEnterCollisionHandle;
         _lampAttackExitZoneCollisionHandler.OnExitAttackExitZone -= AssessDamage;
         _lampStatsManager.OnHealthChange -= HandleUpdateHealth;
-        _lampStatsManager.OnCooldownChange -= HandleUpgradeCooldown;
         _lampStatsManager.OnHealthUpgraded -= HandleUpgradeHealth;
         
         Megabeetle.OnStickAttacked += HandleStickAttack;
@@ -56,7 +54,7 @@ public class Lamp : MonoBehaviour, IInitializable
     {
         _isDead = false;
         _lampStatsManager.Initialize();
-        _lampAttackModel.Initialize(_lampStatsManager.CurrentColldownTime);
+        _lampAttackModel.Initialize();
         _lampMovement.Initialize();
         _lampPresentation.Initialize(_lampStatsManager.DamageWeights, _lampStatsManager.LampImpactPointsData);
         if (_stickyEnemies == null)
@@ -190,12 +188,6 @@ public class Lamp : MonoBehaviour, IInitializable
             _lampStatsManager.LampImpactPointsData
         );
         _lampPresentation.UpgradeHealthBar();
-    }
-        
-    
-    private void HandleUpgradeCooldown()
-    {
-        _lampAttackModel.UpgradeCooldownTime(_lampStatsManager.CurrentColldownTime);
     }
     
     private void MoveLamp()

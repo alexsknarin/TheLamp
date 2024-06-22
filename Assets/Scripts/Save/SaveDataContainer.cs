@@ -15,6 +15,7 @@ public class SaveDataContainer : ScriptableObject
     public int LampDamageWeightRight;
     public int LampDamageWeightLeft;
     public int LampDamageWeightBottom;
+    public float AttackDistance;
 
     public int ImpactLastPointNumber;
     
@@ -43,6 +44,8 @@ public class SaveDataContainer : ScriptableObject
         MaxHealth = saveData.MaxHealth;
         Health = saveData.Health;
         CooldownTime = saveData.CooldownTime;
+        AttackDistance = saveData.AttackDistance;
+        
         LampDamageWeightRight = saveData.LampDamageWeightRight;
         LampDamageWeightLeft = saveData.LampDamageWeightLeft;
         LampDamageWeightBottom = saveData.LampDamageWeightBottom;
@@ -73,6 +76,8 @@ public class SaveDataContainer : ScriptableObject
         _saveData.MaxHealth = MaxHealth;
         _saveData.Health = Health;
         _saveData.CooldownTime = CooldownTime;
+        _saveData.AttackDistance = AttackDistance;
+        
         _saveData.LampDamageWeightRight = LampDamageWeightRight;
         _saveData.LampDamageWeightLeft = LampDamageWeightLeft;
         _saveData.LampDamageWeightBottom = LampDamageWeightBottom;

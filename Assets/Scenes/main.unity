@@ -3335,10 +3335,11 @@ GameObject:
   m_Component:
   - component: {fileID: 619549486}
   - component: {fileID: 619549489}
+  - component: {fileID: 619549490}
   - component: {fileID: 619549488}
   - component: {fileID: 619549487}
   m_Layer: 5
-  m_Name: AttackZoneUp_Button
+  m_Name: AttackDistanceUp_Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3389,7 +3390,7 @@ MonoBehaviour:
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 0.03137255}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.047058824}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 0.05882353}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.08627451}
+    m_DisabledColor: {r: 0.49685526, g: 0.49685526, b: 0.49685526, a: 0.08627451}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
@@ -3408,14 +3409,14 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 1291610354}
         m_TargetAssemblyTypeName: UiManager, Assembly-CSharp
-        m_MethodName: 
+        m_MethodName: HandleUpgradeButtonClick
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 1
+          m_IntArgument: 2
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -3458,6 +3459,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 619549485}
   m_CullTransparentMesh: 1
+--- !u!114 &619549490
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 619549485}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08f70821550cde7468983ebfe4092acc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _button: {fileID: 619549487}
+  _text: {fileID: 874044065}
 --- !u!1 &651099611
 GameObject:
   m_ObjectHideFlags: 0
@@ -3468,6 +3483,7 @@ GameObject:
   m_Component:
   - component: {fileID: 651099612}
   - component: {fileID: 651099615}
+  - component: {fileID: 651099616}
   - component: {fileID: 651099614}
   - component: {fileID: 651099613}
   m_Layer: 5
@@ -3522,7 +3538,7 @@ MonoBehaviour:
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 0.03137255}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.047058824}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 0.05882353}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.08627451}
+    m_DisabledColor: {r: 0.49685526, g: 0.49685526, b: 0.49685526, a: 0.08627451}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
@@ -3591,6 +3607,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 651099611}
   m_CullTransparentMesh: 1
+--- !u!114 &651099616
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 651099611}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08f70821550cde7468983ebfe4092acc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _button: {fileID: 651099613}
+  _text: {fileID: 1605744539}
 --- !u!1 &670812975
 GameObject:
   m_ObjectHideFlags: 0
@@ -3629,89 +3659,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!1 &704642365
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 704642368}
-  - component: {fileID: 704642367}
-  - component: {fileID: 704642366}
-  m_Layer: 0
-  m_Name: f
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!23 &704642366
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 704642365}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_AdditionalVertexStreams: {fileID: 0}
---- !u!33 &704642367
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 704642365}
-  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
---- !u!4 &704642368
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 704642365}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.65, y: 1.65, z: 0.01}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &738155935 stripped
 MeshRenderer:
   m_CorrespondingSourceObject: {fileID: 2296735140330762001, guid: 3fc8442acd052ac4f9c1e690f3aa5d74,
@@ -4286,6 +4233,7 @@ GameObject:
   m_Component:
   - component: {fileID: 949593464}
   - component: {fileID: 949593467}
+  - component: {fileID: 949593468}
   - component: {fileID: 949593466}
   - component: {fileID: 949593465}
   m_Layer: 5
@@ -4340,7 +4288,7 @@ MonoBehaviour:
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 0.03137255}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.047058824}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 0.05882353}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.08627451}
+    m_DisabledColor: {r: 0.49685526, g: 0.49685526, b: 0.49685526, a: 0.08627451}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
@@ -4409,6 +4357,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 949593463}
   m_CullTransparentMesh: 1
+--- !u!114 &949593468
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 949593463}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08f70821550cde7468983ebfe4092acc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _button: {fileID: 949593465}
+  _text: {fileID: 1540463161}
 --- !u!1 &949782835
 GameObject:
   m_ObjectHideFlags: 0
@@ -5952,6 +5914,9 @@ MonoBehaviour:
   _upgradeButtonsPanel: {fileID: 1256375426}
   _uiUpgradePoints: {fileID: 896500833}
   _upgradeHintsPanel: {fileID: 1368674107}
+  _upgradeHealthButton: {fileID: 949593468}
+  _upgradeCooldownButton: {fileID: 651099616}
+  _upgradeAttackDistanceButton: {fileID: 619549490}
   _brokenGlassEffect: {fileID: 1266635119}
   _analyticsConsentPanel: {fileID: 670812975}
   _analyticsConsentEnableButton: {fileID: 1959847705}
@@ -7008,7 +6973,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "Make \nattack zone\nbigger\n"
+  m_text: "Make \nattack zone\nbigger\n- Cost x2\n"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -9453,6 +9418,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5ab5d815efe66a5409b29e137bb7cfce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _lampStatsManager: {fileID: 1934066249}
   _attackZone: {fileID: 594908877}
   _attackExitZone: {fileID: 452042969}
   _currentPower: 1
@@ -9463,7 +9429,6 @@ MonoBehaviour:
   _attackDistance: 0.82
   _attackExitDistance: 0.72
   _isBlockedAttack: 0
-  _saveDataContainer: {fileID: 11400000, guid: 377d55eb1797a24478860b1b98ae759c, type: 2}
 --- !u!114 &1934066246
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9552,8 +9517,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _currentHealth: 0
-  _currentColldownTime: 0
+  _healthCap: 50
+  _currentCooldownTime: 0
+  _cooldownTimeCap: 0.75
   _cooldownDecrement: 0.06
+  _currentAttackDistance: 0
+  _attackDistanceCap: 0.82
   _upgradePoints: 0
   _currentUpgradePointThreshold: 5
   _upgradeThesholdInitialIncrement: 4
@@ -11427,4 +11396,3 @@ SceneRoots:
   - {fileID: 458789824}
   - {fileID: 1180215396}
   - {fileID: 165847973}
-  - {fileID: 704642368}

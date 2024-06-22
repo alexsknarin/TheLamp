@@ -38,6 +38,7 @@ public class Game : MonoBehaviour
         Lamp.OnLampDead += HandleLampDead;
         _lampStatsManager.OnHealthChange += HandleStatsUpgrade;
         _lampStatsManager.OnCooldownChange += HandleStatsUpgrade;
+        _lampStatsManager.OnAttackDistanceChange += HandleStatsUpgrade;
         _adsManager.OnAdFinished += SaveRewards;
         _uiManager.OnGameoverFinished += HandleGameoverUiAnimationFinished;
     }
@@ -52,6 +53,7 @@ public class Game : MonoBehaviour
         Lamp.OnLampDead -= HandleLampDead;
         _lampStatsManager.OnHealthChange -= HandleStatsUpgrade;
         _lampStatsManager.OnCooldownChange -= HandleStatsUpgrade;
+        _lampStatsManager.OnAttackDistanceChange -= HandleStatsUpgrade;
         _adsManager.OnAdFinished -= SaveRewards;
         _uiManager.OnGameoverFinished -= HandleGameoverUiAnimationFinished;
     }
