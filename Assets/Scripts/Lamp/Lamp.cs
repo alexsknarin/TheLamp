@@ -34,10 +34,13 @@ public class Lamp : MonoBehaviour, IInitializable
         _lampAttackExitZoneCollisionHandler.OnExitAttackExitZone += AssessDamage;
         _lampStatsManager.OnHealthChange += HandleUpdateHealth;
         _lampStatsManager.OnHealthUpgraded += HandleUpgradeHealth;
+        _lampStatsManager.OnAttackDistanceUpgraded += HandleAttackDistanceUpgrade;
         
         Megabeetle.OnStickAttacked += HandleStickAttack;
     }
-    
+
+
+
     private void OnDisable()
     {
         _lampCollisionHandler.OnLampCollidedEnemy -= RegisterPotentialDamage;
@@ -46,6 +49,7 @@ public class Lamp : MonoBehaviour, IInitializable
         _lampAttackExitZoneCollisionHandler.OnExitAttackExitZone -= AssessDamage;
         _lampStatsManager.OnHealthChange -= HandleUpdateHealth;
         _lampStatsManager.OnHealthUpgraded -= HandleUpgradeHealth;
+        _lampStatsManager.OnAttackDistanceUpgraded -= HandleAttackDistanceUpgrade;
         
         Megabeetle.OnStickAttacked += HandleStickAttack;
     }
@@ -206,4 +210,8 @@ public class Lamp : MonoBehaviour, IInitializable
         ApplyDamage(enemy);
     }
     
+    private void HandleAttackDistanceUpgrade()
+    {
+        _lampPresentation.StartAttackDistanceUpgradeState();
+    }
 }

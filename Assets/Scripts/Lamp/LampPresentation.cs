@@ -20,6 +20,7 @@ public class LampPresentation : MonoBehaviour
     [SerializeField] private float _lightDamageDuration;
     [Header("Attack")]
     [SerializeField] private LampAttackAnimation _lampAttackAnimation;
+    [SerializeField] private LampAttackDistanceUpgradeAnimation _lampAttackDistanceUpgradeAnimation;
     
     private Vector3 _lastEnemyPosition;
     public Vector3 LastEnemyPosition
@@ -51,6 +52,7 @@ public class LampPresentation : MonoBehaviour
         _lampHealthBar.Initialize();
         _lampAttackAnimation.Initialize();
         _lampDeathAnimation.Initialize();
+        _lampAttackDistanceUpgradeAnimation.Initialize();
 
         // arrange before the intro
         _lampHealthBar.UpdateHealth(0, 0);
@@ -123,5 +125,10 @@ public class LampPresentation : MonoBehaviour
     public void StartDamageState()
     {
         _lampDamageAnimation.Play(_lightDamageDuration);
+    }
+    
+    public void StartAttackDistanceUpgradeState()
+    {
+        _lampAttackDistanceUpgradeAnimation.Play();
     }
 }

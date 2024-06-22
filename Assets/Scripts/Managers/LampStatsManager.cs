@@ -41,8 +41,8 @@
     public Vector3 DamageWeights => _damageWeights;
     public event Action OnHealthChange;
     public event Action OnHealthUpgraded;
-    public event Action OnCooldownChange;
-    public event Action OnAttackDistanceChange;
+    public event Action OnCooldownUpgraded;
+    public event Action OnAttackDistanceUpgraded;
     
     private float _initialCooldownTime;
     
@@ -174,7 +174,7 @@
             _upgradePoints--;
             _currentCooldownTime -= _cooldownDecrement;
             SaveData();
-            OnCooldownChange?.Invoke();
+            OnCooldownUpgraded?.Invoke();
         }
     }
     
@@ -186,7 +186,7 @@
             _upgradePoints -= 2;
             _currentAttackDistance += 0.01f;
             SaveData();
-            OnAttackDistanceChange?.Invoke();
+            OnAttackDistanceUpgraded?.Invoke();
         }
     }
     

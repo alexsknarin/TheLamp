@@ -27,16 +27,16 @@ public class LampAttackModel : MonoBehaviour
     {
         PlayerInputHandler.OnPlayerAttack += StartAttackState; // Possibly move to Lamp????
         Lamp.OnLampDamaged += HandleDamageWithCooldown;
-        _lampStatsManager.OnAttackDistanceChange += UpdateAttackDistance;
-        _lampStatsManager.OnCooldownChange += UpdateCooldownTime;
+        _lampStatsManager.OnAttackDistanceUpgraded += UpdateAttackDistance;
+        _lampStatsManager.OnCooldownUpgraded += UpdateCooldownTime;
     }
     
     private void OnDisable()
     {
         PlayerInputHandler.OnPlayerAttack -= StartAttackState;
         Lamp.OnLampDamaged -= HandleDamageWithCooldown;
-        _lampStatsManager.OnAttackDistanceChange -= UpdateAttackDistance;
-        _lampStatsManager.OnCooldownChange -= UpdateCooldownTime;
+        _lampStatsManager.OnAttackDistanceUpgraded -= UpdateAttackDistance;
+        _lampStatsManager.OnCooldownUpgraded -= UpdateCooldownTime;
     }
     
     public void Initialize()
