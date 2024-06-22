@@ -5,16 +5,15 @@ using UnityEngine.Pool;
 public class Megabeetle : BossBase
 {
     [SerializeField] private EnemyTypes _enemyType;
-    public override EnemyTypes EnemyType => _enemyType;
     [SerializeField] private int _maxHealth;
     [SerializeField] private int _currentHealth;
     [SerializeField] private int _healthToFallThreshold;
-    private int _currentHealthToFall;
     [SerializeField] private MegabeetleMovement _enemyMovement;
     [SerializeField] private MegabeetlePresentation _enemyPresentation;
-    private bool _isDead = false;
-    
+    public override EnemyTypes EnemyType => _enemyType;
     public static Action<EnemyBase> OnStickAttacked;
+    private int _currentHealthToFall;
+    private bool _isDead = false;
     
     private void OnEnable()
     {

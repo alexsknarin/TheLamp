@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class LampAttackModel : MonoBehaviour
 {
+    [SerializeField] private LampStatsManager _lampStatsManager;
     [SerializeField] private CircleCollider2D _attackZone;
     [SerializeField] private CircleCollider2D _attackExitZone;
     [SerializeField] private float _currentPower;
@@ -26,22 +27,28 @@ public class LampAttackModel : MonoBehaviour
     {
         PlayerInputHandler.OnPlayerAttack += StartAttackState; // Possibly move to Lamp????
         Lamp.OnLampDamaged += HandleDamageWithCooldown;
+        _lampStatsManager.OnAttackDistanceUpgraded += UpdateAttackDistance;
+        _lampStatsManager.OnCooldownUpgraded += UpdateCooldownTime;
     }
     
     private void OnDisable()
     {
         PlayerInputHandler.OnPlayerAttack -= StartAttackState;
         Lamp.OnLampDamaged -= HandleDamageWithCooldown;
+        _lampStatsManager.OnAttackDistanceUpgraded -= UpdateAttackDistance;
+        _lampStatsManager.OnCooldownUpgraded -= UpdateCooldownTime;
     }
     
-    public void Initialize(float currentCooldownTime)
+    public void Initialize()
     {
         _currentPower = _maxPower;
         _lampState = LampStates.Neutral;
         _attackZone.radius = _attackDistance;
         _attackExitZone.radius = _attackExitDistance;
         _isBlockedAttack = false;
-        _fullCooldownTime = currentCooldownTime;
+        _fullCooldownTime = _lampStatsManager.CurrentCooldownTime;
+        _attackDistance = _lampStatsManager.CurrentAttackDistance;
+        _attackExitDistance = _attackDistance - 0.1f;
     }
     
     private void Update()
@@ -57,13 +64,6 @@ public class LampAttackModel : MonoBehaviour
                 PerformCooldownState();
                 break;
         }
-    }
-    
-    public void UpgradeCooldownTime(float newCooldownTime)
-    {
-        _fullCooldownTime = newCooldownTime;
-        StartCooldownState();
-        _localTime = 0;
     }
     
     public void HandleLampDeath()
@@ -161,5 +161,20 @@ public class LampAttackModel : MonoBehaviour
         OnLampCurrentPowerChanged?.Invoke(_currentPower);
         UpdateAttackPower();
         _lampState = LampStates.Neutral;
+    }
+
+    private void UpdateAttackDistance()
+    {
+        _attackDistance = _lampStatsManager.CurrentAttackDistance;
+        _attackExitDistance = _attackDistance - 0.1f;
+        // TODO: Start attack distance upgrade animation
+        Debug.Log("Attack distance updated - animation");
+    }
+    
+    private void UpdateCooldownTime()
+    {
+        _fullCooldownTime = _lampStatsManager.CurrentCooldownTime;
+        StartCooldownState();
+        _localTime = 0;
     }
 }

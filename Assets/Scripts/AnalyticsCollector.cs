@@ -18,7 +18,7 @@ public class AnalyticsCollector : MonoBehaviour
         EnemyManager.OnWaveEnded += SubmitWaveEndEvent;
         Lamp.OnLampDamaged += SubmitLampDamageEvent;
         _lampStatsManager.OnHealthChange += SubmitHealthUpgradeEvent;
-        _lampStatsManager.OnCooldownChange += SubmitCoolUpgradeEvent;
+        _lampStatsManager.OnCooldownUpgraded += SubmitCoolUpgradeEvent;
         
         _waveEndEvent = new CustomEvent("waveFinished");
         _lampDamageEvent = new CustomEvent("LampDamaged");
@@ -32,7 +32,7 @@ public class AnalyticsCollector : MonoBehaviour
         EnemyManager.OnWaveEnded -= SubmitWaveEndEvent;
         Lamp.OnLampDamaged -= SubmitLampDamageEvent;
         _lampStatsManager.OnHealthChange -= SubmitHealthUpgradeEvent;
-        _lampStatsManager.OnCooldownChange -= SubmitCoolUpgradeEvent;
+        _lampStatsManager.OnCooldownUpgraded -= SubmitCoolUpgradeEvent;
     }
 
     public void AllowDataCollection()

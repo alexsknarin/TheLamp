@@ -7,15 +7,14 @@ public class MothMovement : EnemyMovement
     [SerializeField] private float _speed;
     [SerializeField] private float _radius;
     [SerializeField] private float _verticalAmplitude;
-    private int _sideDirection;
     [Header("---- Spawn Settings ----")]
     [SerializeField] private float _spawnXPos;
     [SerializeField] private float _spawnYPosMin;
     [SerializeField] private float _spawnYPosMax;
     [Header("---- Depth Settings ----")]
     [SerializeField] bool _isDepthEnabled;
+    private int _sideDirection;
     private int _depthDirection;
-
     // Movement States
     private EnemyMovementStateMachine _movementStateMachine;
     private EnemyMovementBaseState _currentState;
@@ -31,12 +30,12 @@ public class MothMovement : EnemyMovement
     private Vector3 _prevPosition2d; //Debug
     private Vector3 _position2d;
     private Vector3 _position;
-    
+
     // State parameters
-    public bool _isDead = false;
-    public bool _isCollided = false;
-    public bool _isAttacking = false; // Debug
-    
+    private bool _isDead = false;
+    private bool _isCollided = false;
+    private bool _isAttacking = false; // Debug
+
     // Debug
     [SerializeField] private EnemyStates _stateDebug;
     

@@ -3,11 +3,11 @@ using UnityEngine;
 
 public class Wasp : BossBase
 {
-    public override EnemyTypes EnemyType => EnemyTypes.Wasp;
     [SerializeField] private WaspMovement _waspMovement;
     [SerializeField] private WaspPresentation _waspPresentation;
     [SerializeField] private int _maxHealth;
     [SerializeField] private int _currentHealth;
+    public override EnemyTypes EnemyType => EnemyTypes.Wasp;
 
     private void OnEnable()
     {

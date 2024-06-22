@@ -8,7 +8,6 @@ public class MegamothlingMovement : EnemyMovement
     [SerializeField] private float _speed;
     [SerializeField] private float _radius;
     [SerializeField] private float _verticalAmplitude;
-    private int _sideDirection;
     [Header("---- Spawn Settings ----")]
     [SerializeField] private float _spawnAreaSize = 0.5f;
     [SerializeField] private Vector3 _spawnAreaCenter;
@@ -21,12 +20,13 @@ public class MegamothlingMovement : EnemyMovement
     [Header("-- Smooth Damp Settings --")]
     [SerializeField] private bool _isSmoothDampEnabled;
     [SerializeField] private float _smoothTime = .3f;
-    private Vector3 _velocity = Vector3.zero;
     [Header("---- Depth Settings ----")]
     [SerializeField] bool _isDepthEnabled;
+    public event Action OnBossAttackStarted;
+    public event Action OnDeathStateEnded;
+    private Vector3 _velocity = Vector3.zero;
+    private int _sideDirection;
     private int _depthDirection;
-    
-    
     // Movement States
     private EnemyMovementStateMachine _movementStateMachine;
     private EnemyMovementBaseState _currentState;
@@ -53,10 +53,7 @@ public class MegamothlingMovement : EnemyMovement
     
     // Debug
     [SerializeField] private EnemyStates _stateDebug;
-    
-    public event Action OnBossAttackStarted;
-    public event Action OnDeathStateEnded;
-    
+
     public override void Initialize()
     {
         _isDead = false;

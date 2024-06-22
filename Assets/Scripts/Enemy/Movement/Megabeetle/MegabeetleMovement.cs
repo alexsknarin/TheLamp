@@ -11,7 +11,9 @@ public class MegabeetleMovement : EnemyMovement
     [SerializeField] private float _verticalAmplitude;
     [SerializeField] private bool _isSmoothDampEnabled;
     [SerializeField] private bool _isDepthEnabled;
-
+    public event Action OnDeathStateEnded;
+    public event Action OnStickAttackStateEnded;
+    public event Action OnTriggerSpread;
     // Movement States
     private EnemyMovementStateMachine _movementStateMachine;
     private EnemyMovementBaseState _currentState;
@@ -27,25 +29,17 @@ public class MegabeetleMovement : EnemyMovement
     private MegabeetleMovementFallState _fallState;
     private MegabeetleMovementDeathState _deathState;
     private LadybugMovementSpreadState _spreadState;
-    
-    
-    [SerializeField] private int _sideDirection;
+    [SerializeField] private int _sideDirection; // For Debug
     private int _depthDirection;
     private Vector3 _position2d;
     private Vector3 _prevPosition2d;
-    
-    [SerializeField] private Vector3 IDLE_POSITION; 
-    
+    [SerializeField] private Vector3 IDLE_POSITION; // For Debug
     // State parameters
     private bool _isDead = false;
     private bool _isCollided = false;
     private bool _isFalling = false;
     private bool _isSpreading = false;
     private bool _isPlaying = false;
-    
-    public event Action OnDeathStateEnded;
-    public event Action OnStickAttackStateEnded;
-    public event Action OnTriggerSpread;
     
     // Debug
     [SerializeField] private EnemyStates _stateDebug;

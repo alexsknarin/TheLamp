@@ -9,13 +9,13 @@ public class EnemyPool : MonoBehaviour, IInitializable
     [SerializeField] private Enemy _ladybugPrefab;
     [SerializeField] private Enemy _fireflyPrefab;
     [SerializeField] private Enemy _spiderPrefab;
+    [SerializeField] private int _poolSize;
     private ObjectPool<Enemy> _mothlingPool;
     private ObjectPool<Enemy> _flyPool;
     private ObjectPool<Enemy> _mothPool;
     private ObjectPool<Enemy> _ladybugPool;
     private ObjectPool<Enemy> _fireflyPool;
     private ObjectPool<Enemy> _spiderPool;
-    [SerializeField] private int _poolSize;
     private int _mothlingCount;
     private int _flyCount;
     private int _mothCount;
