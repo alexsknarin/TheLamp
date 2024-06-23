@@ -78,7 +78,7 @@ public class Enemy : EnemyBase
         {
             if (_enemyMovement.SideDirection < 0)
             {
-                if ((x < 0 && y < 0.32f) || (x > 0 && y < 1.85f))
+                if ((x < 0 && y < 0.30f) || (x > 0 && y < 1.65f))
                 {
                     ReadyToAttack = true; 
                     return;
@@ -86,7 +86,7 @@ public class Enemy : EnemyBase
             }
             if (_enemyMovement.SideDirection > 0)
             {
-                if ((x > 0 && y < 0.36f) || (x < 0 && y < 2f))
+                if ((x > 0 && y < 0.30f) || (x < 0 && y < 1.65f))
                 {
                     ReadyToAttack = true; 
                     return;
@@ -154,7 +154,6 @@ public class Enemy : EnemyBase
     
     public override void HandleEnteringAttackZone()
     {
-        Debug.Break();
         if (_enemyMovement.State == EnemyStates.Attack || _enemyType == EnemyTypes.Ladybug)
         {
             ReadyToLampDamage = true;    
