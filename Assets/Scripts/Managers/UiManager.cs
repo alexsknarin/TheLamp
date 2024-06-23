@@ -150,9 +150,7 @@ public class UiManager : MonoBehaviour, IInitializable
     public void StartPrepare(int wave)
     {
         _uiStartPrepareAnimation.Play(1f, wave, _lampStatsManager);
-        RefreshHealthUpgradeButton();
-        RefreshCooldownUpgradeButton();
-        RefreshAttackDistanceUpgradeButton();
+        RefreshAllUpgradeButtons();
     }
 
     public void StartFight()
@@ -166,19 +164,19 @@ public class UiManager : MonoBehaviour, IInitializable
         {
             // Upgrade Health
             _lampStatsManager.UpgradeHealth();
-            RefreshHealthUpgradeButton();
+            RefreshAllUpgradeButtons();
         }
         else if (upgradeType == 1)
         {
             // Upgrade Cooldown
             _lampStatsManager.UpgradeCooldown();
-            RefreshCooldownUpgradeButton();
+            RefreshAllUpgradeButtons();
         }
         else if (upgradeType == 2)
         {
             // Upgrade Attack Distance
             _lampStatsManager.UpgradeAttackDistance();
-            RefreshAttackDistanceUpgradeButton();
+            RefreshAllUpgradeButtons();
         }
 
         if (_lampStatsManager.UpgradePoints == 0)
@@ -211,52 +209,26 @@ public class UiManager : MonoBehaviour, IInitializable
         _gameOverButtonsGroup.SetActive(true);
         OnGameoverFinished?.Invoke();
     }
-
-    private void RefreshHealthUpgradeButton()
-    {
-        switch (_lampStatsManager.HealthUpgradeStatus())
-        {
-            case UpgradeStatus.MaxedOut:
-                _upgradeHealthButton.DisableButton();
-                break;
-            case UpgradeStatus.ReadyForUpgrade:
-                _upgradeHealthButton.EnableButton();
-                break;
-            case UpgradeStatus.NotEnoughPoints:
-                //TODO: different images
-                _upgradeHealthButton.DisableButton();
-                break;
-        }
-    }
-
-    private void RefreshCooldownUpgradeButton()
-    {
-        switch (_lampStatsManager.CooldownUpgradeStatus())
-        {
-            case UpgradeStatus.MaxedOut:
-            _upgradeCooldownButton.DisableButton();
-            break;
-            case UpgradeStatus.ReadyForUpgrade:
-            _upgradeCooldownButton.EnableButton();
-            break;
-            case UpgradeStatus.NotEnoughPoints:
-            _upgradeCooldownButton.DisableButton();
-            break;
-        }
-    }
     
-    private void RefreshAttackDistanceUpgradeButton()
+    private void RefreshAllUpgradeButtons()
     {
-        switch (_lampStatsManager.AttackDistanceUpgradeStatus())
+        RefreshUpgradeButton(_lampStatsManager.HealthUpgradeStatus(), _upgradeHealthButton);
+        RefreshUpgradeButton(_lampStatsManager.CooldownUpgradeStatus(), _upgradeCooldownButton);
+        RefreshUpgradeButton(_lampStatsManager.AttackDistanceUpgradeStatus(), _upgradeAttackDistanceButton);
+    }
+
+    private void RefreshUpgradeButton(UpgradeStatus status, UpgradeButton button)
+    {
+        switch (status)
         {
             case UpgradeStatus.MaxedOut:
-                _upgradeAttackDistanceButton.DisableButton();
+                button.DisableButton();
                 break;
             case UpgradeStatus.ReadyForUpgrade:
-                _upgradeAttackDistanceButton.EnableButton();
+                button.EnableButton();
                 break;
             case UpgradeStatus.NotEnoughPoints:
-                _upgradeAttackDistanceButton.DisableButton();
+                button.DisableButton();
                 break;
         }
     }

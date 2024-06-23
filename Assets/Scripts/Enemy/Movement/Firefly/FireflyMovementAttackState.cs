@@ -4,7 +4,7 @@ public class FireflyMovementAttackState: EnemyMovementBaseState
 {
     public override EnemyStates State => EnemyStates.Attack;
     private float _acceleration = 13.5f;
-    private float _depthDecrement = 0.2f;
+    private float _depthDecrement = 0.4f;
     private float _acceleratedSpeed = 1f;
     private float _startDistance;
     
@@ -32,7 +32,10 @@ public class FireflyMovementAttackState: EnemyMovementBaseState
         Position = newPosition;
         
         Vector3 cameraDirection = (_cameraPosition - Position).normalized;
-        float attackProximityGradient = Mathf.Clamp((Position.magnitude - 0.65f) / _startDistance, 0.5f, 1.0f);
+        float attackProximityGradient = Mathf.Clamp((Position.magnitude - 0.65f) / _startDistance, 0.0f, 1.0f);
+        
+        attackProximityGradient = Mathf.Pow(attackProximityGradient, 2.0f) + 0.12f;
+        
         Depth = cameraDirection * (2.5f * _depthDecrement * attackProximityGradient);
     }
 }
