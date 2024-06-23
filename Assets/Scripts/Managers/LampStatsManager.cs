@@ -5,6 +5,9 @@
 
  public class LampStatsManager : MonoBehaviour, IInitializable
 {
+    
+    [Header("Save Data")]
+    [SerializeField] private SaveDataContainer _saveDataContainer;
     private int _maxHealth;
     [Header("Stats displayed for debug purposes")]
     [Header("Use Default Data asset to change values")]
@@ -15,12 +18,6 @@
     [SerializeField] private float _cooldownDecrement;
     [SerializeField] private float _currentAttackDistance;
     [SerializeField] private float _attackDistanceCap = 0.82f;
-    [SerializeField] private int _upgradePoints;
-    [SerializeField] private int _currentUpgradePointThreshold = 5;
-    [SerializeField] private int _upgradeThesholdInitialIncrement = 5;
-    [SerializeField] private int _scoresAccountedForUpgrade = 0;
-    [SerializeField] private int _upgradeThesholdIncrement;
-    [SerializeField] private int _level;
     [Header("Damage")]
     [SerializeField] private int _lampDamageWeightRight;
     [SerializeField] private int _lampDamageWeightLeft;
@@ -29,8 +26,18 @@
     [Header("Impact")]
     [SerializeField] private LampImpactPointsData _lampImpactPointsData = new LampImpactPointsData();
     public LampImpactPointsData LampImpactPointsData => _lampImpactPointsData;
-    [Header("Save Data")]
-    [SerializeField] private SaveDataContainer _saveDataContainer;
+    
+    [Header("Upgrade")]
+    [SerializeField] private int _level;
+    [SerializeField] private int _upgradePoints;
+    [SerializeField] private int _currentUpgradePointThreshold = 5;
+    [SerializeField] private int _upgradeThesholdInitialIncrement = 5;
+    [SerializeField] private int _scoresAccountedForUpgrade = 0;
+    [SerializeField] private int _upgradeThesholdIncrement;
+    [Header("Upgrade prices")]
+    [SerializeField] private readonly int _healthUpgradePrice;
+    [SerializeField] private readonly int _coolUpgradePrice;
+    [SerializeField] private readonly int _attackUpgradePrice;
     public int MaxHealth => _maxHealth;
     public int CurrentHealth => _currentHealth;
     public float NormalizedHealth => (float)_currentHealth / _maxHealth;
@@ -48,6 +55,11 @@
     
     public UpgradeStatus HealthUpgradeStatus()
     {
+        if (_upgradePoints < _healthUpgradePrice)
+        {
+            return UpgradeStatus.NotEnoughPoints;
+        }
+        
         if (_currentHealth < _healthCap)
         {
             return UpgradeStatus.ReadyForUpgrade;
@@ -60,6 +72,11 @@
     
     public UpgradeStatus CooldownUpgradeStatus()
     {
+        if (_upgradePoints < _coolUpgradePrice)
+        {
+            return UpgradeStatus.NotEnoughPoints;
+        }
+        
         if (_currentCooldownTime > _cooldownTimeCap)
         {
             return UpgradeStatus.ReadyForUpgrade;
@@ -72,7 +89,7 @@
     
     public UpgradeStatus AttackDistanceUpgradeStatus()
     {
-        if (_upgradePoints < 2)
+        if (_upgradePoints < _attackUpgradePrice)
         {
             return UpgradeStatus.NotEnoughPoints;
         }
@@ -148,7 +165,7 @@
     {
         if (_upgradePoints > 0)
         {
-            _upgradePoints--;
+            _upgradePoints -= _healthUpgradePrice;
             _level++;
             if (_currentHealth < _maxHealth)
             {
@@ -172,7 +189,7 @@
         if (_upgradePoints > 0)
         {
             _level++;
-            _upgradePoints--;
+            _upgradePoints -= _coolUpgradePrice;
             _currentCooldownTime -= _cooldownDecrement;
             SaveData();
             OnCooldownUpgraded?.Invoke();
@@ -184,7 +201,7 @@
         if (_upgradePoints > 0)
         {
             _level++;
-            _upgradePoints -= 2;
+            _upgradePoints -= _attackUpgradePrice;
             _currentAttackDistance += 0.01f;
             SaveData();
             OnAttackDistanceUpgraded?.Invoke();
