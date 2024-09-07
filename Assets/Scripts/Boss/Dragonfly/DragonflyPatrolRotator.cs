@@ -15,7 +15,7 @@ public class DragonflyPatrolRotator : MonoBehaviour
     [SerializeField] private float _speedFrontMultipler;
     [SerializeField] private float _speedBackMultipler;
     [Header("--- Debug ---")]
-    [SerializeField] private float _fronBackMask = 0;
+    [SerializeField] private float _frontBackMask = 0;
     
     public void Play()
     {
@@ -47,7 +47,7 @@ public class DragonflyPatrolRotator : MonoBehaviour
     {
         if (_isPlaying)
         {
-            Spin(_fronBackMask);
+            Spin(_frontBackMask);
             AdjustPosition();
         }
     }
@@ -60,11 +60,11 @@ public class DragonflyPatrolRotator : MonoBehaviour
     
     private void AdjustPosition()
     {
-        _fronBackMask = Mathf.Abs((_spinTransform.localEulerAngles.y - 180)/180f);
-        float maskSmoothPower = Mathf.Lerp(2f, 0.2f,_fronBackMask);
-        _fronBackMask = Mathf.Pow(_fronBackMask, maskSmoothPower);
-        Tilt(_fronBackMask);
-        KeepDistance(_fronBackMask);  
+        _frontBackMask = Mathf.Abs((_spinTransform.localEulerAngles.y - 180)/180f);
+        float maskSmoothPower = Mathf.Lerp(2f, 0.2f,_frontBackMask);
+        _frontBackMask = Mathf.Pow(_frontBackMask, maskSmoothPower);
+        Tilt(_frontBackMask);
+        KeepDistance(_frontBackMask);  
     }
 
     private void Tilt(float mask)

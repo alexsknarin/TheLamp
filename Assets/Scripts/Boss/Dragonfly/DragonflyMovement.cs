@@ -8,6 +8,7 @@ public class DragonflyMovement : MonoBehaviour
     [SerializeField] private Animator _animator;
     [SerializeField] private Transform _animatedTransform;
     [SerializeField] private Transform _patrolTransform;
+    [SerializeField] private Transform _spiderPatrolTransform;
     [SerializeField] private DragonflyStates _currentDragonflyState;
     [SerializeField] private DragonflyAnimationClipEventHandler _animationClipEvents;
     
@@ -18,6 +19,7 @@ public class DragonflyMovement : MonoBehaviour
 
     [Header("Patrol Rotation")] 
     [SerializeField] private DragonflyPatrolRotator _patrolRotator;
+    [SerializeField] private DragonflyPatrolRotator _spiderPpatrolRotator;
     
     [Header("Visible Body")]
     [SerializeField] private Transform _visibleBodyTransform;
@@ -30,7 +32,6 @@ public class DragonflyMovement : MonoBehaviour
     private PlayableGraph _playableGraph;
     private PlayableOutput _playableOutput;
 
-    private Transform _currentTransform;
 
     private void OnEnable()
     {
@@ -59,8 +60,8 @@ public class DragonflyMovement : MonoBehaviour
         _playablesContainer.AddClip(DragonflyStates.EnterToPatrolL, _enterToPatrolLClip);  
         _playablesContainer.AddClip(DragonflyStates.CatchSpiderL, _catchSpiderLClip);
         
-        PlayStateClip(DragonflyStates.Idle);
-        _currentTransform = _animatedTransform;
+        _currentDragonflyState = DragonflyStates.Idle;
+        PlayStateClip(_currentDragonflyState);
     }
 
     
@@ -80,19 +81,17 @@ public class DragonflyMovement : MonoBehaviour
     {
         if (Input.GetKey(KeyCode.A))
         {
-            PlayStateClip(DragonflyStates.EnterToPatrolL);
-            _currentTransform = _animatedTransform;
+            _currentDragonflyState = DragonflyStates.EnterToPatrolL;
+            PlayStateClip(_currentDragonflyState);
+            ParentVisibleBodyTo(_animatedTransform);
         }
         
         if (Input.GetKey(KeyCode.S))
         {
-            PlayStateClip(DragonflyStates.CatchSpiderL);
-            _currentTransform = _animatedTransform;
+            _currentDragonflyState = DragonflyStates.CatchSpiderL;
+            PlayStateClip(_currentDragonflyState);
+            ParentVisibleBodyTo(_animatedTransform);
         }
-        
-        _visibleBodyTransform.position = _currentTransform.position;
-        _visibleBodyTransform.rotation = _currentTransform.rotation;
-        
     }
 
     private void OnDestroy()
@@ -105,10 +104,33 @@ public class DragonflyMovement : MonoBehaviour
     
     private void OnClipEnded()
     {
+        switch (_currentDragonflyState)
+        {   
+            case DragonflyStates.EnterToPatrolL:
+                _patrolRotator.SetRotationPhase(_animatedTransform.position);
+                _patrolRotator.Play();
+                ParentVisibleBodyTo(_patrolTransform);
+                break;
+            case DragonflyStates.CatchSpiderL:
+                _spiderPpatrolRotator.SetRotationPhase(_animatedTransform.position);
+                _spiderPpatrolRotator.Play();
+                ParentVisibleBodyTo(_spiderPatrolTransform);
+                break;
+        }
         PlayStateClip(DragonflyStates.Idle);
-        
-        _patrolRotator.SetRotationPhase(_animatedTransform.position);
-        _patrolRotator.Play();
-        _currentTransform = _patrolTransform;
+    }
+    
+    private void ParentVisibleBodyTo(Transform parent)
+    {
+        _visibleBodyTransform.SetParent(parent);
+        _visibleBodyTransform.localPosition = Vector3.zero;
+        _visibleBodyTransform.localRotation = Quaternion.identity;
+    }
+    
+    private void UnParentVisibleBody()
+    {
+        _visibleBodyTransform.SetParent(null);
+        _visibleBodyTransform.localPosition = Vector3.zero;
+        _visibleBodyTransform.localRotation = Quaternion.identity;
     }
 }

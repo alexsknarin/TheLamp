@@ -7488,7 +7488,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1041056732
 Transform:
   m_ObjectHideFlags: 0
@@ -7521,15 +7521,15 @@ MonoBehaviour:
   _spinTransform: {fileID: 1006161233}
   _distanceTransform: {fileID: 1218167862}
   _isPlaying: 0
-  _direction: -1
-  _spinSpeed: 65
+  _direction: 1
+  _spinSpeed: 85
   _ditanceFront: -2
   _distanceBack: -1.5
   _tiltFront: -20.35
   _tiltBack: -4
   _speedFrontMultipler: 1
   _speedBackMultipler: 1.25
-  _fronBackMask: 0
+  _frontBackMask: 0
 --- !u!1 &1050569181
 GameObject:
   m_ObjectHideFlags: 0
@@ -7694,14 +7694,14 @@ MonoBehaviour:
   _distanceTransform: {fileID: 1397530006}
   _isPlaying: 0
   _direction: 1
-  _spinSpeed: 70
+  _spinSpeed: 55
   _ditanceFront: -2.5
   _distanceBack: -1.35
   _tiltFront: -35
   _tiltBack: -22
   _speedFrontMultipler: 1
   _speedBackMultipler: 2
-  _fronBackMask: 0
+  _frontBackMask: 0
 --- !u!1 &1057801110
 GameObject:
   m_ObjectHideFlags: 0
@@ -9132,7 +9132,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1282070255
 Transform:
   m_ObjectHideFlags: 0
@@ -11408,12 +11408,14 @@ MonoBehaviour:
   _animator: {fileID: 1098560778}
   _animatedTransform: {fileID: 1098560777}
   _patrolTransform: {fileID: 484483281}
+  _spiderPatrolTransform: {fileID: 322364688}
   _currentDragonflyState: 1
   _animationClipEvents: {fileID: 1098560779}
   _idleClip: {fileID: 7400000, guid: 19dac01ea54d86c45a726bd910b29553, type: 2}
   _enterToPatrolLClip: {fileID: 7400000, guid: d93b8b1839b994b4497189c8a1270eb9, type: 2}
   _catchSpiderLClip: {fileID: 7400000, guid: 06a9e7dc88c0872459ef5eb7031595dc, type: 2}
   _patrolRotator: {fileID: 1057514487}
+  _spiderPpatrolRotator: {fileID: 1041056733}
   _visibleBodyTransform: {fileID: 1720334790}
 --- !u!1 &1540463159
 GameObject:
