@@ -3,5 +3,10 @@ public enum DragonflyStates
     Idle,
     EnterToPatrolL,
     PatrolL,
-    CatchSpiderL
+    PreAttackHeadL,
+    AttackHeadL,
+    BounceHeadL,
+    FallHeadL,
+    CatchSpiderL,
+    SpiderPatrolL
 }
