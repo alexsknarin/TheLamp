@@ -38,6 +38,18 @@ public class DragonflyMovement : MonoBehaviour
     [SerializeField] private AnimationCurve _headFallRotateCurve;
     [SerializeField] private AnimationCurve _headFallFallDownCurve;
     [SerializeField] private float _headFallDuration = 2f;
+
+
+    [Header("States")]  
+    [SerializeField] private DragonflyMovementBaseState _idleState;
+    [SerializeField] private DragonflyEnterToPatrolState _enterToPatrolStateMono;
+    private DragonflyMovementBaseState _enterToPatrolState;
+    [SerializeField] private DragonflyPatrolState _patrolStateMono;
+    private DragonflyMovementBaseState _patrolState;
+    [SerializeField] private DragonflyPreAttackHeadState _preAttackHeadStateMono;
+    private DragonflyMovementBaseState _preAttackHeadState;
+    
+    private DragonflyMovementBaseState _currentMovementState;
     
     private DragonflyStates _prevDragonflyState;
     private AnimationClipPlayable _currentAnimationClipPlayable;
@@ -92,22 +104,36 @@ public class DragonflyMovement : MonoBehaviour
         _playablesContainer.AddClip(DragonflyStates.EnterToPatrolL, _enterToPatrolLClip);  
         _playablesContainer.AddClip(DragonflyStates.CatchSpiderL, _catchSpiderLClip);
         
+        // Initialize States
+        _enterToPatrolStateMono.Initialize(_playableOutput, _playableGraph, _playablesContainer.GetClip(DragonflyStates.EnterToPatrolL));
+        _enterToPatrolState = _enterToPatrolStateMono;
+        _patrolState = _patrolStateMono;
+        _preAttackHeadState = _preAttackHeadStateMono;
+        // init???
+        
+        
+        _currentMovementState = _idleState;
+        
         _currentDragonflyState = DragonflyStates.Idle;
         _collisionCatcher.DisableColliders();
-        PlayStateClip(_currentDragonflyState);
     }
 
     
-    private void PlayStateClip(DragonflyStates state)
+    private void PlayStateClip(DragonflyStates state, PlayableGraph playableGraph, DragonflyPlayablesContainer playablesContainer)
     {
-        AnimationClipPlayable clipPlayable = _playablesContainer.GetClip(state); 
+        AnimationClipPlayable clipPlayable = playablesContainer.GetClip(state); 
         clipPlayable.SetTime(0);
         clipPlayable.SetTime(0); // Unity Bug
         _playableOutput.SetSourcePlayable(clipPlayable);
-        if (_playableGraph.IsValid())
+        if (playableGraph.IsValid())
         {
-            _playableGraph.Play();    
+            playableGraph.Play();    
         }
+    }
+
+    public void SwitchState()
+    {
+        Debug.Log("Switching state");
     }
 
     private void Update()
@@ -115,35 +141,37 @@ public class DragonflyMovement : MonoBehaviour
         // Start Enter to patrol
         if (Input.GetKey(KeyCode.A))
         {
-            _currentDragonflyState = DragonflyStates.EnterToPatrolL;
-            PlayStateClip(_currentDragonflyState);
-            ParentVisibleBodyTo(_animatedTransform);
+            _currentMovementState = _enterToPatrolState;
+            _currentMovementState.EnterState(_animatedTransform.position, 1, 1);
         }
         
         // Start Catch Spider
         if (Input.GetKey(KeyCode.S))
         {
             _currentDragonflyState = DragonflyStates.CatchSpiderL;
-            PlayStateClip(_currentDragonflyState);
+            PlayStateClip(_currentDragonflyState, _playableGraph, _playablesContainer);
             ParentVisibleBodyTo(_animatedTransform);
         }
         
         // Start Head attack
         if (Input.GetKey(KeyCode.Z))
         {
-            _currentDragonflyState = DragonflyStates.PreAttackHeadL;
-            UnParentVisibleBodyKeepPos();
-            _attackDirection = -_visibleBodyTransform.position.normalized;
-            _isHeadPreAttacking = true;
+            _currentMovementState = _preAttackHeadState;
+            _currentMovementState.EnterState(_animatedTransform.position, 1, 1);
+            // _currentDragonflyState = DragonflyStates.PreAttackHeadL;
+            // UnParentVisibleBodyKeepPos();
+            // _attackDirection = -_visibleBodyTransform.position.normalized;
+            // _isHeadPreAttacking = true;
         }
         
         
         // Movement states:
-        if (_isHeadPreAttacking)
-        {
-            HeadPreattackPlay(_visibleBodyTransform, _attackDirection);
-        }
+        // if (_isHeadPreAttacking)
+        // {
+        //     HeadPreattackPlay(_visibleBodyTransform, _attackDirection);
+        // }
         
+        /*
         if (_isHeadAttacking)
         {
             HeadAttackPlay(_visibleBodyTransform, _attackDirection);
@@ -158,7 +186,10 @@ public class DragonflyMovement : MonoBehaviour
         {
             HeadFallPlay(_visibleBodyTransform, _attackDirection);
         }
+        */
         
+        _currentMovementState.CheckForStateChange();
+        _currentMovementState.ExecuteState(_animatedTransform.position);
     }
 
     private void OnDestroy()
@@ -171,13 +202,11 @@ public class DragonflyMovement : MonoBehaviour
     
     private void OnClipEnded()
     {
-        switch (_currentDragonflyState)
+        switch (_currentMovementState.State)
         {   
             case DragonflyStates.EnterToPatrolL:
-                _patrolRotator.SetRotationPhase(_animatedTransform.position);
-                _patrolRotator.Play();
-                ParentVisibleBodyTo(_patrolTransform);
-                _currentDragonflyState = DragonflyStates.PatrolL;
+                _currentMovementState = _patrolState;
+                _currentMovementState.EnterState(_animatedTransform.position, 1, 1);
                 break;
             case DragonflyStates.CatchSpiderL:
                 _spiderPpatrolRotator.SetRotationPhase(_animatedTransform.position);
@@ -186,7 +215,7 @@ public class DragonflyMovement : MonoBehaviour
                 _currentDragonflyState = DragonflyStates.SpiderPatrolL;
                 break;
         }
-        PlayStateClip(DragonflyStates.Idle);
+        PlayStateClip(DragonflyStates.Idle, _playableGraph, _playablesContainer);
     }
     
     private void ParentVisibleBodyTo(Transform parent)
@@ -198,7 +227,7 @@ public class DragonflyMovement : MonoBehaviour
     
     private void UnParentVisibleBodyKeepPos()
     {
-        _visibleBodyTransform.SetParent(null);
+        _visibleBodyTransform.SetParent(this.gameObject.transform);
     }
     
     

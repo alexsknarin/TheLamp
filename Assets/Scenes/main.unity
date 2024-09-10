@@ -11531,6 +11531,10 @@ GameObject:
   m_Component:
   - component: {fileID: 1536401417}
   - component: {fileID: 1536401418}
+  - component: {fileID: 1536401422}
+  - component: {fileID: 1536401419}
+  - component: {fileID: 1536401420}
+  - component: {fileID: 1536401421}
   m_Layer: 0
   m_Name: DragonflySystem
   m_TagString: Untagged
@@ -11657,6 +11661,74 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   _headFallDuration: 1
+  _idleState: {fileID: 1536401422}
+  _enterToPatrolStateMono: {fileID: 1536401419}
+  _patrolStateMono: {fileID: 1536401420}
+  _preAttackHeadStateMono: {fileID: 1536401421}
+--- !u!114 &1536401419
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1536401416}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4cfe5ca10c8597a4d920addc9776534b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _owner: {fileID: 1536401418}
+  _animationClipEventHandler: {fileID: 1098560779}
+  _visibleBodyTransform: {fileID: 1720334790}
+  _state: 1
+--- !u!114 &1536401420
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1536401416}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c957b8d575b1aa8479279ed1e857bd1a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _owner: {fileID: 1536401418}
+  _visibleBodyTransform: {fileID: 1720334790}
+  _patrolRotator: {fileID: 1057514487}
+  _patrolTransform: {fileID: 484483281}
+  _state: 2
+--- !u!114 &1536401421
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1536401416}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 171dff3b2075e764f85936284d58ce34, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _owner: {fileID: 1536401418}
+  _visibleBodyTransform: {fileID: 1720334790}
+  _state: 3
+  _speed: 4
+  _duration: 0.4
+  _deccelerationPower: 2
+--- !u!114 &1536401422
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1536401416}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee63ca3601b3b754bae49b017ff95721, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _state: 0
 --- !u!1 &1540463159
 GameObject:
   m_ObjectHideFlags: 0
