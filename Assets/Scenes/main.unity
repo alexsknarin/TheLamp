@@ -4305,7 +4305,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &568085644
 Transform:
   m_ObjectHideFlags: 0
@@ -11535,6 +11535,9 @@ GameObject:
   - component: {fileID: 1536401419}
   - component: {fileID: 1536401420}
   - component: {fileID: 1536401421}
+  - component: {fileID: 1536401423}
+  - component: {fileID: 1536401424}
+  - component: {fileID: 1536401425}
   m_Layer: 0
   m_Name: DragonflySystem
   m_TagString: Untagged
@@ -11585,14 +11588,127 @@ MonoBehaviour:
   _idleClip: {fileID: 7400000, guid: 19dac01ea54d86c45a726bd910b29553, type: 2}
   _enterToPatrolLClip: {fileID: 7400000, guid: d93b8b1839b994b4497189c8a1270eb9, type: 2}
   _catchSpiderLClip: {fileID: 7400000, guid: 06a9e7dc88c0872459ef5eb7031595dc, type: 2}
-  _patrolRotator: {fileID: 1057514487}
-  _spiderPpatrolRotator: {fileID: 1041056733}
+  _idleState: {fileID: 1536401422}
+  _enterToPatrolStateMono: {fileID: 1536401419}
+  _patrolStateMono: {fileID: 1536401420}
+  _preAttackHeadStateMono: {fileID: 1536401421}
+  _attackHeadState: {fileID: 1536401423}
+  _bounceHeadState: {fileID: 1536401424}
+  _fallHeadLState: {fileID: 1536401425}
+--- !u!114 &1536401419
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1536401416}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4cfe5ca10c8597a4d920addc9776534b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _owner: {fileID: 1536401418}
+  _animationClipEventHandler: {fileID: 1098560779}
   _visibleBodyTransform: {fileID: 1720334790}
-  _headPreattackSpeed: 4
-  _headPreattackDuration: 0.4
-  _headPreattackDeccelerationPower: 2
-  _headAttackSpeed: 12
-  _headAttackAcceleration: 0.75
+  _state: 1
+--- !u!114 &1536401420
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1536401416}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c957b8d575b1aa8479279ed1e857bd1a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _owner: {fileID: 1536401418}
+  _visibleBodyTransform: {fileID: 1720334790}
+  _patrolRotator: {fileID: 1057514487}
+  _patrolTransform: {fileID: 484483281}
+  _state: 2
+--- !u!114 &1536401421
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1536401416}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 171dff3b2075e764f85936284d58ce34, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _owner: {fileID: 1536401418}
+  _visibleBodyTransform: {fileID: 1720334790}
+  _state: 3
+  _speed: 4
+  _duration: 0.4
+  _deccelerationPower: 2
+--- !u!114 &1536401422
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1536401416}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee63ca3601b3b754bae49b017ff95721, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _state: 0
+--- !u!114 &1536401423
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1536401416}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e7b6a1f5bb771e4691208dcacfab5f4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _owner: {fileID: 1536401418}
+  _visibleBodyTransform: {fileID: 1720334790}
+  _state: 4
+  _speed: 4
+  _acceleration: 0.75
+--- !u!114 &1536401424
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1536401416}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75d96595f36970644ac1d2bafba07037, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _owner: {fileID: 1536401418}
+  _visibleBodyTransform: {fileID: 1720334790}
+  _state: 5
+  _speed: 4
+  _duration: 0.15
+--- !u!114 &1536401425
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1536401416}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b16200ea510e224d92933034ccdc60e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _owner: {fileID: 1536401418}
+  _visibleBodyTransform: {fileID: 1720334790}
+  _state: 6
+  _duration: 1
   _headFallPointTransform: {fileID: 780930765}
   _headFallRotateCurve:
     serializedVersion: 2
@@ -11660,75 +11776,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  _headFallDuration: 1
-  _idleState: {fileID: 1536401422}
-  _enterToPatrolStateMono: {fileID: 1536401419}
-  _patrolStateMono: {fileID: 1536401420}
-  _preAttackHeadStateMono: {fileID: 1536401421}
---- !u!114 &1536401419
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1536401416}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4cfe5ca10c8597a4d920addc9776534b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _owner: {fileID: 1536401418}
-  _animationClipEventHandler: {fileID: 1098560779}
-  _visibleBodyTransform: {fileID: 1720334790}
-  _state: 1
---- !u!114 &1536401420
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1536401416}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c957b8d575b1aa8479279ed1e857bd1a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _owner: {fileID: 1536401418}
-  _visibleBodyTransform: {fileID: 1720334790}
-  _patrolRotator: {fileID: 1057514487}
-  _patrolTransform: {fileID: 484483281}
-  _state: 2
---- !u!114 &1536401421
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1536401416}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 171dff3b2075e764f85936284d58ce34, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _owner: {fileID: 1536401418}
-  _visibleBodyTransform: {fileID: 1720334790}
-  _state: 3
-  _speed: 4
-  _duration: 0.4
-  _deccelerationPower: 2
---- !u!114 &1536401422
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1536401416}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ee63ca3601b3b754bae49b017ff95721, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _state: 0
 --- !u!1 &1540463159
 GameObject:
   m_ObjectHideFlags: 0

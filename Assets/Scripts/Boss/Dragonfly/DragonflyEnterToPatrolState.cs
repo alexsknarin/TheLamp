@@ -31,7 +31,6 @@ public class DragonflyEnterToPatrolState : DragonflyMovementBaseState
 
     public void Initialize(PlayableOutput playableOutput, PlayableGraph playableGraph, AnimationClipPlayable animClip)
     {
-        Debug.Log("Initialize EnterToPatrol State");
         _clipPlayable = animClip;
         _playableOutput = playableOutput;
         _playableGraph = playableGraph;
@@ -39,7 +38,6 @@ public class DragonflyEnterToPatrolState : DragonflyMovementBaseState
 
     public override void EnterState(Vector3 currentPosition, int sideDirection, int depthDirection)
     {
-        Debug.Log("Enter EnterToPatrol State in State");
         _visibleBodyTransform.SetParent(_animationClipEventHandler.transform, false);
         _visibleBodyTransform.localPosition = Vector3.zero;
         _visibleBodyTransform.localRotation = Quaternion.identity;
