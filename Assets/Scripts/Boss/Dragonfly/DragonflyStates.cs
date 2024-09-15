@@ -8,5 +8,7 @@ public enum DragonflyStates
     BounceHeadL,
     FallHeadL,
     CatchSpiderL,
-    SpiderPatrolL
+    SpiderPatrolL,
+    SpiderPreattackHeadTransitionStateL,
+    PreAttackTailL
 }

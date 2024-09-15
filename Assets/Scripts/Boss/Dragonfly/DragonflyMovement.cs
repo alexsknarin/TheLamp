@@ -6,6 +6,7 @@ using UnityEngine.Playables;
 public class DragonflyMovement : MonoBehaviour
 {
     [SerializeField] private Animator _animator;
+    [SerializeField] private Transform _visibleBodyTransform;
     [SerializeField] private Transform _animatedTransform;
     [SerializeField] private Transform _patrolTransform;
     [SerializeField] private Transform _spiderPatrolTransform;
@@ -29,7 +30,11 @@ public class DragonflyMovement : MonoBehaviour
     [SerializeField] private DragonflyMovementBaseState _attackHeadState;
     [SerializeField] private DragonflyMovementBaseState _bounceHeadState;
     [SerializeField] private DragonflyMovementBaseState _fallHeadLState;
-    
+    [SerializeField] private DragonflyCatchSpiderState _catchSpiderStateMono;
+    private DragonflyMovementBaseState _catchSpiderState;
+    [SerializeField] private DragonflySpiderPatrolState _spiderPatrolStateMono;
+    private DragonflyMovementBaseState _spiderPatrolState;
+    [SerializeField] private DragonflyMovementBaseState _spiderPreAttackHeadTransitionState;
     
     private DragonflyMovementBaseState _currentMovementState;
     private DragonflyStates _prevDragonflyState;
@@ -73,6 +78,9 @@ public class DragonflyMovement : MonoBehaviour
         _enterToPatrolState = _enterToPatrolStateMono;
         _patrolState = _patrolStateMono;
         _preAttackHeadState = _preAttackHeadStateMono;
+        _catchSpiderStateMono.Initialize(_playableOutput, _playableGraph, _playablesContainer.GetClip(DragonflyStates.CatchSpiderL));
+        _catchSpiderState = _catchSpiderStateMono;
+        _spiderPatrolState = _spiderPatrolStateMono; 
         // init???
 
         _currentMovementState = _idleState;
@@ -107,6 +115,15 @@ public class DragonflyMovement : MonoBehaviour
                 _currentMovementState = _fallHeadLState;
                 _currentMovementState.EnterState(_animatedTransform.position, 1, 1);
                 break;
+            case DragonflyStates.CatchSpiderL:
+                _currentMovementState = _spiderPatrolState;
+                _currentMovementState.EnterState(_animatedTransform.position, 1, 1);
+                break;
+            
+            case DragonflyStates.SpiderPreattackHeadTransitionStateL:
+                _currentMovementState = _preAttackHeadState;
+                _currentMovementState.EnterState(_visibleBodyTransform.position, 1, 1);
+                break;
         }
     }
 
@@ -122,10 +139,16 @@ public class DragonflyMovement : MonoBehaviour
         // Start Catch Spider
         if (Input.GetKey(KeyCode.S))
         {
-            // _currentDragonflyState = DragonflyStates.CatchSpiderL;
-            // PlayStateClip(_currentDragonflyState, _playableGraph, _playablesContainer);
-            // ParentVisibleBodyTo(_animatedTransform);
+            _currentMovementState = _catchSpiderState;
+            _currentMovementState.EnterState(_animatedTransform.position, 1, 1);
         }
+        // Start Spider patrol transition
+        if (Input.GetKey(KeyCode.D))
+        {
+            _currentMovementState = _spiderPreAttackHeadTransitionState;
+            _currentMovementState.EnterState(_visibleBodyTransform.position, 1, 1);
+        }
+        
         
         // Start Head attack
         if (Input.GetKey(KeyCode.Z))
