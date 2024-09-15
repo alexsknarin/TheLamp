@@ -18,4 +18,9 @@ public class DragonflySpiderPatrolState : DragonflyMovementBaseState
         _visibleBodyTransform.localPosition = Vector3.zero;
         _visibleBodyTransform.localRotation = Quaternion.identity;
     }
+    
+    public void ExitState()
+    {
+        _patrolRotator.Stop();
+    }
 }

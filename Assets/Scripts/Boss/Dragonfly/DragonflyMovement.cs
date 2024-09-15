@@ -95,33 +95,40 @@ public class DragonflyMovement : MonoBehaviour
         switch (_currentMovementState.State)
         {
             case DragonflyStates.EnterToPatrolL:
+                _currentMovementState.ExitState();
                 _currentMovementState = _patrolState;
                 _currentMovementState.EnterState(_animatedTransform.position, 1, 1);
                 break;
             case DragonflyStates.PatrolL:
+                _currentMovementState.ExitState();
                 _currentMovementState = _preAttackHeadState;
                 _currentMovementState.EnterState(_animatedTransform.position, 1, 1);
                 break;
             case DragonflyStates.PreAttackHeadL:
                 _collisionCatcher.EnableColliders();
+                _currentMovementState.ExitState();
                 _currentMovementState = _attackHeadState;
                 _currentMovementState.EnterState(_animatedTransform.position, 1, 1);
                 break;
             case DragonflyStates.AttackHeadL:
+                _currentMovementState.ExitState();
                 _currentMovementState = _bounceHeadState;
                 _currentMovementState.EnterState(_animatedTransform.position, 1, 1);
                 break;
             case DragonflyStates.BounceHeadL:
+                _currentMovementState.ExitState();
                 _currentMovementState = _fallHeadLState;
                 _currentMovementState.EnterState(_animatedTransform.position, 1, 1);
                 break;
             case DragonflyStates.CatchSpiderL:
+                _currentMovementState.ExitState();
                 _currentMovementState = _spiderPatrolState;
                 _currentMovementState.EnterState(_animatedTransform.position, 1, 1);
                 break;
             
             case DragonflyStates.SpiderPreattackHeadTransitionStateL:
-                _currentMovementState = _preAttackHeadState;
+                _currentMovementState.ExitState();
+                _currentMovementState = _patrolState;
                 _currentMovementState.EnterState(_visibleBodyTransform.position, 1, 1);
                 break;
         }
@@ -132,6 +139,7 @@ public class DragonflyMovement : MonoBehaviour
         // Start Enter to patrol
         if (Input.GetKey(KeyCode.A))
         {
+            _currentMovementState.ExitState();
             _currentMovementState = _enterToPatrolState;
             _currentMovementState.EnterState(_animatedTransform.position, 1, 1);
         }
@@ -139,12 +147,14 @@ public class DragonflyMovement : MonoBehaviour
         // Start Catch Spider
         if (Input.GetKey(KeyCode.S))
         {
+            _currentMovementState.ExitState();
             _currentMovementState = _catchSpiderState;
             _currentMovementState.EnterState(_animatedTransform.position, 1, 1);
         }
         // Start Spider patrol transition
         if (Input.GetKey(KeyCode.D))
         {
+            _currentMovementState.ExitState();
             _currentMovementState = _spiderPreAttackHeadTransitionState;
             _currentMovementState.EnterState(_visibleBodyTransform.position, 1, 1);
         }
@@ -155,6 +165,7 @@ public class DragonflyMovement : MonoBehaviour
         {
             if (_currentMovementState.State == DragonflyStates.PatrolL)
             {
+                _currentMovementState.ExitState();
                 _currentMovementState = _preAttackHeadState;
                 _currentMovementState.EnterState(_animatedTransform.position, 1, 1);    
             }

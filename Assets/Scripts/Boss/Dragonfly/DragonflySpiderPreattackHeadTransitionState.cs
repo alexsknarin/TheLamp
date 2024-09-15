@@ -5,23 +5,28 @@ public class DragonflySpiderPreattackHeadTransitionState : DragonflyMovementBase
     [SerializeField] private DragonflyMovement _owner;
     [SerializeField] private Transform _visibleBodyTransform;
     [SerializeField] private DragonflyPatrolRotator _spiderPatrolRotator;
+    [SerializeField] private DragonflyPatrolRotator _patrolRotator;
     [SerializeField] private Transform _spiderPatrolTransform;
     [SerializeField] private Transform _patrolTransform;
     [SerializeField] private float _duration = 2f;
     [SerializeField] private DragonflyStates _state = DragonflyStates.SpiderPreattackHeadTransitionStateL;
     public override DragonflyStates State => _state;
+    private Transform _patrolTransformParent;
     
     private float _phase;
     private float _localTime;
 
     public override void EnterState(Vector3 currentPosition, int sideDirection, int depthDirection)
     {
+        _patrolTransformParent = _patrolTransform.parent;
         _spiderPatrolRotator.SetRotationPhase(currentPosition);
         _spiderPatrolRotator.Play();
+        _patrolRotator.SetRotationPhase(currentPosition);
+        _patrolRotator.Stop();
         
-        _visibleBodyTransform.SetParent(_spiderPatrolTransform, false);
-        _visibleBodyTransform.localPosition = Vector3.zero;
-        _visibleBodyTransform.localRotation = Quaternion.identity;
+        _visibleBodyTransform.SetParent(_spiderPatrolTransform);
+        _visibleBodyTransform.position = _spiderPatrolTransform.position;
+        _visibleBodyTransform.rotation = _spiderPatrolTransform.rotation;
         
         _localTime = 0;
         
@@ -29,11 +34,19 @@ public class DragonflySpiderPreattackHeadTransitionState : DragonflyMovementBase
     
     public override void ExecuteState(Vector3 currentPosition)
     {
-        Vector3 localPosition = Vector3.Lerp(Vector3.zero, _patrolTransform.localPosition, _phase);
-        Quaternion localRotation = Quaternion.Slerp(Quaternion.identity, _patrolTransform.localRotation, _phase);
+        _patrolRotator.SetRotationPhase(_spiderPatrolTransform.position);
+        _patrolTransform.SetParent(_spiderPatrolTransform);
         
-        _visibleBodyTransform.localPosition = localPosition;
-        _visibleBodyTransform.localRotation = localRotation;
+        Vector3 position = Vector3.Lerp(Vector3.zero, _patrolTransform.localPosition, _phase);
+        Quaternion rotation = Quaternion.Slerp(Quaternion.identity, _patrolTransform.localRotation, _phase);
+        
+        _patrolTransform.SetParent(_patrolTransformParent);
+        _patrolTransform.localPosition = Vector3.zero;
+        _patrolTransform.localRotation = Quaternion.identity;
+        _patrolTransform.localScale = Vector3.one;
+        
+        _visibleBodyTransform.localPosition = position;
+        _visibleBodyTransform.localRotation = rotation;
         
         _localTime += Time.deltaTime;
     }

@@ -9,15 +9,8 @@ public class DragonflyPatrolState : DragonflyMovementBaseState
     [SerializeField] private DragonflyStates _state = DragonflyStates.PatrolL;
     public override DragonflyStates State => _state;
 
-    
-    public void Initialize()
-    {
-    }
-
     public override void EnterState(Vector3 currentPosition, int sideDirection, int depthDirection)
     {
-        Debug.Log("Enter Patrol State");
-        
         _patrolRotator.SetRotationPhase(currentPosition);
         _patrolRotator.Play();
         
@@ -26,15 +19,8 @@ public class DragonflyPatrolState : DragonflyMovementBaseState
         _visibleBodyTransform.localRotation = Quaternion.identity;
     }
 
-    // public void ExecuteState(Vector3 currentPosition)
-    // {
-    // }
-    //
-    // public void CheckForStateChange()
-    // {
-    // }
-    //
-    // public void ExitState()
-    // {
-    // }
+    public void ExitState()
+    {
+        _patrolRotator.Stop();
+    }
 }
