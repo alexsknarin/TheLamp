@@ -35,6 +35,13 @@ public class DragonflyMovement : MonoBehaviour
     [SerializeField] private DragonflySpiderPatrolState _spiderPatrolStateMono;
     private DragonflyMovementBaseState _spiderPatrolState;
     [SerializeField] private DragonflyMovementBaseState _spiderPreAttackHeadTransitionState;
+    [SerializeField] private DragonflyMovementBaseState _preAttackTailState;
+    [SerializeField] private DragonflyMovementBaseState _attackTailState;
+    [SerializeField] private DragonflyMovementBaseState _bounceTailState;
+    [SerializeField] private DragonflyMovementBaseState _attackTailSuccess;
+    [SerializeField] private DragonflyMovementBaseState _attackTailFail;
+    [SerializeField] private DragonflyMovementBaseState _attackHeadSuccess;
+    
     
     private DragonflyMovementBaseState _currentMovementState;
     private DragonflyStates _prevDragonflyState;
@@ -43,6 +50,10 @@ public class DragonflyMovement : MonoBehaviour
     
     private PlayableGraph _playableGraph;
     private PlayableOutput _playableOutput;
+    
+    
+    private bool _isCollided = false;
+    
     
     private void OnEnable()
     {
@@ -74,14 +85,32 @@ public class DragonflyMovement : MonoBehaviour
         _playablesContainer.AddClip(DragonflyStates.CatchSpiderL, _catchSpiderLClip);
         
         // Initialize States
+        _idleState.SetCommonStateDependencies(this, _visibleBodyTransform);
+        
         _enterToPatrolStateMono.Initialize(_playableOutput, _playableGraph, _playablesContainer.GetClip(DragonflyStates.EnterToPatrolL));
         _enterToPatrolState = _enterToPatrolStateMono;
+        _enterToPatrolState.SetCommonStateDependencies(this, _visibleBodyTransform);
+
         _patrolState = _patrolStateMono;
+        _patrolState.SetCommonStateDependencies(this, _visibleBodyTransform);
         _preAttackHeadState = _preAttackHeadStateMono;
+        _preAttackHeadState.SetCommonStateDependencies(this, _visibleBodyTransform);
+        _attackHeadState.SetCommonStateDependencies(this, _visibleBodyTransform);
+        _bounceHeadState.SetCommonStateDependencies(this, _visibleBodyTransform);
+        _fallHeadLState.SetCommonStateDependencies(this, _visibleBodyTransform);
         _catchSpiderStateMono.Initialize(_playableOutput, _playableGraph, _playablesContainer.GetClip(DragonflyStates.CatchSpiderL));
         _catchSpiderState = _catchSpiderStateMono;
+        _catchSpiderState.SetCommonStateDependencies(this, _visibleBodyTransform);
         _spiderPatrolState = _spiderPatrolStateMono; 
-        // init???
+        _spiderPatrolState.SetCommonStateDependencies(this, _visibleBodyTransform);
+        _spiderPreAttackHeadTransitionState.SetCommonStateDependencies(this, _visibleBodyTransform);
+        _preAttackTailState.SetCommonStateDependencies(this, _visibleBodyTransform);
+        _attackTailState.SetCommonStateDependencies(this, _visibleBodyTransform);
+        _bounceTailState.SetCommonStateDependencies(this, _visibleBodyTransform);
+        _attackTailSuccess.SetCommonStateDependencies(this, _visibleBodyTransform);
+        _attackTailFail.SetCommonStateDependencies(this, _visibleBodyTransform);
+        _attackHeadSuccess.SetCommonStateDependencies(this, _visibleBodyTransform);
+        // 
 
         _currentMovementState = _idleState;
         
@@ -95,85 +124,101 @@ public class DragonflyMovement : MonoBehaviour
         switch (_currentMovementState.State)
         {
             case DragonflyStates.EnterToPatrolL:
-                _currentMovementState.ExitState();
-                _currentMovementState = _patrolState;
-                _currentMovementState.EnterState(_animatedTransform.position, 1, 1);
+                SwitchState(_patrolState, _animatedTransform.position, 1, 1);
                 break;
             case DragonflyStates.PatrolL:
-                _currentMovementState.ExitState();
-                _currentMovementState = _preAttackHeadState;
-                _currentMovementState.EnterState(_animatedTransform.position, 1, 1);
+                SwitchState(_preAttackHeadState, _animatedTransform.position, 1, 1);
                 break;
             case DragonflyStates.PreAttackHeadL:
                 _collisionCatcher.EnableColliders();
-                _currentMovementState.ExitState();
-                _currentMovementState = _attackHeadState;
-                _currentMovementState.EnterState(_animatedTransform.position, 1, 1);
+                _isCollided = false;
+                SwitchState(_attackHeadState, _animatedTransform.position, 1, 1);
                 break;
             case DragonflyStates.AttackHeadL:
-                _currentMovementState.ExitState();
-                _currentMovementState = _bounceHeadState;
-                _currentMovementState.EnterState(_animatedTransform.position, 1, 1);
+                _collisionCatcher.DisableColliders();
+                SwitchState(_bounceHeadState, _animatedTransform.position, 1, 1);
                 break;
+            // case DragonflyStates.BounceHeadL:
+            //     SwitchState(_fallHeadLState, _animatedTransform.position, 1, 1);
+            //     break;
+            
             case DragonflyStates.BounceHeadL:
-                _currentMovementState.ExitState();
-                _currentMovementState = _fallHeadLState;
-                _currentMovementState.EnterState(_animatedTransform.position, 1, 1);
+                SwitchState(_attackHeadSuccess, _animatedTransform.position, 1, 1);
                 break;
+            
             case DragonflyStates.CatchSpiderL:
-                _currentMovementState.ExitState();
-                _currentMovementState = _spiderPatrolState;
-                _currentMovementState.EnterState(_animatedTransform.position, 1, 1);
+                SwitchState(_spiderPatrolState, _animatedTransform.position, 1, 1);
                 break;
             
             case DragonflyStates.SpiderPreattackHeadTransitionStateL:
-                _currentMovementState.ExitState();
-                _currentMovementState = _patrolState;
-                _currentMovementState.EnterState(_visibleBodyTransform.position, 1, 1);
+                SwitchState(_patrolState, _visibleBodyTransform.position, 1, 1);
                 break;
+            
+            case DragonflyStates.PreAttackTailL:
+                _collisionCatcher.EnableColliders();
+                _isCollided = false;
+                SwitchState(_attackTailState, _visibleBodyTransform.position, 1, 1);
+                break;
+            case DragonflyStates.AttackTailL:
+                _collisionCatcher.DisableColliders();
+                SwitchState(_bounceTailState, _visibleBodyTransform.position, 1, 1);
+                break;
+            
+            // case DragonflyStates.BounceTailL:
+            //     SwitchState(_attackTailSuccess, _visibleBodyTransform.position, 1, 1);
+            //     break;
+            
+            case DragonflyStates.BounceTailL:
+                SwitchState(_attackTailFail, _visibleBodyTransform.position, 1, 1);
+                break;
+            
         }
     }
 
     private void Update()
     {
         // Start Enter to patrol
-        if (Input.GetKey(KeyCode.A))
+        if (Input.GetKeyDown(KeyCode.A))
         {
-            _currentMovementState.ExitState();
-            _currentMovementState = _enterToPatrolState;
-            _currentMovementState.EnterState(_animatedTransform.position, 1, 1);
+            SwitchState(_enterToPatrolState, _animatedTransform.position, 1, 1);
         }
         
         // Start Catch Spider
-        if (Input.GetKey(KeyCode.S))
+        if (Input.GetKeyDown(KeyCode.S))
         {
-            _currentMovementState.ExitState();
-            _currentMovementState = _catchSpiderState;
-            _currentMovementState.EnterState(_animatedTransform.position, 1, 1);
+            SwitchState(_catchSpiderState, _animatedTransform.position, 1, 1);
         }
         // Start Spider patrol transition
-        if (Input.GetKey(KeyCode.D))
+        if (Input.GetKeyDown(KeyCode.D))
         {
-            _currentMovementState.ExitState();
-            _currentMovementState = _spiderPreAttackHeadTransitionState;
-            _currentMovementState.EnterState(_visibleBodyTransform.position, 1, 1);
+            SwitchState(_spiderPreAttackHeadTransitionState, _visibleBodyTransform.position, 1, 1);
+        }
+        
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            SwitchState(_preAttackTailState, _visibleBodyTransform.position, 1, 1);
         }
         
         
         // Start Head attack
-        if (Input.GetKey(KeyCode.Z))
+        if (Input.GetKeyDown(KeyCode.Z))
         {
             if (_currentMovementState.State == DragonflyStates.PatrolL)
             {
-                _currentMovementState.ExitState();
-                _currentMovementState = _preAttackHeadState;
-                _currentMovementState.EnterState(_animatedTransform.position, 1, 1);    
+                SwitchState(_preAttackHeadState, _animatedTransform.position, 1, 1);
             }
         }
         
         _currentMovementState.CheckForStateChange();
         _currentMovementState.ExecuteState(_animatedTransform.position);
         _currentDragonflyState = _currentMovementState.State;
+    }
+    
+    private void SwitchState(DragonflyMovementBaseState toState, Vector3 position, int sideDirection, int depthDirection)
+    {
+        _currentMovementState.ExitState();
+        _currentMovementState = toState;
+        _currentMovementState.EnterState(position, 1, 1);
     }
 
     private void OnDestroy()
@@ -196,11 +241,21 @@ public class DragonflyMovement : MonoBehaviour
    
     private void OnCollision()
     {
-        Debug.Log("Collision");
-        
-        if (_currentDragonflyState == DragonflyStates.AttackHeadL)
+        if (!_isCollided)
         {
-            SwitchState();
+            Debug.Log("Collision");
+            if (_currentDragonflyState == DragonflyStates.AttackHeadL)
+            {
+                _collisionCatcher.DisableColliders();
+                _isCollided = true;
+                SwitchState();
+            }
+            if (_currentDragonflyState == DragonflyStates.AttackTailL)
+            {
+                _collisionCatcher.DisableColliders();
+                _isCollided = true;
+                SwitchState();
+            }    
         }
     }
 }

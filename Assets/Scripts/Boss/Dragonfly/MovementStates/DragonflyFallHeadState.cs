@@ -2,8 +2,6 @@ using UnityEngine;
 
 public class DragonflyFallHeadState : DragonflyMovementBaseState
 {
-    [SerializeField] private DragonflyMovement _owner;
-    [SerializeField] private Transform _visibleBodyTransform;
     [SerializeField] private DragonflyStates _state = DragonflyStates.FallHeadL;
     [SerializeField] private float _duration = 1f;
     [SerializeField] private Transform _headFallPointTransform;
@@ -25,6 +23,7 @@ public class DragonflyFallHeadState : DragonflyMovementBaseState
         
         _localTime = 0f;
         _phase = 0f;
+
     }
 
     public override void ExecuteState(Vector3 currentPosition)

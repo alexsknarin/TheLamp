@@ -2,12 +2,10 @@ using UnityEngine;
 using UnityEngine.Animations;
 using UnityEngine.Playables;
 
-public class DragonflyCatchSpiderState : DragonflyMovementBaseState
+public class DragonflyEnterToPatrolState : DragonflyMovementBaseState
 {
-    [SerializeField] private DragonflyMovement _owner;
     [SerializeField] private DragonflyAnimationClipEventHandler _animationClipEventHandler;
-    [SerializeField] private Transform _visibleBodyTransform;
-    [SerializeField] private DragonflyStates _state = DragonflyStates.CatchSpiderL;
+    [SerializeField] private DragonflyStates _state = DragonflyStates.EnterToPatrolL;
     public override DragonflyStates State => _state;
     
     private AnimationClipPlayable _clipPlayable;

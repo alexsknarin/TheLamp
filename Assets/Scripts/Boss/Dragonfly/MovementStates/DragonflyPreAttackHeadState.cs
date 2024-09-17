@@ -1,12 +1,11 @@
 using UnityEngine;
 
-public class DragonflyBounceHeadState : DragonflyMovementBaseState
+public class DragonflyPreAttackHeadState : DragonflyMovementBaseState
 {
-    [SerializeField] private DragonflyMovement _owner;
-    [SerializeField] private Transform _visibleBodyTransform;
-    [SerializeField] private DragonflyStates _state = DragonflyStates.BounceHeadL;
+    [SerializeField] private DragonflyStates _state = DragonflyStates.PreAttackHeadL;
     [SerializeField] private float _speed = 4f;
-    [SerializeField] private float _duration = 0.15f;
+    [SerializeField] private float _duration = 0.4f;
+    [SerializeField] private float _deccelerationPower = 2f;
     public override DragonflyStates State => _state;
     
     private Vector3 _attackDirection;
@@ -23,7 +22,8 @@ public class DragonflyBounceHeadState : DragonflyMovementBaseState
 
     public override void ExecuteState(Vector3 currentPosition)
     {
-        _visibleBodyTransform.position += -_attackDirection * (_speed * Time.deltaTime);
+        float decceleration = Mathf.Pow(1-_phase, _deccelerationPower);
+        _visibleBodyTransform.position += -_attackDirection * (_speed * decceleration * Time.deltaTime);
 
         _localTime += Time.deltaTime;
     }

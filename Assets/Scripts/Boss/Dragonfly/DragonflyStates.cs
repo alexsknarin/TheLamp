@@ -6,9 +6,14 @@ public enum DragonflyStates
     PreAttackHeadL,
     AttackHeadL,
     BounceHeadL,
+    AttackHeadSuccessL,
     FallHeadL,
     CatchSpiderL,
     SpiderPatrolL,
     SpiderPreattackHeadTransitionStateL,
-    PreAttackTailL
+    PreAttackTailL,
+    AttackTailL,
+    BounceTailL,
+    AttackTailSuccessL,
+    AttackTailFailL
 }

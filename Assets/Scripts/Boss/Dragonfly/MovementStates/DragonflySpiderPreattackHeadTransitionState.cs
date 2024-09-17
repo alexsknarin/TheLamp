@@ -2,8 +2,6 @@ using UnityEngine;
 
 public class DragonflySpiderPreattackHeadTransitionState : DragonflyMovementBaseState
 {
-    [SerializeField] private DragonflyMovement _owner;
-    [SerializeField] private Transform _visibleBodyTransform;
     [SerializeField] private DragonflyPatrolRotator _spiderPatrolRotator;
     [SerializeField] private DragonflyPatrolRotator _patrolRotator;
     [SerializeField] private Transform _spiderPatrolTransform;

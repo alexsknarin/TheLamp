@@ -2,8 +2,6 @@ using UnityEngine;
 
 public class DragonflyAttackHeadState : DragonflyMovementBaseState
 {
-    [SerializeField] private DragonflyMovement _owner;
-    [SerializeField] private Transform _visibleBodyTransform;
     [SerializeField] private DragonflyStates _state = DragonflyStates.AttackHeadL;
     [SerializeField] private float _speed = 4f;
     [SerializeField] private float _acceleration = 0.75f;

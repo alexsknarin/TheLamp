@@ -2,8 +2,6 @@ using UnityEngine;
 
 public class DragonflyPatrolState : DragonflyMovementBaseState
 {
-    [SerializeField] private DragonflyMovement _owner;
-    [SerializeField] private Transform _visibleBodyTransform;
     [SerializeField] private DragonflyPatrolRotator _patrolRotator;
     [SerializeField] private Transform _patrolTransform;
     [SerializeField] private DragonflyStates _state = DragonflyStates.PatrolL;
