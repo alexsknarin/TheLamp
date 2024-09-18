@@ -11815,6 +11815,8 @@ GameObject:
   - component: {fileID: 1536401432}
   - component: {fileID: 1536401433}
   - component: {fileID: 1536401434}
+  - component: {fileID: 1536401435}
+  - component: {fileID: 1536401436}
   m_Layer: 0
   m_Name: DragonflySystem
   m_TagString: Untagged
@@ -11866,6 +11868,7 @@ MonoBehaviour:
   _idleClip: {fileID: 7400000, guid: 19dac01ea54d86c45a726bd910b29553, type: 2}
   _enterToPatrolLClip: {fileID: 7400000, guid: d93b8b1839b994b4497189c8a1270eb9, type: 2}
   _catchSpiderLClip: {fileID: 7400000, guid: 06a9e7dc88c0872459ef5eb7031595dc, type: 2}
+  _enterToHoverLClip: {fileID: 7400000, guid: ed123d75c4790c14b894b2d4dee839d2, type: 2}
   _idleState: {fileID: 1536401422}
   _enterToPatrolStateMono: {fileID: 1536401419}
   _patrolStateMono: {fileID: 1536401420}
@@ -11882,6 +11885,8 @@ MonoBehaviour:
   _attackTailSuccess: {fileID: 1536401432}
   _attackTailFail: {fileID: 1536401433}
   _attackHeadSuccess: {fileID: 1536401434}
+  _enterToHoverStateMono: {fileID: 1536401435}
+  _hoverState: {fileID: 1536401436}
 --- !u!114 &1536401419
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12412,6 +12417,36 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &1536401435
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1536401416}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a7b93796de611c439d1c52c34d2fb1a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _animationClipEventHandler: {fileID: 1098560779}
+  _state: 16
+--- !u!114 &1536401436
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1536401416}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b60d8cd38e941984594045f35bb23482, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _state: 17
+  _duration: 1
+  _amplitude: 0.5
+  _frequency: 0.33
 --- !u!1 &1540463159
 GameObject:
   m_ObjectHideFlags: 0

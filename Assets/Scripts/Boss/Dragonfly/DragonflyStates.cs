@@ -15,5 +15,7 @@ public enum DragonflyStates
     AttackTailL,
     BounceTailL,
     AttackTailSuccessL,
-    AttackTailFailL
+    AttackTailFailL,
+    EnterToHoverL,
+    HoverL
 }
