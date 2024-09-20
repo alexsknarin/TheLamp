@@ -26,8 +26,7 @@ public class DragonflyMovement : MonoBehaviour
     private DragonflyMovementBaseState _enterToPatrolState;
     [SerializeField] private DragonflyPatrolState _patrolStateMono;
     private DragonflyMovementBaseState _patrolState;
-    [SerializeField] private DragonflyPreAttackHeadState _preAttackHeadStateMono;
-    private DragonflyMovementBaseState _preAttackHeadState;
+    [SerializeField] private DragonflyMovementBaseState _preAttackHeadState;
     [SerializeField] private DragonflyMovementBaseState _attackHeadState;
     [SerializeField] private DragonflyMovementBaseState _bounceHeadState;
     [SerializeField] private DragonflyMovementBaseState _fallHeadLState;
@@ -45,6 +44,11 @@ public class DragonflyMovement : MonoBehaviour
     [SerializeField] private DragonflyEnterToHoverState _enterToHoverStateMono;
     private DragonflyMovementBaseState _enterToHoverState;
     [SerializeField] private DragonflyMovementBaseState _hoverState;
+    [SerializeField] private DragonflyMovementBaseState _moveToHoverState;
+    [SerializeField] private DragonflyMovementBaseState _preAttackHoverState;
+    [SerializeField] private DragonflyMovementBaseState _attackHoverState;
+    [SerializeField] private DragonflyMovementBaseState _bounceHoverState;
+    [SerializeField] private DragonflyMovementBaseState _returnHoverState;
     
     
     private DragonflyMovementBaseState _currentMovementState;
@@ -98,7 +102,6 @@ public class DragonflyMovement : MonoBehaviour
 
         _patrolState = _patrolStateMono;
         _patrolState.SetCommonStateDependencies(this, _visibleBodyTransform);
-        _preAttackHeadState = _preAttackHeadStateMono;
         _preAttackHeadState.SetCommonStateDependencies(this, _visibleBodyTransform);
         _attackHeadState.SetCommonStateDependencies(this, _visibleBodyTransform);
         _bounceHeadState.SetCommonStateDependencies(this, _visibleBodyTransform);
@@ -119,6 +122,11 @@ public class DragonflyMovement : MonoBehaviour
         _enterToHoverState = _enterToHoverStateMono;
         _enterToHoverState.SetCommonStateDependencies(this, _visibleBodyTransform);
         _hoverState.SetCommonStateDependencies(this, _visibleBodyTransform);
+        _moveToHoverState.SetCommonStateDependencies(this, _visibleBodyTransform);
+        _preAttackHoverState.SetCommonStateDependencies(this, _visibleBodyTransform);
+        _attackHoverState.SetCommonStateDependencies(this, _visibleBodyTransform);
+        _bounceHoverState.SetCommonStateDependencies(this, _visibleBodyTransform);
+        _returnHoverState.SetCommonStateDependencies(this, _visibleBodyTransform);
         // 
 
         _currentMovementState = _idleState;
@@ -172,6 +180,18 @@ public class DragonflyMovement : MonoBehaviour
                 _collisionCatcher.DisableColliders();
                 SwitchState(_bounceTailState, _visibleBodyTransform.position, 1, 1);
                 break;
+            case DragonflyStates.PreAttackHover:
+                _collisionCatcher.EnableColliders();
+                _isCollided = false;
+                SwitchState(_attackHoverState, _visibleBodyTransform.position, 1, 1);
+                break;
+            case DragonflyStates.AttackHover:
+                SwitchState(_bounceHoverState, _visibleBodyTransform.position, 1, 1);
+                break;
+            case DragonflyStates.BounceHover:
+                // SwitchState(_fallHeadLState, _visibleBodyTransform.position, 1, 1);
+                SwitchState(_returnHoverState, _visibleBodyTransform.position, 1, 1);
+                break;
             
             // case DragonflyStates.BounceTailL:
             //     SwitchState(_attackTailSuccess, _visibleBodyTransform.position, 1, 1);
@@ -182,6 +202,9 @@ public class DragonflyMovement : MonoBehaviour
                 break;
             
             case DragonflyStates.EnterToHoverL:
+                SwitchState(_hoverState, _visibleBodyTransform.position, 1, 1);
+                break;
+            case DragonflyStates.MoveToHover:
                 SwitchState(_hoverState, _visibleBodyTransform.position, 1, 1);
                 break;
             
@@ -217,6 +240,11 @@ public class DragonflyMovement : MonoBehaviour
             SwitchState(_enterToHoverState, _visibleBodyTransform.position, 1, 1);
         }
         
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+            SwitchState(_moveToHoverState, _visibleBodyTransform.position, 1, 1);
+        }
+        
         
         // Start Head attack
         if (Input.GetKeyDown(KeyCode.Z))
@@ -224,6 +252,10 @@ public class DragonflyMovement : MonoBehaviour
             if (_currentMovementState.State == DragonflyStates.PatrolL)
             {
                 SwitchState(_preAttackHeadState, _animatedTransform.position, 1, 1);
+            }
+            if (_currentMovementState.State == DragonflyStates.Hover)
+            {
+                SwitchState(_preAttackHoverState, _animatedTransform.position, 1, 1);
             }
         }
         
@@ -263,6 +295,12 @@ public class DragonflyMovement : MonoBehaviour
         {
             Debug.Log("Collision");
             if (_currentDragonflyState == DragonflyStates.AttackHeadL)
+            {
+                _collisionCatcher.DisableColliders();
+                _isCollided = true;
+                SwitchState();
+            }
+            if (_currentDragonflyState == DragonflyStates.AttackHover)
             {
                 _collisionCatcher.DisableColliders();
                 _isCollided = true;

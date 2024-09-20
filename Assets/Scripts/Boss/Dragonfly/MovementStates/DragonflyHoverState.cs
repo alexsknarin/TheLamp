@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class DragonflyHoverState : DragonflyMovementBaseState
 {
-    [SerializeField] private DragonflyStates _state = DragonflyStates.HoverL;
+    [SerializeField] private DragonflyStates _state = DragonflyStates.Hover;
     [SerializeField] private float _amplitude = 1f;
     [SerializeField] private float _frequency = 1f;
     public override DragonflyStates State => _state;
