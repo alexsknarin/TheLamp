@@ -1,12 +1,13 @@
 using UnityEngine;
 
-public class dragonflyAttackTailFailState : DragonflyMovementBaseState
+[CreateAssetMenu(fileName = "DragonflyAttackTailFailState", menuName = "DragonflyStates/DragonflyAttackTailFailState")]
+public class DragonflyAttackTailFailState : DragonflyMovementBaseState
 {
     [SerializeField] private DragonflyStates _state = DragonflyStates.AttackTailFailL;
     [SerializeField] private float _duration = 2f;
-    [SerializeField] private float _fallSpeed;
-    [SerializeField] private float _rotationSpeed;
-    [SerializeField] private float _moveAcceleration;
+    [SerializeField] private float _fallSpeed = 100f;
+    [SerializeField] private float _rotationSpeed = 380f;
+    [SerializeField] private float _moveAcceleration = 1.9f;
     public override DragonflyStates State => _state;
     
     private float _localTime = 0f;
@@ -14,19 +15,19 @@ public class dragonflyAttackTailFailState : DragonflyMovementBaseState
 
     public override void EnterState(Vector3 currentPosition, int sideDirection, int depthDirection)
     {
-        _visibleBodyTransform.SetParent(_owner.transform);
+        _stateData.VisibleBodyTransform.SetParent(_stateData.Owner.transform);
     }
     
     public override void ExecuteState(Vector3 currentPosition)
     {
-        Vector3 position = _visibleBodyTransform.position;
+        Vector3 position = _stateData.VisibleBodyTransform.position;
         position += Vector3.down * (_fallSpeed * Mathf.Pow(_phase, _moveAcceleration) * Time.deltaTime);
-        _visibleBodyTransform.position = position;
+        _stateData.VisibleBodyTransform.position = position;
         
         
-        Vector3 rotation = _visibleBodyTransform.localEulerAngles;
+        Vector3 rotation = _stateData.VisibleBodyTransform.localEulerAngles;
         rotation.y += _rotationSpeed * Time.deltaTime;
-        _visibleBodyTransform.localEulerAngles = rotation;
+        _stateData.VisibleBodyTransform.localEulerAngles = rotation;
         
         _localTime += Time.deltaTime;
     }
@@ -37,7 +38,7 @@ public class dragonflyAttackTailFailState : DragonflyMovementBaseState
         if (_phase > 1)
         {
             Debug.Break();
-            _owner.SwitchState();
+            _stateData.Owner.SwitchState();
         }
     }
 }

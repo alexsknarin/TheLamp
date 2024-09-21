@@ -1,12 +1,11 @@
 using UnityEngine;
 
+[CreateAssetMenu(fileName = "DragonflyPreAttackTailState", menuName = "DragonflyStates/DragonflyPreAttackTailState")]
 public class DragonflyPreAttackTailState : DragonflyMovementBaseState
 {
     [SerializeField] private DragonflyStates _state = DragonflyStates.PreAttackTailL;
-    [SerializeField] private DragonflyPatrolRotator _patrolRotator;
-    [SerializeField] private Transform _patrolTransform;
-    [SerializeField] private float _duration = 0.4f;
-    [SerializeField] private float _distance = -0.4f;
+    [SerializeField] private float _duration = 0.35f;
+    [SerializeField] private float _distance = -0.5f;
     [SerializeField] private AnimationCurve _curve;
     public override DragonflyStates State => _state;
     
@@ -15,12 +14,12 @@ public class DragonflyPreAttackTailState : DragonflyMovementBaseState
     
     public override void EnterState(Vector3 currentPosition, int sideDirection, int depthDirection)
     {
-        _patrolRotator.SetRotationPhase(currentPosition);
-        _patrolRotator.Play();
+        _stateData.PatrolRotator.SetRotationPhase(currentPosition);
+        _stateData.PatrolRotator.Play();
         
-        _visibleBodyTransform.SetParent(_patrolTransform);
-        _visibleBodyTransform.localPosition = Vector3.zero;
-        _visibleBodyTransform.localRotation = Quaternion.identity;
+        _stateData.VisibleBodyTransform.SetParent(_stateData.PatrolTransform);
+        _stateData.VisibleBodyTransform.localPosition = Vector3.zero;
+        _stateData.VisibleBodyTransform.localRotation = Quaternion.identity;
         
         _localTime = 0f;
         _phase = 0f;
@@ -31,7 +30,7 @@ public class DragonflyPreAttackTailState : DragonflyMovementBaseState
         float zPos = Mathf.Lerp(0f, _distance, _curve.Evaluate(_phase));
         Vector3 pos = Vector3.zero;
         pos.z = zPos;
-        _visibleBodyTransform.localPosition = pos;
+        _stateData.VisibleBodyTransform.localPosition = pos;
         
         _localTime += Time.deltaTime;
     }
@@ -41,7 +40,7 @@ public class DragonflyPreAttackTailState : DragonflyMovementBaseState
         _phase = _localTime / _duration;
         if (_phase > 1f)
         {
-            _owner.SwitchState();
+            _stateData.Owner.SwitchState();
         }
     }
 }

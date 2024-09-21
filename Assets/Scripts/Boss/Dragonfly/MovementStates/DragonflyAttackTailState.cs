@@ -1,12 +1,11 @@
 using UnityEngine;
 
+[CreateAssetMenu(fileName = "DragonflyAttackTailState", menuName = "DragonflyStates/DragonflyAttackTailState")]
 public class DragonflyAttackTailState : DragonflyMovementBaseState
 {
     [SerializeField] private DragonflyStates _state = DragonflyStates.AttackTailL;
-    [SerializeField] private DragonflyPatrolRotator _patrolRotator;
-    [SerializeField] private Transform _patrolTransform;
-    [SerializeField] private float _duration = 1f;
-    [SerializeField] private float _distance = 0.3f;
+    [SerializeField] private float _duration = 0.6f;
+    [SerializeField] private float _distance = 0.52f;
     [SerializeField] private AnimationCurve _tzCurve;
     [SerializeField] private AnimationCurve _ryCurve;
     [SerializeField] private AnimationCurve _rzCurve;
@@ -18,13 +17,13 @@ public class DragonflyAttackTailState : DragonflyMovementBaseState
     
     public override void EnterState(Vector3 currentPosition, int sideDirection, int depthDirection)
     {
-        _patrolRotator.SetRotationPhase(currentPosition);
-        _patrolRotator.Play();
+        _stateData.PatrolRotator.SetRotationPhase(currentPosition);
+        _stateData.PatrolRotator.Play();
         
-        _visibleBodyTransform.SetParent(_patrolTransform);
-        _visibleBodyTransform.localRotation = Quaternion.identity;
+        _stateData.VisibleBodyTransform.SetParent(_stateData.PatrolTransform);
+        _stateData.VisibleBodyTransform.localRotation = Quaternion.identity;
         
-        _startZPos = _visibleBodyTransform.localPosition.z;
+        _startZPos = _stateData.VisibleBodyTransform.localPosition.z;
         
         _localTime = 0f;
         _phase = 0f;
@@ -37,8 +36,8 @@ public class DragonflyAttackTailState : DragonflyMovementBaseState
         float rz = _rzCurve.Evaluate(_phase);
         Vector3 pos = Vector3.zero;
         pos.z = zPos;
-        _visibleBodyTransform.localPosition = pos;
-        _visibleBodyTransform.localRotation = Quaternion.Euler(0f, ry, rz);
+        _stateData.VisibleBodyTransform.localPosition = pos;
+        _stateData.VisibleBodyTransform.localRotation = Quaternion.Euler(0f, ry, rz);
         
         _localTime += Time.deltaTime;
     }
@@ -48,7 +47,7 @@ public class DragonflyAttackTailState : DragonflyMovementBaseState
         _phase = _localTime / _duration;
         if (_phase > 1f)
         {
-            _owner.SwitchState();
+            _stateData.Owner.SwitchState();
         }
     }
 

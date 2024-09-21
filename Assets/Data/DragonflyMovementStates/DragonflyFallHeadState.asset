@@ -1,0 +1,55 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b16200ea510e224d92933034ccdc60e, type: 3}
+  m_Name: DragonflyFallHeadState
+  m_EditorClassIdentifier: 
+  _state: 7
+  _duration: 1.1
+  _headFallRotateCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: -11.80435
+      outSlope: -11.80435
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.11330349
+    - serializedVersion: 3
+      time: 0.5
+      value: -130.99864
+      inSlope: -456.83228
+      outSlope: -456.83228
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.12787014
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: -375.66885
+      inSlope: -513.1448
+      outSlope: -513.1448
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.1288656
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _headFallFallDownCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4

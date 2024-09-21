@@ -1,17 +1,24 @@
 using UnityEngine;
 
+[CreateAssetMenu(fileName = "DragonflyReturnHoverState", menuName = "DragonflyStates/DragonflyReturnHoverState")]
 public class DragonflyReturnHoverState : DragonflyMovementBaseState
 {
     [SerializeField] private DragonflyStates _state = DragonflyStates.ReturnHover;
-    [SerializeField] private float duration = 1f;
-    [SerializeField] private float _verticalDistance = 1f;
+    [SerializeField] private float duration = 2f;
+    
+    [SerializeField] private float _zMaxDistance = -1.90932f;
+    [SerializeField] private float _zMinDistance = 2f;
+    [SerializeField] private float _farDuration = 1.1f;
+    [SerializeField] private float _closeDuration = 1.7f;
+    
+    [SerializeField] private float _verticalDistance = 9.5f;
     [SerializeField] private float _horizontalDistance = 1f;
     [SerializeField] private AnimationCurve _verticalMoveCurve;
     
     private float _localTime = 0f;
     private float _phase = 0f;
-    private float _startPosY = 0f;
     private float _endPosY = 0f;
+    private float _normalizedDuration = 0f;
     private Vector3 _direction = Vector3.zero;
     
     private Vector3 _startPos = Vector3.zero;
@@ -31,7 +38,11 @@ public class DragonflyReturnHoverState : DragonflyMovementBaseState
         moveDirection.Normalize();
         _endPos = currentPosition + moveDirection * _horizontalDistance;
         
-        _visibleBodyTransform.SetParent(_owner.transform);
+        _stateData.VisibleBodyTransform.SetParent(_stateData.Owner.transform);
+        
+        // Normalize duration by Z distance from camera
+        float zPhase = Mathf.InverseLerp(_zMinDistance, _zMaxDistance, _endPos.z);
+        _normalizedDuration = Mathf.Lerp(_farDuration, _closeDuration, zPhase);
     }
     
     public override void ExecuteState(Vector3 currentPosition)
@@ -40,17 +51,17 @@ public class DragonflyReturnHoverState : DragonflyMovementBaseState
         position.y = Mathf.Lerp(_startPos.y, _endPosY, _verticalMoveCurve.Evaluate(_phase));
         
         
-        _visibleBodyTransform.position = position;
+        _stateData.VisibleBodyTransform.position = position;
         
         _localTime += Time.deltaTime;
     }
     
     public override void CheckForStateChange()
     {
-        _phase = _localTime / duration;
+        _phase = _localTime / _normalizedDuration;
         if (_phase > 1)
         {
-            _owner.SwitchState();
+            _stateData.Owner.SwitchState();
         }
     }
 }

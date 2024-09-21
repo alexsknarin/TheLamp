@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 using UnityEngine.Animations;
 using UnityEngine.Playables;
@@ -10,9 +9,12 @@ public class DragonflyMovement : MonoBehaviour
     [SerializeField] private Transform _animatedTransform;
     [SerializeField] private Transform _patrolTransform;
     [SerializeField] private Transform _spiderPatrolTransform;
+    [SerializeField] private DragonflyPatrolRotator _patrolRotator;
+    [SerializeField] private DragonflyPatrolRotator _spiderPatrolRotator;
     [SerializeField] private DragonflyCollisionCatcher _collisionCatcher;
     [SerializeField] private DragonflyStates _currentDragonflyState;
     [SerializeField] private DragonflyAnimationClipEventHandler _animationClipEvents;
+    [SerializeField] private Transform _fallPoint;
     
     [Header("Animation Clips")]
     [SerializeField] private AnimationClip _idleClip;
@@ -22,34 +24,32 @@ public class DragonflyMovement : MonoBehaviour
 
     [Header("States")]  
     [SerializeField] private DragonflyMovementBaseState _idleState;
-    [SerializeField] private DragonflyEnterToPatrolState _enterToPatrolStateMono;
-    private DragonflyMovementBaseState _enterToPatrolState;
-    [SerializeField] private DragonflyPatrolState _patrolStateMono;
-    private DragonflyMovementBaseState _patrolState;
-    [SerializeField] private DragonflyMovementBaseState _preAttackHeadState;
+    
     [SerializeField] private DragonflyMovementBaseState _attackHeadState;
-    [SerializeField] private DragonflyMovementBaseState _bounceHeadState;
-    [SerializeField] private DragonflyMovementBaseState _fallHeadLState;
-    [SerializeField] private DragonflyCatchSpiderState _catchSpiderStateMono;
-    private DragonflyMovementBaseState _catchSpiderState;
-    [SerializeField] private DragonflySpiderPatrolState _spiderPatrolStateMono;
-    private DragonflyMovementBaseState _spiderPatrolState;
-    [SerializeField] private DragonflyMovementBaseState _spiderPreAttackHeadTransitionState;
-    [SerializeField] private DragonflyMovementBaseState _preAttackTailState;
-    [SerializeField] private DragonflyMovementBaseState _attackTailState;
-    [SerializeField] private DragonflyMovementBaseState _bounceTailState;
-    [SerializeField] private DragonflyMovementBaseState _attackTailSuccess;
-    [SerializeField] private DragonflyMovementBaseState _attackTailFail;
     [SerializeField] private DragonflyMovementBaseState _attackHeadSuccess;
-    [SerializeField] private DragonflyEnterToHoverState _enterToHoverStateMono;
-    private DragonflyMovementBaseState _enterToHoverState;
+    [SerializeField] private DragonflyMovementBaseState _attackHoverState;
+    [SerializeField] private DragonflyMovementBaseState _attackTailFail;
+    [SerializeField] private DragonflyMovementBaseState _attackTailState;
+    [SerializeField] private DragonflyMovementBaseState _attackTailSuccess;
+    [SerializeField] private DragonflyMovementBaseState _bounceHeadState;
+    [SerializeField] private DragonflyMovementBaseState _bounceHoverState;
+    [SerializeField] private DragonflyMovementBaseState _bounceTailState;
+    [SerializeField] private DragonflyMovementBaseState _catchSpiderState;
+    [SerializeField] private DragonflyMovementBaseState _enterToHoverState;
+    [SerializeField] private DragonflyMovementBaseState _enterToPatrolState;
+    [SerializeField] private DragonflyMovementBaseState _fallHeadLState;
     [SerializeField] private DragonflyMovementBaseState _hoverState;
     [SerializeField] private DragonflyMovementBaseState _moveToHoverState;
+    [SerializeField] private DragonflyMovementBaseState _patrolState;
+    [SerializeField] private DragonflyMovementBaseState _preAttackHeadState;
     [SerializeField] private DragonflyMovementBaseState _preAttackHoverState;
-    [SerializeField] private DragonflyMovementBaseState _attackHoverState;
-    [SerializeField] private DragonflyMovementBaseState _bounceHoverState;
+    [SerializeField] private DragonflyMovementBaseState _preAttackTailState;
     [SerializeField] private DragonflyMovementBaseState _returnHoverState;
+    [SerializeField] private DragonflyMovementBaseState _spiderPatrolState;
+    [SerializeField] private DragonflyMovementBaseState _spiderPreAttackHeadTransitionState;
+
     
+    private DragonflyMovementStateData _stateData;
     
     private DragonflyMovementBaseState _currentMovementState;
     private DragonflyStates _prevDragonflyState;
@@ -80,7 +80,7 @@ public class DragonflyMovement : MonoBehaviour
     }
 
 
-    private void Start()
+    private void Awake()
     {
         _playableGraph = PlayableGraph.Create();
         _playableGraph.SetTimeUpdateMode(DirectorUpdateMode.GameTime);
@@ -93,40 +93,41 @@ public class DragonflyMovement : MonoBehaviour
         _playablesContainer.AddClip(DragonflyStates.CatchSpiderL, _catchSpiderLClip);
         _playablesContainer.AddClip(DragonflyStates.EnterToHoverL, _enterToHoverLClip);
         
-        // Initialize States
-        _idleState.SetCommonStateDependencies(this, _visibleBodyTransform);
+        _stateData = new DragonflyMovementStateData(
+            this, 
+            _visibleBodyTransform, 
+            _fallPoint, 
+            _patrolRotator, 
+            _patrolTransform, 
+            _spiderPatrolRotator, 
+            _spiderPatrolTransform,
+            _animatedTransform);
         
-        _enterToPatrolStateMono.Initialize(_playableOutput, _playableGraph, _playablesContainer.GetClip(DragonflyStates.EnterToPatrolL));
-        _enterToPatrolState = _enterToPatrolStateMono;
-        _enterToPatrolState.SetCommonStateDependencies(this, _visibleBodyTransform);
-
-        _patrolState = _patrolStateMono;
-        _patrolState.SetCommonStateDependencies(this, _visibleBodyTransform);
-        _preAttackHeadState.SetCommonStateDependencies(this, _visibleBodyTransform);
-        _attackHeadState.SetCommonStateDependencies(this, _visibleBodyTransform);
-        _bounceHeadState.SetCommonStateDependencies(this, _visibleBodyTransform);
-        _fallHeadLState.SetCommonStateDependencies(this, _visibleBodyTransform);
-        _catchSpiderStateMono.Initialize(_playableOutput, _playableGraph, _playablesContainer.GetClip(DragonflyStates.CatchSpiderL));
-        _catchSpiderState = _catchSpiderStateMono;
-        _catchSpiderState.SetCommonStateDependencies(this, _visibleBodyTransform);
-        _spiderPatrolState = _spiderPatrolStateMono; 
-        _spiderPatrolState.SetCommonStateDependencies(this, _visibleBodyTransform);
-        _spiderPreAttackHeadTransitionState.SetCommonStateDependencies(this, _visibleBodyTransform);
-        _preAttackTailState.SetCommonStateDependencies(this, _visibleBodyTransform);
-        _attackTailState.SetCommonStateDependencies(this, _visibleBodyTransform);
-        _bounceTailState.SetCommonStateDependencies(this, _visibleBodyTransform);
-        _attackTailSuccess.SetCommonStateDependencies(this, _visibleBodyTransform);
-        _attackTailFail.SetCommonStateDependencies(this, _visibleBodyTransform);
-        _attackHeadSuccess.SetCommonStateDependencies(this, _visibleBodyTransform);
-        _enterToHoverStateMono.Initialize(_playableOutput, _playableGraph, _playablesContainer.GetClip(DragonflyStates.EnterToHoverL));
-        _enterToHoverState = _enterToHoverStateMono;
-        _enterToHoverState.SetCommonStateDependencies(this, _visibleBodyTransform);
-        _hoverState.SetCommonStateDependencies(this, _visibleBodyTransform);
-        _moveToHoverState.SetCommonStateDependencies(this, _visibleBodyTransform);
-        _preAttackHoverState.SetCommonStateDependencies(this, _visibleBodyTransform);
-        _attackHoverState.SetCommonStateDependencies(this, _visibleBodyTransform);
-        _bounceHoverState.SetCommonStateDependencies(this, _visibleBodyTransform);
-        _returnHoverState.SetCommonStateDependencies(this, _visibleBodyTransform);
+        
+        // Initialize States
+        _idleState.SetCommonStateDependencies(_stateData);
+        _enterToPatrolState.SetCommonStateDependencies(_stateData);
+        _patrolState.SetCommonStateDependencies(_stateData);
+        _preAttackHeadState.SetCommonStateDependencies(_stateData);
+        _attackHeadState.SetCommonStateDependencies(_stateData);
+        _bounceHeadState.SetCommonStateDependencies(_stateData);
+        _fallHeadLState.SetCommonStateDependencies(_stateData);
+        _catchSpiderState.SetCommonStateDependencies(_stateData);
+        _spiderPatrolState.SetCommonStateDependencies(_stateData);
+        _spiderPreAttackHeadTransitionState.SetCommonStateDependencies(_stateData);
+        _preAttackTailState.SetCommonStateDependencies(_stateData);
+        _attackTailState.SetCommonStateDependencies(_stateData);
+        _bounceTailState.SetCommonStateDependencies(_stateData);
+        _attackTailSuccess.SetCommonStateDependencies(_stateData);
+        _attackTailFail.SetCommonStateDependencies(_stateData);
+        _attackHeadSuccess.SetCommonStateDependencies(_stateData);
+        _enterToHoverState.SetCommonStateDependencies(_stateData);
+        _hoverState.SetCommonStateDependencies(_stateData);
+        _moveToHoverState.SetCommonStateDependencies(_stateData);
+        _preAttackHoverState.SetCommonStateDependencies(_stateData);
+        _attackHoverState.SetCommonStateDependencies(_stateData);
+        _bounceHoverState.SetCommonStateDependencies(_stateData);
+        _returnHoverState.SetCommonStateDependencies(_stateData);
         // 
 
         _currentMovementState = _idleState;
@@ -135,6 +136,17 @@ public class DragonflyMovement : MonoBehaviour
         _collisionCatcher.DisableColliders();
     }
 
+    public void PlayClip(DragonflyStates state)
+    {
+        AnimationClipPlayable clipPlayable = _playablesContainer.GetClip(state);
+        clipPlayable.SetTime(0);
+        clipPlayable.SetTime(0); // Unity Bug
+        _playableOutput.SetSourcePlayable(clipPlayable);
+        if (_playableGraph.IsValid())
+        {
+            _playableGraph.Play();    
+        }
+    }
     
     public void SwitchState()
     {
@@ -281,12 +293,7 @@ public class DragonflyMovement : MonoBehaviour
     
     private void OnClipEnded()
     {
-        switch (_currentMovementState.State)
-        {   
-            case DragonflyStates.EnterToPatrolL:
-                SwitchState();
-                break;
-        }
+        SwitchState();
     }
    
     private void OnCollision()

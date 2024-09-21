@@ -1,13 +1,10 @@
 using UnityEngine;
 
+[CreateAssetMenu(fileName = "DragonflySpiderPreattackHeadTransitionState", menuName = "DragonflyStates/DragonflySpiderPreattackHeadTransitionState")]
 public class DragonflySpiderPreattackHeadTransitionState : DragonflyMovementBaseState
 {
-    [SerializeField] private DragonflyPatrolRotator _spiderPatrolRotator;
-    [SerializeField] private DragonflyPatrolRotator _patrolRotator;
-    [SerializeField] private Transform _spiderPatrolTransform;
-    [SerializeField] private Transform _patrolTransform;
-    [SerializeField] private float _duration = 2f;
     [SerializeField] private DragonflyStates _state = DragonflyStates.SpiderPreattackHeadTransitionStateL;
+    [SerializeField] private float _duration = 0.65f;
     public override DragonflyStates State => _state;
     private Transform _patrolTransformParent;
     
@@ -16,15 +13,15 @@ public class DragonflySpiderPreattackHeadTransitionState : DragonflyMovementBase
 
     public override void EnterState(Vector3 currentPosition, int sideDirection, int depthDirection)
     {
-        _patrolTransformParent = _patrolTransform.parent;
-        _spiderPatrolRotator.SetRotationPhase(currentPosition);
-        _spiderPatrolRotator.Play();
-        _patrolRotator.SetRotationPhase(currentPosition);
-        _patrolRotator.Stop();
+        _patrolTransformParent = _stateData.PatrolTransform.parent;
+        _stateData.SpiderPatrolRotator.SetRotationPhase(currentPosition);
+        _stateData.SpiderPatrolRotator.Play();
+        _stateData.PatrolRotator.SetRotationPhase(currentPosition);
+        _stateData.PatrolRotator.Stop();
         
-        _visibleBodyTransform.SetParent(_spiderPatrolTransform);
-        _visibleBodyTransform.position = _spiderPatrolTransform.position;
-        _visibleBodyTransform.rotation = _spiderPatrolTransform.rotation;
+        _stateData.VisibleBodyTransform.SetParent(_stateData.SpiderPatrolTransform);
+        _stateData.VisibleBodyTransform.position = _stateData.SpiderPatrolTransform.position;
+        _stateData.VisibleBodyTransform.rotation = _stateData.SpiderPatrolTransform.rotation;
         
         _localTime = 0;
         
@@ -32,19 +29,19 @@ public class DragonflySpiderPreattackHeadTransitionState : DragonflyMovementBase
     
     public override void ExecuteState(Vector3 currentPosition)
     {
-        _patrolRotator.SetRotationPhase(_spiderPatrolTransform.position);
-        _patrolTransform.SetParent(_spiderPatrolTransform);
+        _stateData.PatrolRotator.SetRotationPhase(_stateData.SpiderPatrolTransform.position);
+        _stateData.PatrolTransform.SetParent(_stateData.SpiderPatrolTransform);
         
-        Vector3 position = Vector3.Lerp(Vector3.zero, _patrolTransform.localPosition, _phase);
-        Quaternion rotation = Quaternion.Slerp(Quaternion.identity, _patrolTransform.localRotation, _phase);
+        Vector3 position = Vector3.Lerp(Vector3.zero, _stateData.PatrolTransform.localPosition, _phase);
+        Quaternion rotation = Quaternion.Slerp(Quaternion.identity, _stateData.PatrolTransform.localRotation, _phase);
         
-        _patrolTransform.SetParent(_patrolTransformParent);
-        _patrolTransform.localPosition = Vector3.zero;
-        _patrolTransform.localRotation = Quaternion.identity;
-        _patrolTransform.localScale = Vector3.one;
+        _stateData.PatrolTransform.SetParent(_patrolTransformParent);
+        _stateData.PatrolTransform.localPosition = Vector3.zero;
+        _stateData.PatrolTransform.localRotation = Quaternion.identity;
+        _stateData.PatrolTransform.localScale = Vector3.one;
         
-        _visibleBodyTransform.localPosition = position;
-        _visibleBodyTransform.localRotation = rotation;
+        _stateData.VisibleBodyTransform.localPosition = position;
+        _stateData.VisibleBodyTransform.localRotation = rotation;
         
         _localTime += Time.deltaTime;
     }
@@ -54,7 +51,7 @@ public class DragonflySpiderPreattackHeadTransitionState : DragonflyMovementBase
         _phase = _localTime / _duration;
         if (_phase > 1f)
         {
-            _owner.SwitchState();
+            _stateData.Owner.SwitchState();
         }
     }
 }

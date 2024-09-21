@@ -1,5 +1,6 @@
 using UnityEngine;
 
+[CreateAssetMenu(fileName = "DragonflyPreAttackHoverState", menuName = "DragonflyStates/DragonflyPreAttackHoverState")]
 public class DragonflyPreAttackHoverState : DragonflyMovementBaseState
 {
     [SerializeField] private DragonflyStates _state = DragonflyStates.PreAttackHover;
@@ -14,8 +15,8 @@ public class DragonflyPreAttackHoverState : DragonflyMovementBaseState
     
     public override void EnterState(Vector3 currentPosition, int sideDirection, int depthDirection)
     {
-        _visibleBodyTransform.SetParent(_owner.transform);
-        _attackDirection = -_visibleBodyTransform.position.normalized;
+        _stateData.VisibleBodyTransform.SetParent(_stateData.Owner.transform);
+        _attackDirection = -_stateData.VisibleBodyTransform.position.normalized;
         _localTime = 0f;
         _phase = 0f;
     }
@@ -23,7 +24,7 @@ public class DragonflyPreAttackHoverState : DragonflyMovementBaseState
     public override void ExecuteState(Vector3 currentPosition)
     {
         float decceleration = Mathf.Pow(1-_phase, _deccelerationPower);
-        _visibleBodyTransform.position += -_attackDirection * (_speed * decceleration * Time.deltaTime);
+        _stateData.VisibleBodyTransform.position += -_attackDirection * (_speed * decceleration * Time.deltaTime);
 
         _localTime += Time.deltaTime;
     }
@@ -33,7 +34,7 @@ public class DragonflyPreAttackHoverState : DragonflyMovementBaseState
         _phase = _localTime / _duration;
         if (_phase > 1f)
         {
-            _owner.SwitchState();
+            _stateData.Owner.SwitchState();
         }
     }
 }

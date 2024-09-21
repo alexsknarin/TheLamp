@@ -1,5 +1,6 @@
 using UnityEngine;
 
+[CreateAssetMenu(fileName = "DragonflyBounceHoverState", menuName = "DragonflyStates/DragonflyBounceHoverState")]
 public class DragonflyBounceHoverState : DragonflyMovementBaseState
 {
     [SerializeField] private DragonflyStates _state = DragonflyStates.BounceHover;
@@ -13,15 +14,15 @@ public class DragonflyBounceHoverState : DragonflyMovementBaseState
     
     public override void EnterState(Vector3 currentPosition, int sideDirection, int depthDirection)
     {
-        _visibleBodyTransform.SetParent(_owner.transform);
-        _attackDirection = -_visibleBodyTransform.position.normalized;
+        _stateData.VisibleBodyTransform.SetParent(_stateData.Owner.transform);
+        _attackDirection = -_stateData.VisibleBodyTransform.position.normalized;
         _localTime = 0f;
         _phase = 0f;
     }
 
     public override void ExecuteState(Vector3 currentPosition)
     {
-        _visibleBodyTransform.position += -_attackDirection * (_speed * Time.deltaTime);
+        _stateData.VisibleBodyTransform.position += -_attackDirection * (_speed * Time.deltaTime);
 
         _localTime += Time.deltaTime;
     }
@@ -31,7 +32,7 @@ public class DragonflyBounceHoverState : DragonflyMovementBaseState
         _phase = _localTime / _duration;
         if (_phase > 1f)
         {
-            _owner.SwitchState();
+            _stateData.Owner.SwitchState();
         }
     }
 }
