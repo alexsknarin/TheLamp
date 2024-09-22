@@ -15,7 +15,7 @@ public class DragonflySpiderPreattackHeadTransitionState : DragonflyMovementBase
     {
         _patrolTransformParent = _stateData.PatrolTransform.parent;
         _stateData.SpiderPatrolRotator.SetRotationPhase(currentPosition);
-        _stateData.SpiderPatrolRotator.Play();
+        _stateData.SpiderPatrolRotator.Play(sideDirection);
         _stateData.PatrolRotator.SetRotationPhase(currentPosition);
         _stateData.PatrolRotator.Stop();
         

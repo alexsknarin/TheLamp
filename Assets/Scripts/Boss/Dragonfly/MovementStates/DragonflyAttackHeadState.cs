@@ -3,7 +3,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "DragonflyAttackHeadState", menuName = "DragonflyStates/DragonflyAttackHeadState")]
 public class DragonflyAttackHeadState : DragonflyMovementBaseState
 {
-    [SerializeField] private DragonflyStates _state = DragonflyStates.AttackHeadL;
+    [SerializeField] private DragonflyStates _state = DragonflyStates.AttackHead;
     [SerializeField] private float _speed = 4f;
     [SerializeField] private float _acceleration = 0.75f;
     

@@ -2252,7 +2252,7 @@ GameObject:
   m_Component:
   - component: {fileID: 216528329}
   m_Layer: 0
-  m_Name: DragonflyBody_4
+  m_Name: DragonflyAnimTransform
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -12559,36 +12559,38 @@ MonoBehaviour:
   _fallPoint: {fileID: 780930765}
   _idleClip: {fileID: 7400000, guid: 19dac01ea54d86c45a726bd910b29553, type: 2}
   _enterToPatrolLClip: {fileID: 7400000, guid: d93b8b1839b994b4497189c8a1270eb9, type: 2}
+  _enterToPatrolRClip: {fileID: 7400000, guid: 41ee370514b2b3e4b8f06584522ddfee, type: 2}
   _catchSpiderLClip: {fileID: 7400000, guid: 06a9e7dc88c0872459ef5eb7031595dc, type: 2}
   _enterToHoverLClip: {fileID: 7400000, guid: ed123d75c4790c14b894b2d4dee839d2, type: 2}
+  _enterToHoverRClip: {fileID: 7400000, guid: 597500e6f0f96864b862868cb29be191, type: 2}
   _idleState: {fileID: 11400000, guid: dae798be4ba6af24fbd3ac1e9b6fea98, type: 2}
+  _attackHeadState: {fileID: 11400000, guid: 09b8b47a847391b40ad370f775325f83, type: 2}
+  _attackHeadSuccess: {fileID: 11400000, guid: 10201a7bc533f604bbd59e8a57021ee4, type: 2}
+  _attackHoverState: {fileID: 11400000, guid: 52ff4616e01438643b1a3954ac36588d, type: 2}
+  _attackTailFail: {fileID: 11400000, guid: a77d488590fd9954590dad8eb3d09a9d, type: 2}
+  _attackTailState: {fileID: 11400000, guid: f29f69a6f8dae564d9ee8c4b3432e5f4, type: 2}
+  _attackTailSuccess: {fileID: 11400000, guid: c27b5f3a8b9c84c40afcf3a36b2159b6, type: 2}
+  _bounceHeadState: {fileID: 11400000, guid: 52c12ae0482514349bc6af563d499c5f, type: 2}
+  _bounceHoverState: {fileID: 11400000, guid: 8eca3c6d445e7d549a0b0553ad157445, type: 2}
+  _bounceTailState: {fileID: 11400000, guid: da656aed9740e7d4faff7291e491c089, type: 2}
+  _catchSpiderState: {fileID: 11400000, guid: e5838032aab8f9b4e809d459f1402db1, type: 2}
+  _enterToHoverState: {fileID: 11400000, guid: 9dc56a78431054a4dba08f72c82a50df, type: 2}
   _enterToPatrolState: {fileID: 11400000, guid: adbac4156bc24ef4d92d83aeb89c46e2,
     type: 2}
+  _fallHeadLState: {fileID: 11400000, guid: 73f57ebf134c9464a9da8844bf0458a4, type: 2}
+  _hoverState: {fileID: 11400000, guid: fdd01ab27a155b14988eb72c444bfb39, type: 2}
+  _moveToHoverState: {fileID: 11400000, guid: 9b1b7f8c83c6046459ec82f3d5ec02e7, type: 2}
   _patrolState: {fileID: 11400000, guid: 04714090c1c6be14898f3cde7be3e3aa, type: 2}
   _preAttackHeadState: {fileID: 11400000, guid: 5bda08d9b71115840a02eecd17512622,
     type: 2}
-  _attackHeadState: {fileID: 11400000, guid: 09b8b47a847391b40ad370f775325f83, type: 2}
-  _bounceHeadState: {fileID: 11400000, guid: 52c12ae0482514349bc6af563d499c5f, type: 2}
-  _fallHeadLState: {fileID: 11400000, guid: 73f57ebf134c9464a9da8844bf0458a4, type: 2}
-  _catchSpiderState: {fileID: 11400000, guid: e5838032aab8f9b4e809d459f1402db1, type: 2}
-  _spiderPatrolState: {fileID: 11400000, guid: 7a6399eb78f3d6e4098129ea805ae7c4, type: 2}
-  _spiderPreAttackHeadTransitionState: {fileID: 11400000, guid: 69b7c3efb633ef74bb7d7c7bac7858bc,
+  _preAttackHoverState: {fileID: 11400000, guid: 2a1ee41717889fa419239d620f01ac57,
     type: 2}
   _preAttackTailState: {fileID: 11400000, guid: 82e3ec9d0970c6e4497083be2926ef6d,
     type: 2}
-  _attackTailState: {fileID: 11400000, guid: f29f69a6f8dae564d9ee8c4b3432e5f4, type: 2}
-  _bounceTailState: {fileID: 11400000, guid: da656aed9740e7d4faff7291e491c089, type: 2}
-  _attackTailSuccess: {fileID: 11400000, guid: c27b5f3a8b9c84c40afcf3a36b2159b6, type: 2}
-  _attackTailFail: {fileID: 11400000, guid: a77d488590fd9954590dad8eb3d09a9d, type: 2}
-  _attackHeadSuccess: {fileID: 11400000, guid: 10201a7bc533f604bbd59e8a57021ee4, type: 2}
-  _enterToHoverState: {fileID: 11400000, guid: 9dc56a78431054a4dba08f72c82a50df, type: 2}
-  _hoverState: {fileID: 11400000, guid: fdd01ab27a155b14988eb72c444bfb39, type: 2}
-  _moveToHoverState: {fileID: 11400000, guid: 9b1b7f8c83c6046459ec82f3d5ec02e7, type: 2}
-  _preAttackHoverState: {fileID: 11400000, guid: 2a1ee41717889fa419239d620f01ac57,
-    type: 2}
-  _attackHoverState: {fileID: 11400000, guid: 52ff4616e01438643b1a3954ac36588d, type: 2}
-  _bounceHoverState: {fileID: 11400000, guid: 8eca3c6d445e7d549a0b0553ad157445, type: 2}
   _returnHoverState: {fileID: 11400000, guid: da30c52e361c4d4498abb4d3bf4f0bda, type: 2}
+  _spiderPatrolState: {fileID: 11400000, guid: 7a6399eb78f3d6e4098129ea805ae7c4, type: 2}
+  _spiderPreAttackHeadTransitionState: {fileID: 11400000, guid: 69b7c3efb633ef74bb7d7c7bac7858bc,
+    type: 2}
 --- !u!1 &1540463159
 GameObject:
   m_ObjectHideFlags: 0

@@ -10,11 +10,22 @@ public class DragonflyBounceTailState : DragonflyMovementBaseState
     
     private float _phase = 0f;
     private float _localTime = 0f;
+    private float _sideDirection = 0f;
     
     public override void EnterState(Vector3 currentPosition, int sideDirection, int depthDirection)
     {
+        if (sideDirection == 1)
+        {
+            _state = DragonflyStates.BounceTailL;
+        }
+        else
+        {
+            _state = DragonflyStates.BounceTailR;
+        }
+        _sideDirection = sideDirection;
+        
         _stateData.PatrolRotator.SetRotationPhase(currentPosition);
-        _stateData.PatrolRotator.Play();
+        _stateData.PatrolRotator.Play(sideDirection);
         
         _stateData.VisibleBodyTransform.SetParent(_stateData.PatrolTransform, false);
         _localTime = 0f;
@@ -23,7 +34,7 @@ public class DragonflyBounceTailState : DragonflyMovementBaseState
     public override void ExecuteState(Vector3 currentPosition)
     {
         Vector3 eulers = _stateData.VisibleBodyTransform.localRotation.eulerAngles;
-        eulers.y += _rotationSpeed * Time.deltaTime;
+        eulers.y += _rotationSpeed * Time.deltaTime * _sideDirection;
         _stateData.VisibleBodyTransform.localRotation = Quaternion.Euler(eulers);
         
         _localTime += Time.deltaTime;
@@ -32,7 +43,7 @@ public class DragonflyBounceTailState : DragonflyMovementBaseState
     public override void CheckForStateChange()
     {
         _phase = _localTime / _duration;
-        if (_phase > 0f)
+        if (_phase > 1f)
         {
             _stateData.Owner.SwitchState();
         }

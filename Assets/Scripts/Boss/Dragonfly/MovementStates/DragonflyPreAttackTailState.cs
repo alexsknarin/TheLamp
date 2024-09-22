@@ -14,8 +14,17 @@ public class DragonflyPreAttackTailState : DragonflyMovementBaseState
     
     public override void EnterState(Vector3 currentPosition, int sideDirection, int depthDirection)
     {
+        if (sideDirection == 1)
+        {
+            _state = DragonflyStates.PreAttackTailL;
+        }
+        else
+        {
+            _state = DragonflyStates.PreAttackTailR;
+        }
+        
         _stateData.PatrolRotator.SetRotationPhase(currentPosition);
-        _stateData.PatrolRotator.Play();
+        _stateData.PatrolRotator.Play(sideDirection);
         
         _stateData.VisibleBodyTransform.SetParent(_stateData.PatrolTransform);
         _stateData.VisibleBodyTransform.localPosition = Vector3.zero;

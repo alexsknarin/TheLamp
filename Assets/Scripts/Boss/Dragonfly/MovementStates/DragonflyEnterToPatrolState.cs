@@ -14,6 +14,15 @@ public class DragonflyEnterToPatrolState : DragonflyMovementBaseState
         _stateData.VisibleBodyTransform.localPosition = Vector3.zero;
         _stateData.VisibleBodyTransform.localRotation = Quaternion.identity;
         
+        if (sideDirection == 1)
+        {
+            _state = DragonflyStates.EnterToPatrolL;
+        }
+        else
+        {
+            _state = DragonflyStates.EnterToPatrolR;
+        }
+        
         _stateData.Owner.PlayClip(_state);
     }
 }

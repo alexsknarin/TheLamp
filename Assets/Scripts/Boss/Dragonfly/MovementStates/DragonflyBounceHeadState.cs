@@ -3,7 +3,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "DragonflyBounceHeadState", menuName = "DragonflyStates/DragonflyBounceHeadState")]
 public class DragonflyBounceHeadState : DragonflyMovementBaseState
 {
-    [SerializeField] private DragonflyStates _state = DragonflyStates.BounceHeadL;
+    [SerializeField] private DragonflyStates _state = DragonflyStates.BounceHead;
     [SerializeField] private float _speed = 4.1f;
     [SerializeField] private float _duration = 0.15f;
     public override DragonflyStates State => _state;

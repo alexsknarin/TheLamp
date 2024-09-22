@@ -12,21 +12,35 @@ public class DragonflyAttackTailFailState : DragonflyMovementBaseState
     
     private float _localTime = 0f;
     private float _phase = 0f;
+    private int _sideDirection = 0;
 
     public override void EnterState(Vector3 currentPosition, int sideDirection, int depthDirection)
     {
+        if (sideDirection == 1)
+        {
+            _state = DragonflyStates.AttackTailFailL;
+        }
+        else
+        {
+            _state = DragonflyStates.AttackTailFailR;
+        }
+        
         _stateData.VisibleBodyTransform.SetParent(_stateData.Owner.transform);
+        _localTime = 0f;
+        _phase = 0f;
+        _sideDirection = sideDirection;
     }
     
     public override void ExecuteState(Vector3 currentPosition)
     {
-        Vector3 position = _stateData.VisibleBodyTransform.position;
-        position += Vector3.down * (_fallSpeed * Mathf.Pow(_phase, _moveAcceleration) * Time.deltaTime);
-        _stateData.VisibleBodyTransform.position = position;
+        Vector3 position = currentPosition;
+        float fallSpeed = _fallSpeed * Mathf.Pow(_phase, _moveAcceleration);
+        position += Vector3.down * (fallSpeed * Time.deltaTime);
+        _stateData.VisibleBodyTransform.localPosition = position;
         
         
         Vector3 rotation = _stateData.VisibleBodyTransform.localEulerAngles;
-        rotation.y += _rotationSpeed * Time.deltaTime;
+        rotation.y += _rotationSpeed * Time.deltaTime * _sideDirection;
         _stateData.VisibleBodyTransform.localEulerAngles = rotation;
         
         _localTime += Time.deltaTime;
@@ -37,7 +51,6 @@ public class DragonflyAttackTailFailState : DragonflyMovementBaseState
         _phase = _localTime / _duration;
         if (_phase > 1)
         {
-            Debug.Break();
             _stateData.Owner.SwitchState();
         }
     }

@@ -14,11 +14,22 @@ public class DragonflyAttackTailState : DragonflyMovementBaseState
     private float _localTime = 0f;
     private float _phase = 0f;
     private float _startZPos = 0f;
+    private int _sideDirection = 0;
     
     public override void EnterState(Vector3 currentPosition, int sideDirection, int depthDirection)
     {
+        if (sideDirection == 1)
+        {
+            _state = DragonflyStates.AttackTailL;
+        }
+        else
+        {
+            _state = DragonflyStates.AttackTailR;
+        }
+        _sideDirection = sideDirection;
+        
         _stateData.PatrolRotator.SetRotationPhase(currentPosition);
-        _stateData.PatrolRotator.Play();
+        _stateData.PatrolRotator.Play(sideDirection);
         
         _stateData.VisibleBodyTransform.SetParent(_stateData.PatrolTransform);
         _stateData.VisibleBodyTransform.localRotation = Quaternion.identity;
@@ -32,8 +43,8 @@ public class DragonflyAttackTailState : DragonflyMovementBaseState
     public override void ExecuteState(Vector3 currentPosition)
     {
         float zPos = Mathf.Lerp(_startZPos, _distance, _tzCurve.Evaluate(_phase));
-        float ry = _ryCurve.Evaluate(_phase);
-        float rz = _rzCurve.Evaluate(_phase);
+        float ry = _ryCurve.Evaluate(_phase) * _sideDirection;
+        float rz = _rzCurve.Evaluate(_phase) * _sideDirection;
         Vector3 pos = Vector3.zero;
         pos.z = zPos;
         _stateData.VisibleBodyTransform.localPosition = pos;
@@ -47,7 +58,8 @@ public class DragonflyAttackTailState : DragonflyMovementBaseState
         _phase = _localTime / _duration;
         if (_phase > 1f)
         {
-            _stateData.Owner.SwitchState();
+            _phase = 1f;
+            // _stateData.Owner.SwitchState();
         }
     }
 

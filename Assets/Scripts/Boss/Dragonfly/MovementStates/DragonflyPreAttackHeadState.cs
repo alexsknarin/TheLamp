@@ -15,10 +15,23 @@ public class DragonflyPreAttackHeadState : DragonflyMovementBaseState
     
     public override void EnterState(Vector3 currentPosition, int sideDirection, int depthDirection)
     {
+        if(depthDirection == 1)
+        {
+            _state = DragonflyStates.PreAttackHeadL;
+        }
+        else
+        {
+            _state = DragonflyStates.PreAttackHeadR;
+        }
+        
+        
         _stateData.VisibleBodyTransform.SetParent(_stateData.Owner.transform);
         _attackDirection = -_stateData.VisibleBodyTransform.position.normalized;
         _localTime = 0f;
         _phase = 0f;
+        
+        
+        
     }
 
     public override void ExecuteState(Vector3 currentPosition)

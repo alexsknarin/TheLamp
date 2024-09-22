@@ -3,7 +3,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "DragonflyAttackHeadSuccessState", menuName = "DragonflyStates/DragonflyAttackHeadSuccessState")]
 public class DragonflyAttackHeadSuccessState : DragonflyMovementBaseState
 {
-    [SerializeField] private DragonflyStates _state = DragonflyStates.AttackHeadSuccessL;
+    [SerializeField] private DragonflyStates _state = DragonflyStates.AttackHeadSuccess;
     [SerializeField] private float _duration = 0.85f;
     [SerializeField] private AnimationCurve _tyCurve;
     [SerializeField] private AnimationCurve _tzCurve;

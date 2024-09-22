@@ -17,9 +17,10 @@ public class DragonflyPatrolRotator : MonoBehaviour
     [Header("--- Debug ---")]
     [SerializeField] private float _frontBackMask = 0;
     
-    public void Play()
+    public void Play(int direction)
     {
         _isPlaying = true;
+        _direction = direction;
     }
     
     public void Stop()
