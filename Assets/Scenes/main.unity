@@ -12504,9 +12504,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1536401417}
+  - component: {fileID: 1536401419}
   - component: {fileID: 1536401418}
   m_Layer: 0
-  m_Name: DragonflySystem
+  m_Name: Dragonfly
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -12592,6 +12593,21 @@ MonoBehaviour:
   _spiderPatrolState: {fileID: 11400000, guid: 7a6399eb78f3d6e4098129ea805ae7c4, type: 2}
   _spiderPreAttackHeadTransitionState: {fileID: 11400000, guid: 69b7c3efb633ef74bb7d7c7bac7858bc,
     type: 2}
+--- !u!114 &1536401419
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1536401416}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 16eae1143c5a2b44390c227e30d912ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _dragonflyMovement: {fileID: 1536401418}
+  _hoverWaitMin: 0.5
+  _hoverWaitMax: 2
 --- !u!1 &1540463159
 GameObject:
   m_ObjectHideFlags: 0
