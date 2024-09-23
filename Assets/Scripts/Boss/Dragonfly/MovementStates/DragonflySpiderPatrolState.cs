@@ -8,6 +8,15 @@ public class DragonflySpiderPatrolState : DragonflyMovementBaseState
     
     public override void EnterState(Vector3 currentPosition, int sideDirection, int depthDirection)
     {
+        if (sideDirection == 1)
+        {
+            _state = DragonflyStates.SpiderPatrolL;
+        }
+        else
+        {
+            _state = DragonflyStates.SpiderPatrolR;
+        }
+        
         _stateData.SpiderPatrolRotator.SetRotationPhase(currentPosition);
         _stateData.SpiderPatrolRotator.Play(sideDirection);
         

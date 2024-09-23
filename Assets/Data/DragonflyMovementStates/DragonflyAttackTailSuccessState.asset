@@ -13,8 +13,7 @@ MonoBehaviour:
   m_Name: DragonflyAttackTailSuccessState
   m_EditorClassIdentifier: 
   _state: 14
-  _duration: 1.8
-  _sideSpeed: 1
-  _frontSpeed: 55
+  _duration: 1.2
+  _startSpeed: 6
   _rotationSpeed: 110
-  _moveAcceleration: 1.9
+  _moveAcceleration: 9

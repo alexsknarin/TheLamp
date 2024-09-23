@@ -13,6 +13,15 @@ public class DragonflySpiderPreattackHeadTransitionState : DragonflyMovementBase
 
     public override void EnterState(Vector3 currentPosition, int sideDirection, int depthDirection)
     {
+        if (sideDirection == 1)
+        {
+            _state = DragonflyStates.SpiderPreattackHeadTransitionStateL;
+        }
+        else
+        {
+            _state = DragonflyStates.SpiderPreattackHeadTransitionStateR;
+        }
+        
         _patrolTransformParent = _stateData.PatrolTransform.parent;
         _stateData.SpiderPatrolRotator.SetRotationPhase(currentPosition);
         _stateData.SpiderPatrolRotator.Play(sideDirection);
@@ -24,7 +33,7 @@ public class DragonflySpiderPreattackHeadTransitionState : DragonflyMovementBase
         _stateData.VisibleBodyTransform.rotation = _stateData.SpiderPatrolTransform.rotation;
         
         _localTime = 0;
-        
+        _phase = 0;
     }
     
     public override void ExecuteState(Vector3 currentPosition)

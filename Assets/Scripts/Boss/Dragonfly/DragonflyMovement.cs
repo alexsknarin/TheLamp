@@ -25,6 +25,7 @@ public class DragonflyMovement : MonoBehaviour
     [SerializeField] private AnimationClip _catchSpiderLClip;
     [SerializeField] private AnimationClip _enterToHoverLClip;
     [SerializeField] private AnimationClip _enterToHoverRClip;
+    [SerializeField] private AnimationClip _catchSpiderRClip;
 
     [Header("States")]  
     [SerializeField] private DragonflyMovementBaseState _idleState;
@@ -99,6 +100,7 @@ public class DragonflyMovement : MonoBehaviour
         _playablesContainer.AddClip(DragonflyStates.CatchSpiderL, _catchSpiderLClip);
         _playablesContainer.AddClip(DragonflyStates.EnterToHoverL, _enterToHoverLClip);
         _playablesContainer.AddClip(DragonflyStates.EnterToHoverR, _enterToHoverRClip);
+        _playablesContainer.AddClip(DragonflyStates.CatchSpiderR, _catchSpiderRClip);
         
         _stateData = new DragonflyMovementStateData(
             this, 
@@ -238,7 +240,10 @@ public class DragonflyMovement : MonoBehaviour
             case DragonflyStates.CatchSpiderL:
                 SetState(_spiderPatrolState, _animatedTransform.position, 1, 1);
                 break;
-            
+            case DragonflyStates.CatchSpiderR:
+                SetState(_spiderPatrolState, _animatedTransform.position, -1, 1);
+                break;
+            // //
             case DragonflyStates.SpiderPreattackHeadTransitionStateL:
                 SetState(_patrolState, _visibleBodyTransform.position, 1, 1);
                 break;
@@ -290,7 +295,7 @@ public class DragonflyMovement : MonoBehaviour
             case DragonflyStates.BounceTailL:
                 // TODO:    
                 // isHit = Random.value <= 0.5f;
-                isHit = false;
+                isHit = true;
                 if (isHit)
                 {
                     SetState(_attackTailSuccess, _visibleBodyTransform.position, 1, 1);
@@ -302,7 +307,7 @@ public class DragonflyMovement : MonoBehaviour
                 break;
             case DragonflyStates.BounceTailR:
                 // isHit = Random.value <= 0.5f;
-                isHit = false;
+                isHit = true;
                 if (isHit)
                 {
                     SetState(_attackTailSuccess, _visibleBodyTransform.position, -1, 1);
@@ -312,7 +317,7 @@ public class DragonflyMovement : MonoBehaviour
                     SetState(_attackTailFail, _visibleBodyTransform.position, -1, 1);
                 }
                 break;
-            
+            //
             case DragonflyStates.EnterToHoverL:
                 SetState(_hoverState, _visibleBodyTransform.position, 1, 1);
                 break;
@@ -346,12 +351,20 @@ public class DragonflyMovement : MonoBehaviour
         // Start Catch Spider
         if (Input.GetKeyDown(KeyCode.S))
         {
-            SetState(_catchSpiderState, _animatedTransform.position, 1, 1);
+            SetState(_catchSpiderState, _animatedTransform.position, -1, 1);
         }
         // Start Spider patrol transition
         if (Input.GetKeyDown(KeyCode.D))
         {
-            SetState(_spiderPreAttackHeadTransitionState, _visibleBodyTransform.position, 1, 1);
+            if (_currentMovementState.State == DragonflyStates.SpiderPatrolL)
+            {
+                SetState(_spiderPreAttackHeadTransitionState, _visibleBodyTransform.position, 1, 1);
+            }
+            
+            if (_currentMovementState.State == DragonflyStates.SpiderPatrolR)
+            {
+                SetState(_spiderPreAttackHeadTransitionState, _visibleBodyTransform.position, -1, 1);
+            }
         }
         
         if (Input.GetKeyDown(KeyCode.F))
