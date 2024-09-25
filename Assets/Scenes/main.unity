@@ -12559,12 +12559,14 @@ MonoBehaviour:
   _animationClipEvents: {fileID: 1098560779}
   _fallPoint: {fileID: 780930765}
   _idleClip: {fileID: 7400000, guid: 19dac01ea54d86c45a726bd910b29553, type: 2}
-  _enterToPatrolLClip: {fileID: 7400000, guid: d93b8b1839b994b4497189c8a1270eb9, type: 2}
+  _enterToPatrolLClip: {fileID: 7400000, guid: f5f743d546b656047b5c2db5af5d25ad, type: 2}
   _enterToPatrolRClip: {fileID: 7400000, guid: 41ee370514b2b3e4b8f06584522ddfee, type: 2}
   _catchSpiderLClip: {fileID: 7400000, guid: 06a9e7dc88c0872459ef5eb7031595dc, type: 2}
   _enterToHoverLClip: {fileID: 7400000, guid: ed123d75c4790c14b894b2d4dee839d2, type: 2}
   _enterToHoverRClip: {fileID: 7400000, guid: 597500e6f0f96864b862868cb29be191, type: 2}
   _catchSpiderRClip: {fileID: 7400000, guid: 69dbfb513d6fc0d4899f4793e8615385, type: 2}
+  _moveToPatrolLClip: {fileID: 7400000, guid: d93b8b1839b994b4497189c8a1270eb9, type: 2}
+  _moveToPatrolRClip: {fileID: 7400000, guid: 8c222dd85f2f2924d9e5c7dc5daebebc, type: 2}
   _idleState: {fileID: 11400000, guid: dae798be4ba6af24fbd3ac1e9b6fea98, type: 2}
   _attackHeadState: {fileID: 11400000, guid: 09b8b47a847391b40ad370f775325f83, type: 2}
   _attackHeadSuccess: {fileID: 11400000, guid: 10201a7bc533f604bbd59e8a57021ee4, type: 2}
@@ -12593,6 +12595,7 @@ MonoBehaviour:
   _spiderPatrolState: {fileID: 11400000, guid: 7a6399eb78f3d6e4098129ea805ae7c4, type: 2}
   _spiderPreAttackHeadTransitionState: {fileID: 11400000, guid: 69b7c3efb633ef74bb7d7c7bac7858bc,
     type: 2}
+  _moveToPatrolState: {fileID: 11400000, guid: ea769d6433e498a48b4942af94a76552, type: 2}
 --- !u!114 &1536401419
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12606,8 +12609,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _dragonflyMovement: {fileID: 1536401418}
+  _collisionCatcher: {fileID: 1720334792}
+  _visibleBodyTransform: {fileID: 1720334790}
   _hoverWaitMin: 0.5
   _hoverWaitMax: 2
+  _patrolWaitMin: 0
+  _patrolWaitMax: 1.5
+  _patrolAttackZonesL: {fileID: 11400000, guid: 7e96f2076b5edb84ab43969652ed065f,
+    type: 2}
+  _patrolAttackZonesR: {fileID: 11400000, guid: ab3e3f64eabbf794aad6fbb0033308d3,
+    type: 2}
+  _spiderPatrolAttackZones: {fileID: 11400000, guid: 5049cbd4c9e10754fb99e200b57e1bdb,
+    type: 2}
+  _spiderPatrolWaitMin: 0
+  _spiderPatrolWaitMax: 1
 --- !u!1 &1540463159
 GameObject:
   m_ObjectHideFlags: 0

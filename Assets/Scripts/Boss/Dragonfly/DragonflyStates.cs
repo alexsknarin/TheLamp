@@ -33,5 +33,7 @@ public enum DragonflyStates
     AttackTailFailR,
     CatchSpiderR,
     SpiderPatrolR,
-    SpiderPreattackHeadTransitionStateR
+    SpiderPreattackHeadTransitionStateR,
+    MoveToPatrolL,
+    MoveToPatrolR
 }

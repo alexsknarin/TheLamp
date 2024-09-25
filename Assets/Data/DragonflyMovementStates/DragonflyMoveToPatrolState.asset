@@ -9,11 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 171dff3b2075e764f85936284d58ce34, type: 3}
-  m_Name: DragonflyPreAttackHeadState
+  m_Script: {fileID: 11500000, guid: a6dd241d6a0018a46bfde88fd983918e, type: 3}
+  m_Name: DragonflyMoveToPatrolState
   m_EditorClassIdentifier: 
-  _state: 3
-  _speed: 4
-  _duration: 0.4
-  _deccelerationPower: 2
-  _sideSpeed: 1
+  _state: 34
