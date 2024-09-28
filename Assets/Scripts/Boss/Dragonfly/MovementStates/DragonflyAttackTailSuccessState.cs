@@ -44,8 +44,8 @@ public class DragonflyAttackTailSuccessState : DragonflyMovementBaseState
         Quaternion rot = Quaternion.Lerp(_startRotation, _endRotation, _phase);
         _stateData.VisibleBodyTransform.rotation = rot;
         
+        _speed += _moveAcceleration * Time.deltaTime;
         _localTime += Time.deltaTime;
-        _speed = _speed + _moveAcceleration * Time.deltaTime;
     }
     
     public override void CheckForStateChange()
@@ -53,8 +53,7 @@ public class DragonflyAttackTailSuccessState : DragonflyMovementBaseState
         _phase = _localTime / _duration;
         if (_phase > 1)
         {
-            _phase = 1;
-            // _stateData.Owner.SwitchState();
+            _stateData.Owner.SwitchState();
         }
     }
 }

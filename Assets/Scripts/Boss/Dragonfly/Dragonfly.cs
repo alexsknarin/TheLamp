@@ -15,22 +15,36 @@ public class Dragonfly : MonoBehaviour
     [SerializeField] private float _patrolWaitMax;
     [SerializeField] private DragonflyPatrolAttackZoneRanges _patrolAttackZonesL;
     [SerializeField] private DragonflyPatrolAttackZoneRanges _patrolAttackZonesR;
-    [Header("Spider Patrol")]
+    [SerializeField] private float _patrolTailWaitMin;
+    [SerializeField] private float _patrolTailWaitMax;
+    [SerializeField] private Vector3 _tailAttackZoneLMin;
+    [SerializeField] private Vector3 _tailAttackZoneLMax;
+    [SerializeField] private Vector3 _tailAttackZoneRMin;
+    [SerializeField] private Vector3 _tailAttackZoneRMax;
+    [Header("Spider")]
     [SerializeField] private DragonflySpiderPatrolAttackZoneRanges _spiderPatrolAttackZones;
     [SerializeField] private float _spiderPatrolWaitMin;
     [SerializeField] private float _spiderPatrolWaitMax;
+    [SerializeField] private float _waitAfterSpiderAttack = 0.5f;
+    [SerializeField] private DragonflySpider _spider;
     
     private float _hoverWait;
     private float _patrolHeadWait;
+    private float _patrolTailWait;
     private float _patrolSpiderWait;
     private float _localTime = 0;
     private bool _isWaitingForHoverAttack = false;
     private bool _isWaitingForHeadPatrolAttack = false;
     private bool _isWaitingForHeadPatrolAttackPoint = false;
+    
+    private bool _isWaitingForTailPatrolAttack = false;
+    private bool _isWaitingForTailPatrolAttackPoint = false;
+    
     private bool _isWaitingForSpiderPatrolAttack = false;
     private bool _isWaitingForSpiderPatrolAttackPoint = false;
     private int _lastPatrolDirection = 0;
     private bool _isLastPatrolDirectionSet = false;
+    private bool _isWaitingForSpiderAttackEnd = false;
     
     private DragonflyPatrolAttackZoneRangesData _patrolAttackZonesData = new DragonflyPatrolAttackZoneRangesData();
     private DragonflySpiderPatrolAttackZoneRangesData _spiderPatrolAttackZonesData = new DragonflySpiderPatrolAttackZoneRangesData();
@@ -46,6 +60,7 @@ public class Dragonfly : MonoBehaviour
         _dragonflyMovement.OnAfterAttackExitEnded += OnAfterAttackExitEnded;
         _dragonflyMovement.OnAttackStarted += OnAttackStarted;
         _dragonflyMovement.OnAttackEnded += OnAttackEnded;
+        _spider.OnEnterAnimationEnd += OnSpiderEnterAnimationEnd;
     }
     
     private void OnDisable()
@@ -54,6 +69,7 @@ public class Dragonfly : MonoBehaviour
         _dragonflyMovement.OnAfterAttackExitEnded -= OnAfterAttackExitEnded;
         _dragonflyMovement.OnAttackStarted -= OnAttackStarted;
         _dragonflyMovement.OnAttackEnded -= OnAttackEnded;
+        _spider.OnEnterAnimationEnd -= OnSpiderEnterAnimationEnd;
     }
 
     private void Start()
@@ -62,7 +78,11 @@ public class Dragonfly : MonoBehaviour
         _patrolAttackPositionProvider = new DragonflyPatrolAttackPositionProvider(
             _patrolAttackZonesL, 
             _patrolAttackZonesR, 
-            _spiderPatrolAttackZones);
+            _spiderPatrolAttackZones,
+            _tailAttackZoneLMin,
+            _tailAttackZoneLMax,
+            _tailAttackZoneRMin,
+            _tailAttackZoneRMax);
     }
 
     public void Initialize()
@@ -70,6 +90,8 @@ public class Dragonfly : MonoBehaviour
         _isWaitingForHoverAttack = false;
         _isWaitingForHeadPatrolAttack = false;
         _isWaitingForHeadPatrolAttackPoint = false;
+        _isWaitingForTailPatrolAttack = false;
+        _isWaitingForTailPatrolAttackPoint = false;
         _isWaitingForSpiderPatrolAttack = false;
         _isWaitingForSpiderPatrolAttackPoint = false;
     }
@@ -79,6 +101,8 @@ public class Dragonfly : MonoBehaviour
         _isWaitingForHoverAttack = false;
         _isWaitingForHeadPatrolAttack = false;
         _isWaitingForHeadPatrolAttackPoint = false;
+        _isWaitingForTailPatrolAttack = false;
+        _isWaitingForTailPatrolAttackPoint = false;
         _isWaitingForSpiderPatrolAttack = false;
         _isWaitingForSpiderPatrolAttackPoint = false;
         StartBossActivePhase();
@@ -95,9 +119,9 @@ public class Dragonfly : MonoBehaviour
     }
     
     // Attack Handle Methods ---------------------------------------------------
-    private void StartAttack()
+    private void StartAttack(DragonflyPatrolAttackMode mode)
     {
-        _dragonflyMovement.StartAttack();
+        _dragonflyMovement.StartAttack(mode);
     }
     
     // Hover Attack -------------------------------------------------------------
@@ -115,7 +139,7 @@ public class Dragonfly : MonoBehaviour
             _localTime += Time.deltaTime;
             if (_localTime >= _hoverWait)
             {
-                StartAttack();
+                StartAttack(DragonflyPatrolAttackMode.Head);
                 _isWaitingForHoverAttack = false;
             }
         }
@@ -166,12 +190,65 @@ public class Dragonfly : MonoBehaviour
                     {
                         _isWaitingForHeadPatrolAttackPoint = false;
                         _isLastPatrolDirectionSet = false;
-                        StartAttack();
+                        StartAttack(DragonflyPatrolAttackMode.Head);
                     }
                 }
             }   
         }
     }
+    
+    // Tail Attack -------------------------------------------------------------
+    private void PreparePatrolToTailAttack()
+    {
+        _isWaitingForTailPatrolAttack = true;
+        _localTime = 0;
+        _patrolTailWait = Random.Range(_patrolTailWaitMin, _patrolTailWaitMax);
+    }
+    
+    private void WaitForTailAttack()
+    {
+        if (_isWaitingForTailPatrolAttack)
+        {
+            if(_localTime < _patrolTailWait)
+            {
+                _localTime += Time.deltaTime;
+            }
+            else
+            {
+                _patrolAttackPosition = _patrolAttackPositionProvider.GenerateRandomPreAttackTailPosition(_dragonflyMovement.State);
+                _isWaitingForTailPatrolAttack = false;
+                _isWaitingForTailPatrolAttackPoint = true;
+                _isLastPatrolDirectionSet = false;
+            }
+        }
+
+        if (_isWaitingForTailPatrolAttackPoint)
+        {
+            Vector3 currentPosition = _visibleBodyTransform.position;
+            currentPosition.y = 0;
+            currentPosition.Normalize();
+            float distance = Vector3.Distance(currentPosition, _patrolAttackPosition);
+            if (distance < 0.25f)
+            {
+                if (!_isLastPatrolDirectionSet)
+                {
+                    _lastPatrolDirection = (int)Mathf.Sign((_patrolAttackPosition - currentPosition).normalized.x);
+                    _isLastPatrolDirectionSet = true;
+                }
+                else
+                {
+                    float currentPatrolDirection = (int)Mathf.Sign((_patrolAttackPosition - currentPosition).normalized.x);
+                    if (currentPatrolDirection + _lastPatrolDirection == 0)
+                    {
+                        _isWaitingForTailPatrolAttackPoint = false;
+                        _isLastPatrolDirectionSet = false;
+                        StartAttack(DragonflyPatrolAttackMode.Tail);
+                    }
+                }
+            }   
+        }
+    }
+    
     
     // Spider Patrol Attack -----------------------------------------------------
     private void PrepareSpiderAttack()
@@ -180,6 +257,7 @@ public class Dragonfly : MonoBehaviour
         _isWaitingForSpiderPatrolAttackPoint = false;
         _localTime = 0;
         _patrolSpiderWait = Random.Range(_spiderPatrolWaitMin, _spiderPatrolWaitMax);
+        _isWaitingForSpiderAttackEnd = false;
     }
 
     private void WaitForSpiderAttack()
@@ -222,13 +300,37 @@ public class Dragonfly : MonoBehaviour
                     {
                         _isWaitingForSpiderPatrolAttackPoint = false;
                         _isLastPatrolDirectionSet = false;
-                        StartAttack();
+                        SpiderAttack();
+                        // StartAttack(DragonflyPatrolAttackMode.Tail);
                     }
                 }
             }   
         }
     }
+    
+    private void SpiderAttack()
+    {
+        _spider.gameObject.transform.SetParent(this.transform);
+        _spider.PlayAttackAnimation();
+        _localTime = 0;
+        _isWaitingForSpiderAttackEnd = true;
+    }
 
+    private void WaitForSpiderAttackEnd()
+    {
+        if (_isWaitingForSpiderAttackEnd)
+        {
+            if (_localTime < _waitAfterSpiderAttack)
+            {
+                _localTime += Time.deltaTime;
+            }
+            else
+            {
+                _isWaitingForSpiderAttackEnd = false;
+                _dragonflyMovement.SwitchState();
+            }
+        }
+    }
 
 
     //--------------------------------------------------------------------------------
@@ -241,7 +343,15 @@ public class Dragonfly : MonoBehaviour
         }
         if (state == DragonflyStates.PatrolL || state == DragonflyStates.PatrolR)
         {
-            PreparePatrolToHeadAttack();
+            int mode = Random.Range(0, 2);
+            if (mode == 0)
+            {
+                PreparePatrolToHeadAttack();
+            }
+            else
+            {
+                PreparePatrolToTailAttack();
+            }
         }
         if (state == DragonflyStates.SpiderPatrolL || state == DragonflyStates.SpiderPatrolR)
         {
@@ -262,9 +372,26 @@ public class Dragonfly : MonoBehaviour
     
     private void OnAfterAttackExitEnded(DragonflyStates state)
     {
-        int mode = Random.Range(0, 3);
+        
+        DragonflyReturnMode mode = (DragonflyReturnMode)Random.Range(0, 3);
         int direction = RandomDirection.Generate();
+        if (mode == DragonflyReturnMode.Spider)
+        {
+            _spider.PlayStartAnimation(direction);
+        }
         _dragonflyMovement.Return(mode, direction);
+        
+    }
+
+    private void OnSpiderEnterAnimationEnd()
+    {
+        
+        _spider.gameObject.transform.SetParent(_visibleBodyTransform);
+        Vector3 pos = Vector3.zero;
+        pos.x = 0.012f;
+        pos.y = -0.286f;
+        pos.z = 0.082f;
+        _spider.gameObject.transform.localPosition = pos;
     }
     
     // 
@@ -275,8 +402,17 @@ public class Dragonfly : MonoBehaviour
             Play();
         }
         
+        if (Input.GetKeyDown(KeyCode.Z))
+        {
+            int direction = RandomDirection.Generate();
+            _spider.PlayStartAnimation(direction);
+            _dragonflyMovement.Return(DragonflyReturnMode.Spider, direction);
+        }
+        
         WaitForHoverAttack();
         WaitForHeadAttack();
         WaitForSpiderAttack();
+        WaitForTailAttack();
+        WaitForSpiderAttackEnd();
     }
 }

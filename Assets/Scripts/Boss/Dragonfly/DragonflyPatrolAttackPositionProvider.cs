@@ -11,10 +11,20 @@ public class DragonflyPatrolAttackPositionProvider
     private DragonflyPatrolAttackZoneRangesData _patrolAttackZonesData;
     private DragonflySpiderPatrolAttackZoneRangesData _spiderPatrolAttackZonesData = new DragonflySpiderPatrolAttackZoneRangesData();
     
+    private Vector3 _tailAttackZoneLMin;
+    private Vector3 _tailAttackZoneLMax;
+    private Vector3 _tailAttackZoneRMin;
+    private Vector3 _tailAttackZoneRMax;
+    
     public DragonflyPatrolAttackPositionProvider(
         DragonflyPatrolAttackZoneRanges patrolAttackZonesL,
         DragonflyPatrolAttackZoneRanges patrolAttackZonesR,
-        DragonflySpiderPatrolAttackZoneRanges spiderPatrolAttackZones)
+        DragonflySpiderPatrolAttackZoneRanges spiderPatrolAttackZones,
+        Vector3 tailAttackZoneLMin,
+        Vector3 tailAttackZoneLMax,
+        Vector3 tailAttackZoneRMin,
+        Vector3 tailAttackZoneRMax
+        )
     {
         _patrolAttackZonesL = patrolAttackZonesL;
         _patrolAttackZonesR = patrolAttackZonesR;
@@ -25,6 +35,11 @@ public class DragonflyPatrolAttackPositionProvider
         _patrolAttackZonesData = _patrolAttackZonesDataL;
         
         _spiderPatrolAttackZones.GetRanges(_spiderPatrolAttackZonesData);
+        
+        _tailAttackZoneLMin = tailAttackZoneLMin;
+        _tailAttackZoneLMax = tailAttackZoneLMax;
+        _tailAttackZoneRMin = tailAttackZoneRMin;
+        _tailAttackZoneRMax = tailAttackZoneRMax;
     }
     
     public Vector3 GenerateRandomPreAttackHeadPosition(DragonflyStates state)
@@ -73,7 +88,7 @@ public class DragonflyPatrolAttackPositionProvider
         patrolAttackPosition.z = Random.Range(rangeMin.z, rangeMax.z);
         patrolAttackPosition.Normalize();
         
-        Debug.DrawRay(Vector3.zero, patrolAttackPosition*2, Color.blue, 8f);
+        Debug.DrawRay(Vector3.zero, patrolAttackPosition*2, Color.blue, 5f);
         
         patrolAttackPosition.y = 0;
         patrolAttackPosition.Normalize();
@@ -122,7 +137,37 @@ public class DragonflyPatrolAttackPositionProvider
         patrolAttackPosition.z = Random.Range(rangeMin.z, rangeMax.z);
         patrolAttackPosition.Normalize();
         
-        Debug.DrawRay(Vector3.zero, patrolAttackPosition*2, Color.yellow, 8f);
+        Debug.DrawRay(Vector3.zero, patrolAttackPosition*2, Color.yellow, 5f);
+        
+        patrolAttackPosition.y = 0;
+        patrolAttackPosition.Normalize();
+
+        return patrolAttackPosition;
+    }
+
+    public Vector3 GenerateRandomPreAttackTailPosition(DragonflyStates state)
+    {
+        Vector3 rangeMin = Vector3.zero;
+        Vector3 rangeMax = Vector3.zero;
+        
+        if (state == DragonflyStates.PatrolL)
+        {
+            rangeMin = _tailAttackZoneLMin;
+            rangeMax = _tailAttackZoneLMax;
+        }
+        if (state == DragonflyStates.PatrolR)
+        {
+            rangeMin = _tailAttackZoneRMin;
+            rangeMax = _tailAttackZoneRMax;
+        }
+        
+        Vector3 patrolAttackPosition = Vector3.zero;
+        patrolAttackPosition.x = Random.Range(rangeMin.x, rangeMax.x);
+        patrolAttackPosition.y = Random.Range(rangeMin.y, rangeMax.y);
+        patrolAttackPosition.z = Random.Range(rangeMin.z, rangeMax.z);
+        patrolAttackPosition.Normalize();
+        
+        Debug.DrawRay(Vector3.zero, patrolAttackPosition*2, Color.red, 5f);
         
         patrolAttackPosition.y = 0;
         patrolAttackPosition.Normalize();
