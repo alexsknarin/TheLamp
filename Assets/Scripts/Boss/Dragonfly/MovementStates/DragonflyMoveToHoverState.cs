@@ -1,9 +1,10 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 [CreateAssetMenu(fileName = "DragonflyMoveToHoverState", menuName = "DragonflyStates/DragonflyMoveToHoverState")]
 public class DragonflyMoveToHoverState : DragonflyMovementBaseState
 {
-    [SerializeField] private DragonflyStates _state = DragonflyStates.MoveToHover;
+    [SerializeField] private DragonflyState _state = DragonflyState.MoveToHover;
     [SerializeField] private Vector3[] _hoverPoints;
     [SerializeField] private float _zMaxDistance = -1.90932f;
     [SerializeField] private float _zMinDistance = 2f;
@@ -25,7 +26,7 @@ public class DragonflyMoveToHoverState : DragonflyMovementBaseState
     private Quaternion _endRotation = Quaternion.identity;
     
 
-    public override DragonflyStates State => _state;
+    public override DragonflyState State => _state;
     
     public override void EnterState(Vector3 currentPosition, int sideDirection, int depthDirection)
     {

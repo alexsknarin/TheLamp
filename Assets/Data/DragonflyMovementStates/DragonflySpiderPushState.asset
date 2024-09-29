@@ -1,0 +1,59 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 32304fda3f117674f8ade05e7ae7f80c, type: 3}
+  m_Name: DragonflySpiderPushState
+  m_EditorClassIdentifier: 
+  _state: 37
+  _distance: 0.32
+  _duration: 0.4
+  _animCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 6.5321383
+      outSlope: 6.5321383
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.026217543
+    - serializedVersion: 3
+      time: 0.2731298
+      value: 0.99686307
+      inSlope: -0.03667616
+      outSlope: -0.03667616
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.23803498
+      outWeight: 0.081408605
+    - serializedVersion: 3
+      time: 0.7646417
+      value: 0.14180872
+      inSlope: -1.6117549
+      outSlope: -1.6117549
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: -0.069204964
+      outSlope: -0.069204964
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.15725332
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4

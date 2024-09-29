@@ -5,6 +5,7 @@ using Random = UnityEngine.Random;
 public class Dragonfly : MonoBehaviour
 {
     [SerializeField] private DragonflyMovement _dragonflyMovement;
+    [SerializeField] private DragonflySwarm _swarm;
     [SerializeField] private DragonflyCollisionCatcher _collisionCatcher;
     [SerializeField] private Transform _visibleBodyTransform;
     [Header("Hover")]
@@ -25,7 +26,6 @@ public class Dragonfly : MonoBehaviour
     [SerializeField] private DragonflySpiderPatrolAttackZoneRanges _spiderPatrolAttackZones;
     [SerializeField] private float _spiderPatrolWaitMin;
     [SerializeField] private float _spiderPatrolWaitMax;
-    [SerializeField] private float _waitAfterSpiderAttack = 0.5f;
     [SerializeField] private DragonflySpider _spider;
     
     private float _hoverWait;
@@ -44,7 +44,6 @@ public class Dragonfly : MonoBehaviour
     private bool _isWaitingForSpiderPatrolAttackPoint = false;
     private int _lastPatrolDirection = 0;
     private bool _isLastPatrolDirectionSet = false;
-    private bool _isWaitingForSpiderAttackEnd = false;
     
     private DragonflyPatrolAttackZoneRangesData _patrolAttackZonesData = new DragonflyPatrolAttackZoneRangesData();
     private DragonflySpiderPatrolAttackZoneRangesData _spiderPatrolAttackZonesData = new DragonflySpiderPatrolAttackZoneRangesData();
@@ -257,7 +256,6 @@ public class Dragonfly : MonoBehaviour
         _isWaitingForSpiderPatrolAttackPoint = false;
         _localTime = 0;
         _patrolSpiderWait = Random.Range(_spiderPatrolWaitMin, _spiderPatrolWaitMax);
-        _isWaitingForSpiderAttackEnd = false;
     }
 
     private void WaitForSpiderAttack()
@@ -313,36 +311,28 @@ public class Dragonfly : MonoBehaviour
         _spider.gameObject.transform.SetParent(this.transform);
         _spider.PlayAttackAnimation();
         _localTime = 0;
-        _isWaitingForSpiderAttackEnd = true;
+        _dragonflyMovement.SwitchState();
     }
-
-    private void WaitForSpiderAttackEnd()
-    {
-        if (_isWaitingForSpiderAttackEnd)
-        {
-            if (_localTime < _waitAfterSpiderAttack)
-            {
-                _localTime += Time.deltaTime;
-            }
-            else
-            {
-                _isWaitingForSpiderAttackEnd = false;
-                _dragonflyMovement.SwitchState();
-            }
-        }
-    }
-
 
     //--------------------------------------------------------------------------------
     // Event Handle Methods
-    private void OnReadyToAttackStateEntered(DragonflyStates state)
+    private void OnReadyToAttackStateEntered(DragonflyState state, DragonflyState prevState)
     {
-        if (state == DragonflyStates.Hover)
+        if (state == DragonflyState.Hover)
         {
             PrepareHoverAttack();
         }
-        if (state == DragonflyStates.PatrolL || state == DragonflyStates.PatrolR)
+        if (state == DragonflyState.PatrolL || state == DragonflyState.PatrolR)
         {
+            if (prevState == DragonflyState.EnterToPatrolL || prevState == DragonflyState.MoveToPatrolL)
+            {
+                _swarm.PlayAttack(1);
+            }
+            if (prevState == DragonflyState.EnterToPatrolR || prevState == DragonflyState.MoveToPatrolR)
+            {
+                _swarm.PlayAttack(-1);
+            }
+                
             int mode = Random.Range(0, 2);
             if (mode == 0)
             {
@@ -353,7 +343,7 @@ public class Dragonfly : MonoBehaviour
                 PreparePatrolToTailAttack();
             }
         }
-        if (state == DragonflyStates.SpiderPatrolL || state == DragonflyStates.SpiderPatrolR)
+        if (state == DragonflyState.SpiderPatrolL || state == DragonflyState.SpiderPatrolR)
         {
             PrepareSpiderAttack();
         }
@@ -370,7 +360,7 @@ public class Dragonfly : MonoBehaviour
     }
     
     
-    private void OnAfterAttackExitEnded(DragonflyStates state)
+    private void OnAfterAttackExitEnded(DragonflyState state)
     {
         
         DragonflyReturnMode mode = (DragonflyReturnMode)Random.Range(0, 3);
@@ -413,6 +403,5 @@ public class Dragonfly : MonoBehaviour
         WaitForHeadAttack();
         WaitForSpiderAttack();
         WaitForTailAttack();
-        WaitForSpiderAttackEnd();
     }
 }

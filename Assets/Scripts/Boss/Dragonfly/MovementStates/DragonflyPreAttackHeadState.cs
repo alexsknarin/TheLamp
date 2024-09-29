@@ -1,14 +1,15 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 [CreateAssetMenu(fileName = "DragonflyPreAttackHeadState", menuName = "DragonflyStates/DragonflyPreAttackHeadState")]
 public class DragonflyPreAttackHeadState : DragonflyMovementBaseState
 {
-    [SerializeField] private DragonflyStates _state = DragonflyStates.PreAttackHeadL;
+    [SerializeField] private DragonflyState _state = DragonflyState.PreAttackHeadL;
     [SerializeField] private float _speed = 4f;
     [SerializeField] private float _duration = 0.4f;
     [SerializeField] private float _deccelerationPower = 2f;
     [SerializeField] private float _sideSpeed = 0.5f;
-    public override DragonflyStates State => _state;
+    public override DragonflyState State => _state;
     
     private Vector3 _attackDirection;
     private float _sideDirection;
@@ -20,11 +21,11 @@ public class DragonflyPreAttackHeadState : DragonflyMovementBaseState
     {
         if(depthDirection == 1)
         {
-            _state = DragonflyStates.PreAttackHeadL;
+            _state = DragonflyState.PreAttackHeadL;
         }
         else
         {
-            _state = DragonflyStates.PreAttackHeadR;
+            _state = DragonflyState.PreAttackHeadR;
         }
         _stateData.VisibleBodyTransform.SetParent(_stateData.Owner.transform);
         _attackDirection = -_stateData.VisibleBodyTransform.position.normalized;

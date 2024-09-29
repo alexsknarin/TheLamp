@@ -1,4 +1,4 @@
-public enum DragonflyStates
+public enum DragonflyState
 {
     Idle,
     EnterToPatrolL,
@@ -35,5 +35,7 @@ public enum DragonflyStates
     SpiderPatrolR,
     SpiderPreattackHeadTransitionStateR,
     MoveToPatrolL,
-    MoveToPatrolR
+    MoveToPatrolR,
+    SpiderPushL,
+    SpiderPushR
 }

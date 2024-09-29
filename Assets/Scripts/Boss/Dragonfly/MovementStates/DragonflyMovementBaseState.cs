@@ -4,7 +4,7 @@ public abstract class DragonflyMovementBaseState : ScriptableObject, IMovementSt
 {
     protected DragonflyMovementStateData _stateData;
     
-    abstract public DragonflyStates State { get; }
+    abstract public DragonflyState State { get; }
     
     public virtual void SetCommonStateDependencies(DragonflyMovementStateData stateData)
     {

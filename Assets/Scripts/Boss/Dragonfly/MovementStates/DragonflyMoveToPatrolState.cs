@@ -1,10 +1,11 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 [CreateAssetMenu(fileName = "DragonflyMoveToPatrolState", menuName = "DragonflyStates/DragonflyMoveToPatrolState")]
 public class DragonflyMoveToPatrolState : DragonflyMovementBaseState
 {
-    [SerializeField] private DragonflyStates _state = DragonflyStates.MoveToPatrolL;
-    public override DragonflyStates State => _state;
+    [SerializeField] private DragonflyState _state = DragonflyState.MoveToPatrolL;
+    public override DragonflyState State => _state;
 
     public override void EnterState(Vector3 currentPosition, int sideDirection, int depthDirection)
     {
@@ -14,11 +15,11 @@ public class DragonflyMoveToPatrolState : DragonflyMovementBaseState
         
         if (sideDirection == 1)
         {
-            _state = DragonflyStates.MoveToPatrolL;
+            _state = DragonflyState.MoveToPatrolL;
         }
         else
         {
-            _state = DragonflyStates.MoveToPatrolR;
+            _state = DragonflyState.MoveToPatrolR;
         }
         
         _stateData.Owner.PlayClip(_state);

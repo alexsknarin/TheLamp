@@ -1,20 +1,21 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 [CreateAssetMenu(fileName = "DragonflyPatrolState", menuName = "DragonflyStates/DragonflyPatrolState")]
 public class DragonflyPatrolState : DragonflyMovementBaseState
 {
-    [SerializeField] private DragonflyStates _state = DragonflyStates.PatrolL;
-    public override DragonflyStates State => _state;
+    [SerializeField] private DragonflyState _state = DragonflyState.PatrolL;
+    public override DragonflyState State => _state;
 
     public override void EnterState(Vector3 currentPosition, int sideDirection, int depthDirection)
     {
         if(sideDirection == 1)
         {
-            _state = DragonflyStates.PatrolL;
+            _state = DragonflyState.PatrolL;
         }
         else
         {
-            _state = DragonflyStates.PatrolR;
+            _state = DragonflyState.PatrolR;
         }
         
         _stateData.PatrolRotator.SetRotationPhase(currentPosition);

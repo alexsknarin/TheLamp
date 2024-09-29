@@ -1,14 +1,15 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 [CreateAssetMenu(fileName = "DragonflyFallHeadState", menuName = "DragonflyStates/DragonflyFallHeadState")]
 public class DragonflyFallHeadState : DragonflyMovementBaseState
 {
-    [SerializeField] private DragonflyStates _state = DragonflyStates.FallHead;
+    [SerializeField] private DragonflyState _state = DragonflyState.FallHead;
     [SerializeField] private float _duration = 1.1f;
     [SerializeField] private AnimationCurve _headFallRotateCurve;
     [SerializeField] private AnimationCurve _headFallFallDownCurve;
 
-    public override DragonflyStates State => _state;
+    public override DragonflyState State => _state;
     
     private float _headFallStartPosY = 0f;
     private float _localTime = 0f;
