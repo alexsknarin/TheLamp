@@ -32,7 +32,7 @@ public class Dragonfly : MonoBehaviour
     private float _patrolHeadWait;
     private float _patrolTailWait;
     private float _patrolSpiderWait;
-    private float _localTime = 0;
+    [SerializeField] private float _localTime = 0;
     private bool _isWaitingForHoverAttack = false;
     private bool _isWaitingForHeadPatrolAttack = false;
     private bool _isWaitingForHeadPatrolAttackPoint = false;
@@ -145,11 +145,11 @@ public class Dragonfly : MonoBehaviour
     }
     
     // Head Attack ------------------------------------------------------------- 
-    private void PreparePatrolToHeadAttack()
+    private void PreparePatrolToHeadAttack(float minWaitTime)
     {
-        _isWaitingForHeadPatrolAttack = true;
         _localTime = 0;
-        _patrolHeadWait = Random.Range(_patrolWaitMin, _patrolWaitMax);
+        _isWaitingForHeadPatrolAttack = true;
+        _patrolHeadWait = Random.Range(minWaitTime, _patrolWaitMax);
     }
 
     private void WaitForHeadAttack()
@@ -197,11 +197,11 @@ public class Dragonfly : MonoBehaviour
     }
     
     // Tail Attack -------------------------------------------------------------
-    private void PreparePatrolToTailAttack()
+    private void PreparePatrolToTailAttack(float minWaitTime)
     {
-        _isWaitingForTailPatrolAttack = true;
         _localTime = 0;
-        _patrolTailWait = Random.Range(_patrolTailWaitMin, _patrolTailWaitMax);
+        _isWaitingForTailPatrolAttack = true;
+        _patrolTailWait = Random.Range(minWaitTime, _patrolTailWaitMax);
     }
     
     private void WaitForTailAttack()
@@ -252,9 +252,9 @@ public class Dragonfly : MonoBehaviour
     // Spider Patrol Attack -----------------------------------------------------
     private void PrepareSpiderAttack()
     {
+        _localTime = 0;
         _isWaitingForSpiderPatrolAttack = true;
         _isWaitingForSpiderPatrolAttackPoint = false;
-        _localTime = 0;
         _patrolSpiderWait = Random.Range(_spiderPatrolWaitMin, _spiderPatrolWaitMax);
     }
 
@@ -308,9 +308,9 @@ public class Dragonfly : MonoBehaviour
     
     private void SpiderAttack()
     {
+        _localTime = 0;
         _spider.gameObject.transform.SetParent(this.transform);
         _spider.PlayAttackAnimation();
-        _localTime = 0;
         _dragonflyMovement.SwitchState();
     }
 
@@ -324,23 +324,27 @@ public class Dragonfly : MonoBehaviour
         }
         if (state == DragonflyState.PatrolL || state == DragonflyState.PatrolR)
         {
+            float minWaitTime = 0;
             if (prevState == DragonflyState.EnterToPatrolL || prevState == DragonflyState.MoveToPatrolL)
             {
                 _swarm.PlayAttack(1);
+                minWaitTime = _patrolWaitMin;
             }
             if (prevState == DragonflyState.EnterToPatrolR || prevState == DragonflyState.MoveToPatrolR)
             {
                 _swarm.PlayAttack(-1);
+                minWaitTime = _patrolWaitMin;
+            
             }
-                
+            
             int mode = Random.Range(0, 2);
             if (mode == 0)
             {
-                PreparePatrolToHeadAttack();
+                PreparePatrolToHeadAttack(minWaitTime);
             }
             else
             {
-                PreparePatrolToTailAttack();
+                PreparePatrolToTailAttack(minWaitTime);
             }
         }
         if (state == DragonflyState.SpiderPatrolL || state == DragonflyState.SpiderPatrolR)

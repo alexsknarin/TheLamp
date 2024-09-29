@@ -13750,23 +13750,24 @@ MonoBehaviour:
   _visibleBodyTransform: {fileID: 1720334790}
   _hoverWaitMin: 0.5
   _hoverWaitMax: 2
-  _patrolWaitMin: 1
+  _patrolWaitMin: 2
   _patrolWaitMax: 2.2
   _patrolAttackZonesL: {fileID: 11400000, guid: 7e96f2076b5edb84ab43969652ed065f,
     type: 2}
   _patrolAttackZonesR: {fileID: 11400000, guid: ab3e3f64eabbf794aad6fbb0033308d3,
     type: 2}
-  _patrolTailWaitMin: 0
-  _patrolTailWaitMax: 1.5
+  _patrolTailWaitMin: 2
+  _patrolTailWaitMax: 2.2
   _tailAttackZoneLMin: {x: 0.63, y: -0.42, z: -0.65}
   _tailAttackZoneLMax: {x: 0.26, y: -0.55, z: -0.79}
   _tailAttackZoneRMin: {x: -0.63, y: -0.42, z: -0.65}
   _tailAttackZoneRMax: {x: -0.26, y: -0.55, z: -0.79}
   _spiderPatrolAttackZones: {fileID: 11400000, guid: 5049cbd4c9e10754fb99e200b57e1bdb,
     type: 2}
-  _spiderPatrolWaitMin: 0.25
-  _spiderPatrolWaitMax: 1
+  _spiderPatrolWaitMin: 0.05
+  _spiderPatrolWaitMax: 0.8
   _spider: {fileID: 834016945}
+  _localTime: 0
 --- !u!114 &1536401420
 MonoBehaviour:
   m_ObjectHideFlags: 0
