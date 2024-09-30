@@ -38,5 +38,9 @@ public enum DragonflyState
     MoveToPatrolR,
     SpiderPushL,
     SpiderPushR,
-    AttackTailSuccessR
+    AttackTailSuccessR,
+    ReturnTransitionLRBT,
+    ReturnTransitionLRTB,
+    ReturnTransitionRLBT,
+    ReturnTransitionRLTB
 }

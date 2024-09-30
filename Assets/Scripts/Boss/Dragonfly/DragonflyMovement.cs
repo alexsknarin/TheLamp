@@ -30,6 +30,11 @@ public class DragonflyMovement : MonoBehaviour
     [SerializeField] private AnimationClip _catchSpiderRClip;
     [SerializeField] private AnimationClip _moveToPatrolLClip;
     [SerializeField] private AnimationClip _moveToPatrolRClip;
+    [SerializeField] private AnimationClip _returnTransitionLRBTClip;
+    [SerializeField] private AnimationClip _returnTransitionLRTBClip;
+    [SerializeField] private AnimationClip _returnTransitionRLBTClip;
+    [SerializeField] private AnimationClip _returnTransitionRLTBClip;
+    
 
     [Header("States")]  
     [SerializeField] private DragonflyMovementBaseState _idleState;
@@ -116,6 +121,10 @@ public class DragonflyMovement : MonoBehaviour
         _playablesContainer.AddClip(DragonflyState.CatchSpiderR, _catchSpiderRClip);
         _playablesContainer.AddClip(DragonflyState.MoveToPatrolL, _moveToPatrolLClip);
         _playablesContainer.AddClip(DragonflyState.MoveToPatrolR, _moveToPatrolRClip);
+        _playablesContainer.AddClip(DragonflyState.ReturnTransitionLRBT, _returnTransitionLRBTClip);
+        _playablesContainer.AddClip(DragonflyState.ReturnTransitionLRTB, _returnTransitionLRTBClip);
+        _playablesContainer.AddClip(DragonflyState.ReturnTransitionRLBT, _returnTransitionRLBTClip);
+        _playablesContainer.AddClip(DragonflyState.ReturnTransitionRLTB, _returnTransitionRLTBClip);
         
         _stateData = new DragonflyMovementStateData(
             this, 
