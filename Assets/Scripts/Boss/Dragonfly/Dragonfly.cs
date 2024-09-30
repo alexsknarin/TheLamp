@@ -373,8 +373,7 @@ public class Dragonfly : MonoBehaviour
         {
             _spider.PlayStartAnimation(direction);
         }
-        _dragonflyMovement.Return(mode, direction);
-        
+        _dragonflyMovement.ResolveReturnTransition(mode, direction);
     }
 
     private void OnSpiderEnterAnimationEnd()
@@ -399,7 +398,7 @@ public class Dragonfly : MonoBehaviour
         {
             int direction = RandomDirection.Generate();
             _spider.PlayStartAnimation(direction);
-            _dragonflyMovement.Return(DragonflyReturnMode.Spider, direction);
+            _dragonflyMovement.ResolveReturnTransition(DragonflyReturnMode.Spider, direction);
         }
         
         WaitForHoverAttack();

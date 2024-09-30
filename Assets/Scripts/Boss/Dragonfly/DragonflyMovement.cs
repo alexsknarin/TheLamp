@@ -21,24 +21,10 @@ public class DragonflyMovement : MonoBehaviour
     [SerializeField] private Transform _fallPoint;
     
     [Header("Animation Clips")]
-    [SerializeField] private AnimationClip _idleClip;
-    [SerializeField] private AnimationClip _enterToPatrolLClip;
-    [SerializeField] private AnimationClip _enterToPatrolRClip;
-    [SerializeField] private AnimationClip _catchSpiderLClip;
-    [SerializeField] private AnimationClip _enterToHoverLClip;
-    [SerializeField] private AnimationClip _enterToHoverRClip;
-    [SerializeField] private AnimationClip _catchSpiderRClip;
-    [SerializeField] private AnimationClip _moveToPatrolLClip;
-    [SerializeField] private AnimationClip _moveToPatrolRClip;
-    [SerializeField] private AnimationClip _returnTransitionLRBTClip;
-    [SerializeField] private AnimationClip _returnTransitionLRTBClip;
-    [SerializeField] private AnimationClip _returnTransitionRLBTClip;
-    [SerializeField] private AnimationClip _returnTransitionRLTBClip;
-    
+    [SerializeField] private DragonflyAnimClipCollection _animClipCollection;
 
     [Header("States")]  
     [SerializeField] private DragonflyMovementBaseState _idleState;
-    
     [SerializeField] private DragonflyMovementBaseState _attackHeadState;
     [SerializeField] private DragonflyMovementBaseState _attackHeadSuccess;
     [SerializeField] private DragonflyMovementBaseState _attackHoverState;
@@ -72,7 +58,7 @@ public class DragonflyMovement : MonoBehaviour
     
     private DragonflyMovementStateData _stateData;
     private DragonflyMovementBaseState _currentMovementState;
-    private DragonflyState _prevDragonflyState;
+    [SerializeField] private DragonflyState _prevDragonflyState;
     private AnimationClipPlayable _currentAnimationClipPlayable;
     private DragonflyPlayablesContainer _playablesContainer;
     
@@ -82,6 +68,11 @@ public class DragonflyMovement : MonoBehaviour
     private PlayableOutput _playableOutput;
     
     // Add state switch variables
+    
+    // Return Resolve
+    private bool _isReturnResolved = true;
+    private DragonflyMovementBaseState _returnState;
+    private int _returnSideDirection;
     
     
     private bool _isCollided = false;
@@ -111,20 +102,8 @@ public class DragonflyMovement : MonoBehaviour
         _playableOutput = AnimationPlayableOutput.Create(_playableGraph, "Animation", _animator);
         _playablesContainer = new DragonflyPlayablesContainer(_playableGraph);
         
-        // Add clips
-        _playablesContainer.AddClip(DragonflyState.Idle, _idleClip);
-        _playablesContainer.AddClip(DragonflyState.EnterToPatrolL, _enterToPatrolLClip);  
-        _playablesContainer.AddClip(DragonflyState.EnterToPatrolR, _enterToPatrolRClip);  
-        _playablesContainer.AddClip(DragonflyState.CatchSpiderL, _catchSpiderLClip);
-        _playablesContainer.AddClip(DragonflyState.EnterToHoverL, _enterToHoverLClip);
-        _playablesContainer.AddClip(DragonflyState.EnterToHoverR, _enterToHoverRClip);
-        _playablesContainer.AddClip(DragonflyState.CatchSpiderR, _catchSpiderRClip);
-        _playablesContainer.AddClip(DragonflyState.MoveToPatrolL, _moveToPatrolLClip);
-        _playablesContainer.AddClip(DragonflyState.MoveToPatrolR, _moveToPatrolRClip);
-        _playablesContainer.AddClip(DragonflyState.ReturnTransitionLRBT, _returnTransitionLRBTClip);
-        _playablesContainer.AddClip(DragonflyState.ReturnTransitionLRTB, _returnTransitionLRTBClip);
-        _playablesContainer.AddClip(DragonflyState.ReturnTransitionRLBT, _returnTransitionRLBTClip);
-        _playablesContainer.AddClip(DragonflyState.ReturnTransitionRLTB, _returnTransitionRLTBClip);
+        // Add clips to container
+        _animClipCollection.Initialize(_playablesContainer);
         
         _stateData = new DragonflyMovementStateData(
             this, 
@@ -175,22 +154,138 @@ public class DragonflyMovement : MonoBehaviour
         MovementSetup(state, sideDirection);
     }
     
-    public void Return(DragonflyReturnMode mode, int sideDirection)
+    public void ResolveReturnTransition(DragonflyReturnMode mode, int sideDirection)
     {
+        _prevDragonflyState = _currentMovementState.State;
         _sideDirection = sideDirection;
+        DragonflyExitEnterDirection exitDirection = GetCurrentExitDirection(_currentMovementState.State, _visibleBodyTransform.position);
+        DragonflyState returnMovementState = GetReturnState(mode, sideDirection, exitDirection);
+        
+        // Set return state
+        switch (returnMovementState)
+        {
+            case DragonflyState.MoveToPatrolL:
+                SetState(_moveToPatrolState, _visibleBodyTransform.position, 1, 1);
+                break;
+            case DragonflyState.MoveToPatrolR:
+                SetState(_moveToPatrolState, _visibleBodyTransform.position, -1, 1);
+                break;
+            case DragonflyState.CatchSpiderL:
+                SetState(_catchSpiderState, _visibleBodyTransform.position, 1, 1);
+                break;
+            case DragonflyState.CatchSpiderR:
+                SetState(_catchSpiderState, _visibleBodyTransform.position, -1, 1);
+                break;
+            case DragonflyState.EnterToHoverL:
+                SetState(_enterToHoverState, _visibleBodyTransform.position, 1, 1);
+                break;
+            case DragonflyState.EnterToHoverR:
+                SetState(_enterToHoverState, _visibleBodyTransform.position, -1, 1);
+                break;
+            case DragonflyState.MoveToHover:
+                SetState(_moveToHoverState, _visibleBodyTransform.position, 1, 1);
+                break;
+        }
+    }
+    
+    private DragonflyExitEnterDirection GetCurrentExitDirection(DragonflyState state, Vector3 position)
+    {
+        switch (state)
+        {
+            case DragonflyState.AttackHeadSuccess:
+                if (position.x < 0)
+                {
+                    return DragonflyExitEnterDirection.RLBT;
+                }
+                else
+                {
+                    return DragonflyExitEnterDirection.LRBT;
+                }
+            case DragonflyState.FallHead:
+                if (position.x < 0)
+                {
+                    return DragonflyExitEnterDirection.RLTB;
+                }
+                else
+                {
+                    return DragonflyExitEnterDirection.LRTB;
+                }
+            case DragonflyState.AttackTailSuccessL:
+                return DragonflyExitEnterDirection.L;
+            case DragonflyState.AttackTailSuccessR:
+                return DragonflyExitEnterDirection.R;
+            case DragonflyState.AttackTailFailL:
+                if (position.x < 0)
+                {
+                    return DragonflyExitEnterDirection.RLTB;
+                }
+                else
+                {
+                    return DragonflyExitEnterDirection.LRTB;
+                }
+            case DragonflyState.AttackTailFailR:
+                if (position.x < 0)
+                {
+                    return DragonflyExitEnterDirection.RLTB;
+                }
+                else
+                {
+                    return DragonflyExitEnterDirection.LRTB;
+                }
+            case DragonflyState.ReturnHover:
+                if (position.x < 0)
+                {
+                    return DragonflyExitEnterDirection.RLTB;
+                }
+                else
+                {
+                    return DragonflyExitEnterDirection.LRTB;
+                }
+            default:
+                return DragonflyExitEnterDirection.L;
+        }
+    }
+    
+    private DragonflyState GetReturnState(DragonflyReturnMode mode, int sideDirection, DragonflyExitEnterDirection exitDirection)
+    {
         if (mode == DragonflyReturnMode.Patrol)
         {
-            // TODO:
-            SetState(_moveToPatrolState, _animatedTransform.position, _sideDirection, 1);
+            if (sideDirection == 1)
+            {
+                return DragonflyState.MoveToPatrolL;
+            }
+            else
+            {
+                return DragonflyState.MoveToPatrolR;
+            }
         }
         else if (mode == DragonflyReturnMode.Hover)
         {
-            SetState(_moveToHoverState, _animatedTransform.position, _sideDirection, 1);
+            if (exitDirection == DragonflyExitEnterDirection.RLBT || exitDirection == DragonflyExitEnterDirection.L)
+            {
+                return DragonflyState.EnterToHoverL;
+            }
+            if (exitDirection == DragonflyExitEnterDirection.LRBT || exitDirection == DragonflyExitEnterDirection.R)
+            {
+                return DragonflyState.EnterToHoverR;
+            }
+            if (exitDirection == DragonflyExitEnterDirection.RLTB || exitDirection == DragonflyExitEnterDirection.LRTB)
+            {
+                return DragonflyState.MoveToHover;
+            }
         }
         else if (mode == DragonflyReturnMode.Spider)
         {
-            SetState(_catchSpiderState, _animatedTransform.position, _sideDirection, 1);
+            if (sideDirection == 1)
+            {
+                return DragonflyState.CatchSpiderL;
+            }
+            else
+            {
+                return DragonflyState.CatchSpiderR;
+            }
         }
+        return DragonflyState.Idle;
     }
 
     public void StartAttack(DragonflyPatrolAttackMode mode)
@@ -238,19 +333,19 @@ public class DragonflyMovement : MonoBehaviour
             //// -- Enter Patrol --
             case DragonflyState.EnterToPatrolL:
                 SetState(_patrolState, _visibleBodyTransform.position, 1, 1);
-                OnReadyToAttackStateEntered?.Invoke(DragonflyState.PatrolL, DragonflyState.EnterToPatrolL);
+                OnReadyToAttackStateEntered?.Invoke(DragonflyState.PatrolL, _prevDragonflyState);
                 break;
             case DragonflyState.EnterToPatrolR:
                 SetState(_patrolState, _visibleBodyTransform.position, -1, 1);
-                OnReadyToAttackStateEntered?.Invoke(DragonflyState.PatrolR, DragonflyState.EnterToPatrolR);
+                OnReadyToAttackStateEntered?.Invoke(DragonflyState.PatrolR, _prevDragonflyState);
                 break;
             case DragonflyState.MoveToPatrolL:
                 SetState(_patrolState, _visibleBodyTransform.position, 1, 1);
-                OnReadyToAttackStateEntered?.Invoke(DragonflyState.PatrolL, DragonflyState.MoveToPatrolL);
+                OnReadyToAttackStateEntered?.Invoke(DragonflyState.PatrolL, _prevDragonflyState);
                 break;
             case DragonflyState.MoveToPatrolR:
                 SetState(_patrolState, _visibleBodyTransform.position, -1, 1);
-                OnReadyToAttackStateEntered?.Invoke(DragonflyState.PatrolR, DragonflyState.MoveToPatrolR);
+                OnReadyToAttackStateEntered?.Invoke(DragonflyState.PatrolR, _prevDragonflyState);
                 break;
             // Patrol --> PreAttack Head 
             case DragonflyState.PatrolL:
@@ -365,15 +460,15 @@ public class DragonflyMovement : MonoBehaviour
             //// --- Enter Hover ---
             case DragonflyState.EnterToHoverL:
                 SetState(_hoverState, _visibleBodyTransform.position, 1, 1);
-                OnReadyToAttackStateEntered?.Invoke(DragonflyState.Hover, DragonflyState.EnterToHoverL);
+                OnReadyToAttackStateEntered?.Invoke(DragonflyState.Hover, _prevDragonflyState);
                 break;
             case DragonflyState.EnterToHoverR:
                 SetState(_hoverState, _visibleBodyTransform.position, -1, 1);
-                OnReadyToAttackStateEntered?.Invoke(DragonflyState.Hover, DragonflyState.EnterToHoverR);
+                OnReadyToAttackStateEntered?.Invoke(DragonflyState.Hover, _prevDragonflyState);
                 break;
             case DragonflyState.MoveToHover:
                 SetState(_hoverState, _visibleBodyTransform.position, 1, 1);
-                OnReadyToAttackStateEntered?.Invoke(DragonflyState.Hover, DragonflyState.MoveToHover);
+                OnReadyToAttackStateEntered?.Invoke(DragonflyState.Hover, _prevDragonflyState);
                 break;
             // Hover --> PreAttack Hover
             case DragonflyState.Hover:
@@ -405,16 +500,14 @@ public class DragonflyMovement : MonoBehaviour
             case DragonflyState.ReturnHover:
                 OnAfterAttackExitEnded?.Invoke(DragonflyState.ReturnHover);
                 break;
-            
-            
             // -- Catch Spider --
             // Spider 
             case DragonflyState.CatchSpiderL:
-                OnReadyToAttackStateEntered?.Invoke(DragonflyState.SpiderPatrolL, DragonflyState.CatchSpiderL);
+                OnReadyToAttackStateEntered?.Invoke(DragonflyState.SpiderPatrolL, _prevDragonflyState);
                 SetState(_spiderPatrolState, _visibleBodyTransform.position, 1, 1);
                 break;
             case DragonflyState.CatchSpiderR:
-                OnReadyToAttackStateEntered?.Invoke(DragonflyState.SpiderPatrolR, DragonflyState.CatchSpiderR);
+                OnReadyToAttackStateEntered?.Invoke(DragonflyState.SpiderPatrolR, _prevDragonflyState);
                 SetState(_spiderPatrolState, _visibleBodyTransform.position, -1, 1);
                 break;
             //
@@ -432,11 +525,11 @@ public class DragonflyMovement : MonoBehaviour
                 break;
             // //
             case DragonflyState.SpiderPreattackHeadTransitionStateL:
-                OnReadyToAttackStateEntered?.Invoke(DragonflyState.PatrolL, DragonflyState.SpiderPreattackHeadTransitionStateL);
+                OnReadyToAttackStateEntered?.Invoke(DragonflyState.PatrolL, _prevDragonflyState);
                 SetState(_patrolState, _visibleBodyTransform.position, 1, 1);
                 break;
             case DragonflyState.SpiderPreattackHeadTransitionStateR:
-                OnReadyToAttackStateEntered?.Invoke(DragonflyState.PatrolR, DragonflyState.SpiderPreattackHeadTransitionStateR);
+                OnReadyToAttackStateEntered?.Invoke(DragonflyState.PatrolR, _prevDragonflyState);
                 SetState(_patrolState, _visibleBodyTransform.position, -1, 1);
                 break;
         }
@@ -494,6 +587,10 @@ public class DragonflyMovement : MonoBehaviour
     
     private void SetState(DragonflyMovementBaseState toState, Vector3 position, int sideDirection, int depthDirection)
     {
+        if (_isReturnResolved)
+        {
+            _prevDragonflyState = _currentMovementState.State;
+        }
         _currentMovementState.ExitState();
         _currentMovementState = toState;
         _currentMovementState.EnterState(position, sideDirection, 1);

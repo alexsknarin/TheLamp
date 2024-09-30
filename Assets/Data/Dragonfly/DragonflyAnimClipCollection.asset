@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e43e39de3b94f6449899cb9bc048c16d, type: 3}
+  m_Name: DragonflyAnimClipCollection
+  m_EditorClassIdentifier: 
+  _idleClip: {fileID: 7400000, guid: 19dac01ea54d86c45a726bd910b29553, type: 2}
+  _enterToPatrolLClip: {fileID: 7400000, guid: f5f743d546b656047b5c2db5af5d25ad, type: 2}
+  _enterToPatrolRClip: {fileID: 7400000, guid: 41ee370514b2b3e4b8f06584522ddfee, type: 2}
+  _catchSpiderLClip: {fileID: 7400000, guid: 06a9e7dc88c0872459ef5eb7031595dc, type: 2}
+  _catchSpiderRClip: {fileID: 7400000, guid: 69dbfb513d6fc0d4899f4793e8615385, type: 2}
+  _enterToHoverLClip: {fileID: 7400000, guid: ed123d75c4790c14b894b2d4dee839d2, type: 2}
+  _enterToHoverRClip: {fileID: 7400000, guid: 597500e6f0f96864b862868cb29be191, type: 2}
+  _moveToPatrolLClip: {fileID: 7400000, guid: d93b8b1839b994b4497189c8a1270eb9, type: 2}
+  _moveToPatrolRClip: {fileID: 7400000, guid: 8c222dd85f2f2924d9e5c7dc5daebebc, type: 2}
+  _returnTransitionLRBTClip: {fileID: 7400000, guid: cf844f0ea4fbbeb42a7769d6104a6456,
+    type: 2}
+  _returnTransitionLRTBClip: {fileID: 7400000, guid: f28acf6086dec074fb8d7c358763f70e,
+    type: 2}
+  _returnTransitionRLBTClip: {fileID: 7400000, guid: 2140b50b7534fa64a9b5a0aad9fc83cf,
+    type: 2}
+  _returnTransitionRLTBClip: {fileID: 7400000, guid: f988450511026b14c9e703f911a1844e,
+    type: 2}
