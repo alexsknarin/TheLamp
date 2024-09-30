@@ -379,7 +379,6 @@ public class Dragonfly : MonoBehaviour
 
     private void OnSpiderEnterAnimationEnd()
     {
-        
         _spider.gameObject.transform.SetParent(_visibleBodyTransform);
         Vector3 pos = Vector3.zero;
         pos.x = 0.012f;

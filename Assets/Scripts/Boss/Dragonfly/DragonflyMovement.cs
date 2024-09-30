@@ -344,6 +344,9 @@ public class DragonflyMovement : MonoBehaviour
             case DragonflyState.AttackTailSuccessL:
                 OnAfterAttackExitEnded?.Invoke(DragonflyState.AttackTailSuccessL);
                 break;
+            case DragonflyState.AttackTailSuccessR:
+                OnAfterAttackExitEnded?.Invoke(DragonflyState.AttackTailSuccessR);
+                break;
             case DragonflyState.AttackTailFailL:
                 OnAfterAttackExitEnded?.Invoke(DragonflyState.AttackTailFailL);
                 break;

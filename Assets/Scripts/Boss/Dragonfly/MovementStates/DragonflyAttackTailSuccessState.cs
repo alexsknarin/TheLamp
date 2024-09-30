@@ -34,6 +34,15 @@ public class DragonflyAttackTailSuccessState : DragonflyMovementBaseState
         _phase = 0f;
         _speed = _startSpeed;
         
+        if (_endDirection.x < 0)
+        {
+            _state = DragonflyState.AttackTailSuccessL;
+        }
+        else
+        {
+            _state = DragonflyState.AttackTailSuccessR;
+        }
+        
     }
     
     public override void ExecuteState(Vector3 currentPosition)
