@@ -4786,7 +4786,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &568085644
 Transform:
   m_ObjectHideFlags: 0
@@ -13197,19 +13197,6 @@ MonoBehaviour:
   _fallPoint: {fileID: 780930765}
   _animClipCollection: {fileID: 11400000, guid: 2edc64060a6724243bafcc5920220f71,
     type: 2}
-  _idleClip: {fileID: 7400000, guid: 19dac01ea54d86c45a726bd910b29553, type: 2}
-  _enterToPatrolLClip: {fileID: 7400000, guid: f5f743d546b656047b5c2db5af5d25ad, type: 2}
-  _enterToPatrolRClip: {fileID: 7400000, guid: 41ee370514b2b3e4b8f06584522ddfee, type: 2}
-  _catchSpiderLClip: {fileID: 7400000, guid: 06a9e7dc88c0872459ef5eb7031595dc, type: 2}
-  _enterToHoverLClip: {fileID: 7400000, guid: ed123d75c4790c14b894b2d4dee839d2, type: 2}
-  _enterToHoverRClip: {fileID: 7400000, guid: 597500e6f0f96864b862868cb29be191, type: 2}
-  _catchSpiderRClip: {fileID: 7400000, guid: 69dbfb513d6fc0d4899f4793e8615385, type: 2}
-  _moveToPatrolLClip: {fileID: 7400000, guid: d93b8b1839b994b4497189c8a1270eb9, type: 2}
-  _moveToPatrolRClip: {fileID: 7400000, guid: 8c222dd85f2f2924d9e5c7dc5daebebc, type: 2}
-  _returnTransitionLRBTClip: {fileID: 0}
-  _returnTransitionLRTBClip: {fileID: 0}
-  _returnTransitionRLBTClip: {fileID: 0}
-  _returnTransitionRLTBClip: {fileID: 0}
   _idleState: {fileID: 11400000, guid: dae798be4ba6af24fbd3ac1e9b6fea98, type: 2}
   _attackHeadState: {fileID: 11400000, guid: 09b8b47a847391b40ad370f775325f83, type: 2}
   _attackHeadSuccess: {fileID: 11400000, guid: 10201a7bc533f604bbd59e8a57021ee4, type: 2}
@@ -13240,6 +13227,11 @@ MonoBehaviour:
     type: 2}
   _moveToPatrolState: {fileID: 11400000, guid: ea769d6433e498a48b4942af94a76552, type: 2}
   _spiderPushState: {fileID: 11400000, guid: 9ac76c49df672f347a334773ddd95796, type: 2}
+  _returnTransitionBTState: {fileID: 11400000, guid: cb10b66f917ad204db69799b73d89fa8,
+    type: 2}
+  _returnTransitionTBState: {fileID: 11400000, guid: fca417af9cfa255479035cf7f3c6e900,
+    type: 2}
+  _prevDragonflyState: 0
 --- !u!114 &1536401419
 MonoBehaviour:
   m_ObjectHideFlags: 0

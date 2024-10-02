@@ -49,6 +49,8 @@ public class DragonflyMovement : MonoBehaviour
     [SerializeField] private DragonflyMovementBaseState _spiderPreAttackHeadTransitionState;
     [SerializeField] private DragonflyMovementBaseState _moveToPatrolState;
     [SerializeField] private DragonflyMovementBaseState _spiderPushState;
+    [SerializeField] private DragonflyMovementBaseState _returnTransitionBTState; // Top - Bottom
+    [SerializeField] private DragonflyMovementBaseState _returnTransitionTBState; // Bottom - Top
     public DragonflyState State => _currentMovementState.State;
     
     public event Action<DragonflyState, DragonflyState> OnReadyToAttackStateEntered; 
@@ -71,7 +73,7 @@ public class DragonflyMovement : MonoBehaviour
     
     // Return Resolve
     private bool _isReturnResolved = true;
-    private DragonflyMovementBaseState _returnState;
+    private DragonflyState _returnState;
     private int _returnSideDirection;
     
     
@@ -142,6 +144,8 @@ public class DragonflyMovement : MonoBehaviour
         _returnHoverState.SetCommonStateDependencies(_stateData);
         _moveToPatrolState.SetCommonStateDependencies(_stateData);
         _spiderPushState.SetCommonStateDependencies(_stateData);
+        _returnTransitionBTState.SetCommonStateDependencies(_stateData);
+        _returnTransitionTBState.SetCommonStateDependencies(_stateData);
         // 
 
         _currentMovementState = _idleState;
@@ -165,6 +169,113 @@ public class DragonflyMovement : MonoBehaviour
         switch (returnMovementState)
         {
             case DragonflyState.MoveToPatrolL:
+                if (exitDirection == DragonflyExitEnterDirection.RLBT)
+                {
+                    SetState(_returnTransitionTBState, _visibleBodyTransform.position, -1, 1);
+                    _isReturnResolved = false;
+                }
+                else if (exitDirection == DragonflyExitEnterDirection.L || exitDirection == DragonflyExitEnterDirection.RLTB)
+                {
+                    SetState(_returnTransitionBTState, _visibleBodyTransform.position, -1, 1);
+                    _isReturnResolved = false;
+                }
+                else
+                {
+                    // Other states
+                    SetState(_moveToPatrolState, _visibleBodyTransform.position, 1, 1);
+                    _isReturnResolved = true;
+                }
+                _returnState = DragonflyState.MoveToPatrolL;
+                break;
+            case DragonflyState.MoveToPatrolR:
+                if (exitDirection == DragonflyExitEnterDirection.LRBT)
+                {
+                    SetState(_returnTransitionTBState, _visibleBodyTransform.position, 1, 1);
+                    _isReturnResolved = false;
+                }
+                else if (exitDirection == DragonflyExitEnterDirection.R || exitDirection == DragonflyExitEnterDirection.LRTB)
+                {
+                    SetState(_returnTransitionBTState, _visibleBodyTransform.position, 1, 1);
+                    _isReturnResolved = false;
+                }
+                else
+                {
+                    // Other states
+                    SetState(_moveToPatrolState, _visibleBodyTransform.position, -1, 1);
+                    _isReturnResolved = true;
+                }
+                _returnState = DragonflyState.MoveToPatrolR;
+                break;
+            case DragonflyState.CatchSpiderL:
+                if (exitDirection == DragonflyExitEnterDirection.LRBT)
+                {
+                    SetState(_returnTransitionTBState, _visibleBodyTransform.position, 1, 1);
+                    _isReturnResolved = false;
+                }
+                else if (exitDirection == DragonflyExitEnterDirection.R)
+                {
+                    SetState(_returnTransitionBTState, _visibleBodyTransform.position, 1, 1);
+                    _isReturnResolved = false;
+                }
+                else
+                {
+                    // Other states
+                    SetState(_catchSpiderState, _visibleBodyTransform.position, 1, 1);
+                    _isReturnResolved = true;
+                }
+                _returnState = DragonflyState.CatchSpiderL;
+                break;
+            case DragonflyState.CatchSpiderR:
+                if (exitDirection == DragonflyExitEnterDirection.RLBT)
+                {
+                    SetState(_returnTransitionTBState, _visibleBodyTransform.position, -1, 1);
+                    _isReturnResolved = false;
+                }
+                else if (exitDirection == DragonflyExitEnterDirection.L)
+                {
+                    SetState(_returnTransitionBTState, _visibleBodyTransform.position, -1, 1);
+                    _isReturnResolved = false;
+                }
+                else
+                {
+                    // Other states
+                    SetState(_catchSpiderState, _visibleBodyTransform.position, -1, 1);
+                    _isReturnResolved = true;
+                }
+                _returnState = DragonflyState.CatchSpiderR;
+                break;
+            case DragonflyState.EnterToHoverL:
+                if (exitDirection == DragonflyExitEnterDirection.RLBT || exitDirection == DragonflyExitEnterDirection.L)
+                {
+                    SetState(_enterToHoverState, _visibleBodyTransform.position, 1, 1);
+                    _isReturnResolved = true;
+                }
+                _returnState = DragonflyState.EnterToHoverL;
+                break;
+            case DragonflyState.EnterToHoverR:
+                if (exitDirection == DragonflyExitEnterDirection.LRBT || exitDirection == DragonflyExitEnterDirection.R)
+                {
+                    SetState(_enterToHoverState, _visibleBodyTransform.position, -1, 1);
+                    _isReturnResolved = true;
+                }
+                _returnState = DragonflyState.EnterToHoverR;
+                break;
+            case DragonflyState.MoveToHover:
+                if (exitDirection == DragonflyExitEnterDirection.RLTB || exitDirection == DragonflyExitEnterDirection.LRTB)
+                {
+                    SetState(_moveToHoverState, _visibleBodyTransform.position, 1, 1);
+                    _isReturnResolved = true;
+                }
+                _returnState = DragonflyState.MoveToHover;
+                break;
+        }
+    }
+
+    private void ApplyResolvedReturnTransition()
+    {
+        switch (_returnState)
+        {
+            case DragonflyState.MoveToPatrolL:
                 SetState(_moveToPatrolState, _visibleBodyTransform.position, 1, 1);
                 break;
             case DragonflyState.MoveToPatrolR:
@@ -176,16 +287,8 @@ public class DragonflyMovement : MonoBehaviour
             case DragonflyState.CatchSpiderR:
                 SetState(_catchSpiderState, _visibleBodyTransform.position, -1, 1);
                 break;
-            case DragonflyState.EnterToHoverL:
-                SetState(_enterToHoverState, _visibleBodyTransform.position, 1, 1);
-                break;
-            case DragonflyState.EnterToHoverR:
-                SetState(_enterToHoverState, _visibleBodyTransform.position, -1, 1);
-                break;
-            case DragonflyState.MoveToHover:
-                SetState(_moveToHoverState, _visibleBodyTransform.position, 1, 1);
-                break;
         }
+        _isReturnResolved = true;
     }
     
     private DragonflyExitEnterDirection GetCurrentExitDirection(DragonflyState state, Vector3 position)
@@ -591,6 +694,10 @@ public class DragonflyMovement : MonoBehaviour
         {
             _prevDragonflyState = _currentMovementState.State;
         }
+        else
+        {
+            _prevDragonflyState = _returnState;
+        }
         _currentMovementState.ExitState();
         _currentMovementState = toState;
         _currentMovementState.EnterState(position, sideDirection, 1);
@@ -606,7 +713,15 @@ public class DragonflyMovement : MonoBehaviour
     
     private void OnClipEnded()
     {
-        SwitchState();
+        if (_isReturnResolved)
+        {
+            SwitchState();    
+        }
+        else
+        {
+            ApplyResolvedReturnTransition();
+        }
+        
     }
    
     private void OnCollision()
