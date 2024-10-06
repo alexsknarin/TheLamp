@@ -17,7 +17,7 @@ public class DragonflyAttackHoverState : DragonflyMovementBaseState
     {
         _stateData.VisibleBodyTransform.SetParent(_stateData.Owner.transform);
         _attackDirection = -_stateData.VisibleBodyTransform.position.normalized;
-
+        _attackAccelerationValue = 0;
     }
 
     public override void ExecuteState(Vector3 currentPosition)

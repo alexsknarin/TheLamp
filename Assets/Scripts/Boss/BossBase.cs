@@ -1,4 +1,5 @@
 using System;
+using UnityEngine;
 
 public abstract class BossBase : EnemyBase
 {
@@ -18,7 +19,7 @@ public abstract class BossBase : EnemyBase
         OnDeath?.Invoke();
     }
     
-    public override void HandleEnteringAttackZone()
+    public override void HandleEnteringAttackZone(Collider2D collider)
     {
         ReadyToLampDamage = true;
     }

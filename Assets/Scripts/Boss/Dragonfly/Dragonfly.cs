@@ -1,12 +1,16 @@
 using System;
+using System.Linq;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public class Dragonfly : MonoBehaviour
+public class Dragonfly : EnemyBase
 {
+    [SerializeField] private EnemyTypes _enemyType;
+    [SerializeField] private int _maxHealth;
+    [SerializeField] private int _currentHealth;
     [SerializeField] private DragonflyMovement _dragonflyMovement;
     [SerializeField] private DragonflySwarm _swarm;
-    [SerializeField] private DragonflyCollisionCatcher _collisionCatcher;
+    [SerializeField] private DragonflyCollisionController _collisionController;
     [SerializeField] private Transform _visibleBodyTransform;
     [Header("Hover")]
     [SerializeField] private float _hoverWaitMin;
@@ -27,6 +31,8 @@ public class Dragonfly : MonoBehaviour
     [SerializeField] private float _spiderPatrolWaitMin;
     [SerializeField] private float _spiderPatrolWaitMax;
     [SerializeField] private DragonflySpider _spider;
+    public override EnemyTypes EnemyType => _enemyType;
+    private bool _isDead = false;
     
     private float _hoverWait;
     private float _patrolHeadWait;
@@ -53,22 +59,37 @@ public class Dragonfly : MonoBehaviour
     private Vector3 _patrolAttackPosition;
     private Vector3 _patrolSpiderAttackPosition;
     
+    private DragonflyState[] ATTACK_STATES = new DragonflyState[]
+    {
+        DragonflyState.AttackHead,
+        DragonflyState.AttackHover,
+        DragonflyState.AttackTailL,
+        DragonflyState.AttackTailR
+    };
+    
+    
     private void OnEnable()
     {
         _dragonflyMovement.OnReadyToAttackStateEntered += OnReadyToAttackStateEntered;
         _dragonflyMovement.OnAfterAttackExitEnded += OnAfterAttackExitEnded;
         _dragonflyMovement.OnAttackStarted += OnAttackStarted;
         _dragonflyMovement.OnAttackEnded += OnAttackEnded;
+        _dragonflyMovement.OnPreattackStarted += OnPreAttackStart;
         _spider.OnEnterAnimationEnd += OnSpiderEnterAnimationEnd;
+        
+        LampAttackModel.OnLampAttack += TMPHandleLampAttack;
     }
-    
+
     private void OnDisable()
     {
         _dragonflyMovement.OnReadyToAttackStateEntered -= OnReadyToAttackStateEntered;
         _dragonflyMovement.OnAfterAttackExitEnded -= OnAfterAttackExitEnded;
         _dragonflyMovement.OnAttackStarted -= OnAttackStarted;
         _dragonflyMovement.OnAttackEnded -= OnAttackEnded;
+        _dragonflyMovement.OnPreattackStarted -= OnPreAttackStart;
         _spider.OnEnterAnimationEnd -= OnSpiderEnterAnimationEnd;
+        
+        LampAttackModel.OnLampAttack -= TMPHandleLampAttack;
     }
 
     private void Start()
@@ -95,6 +116,22 @@ public class Dragonfly : MonoBehaviour
         _isWaitingForSpiderPatrolAttackPoint = false;
     }
 
+    public override void SpreadStart()
+    {
+        throw new NotImplementedException();
+    }
+
+    public override void AttackStart()
+    {
+        throw new NotImplementedException();
+    }
+
+    public override void HandleEnteringAttackZone(Collider2D collider)
+    {
+        ReadyToLampDamage = true;            
+        _collisionController.SoloCollider(collider);
+    }
+
     public void Play()
     {
         _isWaitingForHoverAttack = false;
@@ -109,7 +146,7 @@ public class Dragonfly : MonoBehaviour
 
     private void StartBossActivePhase()
     {
-        _collisionCatcher.DisableColliders();
+        _collisionController.DisableColliders();
         // There are only two enter types at the moment
         int enterType = Random.Range(0, 2);
         // Randomly decide the first attack
@@ -355,12 +392,12 @@ public class Dragonfly : MonoBehaviour
 
     private void OnAttackStarted()
     {
-        _collisionCatcher.EnableColliders();
+        _collisionController.EnableColliders();
     }
     
     private void OnAttackEnded()
     {
-        _collisionCatcher.DisableColliders();
+        _collisionController.DisableColliders();
     }
     
     
@@ -405,5 +442,74 @@ public class Dragonfly : MonoBehaviour
         WaitForHeadAttack();
         WaitForSpiderAttack();
         WaitForTailAttack();
+    }
+    
+    // Enemy Base Methods
+    public override void HandleCollisionWithLamp()
+    {
+        ReadyToCollide = false;
+        ReadyToLampDamage = true;
+        _dragonflyMovement.TriggerBounce();
+    }
+
+    public override void HandleExitingAttackExitZone()
+    {
+        ReadyToLampDamage = false;
+    }
+
+    public override void HandleCollisionWithStickZone()
+    {
+        Debug.LogWarning("Dragonfly penetrated collision zone");
+    }
+
+    public override void ReceiveDamage(int damage)
+    {
+        _currentHealth -= damage;
+
+        if (_currentHealth > 0)
+        {
+            ReceivedLampAttack = true;
+            // _enemyPresentation.DamageFlash();
+            // _enemyPresentation.HealthUpdate(_currentHealth, _maxHealth);
+            // OnEnemyDamaged?.Invoke(this);
+            _dragonflyMovement.TriggerFall(true);
+            // _enemyMovement.TriggerFall();
+        }
+        else
+        {
+            if (!_isDead)
+            {
+                ReceivedLampAttack = true;
+                _currentHealth = 0; 
+                // _enemyMovement.TriggerDeath();
+                _dragonflyMovement.TriggerFall(true);
+                OnEnemyDeathInvoke(this);
+                // _enemyPresentation.DeathFlash();
+                _isDead = true;
+            }
+        }   
+    }
+
+    public override void UpdateAttackAvailability()
+    {
+        throw new NotImplementedException();
+    }
+
+    public override void ReturnToPool()
+    {
+        throw new NotImplementedException();
+    }
+    
+    private void OnPreAttackStart()
+    {
+        ReceivedLampAttack = false;
+    }
+    
+    private void TMPHandleLampAttack(int arg1, float arg2, float arg3, float arg4)
+    {
+        if (ReadyToLampDamage)
+        {
+            ReceiveDamage(arg1);
+        }
     }
 }

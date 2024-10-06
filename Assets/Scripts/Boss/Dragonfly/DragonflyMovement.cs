@@ -14,7 +14,6 @@ public class DragonflyMovement : MonoBehaviour
     [SerializeField] private Transform _spiderPatrolTransform;
     [SerializeField] private DragonflyPatrolRotator _patrolRotator;
     [SerializeField] private DragonflyPatrolRotator _spiderPatrolRotator;
-    [SerializeField] private DragonflyCollisionCatcher _collisionCatcher;
     
     [FormerlySerializedAs("_currentDragonflyState")] [SerializeField] private DragonflyState currentDragonflyState;
     [SerializeField] private DragonflyAnimationClipEventHandler _animationClipEvents;
@@ -56,6 +55,7 @@ public class DragonflyMovement : MonoBehaviour
     public event Action<DragonflyState, DragonflyState> OnReadyToAttackStateEntered; 
     public event Action<DragonflyState> OnAfterAttackExitEnded;
     public event Action OnAttackStarted;
+    public event Action OnPreattackStarted;
     public event Action OnAttackEnded;
     
     private DragonflyMovementStateData _stateData;
@@ -78,12 +78,12 @@ public class DragonflyMovement : MonoBehaviour
     
     
     private bool _isCollided = false;
+    private bool _isReceivedDamage = false;
     
     
     private void OnEnable()
     {
         _animationClipEvents.OnClipEndedEvent += OnClipEnded;
-        _collisionCatcher.OnCollidedEvent += OnCollision;
     }
     
     private void OnDisable()
@@ -93,7 +93,6 @@ public class DragonflyMovement : MonoBehaviour
             _playableGraph.Destroy();    
         }
         _animationClipEvents.OnClipEndedEvent -= OnClipEnded;
-        _collisionCatcher.OnCollidedEvent -= OnCollision;
     }
 
 
@@ -150,7 +149,6 @@ public class DragonflyMovement : MonoBehaviour
 
         _currentMovementState = _idleState;
         currentDragonflyState = DragonflyState.Idle;
-        _collisionCatcher.DisableColliders();
     }
 
     public void Play(int state, int sideDirection)
@@ -399,6 +397,7 @@ public class DragonflyMovement : MonoBehaviour
     
     private void MovementSetup(int state, int sideDirection)
     {
+        _isReceivedDamage = false;
         _sideDirection = sideDirection;
         if (state == 0)
         {
@@ -414,7 +413,33 @@ public class DragonflyMovement : MonoBehaviour
     {
     }
 
+
+    public void TriggerBounce()
+    {
+        if (_currentMovementState.State == DragonflyState.AttackHead ||
+            _currentMovementState.State == DragonflyState.AttackTailL ||
+            _currentMovementState.State == DragonflyState.AttackTailR ||
+            _currentMovementState.State == DragonflyState.AttackHover)
+        {
+            SwitchState();
+        }
+        else
+        {
+            Debug.LogWarning("Collided from non-attack state");
+        }
+    }
     
+    public void TriggerFall(bool isReceivedDamage)
+    {
+        if (_currentMovementState.State == DragonflyState.BounceHead ||
+            _currentMovementState.State == DragonflyState.BounceTailL ||
+            _currentMovementState.State == DragonflyState.BounceTailR ||
+            _currentMovementState.State == DragonflyState.BounceHover)
+        {
+            _isReceivedDamage = isReceivedDamage;
+            SwitchState();
+        }
+    }
 
     public void PlayClip(DragonflyState state)
     {
@@ -452,6 +477,7 @@ public class DragonflyMovement : MonoBehaviour
                 break;
             // Patrol --> PreAttack Head 
             case DragonflyState.PatrolL:
+                OnPreattackStarted?.Invoke();
                 if (_currentPatrolAttackMode == DragonflyPatrolAttackMode.Head)
                 {
                     SetState(_preAttackHeadState, _visibleBodyTransform.position, 1, 1);
@@ -462,6 +488,7 @@ public class DragonflyMovement : MonoBehaviour
                 }
                 break;
             case DragonflyState.PatrolR:
+                OnPreattackStarted?.Invoke();
                 if (_currentPatrolAttackMode == DragonflyPatrolAttackMode.Head)
                 {
                     SetState(_preAttackHeadState, _visibleBodyTransform.position, -1, 1);
@@ -487,16 +514,16 @@ public class DragonflyMovement : MonoBehaviour
                 SetState(_bounceHeadState, _visibleBodyTransform.position, 1, 1);
                 break;
             case DragonflyState.BounceHead:
-                // TODO:
                 OnAttackEnded?.Invoke();
-                isHit = Random.value <= 0.5f;
-                if (isHit)
+                if (_isReceivedDamage)
                 {
                     SetState(_fallHeadLState, _visibleBodyTransform.position, 1, 1);
+                    _isReceivedDamage = false;
                 }
                 else
                 {
                     SetState(_attackHeadSuccess, _visibleBodyTransform.position, 1, 1);
+                    _isReceivedDamage = false;
                 }
                 break;
             case DragonflyState.AttackHeadSuccess:
@@ -525,26 +552,28 @@ public class DragonflyMovement : MonoBehaviour
                 break;
             case DragonflyState.BounceTailL:
                 OnAttackEnded?.Invoke();
-                isHit = Random.value <= 0.5f;
-                if (isHit)
+                if (_isReceivedDamage)
                 {
-                    SetState(_attackTailSuccess, _visibleBodyTransform.position, 1, 1);
+                    SetState(_attackTailFail, _visibleBodyTransform.position, 1, 1);
+                    _isReceivedDamage = false;
                 }
                 else
                 {
-                    SetState(_attackTailFail, _visibleBodyTransform.position, 1, 1);
+                    SetState(_attackTailSuccess, _visibleBodyTransform.position, 1, 1);
+                    _isReceivedDamage = false;
                 }
                 break;
             case DragonflyState.BounceTailR:
                 OnAttackEnded?.Invoke();
-                isHit = Random.value <= 0.5f;
-                if (isHit)
+                if (_isReceivedDamage)
                 {
-                    SetState(_attackTailSuccess, _visibleBodyTransform.position, -1, 1);
+                    SetState(_attackTailFail, _visibleBodyTransform.position, -1, 1);
+                    _isReceivedDamage = false;
                 }
                 else
                 {
-                    SetState(_attackTailFail, _visibleBodyTransform.position, -1, 1);
+                    SetState(_attackTailSuccess, _visibleBodyTransform.position, -1, 1);
+                    _isReceivedDamage = false;
                 }
                 break;
             // Exit Tail Attack
@@ -575,13 +604,14 @@ public class DragonflyMovement : MonoBehaviour
                 break;
             // Hover --> PreAttack Hover
             case DragonflyState.Hover:
+                OnPreattackStarted?.Invoke();
                 SetState(_preAttackHoverState, _visibleBodyTransform.position, 1, 1);
                 break;
             // Hover attack
             case DragonflyState.PreAttackHover:
+                SetState(_attackHoverState, _visibleBodyTransform.position, 1, 1);
                 OnAttackStarted?.Invoke();
                 _isCollided = false;
-                SetState(_attackHoverState, _visibleBodyTransform.position, 1, 1);
                 break;
             // Hover Bounce
             case DragonflyState.AttackHover:
@@ -590,14 +620,15 @@ public class DragonflyMovement : MonoBehaviour
             case DragonflyState.BounceHover:
                 // TODO:
                 OnAttackEnded?.Invoke();
-                isHit = Random.value <= 0.5f;
-                if (isHit)
+                if (_isReceivedDamage)
                 {
-                    SetState(_returnHoverState, _visibleBodyTransform.position, 1, 1);
+                    SetState(_fallHeadLState, _visibleBodyTransform.position, 1, 1);
+                    _isReceivedDamage = false;
                 }
                 else
                 {
-                    SetState(_fallHeadLState, _visibleBodyTransform.position, 1, 1);
+                    SetState(_returnHoverState, _visibleBodyTransform.position, 1, 1);
+                    _isReceivedDamage = false;
                 }
                 break;
             case DragonflyState.ReturnHover:
@@ -724,29 +755,29 @@ public class DragonflyMovement : MonoBehaviour
         
     }
    
-    private void OnCollision()
-    {
-        if (!_isCollided)
-        {
-            Debug.Log("Collision");
-            if (currentDragonflyState == DragonflyState.AttackHead)
-            {
-                _collisionCatcher.DisableColliders();
-                _isCollided = true;
-                SwitchState();
-            }
-            if (currentDragonflyState == DragonflyState.AttackHover)
-            {
-                _collisionCatcher.DisableColliders();
-                _isCollided = true;
-                SwitchState();
-            }
-            if (currentDragonflyState == DragonflyState.AttackTailL || currentDragonflyState == DragonflyState.AttackTailR)
-            {
-                _collisionCatcher.DisableColliders();
-                _isCollided = true;
-                SwitchState();
-            }    
-        }
-    }
+    // private void OnCollision()
+    // {
+    //     if (!_isCollided)
+    //     {
+    //         Debug.Log("Collision");
+    //         if (currentDragonflyState == DragonflyState.AttackHead)
+    //         {
+    //             _collisionCatcher.DisableColliders();
+    //             _isCollided = true;
+    //             SwitchState();
+    //         }
+    //         if (currentDragonflyState == DragonflyState.AttackHover)
+    //         {
+    //             _collisionCatcher.DisableColliders();
+    //             _isCollided = true;
+    //             SwitchState();
+    //         }
+    //         if (currentDragonflyState == DragonflyState.AttackTailL || currentDragonflyState == DragonflyState.AttackTailR)
+    //         {
+    //             _collisionCatcher.DisableColliders();
+    //             _isCollided = true;
+    //             SwitchState();
+    //         }    
+    //     }
+    // }
 }

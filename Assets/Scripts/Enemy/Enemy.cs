@@ -152,7 +152,7 @@ public class Enemy : EnemyBase
         IsStick = true;
     }
     
-    public override void HandleEnteringAttackZone()
+    public override void HandleEnteringAttackZone(Collider2D collider)
     {
         if (_enemyMovement.State == EnemyStates.Attack || _enemyType == EnemyTypes.Ladybug)
         {

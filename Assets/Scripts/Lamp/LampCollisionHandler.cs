@@ -23,6 +23,12 @@ public class LampCollisionHandler : MonoBehaviour
             boss.HandleCollisionWithLamp();
             OnLampCollidedEnemy?.Invoke(boss); 
         }
+        if (other.gameObject.CompareTag("Dragonfly"))
+        {
+            EnemyBase dragonfly = other.attachedRigidbody.gameObject.GetComponent<EnemyBase>();
+            dragonfly.HandleCollisionWithLamp();
+            OnLampCollidedEnemy?.Invoke(dragonfly);
+        }
     }
     
     private void OnTriggerExit2D(Collider2D other)

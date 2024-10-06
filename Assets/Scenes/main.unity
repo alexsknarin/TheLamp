@@ -1063,7 +1063,7 @@ GameObject:
   - component: {fileID: 58966514}
   m_Layer: 0
   m_Name: ColliderHead_1
-  m_TagString: Untagged
+  m_TagString: Dragonfly
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1592,7 +1592,7 @@ GameObject:
   - component: {fileID: 125919006}
   m_Layer: 0
   m_Name: ColliderTail_3
-  m_TagString: Untagged
+  m_TagString: Dragonfly
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5953,7 +5953,7 @@ GameObject:
   - component: {fileID: 729917638}
   m_Layer: 0
   m_Name: ColliderTail_2
-  m_TagString: Untagged
+  m_TagString: Dragonfly
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -6921,7 +6921,7 @@ GameObject:
   - component: {fileID: 866568310}
   m_Layer: 0
   m_Name: ColliderTail_4
-  m_TagString: Untagged
+  m_TagString: Dragonfly
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -8958,7 +8958,7 @@ GameObject:
   - component: {fileID: 1052411061}
   m_Layer: 0
   m_Name: ColliderHead_2
-  m_TagString: Untagged
+  m_TagString: Dragonfly
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -11522,7 +11522,7 @@ GameObject:
   - component: {fileID: 1358699637}
   m_Layer: 0
   m_Name: ColliderTail_1
-  m_TagString: Untagged
+  m_TagString: Dragonfly
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -13139,6 +13139,8 @@ GameObject:
   - component: {fileID: 1536401419}
   - component: {fileID: 1536401418}
   - component: {fileID: 1536401420}
+  - component: {fileID: 1536401421}
+  - component: {fileID: 1536401422}
   m_Layer: 0
   m_Name: Dragonfly
   m_TagString: Untagged
@@ -13191,7 +13193,6 @@ MonoBehaviour:
   _spiderPatrolTransform: {fileID: 322364688}
   _patrolRotator: {fileID: 1057514487}
   _spiderPatrolRotator: {fileID: 1041056733}
-  _collisionCatcher: {fileID: 1720334792}
   currentDragonflyState: 1
   _animationClipEvents: {fileID: 1098560779}
   _fallPoint: {fileID: 780930765}
@@ -13244,9 +13245,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 16eae1143c5a2b44390c227e30d912ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _enemyType: 0
+  _maxHealth: 10
+  _currentHealth: 10
   _dragonflyMovement: {fileID: 1536401418}
   _swarm: {fileID: 1536401420}
-  _collisionCatcher: {fileID: 1720334792}
+  _collisionController: {fileID: 1536401422}
   _visibleBodyTransform: {fileID: 1720334790}
   _hoverWaitMin: 0.5
   _hoverWaitMax: 2
@@ -13288,6 +13292,52 @@ MonoBehaviour:
   - {fileID: 80780175}
   - {fileID: 1017518024}
   _timeInterval: 1
+--- !u!50 &1536401421
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1536401416}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
+--- !u!114 &1536401422
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1536401416}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b50a8134daf6e104f9a1622100390b61, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _colliders:
+  - {fileID: 58966514}
+  - {fileID: 1052411061}
+  - {fileID: 1358699637}
+  - {fileID: 729917638}
+  - {fileID: 125919006}
+  - {fileID: 866568310}
 --- !u!1 &1540463159
 GameObject:
   m_ObjectHideFlags: 0
@@ -14573,8 +14623,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1720334790}
-  - component: {fileID: 1720334791}
-  - component: {fileID: 1720334792}
   m_Layer: 0
   m_Name: DragonflyVisibleBody
   m_TagString: Untagged
@@ -14591,7 +14639,7 @@ Transform:
   m_GameObject: {fileID: 1720334789}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -8, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -14599,46 +14647,6 @@ Transform:
   - {fileID: 2125115242}
   m_Father: {fileID: 1536401417}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!50 &1720334791
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1720334789}
-  m_BodyType: 1
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
---- !u!114 &1720334792
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1720334789}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c8d327a6f71706944bd7e86cb954bea0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _colliders: {fileID: 2125115241}
 --- !u!1 &1733480388
 GameObject:
   m_ObjectHideFlags: 0
@@ -15338,7 +15346,7 @@ MonoBehaviour:
   _maxEnemiesOnScreen: 0
   _aggresionLevel: 0
   _maxAggressionLevel: 6
-  _isStartAtWaveTestMode: 1
+  _isStartAtWaveTestMode: 0
   _startAtWave: 30
   _currentWave: 0
   _firstEnemySpawnDelay: 0.5
