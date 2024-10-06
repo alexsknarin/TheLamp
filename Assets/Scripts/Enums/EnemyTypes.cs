@@ -10,5 +10,6 @@ public enum EnemyTypes
     Megamothling,
     Megabeetle,
     Dragonfly,
+    DragonflyProjectile,
     None
 }

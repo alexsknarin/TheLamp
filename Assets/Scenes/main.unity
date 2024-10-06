@@ -1204,12 +1204,13 @@ GameObject:
   - component: {fileID: 80780172}
   - component: {fileID: 80780171}
   - component: {fileID: 80780170}
-  - component: {fileID: 80780175}
   - component: {fileID: 80780174}
   - component: {fileID: 80780173}
+  - component: {fileID: 80780176}
+  - component: {fileID: 80780175}
   m_Layer: 0
   m_Name: SwarmMoth_02
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1350,13 +1351,27 @@ MonoBehaviour:
   m_GameObject: {fileID: 80780169}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f03711013f866de42a20ea171e0bdc80, type: 3}
+  m_Script: {fileID: 11500000, guid: 29bb4363150b4684fb3ebdb649fce0a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _speed: 5
   _bounceSpeed: 1
   _fallSpeed: 1.5
   _fallAcceleraion: 1.6
+--- !u!114 &80780176
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 80780169}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb657196896d0d146a6025dae3805e63, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _enemyType: 10
+  _movement: {fileID: 80780175}
 --- !u!4 &100072936 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2096221262486713844, guid: 556ccd576c35d634e88ba039c8700cfa,
@@ -7901,10 +7916,11 @@ GameObject:
   - component: {fileID: 953067765}
   - component: {fileID: 953067763}
   - component: {fileID: 953067762}
-  - component: {fileID: 953067764}
+  - component: {fileID: 953067768}
+  - component: {fileID: 953067769}
   m_Layer: 0
   m_Name: SwarmMoth_01
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -7971,22 +7987,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!114 &953067764
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 953067761}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f03711013f866de42a20ea171e0bdc80, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _speed: 5
-  _bounceSpeed: 1
-  _fallSpeed: 1.5
-  _fallAcceleraion: 1.6
 --- !u!23 &953067765
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -8052,6 +8052,36 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1536401417}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &953067768
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 953067761}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb657196896d0d146a6025dae3805e63, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _enemyType: 10
+  _movement: {fileID: 953067769}
+--- !u!114 &953067769
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 953067761}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 29bb4363150b4684fb3ebdb649fce0a7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _speed: 5
+  _bounceSpeed: 1
+  _fallSpeed: 1.5
+  _fallAcceleraion: 1.6
 --- !u!1 &969163313 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4557419227544725734, guid: 3fc8442acd052ac4f9c1e690f3aa5d74,
@@ -8408,12 +8438,13 @@ GameObject:
   - component: {fileID: 1017518021}
   - component: {fileID: 1017518020}
   - component: {fileID: 1017518019}
-  - component: {fileID: 1017518024}
   - component: {fileID: 1017518023}
   - component: {fileID: 1017518022}
+  - component: {fileID: 1017518024}
+  - component: {fileID: 1017518025}
   m_Layer: 0
   m_Name: SwarmMoth_03
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -8554,7 +8585,21 @@ MonoBehaviour:
   m_GameObject: {fileID: 1017518018}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f03711013f866de42a20ea171e0bdc80, type: 3}
+  m_Script: {fileID: 11500000, guid: cb657196896d0d146a6025dae3805e63, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _enemyType: 10
+  _movement: {fileID: 1017518025}
+--- !u!114 &1017518025
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1017518018}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 29bb4363150b4684fb3ebdb649fce0a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _speed: 5
@@ -13288,8 +13333,8 @@ MonoBehaviour:
   _startPositionMid: {x: 0, y: -1.625, z: -4.32}
   _startPositionR: {x: 1.063, y: -1.513, z: -4.135}
   _moths:
-  - {fileID: 953067764}
-  - {fileID: 80780175}
+  - {fileID: 953067768}
+  - {fileID: 80780176}
   - {fileID: 1017518024}
   _timeInterval: 1
 --- !u!50 &1536401421

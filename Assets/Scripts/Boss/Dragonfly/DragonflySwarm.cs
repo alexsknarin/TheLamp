@@ -6,7 +6,7 @@ public class DragonflySwarm : MonoBehaviour
     [SerializeField] private Vector3 _startPositionL;
     [SerializeField] private Vector3 _startPositionMid;
     [SerializeField] private Vector3 _startPositionR;
-    [SerializeField] private DragonflySwarmMoth[] _moths;
+    [SerializeField] private DragonflyProjectileMoth[] _moths;
     [SerializeField] private float _timeInterval = 1f;
     private Vector3[] _startPositions = new Vector3[3];
     
@@ -29,7 +29,8 @@ public class DragonflySwarm : MonoBehaviour
             _startPositions[2] = _startPositionR;
         }
         _localTime = 0f;
-        _moths[_attackCount].PlayAttack(_startPositions[_attackCount]);
+        _moths[_attackCount].Initialize(_startPositions[_attackCount]);
+        _moths[_attackCount].AttackStart();
         _isWaitingForAttack = true;
     }
     
@@ -48,7 +49,8 @@ public class DragonflySwarm : MonoBehaviour
                 _attackCount++;
                 if (_attackCount < _moths.Length)
                 {
-                    _moths[_attackCount].PlayAttack(_startPositions[_attackCount]);
+                    _moths[_attackCount].Initialize(_startPositions[_attackCount]);
+                    _moths[_attackCount].AttackStart();
                     _localTime = 0f;
                 }
                 else

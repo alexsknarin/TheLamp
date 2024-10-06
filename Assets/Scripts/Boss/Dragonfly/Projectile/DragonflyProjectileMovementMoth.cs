@@ -1,28 +1,39 @@
-using System;
 using UnityEngine;
 
-public class DragonflySwarmMoth : MonoBehaviour
+public class DragonflyProjectileMovementMoth : MonoBehaviour
 {
     [SerializeField] private float _speed = 5f;
-    [SerializeField] private float _bounceSpeed = 5f;
-    [SerializeField] private float _fallSpeed = 5f;
-    [SerializeField] private float _fallAcceleraion = 5f;
-    
+    [SerializeField] private float _bounceSpeed = 1f;
+    [SerializeField] private float _fallSpeed = 1.5f;
+    [SerializeField] private float _fallAcceleraion = 1.6f;
     
     private bool _isAttacking = false;
     private bool _isFalling = false;
     private Vector3 _attackDirection;
     private float _currentAcceeleration = 0f;
-    
-    public void PlayAttack(Vector3 startPosition)
+
+    public void Initialize(Vector3 startPosition)
     {
-        _isFalling = false;
-        _isAttacking = true;
         transform.position = startPosition;
         _attackDirection = - startPosition.normalized;
     }
 
-    // Update is called once per frame
+    public void TriggerAttack()
+    {
+        _isFalling = false;
+        _isAttacking = true;
+    }
+    
+    public void TriggerFall()
+    {
+        if (!_isFalling)
+        {
+            _isAttacking = false;
+            _isFalling = true;
+            _currentAcceeleration = 0f;    
+        }
+    }
+
     void Update()
     {
         if (_isAttacking)
@@ -49,10 +60,4 @@ public class DragonflySwarmMoth : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter2D(Collider2D other)
-    {
-        _isAttacking = false;
-        _isFalling = true;
-        _currentAcceeleration = 0f;
-    }
 }
