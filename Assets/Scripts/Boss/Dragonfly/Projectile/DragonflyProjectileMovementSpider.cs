@@ -14,6 +14,7 @@ public class DragonflyProjectileMovementSpider : MonoBehaviour
     [SerializeField] private AnimationCurve _fallAnimCurve;
     
     public event Action OnEnterAnimationEnd;
+    public event Action OnFallEnded;
 
     private Vector3 _currentEndPosition;
     private Vector3 _startPosition;
@@ -84,13 +85,13 @@ public class DragonflyProjectileMovementSpider : MonoBehaviour
             if (phase > 1)
             {
                 _isFallPlaying = false;
+                OnFallEnded?.Invoke();
                 return;
             }
             Vector3 pos = transform.localPosition;
             pos += -_attackDirection * (_bounceSpeed * Time.deltaTime);
             pos.y = _startPosition.y + _fallAnimCurve.Evaluate(phase);
             transform.localPosition = pos;
-            
             _localTime += Time.deltaTime;
         }
     }

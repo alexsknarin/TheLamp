@@ -10,13 +10,19 @@ public class DragonflyProjectileMoth : EnemyBase
     private void OnEnable()
     {
         LampAttackModel.OnLampAttack += TMPHandleLampAttack;
+        _movement.OnFallEnded += OnFallEndedHandle;
     }
-    
+
     private void OnDisable()
     {
         LampAttackModel.OnLampAttack -= TMPHandleLampAttack;
+        _movement.OnFallEnded -= OnFallEndedHandle;
     }
 
+    private void OnFallEndedHandle()
+    {
+        gameObject.SetActive(false);
+    }
 
     public void Initialize(Vector3 startPosition)
     {

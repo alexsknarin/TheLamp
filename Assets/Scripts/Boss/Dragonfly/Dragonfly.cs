@@ -413,6 +413,7 @@ public class Dragonfly : EnemyBase
         int direction = RandomDirection.Generate();
         if (mode == DragonflyReturnMode.Spider)
         {
+            _spider.gameObject.SetActive(true);
             _spider.Initialize(direction);
         }
         _dragonflyMovement.ResolveReturnTransition(mode, direction);

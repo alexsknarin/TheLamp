@@ -9,23 +9,31 @@ public class DragonflyProjectileSpider : EnemyBase
     
     public event Action OnEnterAnimationEnd;
     
+    
     private bool _isDead = false;
     
 
     private void OnEnable()
     {
         LampAttackModel.OnLampAttack += TMPHandleLampAttack;
-        _movement.OnEnterAnimationEnd += OnEnterAnimationEndHandler;
+        _movement.OnEnterAnimationEnd += OnEnterAnimationEndHandle;
+        _movement.OnFallEnded += OnFallEndedHandle;
         
     }
     
     private void OnDisable()
     {
         LampAttackModel.OnLampAttack -= TMPHandleLampAttack;
-        _movement.OnEnterAnimationEnd -= OnEnterAnimationEndHandler;
+        _movement.OnEnterAnimationEnd -= OnEnterAnimationEndHandle;
+        _movement.OnFallEnded -= OnFallEndedHandle;
     }
-    
-    private void OnEnterAnimationEndHandler()
+
+    private void OnFallEndedHandle()
+    {
+        gameObject.SetActive(false);
+    }
+
+    private void OnEnterAnimationEndHandle()
     {
         OnEnterAnimationEnd?.Invoke();
     }

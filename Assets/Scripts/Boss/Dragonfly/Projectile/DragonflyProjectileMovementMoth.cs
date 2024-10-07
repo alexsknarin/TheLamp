@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class DragonflyProjectileMovementMoth : MonoBehaviour
@@ -8,6 +9,9 @@ public class DragonflyProjectileMovementMoth : MonoBehaviour
     [SerializeField] private float _fallAcceleraion = 1.6f;
     [SerializeField] private float _noiseFrequency = 1.0f;
     [SerializeField] private float _noiseAmplitude = 1.0f;
+    
+    public event Action OnFallEnded;
+    
     
     private bool _isAttacking = false;
     private bool _isFalling = false;
@@ -71,6 +75,7 @@ public class DragonflyProjectileMovementMoth : MonoBehaviour
                 _isFalling = false;
                 _isAttacking = false;
                 transform.position = new Vector3(0, -2.294306f, -3.276608f);
+                OnFallEnded?.Invoke();
             }
         }
     }
