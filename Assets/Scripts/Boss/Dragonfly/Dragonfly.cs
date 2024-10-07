@@ -30,7 +30,7 @@ public class Dragonfly : EnemyBase
     [SerializeField] private Vector3 _priderAttackPositionBase;
     [SerializeField] private float _spiderPatrolWaitMin;
     [SerializeField] private float _spiderPatrolWaitMax;
-    [SerializeField] private DragonflySpider _spider;
+    [SerializeField] private DragonflyProjectileSpider _spider;
     public override EnemyTypes EnemyType => _enemyType;
     private bool _isDead = false;
     
@@ -322,16 +322,12 @@ public class Dragonfly : EnemyBase
         
         if (_isWaitingForSpiderPatrolAttackPoint)
         {
-            Debug.Log("Spider Attack Point Waiting ...");
-            
             Vector3 currentPosition = _visibleBodyTransform.position;
             currentPosition.y = 0;
             currentPosition.Normalize();
             float distance = Vector3.Distance(currentPosition, _patrolAttackPosition);
-            Debug.Log("Distance: " + distance);
             if (distance < 0.25f)
             {
-                Debug.Log("Distance is less than 0.25");
                 if (!_isLastPatrolDirectionSet)
                 {
                     _lastPatrolDirection = (int)Mathf.Sign((_patrolAttackPosition - currentPosition).normalized.x);
@@ -342,7 +338,6 @@ public class Dragonfly : EnemyBase
                     float currentPatrolDirection = (int)Mathf.Sign((_patrolAttackPosition - currentPosition).normalized.x);
                     if (currentPatrolDirection + _lastPatrolDirection == 0)
                     {
-                        Debug.Log("Spider Attack");
                         _isWaitingForSpiderPatrolAttackPoint = false;
                         _isLastPatrolDirectionSet = false;
                         SpiderAttack();
@@ -357,7 +352,7 @@ public class Dragonfly : EnemyBase
     {
         _localTime = 0;
         _spider.gameObject.transform.SetParent(this.transform);
-        _spider.PlayAttackAnimation();
+        _spider.AttackStart();
         _dragonflyMovement.SwitchState();
     }
 
@@ -418,7 +413,7 @@ public class Dragonfly : EnemyBase
         int direction = RandomDirection.Generate();
         if (mode == DragonflyReturnMode.Spider)
         {
-            _spider.PlayStartAnimation(direction);
+            _spider.Initialize(direction);
         }
         _dragonflyMovement.ResolveReturnTransition(mode, direction);
     }
@@ -444,7 +439,7 @@ public class Dragonfly : EnemyBase
         if (Input.GetKeyDown(KeyCode.Z))
         {
             int direction = RandomDirection.Generate();
-            _spider.PlayStartAnimation(direction);
+            _spider.Initialize(direction);
             _dragonflyMovement.ResolveReturnTransition(DragonflyReturnMode.Spider, direction);
         }
         
