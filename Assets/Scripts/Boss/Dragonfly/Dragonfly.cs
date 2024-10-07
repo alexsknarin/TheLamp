@@ -27,7 +27,7 @@ public class Dragonfly : EnemyBase
     [SerializeField] private Vector3 _tailAttackZoneRMin;
     [SerializeField] private Vector3 _tailAttackZoneRMax;
     [Header("Spider")]
-    [SerializeField] private DragonflySpiderPatrolAttackZoneRanges _spiderPatrolAttackZones;
+    [SerializeField] private Vector3 _priderAttackPositionBase;
     [SerializeField] private float _spiderPatrolWaitMin;
     [SerializeField] private float _spiderPatrolWaitMax;
     [SerializeField] private DragonflySpider _spider;
@@ -98,7 +98,6 @@ public class Dragonfly : EnemyBase
         _patrolAttackPositionProvider = new DragonflyPatrolAttackPositionProvider(
             _patrolAttackZonesL, 
             _patrolAttackZonesR, 
-            _spiderPatrolAttackZones,
             _tailAttackZoneLMin,
             _tailAttackZoneLMax,
             _tailAttackZoneRMin,
@@ -305,7 +304,13 @@ public class Dragonfly : EnemyBase
             }
             else
             {
-                _patrolAttackPosition = _patrolAttackPositionProvider.GenerateSpiderRandomPreAttackHeadPosition();
+                _patrolAttackPosition = _priderAttackPositionBase;
+                _patrolAttackPosition.x *= RandomDirection.Generate();
+                Debug.DrawRay(Vector3.zero, _patrolAttackPosition, Color.yellow, 5f);
+                _patrolAttackPosition.y = 0;
+                _patrolAttackPosition.Normalize();
+                
+                
                 _isWaitingForHeadPatrolAttack = false;
                 _isWaitingForHeadPatrolAttackPoint = false;
                 _isLastPatrolDirectionSet = false;
@@ -317,12 +322,16 @@ public class Dragonfly : EnemyBase
         
         if (_isWaitingForSpiderPatrolAttackPoint)
         {
+            Debug.Log("Spider Attack Point Waiting ...");
+            
             Vector3 currentPosition = _visibleBodyTransform.position;
             currentPosition.y = 0;
             currentPosition.Normalize();
             float distance = Vector3.Distance(currentPosition, _patrolAttackPosition);
+            Debug.Log("Distance: " + distance);
             if (distance < 0.25f)
             {
+                Debug.Log("Distance is less than 0.25");
                 if (!_isLastPatrolDirectionSet)
                 {
                     _lastPatrolDirection = (int)Mathf.Sign((_patrolAttackPosition - currentPosition).normalized.x);
@@ -333,6 +342,7 @@ public class Dragonfly : EnemyBase
                     float currentPatrolDirection = (int)Mathf.Sign((_patrolAttackPosition - currentPosition).normalized.x);
                     if (currentPatrolDirection + _lastPatrolDirection == 0)
                     {
+                        Debug.Log("Spider Attack");
                         _isWaitingForSpiderPatrolAttackPoint = false;
                         _isLastPatrolDirectionSet = false;
                         SpiderAttack();

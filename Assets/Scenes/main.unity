@@ -13319,6 +13319,7 @@ MonoBehaviour:
   _tailAttackZoneRMax: {x: -0.26, y: -0.55, z: -0.79}
   _spiderPatrolAttackZones: {fileID: 11400000, guid: 5049cbd4c9e10754fb99e200b57e1bdb,
     type: 2}
+  _priderAttackPointBase: {x: 0.68, y: -0.4, z: -0.62}
   _spiderPatrolWaitMin: 0.05
   _spiderPatrolWaitMax: 0.8
   _spider: {fileID: 834016945}
