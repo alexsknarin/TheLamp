@@ -1358,6 +1358,8 @@ MonoBehaviour:
   _bounceSpeed: 1
   _fallSpeed: 1.5
   _fallAcceleraion: 1.6
+  _noiseFrequency: 8
+  _noiseAmplitude: 0.065
 --- !u!114 &80780176
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8082,6 +8084,8 @@ MonoBehaviour:
   _bounceSpeed: 1
   _fallSpeed: 1.5
   _fallAcceleraion: 1.6
+  _noiseFrequency: 8
+  _noiseAmplitude: 0.065
 --- !u!1 &969163313 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4557419227544725734, guid: 3fc8442acd052ac4f9c1e690f3aa5d74,
@@ -8606,6 +8610,8 @@ MonoBehaviour:
   _bounceSpeed: 1
   _fallSpeed: 1.5
   _fallAcceleraion: 1.6
+  _noiseFrequency: 8
+  _noiseAmplitude: 0.065
 --- !u!4 &1028657342 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -212581213004161906, guid: 556ccd576c35d634e88ba039c8700cfa,

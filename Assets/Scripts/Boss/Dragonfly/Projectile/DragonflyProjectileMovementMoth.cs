@@ -6,11 +6,19 @@ public class DragonflyProjectileMovementMoth : MonoBehaviour
     [SerializeField] private float _bounceSpeed = 1f;
     [SerializeField] private float _fallSpeed = 1.5f;
     [SerializeField] private float _fallAcceleraion = 1.6f;
+    [SerializeField] private float _noiseFrequency = 1.0f;
+    [SerializeField] private float _noiseAmplitude = 1.0f;
     
     private bool _isAttacking = false;
     private bool _isFalling = false;
     private Vector3 _attackDirection;
     private float _currentAcceeleration = 0f;
+    
+    // Debug
+    private Vector3 _previousPosition;
+    private Vector3 _previousPositionRaw;
+    
+    
 
     public void Initialize(Vector3 startPosition)
     {
@@ -22,6 +30,7 @@ public class DragonflyProjectileMovementMoth : MonoBehaviour
     {
         _isFalling = false;
         _isAttacking = true;
+        _previousPositionRaw = transform.position;
     }
     
     public void TriggerFall()
@@ -38,7 +47,13 @@ public class DragonflyProjectileMovementMoth : MonoBehaviour
     {
         if (_isAttacking)
         {
-            transform.position += _attackDirection * (_speed * Time.deltaTime);
+            _previousPosition = transform.position;
+            Vector3 position = _previousPositionRaw + _attackDirection * (_speed * Time.deltaTime);
+            _previousPositionRaw = position;
+            // Add noise
+            position.x += (Mathf.PerlinNoise(Time.time * _noiseFrequency, 0) - 0.5f) * 2 * _noiseAmplitude;
+            position.y += (Mathf.PerlinNoise(0, Time.time * _noiseFrequency) - 0.5f) * 2 * _noiseAmplitude;
+            transform.position = position;  
         }
         
         if (_isFalling)
