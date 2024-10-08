@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -8,7 +7,8 @@ public class Dragonfly : EnemyBase
     [SerializeField] private EnemyTypes _enemyType;
     [SerializeField] private int _maxHealth;
     [SerializeField] private int _currentHealth;
-    [SerializeField] private DragonflyMovement _dragonflyMovement;
+    [SerializeField] private DragonflyMovement _movement;
+    [SerializeField] private DragonflyPresentation _presentation;
     [SerializeField] private DragonflySwarm _swarm;
     [SerializeField] private DragonflyCollisionController _collisionController;
     [SerializeField] private Transform _visibleBodyTransform;
@@ -70,11 +70,11 @@ public class Dragonfly : EnemyBase
     
     private void OnEnable()
     {
-        _dragonflyMovement.OnReadyToAttackStateEntered += OnReadyToAttackStateEntered;
-        _dragonflyMovement.OnAfterAttackExitEnded += OnAfterAttackExitEnded;
-        _dragonflyMovement.OnAttackStarted += OnAttackStarted;
-        _dragonflyMovement.OnAttackEnded += OnAttackEnded;
-        _dragonflyMovement.OnPreattackStarted += OnPreAttackStart;
+        _movement.OnReadyToAttackStateEntered += OnReadyToAttackStateEntered;
+        _movement.OnAfterAttackExitEnded += OnAfterAttackExitEnded;
+        _movement.OnAttackStarted += OnAttackStarted;
+        _movement.OnAttackEnded += OnAttackEnded;
+        _movement.OnPreattackStarted += OnPreAttackStart;
         _spider.OnEnterAnimationEnd += OnSpiderEnterAnimationEnd;
         
         LampAttackModel.OnLampAttack += TMPHandleLampAttack;
@@ -82,11 +82,11 @@ public class Dragonfly : EnemyBase
 
     private void OnDisable()
     {
-        _dragonflyMovement.OnReadyToAttackStateEntered -= OnReadyToAttackStateEntered;
-        _dragonflyMovement.OnAfterAttackExitEnded -= OnAfterAttackExitEnded;
-        _dragonflyMovement.OnAttackStarted -= OnAttackStarted;
-        _dragonflyMovement.OnAttackEnded -= OnAttackEnded;
-        _dragonflyMovement.OnPreattackStarted -= OnPreAttackStart;
+        _movement.OnReadyToAttackStateEntered -= OnReadyToAttackStateEntered;
+        _movement.OnAfterAttackExitEnded -= OnAfterAttackExitEnded;
+        _movement.OnAttackStarted -= OnAttackStarted;
+        _movement.OnAttackEnded -= OnAttackEnded;
+        _movement.OnPreattackStarted -= OnPreAttackStart;
         _spider.OnEnterAnimationEnd -= OnSpiderEnterAnimationEnd;
         
         LampAttackModel.OnLampAttack -= TMPHandleLampAttack;
@@ -113,6 +113,8 @@ public class Dragonfly : EnemyBase
         _isWaitingForTailPatrolAttackPoint = false;
         _isWaitingForSpiderPatrolAttack = false;
         _isWaitingForSpiderPatrolAttackPoint = false;
+        
+        _presentation.Initialize();
     }
 
     public override void SpreadStart()
@@ -141,6 +143,7 @@ public class Dragonfly : EnemyBase
         _isWaitingForSpiderPatrolAttack = false;
         _isWaitingForSpiderPatrolAttackPoint = false;
         StartBossActivePhase();
+        _presentation.Initialize();
     }
 
     private void StartBossActivePhase()
@@ -150,13 +153,13 @@ public class Dragonfly : EnemyBase
         int enterType = Random.Range(0, 2);
         // Randomly decide the first attack
         int sideDirection = RandomDirection.Generate();
-        _dragonflyMovement.Play(enterType, sideDirection);
+        _movement.Play(enterType, sideDirection);
     }
     
     // Attack Handle Methods ---------------------------------------------------
     private void StartAttack(DragonflyPatrolAttackMode mode)
     {
-        _dragonflyMovement.StartAttack(mode);
+        _movement.StartAttack(mode);
     }
     
     // Hover Attack -------------------------------------------------------------
@@ -198,7 +201,7 @@ public class Dragonfly : EnemyBase
             }
             else
             {
-                _patrolAttackPosition = _patrolAttackPositionProvider.GenerateRandomPreAttackHeadPosition(_dragonflyMovement.State);
+                _patrolAttackPosition = _patrolAttackPositionProvider.GenerateRandomPreAttackHeadPosition(_movement.State);
                 _isWaitingForHeadPatrolAttack = false;
                 _isWaitingForHeadPatrolAttackPoint = true;
                 _isLastPatrolDirectionSet = false;
@@ -250,7 +253,7 @@ public class Dragonfly : EnemyBase
             }
             else
             {
-                _patrolAttackPosition = _patrolAttackPositionProvider.GenerateRandomPreAttackTailPosition(_dragonflyMovement.State);
+                _patrolAttackPosition = _patrolAttackPositionProvider.GenerateRandomPreAttackTailPosition(_movement.State);
                 _isWaitingForTailPatrolAttack = false;
                 _isWaitingForTailPatrolAttackPoint = true;
                 _isLastPatrolDirectionSet = false;
@@ -353,7 +356,7 @@ public class Dragonfly : EnemyBase
         _localTime = 0;
         _spider.gameObject.transform.SetParent(this.transform);
         _spider.AttackStart();
-        _dragonflyMovement.SwitchState();
+        _movement.SwitchState();
     }
 
     //--------------------------------------------------------------------------------
@@ -398,6 +401,7 @@ public class Dragonfly : EnemyBase
     private void OnAttackStarted()
     {
         _collisionController.EnableColliders();
+        _presentation.PreAttackEnd();
     }
     
     private void OnAttackEnded()
@@ -416,7 +420,7 @@ public class Dragonfly : EnemyBase
             _spider.gameObject.SetActive(true);
             _spider.Initialize(direction);
         }
-        _dragonflyMovement.ResolveReturnTransition(mode, direction);
+        _movement.ResolveReturnTransition(mode, direction);
     }
 
     private void OnSpiderEnterAnimationEnd()
@@ -441,7 +445,7 @@ public class Dragonfly : EnemyBase
         {
             int direction = RandomDirection.Generate();
             _spider.Initialize(direction);
-            _dragonflyMovement.ResolveReturnTransition(DragonflyReturnMode.Spider, direction);
+            _movement.ResolveReturnTransition(DragonflyReturnMode.Spider, direction);
         }
         
         WaitForHoverAttack();
@@ -455,7 +459,7 @@ public class Dragonfly : EnemyBase
     {
         ReadyToCollide = false;
         ReadyToLampDamage = true;
-        _dragonflyMovement.TriggerBounce();
+        _movement.TriggerBounce();
     }
 
     public override void HandleExitingAttackExitZone()
@@ -471,14 +475,14 @@ public class Dragonfly : EnemyBase
     public override void ReceiveDamage(int damage)
     {
         _currentHealth -= damage;
-
+        _presentation.DamageFlash();
         if (_currentHealth > 0)
         {
             ReceivedLampAttack = true;
             // _enemyPresentation.DamageFlash();
             // _enemyPresentation.HealthUpdate(_currentHealth, _maxHealth);
             // OnEnemyDamaged?.Invoke(this);
-            _dragonflyMovement.TriggerFall(true);
+            _movement.TriggerFall(true);
             // _enemyMovement.TriggerFall();
         }
         else
@@ -488,7 +492,7 @@ public class Dragonfly : EnemyBase
                 ReceivedLampAttack = true;
                 _currentHealth = 0; 
                 // _enemyMovement.TriggerDeath();
-                _dragonflyMovement.TriggerFall(true);
+                _movement.TriggerFall(true);
                 OnEnemyDeathInvoke(this);
                 // _enemyPresentation.DeathFlash();
                 _isDead = true;
@@ -509,6 +513,7 @@ public class Dragonfly : EnemyBase
     private void OnPreAttackStart()
     {
         ReceivedLampAttack = false;
+        _presentation.PreAttackStart();
     }
     
     private void TMPHandleLampAttack(int arg1, float arg2, float arg3, float arg4)

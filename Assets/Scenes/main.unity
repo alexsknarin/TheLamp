@@ -13078,6 +13078,7 @@ GameObject:
   - component: {fileID: 1536401420}
   - component: {fileID: 1536401421}
   - component: {fileID: 1536401422}
+  - component: {fileID: 1536401423}
   m_Layer: 0
   m_Name: Dragonfly
   m_TagString: Untagged
@@ -13182,10 +13183,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 16eae1143c5a2b44390c227e30d912ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _enemyType: 0
+  _enemyType: 9
   _maxHealth: 10
   _currentHealth: 10
-  _dragonflyMovement: {fileID: 1536401418}
+  _movement: {fileID: 1536401418}
+  _presentation: {fileID: 1536401423}
   _swarm: {fileID: 1536401420}
   _collisionController: {fileID: 1536401422}
   _visibleBodyTransform: {fileID: 1720334790}
@@ -13274,6 +13276,40 @@ MonoBehaviour:
   - {fileID: 729917638}
   - {fileID: 125919006}
   - {fileID: 866568310}
+--- !u!114 &1536401423
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1536401416}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dab9715d45769a242820d370b7b19f32, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _meshRenderers:
+  - {fileID: 398616625}
+  - {fileID: 1768401584}
+  - {fileID: 265099569}
+  - {fileID: 951999748}
+  - {fileID: 432294275}
+  - {fileID: 129938427}
+  - {fileID: 1302505539}
+  - {fileID: 1616759486}
+  - {fileID: 793042658}
+  - {fileID: 42627157}
+  _baseColors:
+  - {r: 0.03137255, g: 0.007843138, b: 0, a: 0}
+  - {r: 0.019607844, g: 0.011764706, b: 0, a: 0}
+  - {r: 0.019607844, g: 0.011764706, b: 0, a: 0}
+  - {r: 0.019607844, g: 0.011764706, b: 0, a: 0}
+  - {r: 0.007843138, g: 0.02745098, b: 0.003921569, a: 0}
+  - {r: 0.007843138, g: 0.02745098, b: 0.003921569, a: 0}
+  - {r: 0.007843138, g: 0.02745098, b: 0.003921569, a: 0}
+  - {r: 0.007843138, g: 0.02745098, b: 0.003921569, a: 0}
+  - {r: 0.011764706, g: 0.003921569, b: 0.003921569, a: 0}
+  - {r: 0.011764706, g: 0.003921569, b: 0.003921569, a: 0}
 --- !u!1 &1540463159
 GameObject:
   m_ObjectHideFlags: 0
