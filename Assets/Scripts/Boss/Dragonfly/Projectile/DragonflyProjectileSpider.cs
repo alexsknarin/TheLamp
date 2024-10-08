@@ -5,6 +5,7 @@ public class DragonflyProjectileSpider : EnemyBase
 {
     [SerializeField] private EnemyTypes _enemyType = EnemyTypes.DragonflyProjectile;
     [SerializeField] private DragonflyProjectileMovementSpider _movement;
+    [SerializeField] private DragonflyProjectilePresentation _presentation;
     public override EnemyTypes EnemyType => _enemyType;
     
     public event Action OnEnterAnimationEnd;
@@ -42,6 +43,7 @@ public class DragonflyProjectileSpider : EnemyBase
     public void Initialize(int direction)
     {
         _movement.Initialize(direction);
+        _presentation.Initialize();
         _isDead = false;
         ReadyToLampDamage = false;
         // Presentation setup
@@ -83,6 +85,7 @@ public class DragonflyProjectileSpider : EnemyBase
         ReceivedLampAttack = true;
         _isDead = true;
         _movement.TriggerFall();
+        _presentation.DeathFlash();
         // Presentation - show damage effect
     }
 

@@ -1208,6 +1208,7 @@ GameObject:
   - component: {fileID: 80780173}
   - component: {fileID: 80780176}
   - component: {fileID: 80780175}
+  - component: {fileID: 80780177}
   m_Layer: 0
   m_Name: SwarmMoth_02
   m_TagString: Enemy
@@ -1374,6 +1375,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _enemyType: 10
   _movement: {fileID: 80780175}
+  _presentation: {fileID: 80780177}
+--- !u!114 &80780177
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 80780169}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8f601f4d8a5a6e54994136ad4242a0d2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _meshRenderer: {fileID: 80780170}
+  _duration: 1.7
 --- !u!4 &100072936 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2096221262486713844, guid: 556ccd576c35d634e88ba039c8700cfa,
@@ -7877,6 +7893,7 @@ GameObject:
   - component: {fileID: 953067762}
   - component: {fileID: 953067768}
   - component: {fileID: 953067769}
+  - component: {fileID: 953067770}
   m_Layer: 0
   m_Name: SwarmMoth_01
   m_TagString: Enemy
@@ -8025,6 +8042,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _enemyType: 10
   _movement: {fileID: 953067769}
+  _presentation: {fileID: 953067770}
 --- !u!114 &953067769
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8043,6 +8061,20 @@ MonoBehaviour:
   _fallAcceleraion: 1.6
   _noiseFrequency: 8
   _noiseAmplitude: 0.065
+--- !u!114 &953067770
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 953067761}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8f601f4d8a5a6e54994136ad4242a0d2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _meshRenderer: {fileID: 953067765}
+  _duration: 1.7
 --- !u!1 &969163313 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4557419227544725734, guid: 3fc8442acd052ac4f9c1e690f3aa5d74,
@@ -8403,6 +8435,7 @@ GameObject:
   - component: {fileID: 1017518022}
   - component: {fileID: 1017518024}
   - component: {fileID: 1017518025}
+  - component: {fileID: 1017518026}
   m_Layer: 0
   m_Name: SwarmMoth_03
   m_TagString: Enemy
@@ -8551,6 +8584,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _enemyType: 10
   _movement: {fileID: 1017518025}
+  _presentation: {fileID: 1017518026}
 --- !u!114 &1017518025
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8569,6 +8603,20 @@ MonoBehaviour:
   _fallAcceleraion: 1.6
   _noiseFrequency: 8
   _noiseAmplitude: 0.065
+--- !u!114 &1017518026
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1017518018}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8f601f4d8a5a6e54994136ad4242a0d2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _meshRenderer: {fileID: 1017518019}
+  _duration: 1.7
 --- !u!4 &1028657342 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -212581213004161906, guid: 556ccd576c35d634e88ba039c8700cfa,
@@ -13371,10 +13419,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1548909586}
+  - component: {fileID: 1548909590}
   - component: {fileID: 1548909589}
   - component: {fileID: 1548909588}
   - component: {fileID: 1548909587}
-  - component: {fileID: 1548909590}
+  - component: {fileID: 1548909591}
   m_Layer: 0
   m_Name: Spider
   m_TagString: Enemy
@@ -13477,6 +13526,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _enemyType: 10
   _movement: {fileID: 1548909587}
+  _presentation: {fileID: 1548909591}
 --- !u!50 &1548909589
 Rigidbody2D:
   serializedVersion: 4
@@ -13539,6 +13589,20 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.15
+--- !u!114 &1548909591
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1548909585}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8f601f4d8a5a6e54994136ad4242a0d2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _meshRenderer: {fileID: 201308328}
+  _duration: 1.7
 --- !u!1 &1556319016
 GameObject:
   m_ObjectHideFlags: 0

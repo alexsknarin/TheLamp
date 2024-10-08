@@ -4,6 +4,7 @@ public class DragonflyProjectileMoth : EnemyBase
 {
     [SerializeField] private EnemyTypes _enemyType = EnemyTypes.DragonflyProjectile;
     [SerializeField] private DragonflyProjectileMovementMoth _movement;
+    [SerializeField] private DragonflyProjectilePresentation _presentation;
     public override EnemyTypes EnemyType => _enemyType;
     private bool _isDead = false;
 
@@ -27,6 +28,7 @@ public class DragonflyProjectileMoth : EnemyBase
     public void Initialize(Vector3 startPosition)
     {
         _movement.Initialize(startPosition);
+        _presentation.Initialize();
         _isDead = false;
         ReadyToLampDamage = false;
         // Presentation setup
@@ -67,6 +69,7 @@ public class DragonflyProjectileMoth : EnemyBase
         ReceivedLampAttack = true;
         _isDead = true;
         _movement.TriggerFall();
+        _presentation.DeathFlash();
         // Presentation - show damage effect
     }
 
