@@ -57,6 +57,7 @@ public class DragonflyMovement : MonoBehaviour
     public event Action OnAttackStarted;
     public event Action OnPreattackStarted;
     public event Action OnAttackEnded;
+    public event Action<int> OnCatchSpiderStarted;
     
     private DragonflyMovementStateData _stateData;
     private DragonflyMovementBaseState _currentMovementState;
@@ -219,6 +220,7 @@ public class DragonflyMovement : MonoBehaviour
                 {
                     // Other states
                     SetState(_catchSpiderState, _visibleBodyTransform.position, 1, 1);
+                    OnCatchSpiderStarted?.Invoke(1);
                     _isReturnResolved = true;
                 }
                 _returnState = DragonflyState.CatchSpiderL;
@@ -238,6 +240,7 @@ public class DragonflyMovement : MonoBehaviour
                 {
                     // Other states
                     SetState(_catchSpiderState, _visibleBodyTransform.position, -1, 1);
+                    OnCatchSpiderStarted?.Invoke(-1);
                     _isReturnResolved = true;
                 }
                 _returnState = DragonflyState.CatchSpiderR;
@@ -281,9 +284,11 @@ public class DragonflyMovement : MonoBehaviour
                 break;
             case DragonflyState.CatchSpiderL:
                 SetState(_catchSpiderState, _visibleBodyTransform.position, 1, 1);
+                OnCatchSpiderStarted?.Invoke(1);    
                 break;
             case DragonflyState.CatchSpiderR:
                 SetState(_catchSpiderState, _visibleBodyTransform.position, -1, 1);
+                OnCatchSpiderStarted?.Invoke(-1);
                 break;
         }
         _isReturnResolved = true;

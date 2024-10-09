@@ -52,7 +52,6 @@ public class Dragonfly : EnemyBase
     private bool _isLastPatrolDirectionSet = false;
     
     private DragonflyPatrolAttackZoneRangesData _patrolAttackZonesData = new DragonflyPatrolAttackZoneRangesData();
-    private DragonflySpiderPatrolAttackZoneRangesData _spiderPatrolAttackZonesData = new DragonflySpiderPatrolAttackZoneRangesData();
 
     private DragonflyPatrolAttackPositionProvider _patrolAttackPositionProvider;
         
@@ -75,7 +74,9 @@ public class Dragonfly : EnemyBase
         _movement.OnAttackStarted += OnAttackStarted;
         _movement.OnAttackEnded += OnAttackEnded;
         _movement.OnPreattackStarted += OnPreAttackStart;
+        _movement.OnCatchSpiderStarted += OnCatchSpiderStart;
         _spider.OnEnterAnimationEnd += OnSpiderEnterAnimationEnd;
+        
         
         LampAttackModel.OnLampAttack += TMPHandleLampAttack;
     }
@@ -87,6 +88,7 @@ public class Dragonfly : EnemyBase
         _movement.OnAttackStarted -= OnAttackStarted;
         _movement.OnAttackEnded -= OnAttackEnded;
         _movement.OnPreattackStarted -= OnPreAttackStart;
+        _movement.OnCatchSpiderStarted -= OnCatchSpiderStart;
         _spider.OnEnterAnimationEnd -= OnSpiderEnterAnimationEnd;
         
         LampAttackModel.OnLampAttack -= TMPHandleLampAttack;
@@ -415,12 +417,19 @@ public class Dragonfly : EnemyBase
         
         DragonflyReturnMode mode = (DragonflyReturnMode)Random.Range(0, 3);
         int direction = RandomDirection.Generate();
-        if (mode == DragonflyReturnMode.Spider)
-        {
-            _spider.gameObject.SetActive(true);
-            _spider.Initialize(direction);
-        }
+        // if (mode == DragonflyReturnMode.Spider)
+        // {
+        //     ***
+        //     // _spider.gameObject.SetActive(true);
+        //     // _spider.Initialize(direction);
+        // }
         _movement.ResolveReturnTransition(mode, direction);
+    }
+    
+    private void OnCatchSpiderStart(int direction)
+    {
+        _spider.gameObject.SetActive(true);
+        _spider.Initialize(direction);
     }
 
     private void OnSpiderEnterAnimationEnd()

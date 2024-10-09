@@ -1361,6 +1361,7 @@ MonoBehaviour:
   _fallAcceleraion: 1.6
   _noiseFrequency: 8
   _noiseAmplitude: 0.065
+  _startTransitionDistance: 2
 --- !u!114 &80780176
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8061,6 +8062,7 @@ MonoBehaviour:
   _fallAcceleraion: 1.6
   _noiseFrequency: 8
   _noiseAmplitude: 0.065
+  _startTransitionDistance: 2
 --- !u!114 &953067770
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8603,6 +8605,7 @@ MonoBehaviour:
   _fallAcceleraion: 1.6
   _noiseFrequency: 8
   _noiseAmplitude: 0.065
+  _startTransitionDistance: 2
 --- !u!114 &1017518026
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13563,6 +13566,7 @@ MonoBehaviour:
   _enemyType: 10
   _movement: {fileID: 1548909587}
   _presentation: {fileID: 1548909591}
+  _collider: {fileID: 1548909590}
 --- !u!50 &1548909589
 Rigidbody2D:
   serializedVersion: 4
