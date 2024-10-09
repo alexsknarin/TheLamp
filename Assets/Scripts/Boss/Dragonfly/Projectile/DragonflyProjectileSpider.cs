@@ -6,6 +6,7 @@ public class DragonflyProjectileSpider : EnemyBase
     [SerializeField] private EnemyTypes _enemyType = EnemyTypes.DragonflyProjectile;
     [SerializeField] private DragonflyProjectileMovementSpider _movement;
     [SerializeField] private DragonflyProjectilePresentation _presentation;
+    [SerializeField] private Collider2D _collider;
     public override EnemyTypes EnemyType => _enemyType;
     
     public event Action OnEnterAnimationEnd;
@@ -46,6 +47,7 @@ public class DragonflyProjectileSpider : EnemyBase
         _presentation.Initialize();
         _isDead = false;
         ReadyToLampDamage = false;
+        _collider.enabled = false;
         // Presentation setup
     }
 
@@ -54,6 +56,7 @@ public class DragonflyProjectileSpider : EnemyBase
         ReadyToCollide = true;
         ReceivedLampAttack = false;
         _movement.TriggerAttack();
+        _collider.enabled = true;
     }
 
     public override void HandleEnteringAttackZone(Collider2D collider)
@@ -84,6 +87,7 @@ public class DragonflyProjectileSpider : EnemyBase
     {
         ReceivedLampAttack = true;
         _isDead = true;
+        _collider.enabled = false;
         _movement.TriggerFall();
         _presentation.DeathFlash();
         // Presentation - show damage effect
