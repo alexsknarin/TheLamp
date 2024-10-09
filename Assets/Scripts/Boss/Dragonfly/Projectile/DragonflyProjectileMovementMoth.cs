@@ -29,8 +29,6 @@ public class DragonflyProjectileMovementMoth : MonoBehaviour
     public void Initialize(Vector3 startPosition)
     {
         transform.position = startPosition;
-        // _attackDirection = - startPosition.normalized;
-        
     }
 
     public void TriggerAttack()

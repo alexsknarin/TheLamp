@@ -26,6 +26,12 @@ public class DragonflyProjectileMovementSpider : MonoBehaviour
     
     private bool _isFallPlaying = false;
     private float _bounceSpeed = 0f;
+    private Vector3 _sideGoal;
+    private float _startTransitionDistance; 
+    
+    
+    // Debug 
+    Vector3 _previousPosition;
     
    
     public void Initialize(int direction)
@@ -44,6 +50,15 @@ public class DragonflyProjectileMovementSpider : MonoBehaviour
     {
         _isAttackPlaying = true;
         _attackDirection = -transform.position.normalized;
+        
+        _sideGoal = transform.position;
+        _sideGoal.z = 0;
+        _sideGoal.Normalize();
+        _sideGoal *= 0.75f;
+
+        _startTransitionDistance = Mathf.Abs(transform.position.z);
+        
+        _attackDirection = (_sideGoal - transform.position).normalized;
     }
     
     public void TriggerFall()
@@ -75,7 +90,15 @@ public class DragonflyProjectileMovementSpider : MonoBehaviour
 
         if (_isAttackPlaying)
         {
+            float distance = Mathf.Abs(transform.position.z);
+            float phase = Mathf.Pow(1 - distance / _startTransitionDistance, 2.5f);
+            Vector3 midGoalPosition = Vector3.Lerp(_sideGoal, Vector3.zero, phase);
+            _attackDirection = (midGoalPosition - transform.position).normalized;
+            
+            _previousPosition = transform.position;
             transform.position += _attackDirection * (_attackSpeed * Time.deltaTime);
+            
+            Debug.DrawLine(_previousPosition, transform.position, Color.cyan, 5f);
         }
         
         if (_isFallPlaying)
