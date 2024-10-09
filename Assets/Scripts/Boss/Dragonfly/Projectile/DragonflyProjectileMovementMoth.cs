@@ -9,6 +9,7 @@ public class DragonflyProjectileMovementMoth : MonoBehaviour
     [SerializeField] private float _fallAcceleraion = 1.6f;
     [SerializeField] private float _noiseFrequency = 1.0f;
     [SerializeField] private float _noiseAmplitude = 1.0f;
+    [SerializeField] private float _startTransitionDistance = 2.0f;
     
     public event Action OnFallEnded;
     
@@ -17,6 +18,7 @@ public class DragonflyProjectileMovementMoth : MonoBehaviour
     private bool _isFalling = false;
     private Vector3 _attackDirection;
     private float _currentAcceeleration = 0f;
+    private Vector3 _sideGoal;
     
     // Debug
     private Vector3 _previousPosition;
@@ -27,7 +29,8 @@ public class DragonflyProjectileMovementMoth : MonoBehaviour
     public void Initialize(Vector3 startPosition)
     {
         transform.position = startPosition;
-        _attackDirection = - startPosition.normalized;
+        // _attackDirection = - startPosition.normalized;
+        
     }
 
     public void TriggerAttack()
@@ -35,6 +38,13 @@ public class DragonflyProjectileMovementMoth : MonoBehaviour
         _isFalling = false;
         _isAttacking = true;
         _previousPositionRaw = transform.position;
+        
+        _sideGoal = transform.position;
+        _sideGoal.z = 0;
+        _sideGoal.Normalize();
+        _sideGoal *= 0.75f;
+       
+        _attackDirection = (_sideGoal - transform.position).normalized;
     }
     
     public void TriggerFall()
@@ -51,13 +61,23 @@ public class DragonflyProjectileMovementMoth : MonoBehaviour
     {
         if (_isAttacking)
         {
+            float distance = Mathf.Abs(transform.position.z);
+            if (distance < _startTransitionDistance)
+            {
+                float phase = Mathf.Pow(1 - distance / _startTransitionDistance, 2.5f);
+                Vector3 midGoalPosition = Vector3.Lerp(_sideGoal, Vector3.zero, phase);
+                _attackDirection = (midGoalPosition - transform.position).normalized;
+            }
+
             _previousPosition = transform.position;
             Vector3 position = _previousPositionRaw + _attackDirection * (_speed * Time.deltaTime);
             _previousPositionRaw = position;
             // Add noise
             position.x += (Mathf.PerlinNoise(Time.time * _noiseFrequency, 0) - 0.5f) * 2 * _noiseAmplitude;
             position.y += (Mathf.PerlinNoise(0, Time.time * _noiseFrequency) - 0.5f) * 2 * _noiseAmplitude;
-            transform.position = position;  
+            transform.position = position;
+            
+            Debug.DrawLine(_previousPosition, transform.position, Color.cyan, 5f);
         }
         
         if (_isFalling)
