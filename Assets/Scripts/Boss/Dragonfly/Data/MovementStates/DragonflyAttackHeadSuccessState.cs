@@ -5,6 +5,7 @@ public class DragonflyAttackHeadSuccessState : DragonflyMovementBaseState
 {
     [SerializeField] private DragonflyState _state = DragonflyState.AttackHeadSuccess;
     [SerializeField] private float _duration = 0.85f;
+    [SerializeField] private float _afterDelay = .6f;
     [SerializeField] private AnimationCurve _tyCurve;
     [SerializeField] private AnimationCurve _tzCurve;
     [SerializeField] private AnimationCurve _rxCurve;
@@ -13,6 +14,8 @@ public class DragonflyAttackHeadSuccessState : DragonflyMovementBaseState
     
     private float _localTime = 0f;
     private float _phase = 0f;
+    private bool _isAfterDelay = false;
+
     
     public override void EnterState(Vector3 currentPosition, int sideDirection, int depthDirection)
     {
@@ -24,7 +27,8 @@ public class DragonflyAttackHeadSuccessState : DragonflyMovementBaseState
         _stateData.VisibleBodyTransform.localScale = Vector3.one;
         
         _localTime = 0f;
-        _phase = 0f;
+        _phase = 0f;    
+        _isAfterDelay = false;
     }
 
     public override void ExecuteState(Vector3 currentPosition)
@@ -43,9 +47,18 @@ public class DragonflyAttackHeadSuccessState : DragonflyMovementBaseState
     
     public override void CheckForStateChange()
     {
-        _phase = _localTime / _duration;
-        if (_phase > 1f)
+        if (!_isAfterDelay)
         {
+            _phase = _localTime / _duration;
+            if (_phase > 1)
+            {
+                _isAfterDelay = true;
+                _localTime = 0f;
+            }    
+        }
+        else if (_isAfterDelay && _localTime > _afterDelay)
+        {
+            _isAfterDelay = false;
             _stateData.Owner.SwitchState();
         }
     }
