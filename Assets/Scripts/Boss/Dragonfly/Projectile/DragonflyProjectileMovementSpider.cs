@@ -54,7 +54,7 @@ public class DragonflyProjectileMovementSpider : MonoBehaviour
         _sideGoal = transform.position;
         _sideGoal.z = 0;
         _sideGoal.Normalize();
-        _sideGoal *= 0.75f;
+        _sideGoal *= 0.95f;
 
         _startTransitionDistance = Mathf.Abs(transform.position.z);
         

@@ -40,7 +40,7 @@ public class DragonflyProjectileMovementMoth : MonoBehaviour
         _sideGoal = transform.position;
         _sideGoal.z = 0;
         _sideGoal.Normalize();
-        _sideGoal *= 0.75f;
+        _sideGoal *= 0.95f;
        
         _attackDirection = (_sideGoal - transform.position).normalized;
     }
