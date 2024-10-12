@@ -153,6 +153,12 @@ public class Megamothling : BossBase
     {
     }
     
+    public override Vector3 ProvideImpactPoint()
+    {
+        return transform.position;
+    }
+    
+    
     public override void Reset()
     {
         ReceivedLampAttack = false;

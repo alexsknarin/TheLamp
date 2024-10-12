@@ -103,6 +103,11 @@ public class Wasp : BossBase
     public override void HandleCollisionWithLamp()
     {
     }
+    
+    public override Vector3 ProvideImpactPoint()
+    {
+        return transform.position;
+    }
 
     private void HandleLeftScreen()
     {

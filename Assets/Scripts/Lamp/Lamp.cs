@@ -146,7 +146,7 @@ public class Lamp : MonoBehaviour, IInitializable
             return;
         }
         
-        Vector3 impactPoint = enemy.transform.position.normalized;
+        Vector3 impactPoint = enemy.ProvideImpactPoint();
         if (!_isInvincible)
         {
             _lampStatsManager.DecreaseCurrentHealth(1, impactPoint);    

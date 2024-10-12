@@ -519,6 +519,11 @@ public class Dragonfly : EnemyBase
         throw new NotImplementedException();
     }
     
+    public override Vector3 ProvideImpactPoint()
+    {
+        return _collisionController.GetFirstActiveColliderPosition();
+    }
+    
     private void OnPreAttackStart()
     {
         ReceivedLampAttack = false;

@@ -180,6 +180,11 @@ public class Megabeetle : BossBase
     {
     }
     
+    public override Vector3 ProvideImpactPoint()
+    {
+        return transform.position;
+    }
+    
     private void OnDeactivated()
     {
     }

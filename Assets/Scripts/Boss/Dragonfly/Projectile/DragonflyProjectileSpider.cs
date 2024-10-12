@@ -103,6 +103,11 @@ public class DragonflyProjectileSpider : EnemyBase
         throw new System.NotImplementedException();
     }
     
+    public override Vector3 ProvideImpactPoint()
+    {
+        return transform.position;
+    }
+    
     public override void SpreadStart()
     {
         throw new System.NotImplementedException();

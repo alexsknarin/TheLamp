@@ -210,7 +210,12 @@ public class Enemy : EnemyBase
             _objectPool.Release(this);    
         }
     }
-    
+
+    public override Vector3 ProvideImpactPoint()
+    {
+        return transform.position;
+    }
+
     private void OnDeactivated()
     {
         OnEnemyDeactivated?.Invoke(this);
