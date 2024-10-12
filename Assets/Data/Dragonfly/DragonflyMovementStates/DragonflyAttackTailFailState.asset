@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd4bcffa4f31db741ac52c62ad6e9f1d, type: 3}
   m_Name: DragonflyAttackTailFailState
   m_EditorClassIdentifier: 
-  _state: 15
+  _state: 30
   _duration: 2
+  _afterDelay: 0.25
   _fallSpeed: 13
   _rotationSpeed: 380
   _moveAcceleration: 1.9

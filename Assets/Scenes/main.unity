@@ -4903,7 +4903,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &568085644
 Transform:
   m_ObjectHideFlags: 0
@@ -16163,7 +16163,7 @@ MonoBehaviour:
   _lampAttackExitZoneCollisionHandler: {fileID: 452042971}
   _attackBlockerCount: 0
   _lampStatsManager: {fileID: 1934066249}
-  _isInvincible: 0
+  _isInvincible: 1
 --- !u!114 &1934066247
 MonoBehaviour:
   m_ObjectHideFlags: 0

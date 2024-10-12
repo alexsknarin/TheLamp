@@ -15,6 +15,8 @@ public class DragonflyPreAttackHeadState : DragonflyMovementBaseState
     private float _sideDirection;
     private float _localTime = 0f;
     private float _phase = 0f;
+    private Quaternion _startRotation;
+    private Quaternion _endRotation;
     
     
     public override void EnterState(Vector3 currentPosition, int sideDirection, int depthDirection)
@@ -32,7 +34,9 @@ public class DragonflyPreAttackHeadState : DragonflyMovementBaseState
         _localTime = 0f;
         _phase = 0f;
         _sideDirection = sideDirection;
-
+        
+        _startRotation = _stateData.VisibleBodyTransform.rotation;
+        _endRotation = Quaternion.LookRotation(_attackDirection, Vector3.up);
     }
 
     public override void ExecuteState(Vector3 currentPosition)
@@ -45,8 +49,8 @@ public class DragonflyPreAttackHeadState : DragonflyMovementBaseState
         Vector3 sideVector = _stateData.VisibleBodyTransform.right.normalized;
         _stateData.VisibleBodyTransform.position += sideVector * (_sideSpeed * -_sideDirection * Time.deltaTime);
         
-        Vector3 forward = -_stateData.VisibleBodyTransform.position.normalized;
-        _stateData.VisibleBodyTransform.rotation = Quaternion.LookRotation(forward, Vector3.up);
+        // Rotate
+        _stateData.VisibleBodyTransform.rotation = Quaternion.Slerp(_startRotation, _endRotation, _phase);
         
         _localTime += Time.deltaTime;
     }

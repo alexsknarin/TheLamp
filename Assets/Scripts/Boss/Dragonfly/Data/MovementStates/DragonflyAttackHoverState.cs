@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.Serialization;
 
 [CreateAssetMenu(fileName = "DragonflyAttackHoverState", menuName = "DragonflyStates/DragonflyAttackHoverState")]
 public class DragonflyAttackHoverState : DragonflyMovementBaseState
@@ -16,8 +15,26 @@ public class DragonflyAttackHoverState : DragonflyMovementBaseState
     public override void EnterState(Vector3 currentPosition, int sideDirection, int depthDirection)
     {
         _stateData.VisibleBodyTransform.SetParent(_stateData.Owner.transform);
-        _attackDirection = -_stateData.VisibleBodyTransform.position.normalized;
+        // _attackDirection = -_stateData.VisibleBodyTransform.position.normalized;
         _attackAccelerationValue = 0;
+        
+        Vector3 sideGoal = currentPosition;
+        sideGoal.z = 0;
+        sideGoal.Normalize();
+        sideGoal *= 0.85f;
+        
+        if (currentPosition.z > 0)
+        {
+            sideGoal *= 0.95f;
+            sideGoal.y *= 0.75f;
+        }
+        else
+        {
+            sideGoal *= 0.85f;
+        }
+        _attackDirection = (sideGoal - currentPosition).normalized;
+                
+        Debug.DrawLine(currentPosition, sideGoal, Color.yellow, 5f);
     }
 
     public override void ExecuteState(Vector3 currentPosition)

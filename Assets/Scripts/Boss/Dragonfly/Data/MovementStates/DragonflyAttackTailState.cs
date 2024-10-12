@@ -8,6 +8,7 @@ public class DragonflyAttackTailState : DragonflyMovementBaseState
     [SerializeField] private float _duration = 0.6f;
     [SerializeField] private float _distance = 0.52f;
     [SerializeField] private AnimationCurve _tzCurve;
+    [SerializeField] private AnimationCurve _rxCurve;
     [SerializeField] private AnimationCurve _ryCurve;
     [SerializeField] private AnimationCurve _rzCurve;
     public override DragonflyState State => _state;
