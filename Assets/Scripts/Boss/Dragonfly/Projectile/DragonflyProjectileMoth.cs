@@ -48,7 +48,6 @@ public class DragonflyProjectileMoth : EnemyBase
 
     public override void HandleCollisionWithLamp()
     {
-        Debug.Log("Collided with lamp");
         ReadyToCollide = false;
         ReadyToLampDamage = true;
         _movement.TriggerFall();

@@ -75,6 +75,7 @@ public class Dragonfly : EnemyBase
         _movement.OnAttackEnded += OnAttackEnded;
         _movement.OnPreattackStarted += OnPreAttackStart;
         _movement.OnCatchSpiderStarted += OnCatchSpiderStart;
+        _movement.OnDeathAnimationEnded += OnDeathAnimationEnded;
         _spider.OnEnterAnimationEnd += OnSpiderEnterAnimationEnd;
         
         
@@ -89,6 +90,7 @@ public class Dragonfly : EnemyBase
         _movement.OnAttackEnded -= OnAttackEnded;
         _movement.OnPreattackStarted -= OnPreAttackStart;
         _movement.OnCatchSpiderStarted -= OnCatchSpiderStart;
+        _movement.OnDeathAnimationEnded -= OnDeathAnimationEnded;
         _spider.OnEnterAnimationEnd -= OnSpiderEnterAnimationEnd;
         
         LampAttackModel.OnLampAttack -= TMPHandleLampAttack;
@@ -115,7 +117,7 @@ public class Dragonfly : EnemyBase
         _isWaitingForTailPatrolAttackPoint = false;
         _isWaitingForSpiderPatrolAttack = false;
         _isWaitingForSpiderPatrolAttackPoint = false;
-        
+        _isDead = false;
         _presentation.Initialize();
     }
 
@@ -485,6 +487,7 @@ public class Dragonfly : EnemyBase
     {
         _currentHealth -= damage;
         _presentation.DamageFlash();
+        
         if (_currentHealth > 0)
         {
             ReceivedLampAttack = true;
@@ -498,15 +501,22 @@ public class Dragonfly : EnemyBase
         {
             if (!_isDead)
             {
+                Debug.Log("Dragonfly: Dead");
                 ReceivedLampAttack = true;
                 _currentHealth = 0; 
                 // _enemyMovement.TriggerDeath();
-                _movement.TriggerFall(true);
+                // _movement.TriggerFall(true);
+                _movement.TriggerDeath(true);
                 OnEnemyDeathInvoke(this);
                 // _enemyPresentation.DeathFlash();
                 _isDead = true;
             }
         }   
+    }
+    
+    private void OnDeathAnimationEnded()
+    {
+        gameObject.SetActive(false);
     }
 
     public override void UpdateAttackAvailability()

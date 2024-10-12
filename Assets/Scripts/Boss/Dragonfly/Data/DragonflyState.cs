@@ -42,5 +42,8 @@ public enum DragonflyState
     ReturnTransitionLRBT,
     ReturnTransitionLRTB,
     ReturnTransitionRLBT,
-    ReturnTransitionRLTB
+    ReturnTransitionRLTB,
+    DeathTailL,
+    DeathTailR,
+    DeathHead
 }

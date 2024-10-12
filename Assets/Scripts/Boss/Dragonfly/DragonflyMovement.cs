@@ -50,6 +50,9 @@ public class DragonflyMovement : MonoBehaviour
     [SerializeField] private DragonflyMovementBaseState _spiderPushState;
     [SerializeField] private DragonflyMovementBaseState _returnTransitionBTState; // Top - Bottom
     [SerializeField] private DragonflyMovementBaseState _returnTransitionTBState; // Bottom - Top
+    [SerializeField] private DragonflyMovementBaseState _deathHeadState;
+    [SerializeField] private DragonflyMovementBaseState _deathTailState;
+    
     public DragonflyState State => _currentMovementState.State;
     
     public event Action<DragonflyState, DragonflyState> OnReadyToAttackStateEntered; 
@@ -58,6 +61,7 @@ public class DragonflyMovement : MonoBehaviour
     public event Action OnPreattackStarted;
     public event Action OnAttackEnded;
     public event Action<int> OnCatchSpiderStarted;
+    public event Action OnDeathAnimationEnded; 
     
     private DragonflyMovementStateData _stateData;
     private DragonflyMovementBaseState _currentMovementState;
@@ -80,6 +84,8 @@ public class DragonflyMovement : MonoBehaviour
     
     private bool _isCollided = false;
     private bool _isReceivedDamage = false;
+    
+    private bool _isDead = false;
     
     
     private void OnEnable()
@@ -146,6 +152,8 @@ public class DragonflyMovement : MonoBehaviour
         _spiderPushState.SetCommonStateDependencies(_stateData);
         _returnTransitionBTState.SetCommonStateDependencies(_stateData);
         _returnTransitionTBState.SetCommonStateDependencies(_stateData);
+        _deathHeadState.SetCommonStateDependencies(_stateData);
+        _deathTailState.SetCommonStateDependencies(_stateData);
         // 
 
         _currentMovementState = _idleState;
@@ -402,6 +410,7 @@ public class DragonflyMovement : MonoBehaviour
     
     private void MovementSetup(int state, int sideDirection)
     {
+        _isDead = false;
         _isReceivedDamage = false;
         _sideDirection = sideDirection;
         if (state == 0)
@@ -445,6 +454,14 @@ public class DragonflyMovement : MonoBehaviour
             SwitchState();
         }
     }
+    
+    public void TriggerDeath(bool isReceivedDamage)
+    {
+        _isReceivedDamage = isReceivedDamage;
+        _isDead = true;
+        SwitchState();
+    }
+    
 
     public void PlayClip(DragonflyState state)
     {
@@ -522,7 +539,15 @@ public class DragonflyMovement : MonoBehaviour
                 OnAttackEnded?.Invoke();
                 if (_isReceivedDamage)
                 {
-                    SetState(_fallHeadLState, _visibleBodyTransform.position, 1, 1);
+                    if (_isDead)
+                    {
+                        SetState(_deathHeadState, _visibleBodyTransform.position, 1, 1);
+                        Debug.Log("Dragonfly Death State started");
+                    }
+                    else
+                    {
+                        SetState(_fallHeadLState, _visibleBodyTransform.position, 1, 1);    
+                    }
                     _isReceivedDamage = false;
                 }
                 else
@@ -559,7 +584,14 @@ public class DragonflyMovement : MonoBehaviour
                 OnAttackEnded?.Invoke();
                 if (_isReceivedDamage)
                 {
-                    SetState(_attackTailFail, _visibleBodyTransform.position, 1, 1);
+                    if (_isDead)
+                    {
+                        SetState(_deathTailState, _visibleBodyTransform.position, 1, 1);
+                    }
+                    else
+                    {
+                        SetState(_attackTailFail, _visibleBodyTransform.position, 1, 1);    
+                    }
                     _isReceivedDamage = false;
                 }
                 else
@@ -572,7 +604,14 @@ public class DragonflyMovement : MonoBehaviour
                 OnAttackEnded?.Invoke();
                 if (_isReceivedDamage)
                 {
-                    SetState(_attackTailFail, _visibleBodyTransform.position, -1, 1);
+                    if (_isDead)
+                    {
+                        SetState(_deathTailState, _visibleBodyTransform.position, -1, 1);
+                    }
+                    else
+                    {
+                        SetState(_attackTailFail, _visibleBodyTransform.position, -1, 1);
+                    }
                     _isReceivedDamage = false;
                 }
                 else
@@ -627,7 +666,14 @@ public class DragonflyMovement : MonoBehaviour
                 OnAttackEnded?.Invoke();
                 if (_isReceivedDamage)
                 {
-                    SetState(_fallHeadLState, _visibleBodyTransform.position, 1, 1);
+                    if (_isDead)
+                    {
+                        SetState(_deathHeadState, _visibleBodyTransform.position, 1, 1);
+                    }
+                    else
+                    {
+                        SetState(_fallHeadLState, _visibleBodyTransform.position, 1, 1);    
+                    }
                     _isReceivedDamage = false;
                 }
                 else
@@ -670,6 +716,15 @@ public class DragonflyMovement : MonoBehaviour
             case DragonflyState.SpiderPreattackHeadTransitionStateR:
                 OnReadyToAttackStateEntered?.Invoke(DragonflyState.PatrolR, _prevDragonflyState);
                 SetState(_patrolState, _visibleBodyTransform.position, -1, 1);
+                break;
+            case DragonflyState.DeathHead:
+                OnDeathAnimationEnded?.Invoke();
+                break;
+            case DragonflyState.DeathTailL:
+                OnDeathAnimationEnded?.Invoke();
+                break;
+            case DragonflyState.DeathTailR: 
+                OnDeathAnimationEnded?.Invoke();
                 break;
         }
     }

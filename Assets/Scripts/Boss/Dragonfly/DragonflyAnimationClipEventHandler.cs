@@ -7,7 +7,6 @@ public class DragonflyAnimationClipEventHandler : MonoBehaviour
     
     public void ClipEnded()
     {
-        Debug.Log("ClipEnd");
         OnClipEndedEvent?.Invoke();
     }
 }

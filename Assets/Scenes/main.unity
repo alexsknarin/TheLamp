@@ -13173,6 +13173,8 @@ MonoBehaviour:
     type: 2}
   _returnTransitionTBState: {fileID: 11400000, guid: fca417af9cfa255479035cf7f3c6e900,
     type: 2}
+  _deathHeadState: {fileID: 11400000, guid: ed543c5b32e029940818be8c06fecc66, type: 2}
+  _deathTailState: {fileID: 11400000, guid: 34081985a0f828d439ed664c2bf8077f, type: 2}
   _prevDragonflyState: 0
 --- !u!114 &1536401419
 MonoBehaviour:
@@ -13187,8 +13189,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _enemyType: 9
-  _maxHealth: 10
-  _currentHealth: 10
+  _maxHealth: 3
+  _currentHealth: 3
   _movement: {fileID: 1536401418}
   _presentation: {fileID: 1536401423}
   _swarm: {fileID: 1536401420}

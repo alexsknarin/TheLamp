@@ -57,12 +57,10 @@ public class DragonflyPresentation : EnemyPresentation
     {
         if (_isDamageFlashing)
         {
-            Debug.Log("Damage flashing");
             float phase = _localTime / 0.5f;
             
             if (phase > 1)
             {
-                Debug.Log("Damage flashing Ended");
                 _isDamageFlashing = false;
                 for (int i = 0; i < _meshRenderers.Count; i++)
                 {
