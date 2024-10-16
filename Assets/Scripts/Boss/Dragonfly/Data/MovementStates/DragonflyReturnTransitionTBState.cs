@@ -1,10 +1,11 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 [CreateAssetMenu(fileName = "DragonflyReturnTransitionTBState", menuName = "DragonflyStates/DragonflyReturnTransitionTBState")]
 public class DragonflyReturnTransitionTBState : DragonflyMovementBaseState
 {
-    [SerializeField] private DragonflyState _state = DragonflyState.ReturnTransitionRLTB;
-    public override DragonflyState State => _state;
+    [SerializeField] private DragonflyMovementState _state = DragonflyMovementState.ReturnTransitionRLTB;
+    public override DragonflyMovementState State => _state;
 
     public override void EnterState(Vector3 currentPosition, int sideDirection, int depthDirection)
     {
@@ -14,11 +15,11 @@ public class DragonflyReturnTransitionTBState : DragonflyMovementBaseState
         
         if (sideDirection == 1)
         {
-            _state = DragonflyState.ReturnTransitionRLTB;
+            _state = DragonflyMovementState.ReturnTransitionRLTB;
         }
         else
         {
-            _state = DragonflyState.ReturnTransitionLRTB;
+            _state = DragonflyMovementState.ReturnTransitionLRTB;
         }
         
         _stateData.Owner.PlayClip(_state);

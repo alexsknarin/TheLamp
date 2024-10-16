@@ -1,4 +1,4 @@
-public enum DragonflyState
+public enum DragonflyMovementState
 {
     Idle,
     EnterToPatrolL,

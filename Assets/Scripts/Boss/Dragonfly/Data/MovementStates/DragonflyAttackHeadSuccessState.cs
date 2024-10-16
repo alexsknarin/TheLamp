@@ -3,14 +3,14 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "DragonflyAttackHeadSuccessState", menuName = "DragonflyStates/DragonflyAttackHeadSuccessState")]
 public class DragonflyAttackHeadSuccessState : DragonflyMovementBaseState
 {
-    [SerializeField] private DragonflyState _state = DragonflyState.AttackHeadSuccess;
+    [SerializeField] private DragonflyMovementState _state = DragonflyMovementState.AttackHeadSuccess;
     [SerializeField] private float _duration = 0.85f;
     [SerializeField] private float _afterDelay = .6f;
     [SerializeField] private AnimationCurve _tyCurve;
     [SerializeField] private AnimationCurve _tzCurve;
     [SerializeField] private AnimationCurve _rxCurve;
     
-    public override DragonflyState State => _state;
+    public override DragonflyMovementState State => _state;
     
     private float _localTime = 0f;
     private float _phase = 0f;

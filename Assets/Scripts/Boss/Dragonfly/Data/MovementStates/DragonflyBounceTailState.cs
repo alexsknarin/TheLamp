@@ -1,13 +1,13 @@
 using UnityEngine;
-using UnityEngine.Serialization;
+
 
 [CreateAssetMenu(fileName = "DragonflyBounceTailState", menuName = "DragonflyStates/DragonflyBounceTailState")]
 public class DragonflyBounceTailState : DragonflyMovementBaseState
 {
-    [SerializeField] private DragonflyState _state = DragonflyState.BounceTailL;
+    [SerializeField] private DragonflyMovementState _state = DragonflyMovementState.BounceTailL;
     [SerializeField] private float _rotationSpeed = 125f;
     [SerializeField] private float _duration = 0.15f;
-    public override DragonflyState State => _state;
+    public override DragonflyMovementState State => _state;
     
     private float _phase = 0f;
     private float _localTime = 0f;
@@ -17,11 +17,11 @@ public class DragonflyBounceTailState : DragonflyMovementBaseState
     {
         if (sideDirection == 1)
         {
-            _state = DragonflyState.BounceTailL;
+            _state = DragonflyMovementState.BounceTailL;
         }
         else
         {
-            _state = DragonflyState.BounceTailR;
+            _state = DragonflyMovementState.BounceTailR;
         }
         _sideDirection = sideDirection;
         

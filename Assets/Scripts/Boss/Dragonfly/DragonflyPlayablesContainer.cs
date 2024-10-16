@@ -6,23 +6,23 @@ using UnityEngine.Playables;
 public class DragonflyPlayablesContainer
 {
     private PlayableGraph _playableGraph;
-    private Dictionary<DragonflyState, AnimationClipPlayable> _animationClips;
+    private Dictionary<DragonflyMovementState, AnimationClipPlayable> _animationClips;
     
     public DragonflyPlayablesContainer(PlayableGraph graph)
     {
         _playableGraph = graph;
-        _animationClips = new Dictionary<DragonflyState, AnimationClipPlayable>();
+        _animationClips = new Dictionary<DragonflyMovementState, AnimationClipPlayable>();
     }
     
-    public void AddClip(DragonflyState key, AnimationClip clip)
+    public void AddClip(DragonflyMovementState key, AnimationClip clip)
     {
         var clipPlayable = AnimationClipPlayable.Create(_playableGraph, clip);
         _animationClips.Add(key, clipPlayable);
     }
     
-    public AnimationClipPlayable GetClip(DragonflyState state)
+    public AnimationClipPlayable GetClip(DragonflyMovementState movementState)
     {
-        return _animationClips[state];
+        return _animationClips[movementState];
     }
     
 }

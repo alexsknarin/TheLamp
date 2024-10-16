@@ -1,13 +1,12 @@
 using UnityEngine;
-using UnityEngine.Serialization;
 
 [CreateAssetMenu(fileName = "DragonflyHoverState", menuName = "DragonflyStates/DragonflyHoverState")]
 public class DragonflyHoverState : DragonflyMovementBaseState
 {
-    [SerializeField] private DragonflyState _state = DragonflyState.Hover;
+    [SerializeField] private DragonflyMovementState _state = DragonflyMovementState.Hover;
     [SerializeField] private float _amplitude = 0.5f;
     [SerializeField] private float _frequency = 0.33f;
-    public override DragonflyState State => _state;
+    public override DragonflyMovementState State => _state;
     private float _localTime = 0f;
     private Vector3 _hoverPos = Vector3.zero;
     

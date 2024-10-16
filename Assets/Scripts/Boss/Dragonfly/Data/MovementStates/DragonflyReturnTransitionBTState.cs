@@ -3,8 +3,8 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "DragonflyReturnTransitionBTState", menuName = "DragonflyStates/DragonflyReturnTransitionBTState")]
 public class DragonflyReturnTransitionBTState : DragonflyMovementBaseState
 {
-    [SerializeField] private DragonflyState _state = DragonflyState.ReturnTransitionRLBT;
-    public override DragonflyState State => _state;
+    [SerializeField] private DragonflyMovementState _state = DragonflyMovementState.ReturnTransitionRLBT;
+    public override DragonflyMovementState State => _state;
 
     public override void EnterState(Vector3 currentPosition, int sideDirection, int depthDirection)
     {
@@ -14,11 +14,11 @@ public class DragonflyReturnTransitionBTState : DragonflyMovementBaseState
         
         if (sideDirection == 1)
         {
-            _state = DragonflyState.ReturnTransitionRLBT;
+            _state = DragonflyMovementState.ReturnTransitionRLBT;
         }
         else
         {
-            _state = DragonflyState.ReturnTransitionLRBT;
+            _state = DragonflyMovementState.ReturnTransitionLRBT;
         }
         
         _stateData.Owner.PlayClip(_state);

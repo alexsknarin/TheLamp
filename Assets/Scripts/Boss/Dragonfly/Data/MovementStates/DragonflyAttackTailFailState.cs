@@ -1,16 +1,15 @@
 using UnityEngine;
-using UnityEngine.Serialization;
 
 [CreateAssetMenu(fileName = "DragonflyAttackTailFailState", menuName = "DragonflyStates/DragonflyAttackTailFailState")]
 public class DragonflyAttackTailFailState : DragonflyMovementBaseState
 {
-    [SerializeField] private DragonflyState _state = DragonflyState.AttackTailFailL;
+    [SerializeField] private DragonflyMovementState _state = DragonflyMovementState.AttackTailFailL;
     [SerializeField] private float _duration = 2f;
     [SerializeField] private float _afterDelay = 1f;
     [SerializeField] private float _fallSpeed = 100f;
     [SerializeField] private float _rotationSpeed = 380f;
     [SerializeField] private float _moveAcceleration = 1.9f;
-    public override DragonflyState State => _state;
+    public override DragonflyMovementState State => _state;
     
     private float _localTime = 0f;
     private float _phase = 0f;
@@ -21,11 +20,11 @@ public class DragonflyAttackTailFailState : DragonflyMovementBaseState
     {
         if (sideDirection == 1)
         {
-            _state = DragonflyState.AttackTailFailL;
+            _state = DragonflyMovementState.AttackTailFailL;
         }
         else
         {
-            _state = DragonflyState.AttackTailFailR;
+            _state = DragonflyMovementState.AttackTailFailR;
         }
         
         _stateData.VisibleBodyTransform.SetParent(_stateData.Owner.transform);

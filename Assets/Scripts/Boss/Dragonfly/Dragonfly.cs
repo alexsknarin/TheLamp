@@ -58,12 +58,12 @@ public class Dragonfly : EnemyBase
     private Vector3 _patrolAttackPosition;
     private Vector3 _patrolSpiderAttackPosition;
     
-    private DragonflyState[] ATTACK_STATES = new DragonflyState[]
+    private DragonflyMovementState[] ATTACK_STATES = new DragonflyMovementState[]
     {
-        DragonflyState.AttackHead,
-        DragonflyState.AttackHover,
-        DragonflyState.AttackTailL,
-        DragonflyState.AttackTailR
+        DragonflyMovementState.AttackHead,
+        DragonflyMovementState.AttackHover,
+        DragonflyMovementState.AttackTailL,
+        DragonflyMovementState.AttackTailR
     };
     
     
@@ -205,7 +205,7 @@ public class Dragonfly : EnemyBase
             }
             else
             {
-                _patrolAttackPosition = _patrolAttackPositionProvider.GenerateRandomPreAttackHeadPosition(_movement.State);
+                _patrolAttackPosition = _patrolAttackPositionProvider.GenerateRandomPreAttackHeadPosition(_movement.MovementState);
                 _isWaitingForHeadPatrolAttack = false;
                 _isWaitingForHeadPatrolAttackPoint = true;
                 _isLastPatrolDirectionSet = false;
@@ -257,7 +257,7 @@ public class Dragonfly : EnemyBase
             }
             else
             {
-                _patrolAttackPosition = _patrolAttackPositionProvider.GenerateRandomPreAttackTailPosition(_movement.State);
+                _patrolAttackPosition = _patrolAttackPositionProvider.GenerateRandomPreAttackTailPosition(_movement.MovementState);
                 _isWaitingForTailPatrolAttack = false;
                 _isWaitingForTailPatrolAttackPoint = true;
                 _isLastPatrolDirectionSet = false;
@@ -365,21 +365,21 @@ public class Dragonfly : EnemyBase
 
     //--------------------------------------------------------------------------------
     // Event Handle Methods
-    private void OnReadyToAttackStateEntered(DragonflyState state, DragonflyState prevState)
+    private void OnReadyToAttackStateEntered(DragonflyMovementState movementState, DragonflyMovementState prevMovementState)
     {
-        if (state == DragonflyState.Hover)
+        if (movementState == DragonflyMovementState.Hover)
         {
             PrepareHoverAttack();
         }
-        if (state == DragonflyState.PatrolL || state == DragonflyState.PatrolR)
+        if (movementState == DragonflyMovementState.PatrolL || movementState == DragonflyMovementState.PatrolR)
         {
             float minWaitTime = 0;
-            if (prevState == DragonflyState.EnterToPatrolL || prevState == DragonflyState.MoveToPatrolL)
+            if (prevMovementState == DragonflyMovementState.EnterToPatrolL || prevMovementState == DragonflyMovementState.MoveToPatrolL)
             {
                 _swarm.PlayAttack(1);
                 minWaitTime = _patrolWaitMin;
             }
-            if (prevState == DragonflyState.EnterToPatrolR || prevState == DragonflyState.MoveToPatrolR)
+            if (prevMovementState == DragonflyMovementState.EnterToPatrolR || prevMovementState == DragonflyMovementState.MoveToPatrolR)
             {
                 _swarm.PlayAttack(-1);
                 minWaitTime = _patrolWaitMin;
@@ -396,7 +396,7 @@ public class Dragonfly : EnemyBase
                 PreparePatrolToTailAttack(minWaitTime);
             }
         }
-        if (state == DragonflyState.SpiderPatrolL || state == DragonflyState.SpiderPatrolR)
+        if (movementState == DragonflyMovementState.SpiderPatrolL || movementState == DragonflyMovementState.SpiderPatrolR)
         {
             PrepareSpiderAttack();
         }
@@ -414,7 +414,7 @@ public class Dragonfly : EnemyBase
     }
     
     
-    private void OnAfterAttackExitEnded(DragonflyState state)
+    private void OnAfterAttackExitEnded(DragonflyMovementState movementState)
     {
         
         DragonflyReturnMode mode = (DragonflyReturnMode)Random.Range(0, 3);

@@ -36,14 +36,14 @@ public class DragonflyPatrolAttackPositionProvider
         _tailAttackZoneRMax = tailAttackZoneRMax;
     }
     
-    public Vector3 GenerateRandomPreAttackHeadPosition(DragonflyState state)
+    public Vector3 GenerateRandomPreAttackHeadPosition(DragonflyMovementState movementState)
     {
         // Get ranges Data
-        if (state == DragonflyState.PatrolL)
+        if (movementState == DragonflyMovementState.PatrolL)
         {
             _patrolAttackZonesData = _patrolAttackZonesDataL;
         }
-        if (state == DragonflyState.PatrolR)
+        if (movementState == DragonflyMovementState.PatrolR)
         {
             _patrolAttackZonesData = _patrolAttackZonesDataR;
         }
@@ -90,17 +90,17 @@ public class DragonflyPatrolAttackPositionProvider
         return patrolAttackPosition;
     }
     
-    public Vector3 GenerateRandomPreAttackTailPosition(DragonflyState state)
+    public Vector3 GenerateRandomPreAttackTailPosition(DragonflyMovementState movementState)
     {
         Vector3 rangeMin = Vector3.zero;
         Vector3 rangeMax = Vector3.zero;
         
-        if (state == DragonflyState.PatrolL)
+        if (movementState == DragonflyMovementState.PatrolL)
         {
             rangeMin = _tailAttackZoneLMin;
             rangeMax = _tailAttackZoneLMax;
         }
-        if (state == DragonflyState.PatrolR)
+        if (movementState == DragonflyMovementState.PatrolR)
         {
             rangeMin = _tailAttackZoneRMin;
             rangeMax = _tailAttackZoneRMax;

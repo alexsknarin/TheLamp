@@ -1,12 +1,11 @@
 using UnityEngine;
-using UnityEngine.Serialization;
 
 [CreateAssetMenu(fileName = "DragonflySpiderPreattackHeadTransitionState", menuName = "DragonflyStates/DragonflySpiderPreattackHeadTransitionState")]
 public class DragonflySpiderPreattackHeadTransitionState : DragonflyMovementBaseState
 {
-    [SerializeField] private DragonflyState _state = DragonflyState.SpiderPreattackHeadTransitionStateL;
+    [SerializeField] private DragonflyMovementState _state = DragonflyMovementState.SpiderPreattackHeadTransitionStateL;
     [SerializeField] private float _duration = 0.65f;
-    public override DragonflyState State => _state;
+    public override DragonflyMovementState State => _state;
     private Transform _patrolTransformParent;
     
     private float _phase;
@@ -16,11 +15,11 @@ public class DragonflySpiderPreattackHeadTransitionState : DragonflyMovementBase
     {
         if (sideDirection == 1)
         {
-            _state = DragonflyState.SpiderPreattackHeadTransitionStateL;
+            _state = DragonflyMovementState.SpiderPreattackHeadTransitionStateL;
         }
         else
         {
-            _state = DragonflyState.SpiderPreattackHeadTransitionStateR;
+            _state = DragonflyMovementState.SpiderPreattackHeadTransitionStateR;
         }
         
         _patrolTransformParent = _stateData.PatrolTransform.parent;

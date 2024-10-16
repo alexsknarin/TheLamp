@@ -1,9 +1,8 @@
 using UnityEngine;
-using UnityEngine.Serialization;
 
 [CreateAssetMenu(fileName = "DragonflyIdleState", menuName = "DragonflyStates/DragonflyIdleState")]
 public class DragonflyIdleState : DragonflyMovementBaseState
 {
-    [SerializeField] private DragonflyState _state = DragonflyState.Idle;
-    public override DragonflyState State => _state;
+    [SerializeField] private DragonflyMovementState _state = DragonflyMovementState.Idle;
+    public override DragonflyMovementState State => _state;
 }

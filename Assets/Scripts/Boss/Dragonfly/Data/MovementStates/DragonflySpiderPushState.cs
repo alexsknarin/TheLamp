@@ -1,14 +1,13 @@
 using UnityEngine;
-using UnityEngine.Serialization;
 
 [CreateAssetMenu(fileName = "DragonflySpiderPushState", menuName = "DragonflyStates/DragonflySpiderPushState")]
 public class DragonflySpiderPushState : DragonflyMovementBaseState
 {
-    [SerializeField] private DragonflyState _state = DragonflyState.SpiderPushL;
+    [SerializeField] private DragonflyMovementState _state = DragonflyMovementState.SpiderPushL;
     [SerializeField] private float _distance = 0.5f;
     [SerializeField] private float _duration = 0.5f;
     [SerializeField] private AnimationCurve _animCurve;
-    public override DragonflyState State => _state;
+    public override DragonflyMovementState State => _state;
     
     private float _localTime = 0f;
     private float _phase = 0f;
@@ -18,11 +17,11 @@ public class DragonflySpiderPushState : DragonflyMovementBaseState
     {
         if (sideDirection == 1)
         {
-            _state = DragonflyState.SpiderPushL;
+            _state = DragonflyMovementState.SpiderPushL;
         }
         else
         {
-            _state = DragonflyState.SpiderPushR;
+            _state = DragonflyMovementState.SpiderPushR;
         }
         
         _stateData.SpiderPatrolRotator.SetRotationPhase(currentPosition);
