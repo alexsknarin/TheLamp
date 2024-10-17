@@ -67,6 +67,7 @@ public class DragonflyProjectileMoth : EnemyBase
     {
         ReceivedLampAttack = true;
         _isDead = true;
+        OnEnemyDeathInvoke(this);
         _movement.TriggerFall();
         _presentation.DeathFlash();
         // Presentation - show damage effect

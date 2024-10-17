@@ -88,6 +88,7 @@ public class DragonflyProjectileSpider : EnemyBase
         ReceivedLampAttack = true;
         _isDead = true;
         _collider.enabled = false;
+        OnEnemyDeathInvoke(this);
         _movement.TriggerFall();
         _presentation.DeathFlash();
         // Presentation - show damage effect
