@@ -1,5 +1,18 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-4053770847697943188
+MonoBehaviour:
+  m_ObjectHideFlags: 11
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0353a89b1f911e48b9e16bdc9f2e058, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  version: 7
 --- !u!21 &2100000
 Material:
   serializedVersion: 8
@@ -7,8 +20,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Lamp_GlassTransparent_material
-  m_Shader: {fileID: -6465566751694194690, guid: afe5e28e02ec6b84ab7e02551d416682,
+  m_Name: DragonflyWingsSimple_material
+  m_Shader: {fileID: -6465566751694194690, guid: faab3d36e82fb204eb8aa911fcba5dbf,
     type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -24,24 +37,20 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
+    - _BaseColorMar:
+        m_Texture: {fileID: 2800000, guid: 2fe92fe0d1f25ae4cafeb581e15c986a, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _BaseEmissionColorMap:
+        m_Texture: {fileID: 2800000, guid: ff6bf4f6b68501c4499e515cee1a3295, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _BaseMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BumpMap:
         m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _CenterGlowMask:
-        m_Texture: {fileID: 2800000, guid: e9ec0c67758fb2d46b7b84e660f76a96, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _CracksMask:
-        m_Texture: {fileID: 2800000, guid: 20f20899f13242f41b54381daab08bbd, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _DamageImpactPontMap:
-        m_Texture: {fileID: 2800000, guid: 6f8f6a7eb13e4394484d3c40e2cb8679, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _DetailAlbedoMap:
@@ -56,16 +65,8 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _DirtMap:
-        m_Texture: {fileID: 2800000, guid: 5c98c07be3fefd5429d1624038327203, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
     - _EmissionMap:
         m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _ImpactPontMap:
-        m_Texture: {fileID: 2800000, guid: 6f8f6a7eb13e4394484d3c40e2cb8679, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
@@ -86,6 +87,10 @@ Material:
         m_Offset: {x: 0, y: 0}
     - _SpecGlossMap:
         m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SpecularColorMap:
+        m_Texture: {fileID: 2800000, guid: 2fbf980e6d7027540a0264a0a97212a7, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:
@@ -109,50 +114,21 @@ Material:
     - _BumpScale: 1
     - _ClearCoatMask: 0
     - _ClearCoatSmoothness: 0
-    - _CracksAmountB: 0
-    - _CracksAmountL: 0
-    - _CracksAmountR: 0
-    - _CracksAmountR_1: 0
-    - _CracksAmountR_2: 0
     - _Cull: 2
     - _Cutoff: 0.5
-    - _DamageMix: 0
-    - _DamagePoint01GlobalAngle: 0
-    - _DamagePoint01LocalAngle: 0
-    - _DamagePoint01Strength: 0
-    - _DamagePoint02GlobalAngle: 0
-    - _DamagePoint02LocalAngle: 0
-    - _DamagePoint02Strength: 0
-    - _DamagePoint03GlobalAngle: 0
-    - _DamagePoint03LocalAngle: 0
-    - _DamagePoint03Strength: 0
+    - _DamageFlashingFrequency: 24
+    - _DamagePhase: 0
+    - _DeathPhase: 0
     - _DetailAlbedoMapScale: 1
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
     - _DstBlendAlpha: 0
-    - _EdgeDirtEmission: 0.935
-    - _EdgeEmission: 0.739
-    - _EdgeEmissionPower: 6.11
-    - _EdgeEmissionStrength: 1.54
-    - _EmissionStrength: 1.269552
     - _EnvironmentReflections: 1
-    - _GlassIOR: -0.21
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
-    - _GlowEmissionStrength: 11.7
-    - _ImpactPoint01GlobalAngle: 0
-    - _ImpactPoint01LocalAngle: 0
-    - _ImpactPoint01Strength: 0
-    - _ImpactPoint02GlobalAngle: 0
-    - _ImpactPoint02LocalAngle: 0
-    - _ImpactPoint02Strength: 0
-    - _ImpactPoint03GlobalAngle: 0
-    - _ImpactPoint03LocalAngle: 0
-    - _ImpactPoint03Strength: 0
     - _Metallic: 0
     - _OcclusionStrength: 1
-    - _PamagePoint01LocalAngle: 0
     - _Parallax: 0.005
     - _QueueControl: 0
     - _QueueOffset: 0
@@ -163,26 +139,16 @@ Material:
     - _SrcBlend: 1
     - _SrcBlendAlpha: 1
     - _Surface: 0
+    - _Transparency: 0.32
     - _WorkflowMode: 1
     - _ZWrite: 1
+    - _isDamaged: 0
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
+    - _BaseEmissionColor: {r: 1.3211582, g: 4.607404, b: 0, a: 0}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
-    - _DamageColor: {r: 8.932279, g: 0, b: 0, a: 1}
+    - _DamageEmissionColor: {r: 4.649013, g: 0.1217019, b: 0, a: 0}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _LightEmissionColor: {r: 0.9559748, g: 0.31482676, b: 0.08116753, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
+    - _SpecularColor: {r: 1, g: 1, b: 1, a: 0}
   m_BuildTextureStacks: []
---- !u!114 &9108830626324274294
-MonoBehaviour:
-  m_ObjectHideFlags: 11
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d0353a89b1f911e48b9e16bdc9f2e058, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  version: 7

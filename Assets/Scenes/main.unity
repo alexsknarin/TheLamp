@@ -5136,12 +5136,12 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 73915f37d2f3546459453f88cef19615, type: 2}
+      objectReference: {fileID: 2100000, guid: 40254bdf2c44f4e4dbe6290209b62d01, type: 2}
     - target: {fileID: -5122729196051506736, guid: 9e1540e526eb6fb41aadc72fdcd9995b,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: c0af2388eb53bb040b30dacb68230f46, type: 2}
+      objectReference: {fileID: 2100000, guid: bb881ef7257dda84b9bda63ef3f9b4a4, type: 2}
     - target: {fileID: 919132149155446097, guid: 9e1540e526eb6fb41aadc72fdcd9995b,
         type: 3}
       propertyPath: m_Name
@@ -15783,6 +15783,7 @@ MonoBehaviour:
   _spiderScorePrice: 3
   _waspsScorePrice: 25
   _megabeetleScorePrice: 50
+  _dragonflyProjectileScorePrice: 1
   _currentScore: 0
   _saveDataContainer: {fileID: 11400000, guid: 377d55eb1797a24478860b1b98ae759c, type: 2}
 --- !u!114 &1818435509
