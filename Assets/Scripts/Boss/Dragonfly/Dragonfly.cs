@@ -486,7 +486,7 @@ public class Dragonfly : EnemyBase
     public override void ReceiveDamage(int damage)
     {
         _currentHealth -= damage;
-        _presentation.DamageFlash();
+        _presentation.HealthUpdate(_currentHealth, _maxHealth);
         
         if (_currentHealth > 0)
         {
@@ -494,6 +494,7 @@ public class Dragonfly : EnemyBase
             // _enemyPresentation.DamageFlash();
             // _enemyPresentation.HealthUpdate(_currentHealth, _maxHealth);
             // OnEnemyDamaged?.Invoke(this);
+            _presentation.DamageFlash();
             _movement.TriggerFall(true);
             // _enemyMovement.TriggerFall();
         }
@@ -507,6 +508,7 @@ public class Dragonfly : EnemyBase
                 // _enemyMovement.TriggerDeath();
                 // _movement.TriggerFall(true);
                 _movement.TriggerDeath(true);
+                _presentation.DeathFlash();
                 OnEnemyDeathInvoke(this);
                 // _enemyPresentation.DeathFlash();
                 _isDead = true;

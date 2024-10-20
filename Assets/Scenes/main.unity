@@ -5228,6 +5228,18 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 580873668}
   m_PrefabAsset: {fileID: 0}
+--- !u!23 &580873670 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -5122729196051506736, guid: 9e1540e526eb6fb41aadc72fdcd9995b,
+    type: 3}
+  m_PrefabInstance: {fileID: 580873668}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &580873671 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -6652725513331149018, guid: 9e1540e526eb6fb41aadc72fdcd9995b,
+    type: 3}
+  m_PrefabInstance: {fileID: 580873668}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &592659931
 GameObject:
   m_ObjectHideFlags: 0
@@ -13236,6 +13248,9 @@ GameObject:
   - component: {fileID: 1536401421}
   - component: {fileID: 1536401422}
   - component: {fileID: 1536401423}
+  - component: {fileID: 1536401424}
+  - component: {fileID: 1536401425}
+  - component: {fileID: 1536401426}
   m_Layer: 0
   m_Name: Dragonfly
   m_TagString: Untagged
@@ -13343,8 +13358,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _enemyType: 9
-  _maxHealth: 3
-  _currentHealth: 3
+  _maxHealth: 12
+  _currentHealth: 12
   _movement: {fileID: 1536401418}
   _presentation: {fileID: 1536401423}
   _swarm: {fileID: 1536401420}
@@ -13447,28 +13462,53 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dab9715d45769a242820d370b7b19f32, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _meshRenderers:
-  - {fileID: 398616625}
-  - {fileID: 1768401584}
-  - {fileID: 265099569}
-  - {fileID: 951999748}
-  - {fileID: 432294275}
-  - {fileID: 129938427}
-  - {fileID: 1302505539}
-  - {fileID: 1616759486}
-  - {fileID: 793042658}
-  - {fileID: 42627157}
-  _baseColors:
-  - {r: 0.03137255, g: 0.007843138, b: 0, a: 0}
-  - {r: 0.019607844, g: 0.011764706, b: 0, a: 0}
-  - {r: 0.019607844, g: 0.011764706, b: 0, a: 0}
-  - {r: 0.019607844, g: 0.011764706, b: 0, a: 0}
-  - {r: 0.007843138, g: 0.02745098, b: 0.003921569, a: 0}
-  - {r: 0.007843138, g: 0.02745098, b: 0.003921569, a: 0}
-  - {r: 0.007843138, g: 0.02745098, b: 0.003921569, a: 0}
-  - {r: 0.007843138, g: 0.02745098, b: 0.003921569, a: 0}
-  - {r: 0.011764706, g: 0.003921569, b: 0.003921569, a: 0}
-  - {r: 0.011764706, g: 0.003921569, b: 0.003921569, a: 0}
+  _damageIndication: {fileID: 1536401424}
+  _healthIndication: {fileID: 1536401425}
+  _deathFlash: {fileID: 1536401426}
+--- !u!114 &1536401424
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1536401416}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 798bc5b43b5d38f47a06da7001774798, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _bodyMeshRenderer: {fileID: 580873671}
+  _wingsMeshRenderer: {fileID: 580873670}
+  _duration: 0.5
+--- !u!114 &1536401425
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1536401416}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 572f5c7a15ca1554a91fcf44e99f4c9c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _bodyMeshRenderer: {fileID: 580873671}
+  _wingsMeshRenderer: {fileID: 580873670}
+--- !u!114 &1536401426
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1536401416}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0674cd139134bae43b9e18d3bf4aedd8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _bodyMeshRenderer: {fileID: 580873671}
+  _wingsMeshRenderer: {fileID: 580873670}
+  _duration: 2.5
 --- !u!1 &1540463159
 GameObject:
   m_ObjectHideFlags: 0

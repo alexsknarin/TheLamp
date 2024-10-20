@@ -8,6 +8,7 @@ public class HealthIndication : MonoBehaviour, IInitializable
     public void Refresh(int currentHealth, int maxHealth)
     {
         _material.SetFloat("_Health", (float)currentHealth / maxHealth);
+        Debug.Log("Health: " + currentHealth/maxHealth);
     }
 
     public void Initialize()
