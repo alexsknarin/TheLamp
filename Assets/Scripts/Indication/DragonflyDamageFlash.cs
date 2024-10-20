@@ -1,15 +1,17 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.VFX;
 
 public class DragonflyDamageFlash : DamageIndication
 {
     [SerializeField] private MeshRenderer _bodyMeshRenderer;
     [SerializeField] private MeshRenderer _wingsMeshRenderer;
     [SerializeField] private float _duration = 0.5f;
-    // [SerializeField] private VisualEffect _damageParticles;
+    [SerializeField] private VisualEffect _damageParticles;
     private Material _bodyMaterial;
     private Material _wingsMaterial;
     private WaitForSeconds _damageFlashDuration = new WaitForSeconds(1.2f);
+    private Transform _contactCollisionTransform;
     
     private IEnumerator WaitForDamageFlashEnd()
     {
@@ -25,6 +27,11 @@ public class DragonflyDamageFlash : DamageIndication
         _wingsMaterial.SetFloat("_AttackSemaphore", 0f);
     }
     
+    public void SetContactCollisionTransform(Transform contactCollisionTransform)
+    {
+        _contactCollisionTransform = contactCollisionTransform;
+    }
+    
     public override void Play()
     {
         
@@ -32,11 +39,13 @@ public class DragonflyDamageFlash : DamageIndication
         _wingsMaterial.SetInt("_isDamaged", 1);
         StartCoroutine(WaitForDamageFlashEnd());
         
-        
-        // Vector3 direction = transform.position.normalized;
-        // _damageParticles.SetVector3("Direction", direction);
-        // _damageParticles.SendEvent("OnDamage");
+        if (_contactCollisionTransform != null)
+        {
+            _damageParticles.transform.localPosition = _contactCollisionTransform.localPosition;
+            Vector3 direction = -_contactCollisionTransform.position.normalized;
+            _damageParticles.SetVector3("Direction", direction);
+            _damageParticles.SendEvent("OnDamage");
+        }
     }
-    
-    
+   
 }

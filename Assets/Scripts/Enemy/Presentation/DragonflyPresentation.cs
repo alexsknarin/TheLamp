@@ -1,11 +1,11 @@
-using System.Collections.Generic;
 using UnityEngine;
 
 public class DragonflyPresentation : EnemyPresentation
 {
-    [SerializeField] private DamageIndication _damageIndication;
+    [SerializeField] private DragonflyDamageFlash _damageIndication;
     [SerializeField] private DragonflyHealthIndication _healthIndication;
     [SerializeField] private DragonflyDeathFlash _deathFlash;
+    [SerializeField] private DragonflyPreAttackFlash _preAttackFlash;
 
     
     // private bool _isDamageFlashing = false;
@@ -15,12 +15,19 @@ public class DragonflyPresentation : EnemyPresentation
     
     public override void PreAttackStart()
     {
+        _preAttackFlash.PreAttackStart();
     }
 
     public override void PreAttackEnd()
     {
+        _preAttackFlash.PreAttackEnd();
     }
-
+    
+    public void SetActiveColliderTransform(Transform transform)
+    {
+        _damageIndication.SetContactCollisionTransform(transform);
+    }
+    
     public override void DamageFlash()
     {
         // _isDamageFlashing = true;
@@ -43,5 +50,6 @@ public class DragonflyPresentation : EnemyPresentation
         _damageIndication.Initialize();
         _healthIndication.Initialize();
         _deathFlash.Initialize();
+        _preAttackFlash.Initialize();
     }
 }

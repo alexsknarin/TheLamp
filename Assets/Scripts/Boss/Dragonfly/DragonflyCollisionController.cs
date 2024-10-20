@@ -54,4 +54,16 @@ public class DragonflyCollisionController : MonoBehaviour
         }
         return Vector3.zero;
     }
+    
+    public Transform GetFirstActiveColliderTransform()
+    {
+        foreach (var col in _colliders)
+        {
+            if (col.enabled)
+            {
+                return col.transform;
+            }
+        }
+        return null;
+    }
 }

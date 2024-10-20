@@ -486,17 +486,17 @@ public class Dragonfly : EnemyBase
     public override void ReceiveDamage(int damage)
     {
         _currentHealth -= damage;
-        _presentation.HealthUpdate(_currentHealth, _maxHealth);
+        
         
         if (_currentHealth > 0)
         {
             ReceivedLampAttack = true;
-            // _enemyPresentation.DamageFlash();
-            // _enemyPresentation.HealthUpdate(_currentHealth, _maxHealth);
-            // OnEnemyDamaged?.Invoke(this);
+            
+            _presentation.HealthUpdate(_currentHealth, _maxHealth);
+            _presentation.SetActiveColliderTransform(_collisionController.GetFirstActiveColliderTransform());
             _presentation.DamageFlash();
             _movement.TriggerFall(true);
-            // _enemyMovement.TriggerFall();
+         
         }
         else
         {
