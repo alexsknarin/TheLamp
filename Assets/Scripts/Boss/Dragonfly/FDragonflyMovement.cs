@@ -20,22 +20,28 @@ public class FDragonflyMovement : MonoBehaviour
 
     [Header("States")]  
     [SerializeField] private FDragonflyIdleState _idleState;
+    [SerializeField] private FDragonflyAttackHeadState _attackHeadState;
+    [SerializeField] private FDragonflyAttackHeadSuccessState _attackHeadSuccess; 
+    [SerializeField] private FDragonflyAttackHoverState _attackHoverState;
+    [SerializeField] private FDragonflyAttackTailFailStateL _attackTailFailL;
+    [SerializeField] private FDragonflyAttackTailFailStateR _attackTailFailR;
+    [SerializeField] private FDragonflyAttackTailStateL _attackTailStateL;
+    [SerializeField] private FDragonflyAttackTailStateR _attackTailStateR;
+    [SerializeField] private FDragonflyAttackTailSuccessStateL _attackTailSuccess;
+    [SerializeField] private FDragonflyAttackTailSuccessStateR _attackTailSuccessR;
+    [SerializeField] private FDragonflyBounceHeadState _bounceHeadState;
+    [SerializeField] private FDragonflyBounceHoverState _bounceHoverState;
+    [SerializeField] private FDragonflyBounceTailStateL _bounceTailStateL;
+    [SerializeField] private FDragonflyBounceTailStateR _bounceTailStateR;
+    [SerializeField] private FDragonflyCatchSpiderStateL _catchSpiderStateL;
+    [SerializeField] private FDragonflyCatchSpiderStateR _catchSpiderStateR;
+    [SerializeField] private FDragonflyEnterToHoverStateL _enterToHoverStateL;
+    [SerializeField] private FDragonflyEnterToHoverStateR _enterToHoverStateR;
+    [SerializeField] private FDragonflyEnterToPatrolStateL _enterToPatrolStateL;
+    [SerializeField] private FDragonflyEnterToPatrolStateR _enterToPatrolStateR;
+    [SerializeField] private FDragonflyFallHeadState _fallHeadState;
     
     
-
-    // [SerializeField] private DragonflyMovementBaseState _attackHeadState;
-    // [SerializeField] private DragonflyMovementBaseState _attackHeadSuccess;
-    // [SerializeField] private DragonflyMovementBaseState _attackHoverState;
-    // [SerializeField] private DragonflyMovementBaseState _attackTailFail;
-    // [SerializeField] private DragonflyMovementBaseState _attackTailState;
-    // [SerializeField] private DragonflyMovementBaseState _attackTailSuccess;
-    // [SerializeField] private DragonflyMovementBaseState _bounceHeadState;
-    // [SerializeField] private DragonflyMovementBaseState _bounceHoverState;
-    // [SerializeField] private DragonflyMovementBaseState _bounceTailState;
-    // [SerializeField] private DragonflyMovementBaseState _catchSpiderState;
-    // [SerializeField] private DragonflyMovementBaseState _enterToHoverState;
-    // [SerializeField] private DragonflyMovementBaseState _enterToPatrolState;
-    // [SerializeField] private DragonflyMovementBaseState _fallHeadLState;
     // [SerializeField] private DragonflyMovementBaseState _hoverState;
     // [SerializeField] private DragonflyMovementBaseState _moveToHoverState;
     // [SerializeField] private DragonflyMovementBaseState _patrolState;
@@ -56,7 +62,22 @@ public class FDragonflyMovement : MonoBehaviour
 
 
 
-
+    
+    
+    
+    public void PlayClip(DragonflyMovementState movementState)
+    {
+        // TODO: refactor to remove enum
+        
+        // AnimationClipPlayable clipPlayable = _playablesContainer.GetClip(movementState);
+        // clipPlayable.SetTime(0);
+        // clipPlayable.SetTime(0); // Unity Bug
+        // _playableOutput.SetSourcePlayable(clipPlayable);
+        // if (_playableGraph.IsValid())
+        // {
+        //     _playableGraph.Play();    
+        // }
+    }
 
     
     
