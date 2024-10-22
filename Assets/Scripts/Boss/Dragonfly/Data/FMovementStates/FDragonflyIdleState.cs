@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "FDragonflyIdleState", menuName = "FDragonflyStates/FDragonflyIdleState")]
+[CreateAssetMenu(fileName = "FDragonflyIdleState", menuName = "FDragonflyMovementStates/FDragonflyIdleState")]
 public class FDragonflyIdleState : ScriptableObject, IState
 {
     // Dependencies

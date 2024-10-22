@@ -40,27 +40,32 @@ public class FDragonflyMovement : MonoBehaviour
     [SerializeField] private FDragonflyEnterToPatrolStateL _enterToPatrolStateL;
     [SerializeField] private FDragonflyEnterToPatrolStateR _enterToPatrolStateR;
     [SerializeField] private FDragonflyFallHeadState _fallHeadState;
+    [SerializeField] private FDragonflyHoverState _hoverState;
+    [SerializeField] private FDragonflyMoveToHoverState _moveToHoverState;
+    [SerializeField] private FDragonflyPatrolStateL _patrolStateL;
+    [SerializeField] private FDragonflyPatrolStateR _patrolStateR;
+    [SerializeField] private FDragonflyPreAttackHeadStateL _preAttackHeadStateL;
+    [SerializeField] private FDragonflyPreAttackHeadStateR _preAttackHeadStateR;
+    [SerializeField] private FDragonflyPreAttackHoverState _preAttackHoverState;
+    [SerializeField] private FDragonflyPreAttackTailStateL _preAttackTailStateL;
+    [SerializeField] private FDragonflyPreAttackTailStateR _preAttackTailStateR;
+    [SerializeField] private FDragonflyReturnHoverState _returnHoverState;
+    [SerializeField] private FDragonflySpiderPatrolStateL _spiderPatrolStateL;
+    [SerializeField] private FDragonflySpiderPatrolStateR _spiderPatrolStateR;
+    [SerializeField] private FDragonflySpiderPreattackHeadTransitionStateL _spiderPreAttackHeadTransitionStateL;
+    [SerializeField] private FDragonflySpiderPreattackHeadTransitionStateR _spiderPreAttackHeadTransitionStateR;
+    [SerializeField] private FDragonflyMoveToPatrolStateL _moveToPatrolStateL;
+    [SerializeField] private FDragonflyMoveToPatrolStateR _moveToPatrolStateR;
+    [SerializeField] private FDragonflySpiderPushStateL _spiderPushStateL;
+    [SerializeField] private FDragonflySpiderPushStateR _spiderPushStateR;
+    [SerializeField] private FDragonflyReturnTransitionBTStateL _returnTransitionBTStateL;
+    [SerializeField] private FDragonflyReturnTransitionBTStateR _returnTransitionBTStateR;
+    [SerializeField] private FDragonflyReturnTransitionTBStateL _returnTransitionTBStateL;
+    [SerializeField] private FDragonflyReturnTransitionTBStateR _returnTransitionTBStateR;
+    [SerializeField] private FDragonflyDeathHeadState _deathHeadState;
+    [SerializeField] private FDragonflyDeathTailStateL _deathTailStateL;
+    [SerializeField] private FDragonflyDeathTailStateR _deathTailStateR;
     
-    
-    // [SerializeField] private DragonflyMovementBaseState _hoverState;
-    // [SerializeField] private DragonflyMovementBaseState _moveToHoverState;
-    // [SerializeField] private DragonflyMovementBaseState _patrolState;
-    // [SerializeField] private DragonflyMovementBaseState _preAttackHeadState;
-    // [SerializeField] private DragonflyMovementBaseState _preAttackHoverState;
-    // [SerializeField] private DragonflyMovementBaseState _preAttackTailState;
-    // [SerializeField] private DragonflyMovementBaseState _returnHoverState;
-    // [SerializeField] private DragonflyMovementBaseState _spiderPatrolState;
-    // [SerializeField] private DragonflyMovementBaseState _spiderPreAttackHeadTransitionState;
-    // [SerializeField] private DragonflyMovementBaseState _moveToPatrolState;
-    // [SerializeField] private DragonflyMovementBaseState _spiderPushState;
-    // [SerializeField] private DragonflyMovementBaseState _returnTransitionBTState; // Top - Bottom
-    // [SerializeField] private DragonflyMovementBaseState _returnTransitionTBState; // Bottom - Top
-    // [SerializeField] private DragonflyMovementBaseState _deathHeadState;
-    // [SerializeField] private DragonflyMovementBaseState _deathTailState;
-    
-    
-
-
 
     
     
