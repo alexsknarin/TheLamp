@@ -13524,7 +13524,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1536401416}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a382b4605b4137e499abb296101f53cb, type: 3}
   m_Name: 
@@ -13772,6 +13772,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 254b76e94729c0e4e8545c2bc9b7ceca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _currentStateType: 
   _animator: {fileID: 1098560778}
   _visibleBodyTransform: {fileID: 1720334790}
   _animatedTransform: {fileID: 1098560777}

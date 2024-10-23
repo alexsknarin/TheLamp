@@ -90,6 +90,14 @@ public class FDragonflyMovement : MonoBehaviour
     
     private void Awake()
     {
+        _playableGraph = PlayableGraph.Create();
+        _playableGraph.SetTimeUpdateMode(DirectorUpdateMode.GameTime);
+        _playableOutput = AnimationPlayableOutput.Create(_playableGraph, "Animation", _animator);
+        _playablesContainer = new DragonflyPlayablesContainer(_playableGraph);
+        
+        // Add clips to container
+        _animClipCollection.Initialize(_playablesContainer);
+        
         SetMovementStatesDependencies();
         SetupStateMachine();
     }
@@ -168,6 +176,7 @@ public class FDragonflyMovement : MonoBehaviour
 
     public void PlayClip(DragonflyMovementState movementState)
     {
+        Debug.Log("PlayClip: " + movementState);
         // TODO: refactor to remove enum
         AnimationClipPlayable clipPlayable = _playablesContainer.GetClip(movementState);
         clipPlayable.SetTime(0);
@@ -180,6 +189,12 @@ public class FDragonflyMovement : MonoBehaviour
     }
 
     
-    
+    private void OnDestroy()
+    {
+        if (_playableGraph.IsValid())
+        {
+            _playableGraph.Destroy();    
+        }
+    }
 
 }
