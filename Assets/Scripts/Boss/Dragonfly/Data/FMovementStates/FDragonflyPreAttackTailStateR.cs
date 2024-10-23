@@ -57,7 +57,7 @@ public class FDragonflyPreAttackTailStateR : ScriptableObject, IState
     {
     }
 
-    public void CheckForStateChange()
+    private void CheckForStateChange()
     {
         _phase = _localTime / _duration;
         if (_phase > 1f)

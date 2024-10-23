@@ -20,7 +20,7 @@ public class FDragonflySpiderPreattackHeadTransitionStateR : ScriptableObject, I
     private DragonflyPatrolRotator _patrolRotator;
     private DragonflyPatrolRotator _spiderPatrolRotator;
 
-    private void SetDependencies(Transform visibleBodyTransform, Transform patrolTransform, Transform spiderPatrolTransform, 
+    public void SetDependencies(Transform visibleBodyTransform, Transform patrolTransform, Transform spiderPatrolTransform, 
         DragonflyPatrolRotator patrolRotator, DragonflyPatrolRotator spiderPatrolRotator)
     {
         _visibleBodyTransform = visibleBodyTransform;

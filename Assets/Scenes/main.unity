@@ -13483,6 +13483,7 @@ GameObject:
   - component: {fileID: 1536401425}
   - component: {fileID: 1536401426}
   - component: {fileID: 1536401427}
+  - component: {fileID: 1536401428}
   m_Layer: 0
   m_Name: Dragonfly
   m_TagString: Untagged
@@ -13759,6 +13760,96 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _bodyMeshRenderer: {fileID: 580873671}
   _wingsMeshRenderer: {fileID: 580873670}
+--- !u!114 &1536401428
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1536401416}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 254b76e94729c0e4e8545c2bc9b7ceca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _animator: {fileID: 1098560778}
+  _visibleBodyTransform: {fileID: 1720334790}
+  _animatedTransform: {fileID: 1098560777}
+  _patrolTransform: {fileID: 484483281}
+  _spiderPatrolTransform: {fileID: 322364688}
+  _patrolRotator: {fileID: 1057514487}
+  _spiderPatrolRotator: {fileID: 1041056733}
+  _animationClipEvents: {fileID: 1098560779}
+  _fallPoint: {fileID: 780930765}
+  _animClipCollection: {fileID: 11400000, guid: 2edc64060a6724243bafcc5920220f71,
+    type: 2}
+  _attackHeadState: {fileID: 11400000, guid: d85f95c613dcf1545ad439c39bae43f9, type: 2}
+  _attackHeadSuccess: {fileID: 11400000, guid: fd7d9c380526ebd468f96bbc9adf0aea, type: 2}
+  _attackHoverState: {fileID: 11400000, guid: 9de246e810945b94ea088f8d2cdfcfed, type: 2}
+  _attackTailFailL: {fileID: 11400000, guid: 938313dd6b7b0bf46a4bd2c551000548, type: 2}
+  _attackTailFailR: {fileID: 11400000, guid: b80e718e05080a44c8d3a5c28bae9a7b, type: 2}
+  _attackTailStateL: {fileID: 11400000, guid: 9d42307de1566e94994727beb9786b64, type: 2}
+  _attackTailStateR: {fileID: 11400000, guid: df918979800dc28468b902dbf0071620, type: 2}
+  _attackTailSuccessL: {fileID: 11400000, guid: 38e3d9f3c4851044c8e40ef3219c647b,
+    type: 2}
+  _attackTailSuccessR: {fileID: 11400000, guid: 69d2fd09dcbb3234aafddaab06d935b4,
+    type: 2}
+  _bounceHeadState: {fileID: 11400000, guid: 78e36a87347788f46865406475a87350, type: 2}
+  _bounceHoverState: {fileID: 11400000, guid: 5292669eeb91bb341990501722c73159, type: 2}
+  _bounceTailStateL: {fileID: 11400000, guid: b506be01074847844ad4e1c8e80f3647, type: 2}
+  _bounceTailStateR: {fileID: 11400000, guid: 4f096a114f7c8f84f805c8d31e63838e, type: 2}
+  _catchSpiderStateL: {fileID: 11400000, guid: efd4cffb6d0d24240941f8f71ed36edd, type: 2}
+  _catchSpiderStateR: {fileID: 11400000, guid: d4d6f20044454d74e9132af402595b2f, type: 2}
+  _deathHeadState: {fileID: 11400000, guid: 02bf8dabb133a3b46b9c092d54d1b5c5, type: 2}
+  _deathTailStateL: {fileID: 11400000, guid: 789d9c6886ebf484caf242cb454bf060, type: 2}
+  _deathTailStateR: {fileID: 11400000, guid: cf35529deb8e9bd4e8252c2aa6a430f3, type: 2}
+  _enterToHoverStateL: {fileID: 11400000, guid: a7c02f92be9cfdc40b2984733ec1c44c,
+    type: 2}
+  _enterToHoverStateR: {fileID: 11400000, guid: 703714c2ac9bbae4e9139ce6156ae971,
+    type: 2}
+  _enterToPatrolStateL: {fileID: 11400000, guid: cb81e3dd6db117841b96a6ff486fc292,
+    type: 2}
+  _enterToPatrolStateR: {fileID: 11400000, guid: b716d6a880d77304596b77133eb64a0a,
+    type: 2}
+  _fallHeadState: {fileID: 11400000, guid: 3806b5c4ffde866478ca730f72c7e66d, type: 2}
+  _hoverState: {fileID: 11400000, guid: 00452b769f7def74fb0336b53d2e46d3, type: 2}
+  _idleState: {fileID: 11400000, guid: c8f31d6aa0c1d154fb35922e345a88f0, type: 2}
+  _moveToHoverState: {fileID: 11400000, guid: d7b5aff46d7e45346ae55914022874ea, type: 2}
+  _moveToPatrolStateL: {fileID: 11400000, guid: 89599821aeef384459ee7e26add85a93,
+    type: 2}
+  _moveToPatrolStateR: {fileID: 11400000, guid: bf21b5e1347b7284886d85cf8354b6b9,
+    type: 2}
+  _patrolStateL: {fileID: 11400000, guid: 5a51010d4e9bd5f49b1bcf011bf3a250, type: 2}
+  _patrolStateR: {fileID: 11400000, guid: b6bd8944d0b2242438c092b66db515d3, type: 2}
+  _preAttackHeadStateL: {fileID: 11400000, guid: 29d6c663d4e61364bb198c889f8c1830,
+    type: 2}
+  _preAttackHeadStateR: {fileID: 11400000, guid: 3ed522e0ae0414341937bfeb4ae680b6,
+    type: 2}
+  _preAttackHoverState: {fileID: 11400000, guid: 7d7eacaeff93c3f44bad39dd5db28395,
+    type: 2}
+  _preAttackTailStateL: {fileID: 11400000, guid: 3d356866ce9ef5641ae2b39182f37df5,
+    type: 2}
+  _preAttackTailStateR: {fileID: 11400000, guid: a528974f81abb3e46b56e7c0fed10fd5,
+    type: 2}
+  _returnHoverState: {fileID: 11400000, guid: 086569eff23e41543a446d3259657d40, type: 2}
+  _returnTransitionBTStateL: {fileID: 11400000, guid: e97a233463532bb4e8cd7b9988511c8f,
+    type: 2}
+  _returnTransitionBTStateR: {fileID: 11400000, guid: 8ccae03547759c64c81b1cf05c5c8e11,
+    type: 2}
+  _returnTransitionTBStateL: {fileID: 11400000, guid: 565b1126d78b43e42b81e0fecb5695ac,
+    type: 2}
+  _returnTransitionTBStateR: {fileID: 11400000, guid: 6257ccda6fa359c41867c54a9763b285,
+    type: 2}
+  _spiderPatrolStateL: {fileID: 11400000, guid: 1876e373f8fa912468eb65511ddff140,
+    type: 2}
+  _spiderPatrolStateR: {fileID: 11400000, guid: d82dae1b211446044aff27d6df52027d,
+    type: 2}
+  _spiderPreAttackHeadTransitionStateL: {fileID: 11400000, guid: eac136a55dafb304ea7c2272c7e03816,
+    type: 2}
+  _spiderPreAttackHeadTransitionStateR: {fileID: 11400000, guid: d9e0c934652fe064bbf00a47e486b71a,
+    type: 2}
+  _spiderPushStateL: {fileID: 11400000, guid: b9a528afb4edc7240b25d383469448ce, type: 2}
+  _spiderPushStateR: {fileID: 11400000, guid: f34b4697802a5564dbcfd6d29c735c95, type: 2}
 --- !u!1 &1540463159
 GameObject:
   m_ObjectHideFlags: 0

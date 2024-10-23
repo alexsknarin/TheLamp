@@ -21,7 +21,7 @@ public class FDragonflyDeathTailStateR : ScriptableObject, IState
     private Transform _visibleBodyTransform;
     private Transform _baseTransform;
     
-    private void SetDependencies(Transform visibleBodyTransform, Transform baseTransform)
+    public void SetDependencies(Transform visibleBodyTransform, Transform baseTransform)
     {
         _visibleBodyTransform = visibleBodyTransform;
         _baseTransform = baseTransform;
