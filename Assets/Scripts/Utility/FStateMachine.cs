@@ -4,8 +4,9 @@ using System.Collections.Generic;
 public class FStateMachine
 {
     private IState _currentState;
+    public IState CurrentState => _currentState;
     public Type CurrentStateType => _currentState.GetType();
-   
+
     private Dictionary<Type, List<Transition>> _transitions = new Dictionary<Type, List<Transition>>();
     private List<Transition> _currentTransitions = new List<Transition>();
     private List<Transition> _anyTransitions = new List<Transition>();
