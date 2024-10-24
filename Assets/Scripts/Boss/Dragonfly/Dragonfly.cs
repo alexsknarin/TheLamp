@@ -7,7 +7,8 @@ public class Dragonfly : EnemyBase
     [SerializeField] private EnemyTypes _enemyType;
     [SerializeField] private int _maxHealth;
     [SerializeField] private int _currentHealth;
-    [SerializeField] private DragonflyMovement _movement;
+    // [SerializeField] private DragonflyMovement _movement;
+    [SerializeField] private FDragonflyMovement _movement;
     [SerializeField] private DragonflyPresentation _presentation;
     [SerializeField] private DragonflySwarm _swarm;
     [SerializeField] private DragonflyCollisionController _collisionController;
@@ -205,6 +206,7 @@ public class Dragonfly : EnemyBase
             }
             else
             {
+                // _patrolAttackPosition = _patrolAttackPositionProvider.GenerateRandomPreAttackHeadPosition(_movement.MovementState);
                 _patrolAttackPosition = _patrolAttackPositionProvider.GenerateRandomPreAttackHeadPosition(_movement.MovementState);
                 _isWaitingForHeadPatrolAttack = false;
                 _isWaitingForHeadPatrolAttackPoint = true;
@@ -360,11 +362,59 @@ public class Dragonfly : EnemyBase
         _localTime = 0;
         _spider.gameObject.transform.SetParent(this.transform);
         _spider.AttackStart();
-        _movement.SwitchState();
+        // _movement.SwitchState(); <-----------------------------------------------------------------------------------
     }
 
     //--------------------------------------------------------------------------------
     // Event Handle Methods
+    private void OnReadyToAttackStateEntered(IState movementState)
+    {
+        float minWaitTime = 0;
+        if (movementState.GetType() == typeof(FDragonflyEnterToHoverStateL) || 
+            movementState.GetType() == typeof(FDragonflyEnterToHoverStateR) ||
+            movementState.GetType() == typeof(FDragonflyMoveToHoverState))
+        {
+            PrepareHoverAttack();
+        }
+        else if (movementState.GetType() == typeof(FDragonflyEnterToPatrolStateL) ||
+                 movementState.GetType() == typeof(FDragonflyMoveToPatrolStateL))
+        {
+            _swarm.PlayAttack(1);
+            minWaitTime = _patrolWaitMin;
+            
+            int mode = Random.Range(0, 2);
+            if (mode == 0)
+            {
+                PreparePatrolToHeadAttack(minWaitTime);
+            }
+            else
+            {
+                PreparePatrolToTailAttack(minWaitTime);
+            }
+        }
+        else if (movementState.GetType() == typeof(FDragonflyEnterToPatrolStateR) ||
+                 movementState.GetType() == typeof(FDragonflyMoveToPatrolStateR))
+        {
+            _swarm.PlayAttack(-1);
+            minWaitTime = _patrolWaitMin;
+            
+            int mode = Random.Range(0, 2);
+            if (mode == 0)
+            {
+                PreparePatrolToHeadAttack(minWaitTime);
+            }
+            else
+            {
+                PreparePatrolToTailAttack(minWaitTime);
+            }
+        }
+        else if (movementState.GetType() == typeof(FDragonflyCatchSpiderStateL) || movementState.GetType() == typeof(FDragonflyCatchSpiderStateL))
+        {
+            PrepareSpiderAttack();
+        }
+    }
+    
+    /*
     private void OnReadyToAttackStateEntered(DragonflyMovementState movementState, DragonflyMovementState prevMovementState)
     {
         if (movementState == DragonflyMovementState.Hover)
@@ -401,6 +451,7 @@ public class Dragonfly : EnemyBase
             PrepareSpiderAttack();
         }
     }
+    */
 
     private void OnAttackStarted()
     {
@@ -495,7 +546,7 @@ public class Dragonfly : EnemyBase
             _presentation.HealthUpdate(_currentHealth, _maxHealth);
             _presentation.SetActiveColliderTransform(_collisionController.GetFirstActiveColliderTransform());
             _presentation.DamageFlash();
-            _movement.TriggerFall(true);
+            // _movement.TriggerFall(true); <-----------------------------------------------------------------------------------
          
         }
         else
@@ -507,7 +558,7 @@ public class Dragonfly : EnemyBase
                 _currentHealth = 0; 
                 // _enemyMovement.TriggerDeath();
                 // _movement.TriggerFall(true);
-                _movement.TriggerDeath(true);
+                // _movement.TriggerDeath(true); <-----------------------------------------------------------------------------------
                 _presentation.DeathFlash();
                 OnEnemyDeathInvoke(this);
                 // _enemyPresentation.DeathFlash();

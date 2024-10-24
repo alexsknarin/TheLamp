@@ -68,6 +68,18 @@ public class FDragonflyMovement : MonoBehaviour
     [SerializeField] private FDragonflySpiderPushStateL _spiderPushStateL;
     [SerializeField] private FDragonflySpiderPushStateR _spiderPushStateR;
     
+    // Events
+    public event Action<IState> OnReadyToAttackStateEntered; 
+    public event Action<DragonflyMovementState> OnAfterAttackExitEnded;
+    public event Action OnAttackStarted;
+    public event Action OnPreattackStarted;
+    public event Action OnAttackEnded;
+    public event Action<int> OnCatchSpiderStarted;
+    public event Action OnDeathAnimationEnded; 
+    
+    public IState MovementState => _stateMachine.CurrentState;
+    
+    
     private FStateMachine _stateMachine = new FStateMachine();
     
     // Animation 
@@ -76,20 +88,45 @@ public class FDragonflyMovement : MonoBehaviour
     private PlayableGraph _playableGraph;
     private PlayableOutput _playableOutput;
     
-    private int _sideDirection = 1;
-    private DragonflyPatrolAttackMode _currentPatrolAttackMode; 
-
+    // Attack Modes
+    private bool _isAttacking = false;
+    private DragonflyPatrolAttackMode _currentPatrolAttackMode;
+    
+    // Tracking previous state
+    private IState _previousState;
+    
     // Return Resolve
     private bool _isReturnResolved = true;
     private DragonflyMovementState _returnMovementState;
     private int _returnSideDirection;
-    
+
+    private bool _isPlaying = false;
+    private bool _isAnimClipEnded = false;
+    private bool _isBounced = false;
+    private int _enterState = 0;
+    private int _sideDirection = 1;
     private bool _isCollided = false;
     private bool _isReceivedDamage = false;
     private bool _isDead = false;
-    
+
+    private void OnEnable()
+    {
+        _animationClipEvents.OnClipEndedEvent += OnClipEnded;
+    }
+
+    private void OnDisable()
+    {
+        if (_playableGraph.IsValid())
+        {
+            _playableGraph.Destroy();    
+        }
+        _animationClipEvents.OnClipEndedEvent -= OnClipEnded;
+    }
+
     private void Awake()
     {
+        _isPlaying = false;
+        
         _playableGraph = PlayableGraph.Create();
         _playableGraph.SetTimeUpdateMode(DirectorUpdateMode.GameTime);
         _playableOutput = AnimationPlayableOutput.Create(_playableGraph, "Animation", _animator);
@@ -153,10 +190,47 @@ public class FDragonflyMovement : MonoBehaviour
         _spiderPushStateL.SetDependencies(_visibleBodyTransform, _spiderPatrolTransform, _spiderPatrolRotator);
         _spiderPushStateR.SetDependencies(_visibleBodyTransform, _spiderPatrolTransform, _spiderPatrolRotator);
     }
-    
+
     private void SetupStateMachine()
     {
-        At(_idleState, _enterToPatrolStateL, () => Input.GetAxis("Horizontal") > 0);
+        // Idle ->
+        At(_idleState, _enterToPatrolStateL, () => _isPlaying && _enterState == 0 && _sideDirection == 1);
+        At(_idleState, _enterToPatrolStateR, () => _isPlaying && _enterState == 0 && _sideDirection == -1);
+        At(_idleState, _enterToHoverStateL, () => _isPlaying && _enterState == 1 && _sideDirection == 1);
+        At(_idleState, _enterToHoverStateR, () => _isPlaying && _enterState == 1 && _sideDirection == -1);
+        
+        // EnterToPatrolL ->
+        At(_enterToPatrolStateL, _patrolStateL, IsEnteredToPatrolByAnimation());
+        // EnterToPatrolR ->
+        At(_enterToPatrolStateR, _patrolStateR, IsEnteredToPatrolByAnimation());
+        // EnterToHoverL ->
+        At(_enterToHoverStateL, _hoverState, IsEnteredToPatrolByAnimation());
+        // EnterToHoverR ->
+        At(_enterToHoverStateR, _hoverState, IsEnteredToPatrolByAnimation());
+        
+        // PatrolL ->
+        At(_patrolStateL, _preAttackHeadStateL,  IsStartPatrolAttackHead());
+        At(_patrolStateL, _preAttackTailStateL,  IsStartPatrolAttackTail());
+        // PatrolR ->
+        At(_patrolStateR, _preAttackHeadStateR,  IsStartPatrolAttackHead());
+        At(_patrolStateR, _preAttackTailStateR,  IsStartPatrolAttackTail());
+        
+        // PreAttackHeadL ->
+        At(_preAttackHeadStateL, _attackHeadState, IsPreAttackHeadStateLEnded());
+        // PreAttackHeadR ->
+        At(_preAttackHeadStateR, _attackHeadState, IsPreAttackHeadStateREnded());
+        // PreAttackTailL ->
+        At(_preAttackTailStateL, _attackTailStateL, IsPreAttackTailStateLEnded());
+        // PreAttackTailR ->
+        At(_preAttackTailStateR, _attackTailStateR, IsPreAttackTailStateREnded());
+        
+        
+        // Hover ->
+        At(_hoverState, _preAttackHoverState, IsStartPatrolAttackHover());
+        // PreAttackHover ->
+        At(_preAttackHoverState, _attackHoverState, IsPreAttackHoverStateEnded());
+        
+
         
         
         _stateMachine.SetState(_idleState);
@@ -165,15 +239,206 @@ public class FDragonflyMovement : MonoBehaviour
         void At(IState from, IState to, Func<bool> condition) => _stateMachine.AddTransition(from, to, condition);
         
         // Transition Predicates
+        # region Transition Predicate Delegates
+        
+        Func<bool> IsEnteredToPatrolByAnimation() => () =>
+        {
+            if (_isAnimClipEnded)
+            {
+                _isAnimClipEnded = false;
+                OnReadyToAttackStateEntered?.Invoke(_stateMachine.CurrentState); // TODO: find fow to pass a new state here or do something else
+                Debug.Log("OnReadyToAttackStateEntered invoked");
+                return true;
+            }
+            return false;
+        };
+        
+        Func<bool> IsStartPatrolAttackHead() => () =>
+        {
+            if (_isAttacking && _currentPatrolAttackMode == DragonflyPatrolAttackMode.Head)
+            {
+                _isAttacking = false;
+                OnPreattackStarted?.Invoke();
+                return true;
+            }
+            return false;
+        };
+        
+        Func<bool> IsStartPatrolAttackTail() => () =>
+        {
+            if (_isAttacking && _currentPatrolAttackMode == DragonflyPatrolAttackMode.Tail)
+            {
+                _isAttacking = false;
+                OnPreattackStarted?.Invoke();
+                return true;
+            }
+            return false;
+        };
+        
+        Func<bool> IsStartPatrolAttackHover() => () =>
+        {
+            if (_isAttacking)
+            {
+                _isAttacking = false;
+                OnPreattackStarted?.Invoke();
+                return true;
+            }
+            return false;
+        };
+
+        // TODO: refactor to merge cast an class check
+        Func<bool> IsPreAttackHeadStateLEnded() => () =>
+        {
+            if (_stateMachine.CurrentState != null && _stateMachine.CurrentState is FDragonflyPreAttackHeadStateL)
+            {
+                if ((_stateMachine.CurrentState as FDragonflyPreAttackHeadStateL).ReadyToSwitch)
+                {
+                    OnAttackEnded?.Invoke();
+                    return true;
+                }    
+            }
+            return false;
+        };
+
+        Func<bool> IsPreAttackHeadStateREnded() => () =>
+        {
+            if (_stateMachine.CurrentState != null && _stateMachine.CurrentState is FDragonflyPreAttackHeadStateR)
+            {
+                if ((_stateMachine.CurrentState as FDragonflyPreAttackHeadStateR).ReadyToSwitch)
+                {
+                    OnAttackEnded?.Invoke();
+                    return true;
+                }    
+            }
+            return false;
+        };
+        
+        Func<bool> IsPreAttackTailStateLEnded() => () =>
+        {
+            if (_stateMachine.CurrentState != null && _stateMachine.CurrentState is FDragonflyPreAttackTailStateL)
+            {
+                if ((_stateMachine.CurrentState as FDragonflyPreAttackTailStateL).ReadyToSwitch)
+                {
+                    OnAttackEnded?.Invoke();
+                    return true;
+                }    
+            }
+            return false;
+        };
+        
+        Func<bool> IsPreAttackTailStateREnded() => () =>
+        {
+            if (_stateMachine.CurrentState != null && _stateMachine.CurrentState is FDragonflyPreAttackTailStateR)
+            {
+                if ((_stateMachine.CurrentState as FDragonflyPreAttackTailStateR).ReadyToSwitch)
+                {
+                    OnAttackEnded?.Invoke();
+                    return true;
+                }    
+            }
+            return false;
+        };
+        
+        Func<bool> IsPreAttackHoverStateEnded() => () =>
+        {
+            if (_stateMachine.CurrentState != null && _stateMachine.CurrentState is FDragonflyPreAttackHoverState)
+            {
+                if ((_stateMachine.CurrentState as FDragonflyPreAttackHoverState).ReadyToSwitch)
+                {
+                    OnAttackEnded?.Invoke();
+                    return true;
+                }    
+            }
+            return false;
+        };
+        
+        
+        # endregion
+    }
+
+    public void Play(int state, int sideDirection)
+    {
+        MovementInit(state, sideDirection);
+    }
+
+    private void MovementInit(int state, int sideDirection)
+    {
+        _isDead = false;
+        _isReceivedDamage = false;
+        _sideDirection = sideDirection;
+        _enterState = state;
+        _isPlaying = true;
+    }
+
+    public void StartAttack(DragonflyPatrolAttackMode mode)
+    {
+        _currentPatrolAttackMode = mode;
+        _isAttacking = true;
+    }
+
+    public void ResolveReturnTransition(DragonflyReturnMode mode, int sideDirection)
+    {
+    }
+    
+    public void TriggerBounce()
+    {
+        _isBounced = true;
     }
 
     private void Update()
     {
-        _stateMachine.Tick();
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            _isPlaying = false;
+            _stateMachine.SetState(_idleState);
+            MovementInit(0, 1);
+        }
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+            _isPlaying = false;
+            _stateMachine.SetState(_idleState);
+            MovementInit(0, -1);
+        }
+        if (Input.GetKeyDown(KeyCode.Y))
+        {
+            _isPlaying = false;
+            _stateMachine.SetState(_idleState);
+            MovementInit(1, 1);
+        }
+        if (Input.GetKeyDown(KeyCode.U))
+        {
+            _isPlaying = false;
+            _stateMachine.SetState(_idleState);
+            MovementInit(1, -1);
+        }
+        
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            StartAttack(DragonflyPatrolAttackMode.Head); // TODO: unset 
+        }
+        if (Input.GetKeyDown(KeyCode.G))
+        {
+            StartAttack(DragonflyPatrolAttackMode.Tail);
+        }
+        
+
+        if (_isPlaying)
+        {
+            _stateMachine.Tick();
+        }
         // Show current state for debug
         _currentStateType = _stateMachine.CurrentStateType.ToString().Replace("FDragonfly", "");
     }
-
+    
+    
+    private void OnDestroy()
+    {
+        if (_playableGraph.IsValid())
+        {
+            _playableGraph.Destroy();    
+        }
+    }
+    
     public void PlayClip(DragonflyMovementState movementState)
     {
         Debug.Log("PlayClip: " + movementState);
@@ -187,14 +452,17 @@ public class FDragonflyMovement : MonoBehaviour
             _playableGraph.Play();    
         }
     }
-
     
-    private void OnDestroy()
+    private void OnClipEnded()
     {
-        if (_playableGraph.IsValid())
-        {
-            _playableGraph.Destroy();    
-        }
+        // if (_isReturnResolved)
+        // {
+        //     SwitchState();    
+        // }
+        // else
+        // {
+        //     ApplyResolvedReturnTransition();
+        // }
+        _isAnimClipEnded = true;
     }
-
 }
