@@ -106,7 +106,8 @@ public class FDragonflyMovement : MonoBehaviour
     private int _enterState = 0;
     private int _sideDirection = 1;
     private bool _isCollided = false;
-    private bool _isReceivedDamage = false;
+    private bool _isAttackSuccess = false;
+    private bool _isAttackFail = false;
     private bool _isDead = false;
 
     private void OnEnable()
@@ -193,44 +194,54 @@ public class FDragonflyMovement : MonoBehaviour
 
     private void SetupStateMachine()
     {
-        // Idle ->
+        // Idle -> Enter States
         At(_idleState, _enterToPatrolStateL, () => _isPlaying && _enterState == 0 && _sideDirection == 1);
         At(_idleState, _enterToPatrolStateR, () => _isPlaying && _enterState == 0 && _sideDirection == -1);
         At(_idleState, _enterToHoverStateL, () => _isPlaying && _enterState == 1 && _sideDirection == 1);
         At(_idleState, _enterToHoverStateR, () => _isPlaying && _enterState == 1 && _sideDirection == -1);
         
-        // EnterToPatrolL ->
+        // Enter -> Patrol
         At(_enterToPatrolStateL, _patrolStateL, IsEnteredToPatrolByAnimation());
-        // EnterToPatrolR ->
         At(_enterToPatrolStateR, _patrolStateR, IsEnteredToPatrolByAnimation());
-        // EnterToHoverL ->
         At(_enterToHoverStateL, _hoverState, IsEnteredToPatrolByAnimation());
-        // EnterToHoverR ->
         At(_enterToHoverStateR, _hoverState, IsEnteredToPatrolByAnimation());
         
-        // PatrolL ->
+        // Patrol -> PreAttack
         At(_patrolStateL, _preAttackHeadStateL,  IsStartPatrolAttackHead());
         At(_patrolStateL, _preAttackTailStateL,  IsStartPatrolAttackTail());
-        // PatrolR ->
         At(_patrolStateR, _preAttackHeadStateR,  IsStartPatrolAttackHead());
         At(_patrolStateR, _preAttackTailStateR,  IsStartPatrolAttackTail());
         
-        // PreAttackHeadL ->
+        // PreAttack -> Attack
         At(_preAttackHeadStateL, _attackHeadState, IsPreAttackHeadStateLEnded());
-        // PreAttackHeadR ->
         At(_preAttackHeadStateR, _attackHeadState, IsPreAttackHeadStateREnded());
-        // PreAttackTailL ->
         At(_preAttackTailStateL, _attackTailStateL, IsPreAttackTailStateLEnded());
-        // PreAttackTailR ->
         At(_preAttackTailStateR, _attackTailStateR, IsPreAttackTailStateREnded());
         
-        
-        // Hover ->
+        // Hover -> PreAttack
         At(_hoverState, _preAttackHoverState, IsStartPatrolAttackHover());
-        // PreAttackHover ->
+        // PreAttackHover -> Attack
         At(_preAttackHoverState, _attackHoverState, IsPreAttackHoverStateEnded());
         
-
+        // Attack -> Bounce
+        At(_attackHeadState, _bounceHeadState, IsBounced());
+        At(_attackTailStateL, _bounceTailStateL, IsBounced());
+        At(_attackTailStateR, _bounceTailStateR, IsBounced());
+        At(_attackHoverState, _bounceHoverState, IsBounced());
+        
+        // Bounce -> Success
+        At(_bounceHeadState, _attackHeadSuccess, IsAttackSuccess());
+        At(_bounceTailStateL, _attackTailSuccessL, IsAttackSuccess());
+        At(_bounceTailStateR, _attackTailSuccessR, IsAttackSuccess());
+        At(_bounceHoverState, _returnHoverState, IsAttackSuccess());
+        
+        // Bounce -> Fail
+        At(_bounceHeadState, _fallHeadState, IsAttackFail());
+        At(_bounceTailStateL, _attackTailFailL, IsAttackFail());
+        At(_bounceTailStateR, _attackTailFailR, IsAttackFail());
+        At(_bounceHoverState, _fallHeadState, IsAttackFail());
+        
+        // Bounce - Death
         
         
         _stateMachine.SetState(_idleState);
@@ -293,7 +304,7 @@ public class FDragonflyMovement : MonoBehaviour
             {
                 if ((_stateMachine.CurrentState as FDragonflyPreAttackHeadStateL).ReadyToSwitch)
                 {
-                    OnAttackEnded?.Invoke();
+                    OnAttackStarted?.Invoke();
                     return true;
                 }    
             }
@@ -306,7 +317,7 @@ public class FDragonflyMovement : MonoBehaviour
             {
                 if ((_stateMachine.CurrentState as FDragonflyPreAttackHeadStateR).ReadyToSwitch)
                 {
-                    OnAttackEnded?.Invoke();
+                    OnAttackStarted?.Invoke();
                     return true;
                 }    
             }
@@ -319,7 +330,7 @@ public class FDragonflyMovement : MonoBehaviour
             {
                 if ((_stateMachine.CurrentState as FDragonflyPreAttackTailStateL).ReadyToSwitch)
                 {
-                    OnAttackEnded?.Invoke();
+                    OnAttackStarted?.Invoke();
                     return true;
                 }    
             }
@@ -332,7 +343,7 @@ public class FDragonflyMovement : MonoBehaviour
             {
                 if ((_stateMachine.CurrentState as FDragonflyPreAttackTailStateR).ReadyToSwitch)
                 {
-                    OnAttackEnded?.Invoke();
+                    OnAttackStarted?.Invoke();
                     return true;
                 }    
             }
@@ -345,12 +356,47 @@ public class FDragonflyMovement : MonoBehaviour
             {
                 if ((_stateMachine.CurrentState as FDragonflyPreAttackHoverState).ReadyToSwitch)
                 {
-                    OnAttackEnded?.Invoke();
+                    OnAttackStarted?.Invoke();
                     return true;
                 }    
             }
             return false;
         };
+        
+        Func<bool> IsBounced() => () =>
+        {
+            if (_isBounced)
+            {
+                Debug.Log("Bounced");
+                _isBounced = false;
+                return true;
+            }
+            return false;
+        };
+        
+        Func<bool> IsAttackSuccess() => () =>
+        {
+            if (_isAttackSuccess)
+            {
+                OnAttackEnded?.Invoke();
+                _isAttackSuccess = false;
+                return true;
+            }
+            return false;
+        };
+        
+        Func<bool> IsAttackFail() => () =>
+        {
+            if (_isAttackFail)
+            {
+                OnAttackEnded?.Invoke();
+                _isAttackFail = false;
+                return true;
+            }
+            return false;
+        };
+        
+        
         
         
         # endregion
@@ -364,7 +410,8 @@ public class FDragonflyMovement : MonoBehaviour
     private void MovementInit(int state, int sideDirection)
     {
         _isDead = false;
-        _isReceivedDamage = false;
+        _isAttackSuccess = false;
+        _isAttackFail = false;
         _sideDirection = sideDirection;
         _enterState = state;
         _isPlaying = true;
@@ -384,44 +431,31 @@ public class FDragonflyMovement : MonoBehaviour
     {
         _isBounced = true;
     }
+    
+    public void TriggerFall(bool isReceivedDamage)
+    {
+        Debug.Log("TriggerFall");
+        if (isReceivedDamage)
+        {
+            _isAttackSuccess = false;
+            _isAttackFail = true;
+        }
+        else
+        {
+            _isAttackSuccess = true;
+            _isAttackFail = false;
+        }
+    }
+    
+    public void TriggerDeath()
+    {
+        _isAttackSuccess = false;
+        _isAttackFail = false;
+        _isDead = true;
+    }
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            _isPlaying = false;
-            _stateMachine.SetState(_idleState);
-            MovementInit(0, 1);
-        }
-        if (Input.GetKeyDown(KeyCode.T))
-        {
-            _isPlaying = false;
-            _stateMachine.SetState(_idleState);
-            MovementInit(0, -1);
-        }
-        if (Input.GetKeyDown(KeyCode.Y))
-        {
-            _isPlaying = false;
-            _stateMachine.SetState(_idleState);
-            MovementInit(1, 1);
-        }
-        if (Input.GetKeyDown(KeyCode.U))
-        {
-            _isPlaying = false;
-            _stateMachine.SetState(_idleState);
-            MovementInit(1, -1);
-        }
-        
-        if (Input.GetKeyDown(KeyCode.F))
-        {
-            StartAttack(DragonflyPatrolAttackMode.Head); // TODO: unset 
-        }
-        if (Input.GetKeyDown(KeyCode.G))
-        {
-            StartAttack(DragonflyPatrolAttackMode.Tail);
-        }
-        
-
         if (_isPlaying)
         {
             _stateMachine.Tick();

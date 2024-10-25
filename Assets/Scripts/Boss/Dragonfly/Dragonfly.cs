@@ -519,6 +519,7 @@ public class Dragonfly : EnemyBase
     // Enemy Base Methods
     public override void HandleCollisionWithLamp()
     {
+        Debug.Log("Dragonfly: Collision with lamp");
         ReadyToCollide = false;
         ReadyToLampDamage = true;
         _movement.TriggerBounce();
@@ -546,7 +547,7 @@ public class Dragonfly : EnemyBase
             _presentation.HealthUpdate(_currentHealth, _maxHealth);
             _presentation.SetActiveColliderTransform(_collisionController.GetFirstActiveColliderTransform());
             _presentation.DamageFlash();
-            // _movement.TriggerFall(true); <-----------------------------------------------------------------------------------
+            _movement.TriggerFall(true);
          
         }
         else
@@ -558,7 +559,7 @@ public class Dragonfly : EnemyBase
                 _currentHealth = 0; 
                 // _enemyMovement.TriggerDeath();
                 // _movement.TriggerFall(true);
-                // _movement.TriggerDeath(true); <-----------------------------------------------------------------------------------
+                _movement.TriggerDeath(); 
                 _presentation.DeathFlash();
                 OnEnemyDeathInvoke(this);
                 // _enemyPresentation.DeathFlash();
