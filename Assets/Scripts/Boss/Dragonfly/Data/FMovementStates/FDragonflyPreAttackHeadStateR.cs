@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "FDragonflyPreAttackHeadStateR", menuName = "FDragonflyMovementStates/FDragonflyPreAttackHeadStateR")]
@@ -7,6 +8,8 @@ public class FDragonflyPreAttackHeadStateR : ScriptableObject, IState
     [SerializeField] private float _duration = 0.4f;
     [SerializeField] private float _deccelerationPower = 2f;
     [SerializeField] private float _sideSpeed = 0.5f;
+    
+    public event Action OnStarted;
     
     private Vector3 _attackDirection;
     private readonly int _sideDirection = -1;
@@ -38,6 +41,7 @@ public class FDragonflyPreAttackHeadStateR : ScriptableObject, IState
         _startRotation = _visibleBodyTransform.rotation;
         _endRotation = Quaternion.LookRotation(_attackDirection, Vector3.up);
         _readyToSwitch = false;
+        OnStarted?.Invoke();
     }
 
     public void Tick()

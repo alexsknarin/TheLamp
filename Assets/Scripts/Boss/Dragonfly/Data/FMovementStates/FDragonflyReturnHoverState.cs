@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "FDragonflyReturnHoverState", menuName = "FDragonflyMovementStates/FDragonflyReturnHoverState")]
@@ -13,6 +14,9 @@ public class FDragonflyReturnHoverState : ScriptableObject, IState
     [SerializeField] private float _horizontalDistance = 1f;
     [SerializeField] private AnimationCurve _verticalMoveCurve;
     
+    public event Action OnStarted;
+    public event Action OnEnded;
+    
     private float _localTime = 0f;
     private float _phase = 0f;
     private float _endPosY = 0f;
@@ -20,9 +24,6 @@ public class FDragonflyReturnHoverState : ScriptableObject, IState
     private Vector3 _direction = Vector3.zero;
     private Vector3 _startPos = Vector3.zero;
     private Vector3 _endPos = Vector3.zero;
-    
-    private bool _readyToSwitch = false;
-    public bool ReadyToSwitch => _readyToSwitch;
     
     // Dependencies
     private Transform _visibleBodyTransform;
@@ -51,7 +52,7 @@ public class FDragonflyReturnHoverState : ScriptableObject, IState
         // Normalize duration by Z distance from camera
         float zPhase = Mathf.InverseLerp(_zMinDistance, _zMaxDistance, _endPos.z);
         _normalizedDuration = Mathf.Lerp(_farDuration, _closeDuration, zPhase);
-        _readyToSwitch = false;
+        OnStarted?.Invoke();
     }
     
     public void Tick()
@@ -73,7 +74,7 @@ public class FDragonflyReturnHoverState : ScriptableObject, IState
         _phase = _localTime / _normalizedDuration;
         if (_phase > 1)
         {
-            _readyToSwitch = true;
+            OnEnded?.Invoke();
         }
     }
 }

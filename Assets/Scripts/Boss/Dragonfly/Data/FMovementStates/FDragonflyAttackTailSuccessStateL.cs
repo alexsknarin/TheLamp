@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "FDragonflyAttackTailSuccessStateL", menuName = "FDragonflyMovementStates/FDragonflyAttackTailSuccessStateL")]
@@ -7,7 +8,10 @@ public class FDragonflyAttackTailSuccessStateL : ScriptableObject, IState
     [SerializeField] private float _startSpeed = 55f;
     [SerializeField] private float _rotationSpeed = 110f;
     [SerializeField] private float _moveAcceleration = 1.9f;
-
+    
+    public event Action OnStarted; 
+    public event Action OnEnded; 
+    
     private float _localTime = 0f;
     private float _phase = 0f;
     private Vector3 _startDirection;
@@ -16,9 +20,6 @@ public class FDragonflyAttackTailSuccessStateL : ScriptableObject, IState
     
     Quaternion _startRotation;
     Quaternion _endRotation;
-    
-    private bool _readyToSwitch = false;
-    public bool ReadyToSwitch => _readyToSwitch;
     
     // Dependencies
     private Transform _visibleBodyTransform;
@@ -43,7 +44,7 @@ public class FDragonflyAttackTailSuccessStateL : ScriptableObject, IState
         _localTime = 0f;
         _phase = 0f;
         _speed = _startSpeed;
-        _readyToSwitch = false;
+        OnStarted?.Invoke();
     }
     
     public void Tick()
@@ -69,7 +70,7 @@ public class FDragonflyAttackTailSuccessStateL : ScriptableObject, IState
         _phase = _localTime / _duration;
         if (_phase > 1)
         {
-            _readyToSwitch = true;
+            OnEnded?.Invoke();
         }
     }
 }

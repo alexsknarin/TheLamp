@@ -360,7 +360,7 @@ public class DragonflyMovement : MonoBehaviour
     
     private DragonflyMovementState GetReturnState(DragonflyReturnMode mode, int sideDirection, DragonflyExitEnterDirection exitDirection)
     {
-        if (mode == DragonflyReturnMode.Patrol)
+        if (mode == DragonflyReturnMode.PatrolL)
         {
             if (sideDirection == 1)
             {
@@ -386,7 +386,7 @@ public class DragonflyMovement : MonoBehaviour
                 return DragonflyMovementState.MoveToHover;
             }
         }
-        else if (mode == DragonflyReturnMode.Spider)
+        else if (mode == DragonflyReturnMode.SpiderL)
         {
             if (sideDirection == 1)
             {

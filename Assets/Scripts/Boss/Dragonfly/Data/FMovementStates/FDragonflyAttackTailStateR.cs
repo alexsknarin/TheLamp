@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "FDragonflyAttackTailStateR", menuName = "FDragonflyMovementStates/FDragonflyAttackTailStateR")]
@@ -10,6 +11,8 @@ public class FDragonflyAttackTailStateR : ScriptableObject, IState
     [SerializeField] private AnimationCurve _ryCurve;
     [SerializeField] private AnimationCurve _rzCurve;
 
+    public event Action OnStarted;
+    
     private float _localTime = 0f;
     private float _phase = 0f;
     private float _startZPos = 0f;
@@ -41,6 +44,7 @@ public class FDragonflyAttackTailStateR : ScriptableObject, IState
         
         _localTime = 0f;
         _phase = 0f;
+        OnStarted?.Invoke();
     }
     
     public void Tick()

@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "FDragonflyFallHeadState", menuName = "FDragonflyMovementStates/FDragonflyFallHeadState")]
@@ -8,13 +9,13 @@ public class FDragonflyFallHeadState : ScriptableObject, IState
     [SerializeField] private AnimationCurve _headFallRotateCurve;
     [SerializeField] private AnimationCurve _headFallFallDownCurve;
 
+    public event Action OnStarted;
+    public event Action OnEnded;
+    
     private float _headFallStartPosY = 0f;
     private float _localTime = 0f;
     private float _phase = 0f;
     private bool _isAfterDelay = false;
-    
-    private bool _readyToSwitch = false;
-    public bool ReadyToSwitch => _readyToSwitch;
     
     // Dependencies
     private Transform _visibleBodyTransform;
@@ -36,7 +37,7 @@ public class FDragonflyFallHeadState : ScriptableObject, IState
         _localTime = 0f;
         _phase = 0f;
         _isAfterDelay = false;
-        _readyToSwitch = false;
+        OnStarted?.Invoke();
     }
 
     public void Tick()
@@ -71,7 +72,7 @@ public class FDragonflyFallHeadState : ScriptableObject, IState
         else if (_isAfterDelay && _localTime > _afterDelay)
         {
             _isAfterDelay = false;
-            _readyToSwitch = true;
+            OnEnded?.Invoke();
         }
     }
 }

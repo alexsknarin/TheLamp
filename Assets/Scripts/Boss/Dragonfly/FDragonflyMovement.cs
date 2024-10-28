@@ -22,7 +22,7 @@ public class FDragonflyMovement : MonoBehaviour
     [Header("States")]  
     
     [SerializeField] private FDragonflyAttackHeadState _attackHeadState;
-    [SerializeField] private FDragonflyAttackHeadSuccessState _attackHeadSuccess; 
+    [SerializeField] private FDragonflyAttackHeadSuccessState _attackHeadSuccessState; 
     [SerializeField] private FDragonflyAttackHoverState _attackHoverState;
     [SerializeField] private FDragonflyAttackTailFailStateL _attackTailFailL;
     [SerializeField] private FDragonflyAttackTailFailStateR _attackTailFailR;
@@ -57,10 +57,10 @@ public class FDragonflyMovement : MonoBehaviour
     [SerializeField] private FDragonflyPreAttackTailStateL _preAttackTailStateL;
     [SerializeField] private FDragonflyPreAttackTailStateR _preAttackTailStateR;
     [SerializeField] private FDragonflyReturnHoverState _returnHoverState;
-    [SerializeField] private FDragonflyReturnTransitionBTStateL _returnTransitionBTStateL;
-    [SerializeField] private FDragonflyReturnTransitionBTStateR _returnTransitionBTStateR;
-    [SerializeField] private FDragonflyReturnTransitionTBStateL _returnTransitionTBStateL;
-    [SerializeField] private FDragonflyReturnTransitionTBStateR _returnTransitionTBStateR;
+    [SerializeField] private FDragonflyReturnTransitionLRBTState returnTransitionLRBTState;
+    [SerializeField] private FDragonflyReturnTransitionLRTBState returnTransitionLRTBState;
+    [SerializeField] private FDragonflyReturnTransitionRLTBState returnTransitionRLTBState;
+    [SerializeField] private FDragonflyReturnTransitionRLBTState returnTransitionRLBTState;
     [SerializeField] private FDragonflySpiderPatrolStateL _spiderPatrolStateL;
     [SerializeField] private FDragonflySpiderPatrolStateR _spiderPatrolStateR;
     [SerializeField] private FDragonflySpiderPreattackHeadTransitionStateL _spiderPreAttackHeadTransitionStateL;
@@ -69,18 +69,18 @@ public class FDragonflyMovement : MonoBehaviour
     [SerializeField] private FDragonflySpiderPushStateR _spiderPushStateR;
     
     // Events
-    public event Action<IState> OnReadyToAttackStateEntered; 
-    public event Action<DragonflyMovementState> OnAfterAttackExitEnded;
+    public event Action<IState> OnReadyToAttackStateEntered; // TODO: possibly Use Type instead of IState 
+    public event Action OnReadyToSwarmAttackStateEntered;
+    public event Action<IState> OnAfterAttackExitEnded; // TODO: possibly Use Type instead of IState
     public event Action OnAttackStarted;
     public event Action OnPreattackStarted;
     public event Action OnAttackEnded;
     public event Action<int> OnCatchSpiderStarted;
-    public event Action OnDeathAnimationEnded; 
-    
-    public IState MovementState => _stateMachine.CurrentState;
-    
-    
+    public event Action OnReadyToSpiderAttackStateEntered;
+    public event Action OnDeathAnimationEnded;
+
     private FStateMachine _stateMachine = new FStateMachine();
+    public IState MovementState => _stateMachine.CurrentState;
     
     // Animation 
     private AnimationClipPlayable _currentAnimationClipPlayable;
@@ -94,9 +94,10 @@ public class FDragonflyMovement : MonoBehaviour
     
     // Tracking previous state
     private IState _previousState;
+    private DragonflyReturnMode _resolvedReturnMode;
+
     
     // Return Resolve
-    private bool _isReturnResolved = true;
     private DragonflyMovementState _returnMovementState;
     private int _returnSideDirection;
 
@@ -113,6 +114,56 @@ public class FDragonflyMovement : MonoBehaviour
     private void OnEnable()
     {
         _animationClipEvents.OnClipEndedEvent += OnClipEnded;
+        
+        _hoverState.OnStarted += OnReadyToAttackEnterHandle;
+        _patrolStateL.OnStarted += OnReadyToAttackEnterHandle; // 
+        _patrolStateR.OnStarted += OnReadyToAttackEnterHandle; //
+        
+        _patrolStateL.OnStarted += OnReadyToSwarmAttackEnterHandle;
+        _patrolStateR.OnStarted += OnReadyToSwarmAttackEnterHandle;
+        
+        _spiderPatrolStateL.OnStarted += OnReadyToSpiderAttackHandle;
+        _spiderPatrolStateR.OnStarted += OnReadyToSpiderAttackHandle;
+        
+        _catchSpiderStateL.OnStarted += OnCatchSpiderStartedLHandle;
+        _catchSpiderStateR.OnStarted += OnCatchSpiderStartedRHandle;
+        
+        _preAttackHeadStateL.OnStarted += OnPreAttackStartedHandle;
+        _preAttackHeadStateR.OnStarted += OnPreAttackStartedHandle;
+        _preAttackTailStateL.OnStarted += OnPreAttackStartedHandle;
+        _preAttackTailStateR.OnStarted += OnPreAttackStartedHandle;
+        _preAttackHoverState.OnStarted += OnPreAttackStartedHandle;
+        
+        _attackHeadState.OnStarted += OnAttackStartedHandle;
+        _attackTailStateL.OnStarted += OnAttackStartedHandle;
+        _attackTailStateR.OnStarted += OnAttackStartedHandle;
+        _attackHoverState.OnStarted += OnAttackStartedHandle;
+        
+        _deathHeadState.OnStarted += OnAttackEndedHandle;
+        _deathTailStateL.OnStarted += OnAttackEndedHandle;
+        _deathTailStateR.OnStarted += OnAttackEndedHandle;
+        _attackHeadSuccessState.OnStarted += OnAttackEndedHandle;
+        _fallHeadState.OnStarted += OnAttackEndedHandle;
+        _attackTailFailL.OnStarted += OnAttackEndedHandle;
+        _attackTailFailR.OnStarted += OnAttackEndedHandle;
+        _attackTailSuccessL.OnStarted += OnAttackEndedHandle;
+        _attackTailSuccessR.OnStarted += OnAttackEndedHandle;
+        _returnHoverState.OnStarted += OnAttackEndedHandle;
+        
+        _attackHeadSuccessState.OnEnded += OnAfterAttackExitEndedHandle;
+        _attackTailSuccessL.OnEnded += OnAfterAttackExitEndedHandle;
+        _attackTailSuccessR.OnEnded += OnAfterAttackExitEndedHandle;
+        _attackTailFailL.OnEnded += OnAfterAttackExitEndedHandle;
+        _attackTailFailR.OnEnded += OnAfterAttackExitEndedHandle;
+        _fallHeadState.OnEnded += OnAfterAttackExitEndedHandle;
+        _returnHoverState.OnEnded += OnAfterAttackExitEndedHandle;
+        _deathHeadState.OnEnded += OnAfterAttackExitEndedHandle;
+        _deathTailStateL.OnEnded += OnAfterAttackExitEndedHandle;
+        _deathTailStateR.OnEnded += OnAfterAttackExitEndedHandle;
+        
+        _deathHeadState.OnEnded += OnDeathAnimationEndedHandle;
+        _deathTailStateL.OnEnded += OnDeathAnimationEndedHandle;
+        _deathTailStateR.OnEnded += OnDeathAnimationEndedHandle;
     }
 
     private void OnDisable()
@@ -122,6 +173,56 @@ public class FDragonflyMovement : MonoBehaviour
             _playableGraph.Destroy();    
         }
         _animationClipEvents.OnClipEndedEvent -= OnClipEnded;
+        
+        _hoverState.OnStarted -= OnReadyToAttackEnterHandle;
+        _patrolStateL.OnStarted -= OnReadyToAttackEnterHandle; // 
+        _patrolStateR.OnStarted -= OnReadyToAttackEnterHandle; //
+        
+        _patrolStateL.OnStarted -= OnReadyToSwarmAttackEnterHandle;
+        _patrolStateR.OnStarted -= OnReadyToSwarmAttackEnterHandle;
+        
+        _spiderPatrolStateL.OnStarted -= OnReadyToSpiderAttackHandle;
+        _spiderPatrolStateR.OnStarted -= OnReadyToSpiderAttackHandle;
+        
+        _catchSpiderStateL.OnStarted -= OnCatchSpiderStartedLHandle;
+        _catchSpiderStateR.OnStarted -= OnCatchSpiderStartedRHandle;
+        
+        _preAttackHeadStateL.OnStarted -= OnPreAttackStartedHandle;
+        _preAttackHeadStateR.OnStarted -= OnPreAttackStartedHandle;
+        _preAttackTailStateL.OnStarted -= OnPreAttackStartedHandle;
+        _preAttackTailStateR.OnStarted -= OnPreAttackStartedHandle;
+        _preAttackHoverState.OnStarted -= OnPreAttackStartedHandle;
+        
+        _attackHeadState.OnStarted -= OnAttackStartedHandle;
+        _attackTailStateL.OnStarted -= OnAttackStartedHandle;
+        _attackTailStateR.OnStarted -= OnAttackStartedHandle;
+        _attackHoverState.OnStarted -= OnAttackStartedHandle;
+        
+        _deathHeadState.OnStarted -= OnAttackEndedHandle;
+        _deathTailStateL.OnStarted -= OnAttackEndedHandle;
+        _deathTailStateR.OnStarted -= OnAttackEndedHandle;
+        _attackHeadSuccessState.OnStarted -= OnAttackEndedHandle;
+        _fallHeadState.OnStarted -= OnAttackEndedHandle;
+        _attackTailFailL.OnStarted -= OnAttackEndedHandle;
+        _attackTailFailR.OnStarted -= OnAttackEndedHandle;
+        _attackTailSuccessL.OnStarted -= OnAttackEndedHandle;
+        _attackTailSuccessR.OnStarted -= OnAttackEndedHandle;
+        _returnHoverState.OnStarted -= OnAttackEndedHandle;
+        
+        _attackHeadSuccessState.OnEnded -= OnAfterAttackExitEndedHandle;
+        _attackTailSuccessL.OnEnded -= OnAfterAttackExitEndedHandle;
+        _attackTailSuccessR.OnEnded -= OnAfterAttackExitEndedHandle;
+        _attackTailFailL.OnEnded -= OnAfterAttackExitEndedHandle;
+        _attackTailFailR.OnEnded -= OnAfterAttackExitEndedHandle;
+        _fallHeadState.OnEnded -= OnAfterAttackExitEndedHandle;
+        _returnHoverState.OnEnded -= OnAfterAttackExitEndedHandle;
+        _deathHeadState.OnEnded -= OnAfterAttackExitEndedHandle;
+        _deathTailStateL.OnEnded -= OnAfterAttackExitEndedHandle;
+        _deathTailStateR.OnEnded -= OnAfterAttackExitEndedHandle;
+        
+        _deathHeadState.OnEnded -= OnDeathAnimationEndedHandle;
+        _deathTailStateL.OnEnded -= OnDeathAnimationEndedHandle;
+        _deathTailStateR.OnEnded -= OnDeathAnimationEndedHandle;
     }
 
     private void Awake()
@@ -143,7 +244,7 @@ public class FDragonflyMovement : MonoBehaviour
     private void SetMovementStatesDependencies()
     { 
         _attackHeadState.SetDependencies(_visibleBodyTransform, transform);
-        _attackHeadSuccess.SetDependencies(_visibleBodyTransform, transform); 
+        _attackHeadSuccessState.SetDependencies(_visibleBodyTransform, transform); 
         _attackHoverState.SetDependencies(_visibleBodyTransform, transform);
         _attackTailFailL.SetDependencies(_visibleBodyTransform, transform);
         _attackTailFailR.SetDependencies(_visibleBodyTransform, transform);
@@ -178,10 +279,10 @@ public class FDragonflyMovement : MonoBehaviour
         _preAttackTailStateL.SetDependencies(_visibleBodyTransform, _patrolTransform, _patrolRotator);
         _preAttackTailStateR.SetDependencies(_visibleBodyTransform, _patrolTransform, _patrolRotator);
         _returnHoverState.SetDependencies(_visibleBodyTransform, transform);
-        _returnTransitionBTStateL.SetDependencies(_visibleBodyTransform, _animatedTransform, this);
-        _returnTransitionBTStateR.SetDependencies(_visibleBodyTransform, _animatedTransform, this);
-        _returnTransitionTBStateL.SetDependencies(_visibleBodyTransform, _animatedTransform, this);
-        _returnTransitionTBStateR.SetDependencies(_visibleBodyTransform, _animatedTransform, this);
+        returnTransitionRLBTState.SetDependencies(_visibleBodyTransform, _animatedTransform, this);
+        returnTransitionLRBTState.SetDependencies(_visibleBodyTransform, _animatedTransform, this);
+        returnTransitionRLTBState.SetDependencies(_visibleBodyTransform, _animatedTransform, this);
+        returnTransitionLRTBState.SetDependencies(_visibleBodyTransform, _animatedTransform, this);
         _spiderPatrolStateL.SetDependencies(_visibleBodyTransform, _spiderPatrolTransform, _spiderPatrolRotator);
         _spiderPatrolStateR.SetDependencies(_visibleBodyTransform, _spiderPatrolTransform, _spiderPatrolRotator);
         _spiderPreAttackHeadTransitionStateL.SetDependencies(
@@ -207,21 +308,21 @@ public class FDragonflyMovement : MonoBehaviour
         At(_enterToHoverStateR, _hoverState, IsEnteredToPatrolByAnimation());
         
         // Patrol -> PreAttack
-        At(_patrolStateL, _preAttackHeadStateL,  IsStartPatrolAttackHead());
-        At(_patrolStateL, _preAttackTailStateL,  IsStartPatrolAttackTail());
-        At(_patrolStateR, _preAttackHeadStateR,  IsStartPatrolAttackHead());
-        At(_patrolStateR, _preAttackTailStateR,  IsStartPatrolAttackTail());
+        At(_patrolStateL, _preAttackHeadStateL,  IsStartAttack());
+        At(_patrolStateR, _preAttackHeadStateR,  IsStartAttack());
+        At(_patrolStateL, _preAttackTailStateL,  IsStartAttack());
+        At(_patrolStateR, _preAttackTailStateR,  IsStartAttack());
         
         // PreAttack -> Attack
-        At(_preAttackHeadStateL, _attackHeadState, IsPreAttackHeadStateLEnded());
-        At(_preAttackHeadStateR, _attackHeadState, IsPreAttackHeadStateREnded());
-        At(_preAttackTailStateL, _attackTailStateL, IsPreAttackTailStateLEnded());
-        At(_preAttackTailStateR, _attackTailStateR, IsPreAttackTailStateREnded());
+        At(_preAttackHeadStateL, _attackHeadState, ()  => _preAttackHeadStateL.ReadyToSwitch);
+        At(_preAttackHeadStateR, _attackHeadState, ()  => _preAttackHeadStateR.ReadyToSwitch);
+        At(_preAttackTailStateL, _attackTailStateL, () => _preAttackTailStateL.ReadyToSwitch);
+        At(_preAttackTailStateR, _attackTailStateR, () => _preAttackTailStateR.ReadyToSwitch);
         
         // Hover -> PreAttack
-        At(_hoverState, _preAttackHoverState, IsStartPatrolAttackHover());
+        At(_hoverState, _preAttackHoverState, IsStartAttack());
         // PreAttackHover -> Attack
-        At(_preAttackHoverState, _attackHoverState, IsPreAttackHoverStateEnded());
+        At(_preAttackHoverState, _attackHoverState, () => _preAttackHoverState.ReadyToSwitch);
         
         // Attack -> Bounce
         At(_attackHeadState, _bounceHeadState, IsBounced());
@@ -229,8 +330,10 @@ public class FDragonflyMovement : MonoBehaviour
         At(_attackTailStateR, _bounceTailStateR, IsBounced());
         At(_attackHoverState, _bounceHoverState, IsBounced());
         
+        
         // Bounce -> Success
-        At(_bounceHeadState, _attackHeadSuccess, IsAttackSuccess());
+        // TODO: bounce should be based on the exit from the collision zone, to the bounce duration TODO: check 
+        At(_bounceHeadState, _attackHeadSuccessState, IsAttackSuccess());
         At(_bounceTailStateL, _attackTailSuccessL, IsAttackSuccess());
         At(_bounceTailStateR, _attackTailSuccessR, IsAttackSuccess());
         At(_bounceHoverState, _returnHoverState, IsAttackSuccess());
@@ -242,12 +345,29 @@ public class FDragonflyMovement : MonoBehaviour
         At(_bounceHoverState, _fallHeadState, IsAttackFail());
         
         // Bounce - Death
+        At(_bounceHeadState, _deathHeadState, IsDied());
+        At(_bounceTailStateL, _deathTailStateL, IsDied());
+        At(_bounceTailStateR, _deathTailStateR, IsDied());
+        At(_bounceHoverState, _deathHeadState, IsDied());
+        
+        // Return Resolve Transitions
+        /*
+        At(returnTransitionLRTBState, _moveToPatrolStateL, () => _resolvedReturnMode == DragonflyReturnMode.PatrolL);
+        At(returnTransitionLRTBState, _catchSpiderStateR, () => _resolvedReturnMode == DragonflyReturnMode.PatrolL);
+        At(returnTransitionLRTBState, _moveToHoverState, () => _resolvedReturnMode == DragonflyReturnMode.PatrolL);
+        */
         
         
+        
+        
+        
+        
+
         _stateMachine.SetState(_idleState);
         
         // Transition helper methods
         void At(IState from, IState to, Func<bool> condition) => _stateMachine.AddTransition(from, to, condition);
+        void Any(IState to, Func<bool> condition) => _stateMachine.AddAnyTransition(to, condition);
         
         // Transition Predicates
         # region Transition Predicate Delegates
@@ -257,117 +377,26 @@ public class FDragonflyMovement : MonoBehaviour
             if (_isAnimClipEnded)
             {
                 _isAnimClipEnded = false;
-                OnReadyToAttackStateEntered?.Invoke(_stateMachine.CurrentState); // TODO: find fow to pass a new state here or do something else
-                Debug.Log("OnReadyToAttackStateEntered invoked");
                 return true;
             }
             return false;
         };
         
-        Func<bool> IsStartPatrolAttackHead() => () =>
-        {
-            if (_isAttacking && _currentPatrolAttackMode == DragonflyPatrolAttackMode.Head)
-            {
-                _isAttacking = false;
-                OnPreattackStarted?.Invoke();
-                return true;
-            }
-            return false;
-        };
-        
-        Func<bool> IsStartPatrolAttackTail() => () =>
-        {
-            if (_isAttacking && _currentPatrolAttackMode == DragonflyPatrolAttackMode.Tail)
-            {
-                _isAttacking = false;
-                OnPreattackStarted?.Invoke();
-                return true;
-            }
-            return false;
-        };
-        
-        Func<bool> IsStartPatrolAttackHover() => () =>
+        // TODO: why separate delegates
+        Func<bool> IsStartAttack() => () =>
         {
             if (_isAttacking)
             {
                 _isAttacking = false;
-                OnPreattackStarted?.Invoke();
                 return true;
             }
             return false;
         };
 
-        // TODO: refactor to merge cast an class check
-        Func<bool> IsPreAttackHeadStateLEnded() => () =>
-        {
-            if (_stateMachine.CurrentState != null && _stateMachine.CurrentState is FDragonflyPreAttackHeadStateL)
-            {
-                if ((_stateMachine.CurrentState as FDragonflyPreAttackHeadStateL).ReadyToSwitch)
-                {
-                    OnAttackStarted?.Invoke();
-                    return true;
-                }    
-            }
-            return false;
-        };
-
-        Func<bool> IsPreAttackHeadStateREnded() => () =>
-        {
-            if (_stateMachine.CurrentState != null && _stateMachine.CurrentState is FDragonflyPreAttackHeadStateR)
-            {
-                if ((_stateMachine.CurrentState as FDragonflyPreAttackHeadStateR).ReadyToSwitch)
-                {
-                    OnAttackStarted?.Invoke();
-                    return true;
-                }    
-            }
-            return false;
-        };
-        
-        Func<bool> IsPreAttackTailStateLEnded() => () =>
-        {
-            if (_stateMachine.CurrentState != null && _stateMachine.CurrentState is FDragonflyPreAttackTailStateL)
-            {
-                if ((_stateMachine.CurrentState as FDragonflyPreAttackTailStateL).ReadyToSwitch)
-                {
-                    OnAttackStarted?.Invoke();
-                    return true;
-                }    
-            }
-            return false;
-        };
-        
-        Func<bool> IsPreAttackTailStateREnded() => () =>
-        {
-            if (_stateMachine.CurrentState != null && _stateMachine.CurrentState is FDragonflyPreAttackTailStateR)
-            {
-                if ((_stateMachine.CurrentState as FDragonflyPreAttackTailStateR).ReadyToSwitch)
-                {
-                    OnAttackStarted?.Invoke();
-                    return true;
-                }    
-            }
-            return false;
-        };
-        
-        Func<bool> IsPreAttackHoverStateEnded() => () =>
-        {
-            if (_stateMachine.CurrentState != null && _stateMachine.CurrentState is FDragonflyPreAttackHoverState)
-            {
-                if ((_stateMachine.CurrentState as FDragonflyPreAttackHoverState).ReadyToSwitch)
-                {
-                    OnAttackStarted?.Invoke();
-                    return true;
-                }    
-            }
-            return false;
-        };
-        
         Func<bool> IsBounced() => () =>
         {
             if (_isBounced)
             {
-                Debug.Log("Bounced");
                 _isBounced = false;
                 return true;
             }
@@ -378,7 +407,6 @@ public class FDragonflyMovement : MonoBehaviour
         {
             if (_isAttackSuccess)
             {
-                OnAttackEnded?.Invoke();
                 _isAttackSuccess = false;
                 return true;
             }
@@ -387,17 +415,23 @@ public class FDragonflyMovement : MonoBehaviour
         
         Func<bool> IsAttackFail() => () =>
         {
-            if (_isAttackFail)
+            if (_isAttackFail && !_isDead)
             {
-                OnAttackEnded?.Invoke();
                 _isAttackFail = false;
                 return true;
             }
             return false;
         };
         
-        
-        
+        Func<bool> IsDied() => () =>
+        {
+            if (_isDead)
+            {
+                _isDead = false;
+                return true;
+            }
+            return false;
+        };
         
         # endregion
     }
@@ -423,15 +457,128 @@ public class FDragonflyMovement : MonoBehaviour
         _isAttacking = true;
     }
 
-    public void ResolveReturnTransition(DragonflyReturnMode mode, int sideDirection)
+
+    // TODO:
+
+    public void ResolveReturnTransition(DragonflyReturnMode mode)
     {
+        _previousState = _stateMachine.CurrentState;
+        _resolvedReturnMode = mode;
+        IState resolvedState = null;
+        
+        switch (mode)
+        {
+            case DragonflyReturnMode.PatrolL:
+                resolvedState = _moveToPatrolStateL;
+                break;
+            case DragonflyReturnMode.PatrolR:
+                resolvedState = _moveToPatrolStateR;
+                break;
+            case DragonflyReturnMode.SpiderL:
+                resolvedState = _spiderPushStateL;
+                break;
+            case DragonflyReturnMode.SpiderR:
+                resolvedState = _spiderPushStateR;
+                break;
+            case DragonflyReturnMode.Hover:
+                resolvedState = _moveToHoverState;
+                break;
+        }
+        
+        // Immediately switch to the resolved state if possible
+        
+        if (_stateMachine.CurrentState == _attackHeadSuccessState && _visibleBodyTransform.position.x < 0)
+        {
+            if (resolvedState == _moveToPatrolStateR || resolvedState == _catchSpiderStateL)
+            {
+                _stateMachine.SetState(resolvedState);
+            }
+            else
+            {
+                _stateMachine.SetState(returnTransitionLRTBState);
+            }
+        }
+        
+        if (_stateMachine.CurrentState == _attackHeadSuccessState && _visibleBodyTransform.position.x > 0)
+        {
+            if (resolvedState == _moveToPatrolStateL || resolvedState == _catchSpiderStateR)
+            {
+                _stateMachine.SetState(resolvedState);
+            }else
+            {
+                _stateMachine.SetState(returnTransitionRLTBState);
+            }
+        }
+        
+        if (_stateMachine.CurrentState == _attackTailSuccessL)
+        {
+            if (resolvedState == _moveToPatrolStateR || resolvedState == _catchSpiderStateL || resolvedState == _moveToHoverState)
+            {
+                _stateMachine.SetState(resolvedState);
+            }
+            else
+            {
+                _stateMachine.SetState(returnTransitionLRTBState);
+            }
+        }
+        
+        if (_stateMachine.CurrentState == _attackTailSuccessR)
+        {
+            if (resolvedState == _moveToPatrolStateL || resolvedState == _catchSpiderStateR || resolvedState == _moveToHoverState)
+            {
+                _stateMachine.SetState(resolvedState);
+            }
+            else
+            {
+                _stateMachine.SetState(returnTransitionRLTBState);
+            }
+        }
+        
+        if (_stateMachine.CurrentState == _fallHeadState ||
+            _stateMachine.CurrentState == _returnHoverState ||
+            _stateMachine.CurrentState == _attackTailFailL ||
+            _stateMachine.CurrentState == _attackTailFailR)
+        {
+            if (resolvedState == _moveToPatrolStateL || resolvedState == _moveToPatrolStateR || resolvedState == _moveToHoverState)
+            {
+                _stateMachine.SetState(resolvedState);
+            }
+        }
+
+        if ((_stateMachine.CurrentState == _fallHeadState && _visibleBodyTransform.position.x < 0) ||
+            (_stateMachine.CurrentState == _returnHoverState && _visibleBodyTransform.position.x < 0) ||
+            _stateMachine.CurrentState == _attackTailFailL)
+        {
+            if (resolvedState == _catchSpiderStateL)
+            {
+                _stateMachine.SetState(returnTransitionRLBTState);
+            }
+            if (resolvedState == _catchSpiderStateR)
+            {
+                _stateMachine.SetState(returnTransitionLRBTState);
+            }
+        }
+        
+        if ((_stateMachine.CurrentState == _fallHeadState && _visibleBodyTransform.position.x > 0) ||
+            (_stateMachine.CurrentState == _returnHoverState && _visibleBodyTransform.position.x > 0) ||
+            _stateMachine.CurrentState == _attackTailFailR)
+        {
+            if (resolvedState == _catchSpiderStateL)
+            {
+                _stateMachine.SetState(returnTransitionLRBTState);
+            }
+            if (resolvedState == _catchSpiderStateR)
+            {
+                _stateMachine.SetState(returnTransitionRLBTState);
+            }
+        }
     }
-    
+
     public void TriggerBounce()
     {
         _isBounced = true;
     }
-    
+
     public void TriggerFall(bool isReceivedDamage)
     {
         Debug.Log("TriggerFall");
@@ -446,7 +593,7 @@ public class FDragonflyMovement : MonoBehaviour
             _isAttackFail = false;
         }
     }
-    
+
     public void TriggerDeath()
     {
         _isAttackSuccess = false;
@@ -463,8 +610,8 @@ public class FDragonflyMovement : MonoBehaviour
         // Show current state for debug
         _currentStateType = _stateMachine.CurrentStateType.ToString().Replace("FDragonfly", "");
     }
-    
-    
+
+
     private void OnDestroy()
     {
         if (_playableGraph.IsValid())
@@ -472,7 +619,7 @@ public class FDragonflyMovement : MonoBehaviour
             _playableGraph.Destroy();    
         }
     }
-    
+
     public void PlayClip(DragonflyMovementState movementState)
     {
         Debug.Log("PlayClip: " + movementState);
@@ -486,7 +633,7 @@ public class FDragonflyMovement : MonoBehaviour
             _playableGraph.Play();    
         }
     }
-    
+
     private void OnClipEnded()
     {
         // if (_isReturnResolved)
@@ -499,4 +646,58 @@ public class FDragonflyMovement : MonoBehaviour
         // }
         _isAnimClipEnded = true;
     }
+
+    #region State Event Handle methods
+
+    private void OnReadyToAttackEnterHandle()
+    {
+        OnReadyToAttackStateEntered?.Invoke(_stateMachine.CurrentState);
+    }
+
+    private void OnReadyToSwarmAttackEnterHandle()
+    {
+        OnReadyToSwarmAttackStateEntered?.Invoke();
+    }
+
+    private void OnReadyToSpiderAttackHandle()
+    {
+        OnReadyToSpiderAttackStateEntered?.Invoke();
+    }
+
+    private void OnCatchSpiderStartedLHandle()
+    {
+        OnCatchSpiderStarted?.Invoke(1);
+    }
+
+    private void OnCatchSpiderStartedRHandle()
+    {
+        OnCatchSpiderStarted?.Invoke(-1);
+    }
+
+    private void OnPreAttackStartedHandle()
+    {
+        OnPreattackStarted?.Invoke();
+    }
+
+    private void OnAttackStartedHandle()
+    {
+        OnAttackStarted?.Invoke();
+    }
+
+    private void OnAttackEndedHandle()
+    {
+        OnAttackEnded?.Invoke();
+    }
+
+    private void OnAfterAttackExitEndedHandle()
+    {
+        OnAfterAttackExitEnded?.Invoke(_stateMachine.CurrentState);
+    }
+
+    private void OnDeathAnimationEndedHandle()
+    {
+        OnDeathAnimationEnded?.Invoke();
+    }
+
+    #endregion
 }

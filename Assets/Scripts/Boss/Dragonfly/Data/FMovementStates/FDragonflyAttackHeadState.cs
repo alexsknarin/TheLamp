@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "FDragonflyAttackHeadState", menuName = "FDragonflyMovementStates/FDragonflyAttackHeadState")]
@@ -5,6 +6,8 @@ public class FDragonflyAttackHeadState : ScriptableObject, IState
 {
     [SerializeField] private float _speed = 4f;
     [SerializeField] private float _acceleration = 0.75f;
+    
+    public event Action OnStarted;
     
     private float _attackAccelerationValue = 0;
     private Vector3 _attackDirection;
@@ -39,6 +42,7 @@ public class FDragonflyAttackHeadState : ScriptableObject, IState
             sideGoal *= 0.85f;
         }
         _attackDirection = (sideGoal - currentPosition).normalized;
+        OnStarted?.Invoke();
     }
 
     public void Tick()

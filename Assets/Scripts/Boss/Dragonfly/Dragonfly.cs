@@ -67,6 +67,15 @@ public class Dragonfly : EnemyBase
         DragonflyMovementState.AttackTailR
     };
     
+    private DragonflyReturnMode[] RETURN_MODES = new DragonflyReturnMode[]
+    {
+        DragonflyReturnMode.PatrolL,
+        DragonflyReturnMode.PatrolR,
+        DragonflyReturnMode.SpiderL,
+        DragonflyReturnMode.SpiderR,
+        DragonflyReturnMode.Hover,
+        DragonflyReturnMode.Hover
+    };
     
     private void OnEnable()
     {
@@ -379,7 +388,7 @@ public class Dragonfly : EnemyBase
         else if (movementState.GetType() == typeof(FDragonflyEnterToPatrolStateL) ||
                  movementState.GetType() == typeof(FDragonflyMoveToPatrolStateL))
         {
-            _swarm.PlayAttack(1);
+            _swarm.PlayAttack(1); // <-----------------------------------------------------------------------------------
             minWaitTime = _patrolWaitMin;
             
             int mode = Random.Range(0, 2);
@@ -465,18 +474,11 @@ public class Dragonfly : EnemyBase
     }
     
     
-    private void OnAfterAttackExitEnded(DragonflyMovementState movementState)
+    private void OnAfterAttackExitEnded(IState movementState)
     {
         
-        DragonflyReturnMode mode = (DragonflyReturnMode)Random.Range(0, 3);
-        int direction = RandomDirection.Generate();
-        // if (mode == DragonflyReturnMode.Spider)
-        // {
-        //     ***
-        //     // _spider.gameObject.SetActive(true);
-        //     // _spider.Initialize(direction);
-        // }
-        _movement.ResolveReturnTransition(mode, direction);
+        DragonflyReturnMode mode = RETURN_MODES[Random.Range(0, 6)];
+        _movement.ResolveReturnTransition(mode);
     }
     
     private void OnCatchSpiderStart(int direction)
@@ -503,13 +505,6 @@ public class Dragonfly : EnemyBase
             Play();
         }
         
-        if (Input.GetKeyDown(KeyCode.Z))
-        {
-            int direction = RandomDirection.Generate();
-            _spider.Initialize(direction);
-            _movement.ResolveReturnTransition(DragonflyReturnMode.Spider, direction);
-        }
-        
         WaitForHoverAttack();
         WaitForHeadAttack();
         WaitForSpiderAttack();
@@ -528,6 +523,10 @@ public class Dragonfly : EnemyBase
     public override void HandleExitingAttackExitZone()
     {
         ReadyToLampDamage = false;
+        if (!ReceivedLampAttack)
+        {
+            _movement.TriggerFall(false);
+        }
     }
 
     public override void HandleCollisionWithStickZone()

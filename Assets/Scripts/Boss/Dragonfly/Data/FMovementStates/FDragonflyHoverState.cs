@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "FDragonflyHoverState", menuName = "FDragonflyMovementStates/FDragonflyHoverState")]
@@ -8,7 +9,8 @@ public class FDragonflyHoverState : ScriptableObject, IState
     private float _localTime = 0f;
     private Vector3 _hoverPos = Vector3.zero;
     
-    
+    public event Action OnStarted;
+
     // Dependencies
     private Transform _visibleBodyTransform;
     private Transform _baseTransform;
@@ -24,6 +26,7 @@ public class FDragonflyHoverState : ScriptableObject, IState
         _visibleBodyTransform.SetParent(_baseTransform);
         _hoverPos = _visibleBodyTransform.localPosition;
         _localTime = 0f;
+        OnStarted?.Invoke();
     }
 
     public void Tick()

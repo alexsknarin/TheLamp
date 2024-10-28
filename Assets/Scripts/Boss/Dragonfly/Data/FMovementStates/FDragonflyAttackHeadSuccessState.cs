@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "FDragonflyAttackHeadSuccessState", menuName = "FDragonflyMovementStates/FDragonflyAttackHeadSuccessState")]
@@ -9,13 +10,13 @@ public class FDragonflyAttackHeadSuccessState : ScriptableObject, IState
     [SerializeField] private AnimationCurve _tzCurve;
     [SerializeField] private AnimationCurve _rxCurve;
     
+    public event Action OnStarted; 
+    public event Action OnEnded; 
+    
     private float _localTime = 0f;
     private float _phase = 0f;
     private bool _isAfterDelay = false;
     
-    private bool _readyToSwitch = false;
-    public bool ReadyToSwitch => _readyToSwitch;
-
     // Dependencies
     private Transform _visibleBodyTransform;
     private Transform _fallPointTransform;
@@ -38,7 +39,7 @@ public class FDragonflyAttackHeadSuccessState : ScriptableObject, IState
         _localTime = 0f;
         _phase = 0f;    
         _isAfterDelay = false;
-        _readyToSwitch = false;
+        OnStarted?.Invoke();
     }
 
     public void Tick()
@@ -70,7 +71,7 @@ public class FDragonflyAttackHeadSuccessState : ScriptableObject, IState
         else if (_isAfterDelay && _localTime > _afterDelay)
         {
             _isAfterDelay = false;
-            _readyToSwitch = true;
+            OnEnded?.Invoke();
         }
     }
     

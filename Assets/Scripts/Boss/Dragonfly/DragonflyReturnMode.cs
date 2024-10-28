@@ -1,6 +1,8 @@
 public enum DragonflyReturnMode
 {
-    Patrol,
-    Hover,
-    Spider
+    PatrolL,
+    PatrolR,
+    SpiderL,
+    SpiderR,
+    Hover
 }
