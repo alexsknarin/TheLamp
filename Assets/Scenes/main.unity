@@ -4903,7 +4903,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &568085644
 Transform:
   m_ObjectHideFlags: 0
@@ -13785,7 +13785,8 @@ MonoBehaviour:
   _animClipCollection: {fileID: 11400000, guid: 2edc64060a6724243bafcc5920220f71,
     type: 2}
   _attackHeadState: {fileID: 11400000, guid: d85f95c613dcf1545ad439c39bae43f9, type: 2}
-  _attackHeadSuccess: {fileID: 11400000, guid: fd7d9c380526ebd468f96bbc9adf0aea, type: 2}
+  _attackHeadSuccessState: {fileID: 11400000, guid: fd7d9c380526ebd468f96bbc9adf0aea,
+    type: 2}
   _attackHoverState: {fileID: 11400000, guid: 9de246e810945b94ea088f8d2cdfcfed, type: 2}
   _attackTailFailL: {fileID: 11400000, guid: 938313dd6b7b0bf46a4bd2c551000548, type: 2}
   _attackTailFailR: {fileID: 11400000, guid: b80e718e05080a44c8d3a5c28bae9a7b, type: 2}
