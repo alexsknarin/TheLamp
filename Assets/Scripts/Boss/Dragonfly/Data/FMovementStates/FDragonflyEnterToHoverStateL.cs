@@ -6,6 +6,6 @@ public class FDragonflyEnterToHoverStateL : FDragonflyAnimBaseState
     public override void OnEnter()
     {
         ParentVisibleBodyToAnimatedTransform();
-        _movement.PlayClip(DragonflyMovementState.EnterToHoverL);
+        _movement.PlayClip(this.GetType());
     }
 }

@@ -6,6 +6,6 @@ public class FDragonflyEnterToPatrolStateR : FDragonflyAnimBaseState
     public override void OnEnter()
     {
         ParentVisibleBodyToAnimatedTransform();
-        _movement.PlayClip(DragonflyMovementState.EnterToPatrolR);
+        _movement.PlayClip(this.GetType());
     }
 }

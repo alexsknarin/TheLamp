@@ -59,14 +59,6 @@ public class Dragonfly : EnemyBase
     private Vector3 _patrolAttackPosition;
     private Vector3 _patrolSpiderAttackPosition;
     
-    private DragonflyMovementState[] ATTACK_STATES = new DragonflyMovementState[]
-    {
-        DragonflyMovementState.AttackHead,
-        DragonflyMovementState.AttackHover,
-        DragonflyMovementState.AttackTailL,
-        DragonflyMovementState.AttackTailR
-    };
-    
     private DragonflyReturnMode[] RETURN_MODES = new DragonflyReturnMode[]
     {
         DragonflyReturnMode.PatrolL,

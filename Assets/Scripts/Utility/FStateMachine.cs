@@ -40,8 +40,6 @@ public class FStateMachine
             _currentTransitions = EmptyTransitions;
         }
         
-        // TODO: how to handle states without TO transitions? 
-        
         _currentState.OnEnter();
     }
 

@@ -6,6 +6,6 @@ public class FDragonflyReturnTransitionLRTBState : FDragonflyAnimBaseState
     public override void OnEnter()
     {
         ParentVisibleBodyToAnimatedTransform();
-        _movement.PlayClip(DragonflyMovementState.ReturnTransitionLRTB);
+        _movement.PlayClip(this.GetType());
     }
 }

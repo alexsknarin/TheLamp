@@ -98,7 +98,6 @@ public class FDragonflyMovement : MonoBehaviour
 
     
     // Return Resolve
-    private DragonflyMovementState _returnMovementState;
     private int _returnSideDirection;
 
     private bool _isPlaying = false;
@@ -546,7 +545,6 @@ public class FDragonflyMovement : MonoBehaviour
 
     public void StartAttack(DragonflyPatrolAttackMode mode)
     {
-        Debug.Log("Start Attack!!!!!!!!!!!!!!! >>>>>> " + mode.ToString());
         _currentPatrolAttackMode = mode;
         _isAttacking = true;
     }
@@ -651,39 +649,6 @@ public class FDragonflyMovement : MonoBehaviour
                 _currentStateType = resolvedState.ToString().Replace("FDragonfly", ""); // DEBUG
             }
         }
-
-        // if (_stateMachine.CurrentState == _fallHeadState ||
-        //     _stateMachine.CurrentState == _returnHoverState ||
-        //     _stateMachine.CurrentState == _attackTailFailL ||
-        //     _stateMachine.CurrentState == _attackTailFailR)
-        // {
-        //     if (resolvedState == _catchSpiderStateL)
-        //     {
-        //         _stateMachine.SetState(_returnTransitionRLBTState);
-        //         _currentStateType = resolvedState.ToString().Replace("FDragonfly", ""); // DEBUG
-        //     }
-        //     if (resolvedState == _catchSpiderStateR)
-        //     {
-        //         _stateMachine.SetState(_returnTransitionLRBTState);
-        //         _currentStateType = resolvedState.ToString().Replace("FDragonfly", ""); // DEBUG
-        //     }
-        // }
-        
-        // if ((_stateMachine.CurrentState == _fallHeadState && _visibleBodyTransform.position.x > 0) ||
-        //     (_stateMachine.CurrentState == _returnHoverState && _visibleBodyTransform.position.x > 0) ||
-        //     _stateMachine.CurrentState == _attackTailFailR)
-        // {
-        //     if (resolvedState == _catchSpiderStateL)
-        //     {
-        //         _stateMachine.SetState(_returnTransitionLRBTState);
-        //         _currentStateType = resolvedState.ToString().Replace("FDragonfly", ""); // DEBUG
-        //     }
-        //     if (resolvedState == _catchSpiderStateR)
-        //     {
-        //         _stateMachine.SetState(_returnTransitionRLBTState);
-        //         _currentStateType = resolvedState.ToString().Replace("FDragonfly", ""); // DEBUG
-        //     }
-        // }
     }
 
     public void TriggerBounce()
@@ -731,7 +696,7 @@ public class FDragonflyMovement : MonoBehaviour
         }
     }
 
-    public void PlayClip(DragonflyMovementState movementState)
+    public void PlayClip(Type movementState)
     {
         Debug.Log("PlayClip: " + movementState);
         // TODO: refactor to remove enum

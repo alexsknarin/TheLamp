@@ -23,18 +23,18 @@ public class DragonflyAnimClipCollection : ScriptableObject
     public void Initialize(DragonflyPlayablesContainer playablesContainer)
     {
         _playablesContainer = playablesContainer;
-        _playablesContainer.AddClip(DragonflyMovementState.Idle, _idleClip);
-        _playablesContainer.AddClip(DragonflyMovementState.EnterToPatrolL, _enterToPatrolLClip);  
-        _playablesContainer.AddClip(DragonflyMovementState.EnterToPatrolR, _enterToPatrolRClip);  
-        _playablesContainer.AddClip(DragonflyMovementState.CatchSpiderL, _catchSpiderLClip);
-        _playablesContainer.AddClip(DragonflyMovementState.EnterToHoverL, _enterToHoverLClip);
-        _playablesContainer.AddClip(DragonflyMovementState.EnterToHoverR, _enterToHoverRClip);
-        _playablesContainer.AddClip(DragonflyMovementState.CatchSpiderR, _catchSpiderRClip);
-        _playablesContainer.AddClip(DragonflyMovementState.MoveToPatrolL, _moveToPatrolLClip);
-        _playablesContainer.AddClip(DragonflyMovementState.MoveToPatrolR, _moveToPatrolRClip);
-        _playablesContainer.AddClip(DragonflyMovementState.ReturnTransitionLRBT, _returnTransitionLRBTClip);
-        _playablesContainer.AddClip(DragonflyMovementState.ReturnTransitionLRTB, _returnTransitionLRTBClip);
-        _playablesContainer.AddClip(DragonflyMovementState.ReturnTransitionRLBT, _returnTransitionRLBTClip);
-        _playablesContainer.AddClip(DragonflyMovementState.ReturnTransitionRLTB, _returnTransitionRLTBClip);
+        _playablesContainer.AddClip( typeof(FDragonflyIdleState), _idleClip);
+        _playablesContainer.AddClip(typeof(FDragonflyEnterToPatrolStateL), _enterToPatrolLClip);  
+        _playablesContainer.AddClip(typeof(FDragonflyEnterToPatrolStateR), _enterToPatrolRClip);  
+        _playablesContainer.AddClip(typeof(FDragonflyCatchSpiderStateL), _catchSpiderLClip);
+        _playablesContainer.AddClip(typeof(FDragonflyCatchSpiderStateR), _catchSpiderRClip);
+        _playablesContainer.AddClip(typeof(FDragonflyEnterToHoverStateL), _enterToHoverLClip);
+        _playablesContainer.AddClip(typeof(FDragonflyEnterToHoverStateR), _enterToHoverRClip);
+        _playablesContainer.AddClip(typeof(FDragonflyMoveToPatrolStateL), _moveToPatrolLClip);
+        _playablesContainer.AddClip(typeof(FDragonflyMoveToPatrolStateR), _moveToPatrolRClip);
+        _playablesContainer.AddClip(typeof(FDragonflyReturnTransitionLRBTState), _returnTransitionLRBTClip);
+        _playablesContainer.AddClip(typeof(FDragonflyReturnTransitionLRTBState), _returnTransitionLRTBClip);
+        _playablesContainer.AddClip(typeof(FDragonflyReturnTransitionRLBTState), _returnTransitionRLBTClip);
+        _playablesContainer.AddClip(typeof(FDragonflyReturnTransitionRLTBState), _returnTransitionRLTBClip);
     }
 }
