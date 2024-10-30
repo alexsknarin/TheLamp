@@ -335,7 +335,6 @@ public class FDragonflyMovement : MonoBehaviour
         At(_attackHoverState, _bounceHoverState, IsBounced());
         
         // Bounce -> Success
-        // TODO: bounce should be based on the exit from the collision zone, to the bounce duration TODO: check 
         At(_bounceHeadState, _attackHeadSuccessState, IsAttackSuccess());
         At(_bounceTailStateL, _attackTailSuccessL, IsAttackSuccess());
         At(_bounceTailStateR, _attackTailSuccessR, IsAttackSuccess());
@@ -528,6 +527,18 @@ public class FDragonflyMovement : MonoBehaviour
         # endregion
     }
 
+    public void PlayClip(Type movementState)
+    {
+        AnimationClipPlayable clipPlayable = _playablesContainer.GetClip(movementState);
+        clipPlayable.SetTime(0);
+        clipPlayable.SetTime(0); // Unity Bug
+        _playableOutput.SetSourcePlayable(clipPlayable);
+        if (_playableGraph.IsValid())
+        {
+            _playableGraph.Play();    
+        }
+    }
+
     public void Play(int state, int sideDirection)
     {
         MovementInit(state, sideDirection);
@@ -541,6 +552,16 @@ public class FDragonflyMovement : MonoBehaviour
         _sideDirection = sideDirection;
         _enterState = state;
         _isPlaying = true;
+    }
+
+    private void Update()
+    {
+        _currentStateType = _stateMachine.CurrentStateType.ToString().Replace("FDragonfly", ""); // DEBUG
+        if (_isPlaying)
+        {
+            _stateMachine.Tick();
+        }
+        _currentStateType = _stateMachine.CurrentStateType.ToString().Replace("FDragonfly", ""); // DEBUG
     }
 
     public void StartAttack(DragonflyPatrolAttackMode mode)
@@ -587,7 +608,6 @@ public class FDragonflyMovement : MonoBehaviour
             {
                 _stateMachine.SetState(_returnTransitionLRTBState);
             }
-            _currentStateType = resolvedState.ToString().Replace("FDragonfly", ""); // DEBUG
         }
         
         if (_stateMachine.CurrentState == _attackHeadSuccessState && _visibleBodyTransform.position.x > 0)
@@ -599,7 +619,6 @@ public class FDragonflyMovement : MonoBehaviour
             {
                 _stateMachine.SetState(_returnTransitionRLTBState);
             }
-            _currentStateType = resolvedState.ToString().Replace("FDragonfly", ""); // DEBUG
         }
         
         if (_stateMachine.CurrentState == _attackTailSuccessL)
@@ -612,7 +631,6 @@ public class FDragonflyMovement : MonoBehaviour
             {
                 _stateMachine.SetState(_returnTransitionLRTBState);
             }
-            _currentStateType = resolvedState.ToString().Replace("FDragonfly", ""); // DEBUG
         }
         
         if (_stateMachine.CurrentState == _attackTailSuccessR)
@@ -625,7 +643,6 @@ public class FDragonflyMovement : MonoBehaviour
             {
                 _stateMachine.SetState(_returnTransitionRLTBState);
             }
-            _currentStateType = resolvedState.ToString().Replace("FDragonfly", ""); // DEBUG
         }
         
         if (_stateMachine.CurrentState == _fallHeadState ||
@@ -636,19 +653,19 @@ public class FDragonflyMovement : MonoBehaviour
             if (resolvedState == _moveToPatrolStateL || resolvedState == _moveToPatrolStateR || resolvedState == _moveToHoverState)
             {
                 _stateMachine.SetState(resolvedState);
-                _currentStateType = resolvedState.ToString().Replace("FDragonfly", ""); // DEBUG
             }
             if (resolvedState == _catchSpiderStateL)
             {
                 _stateMachine.SetState(_returnTransitionRLBTState);
-                _currentStateType = resolvedState.ToString().Replace("FDragonfly", ""); // DEBUG
             }
             if (resolvedState == _catchSpiderStateR)
             {
                 _stateMachine.SetState(_returnTransitionLRBTState);
-                _currentStateType = resolvedState.ToString().Replace("FDragonfly", ""); // DEBUG
             }
         }
+#if  UNITY_EDITOR
+        _currentStateType = resolvedState.ToString().Replace("FDragonfly", ""); // DEBUG
+#endif 
     }
 
     public void TriggerBounce()
@@ -669,22 +686,12 @@ public class FDragonflyMovement : MonoBehaviour
             _isAttackFail = false;
         }
     }
-    
+
     public void TriggerDeath()
     {
         _isAttackSuccess = false;
         _isAttackFail = false;
         _isDead = true;
-    }
-
-    private void Update()
-    {
-        _currentStateType = _stateMachine.CurrentStateType.ToString().Replace("FDragonfly", ""); // DEBUG
-        if (_isPlaying)
-        {
-            _stateMachine.Tick();
-        }
-        _currentStateType = _stateMachine.CurrentStateType.ToString().Replace("FDragonfly", ""); // DEBUG
     }
 
 
@@ -696,30 +703,8 @@ public class FDragonflyMovement : MonoBehaviour
         }
     }
 
-    public void PlayClip(Type movementState)
-    {
-        Debug.Log("PlayClip: " + movementState);
-        // TODO: refactor to remove enum
-        AnimationClipPlayable clipPlayable = _playablesContainer.GetClip(movementState);
-        clipPlayable.SetTime(0);
-        clipPlayable.SetTime(0); // Unity Bug
-        _playableOutput.SetSourcePlayable(clipPlayable);
-        if (_playableGraph.IsValid())
-        {
-            _playableGraph.Play();    
-        }
-    }
-
     private void OnClipEnded()
     {
-        // if (_isReturnResolved)
-        // {
-        //     SwitchState();    
-        // }
-        // else
-        // {
-        //     ApplyResolvedReturnTransition();
-        // }
         _isAnimClipEnded = true;
     }
 

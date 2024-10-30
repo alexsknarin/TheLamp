@@ -26,7 +26,6 @@ public class FDragonflyAttackHoverState : ScriptableObject, IState
     {
         Vector3 currentPosition = _visibleBodyTransform.position;
         _visibleBodyTransform.SetParent(_baseTransform);
-        // _attackDirection = -_stateData.VisibleBodyTransform.position.normalized;
         _attackAccelerationValue = 0;
         
         Vector3 sideGoal = currentPosition;
@@ -44,8 +43,9 @@ public class FDragonflyAttackHoverState : ScriptableObject, IState
             sideGoal *= 0.85f;
         }
         _attackDirection = (sideGoal - currentPosition).normalized;
-                
+#if UNITY_EDITOR  
         Debug.DrawLine(currentPosition, sideGoal, Color.yellow, 5f);
+#endif
         OnStarted?.Invoke();
     }
 

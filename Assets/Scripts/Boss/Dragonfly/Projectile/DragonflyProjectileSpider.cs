@@ -62,12 +62,10 @@ public class DragonflyProjectileSpider : EnemyBase
     public override void HandleEnteringAttackZone(Collider2D collider)
     {
         ReadyToLampDamage = true;
-        Debug.Log("Dragonfly Projectile: Entered attack zone");
     }
 
     public override void HandleCollisionWithLamp()
     {
-        Debug.Log("Collided with lamp");
         ReadyToCollide = false;
         ReadyToLampDamage = true;
         _movement.TriggerFall();

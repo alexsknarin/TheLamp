@@ -3,8 +3,8 @@ using UnityEngine;
 public abstract class FDragonflyAnimBaseState : ScriptableObject, IState
 {
     // Dependencies
-    protected Transform _visibleBodyTransform;
-    protected Transform _animatedTransform;
+    private Transform _visibleBodyTransform;
+    private Transform _animatedTransform;
     protected FDragonflyMovement _movement;
     
     public void SetDependencies(Transform visibleBodyTransform, Transform animatedTransform, FDragonflyMovement movement)

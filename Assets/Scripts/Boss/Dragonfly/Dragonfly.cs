@@ -156,6 +156,19 @@ public class Dragonfly : EnemyBase
         _presentation.Initialize();
     }
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            Play();
+        }
+        
+        WaitForHoverAttack();
+        WaitForHeadAttack();
+        WaitForSpiderAttack();
+        WaitForTailAttack();
+    }
+
     private void StartBossActivePhase()
     {
         _collisionController.DisableColliders();
@@ -165,14 +178,16 @@ public class Dragonfly : EnemyBase
         int sideDirection = RandomDirection.Generate();
         _movement.Play(enterType, sideDirection);
     }
-    
+
     // Attack Handle Methods ---------------------------------------------------
+
     private void StartAttack(DragonflyPatrolAttackMode mode)
     {
         _movement.StartAttack(mode);
     }
-    
+
     // Hover Attack -------------------------------------------------------------
+
     private void PrepareHoverAttack()
     {
         _localTime = 0;
@@ -192,8 +207,9 @@ public class Dragonfly : EnemyBase
             }
         }
     }
-    
+
     // Head Attack ------------------------------------------------------------- 
+
     private void PreparePatrolToHeadAttack(float minWaitTime)
     {
         _localTime = 0;
@@ -244,15 +260,16 @@ public class Dragonfly : EnemyBase
             }   
         }
     }
-    
+
     // Tail Attack -------------------------------------------------------------
+
     private void PreparePatrolToTailAttack(float minWaitTime)
     {
         _localTime = 0;
         _isWaitingForTailPatrolAttack = true;
         _patrolTailWait = Random.Range(minWaitTime, _patrolTailWaitMax);
     }
-    
+
     private void WaitForTailAttack()
     {
         if (_isWaitingForTailPatrolAttack)
@@ -296,9 +313,10 @@ public class Dragonfly : EnemyBase
             }   
         }
     }
-    
-    
+
+
     // Spider Patrol Attack -----------------------------------------------------
+
     private void PrepareSpiderAttack()
     {
         _localTime = 0;
@@ -354,13 +372,12 @@ public class Dragonfly : EnemyBase
                         _isWaitingForSpiderPatrolAttackPoint = false;
                         _isLastPatrolDirectionSet = false;
                         SpiderAttack();
-                        // StartAttack(DragonflyPatrolAttackMode.Tail);
                     }
                 }
             }   
         }
     }
-    
+
     private void SpiderAttack()
     {
         _localTime = 0;
@@ -369,9 +386,11 @@ public class Dragonfly : EnemyBase
         _movement.StartAttack(DragonflyPatrolAttackMode.Spider);
     }
 
+
     //--------------------------------------------------------------------------------
     // Event Handle Methods
-    
+
+
     private void OnReadyToSwarmAttackEnterHandle(IState movementState)
     {
         if (movementState.GetType() == typeof(FDragonflyPatrolStateL))
@@ -388,7 +407,7 @@ public class Dragonfly : EnemyBase
     {
         PrepareSpiderAttack();
     }
-    
+
     private void OnReadyToAttackEnterHandle(IState movementState)
     {
         float minWaitTime = 0;
@@ -423,20 +442,20 @@ public class Dragonfly : EnemyBase
         _collisionController.EnableColliders();
         _presentation.PreAttackEnd();
     }
-    
+
     private void OnAttackEndHandle()
     {
         _collisionController.DisableColliders();
     }
-    
-    
+
+
     private void OnAfterAttackExitEndHandle(IState movementState)
     {
         
         DragonflyReturnMode mode = RETURN_MODES[Random.Range(0, 6)];
         _movement.ResolveReturnTransition(mode);
     }
-    
+
     private void OnCatchSpiderStartHandle(int direction)
     {
         _spider.gameObject.SetActive(true);
@@ -452,25 +471,10 @@ public class Dragonfly : EnemyBase
         pos.z = 0.082f;
         _spider.gameObject.transform.localPosition = pos;
     }
-    
-    // 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            Play();
-        }
-        
-        WaitForHoverAttack();
-        WaitForHeadAttack();
-        WaitForSpiderAttack();
-        WaitForTailAttack();
-    }
-    
+
     // Enemy Base Methods
     public override void HandleCollisionWithLamp()
     {
-        Debug.Log("Dragonfly: Collision with lamp");
         ReadyToCollide = false;
         ReadyToLampDamage = true;
         _movement.TriggerBounce();
@@ -509,15 +513,11 @@ public class Dragonfly : EnemyBase
         {
             if (!_isDead)
             {
-                Debug.Log("Dragonfly: Dead");
                 ReceivedLampAttack = true;
                 _currentHealth = 0; 
-                // _enemyMovement.TriggerDeath();
-                // _movement.TriggerFall(true);
                 _movement.TriggerDeath(); 
                 _presentation.DeathFlash();
                 OnEnemyDeathInvoke(this);
-                // _enemyPresentation.DeathFlash();
                 _isDead = true;
             }
         }   
