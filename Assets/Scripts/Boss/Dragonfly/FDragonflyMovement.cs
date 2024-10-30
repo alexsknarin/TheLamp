@@ -57,10 +57,10 @@ public class FDragonflyMovement : MonoBehaviour
     [SerializeField] private FDragonflyPreAttackTailStateL _preAttackTailStateL;
     [SerializeField] private FDragonflyPreAttackTailStateR _preAttackTailStateR;
     [SerializeField] private FDragonflyReturnHoverState _returnHoverState;
-    [SerializeField] private FDragonflyReturnTransitionLRBTState returnTransitionLRBTState;
-    [SerializeField] private FDragonflyReturnTransitionLRTBState returnTransitionLRTBState;
-    [SerializeField] private FDragonflyReturnTransitionRLTBState returnTransitionRLTBState;
-    [SerializeField] private FDragonflyReturnTransitionRLBTState returnTransitionRLBTState;
+    [SerializeField] private FDragonflyReturnTransitionLRBTState _returnTransitionLRBTState;
+    [SerializeField] private FDragonflyReturnTransitionLRTBState _returnTransitionLRTBState;
+    [SerializeField] private FDragonflyReturnTransitionRLBTState _returnTransitionRLBTState;
+    [SerializeField] private FDragonflyReturnTransitionRLTBState _returnTransitionRLTBState;
     [SerializeField] private FDragonflySpiderPatrolStateL _spiderPatrolStateL;
     [SerializeField] private FDragonflySpiderPatrolStateR _spiderPatrolStateR;
     [SerializeField] private FDragonflySpiderPreattackHeadTransitionStateL _spiderPreAttackHeadTransitionStateL;
@@ -279,10 +279,10 @@ public class FDragonflyMovement : MonoBehaviour
         _preAttackTailStateL.SetDependencies(_visibleBodyTransform, _patrolTransform, _patrolRotator);
         _preAttackTailStateR.SetDependencies(_visibleBodyTransform, _patrolTransform, _patrolRotator);
         _returnHoverState.SetDependencies(_visibleBodyTransform, transform);
-        returnTransitionRLBTState.SetDependencies(_visibleBodyTransform, _animatedTransform, this);
-        returnTransitionLRBTState.SetDependencies(_visibleBodyTransform, _animatedTransform, this);
-        returnTransitionRLTBState.SetDependencies(_visibleBodyTransform, _animatedTransform, this);
-        returnTransitionLRTBState.SetDependencies(_visibleBodyTransform, _animatedTransform, this);
+        _returnTransitionRLBTState.SetDependencies(_visibleBodyTransform, _animatedTransform, this);
+        _returnTransitionLRBTState.SetDependencies(_visibleBodyTransform, _animatedTransform, this);
+        _returnTransitionRLTBState.SetDependencies(_visibleBodyTransform, _animatedTransform, this);
+        _returnTransitionLRTBState.SetDependencies(_visibleBodyTransform, _animatedTransform, this);
         _spiderPatrolStateL.SetDependencies(_visibleBodyTransform, _spiderPatrolTransform, _spiderPatrolRotator);
         _spiderPatrolStateR.SetDependencies(_visibleBodyTransform, _spiderPatrolTransform, _spiderPatrolRotator);
         _spiderPreAttackHeadTransitionStateL.SetDependencies(
@@ -304,15 +304,19 @@ public class FDragonflyMovement : MonoBehaviour
         // Enter -> Patrol
         At(_enterToPatrolStateL, _patrolStateL, IsAnimationEnded());
         At(_enterToPatrolStateR, _patrolStateR, IsAnimationEnded());
+        At(_moveToPatrolStateL, _patrolStateL, IsAnimationEnded());
+        At(_moveToPatrolStateR, _patrolStateR, IsAnimationEnded());
+        
         
         At(_enterToHoverStateL, _hoverState, IsAnimationEnded());
         At(_enterToHoverStateR, _hoverState, IsAnimationEnded());
+        At(_moveToHoverState, _hoverState, () => _moveToHoverState.ReadyToSwitch);
         
         // Patrol -> PreAttack
-        At(_patrolStateL, _preAttackHeadStateL,  IsStartAttack());
-        At(_patrolStateR, _preAttackHeadStateR,  IsStartAttack());
-        At(_patrolStateL, _preAttackTailStateL,  IsStartAttack());
-        At(_patrolStateR, _preAttackTailStateR,  IsStartAttack());
+        At(_patrolStateL, _preAttackHeadStateL,  IsStartHeadAttack());
+        At(_patrolStateR, _preAttackHeadStateR,  IsStartHeadAttack());
+        At(_patrolStateL, _preAttackTailStateL,  IsStartTailAttack());
+        At(_patrolStateR, _preAttackTailStateR,  IsStartTailAttack());
         
         // PreAttack -> Attack
         At(_preAttackHeadStateL, _attackHeadState, ()  => _preAttackHeadStateL.ReadyToSwitch);
@@ -321,7 +325,7 @@ public class FDragonflyMovement : MonoBehaviour
         At(_preAttackTailStateR, _attackTailStateR, () => _preAttackTailStateR.ReadyToSwitch);
         
         // Hover -> PreAttack
-        At(_hoverState, _preAttackHoverState, IsStartAttack());
+        At(_hoverState, _preAttackHoverState, IsStartHeadAttack());
         // PreAttackHover -> Attack
         At(_preAttackHoverState, _attackHoverState, () => _preAttackHoverState.ReadyToSwitch);
         
@@ -330,7 +334,6 @@ public class FDragonflyMovement : MonoBehaviour
         At(_attackTailStateL, _bounceTailStateL, IsBounced());
         At(_attackTailStateR, _bounceTailStateR, IsBounced());
         At(_attackHoverState, _bounceHoverState, IsBounced());
-        
         
         // Bounce -> Success
         // TODO: bounce should be based on the exit from the collision zone, to the bounce duration TODO: check 
@@ -351,23 +354,36 @@ public class FDragonflyMovement : MonoBehaviour
         At(_bounceTailStateR, _deathTailStateR, IsDied());
         At(_bounceHoverState, _deathHeadState, IsDied());
         
+        // Spider
+        At(_catchSpiderStateL, _spiderPatrolStateL, IsAnimationEnded());
+        At(_catchSpiderStateR, _spiderPatrolStateR, IsAnimationEnded());
+        
+        At(_spiderPatrolStateL, _spiderPushStateL, IsStartSpiderAttack());
+        At(_spiderPatrolStateR, _spiderPushStateR, IsStartSpiderAttack());
+        
+        At(_spiderPushStateL, _spiderPreAttackHeadTransitionStateL, () => _spiderPushStateL.ReadyToSwitch);
+        At(_spiderPushStateR, _spiderPreAttackHeadTransitionStateR, () => _spiderPushStateR.ReadyToSwitch);
+        
+        // Spider to patrol
+        At(_spiderPreAttackHeadTransitionStateL, _patrolStateL, () => _spiderPreAttackHeadTransitionStateL.ReadyToSwitch);
+        At(_spiderPreAttackHeadTransitionStateR, _patrolStateR, () => _spiderPreAttackHeadTransitionStateR.ReadyToSwitch);
+        
+        
         // Return Resolve Transitions
         
-        At(returnTransitionLRTBState, _moveToPatrolStateL, IsResolvedToPatrolL());
-        At(returnTransitionLRTBState, _catchSpiderStateR, IsResolvedToCatchSpiderR());
-        At(returnTransitionLRTBState, _moveToHoverState, IsResolvedToHover());
+        At(_returnTransitionLRTBState, _moveToPatrolStateL, IsResolvedToPatrolL());
+        At(_returnTransitionLRTBState, _catchSpiderStateR, IsResolvedToCatchSpiderR());
+        At(_returnTransitionLRTBState, _moveToHoverState, IsResolvedToHover());
         
-        At(returnTransitionRLTBState, _moveToPatrolStateR, IsResolvedToPatrolR());
-        At(returnTransitionRLTBState, _catchSpiderStateL, IsResolvedToCatchSpiderL());
-        At(returnTransitionRLTBState, _moveToHoverState, IsResolvedToHover());
+        At(_returnTransitionRLTBState, _moveToPatrolStateR, IsResolvedToPatrolR());
+        At(_returnTransitionRLTBState, _catchSpiderStateL, IsResolvedToCatchSpiderL());
+        At(_returnTransitionRLTBState, _moveToHoverState, IsResolvedToHover());
         
-        At(returnTransitionLRBTState, _catchSpiderStateL, IsResolvedToCatchSpiderL());
-        At(returnTransitionLRBTState, _catchSpiderStateR, IsResolvedToCatchSpiderR());
+        At(_returnTransitionLRBTState, _catchSpiderStateL, IsResolvedToCatchSpiderL());
+        At(_returnTransitionLRBTState, _catchSpiderStateR, IsResolvedToCatchSpiderR());
         
-        At(returnTransitionRLBTState, _catchSpiderStateL, IsResolvedToCatchSpiderL());
-        At(returnTransitionRLBTState, _catchSpiderStateR, IsResolvedToCatchSpiderR());
-        
-        // TODO: Spider Attack 
+        At(_returnTransitionRLBTState, _catchSpiderStateL, IsResolvedToCatchSpiderL());
+        At(_returnTransitionRLBTState, _catchSpiderStateR, IsResolvedToCatchSpiderR());
         
         // Set Initial State
         _stateMachine.SetState(_idleState);
@@ -389,15 +405,36 @@ public class FDragonflyMovement : MonoBehaviour
             return false;
         };
         
-        Func<bool> IsStartAttack() => () =>
+        Func<bool> IsStartHeadAttack() => () =>
         {
-            if (_isAttacking)
+            if (_isAttacking && _currentPatrolAttackMode == DragonflyPatrolAttackMode.Head)
             {
                 _isAttacking = false;
                 return true;
             }
             return false;
         };
+        
+        Func<bool> IsStartTailAttack() => () =>
+        {
+            if (_isAttacking && _currentPatrolAttackMode == DragonflyPatrolAttackMode.Tail)
+            {
+                _isAttacking = false;
+                return true;
+            }
+            return false;
+        };
+        
+        Func<bool> IsStartSpiderAttack() => () =>
+        {
+            if (_isAttacking && _currentPatrolAttackMode == DragonflyPatrolAttackMode.Spider)
+            {
+                _isAttacking = false;
+                return true;
+            }
+            return false;
+        };
+        
 
         Func<bool> IsBounced() => () =>
         {
@@ -509,12 +546,10 @@ public class FDragonflyMovement : MonoBehaviour
 
     public void StartAttack(DragonflyPatrolAttackMode mode)
     {
+        Debug.Log("Start Attack!!!!!!!!!!!!!!! >>>>>> " + mode.ToString());
         _currentPatrolAttackMode = mode;
         _isAttacking = true;
     }
-
-
-    // TODO:
 
     public void ResolveReturnTransition(DragonflyReturnMode mode)
     {
@@ -531,19 +566,22 @@ public class FDragonflyMovement : MonoBehaviour
                 resolvedState = _moveToPatrolStateR;
                 break;
             case DragonflyReturnMode.SpiderL:
-                resolvedState = _spiderPushStateL;
+                resolvedState = _catchSpiderStateL;
                 break;
             case DragonflyReturnMode.SpiderR:
-                resolvedState = _spiderPushStateR;
+                resolvedState = _catchSpiderStateR;
                 break;
             case DragonflyReturnMode.Hover:
                 resolvedState = _moveToHoverState;
                 break;
         }
         
+        Debug.Log("|||||||||");
+        Debug.Log("Resloved State: " + resolvedState);
+        
         // Immediately switch to the resolved state if possible
         
-        if (_stateMachine.CurrentState == _attackHeadSuccessState && _visibleBodyTransform.position.x < 0)
+        if ((_stateMachine.CurrentState == _attackHeadSuccessState && _visibleBodyTransform.position.x < 0))
         {
             if (resolvedState == _moveToPatrolStateR || resolvedState == _catchSpiderStateL)
             {
@@ -552,7 +590,7 @@ public class FDragonflyMovement : MonoBehaviour
             }
             else
             {
-                _stateMachine.SetState(returnTransitionLRTBState);
+                _stateMachine.SetState(_returnTransitionLRTBState);
             }
             _currentStateType = resolvedState.ToString().Replace("FDragonfly", ""); // DEBUG
         }
@@ -564,7 +602,7 @@ public class FDragonflyMovement : MonoBehaviour
                 _stateMachine.SetState(resolvedState);
             }else
             {
-                _stateMachine.SetState(returnTransitionRLTBState);
+                _stateMachine.SetState(_returnTransitionRLTBState);
             }
             _currentStateType = resolvedState.ToString().Replace("FDragonfly", ""); // DEBUG
         }
@@ -577,7 +615,7 @@ public class FDragonflyMovement : MonoBehaviour
             }
             else
             {
-                _stateMachine.SetState(returnTransitionLRTBState);
+                _stateMachine.SetState(_returnTransitionLRTBState);
             }
             _currentStateType = resolvedState.ToString().Replace("FDragonfly", ""); // DEBUG
         }
@@ -590,7 +628,7 @@ public class FDragonflyMovement : MonoBehaviour
             }
             else
             {
-                _stateMachine.SetState(returnTransitionRLTBState);
+                _stateMachine.SetState(_returnTransitionRLTBState);
             }
             _currentStateType = resolvedState.ToString().Replace("FDragonfly", ""); // DEBUG
         }
@@ -605,39 +643,50 @@ public class FDragonflyMovement : MonoBehaviour
                 _stateMachine.SetState(resolvedState);
                 _currentStateType = resolvedState.ToString().Replace("FDragonfly", ""); // DEBUG
             }
+            if (resolvedState == _catchSpiderStateL)
+            {
+                _stateMachine.SetState(_returnTransitionRLBTState);
+                _currentStateType = resolvedState.ToString().Replace("FDragonfly", ""); // DEBUG
+            }
+            if (resolvedState == _catchSpiderStateR)
+            {
+                _stateMachine.SetState(_returnTransitionLRBTState);
+                _currentStateType = resolvedState.ToString().Replace("FDragonfly", ""); // DEBUG
+            }
         }
 
-        if ((_stateMachine.CurrentState == _fallHeadState && _visibleBodyTransform.position.x < 0) ||
-            (_stateMachine.CurrentState == _returnHoverState && _visibleBodyTransform.position.x < 0) ||
-            _stateMachine.CurrentState == _attackTailFailL)
-        {
-            if (resolvedState == _catchSpiderStateL)
-            {
-                _stateMachine.SetState(returnTransitionRLBTState);
-                _currentStateType = resolvedState.ToString().Replace("FDragonfly", ""); // DEBUG
-            }
-            if (resolvedState == _catchSpiderStateR)
-            {
-                _stateMachine.SetState(returnTransitionLRBTState);
-                _currentStateType = resolvedState.ToString().Replace("FDragonfly", ""); // DEBUG
-            }
-        }
+        // if (_stateMachine.CurrentState == _fallHeadState ||
+        //     _stateMachine.CurrentState == _returnHoverState ||
+        //     _stateMachine.CurrentState == _attackTailFailL ||
+        //     _stateMachine.CurrentState == _attackTailFailR)
+        // {
+        //     if (resolvedState == _catchSpiderStateL)
+        //     {
+        //         _stateMachine.SetState(_returnTransitionRLBTState);
+        //         _currentStateType = resolvedState.ToString().Replace("FDragonfly", ""); // DEBUG
+        //     }
+        //     if (resolvedState == _catchSpiderStateR)
+        //     {
+        //         _stateMachine.SetState(_returnTransitionLRBTState);
+        //         _currentStateType = resolvedState.ToString().Replace("FDragonfly", ""); // DEBUG
+        //     }
+        // }
         
-        if ((_stateMachine.CurrentState == _fallHeadState && _visibleBodyTransform.position.x > 0) ||
-            (_stateMachine.CurrentState == _returnHoverState && _visibleBodyTransform.position.x > 0) ||
-            _stateMachine.CurrentState == _attackTailFailR)
-        {
-            if (resolvedState == _catchSpiderStateL)
-            {
-                _stateMachine.SetState(returnTransitionLRBTState);
-                _currentStateType = resolvedState.ToString().Replace("FDragonfly", ""); // DEBUG
-            }
-            if (resolvedState == _catchSpiderStateR)
-            {
-                _stateMachine.SetState(returnTransitionRLBTState);
-                _currentStateType = resolvedState.ToString().Replace("FDragonfly", ""); // DEBUG
-            }
-        }
+        // if ((_stateMachine.CurrentState == _fallHeadState && _visibleBodyTransform.position.x > 0) ||
+        //     (_stateMachine.CurrentState == _returnHoverState && _visibleBodyTransform.position.x > 0) ||
+        //     _stateMachine.CurrentState == _attackTailFailR)
+        // {
+        //     if (resolvedState == _catchSpiderStateL)
+        //     {
+        //         _stateMachine.SetState(_returnTransitionLRBTState);
+        //         _currentStateType = resolvedState.ToString().Replace("FDragonfly", ""); // DEBUG
+        //     }
+        //     if (resolvedState == _catchSpiderStateR)
+        //     {
+        //         _stateMachine.SetState(_returnTransitionRLBTState);
+        //         _currentStateType = resolvedState.ToString().Replace("FDragonfly", ""); // DEBUG
+        //     }
+        // }
     }
 
     public void TriggerBounce()
@@ -658,7 +707,7 @@ public class FDragonflyMovement : MonoBehaviour
             _isAttackFail = false;
         }
     }
-
+    
     public void TriggerDeath()
     {
         _isAttackSuccess = false;

@@ -31,7 +31,7 @@ public class DragonflySwarm : MonoBehaviour
         _localTime = 0f;
         _moths[_attackCount].gameObject.SetActive(true);
         _moths[_attackCount].Initialize(_startPositions[_attackCount]);
-        _moths[_attackCount].AttackStart();
+        _moths[_attackCount].StartAttack();
         _isWaitingForAttack = true;
     }
     
@@ -52,7 +52,7 @@ public class DragonflySwarm : MonoBehaviour
                 {
                     _moths[_attackCount].gameObject.SetActive(true);
                     _moths[_attackCount].Initialize(_startPositions[_attackCount]);
-                    _moths[_attackCount].AttackStart();
+                    _moths[_attackCount].StartAttack();
                     _localTime = 0f;
                 }
                 else

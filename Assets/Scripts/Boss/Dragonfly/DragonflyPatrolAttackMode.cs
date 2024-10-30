@@ -1,5 +1,6 @@
 public enum DragonflyPatrolAttackMode
 {
     Head,
-    Tail
+    Tail,
+    Spider
 }

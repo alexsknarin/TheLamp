@@ -91,7 +91,7 @@ public class Megabeetle : BossBase
         _enemyMovement.TriggerSpread();
     }
    
-    public override void AttackStart()
+    public override void StartAttack()
     {
         _enemyMovement.TriggerAttack();
     }

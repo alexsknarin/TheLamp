@@ -94,23 +94,6 @@ public class Dragonfly : EnemyBase
         LampAttackModel.OnLampAttack += TMPHandleLampAttack;
     }
 
-    private void OnReadyToSwarmAttackEnterHandle(IState movementState)
-    {
-        if (movementState.GetType() == typeof(FDragonflyPatrolStateL))
-        {
-            _swarm.PlayAttack(1);
-        }
-        else if (movementState.GetType() == typeof(FDragonflyPatrolStateR))
-        {
-            _swarm.PlayAttack(-1);
-        }
-    }
-
-    private void OnReadyToSpiderAttackEnterHandle()
-    {
-        throw new NotImplementedException();
-    }
-
     private void OnDisable()
     {
         _movement.OnReadyToAttackStateEntered -= OnReadyToAttackEnterHandle;
@@ -157,7 +140,7 @@ public class Dragonfly : EnemyBase
         throw new NotImplementedException();
     }
 
-    public override void AttackStart()
+    public override void StartAttack()
     {
         throw new NotImplementedException();
     }
@@ -236,7 +219,6 @@ public class Dragonfly : EnemyBase
             }
             else
             {
-                // _patrolAttackPosition = _patrolAttackPositionProvider.GenerateRandomPreAttackHeadPosition(_movement.MovementState);
                 _patrolAttackPosition = _patrolAttackPositionProvider.GenerateRandomPreAttackHeadPosition(_movement.MovementState);
                 _isWaitingForHeadPatrolAttack = false;
                 _isWaitingForHeadPatrolAttackPoint = true;
@@ -391,12 +373,30 @@ public class Dragonfly : EnemyBase
     {
         _localTime = 0;
         _spider.gameObject.transform.SetParent(this.transform);
-        _spider.AttackStart();
-        // _movement.SwitchState(); <-----------------------------------------------------------------------------------
+        _spider.StartAttack();
+        _movement.StartAttack(DragonflyPatrolAttackMode.Spider);
     }
 
     //--------------------------------------------------------------------------------
     // Event Handle Methods
+    
+    private void OnReadyToSwarmAttackEnterHandle(IState movementState)
+    {
+        if (movementState.GetType() == typeof(FDragonflyPatrolStateL))
+        {
+            _swarm.PlayAttack(1);
+        }
+        else if (movementState.GetType() == typeof(FDragonflyPatrolStateR))
+        {
+            _swarm.PlayAttack(-1);
+        }
+    }
+
+    private void OnReadyToSpiderAttackEnterHandle()
+    {
+        PrepareSpiderAttack();
+    }
+    
     private void OnReadyToAttackEnterHandle(IState movementState)
     {
         float minWaitTime = 0;

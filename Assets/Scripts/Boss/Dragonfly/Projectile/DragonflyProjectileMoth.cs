@@ -34,7 +34,7 @@ public class DragonflyProjectileMoth : EnemyBase
         // Presentation setup
     }
 
-    public override void AttackStart()
+    public override void StartAttack()
     {
         ReadyToCollide = true;
         ReceivedLampAttack = false;
