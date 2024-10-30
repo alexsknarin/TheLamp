@@ -43,7 +43,7 @@ public class TestSpawner : MonoBehaviour
             _enemyPrefab.UpdateAttackAvailability();
             if (_enemyPrefab.ReadyToAttack)
             {
-                _enemyPrefab.AttackStart();    
+                _enemyPrefab.StartAttack();    
             }
         }
         if (Input.GetKeyDown(KeyCode.D))

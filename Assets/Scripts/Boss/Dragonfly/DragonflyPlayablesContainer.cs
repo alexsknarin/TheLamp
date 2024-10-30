@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Animations;
@@ -6,21 +7,21 @@ using UnityEngine.Playables;
 public class DragonflyPlayablesContainer
 {
     private PlayableGraph _playableGraph;
-    private Dictionary<DragonflyMovementState, AnimationClipPlayable> _animationClips;
+    private Dictionary<Type, AnimationClipPlayable> _animationClips;
     
     public DragonflyPlayablesContainer(PlayableGraph graph)
     {
         _playableGraph = graph;
-        _animationClips = new Dictionary<DragonflyMovementState, AnimationClipPlayable>();
+        _animationClips = new Dictionary<Type, AnimationClipPlayable>();
     }
     
-    public void AddClip(DragonflyMovementState key, AnimationClip clip)
+    public void AddClip(Type key, AnimationClip clip)
     {
         var clipPlayable = AnimationClipPlayable.Create(_playableGraph, clip);
         _animationClips.Add(key, clipPlayable);
     }
     
-    public AnimationClipPlayable GetClip(DragonflyMovementState movementState)
+    public AnimationClipPlayable GetClip(Type movementState)
     {
         return _animationClips[movementState];
     }

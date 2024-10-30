@@ -482,7 +482,7 @@ public class EnemyManager : MonoBehaviour,IInitializable
             }
         }
        
-        attackingEnemy.AttackStart();
+        attackingEnemy.StartAttack();
         _attackLocalTime = 0;
         _attackDelay = GetRandomAttackDelay(2.5f, 0.8f, 6.1f, 1.8f, _aggressionLevelNormalized);
         _isAttacking = false;

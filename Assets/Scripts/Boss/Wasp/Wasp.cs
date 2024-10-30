@@ -96,7 +96,7 @@ public class Wasp : BossBase
     {
     }
 
-    public override void AttackStart()
+    public override void StartAttack()
     {
     }
     

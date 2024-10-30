@@ -16,7 +16,6 @@ public class DragonflyCollisionController : MonoBehaviour
     
     public void DisableColliders()
     {
-        Debug.Log("Disabling colliders");
         foreach (var col in _colliders)
         {
             col.enabled = false;
@@ -25,7 +24,6 @@ public class DragonflyCollisionController : MonoBehaviour
 
     public void SoloCollider(Collider2D collider)
     {
-        Debug.Log("Trying to solo a collider");
         if (!_isCollided)
         {
             foreach (var col in _colliders)

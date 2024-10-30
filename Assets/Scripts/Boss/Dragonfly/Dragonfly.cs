@@ -7,7 +7,8 @@ public class Dragonfly : EnemyBase
     [SerializeField] private EnemyTypes _enemyType;
     [SerializeField] private int _maxHealth;
     [SerializeField] private int _currentHealth;
-    [SerializeField] private DragonflyMovement _movement;
+    // [SerializeField] private DragonflyMovement _movement;
+    [SerializeField] private FDragonflyMovement _movement;
     [SerializeField] private DragonflyPresentation _presentation;
     [SerializeField] private DragonflySwarm _swarm;
     [SerializeField] private DragonflyCollisionController _collisionController;
@@ -58,25 +59,28 @@ public class Dragonfly : EnemyBase
     private Vector3 _patrolAttackPosition;
     private Vector3 _patrolSpiderAttackPosition;
     
-    private DragonflyMovementState[] ATTACK_STATES = new DragonflyMovementState[]
+    private DragonflyReturnMode[] RETURN_MODES = new DragonflyReturnMode[]
     {
-        DragonflyMovementState.AttackHead,
-        DragonflyMovementState.AttackHover,
-        DragonflyMovementState.AttackTailL,
-        DragonflyMovementState.AttackTailR
+        DragonflyReturnMode.PatrolL,
+        DragonflyReturnMode.PatrolR,
+        DragonflyReturnMode.SpiderL,
+        DragonflyReturnMode.SpiderR,
+        DragonflyReturnMode.Hover,
+        DragonflyReturnMode.Hover
     };
-    
     
     private void OnEnable()
     {
-        _movement.OnReadyToAttackStateEntered += OnReadyToAttackStateEntered;
-        _movement.OnAfterAttackExitEnded += OnAfterAttackExitEnded;
-        _movement.OnAttackStarted += OnAttackStarted;
-        _movement.OnAttackEnded += OnAttackEnded;
-        _movement.OnPreattackStarted += OnPreAttackStart;
-        _movement.OnCatchSpiderStarted += OnCatchSpiderStart;
-        _movement.OnDeathAnimationEnded += OnDeathAnimationEnded;
-        _spider.OnEnterAnimationEnd += OnSpiderEnterAnimationEnd;
+        _movement.OnReadyToAttackStateEntered += OnReadyToAttackEnterHandle;
+        _movement.OnReadyToSwarmAttackStateEntered += OnReadyToSwarmAttackEnterHandle;
+        _movement.OnReadyToSpiderAttackStateEntered += OnReadyToSpiderAttackEnterHandle;
+        _movement.OnAfterAttackExitEnded += OnAfterAttackExitEndHandle;
+        _movement.OnPreattackStarted += OnPreAttackStartHandle;
+        _movement.OnAttackStarted += OnAttackStartHandle;
+        _movement.OnAttackEnded += OnAttackEndHandle;
+        _movement.OnCatchSpiderStarted += OnCatchSpiderStartHandle;
+        _movement.OnDeathAnimationEnded += OnDeathAnimationEndedHandle;
+        _spider.OnEnterAnimationEnd += OnSpiderEnterAnimationEndHandle;
         
         
         LampAttackModel.OnLampAttack += TMPHandleLampAttack;
@@ -84,14 +88,16 @@ public class Dragonfly : EnemyBase
 
     private void OnDisable()
     {
-        _movement.OnReadyToAttackStateEntered -= OnReadyToAttackStateEntered;
-        _movement.OnAfterAttackExitEnded -= OnAfterAttackExitEnded;
-        _movement.OnAttackStarted -= OnAttackStarted;
-        _movement.OnAttackEnded -= OnAttackEnded;
-        _movement.OnPreattackStarted -= OnPreAttackStart;
-        _movement.OnCatchSpiderStarted -= OnCatchSpiderStart;
-        _movement.OnDeathAnimationEnded -= OnDeathAnimationEnded;
-        _spider.OnEnterAnimationEnd -= OnSpiderEnterAnimationEnd;
+        _movement.OnReadyToAttackStateEntered -= OnReadyToAttackEnterHandle;
+        _movement.OnReadyToSwarmAttackStateEntered -= OnReadyToSwarmAttackEnterHandle;
+        _movement.OnReadyToSpiderAttackStateEntered -= OnReadyToSpiderAttackEnterHandle;
+        _movement.OnAfterAttackExitEnded -= OnAfterAttackExitEndHandle;
+        _movement.OnAttackStarted -= OnAttackStartHandle;
+        _movement.OnAttackEnded -= OnAttackEndHandle;
+        _movement.OnPreattackStarted -= OnPreAttackStartHandle;
+        _movement.OnCatchSpiderStarted -= OnCatchSpiderStartHandle;
+        _movement.OnDeathAnimationEnded -= OnDeathAnimationEndedHandle;
+        _spider.OnEnterAnimationEnd -= OnSpiderEnterAnimationEndHandle;
         
         LampAttackModel.OnLampAttack -= TMPHandleLampAttack;
     }
@@ -126,7 +132,7 @@ public class Dragonfly : EnemyBase
         throw new NotImplementedException();
     }
 
-    public override void AttackStart()
+    public override void StartAttack()
     {
         throw new NotImplementedException();
     }
@@ -150,6 +156,19 @@ public class Dragonfly : EnemyBase
         _presentation.Initialize();
     }
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            Play();
+        }
+        
+        WaitForHoverAttack();
+        WaitForHeadAttack();
+        WaitForSpiderAttack();
+        WaitForTailAttack();
+    }
+
     private void StartBossActivePhase()
     {
         _collisionController.DisableColliders();
@@ -159,14 +178,16 @@ public class Dragonfly : EnemyBase
         int sideDirection = RandomDirection.Generate();
         _movement.Play(enterType, sideDirection);
     }
-    
+
     // Attack Handle Methods ---------------------------------------------------
+
     private void StartAttack(DragonflyPatrolAttackMode mode)
     {
         _movement.StartAttack(mode);
     }
-    
+
     // Hover Attack -------------------------------------------------------------
+
     private void PrepareHoverAttack()
     {
         _localTime = 0;
@@ -186,8 +207,9 @@ public class Dragonfly : EnemyBase
             }
         }
     }
-    
+
     // Head Attack ------------------------------------------------------------- 
+
     private void PreparePatrolToHeadAttack(float minWaitTime)
     {
         _localTime = 0;
@@ -238,15 +260,16 @@ public class Dragonfly : EnemyBase
             }   
         }
     }
-    
+
     // Tail Attack -------------------------------------------------------------
+
     private void PreparePatrolToTailAttack(float minWaitTime)
     {
         _localTime = 0;
         _isWaitingForTailPatrolAttack = true;
         _patrolTailWait = Random.Range(minWaitTime, _patrolTailWaitMax);
     }
-    
+
     private void WaitForTailAttack()
     {
         if (_isWaitingForTailPatrolAttack)
@@ -290,9 +313,10 @@ public class Dragonfly : EnemyBase
             }   
         }
     }
-    
-    
+
+
     // Spider Patrol Attack -----------------------------------------------------
+
     private void PrepareSpiderAttack()
     {
         _localTime = 0;
@@ -348,43 +372,53 @@ public class Dragonfly : EnemyBase
                         _isWaitingForSpiderPatrolAttackPoint = false;
                         _isLastPatrolDirectionSet = false;
                         SpiderAttack();
-                        // StartAttack(DragonflyPatrolAttackMode.Tail);
                     }
                 }
             }   
         }
     }
-    
+
     private void SpiderAttack()
     {
         _localTime = 0;
         _spider.gameObject.transform.SetParent(this.transform);
-        _spider.AttackStart();
-        _movement.SwitchState();
+        _spider.StartAttack();
+        _movement.StartAttack(DragonflyPatrolAttackMode.Spider);
     }
+
 
     //--------------------------------------------------------------------------------
     // Event Handle Methods
-    private void OnReadyToAttackStateEntered(DragonflyMovementState movementState, DragonflyMovementState prevMovementState)
+
+
+    private void OnReadyToSwarmAttackEnterHandle(IState movementState)
     {
-        if (movementState == DragonflyMovementState.Hover)
+        if (movementState.GetType() == typeof(FDragonflyPatrolStateL))
+        {
+            _swarm.PlayAttack(1);
+        }
+        else if (movementState.GetType() == typeof(FDragonflyPatrolStateR))
+        {
+            _swarm.PlayAttack(-1);
+        }
+    }
+
+    private void OnReadyToSpiderAttackEnterHandle()
+    {
+        PrepareSpiderAttack();
+    }
+
+    private void OnReadyToAttackEnterHandle(IState movementState)
+    {
+        float minWaitTime = 0;
+        if (movementState.GetType() == typeof(FDragonflyHoverState))
         {
             PrepareHoverAttack();
         }
-        if (movementState == DragonflyMovementState.PatrolL || movementState == DragonflyMovementState.PatrolR)
+        else if (movementState.GetType() == typeof(FDragonflyPatrolStateL) ||
+                 movementState.GetType() == typeof(FDragonflyPatrolStateR))
         {
-            float minWaitTime = 0;
-            if (prevMovementState == DragonflyMovementState.EnterToPatrolL || prevMovementState == DragonflyMovementState.MoveToPatrolL)
-            {
-                _swarm.PlayAttack(1);
-                minWaitTime = _patrolWaitMin;
-            }
-            if (prevMovementState == DragonflyMovementState.EnterToPatrolR || prevMovementState == DragonflyMovementState.MoveToPatrolR)
-            {
-                _swarm.PlayAttack(-1);
-                minWaitTime = _patrolWaitMin;
-            
-            }
+            minWaitTime = _patrolWaitMin;
             
             int mode = Random.Range(0, 2);
             if (mode == 0)
@@ -396,45 +430,39 @@ public class Dragonfly : EnemyBase
                 PreparePatrolToTailAttack(minWaitTime);
             }
         }
-        if (movementState == DragonflyMovementState.SpiderPatrolL || movementState == DragonflyMovementState.SpiderPatrolR)
+        else if (movementState.GetType() == typeof(FDragonflySpiderPatrolStateL) || 
+                 movementState.GetType() == typeof(FDragonflySpiderPatrolStateR))
         {
             PrepareSpiderAttack();
         }
     }
 
-    private void OnAttackStarted()
+    private void OnAttackStartHandle()
     {
         _collisionController.EnableColliders();
         _presentation.PreAttackEnd();
     }
-    
-    private void OnAttackEnded()
+
+    private void OnAttackEndHandle()
     {
         _collisionController.DisableColliders();
     }
-    
-    
-    private void OnAfterAttackExitEnded(DragonflyMovementState movementState)
+
+
+    private void OnAfterAttackExitEndHandle(IState movementState)
     {
         
-        DragonflyReturnMode mode = (DragonflyReturnMode)Random.Range(0, 3);
-        int direction = RandomDirection.Generate();
-        // if (mode == DragonflyReturnMode.Spider)
-        // {
-        //     ***
-        //     // _spider.gameObject.SetActive(true);
-        //     // _spider.Initialize(direction);
-        // }
-        _movement.ResolveReturnTransition(mode, direction);
+        DragonflyReturnMode mode = RETURN_MODES[Random.Range(0, 6)];
+        _movement.ResolveReturnTransition(mode);
     }
-    
-    private void OnCatchSpiderStart(int direction)
+
+    private void OnCatchSpiderStartHandle(int direction)
     {
         _spider.gameObject.SetActive(true);
         _spider.Initialize(direction);
     }
 
-    private void OnSpiderEnterAnimationEnd()
+    private void OnSpiderEnterAnimationEndHandle()
     {
         _spider.gameObject.transform.SetParent(_visibleBodyTransform);
         Vector3 pos = Vector3.zero;
@@ -443,28 +471,7 @@ public class Dragonfly : EnemyBase
         pos.z = 0.082f;
         _spider.gameObject.transform.localPosition = pos;
     }
-    
-    // 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            Play();
-        }
-        
-        if (Input.GetKeyDown(KeyCode.Z))
-        {
-            int direction = RandomDirection.Generate();
-            _spider.Initialize(direction);
-            _movement.ResolveReturnTransition(DragonflyReturnMode.Spider, direction);
-        }
-        
-        WaitForHoverAttack();
-        WaitForHeadAttack();
-        WaitForSpiderAttack();
-        WaitForTailAttack();
-    }
-    
+
     // Enemy Base Methods
     public override void HandleCollisionWithLamp()
     {
@@ -476,6 +483,10 @@ public class Dragonfly : EnemyBase
     public override void HandleExitingAttackExitZone()
     {
         ReadyToLampDamage = false;
+        if (!ReceivedLampAttack)
+        {
+            _movement.TriggerFall(false);
+        }
     }
 
     public override void HandleCollisionWithStickZone()
@@ -502,21 +513,17 @@ public class Dragonfly : EnemyBase
         {
             if (!_isDead)
             {
-                Debug.Log("Dragonfly: Dead");
                 ReceivedLampAttack = true;
                 _currentHealth = 0; 
-                // _enemyMovement.TriggerDeath();
-                // _movement.TriggerFall(true);
-                _movement.TriggerDeath(true);
+                _movement.TriggerDeath(); 
                 _presentation.DeathFlash();
                 OnEnemyDeathInvoke(this);
-                // _enemyPresentation.DeathFlash();
                 _isDead = true;
             }
         }   
     }
     
-    private void OnDeathAnimationEnded()
+    private void OnDeathAnimationEndedHandle()
     {
         gameObject.SetActive(false);
     }
@@ -536,7 +543,7 @@ public class Dragonfly : EnemyBase
         return _collisionController.GetFirstActiveColliderPosition();
     }
     
-    private void OnPreAttackStart()
+    private void OnPreAttackStartHandle()
     {
         ReceivedLampAttack = false;
         _presentation.PreAttackStart();
