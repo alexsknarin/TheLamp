@@ -54,7 +54,7 @@ public class FDragonflyMoveToHoverState : ScriptableObject, IState
         _endRotation = Quaternion.LookRotation(_endDirection, Vector3.up);
 
         _visibleBodyTransform.SetParent(_baseTransform);
-        _visibleBodyTransform.position = _endPos;
+        _visibleBodyTransform.position = _startPos;
         _visibleBodyTransform.rotation = Quaternion.LookRotation(_startDirection, Vector3.up);
         
         // Normalize duration by Z distance from camera

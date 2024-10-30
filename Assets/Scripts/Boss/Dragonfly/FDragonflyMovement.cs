@@ -576,9 +576,6 @@ public class FDragonflyMovement : MonoBehaviour
                 break;
         }
         
-        Debug.Log("|||||||||");
-        Debug.Log("Resloved State: " + resolvedState);
-        
         // Immediately switch to the resolved state if possible
         
         if ((_stateMachine.CurrentState == _attackHeadSuccessState && _visibleBodyTransform.position.x < 0))
