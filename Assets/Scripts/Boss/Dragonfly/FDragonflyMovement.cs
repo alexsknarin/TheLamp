@@ -103,7 +103,7 @@ public class FDragonflyMovement : MonoBehaviour
     private bool _isPlaying = false;
     private bool _isAnimClipEnded = false;
     private bool _isBounced = false;
-    private int _enterState = 0;
+    private DragonflyEnterType _enterState = 0;
     private int _sideDirection = 1;
     private bool _isCollided = false;
     private bool _isAttackSuccess = false;
@@ -295,10 +295,10 @@ public class FDragonflyMovement : MonoBehaviour
     private void SetupStateMachine()
     {
         // Idle -> Enter States
-        At(_idleState, _enterToPatrolStateL, () => _isPlaying && _enterState == 0 && _sideDirection == 1);
-        At(_idleState, _enterToPatrolStateR, () => _isPlaying && _enterState == 0 && _sideDirection == -1);
-        At(_idleState, _enterToHoverStateL, () => _isPlaying && _enterState == 1 && _sideDirection == 1);
-        At(_idleState, _enterToHoverStateR, () => _isPlaying && _enterState == 1 && _sideDirection == -1);
+        At(_idleState, _enterToPatrolStateL, () => _isPlaying && _enterState == DragonflyEnterType.Patrol && _sideDirection == 1);
+        At(_idleState, _enterToPatrolStateR, () => _isPlaying && _enterState == DragonflyEnterType.Patrol && _sideDirection == -1);
+        At(_idleState, _enterToHoverStateL, () => _isPlaying && _enterState == DragonflyEnterType.Hover && _sideDirection == 1);
+        At(_idleState, _enterToHoverStateR, () => _isPlaying && _enterState == DragonflyEnterType.Hover && _sideDirection == -1);
         
         // Enter -> Patrol
         At(_enterToPatrolStateL, _patrolStateL, IsAnimationEnded());
@@ -539,12 +539,12 @@ public class FDragonflyMovement : MonoBehaviour
         }
     }
 
-    public void Play(int state, int sideDirection)
+    public void Play(DragonflyEnterType state, int sideDirection)
     {
         MovementInit(state, sideDirection);
     }
 
-    private void MovementInit(int state, int sideDirection)
+    private void MovementInit(DragonflyEnterType state, int sideDirection)
     {
         _isDead = false;
         _isAttackSuccess = false;

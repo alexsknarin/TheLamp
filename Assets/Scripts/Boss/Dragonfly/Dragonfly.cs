@@ -65,8 +65,8 @@ public class Dragonfly : EnemyBase
     private DragonflyWaitSpiderAttackState _waitSpiderAttackState;
 
     private bool _isActivated = false;
-    private int _enterType = 0;
-    private int _patrolAttackMode = 0;
+    private DragonflyEnterType _enterType = 0;
+    private DragonflyPatrolAttackMode _patrolAttackMode = DragonflyPatrolAttackMode.Head;
     private bool _isReadyToPreAttackWait = false;
     private bool _isReadyToAttackWait = false;
     private bool _isAttacked = false;
@@ -149,8 +149,8 @@ public class Dragonfly : EnemyBase
         
         // Set up State Machine Transitions
         // Enter
-        At(_inactiveState, _patrolState, () => _isActivated && _enterType == 0);
-        At(_inactiveState, _hoverState, () => _isActivated && _enterType == 1);
+        At(_inactiveState, _patrolState, () => _isActivated && _enterType == DragonflyEnterType.Patrol);
+        At(_inactiveState, _hoverState, () => _isActivated && _enterType == DragonflyEnterType.Hover);
         // Patrol to Head/Tail attack
         At(_patrolState, _patrolHeadState, IsReadyToPatrolHead());
         At(_patrolState, _patrolTailState, IsReadyToPatrolTail());
@@ -179,7 +179,7 @@ public class Dragonfly : EnemyBase
         
         Func<bool> IsReadyToPatrolHead() => () =>
         {
-            if (_isReadyToPreAttackWait && _patrolAttackMode == 0)
+            if (_isReadyToPreAttackWait && _patrolAttackMode == DragonflyPatrolAttackMode.Head)
             {
                 _isReadyToPreAttackWait = false;
                 return true;
@@ -189,7 +189,7 @@ public class Dragonfly : EnemyBase
         
         Func<bool> IsReadyToPatrolTail() => () =>
         {
-            if (_isReadyToPreAttackWait && _patrolAttackMode == 1)
+            if (_isReadyToPreAttackWait && _patrolAttackMode == DragonflyPatrolAttackMode.Tail)
             {
                 _isReadyToPreAttackWait = false;
                 return true;
@@ -294,7 +294,7 @@ public class Dragonfly : EnemyBase
     private void StartBossActivePhase()
     {
         _collisionController.DisableColliders();
-        _enterType = Random.Range(0, 2); // 0 Patrol, 1 Hover TODO: enum???????????
+        _enterType = (DragonflyEnterType)Random.Range(0, 2); // 0 Patrol, 1 Hover TODO: enum???????????
         int sideDirection = RandomDirection.Generate();
         _movement.Play(_enterType, sideDirection);
         _isActivated = true;
@@ -323,7 +323,7 @@ public class Dragonfly : EnemyBase
     // Event Handle Methods
     private void OnReadyToAttackEnterHandle(IState movementState)
     {
-        _patrolAttackMode = Random.Range(0, 2); // TODO: enum??????????? -- Check for the input state?????
+        _patrolAttackMode = (DragonflyPatrolAttackMode)Random.Range(0, 2);
         _isReadyToPreAttackWait = true;
     }
 
