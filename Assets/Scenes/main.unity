@@ -13528,9 +13528,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 16eae1143c5a2b44390c227e30d912ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _stateDebug: 
   _enemyType: 9
-  _maxHealth: 3
-  _currentHealth: 3
+  _maxHealth: 6
+  _currentHealth: 6
   _movement: {fileID: 1536401428}
   _presentation: {fileID: 1536401423}
   _swarm: {fileID: 1536401420}
@@ -13550,9 +13551,9 @@ MonoBehaviour:
   _tailAttackZoneLMax: {x: 0.26, y: -0.55, z: -0.79}
   _tailAttackZoneRMin: {x: -0.63, y: -0.42, z: -0.65}
   _tailAttackZoneRMax: {x: -0.26, y: -0.55, z: -0.79}
-  _priderAttackPositionBase: {x: 0.68, y: -0.4, z: -0.62}
-  _spiderPatrolWaitMin: 0.05
-  _spiderPatrolWaitMax: 0.8
+  _spiderAttackPositionBase: {x: 0.68, y: -0.4, z: -0.62}
+  _spiderPatrolWaitMin: 1.05
+  _spiderPatrolWaitMax: 1.8
   _spider: {fileID: 1548909588}
   _localTime: 0
 --- !u!114 &1536401420

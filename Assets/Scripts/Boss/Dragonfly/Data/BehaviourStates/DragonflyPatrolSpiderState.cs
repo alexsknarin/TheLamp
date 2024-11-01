@@ -1,25 +1,25 @@
 using System;
 using UnityEngine;
 using Random = UnityEngine.Random;
-
-public class DragonflyWaitHoverAttackState : IState
+public class DragonflyPatrolSpiderState : IState
 {
-    public event Action<DragonflyPatrolAttackMode> OnEnded;
+    public event Action OnEnded;
     private readonly float _minWaitTime = 0f;
     private readonly float _maxWaitTime = 1f;
     private float _localTime = 0f;
     private float _duration = 0f;
     
-    public DragonflyWaitHoverAttackState(float minWaitTime, float maxWaitTime)
+    public DragonflyPatrolSpiderState(float minWaitTime, float maxWaitTime)
     {
         _minWaitTime = minWaitTime;
         _maxWaitTime = maxWaitTime;
     }
-
+    
     public void OnEnter()
     {
         _localTime = 0;
         _duration = Random.Range(_minWaitTime, _maxWaitTime);
+        Debug.Log("DragonflyPatrolSpiderState duration: " + _duration);
     }
 
     public void Tick()
@@ -27,7 +27,7 @@ public class DragonflyWaitHoverAttackState : IState
         _localTime += Time.deltaTime;
         if (_localTime >= _duration)
         {
-            OnEnded?.Invoke(DragonflyPatrolAttackMode.Head);
+            OnEnded?.Invoke();
         }
     }
 

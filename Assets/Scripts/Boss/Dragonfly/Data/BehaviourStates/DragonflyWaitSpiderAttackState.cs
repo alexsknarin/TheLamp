@@ -1,30 +1,32 @@
 using System;
 using UnityEngine;
 
-public class DragonflyWaitHeadAttackState : IState
+public class DragonflyWaitSpiderAttackState : IState
 {
-    public event Action<DragonflyPatrolAttackMode> OnEnded;
+    public event Action OnEnded;
     
     private Vector3 _targetPosition;
+
     private readonly Transform _transform;
-    private readonly DragonflyPatrolAttackPositionProvider _patrolAttackPositionProvider;
-    private readonly FDragonflyMovement _movement;
+    private readonly Vector3 _attackPositionBase;
     
     private bool _isLastPatrolDirectionSet = false;
     private int _lastPatrolDirection = 0;
     
-    public DragonflyWaitHeadAttackState(Transform visibleBodyTransform, 
-        DragonflyPatrolAttackPositionProvider patrolAttackPositionProvider, 
-        FDragonflyMovement movement)
+    public DragonflyWaitSpiderAttackState(Transform visibleBodyTransform, Vector3 attackPositionBase)
     {
         _transform = visibleBodyTransform;
-        _patrolAttackPositionProvider = patrolAttackPositionProvider;
-        _movement = movement;
+        _attackPositionBase = attackPositionBase;
     }
     
     public void OnEnter()
     {
-        _targetPosition = _patrolAttackPositionProvider.GenerateRandomPreAttackHeadPosition(_movement.MovementState);
+        _targetPosition = _attackPositionBase;
+        _targetPosition.x *= RandomDirection.Generate();
+        Debug.DrawRay(Vector3.zero, _targetPosition, Color.yellow, 5f);
+        _targetPosition.y = 0;
+        _targetPosition.Normalize();
+        
         _isLastPatrolDirectionSet = false;
         _lastPatrolDirection = 0;
     }
@@ -47,7 +49,7 @@ public class DragonflyWaitHeadAttackState : IState
                 float currentPatrolDirection = (int)Mathf.Sign((_targetPosition - currentPosition).normalized.x);
                 if (currentPatrolDirection + _lastPatrolDirection == 0)
                 {
-                    OnEnded?.Invoke(DragonflyPatrolAttackMode.Head);
+                    OnEnded?.Invoke();
                 }
             }
         }

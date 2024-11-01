@@ -5,8 +5,8 @@ using Random = UnityEngine.Random;
 public class DragonflyPatrolHeadState : IState
 {
     public event Action OnEnded;
-    private float _minWaitTime = 0f;
-    private float _maxWaitTime = 1f;
+    private readonly float _minWaitTime = 0f;
+    private readonly float _maxWaitTime = 1f;
     private float _localTime = 0f;
     private float _duration = 0f;
 
