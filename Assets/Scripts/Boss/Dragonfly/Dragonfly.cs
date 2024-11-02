@@ -17,7 +17,9 @@ public class Dragonfly : EnemyBase
     [Header("Hover")]
     [SerializeField] private float _hoverWaitMin;
     [SerializeField] private float _hoverWaitMax;
+
     [Header("Patrol")]
+    [SerializeField] private float _swarmAttackDuration; // TODO: control swarm duration itself from here as well
     [SerializeField] private float _patrolWaitMin;
     [SerializeField] private float _patrolWaitMax;
     [SerializeField] private DragonflyPatrolAttackZoneRanges _patrolAttackZonesL;
@@ -28,6 +30,7 @@ public class Dragonfly : EnemyBase
     [SerializeField] private Vector3 _tailAttackZoneLMax;
     [SerializeField] private Vector3 _tailAttackZoneRMin;
     [SerializeField] private Vector3 _tailAttackZoneRMax;
+
     [Header("Spider")]
     [SerializeField] private Vector3 _spiderAttackPositionBase;
     [SerializeField] private float _spiderPatrolWaitMin;
@@ -63,6 +66,7 @@ public class Dragonfly : EnemyBase
     private DragonflySpiderEnterState _spiderEnterState;
     private DragonflyPatrolSpiderState _patrolSpiderState;
     private DragonflyWaitSpiderAttackState _waitSpiderAttackState;
+    private DragonflySwarmAttackState _swarmAttackState;
 
     private bool _isActivated = false;
     private DragonflyEnterType _enterType = 0;
@@ -146,14 +150,19 @@ public class Dragonfly : EnemyBase
         _spiderEnterState = new DragonflySpiderEnterState();
         _patrolSpiderState = new DragonflyPatrolSpiderState(_spiderPatrolWaitMin, _spiderPatrolWaitMax);
         _waitSpiderAttackState = new DragonflyWaitSpiderAttackState(_visibleBodyTransform, _spiderAttackPositionBase);
+        _swarmAttackState = new DragonflySwarmAttackState(_swarmAttackDuration);
         
         // Set up State Machine Transitions
         // Enter
         At(_inactiveState, _patrolState, () => _isActivated && _enterType == DragonflyEnterType.Patrol);
         At(_inactiveState, _hoverState, () => _isActivated && _enterType == DragonflyEnterType.Hover);
-        // Patrol to Head/Tail attack
-        At(_patrolState, _patrolHeadState, IsReadyToPatrolHead());
-        At(_patrolState, _patrolTailState, IsReadyToPatrolTail());
+        // Patrol to Head/Tail attack through the swarm attack state
+        At(_patrolState, _swarmAttackState, IsReadyToPatrolHead());
+        At(_patrolState, _swarmAttackState, IsReadyToPatrolTail());
+        At(_swarmAttackState, _patrolHeadState, () => _swarmAttackState.ReadyToSwitch 
+                                                      && _patrolAttackMode == DragonflyPatrolAttackMode.Head);
+        At(_swarmAttackState, _patrolTailState, () => _swarmAttackState.ReadyToSwitch 
+                                                      && _patrolAttackMode == DragonflyPatrolAttackMode.Tail);
         At(_patrolHeadState, _waitHeadAttackState, IsReadyToAttackWait());
         At(_patrolTailState, _waitTailAttackState, IsReadyToAttackWait());
         // Hover to Attack        
