@@ -186,6 +186,7 @@ public class Dragonfly : EnemyBase
         
         void At(IState from, IState to, Func<bool> condition) => _stateMachine.AddTransition(from, to, condition);
         
+        #region Transition Predicate Delegates
         Func<bool> IsReadyToPatrolHead() => () =>
         {
             if (_isReadyToPreAttackWait && _patrolAttackMode == DragonflyPatrolAttackMode.Head)
@@ -265,6 +266,7 @@ public class Dragonfly : EnemyBase
             }
             return false;
         };
+        #endregion
     }
 
     private void Start()

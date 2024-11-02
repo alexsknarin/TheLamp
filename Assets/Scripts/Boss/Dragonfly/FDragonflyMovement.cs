@@ -391,7 +391,7 @@ public class FDragonflyMovement : MonoBehaviour
         // void Any(IState to, Func<bool> condition) => _stateMachine.AddAnyTransition(to, condition);
         
         // Transition Predicates
-        # region Transition Predicate Delegates
+        #region Transition Predicate Delegates
         
         Func<bool> IsAnimationEnded() => () =>
         {
@@ -524,7 +524,7 @@ public class FDragonflyMovement : MonoBehaviour
             return false;
         };
         
-        # endregion
+        #endregion
     }
 
     public void PlayClip(Type movementState)
