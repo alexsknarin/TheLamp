@@ -105,10 +105,9 @@ public class FDragonflyMovement : MonoBehaviour
     private bool _isBounced = false;
     private DragonflyEnterType _enterState = 0;
     private int _sideDirection = 1;
-    private bool _isCollided = false;
-    private bool _isAttackSuccess = false;
-    private bool _isAttackFail = false;
-    private bool _isDead = false;
+    private bool _isAttackSuccess;
+    private bool _isAttackFail;
+    private bool _isDead;
 
     private void OnEnable()
     {
@@ -379,7 +378,6 @@ public class FDragonflyMovement : MonoBehaviour
         
         At(_returnTransitionLRBTState, _catchSpiderStateL, IsResolvedToCatchSpiderL());
         At(_returnTransitionLRBTState, _catchSpiderStateR, IsResolvedToCatchSpiderR());
-        
         At(_returnTransitionRLBTState, _catchSpiderStateL, IsResolvedToCatchSpiderL());
         At(_returnTransitionRLBTState, _catchSpiderStateR, IsResolvedToCatchSpiderR());
         
@@ -556,12 +554,20 @@ public class FDragonflyMovement : MonoBehaviour
 
     private void Update()
     {
-        _currentStateType = _stateMachine.CurrentStateType.ToString().Replace("FDragonfly", ""); // DEBUG
+        // _currentStateType = _stateMachine.CurrentStateType.ToString().Replace("FDragonfly", ""); // DEBUG
+        // _previousState = _stateMachine.CurrentState;
+        
         if (_isPlaying)
         {
             _stateMachine.Tick();
         }
         _currentStateType = _stateMachine.CurrentStateType.ToString().Replace("FDragonfly", ""); // DEBUG
+        
+        // if (_previousState != _stateMachine.CurrentState)
+        // {
+        //     Debug.Log($"|-- " + _previousState.GetType().ToString().Replace("FDragonfly", "") + " -> " + 
+        //               _stateMachine.CurrentState.GetType().ToString().Replace("FDragonfly", "") + "");
+        // }
     }
 
     public void StartAttack(DragonflyPatrolAttackMode mode)
@@ -654,11 +660,21 @@ public class FDragonflyMovement : MonoBehaviour
             {
                 _stateMachine.SetState(resolvedState);
             }
-            if (resolvedState == _catchSpiderStateL)
+            
+            if (resolvedState == _catchSpiderStateL && _visibleBodyTransform.position.x < 0)
+            {
+                _stateMachine.SetState(resolvedState);
+            }
+            if (resolvedState == _catchSpiderStateL && _visibleBodyTransform.position.x > 0)
             {
                 _stateMachine.SetState(_returnTransitionRLBTState);
             }
-            if (resolvedState == _catchSpiderStateR)
+            
+            if (resolvedState == _catchSpiderStateR && _visibleBodyTransform.position.x > 0)
+            {
+                _stateMachine.SetState(resolvedState);
+            }
+            if (resolvedState == _catchSpiderStateR && _visibleBodyTransform.position.x < 0)
             {
                 _stateMachine.SetState(_returnTransitionLRBTState);
             }
