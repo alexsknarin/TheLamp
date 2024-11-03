@@ -18,7 +18,7 @@ public abstract class EnemyBase : MonoBehaviour, IInitializable
     }
     public abstract void SpreadStart();
     public abstract void StartAttack();
-    public abstract void HandleEnteringAttackZone(Collider2D collider);
+    public abstract void HandleEnteringAttackZone();
     public abstract void HandleCollisionWithLamp();
     public abstract void HandleExitingAttackExitZone();
     public abstract void HandleCollisionWithStickZone();

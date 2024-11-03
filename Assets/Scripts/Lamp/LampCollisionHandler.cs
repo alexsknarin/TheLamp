@@ -37,5 +37,10 @@ public class LampCollisionHandler : MonoBehaviour
         {
             OnExitLampCollisionEnemy?.Invoke(other.GetComponent<EnemyBase>());
         }
+        
+        if (other.gameObject.CompareTag("Dragonfly"))
+        {
+            other.attachedRigidbody.gameObject.GetComponent<Dragonfly>().HandleExitingLampCollisionZone();
+        }
     }
 }

@@ -19,7 +19,7 @@ public abstract class BossBase : EnemyBase
         OnDeath?.Invoke();
     }
     
-    public override void HandleEnteringAttackZone(Collider2D collider)
+    public override void HandleEnteringAttackZone()
     {
         ReadyToLampDamage = true;
     }

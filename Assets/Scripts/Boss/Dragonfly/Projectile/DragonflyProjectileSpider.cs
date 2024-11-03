@@ -59,7 +59,7 @@ public class DragonflyProjectileSpider : EnemyBase
         _collider.enabled = true;
     }
 
-    public override void HandleEnteringAttackZone(Collider2D collider)
+    public override void HandleEnteringAttackZone()
     {
         ReadyToLampDamage = true;
     }

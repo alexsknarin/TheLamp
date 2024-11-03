@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 public class Dragonfly : EnemyBase
@@ -8,7 +9,6 @@ public class Dragonfly : EnemyBase
     [SerializeField] private EnemyTypes _enemyType;
     [SerializeField] private int _maxHealth;
     [SerializeField] private int _currentHealth;
-    // [SerializeField] private DragonflyMovement _movement;
     [SerializeField] private FDragonflyMovement _movement;
     [SerializeField] private DragonflyPresentation _presentation;
     [SerializeField] private DragonflySwarm _swarm;
@@ -67,6 +67,7 @@ public class Dragonfly : EnemyBase
     private DragonflyPatrolSpiderState _patrolSpiderState;
     private DragonflyWaitSpiderAttackState _waitSpiderAttackState;
     private DragonflySwarmAttackState _swarmAttackState;
+    private DragonflyWaitForBounceState _waitForBounceState;
 
     private bool _isActivated = false;
     private DragonflyEnterType _enterType = 0;
@@ -77,6 +78,11 @@ public class Dragonfly : EnemyBase
     private bool _isDead = false;
     private DragonflyReturnMode _returnMode;
     
+    [SerializeField] private bool _readyToLampDamage;
+    
+    // TODO: for refactor
+    [SerializeField] private bool _isInAttackExitZone = false;
+    [SerializeField] private bool _isCollidedWithLamp = false;
     
     private void OnEnable()
     {
@@ -91,8 +97,9 @@ public class Dragonfly : EnemyBase
         _waitHeadAttackState.OnEnded += StartAttack;
         _waitTailAttackState.OnEnded += StartAttack;
         _waitHoverAttackState.OnEnded += StartAttack;
-        
         _waitSpiderAttackState.OnEnded += StartSpiderAttack;
+        
+        _waitForBounceState.OnEnded += HandleBounce;
         
         _movement.OnAfterAttackExitEnded += OnAfterAttackExitEndHandle;
         _movement.OnReadyToSpiderAttackStateEntered += OnReadyToSpiderAttackEnterHandle;
@@ -119,6 +126,8 @@ public class Dragonfly : EnemyBase
         _waitTailAttackState.OnEnded -= StartAttack;
         _waitHoverAttackState.OnEnded -= StartAttack;
         _waitSpiderAttackState.OnEnded -= StartSpiderAttack;
+        
+        _waitForBounceState.OnEnded -= HandleBounce;
         
         _movement.OnAfterAttackExitEnded -= OnAfterAttackExitEndHandle;
         _movement.OnReadyToSpiderAttackStateEntered -= OnReadyToSpiderAttackEnterHandle;
@@ -153,6 +162,7 @@ public class Dragonfly : EnemyBase
         _patrolSpiderState = new DragonflyPatrolSpiderState(_spiderPatrolWaitMin, _spiderPatrolWaitMax);
         _waitSpiderAttackState = new DragonflyWaitSpiderAttackState(_visibleBodyTransform, _spiderAttackPositionBase);
         _swarmAttackState = new DragonflySwarmAttackState(_swarmAttackDuration);
+        _waitForBounceState = new DragonflyWaitForBounceState();
         
         // Set up State Machine Transitions
         // Enter
@@ -170,9 +180,12 @@ public class Dragonfly : EnemyBase
         // Hover to Attack        
         At(_hoverState, _waitHoverAttackState, IsReadyToPreAttackWait());
         // Exit from attacks to passive state
-        At(_waitHeadAttackState, _passiveState, IsAttacked());
-        At(_waitTailAttackState, _passiveState, IsAttacked());
-        At(_waitHoverAttackState, _passiveState, IsAttacked());
+        At(_waitHeadAttackState, _waitForBounceState, IsAttacked());
+        At(_waitTailAttackState, _waitForBounceState, IsAttacked());
+        At(_waitHoverAttackState, _waitForBounceState, IsAttacked());
+        
+        At(_waitForBounceState, _passiveState, () => _isInAttackExitZone && _isCollidedWithLamp);
+        
         // Return to patrol/hover
         At(_passiveState, _patrolState, IsReturnToPatrol());
         At(_passiveState, _hoverState, IsReturnToHover());
@@ -317,7 +330,7 @@ public class Dragonfly : EnemyBase
     {
         _movement.StartAttack(mode);
         _isAttacked = true;
-        
+        _isCollidedWithLamp = false;
     }
 
     private void GenerateAttackPosition()
@@ -403,12 +416,6 @@ public class Dragonfly : EnemyBase
     }
 
     // Lamp Interaction Methods
-    public override void HandleEnteringAttackZone(Collider2D collider)
-    {
-        ReadyToLampDamage = true;            
-        _collisionController.SoloCollider(collider);
-    }
-
     private void TMPHandleLampAttack(int arg1, float arg2, float arg3, float arg4)
     {
         if (ReadyToLampDamage)
@@ -417,21 +424,40 @@ public class Dragonfly : EnemyBase
         }
     }
 
+    public void CatchFirstCollider()
+    {
+        _collisionController.SoloCollider();
+    }
+
+    public override void HandleEnteringAttackZone()
+    {
+        ReadyToLampDamage = true;
+        _readyToLampDamage = true;
+    }
+
+    public void HandleEnteringAttackExitZone()
+    {
+        _isInAttackExitZone = true;
+    }
+
     public override void HandleCollisionWithLamp()
     {
         ReadyToCollide = false;
         ReadyToLampDamage = true;
-        _movement.TriggerBounce();
+        _readyToLampDamage = true;
+        _isCollidedWithLamp = true;
     }
 
-    public override Vector3 ProvideImpactPoint()
+    public void HandleExitingLampCollisionZone()
     {
-        return _collisionController.GetFirstActiveColliderPosition();
+        _isCollidedWithLamp = false;
     }
 
     public override void HandleExitingAttackExitZone()
     {
+        _isInAttackExitZone = false;
         ReadyToLampDamage = false;
+        _readyToLampDamage = false;
         if (!ReceivedLampAttack)
         {
             _movement.TriggerFall(false);
@@ -443,11 +469,20 @@ public class Dragonfly : EnemyBase
         Debug.LogWarning("Dragonfly penetrated collision zone");
     }
 
+    private void HandleBounce()
+    {
+        _movement.TriggerBounce();
+    }
+
+    public override Vector3 ProvideImpactPoint()
+    {
+        return _collisionController.GetFirstActiveColliderPosition();
+    }
+
     public override void ReceiveDamage(int damage)
     {
         _currentHealth -= damage;
-        
-        
+
         if (_currentHealth > 0)
         {
             ReceivedLampAttack = true;
@@ -456,7 +491,6 @@ public class Dragonfly : EnemyBase
             _presentation.SetActiveColliderTransform(_collisionController.GetFirstActiveColliderTransform());
             _presentation.DamageFlash();
             _movement.TriggerFall(true);
-         
         }
         else
         {
@@ -469,7 +503,10 @@ public class Dragonfly : EnemyBase
                 OnEnemyDeathInvoke(this);
                 _isDead = true;
             }
-        }   
+        }
+        
+        ReadyToLampDamage = false;
+        _readyToLampDamage = false;
     }
 
 

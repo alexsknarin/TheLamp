@@ -51,8 +51,11 @@ public class FDragonflyAttackHoverState : ScriptableObject, IState
 
     public void Tick()
     {
-        _visibleBodyTransform.position += _attackDirection * (_speed * Time.deltaTime + _attackAccelerationValue);
-        _attackAccelerationValue += _acceleration * Time.deltaTime;
+        if (_visibleBodyTransform.position.magnitude > 0.2f)
+        {
+            _visibleBodyTransform.position += _attackDirection * (_speed * Time.deltaTime + _attackAccelerationValue);
+            _attackAccelerationValue += _acceleration * Time.deltaTime;    
+        }
     }
 
     public void OnExit()

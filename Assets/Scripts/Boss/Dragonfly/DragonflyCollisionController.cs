@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class DragonflyCollisionController : MonoBehaviour
@@ -22,13 +23,26 @@ public class DragonflyCollisionController : MonoBehaviour
         }
     }
 
-    public void SoloCollider(Collider2D collider)
+    public void SoloCollider()
     {
         if (!_isCollided)
         {
+            var closesCollider = _colliders[0];
+            float closestDistance = closesCollider.transform.position.magnitude;
+
             foreach (var col in _colliders)
             {
-                if (col == collider)
+                float distance = col.transform.position.magnitude;
+                if (distance < closestDistance)
+                {
+                    closesCollider = col;
+                    closestDistance = distance;
+                }
+            }
+
+            foreach (var col in _colliders)
+            {
+                if (col == closesCollider)
                 {
                     col.enabled = true;
                 }
@@ -63,5 +77,10 @@ public class DragonflyCollisionController : MonoBehaviour
             }
         }
         return null;
+    }
+
+    private void Update()
+    {
+
     }
 }

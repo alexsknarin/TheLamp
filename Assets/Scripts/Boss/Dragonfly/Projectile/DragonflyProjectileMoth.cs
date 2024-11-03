@@ -41,7 +41,7 @@ public class DragonflyProjectileMoth : EnemyBase
         _movement.TriggerAttack();
     }
 
-    public override void HandleEnteringAttackZone(Collider2D collider)
+    public override void HandleEnteringAttackZone()
     {
         ReadyToLampDamage = true;
     }

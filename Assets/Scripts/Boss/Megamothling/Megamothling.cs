@@ -99,7 +99,7 @@ public class Megamothling : BossBase
         IsStick = true;
     }
     
-    public override void HandleEnteringAttackZone(Collider2D collider)
+    public override void HandleEnteringAttackZone()
     {
         if (_enemyMovement.State == EnemyStates.Attack || _enemyType == EnemyTypes.Ladybug)
         {

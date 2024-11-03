@@ -12,11 +12,20 @@ public class LampAttackExitZoneCollisionHandler : MonoBehaviour
             OnExitAttackExitZone?.Invoke(enemy);
             enemy.HandleExitingAttackExitZone();
         }
+        
         if (other.gameObject.CompareTag("Dragonfly"))
         {
-            EnemyBase dragonfly = other.attachedRigidbody.gameObject.GetComponent<EnemyBase>();
+            EnemyBase dragonfly = other.attachedRigidbody.gameObject.GetComponent<Dragonfly>();
             OnExitAttackExitZone?.Invoke(dragonfly);
             dragonfly.HandleExitingAttackExitZone();
+        }
+    }
+    
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.gameObject.CompareTag("Dragonfly"))
+        {
+            other.attachedRigidbody.gameObject.GetComponent<Dragonfly>().HandleEnteringAttackExitZone();
         }
     }
 }
