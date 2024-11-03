@@ -41,7 +41,7 @@ public class DragonflyProjectileSpider : EnemyBase
     }
 
 
-    public void Initialize(int direction)
+    public void Play(int direction)
     {
         _movement.Initialize(direction);
         _presentation.Initialize();

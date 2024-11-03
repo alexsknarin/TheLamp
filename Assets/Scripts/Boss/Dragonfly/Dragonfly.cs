@@ -91,7 +91,9 @@ public class Dragonfly : EnemyBase
         _waitHeadAttackState.OnEnded += StartAttack;
         _waitTailAttackState.OnEnded += StartAttack;
         _waitHoverAttackState.OnEnded += StartAttack;
+        
         _waitSpiderAttackState.OnEnded += StartSpiderAttack;
+        
         _movement.OnAfterAttackExitEnded += OnAfterAttackExitEndHandle;
         _movement.OnReadyToSpiderAttackStateEntered += OnReadyToSpiderAttackEnterHandle;
         _movement.OnCatchSpiderStarted += OnCatchSpiderStartHandle;
@@ -363,7 +365,6 @@ public class Dragonfly : EnemyBase
 
     private void OnAfterAttackExitEndHandle(IState movementState)
     {
-        
         _returnMode = RETURN_MODES[Random.Range(0, 6)];
         _movement.ResolveReturnTransition(_returnMode);
         _isReadyToPreAttackWait = true;
@@ -388,7 +389,7 @@ public class Dragonfly : EnemyBase
     private void OnCatchSpiderStartHandle(int direction)
     {
         _spider.gameObject.SetActive(true);
-        _spider.Initialize(direction);
+        _spider.Play(direction);
     }
 
     private void OnReadyToSpiderAttackEnterHandle()

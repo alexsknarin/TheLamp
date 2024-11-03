@@ -19,7 +19,6 @@ public class DragonflyPatrolSpiderState : IState
     {
         _localTime = 0;
         _duration = Random.Range(_minWaitTime, _maxWaitTime);
-        Debug.Log("DragonflyPatrolSpiderState duration: " + _duration);
     }
 
     public void Tick()
