@@ -78,9 +78,4 @@ public class DragonflyCollisionController : MonoBehaviour
         }
         return null;
     }
-
-    private void Update()
-    {
-
-    }
 }
