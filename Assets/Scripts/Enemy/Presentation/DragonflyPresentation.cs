@@ -6,6 +6,7 @@ public class DragonflyPresentation : EnemyPresentation
     [SerializeField] private DragonflyHealthIndication _healthIndication;
     [SerializeField] private DragonflyDeathFlash _deathFlash;
     [SerializeField] private DragonflyPreAttackFlash _preAttackFlash;
+    [SerializeField] private DragonflySwarmCallPresentation _swarmCallPresentation;
 
     
     // private bool _isDamageFlashing = false;
@@ -45,11 +46,19 @@ public class DragonflyPresentation : EnemyPresentation
         _healthIndication.Refresh(currentHealth, maxHealth);
     }
 
+    public void SwarmCall()
+    {
+        _swarmCallPresentation.Play();
+    }
+
     public override void Initialize()
     {
         _damageIndication.Initialize();
         _healthIndication.Initialize();
         _deathFlash.Initialize();
         _preAttackFlash.Initialize();
+        _swarmCallPresentation.Initialize();
     }
+    
+    
 }

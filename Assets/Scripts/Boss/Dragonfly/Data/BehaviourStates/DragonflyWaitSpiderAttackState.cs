@@ -42,7 +42,6 @@ public class DragonflyWaitSpiderAttackState : IState
         currentPosition.y = 0;
         currentPosition.Normalize();
         float distance = Vector3.Distance(currentPosition, _targetPosition);
-        Debug.Log(distance);
         if (!_isReadyToPreAttack && distance < _preattackDistance)
         {
             _isReadyToPreAttack = true;

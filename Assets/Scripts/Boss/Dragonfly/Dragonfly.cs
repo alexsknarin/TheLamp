@@ -1,6 +1,6 @@
 using System;
 using UnityEngine;
-using UnityEngine.Serialization;
+
 using Random = UnityEngine.Random;
 
 public class Dragonfly : EnemyBase
@@ -91,6 +91,8 @@ public class Dragonfly : EnemyBase
         _movement.OnPreattackStarted += OnPreAttackStartHandle;
         _movement.OnAttackStarted += OnAttackStartedHandle;
         _movement.OnAttackEnded += OnAttackEndedHandle;
+        _movement.OnSwarmCallEvent += OnSwarmCallHandle;
+        
         _patrolHeadState.OnEnded += GenerateAttackPosition;
         _patrolTailState.OnEnded += GenerateAttackPosition;
         _patrolSpiderState.OnEnded += GenerateAttackPosition;
@@ -119,6 +121,7 @@ public class Dragonfly : EnemyBase
         _movement.OnPreattackStarted -= OnPreAttackStartHandle;
         _movement.OnAttackStarted -= OnAttackStartedHandle;
         _movement.OnAttackEnded -= OnAttackEndedHandle;
+        _movement.OnSwarmCallEvent -= OnSwarmCallHandle;
         
         _patrolHeadState.OnEnded -= GenerateAttackPosition;
         _patrolTailState.OnEnded -= GenerateAttackPosition;
@@ -295,6 +298,8 @@ public class Dragonfly : EnemyBase
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
+            _stateMachine.SetState(_inactiveState);
+            Initialize();
             Play();
         }
         _stateMachine.Tick();
@@ -359,6 +364,11 @@ public class Dragonfly : EnemyBase
         _patrolAttackMode = (DragonflyPatrolAttackMode)Random.Range(0, 2);
         _isReadyToPreAttackWait = true;
     }
+    
+    private void OnSwarmCallHandle()
+    {
+        _presentation.SwarmCall();
+    }
 
     private void OnReadyToSwarmAttackEnterHandle(IState movementState)
     {
@@ -371,7 +381,7 @@ public class Dragonfly : EnemyBase
             _swarm.PlayAttack(-1);
         }
     }
-
+    
     private void OnAttackStartedHandle()
     {
         _collisionController.EnableColliders();

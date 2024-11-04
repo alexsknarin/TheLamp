@@ -78,6 +78,7 @@ public class FDragonflyMovement : MonoBehaviour
     public event Action<int> OnCatchSpiderStarted;
     public event Action OnReadyToSpiderAttackStateEntered;
     public event Action OnDeathAnimationEnded;
+    public event Action OnSwarmCallEvent;
 
     private FStateMachine _stateMachine = new FStateMachine();
     public IState MovementState => _stateMachine.CurrentState;
@@ -111,7 +112,9 @@ public class FDragonflyMovement : MonoBehaviour
 
     private void OnEnable()
     {
-        _animationClipEvents.OnClipEndedEvent += OnClipEnded;
+        _animationClipEvents.OnClipEndedEvent += OnClipEndedHandle;
+        _animationClipEvents.OnSwarmCallEvent += OnSwarmCallHandle;
+        _spiderPushStateL.OnEnded += OnSwarmCallHandle;
         
         _hoverState.OnStarted += OnReadyToAttackEnterHandle;
         _patrolStateL.OnStarted += OnReadyToAttackEnterHandle; // 
@@ -170,7 +173,9 @@ public class FDragonflyMovement : MonoBehaviour
         {
             _playableGraph.Destroy();    
         }
-        _animationClipEvents.OnClipEndedEvent -= OnClipEnded;
+        _animationClipEvents.OnClipEndedEvent -= OnClipEndedHandle;
+        _animationClipEvents.OnSwarmCallEvent -= OnSwarmCallHandle;
+        _spiderPushStateL.OnEnded -= OnSwarmCallHandle;
         
         _hoverState.OnStarted -= OnReadyToAttackEnterHandle;
         _patrolStateL.OnStarted -= OnReadyToAttackEnterHandle; // 
@@ -539,6 +544,7 @@ public class FDragonflyMovement : MonoBehaviour
 
     public void Play(DragonflyEnterType state, int sideDirection)
     {
+        _stateMachine.SetState(_idleState);
         MovementInit(state, sideDirection);
     }
 
@@ -713,9 +719,14 @@ public class FDragonflyMovement : MonoBehaviour
         }
     }
 
-    private void OnClipEnded()
+    private void OnClipEndedHandle()
     {
         _isAnimClipEnded = true;
+    }
+
+    private void OnSwarmCallHandle()
+    {
+        OnSwarmCallEvent?.Invoke();
     }
 
     #region State Event Handle methods
