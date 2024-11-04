@@ -83,13 +83,15 @@ public class DragonflyProjectileSpider : EnemyBase
 
     public override void ReceiveDamage(int damage)
     {
+        if (damage < 1f) return;
+        
         ReceivedLampAttack = true;
         _isDead = true;
         _collider.enabled = false;
         OnEnemyDeathInvoke(this);
         _movement.TriggerFall();
         _presentation.DeathFlash();
-        // Presentation - show damage effect
+        // Presentation - show damage effect    
     }
 
     public override void UpdateAttackAvailability()

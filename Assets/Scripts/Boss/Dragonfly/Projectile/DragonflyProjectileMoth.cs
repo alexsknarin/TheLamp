@@ -65,12 +65,14 @@ public class DragonflyProjectileMoth : EnemyBase
 
     public override void ReceiveDamage(int damage)
     {
+        if (damage < 1f) return;
+
         ReceivedLampAttack = true;
         _isDead = true;
         OnEnemyDeathInvoke(this);
         _movement.TriggerFall();
         _presentation.DeathFlash();
-        // Presentation - show damage effect
+        // Presentation - show damage effect    
     }
 
     public override void UpdateAttackAvailability()
