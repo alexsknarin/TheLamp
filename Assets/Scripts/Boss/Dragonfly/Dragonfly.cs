@@ -97,6 +97,7 @@ public class Dragonfly : EnemyBase
         _waitHeadAttackState.OnEnded += StartAttack;
         _waitTailAttackState.OnEnded += StartAttack;
         _waitHoverAttackState.OnEnded += StartAttack;
+        _waitSpiderAttackState.OnReadyToPreAttack += StartSpiderPreAttack;
         _waitSpiderAttackState.OnEnded += StartSpiderAttack;
         
         _waitForBounceState.OnEnded += HandleBounce;
@@ -125,6 +126,7 @@ public class Dragonfly : EnemyBase
         _waitHeadAttackState.OnEnded -= StartAttack;
         _waitTailAttackState.OnEnded -= StartAttack;
         _waitHoverAttackState.OnEnded -= StartAttack;
+        _waitSpiderAttackState.OnReadyToPreAttack -= StartSpiderPreAttack;
         _waitSpiderAttackState.OnEnded -= StartSpiderAttack;
         
         _waitForBounceState.OnEnded -= HandleBounce;
@@ -338,6 +340,11 @@ public class Dragonfly : EnemyBase
         _isReadyToAttackWait = true;
     }
 
+    private void StartSpiderPreAttack()
+    {
+        _spider.StartPreAttack();
+    }
+    
     private void StartSpiderAttack()
     {
         _spider.gameObject.transform.SetParent(this.transform);

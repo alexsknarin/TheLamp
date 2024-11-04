@@ -5,15 +5,22 @@ public class DragonflyProjectilePresentation : EnemyPresentation
     // TODO: replace with a standard Death Flash
     [SerializeField] private MeshRenderer _meshRenderer;
     [SerializeField] private float _duration = 1.7f;
+    [Header("------ Preattack Flash ------")]
+    [SerializeField] private PreAttackFlash _preAttackFlash;
+    
+    
     private Material _material;
     private bool _isActive = false;
     private float _localTime;
+    
     
     
     public override void Initialize()
     {
         _isActive = false;
         _material = _meshRenderer.material;
+        _preAttackFlash?.Initialize();  // TODO: remove null check later
+        
         _material.SetFloat("_DeathFade", 0f);
         _material.SetFloat("_AttackSemaphore", 0f);
         _material.SetFloat("_Damage", 1f);
@@ -21,12 +28,12 @@ public class DragonflyProjectilePresentation : EnemyPresentation
     
     public override void PreAttackStart()
     {
-        throw new System.NotImplementedException();
+        _preAttackFlash?.PreAttackStart();
     }
 
     public override void PreAttackEnd()
     {
-        throw new System.NotImplementedException();
+        _preAttackFlash?.PreAttackEnd();
     }
 
     public override void DamageFlash()

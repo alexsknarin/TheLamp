@@ -50,12 +50,18 @@ public class DragonflyProjectileSpider : EnemyBase
         _collider.enabled = false;
         // Presentation setup
     }
+    
+    public void StartPreAttack()
+    {
+        _presentation.PreAttackStart();
+    }
 
     public override void StartAttack()
     {
         ReadyToCollide = true;
         ReceivedLampAttack = false;
         _movement.TriggerAttack();
+        _presentation.PreAttackEnd();
         _collider.enabled = true;
     }
 
