@@ -2,28 +2,15 @@ using UnityEngine;
 
 public class DragonflyProjectilePresentation : EnemyPresentation
 {
-    // TODO: replace with a standard Death Flash
-    [SerializeField] private MeshRenderer _meshRenderer;
-    [SerializeField] private float _duration = 1.7f;
+    [SerializeField] private DeathFlash _deathFlash; 
     [Header("------ Preattack Flash ------")]
     [SerializeField] private PreAttackFlash _preAttackFlash;
     
     
-    private Material _material;
-    private bool _isActive = false;
-    private float _localTime;
-    
-    
-    
     public override void Initialize()
     {
-        _isActive = false;
-        _material = _meshRenderer.material;
+        _deathFlash.Initialize();
         _preAttackFlash?.Initialize();  // TODO: remove null check later
-        
-        _material.SetFloat("_DeathFade", 0f);
-        _material.SetFloat("_AttackSemaphore", 0f);
-        _material.SetFloat("_Damage", 1f);
     }
     
     public override void PreAttackStart()
@@ -41,31 +28,9 @@ public class DragonflyProjectilePresentation : EnemyPresentation
         throw new System.NotImplementedException();
     }
 
-    private void Update()
-    {
-        if (_isActive)
-        {
-            float phase = _localTime / _duration;
-            if (phase > 1)
-            {
-                _isActive = false;
-                _material.SetFloat("_DeathFade", 1f);
-                _material.SetFloat("_Damage", 1f);
-                return;
-            }
-            _material.SetFloat("_Damage", 4f);
-            _material.SetFloat("_DeathFade", phase);
-            _localTime += Time.deltaTime;
-        }
-    }
-
     public override void DeathFlash()
     {
-        _isActive = true;
-        _localTime = 0;
-        _material.SetFloat("_DeathFade", 0);
-        _material.SetFloat("_AttackSemaphore", 0);
-        _material.SetFloat("_Damage", 1f);
+        _deathFlash.Play();
     }
 
     public override void HealthUpdate(int currentHealth, int maxHealth)
