@@ -8,6 +8,8 @@ public class FDragonflyFallHeadState : ScriptableObject, IState
     [SerializeField] private float _afterDelay = .6f;
     [SerializeField] private AnimationCurve _headFallRotateCurve;
     [SerializeField] private AnimationCurve _headFallFallDownCurve;
+    [SerializeField] private float _bounceDistance = .25f;
+    [SerializeField] private AnimationCurve _bounceCurve;
 
     public event Action OnStarted;
     public event Action OnEnded;
@@ -20,6 +22,7 @@ public class FDragonflyFallHeadState : ScriptableObject, IState
     // Dependencies
     private Transform _visibleBodyTransform;
     private Transform _fallPointTransform;
+    private float _bouncePosition = 0f;
     
     public void SetDependencies(Transform visibleBodyTransform, Transform fallPointTransform)
     {
@@ -37,6 +40,7 @@ public class FDragonflyFallHeadState : ScriptableObject, IState
         _localTime = 0f;
         _phase = 0f;
         _isAfterDelay = false;
+        _bouncePosition = 0f;
         OnStarted?.Invoke();
     }
 
@@ -49,6 +53,11 @@ public class FDragonflyFallHeadState : ScriptableObject, IState
         Vector3 fallPos = _fallPointTransform.position;
         fallPos.y = _headFallStartPosY + _headFallFallDownCurve.Evaluate(_phase);
         _fallPointTransform.position = fallPos;
+        
+        _bouncePosition = -_bounceCurve.Evaluate(_phase) * _bounceDistance;
+        Vector3 bouncePos = _visibleBodyTransform.localPosition;
+        bouncePos.z = _bouncePosition;
+        _visibleBodyTransform.localPosition = bouncePos;
         
         _localTime += Time.deltaTime;
         CheckForStateChange();
