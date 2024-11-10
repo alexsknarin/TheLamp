@@ -8,8 +8,7 @@ public class FDragonflyCatchSpiderStateL : FDragonflyAnimBaseState
     
     public override void OnEnter()
     {
-        ParentVisibleBodyToAnimatedTransform();
-        _movement.PlayClip(this.GetType());
+        base.OnEnter();
         OnStarted?.Invoke();
     }
 }

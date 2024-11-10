@@ -15,12 +15,7 @@ public class FDragonflyMovement : MonoBehaviour
     [SerializeField] private DragonflyPatrolRotator _spiderPatrolRotator;
     [SerializeField] private DragonflyAnimationClipEventHandler _animationClipEvents;
     [SerializeField] private Transform _fallPoint;
-    
-    [Header("Animation Clips")]
-    [SerializeField] private DragonflyAnimClipCollection _animClipCollection;
-
     [Header("States")]  
-    
     [SerializeField] private FDragonflyAttackHeadState _attackHeadState;
     [SerializeField] private FDragonflyAttackHeadSuccessState _attackHeadSuccessState; 
     [SerializeField] private FDragonflyAttackHoverState _attackHoverState;
@@ -84,10 +79,19 @@ public class FDragonflyMovement : MonoBehaviour
     public IState MovementState => _stateMachine.CurrentState;
     
     // Animation 
-    private AnimationClipPlayable _currentAnimationClipPlayable;
-    private DragonflyPlayablesContainer _playablesContainer;
-    private PlayableGraph _playableGraph;
-    private PlayableOutput _playableOutput;
+    private readonly int _idleHash = Animator.StringToHash("Idle");
+    private readonly int _enterToPatrolLHash = Animator.StringToHash("EnterToPatrolL");
+    private readonly int _enterToPatrolRHash = Animator.StringToHash("EnterToPatrolR");
+    private readonly int _catchSpiderLHash = Animator.StringToHash("CatchSpiderL");
+    private readonly int _catchSpiderRHash = Animator.StringToHash("CatchSpiderR");
+    private readonly int _enterToHoverLHash = Animator.StringToHash("EnterToHoverL");
+    private readonly int _enterToHoverRHash = Animator.StringToHash("EnterToHoverR");
+    private readonly int _moveToPatrolLHash = Animator.StringToHash("MoveToPatrolL");
+    private readonly int _moveToPatrolRHash = Animator.StringToHash("MoveToPatrolR");
+    private readonly int _returnTransitionLRBTHash = Animator.StringToHash("ReturnTransitionLRBT");
+    private readonly int _returnTransitionLRTBHash = Animator.StringToHash("ReturnTransitionLRTB");
+    private readonly int _returnTransitionRLBTHash = Animator.StringToHash("ReturnTransitionRLBT");
+    private readonly int _returnTransitionRLTBHash = Animator.StringToHash("ReturnTransitionRLTB");
     
     // Attack Modes
     private bool _isAttacking = false;
@@ -169,10 +173,6 @@ public class FDragonflyMovement : MonoBehaviour
 
     private void OnDisable()
     {
-        if (_playableGraph.IsValid())
-        {
-            _playableGraph.Destroy();    
-        }
         _animationClipEvents.OnClipEndedEvent -= OnClipEndedHandle;
         _animationClipEvents.OnSwarmCallEvent -= OnSwarmCallHandle;
         _spiderPushStateL.OnEnded -= OnSwarmCallHandle;
@@ -231,15 +231,6 @@ public class FDragonflyMovement : MonoBehaviour
     private void Awake()
     {
         _isPlaying = false;
-        
-        _playableGraph = PlayableGraph.Create();
-        _playableGraph.SetTimeUpdateMode(DirectorUpdateMode.GameTime);
-        _playableOutput = AnimationPlayableOutput.Create(_playableGraph, "Animation", _animator);
-        _playablesContainer = new DragonflyPlayablesContainer(_playableGraph);
-        
-        // Add clips to container
-        _animClipCollection.Initialize(_playablesContainer);
-        
         SetMovementStatesDependencies();
         SetupStateMachine();
     }
@@ -259,21 +250,21 @@ public class FDragonflyMovement : MonoBehaviour
         _bounceHoverState.SetDependencies(_visibleBodyTransform, transform);
         _bounceTailStateL.SetDependencies(_visibleBodyTransform, _patrolTransform, _patrolRotator);
         _bounceTailStateR.SetDependencies(_visibleBodyTransform, _patrolTransform, _patrolRotator);
-        _catchSpiderStateL.SetDependencies(_visibleBodyTransform, _animatedTransform, this);
-        _catchSpiderStateR.SetDependencies(_visibleBodyTransform, _animatedTransform, this);
+        _catchSpiderStateL.SetDependencies(_visibleBodyTransform, _animatedTransform, _animator, _catchSpiderLHash);
+        _catchSpiderStateR.SetDependencies(_visibleBodyTransform, _animatedTransform, _animator, _catchSpiderRHash);
         _deathHeadState.SetDependencies(_visibleBodyTransform, _fallPoint);
         _deathTailStateL.SetDependencies(_visibleBodyTransform, _fallPoint);
         _deathTailStateR.SetDependencies(_visibleBodyTransform, _fallPoint);
-        _enterToHoverStateL.SetDependencies(_visibleBodyTransform, _animatedTransform, this);
-        _enterToHoverStateR.SetDependencies(_visibleBodyTransform, _animatedTransform, this);
-        _enterToPatrolStateL.SetDependencies(_visibleBodyTransform, _animatedTransform, this);
-        _enterToPatrolStateR.SetDependencies(_visibleBodyTransform, _animatedTransform, this);
+        _enterToHoverStateL.SetDependencies(_visibleBodyTransform, _animatedTransform, _animator, _enterToHoverLHash);
+        _enterToHoverStateR.SetDependencies(_visibleBodyTransform, _animatedTransform, _animator, _enterToHoverRHash);
+        _enterToPatrolStateL.SetDependencies(_visibleBodyTransform, _animatedTransform, _animator, _enterToPatrolLHash);
+        _enterToPatrolStateR.SetDependencies(_visibleBodyTransform, _animatedTransform, _animator, _enterToPatrolRHash);
         _fallHeadState.SetDependencies(_visibleBodyTransform, _fallPoint);
         _hoverState.SetDependencies(_visibleBodyTransform, transform);
         _idleState.SetDependencies();
         _moveToHoverState.SetDependencies(_visibleBodyTransform, transform);
-        _moveToPatrolStateL.SetDependencies(_visibleBodyTransform, _animatedTransform, this);;
-        _moveToPatrolStateR.SetDependencies(_visibleBodyTransform, _animatedTransform, this);;
+        _moveToPatrolStateL.SetDependencies(_visibleBodyTransform, _animatedTransform, _animator, _moveToPatrolLHash);
+        _moveToPatrolStateR.SetDependencies(_visibleBodyTransform, _animatedTransform, _animator, _moveToPatrolRHash);
         _patrolStateL.SetDependencies(_visibleBodyTransform, _patrolTransform, _patrolRotator);
         _patrolStateR.SetDependencies(_visibleBodyTransform, _patrolTransform, _patrolRotator);
         _preAttackHeadStateL.SetDependencies(_visibleBodyTransform, transform);
@@ -282,10 +273,10 @@ public class FDragonflyMovement : MonoBehaviour
         _preAttackTailStateL.SetDependencies(_visibleBodyTransform, _patrolTransform, _patrolRotator);
         _preAttackTailStateR.SetDependencies(_visibleBodyTransform, _patrolTransform, _patrolRotator);
         _returnHoverState.SetDependencies(_visibleBodyTransform, transform);
-        _returnTransitionRLBTState.SetDependencies(_visibleBodyTransform, _animatedTransform, this);
-        _returnTransitionLRBTState.SetDependencies(_visibleBodyTransform, _animatedTransform, this);
-        _returnTransitionRLTBState.SetDependencies(_visibleBodyTransform, _animatedTransform, this);
-        _returnTransitionLRTBState.SetDependencies(_visibleBodyTransform, _animatedTransform, this);
+        _returnTransitionRLBTState.SetDependencies(_visibleBodyTransform, _animatedTransform, _animator, _returnTransitionRLBTHash);
+        _returnTransitionLRBTState.SetDependencies(_visibleBodyTransform, _animatedTransform, _animator, _returnTransitionLRBTHash);
+        _returnTransitionRLTBState.SetDependencies(_visibleBodyTransform, _animatedTransform, _animator, _returnTransitionRLTBHash);
+        _returnTransitionLRTBState.SetDependencies(_visibleBodyTransform, _animatedTransform, _animator, _returnTransitionLRTBHash);
         _spiderPatrolStateL.SetDependencies(_visibleBodyTransform, _spiderPatrolTransform, _spiderPatrolRotator);
         _spiderPatrolStateR.SetDependencies(_visibleBodyTransform, _spiderPatrolTransform, _spiderPatrolRotator);
         _spiderPreAttackHeadTransitionStateL.SetDependencies(
@@ -529,19 +520,7 @@ public class FDragonflyMovement : MonoBehaviour
         
         #endregion
     }
-
-    public void PlayClip(Type movementState)
-    {
-        AnimationClipPlayable clipPlayable = _playablesContainer.GetClip(movementState);
-        clipPlayable.SetTime(0);
-        clipPlayable.SetTime(0); // Unity Bug
-        _playableOutput.SetSourcePlayable(clipPlayable);
-        if (_playableGraph.IsValid())
-        {
-            _playableGraph.Play();    
-        }
-    }
-
+    
     public void Play(DragonflyEnterType state, int sideDirection)
     {
         _stateMachine.SetState(_idleState);
@@ -708,15 +687,6 @@ public class FDragonflyMovement : MonoBehaviour
         _isAttackSuccess = false;
         _isAttackFail = false;
         _isDead = true;
-    }
-
-
-    private void OnDestroy()
-    {
-        if (_playableGraph.IsValid())
-        {
-            _playableGraph.Destroy();    
-        }
     }
 
     private void OnClipEndedHandle()

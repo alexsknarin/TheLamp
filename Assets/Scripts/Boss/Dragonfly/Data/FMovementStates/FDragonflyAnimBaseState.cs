@@ -5,13 +5,16 @@ public abstract class FDragonflyAnimBaseState : ScriptableObject, IState
     // Dependencies
     private Transform _visibleBodyTransform;
     private Transform _animatedTransform;
-    protected FDragonflyMovement _movement;
+    protected Animator _animator;
+    protected int _clipHash;
     
-    public void SetDependencies(Transform visibleBodyTransform, Transform animatedTransform, FDragonflyMovement movement)
+    
+    public void SetDependencies(Transform visibleBodyTransform, Transform animatedTransform, Animator animator, int clipHash)
     {
         _visibleBodyTransform = visibleBodyTransform;
         _animatedTransform = animatedTransform;
-        _movement = movement;
+        _animator = animator;
+        _clipHash = clipHash;
     }
     
     protected void ParentVisibleBodyToAnimatedTransform()
@@ -23,6 +26,8 @@ public abstract class FDragonflyAnimBaseState : ScriptableObject, IState
 
     public virtual void OnEnter()
     {
+        ParentVisibleBodyToAnimatedTransform();
+        _animator.Play(_clipHash, -1, 0);
     }
 
     public void Tick()
