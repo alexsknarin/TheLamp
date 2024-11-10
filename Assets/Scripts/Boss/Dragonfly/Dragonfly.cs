@@ -19,17 +19,17 @@ public class Dragonfly : EnemyBase
     [SerializeField] private float _hoverWaitMax;
 
     [Header("Patrol")]
+    [Header("Head")]
     [SerializeField] private float _swarmAttackDuration; // TODO: control swarm duration itself from here as well
     [SerializeField] private float _patrolWaitMin;
     [SerializeField] private float _patrolWaitMax;
     [SerializeField] private DragonflyPatrolAttackZoneRanges _patrolAttackZonesL;
     [SerializeField] private DragonflyPatrolAttackZoneRanges _patrolAttackZonesR;
+    [Header("Tail")]
+    [SerializeField] private Transform _tailAttackPositionBaseTRM;
+    [SerializeField] private Vector3 _tailAttackPositionBase;
     [SerializeField] private float _patrolTailWaitMin;
     [SerializeField] private float _patrolTailWaitMax;
-    [SerializeField] private Vector3 _tailAttackZoneLMin;
-    [SerializeField] private Vector3 _tailAttackZoneLMax;
-    [SerializeField] private Vector3 _tailAttackZoneRMin;
-    [SerializeField] private Vector3 _tailAttackZoneRMax;
 
     [Header("Spider")]
     [SerializeField] private Vector3 _spiderAttackPositionBase;
@@ -144,13 +144,12 @@ public class Dragonfly : EnemyBase
 
     private void Awake()
     {
+        _tailAttackPositionBase = _tailAttackPositionBaseTRM.position;
+        
         _patrolAttackPositionProvider = new DragonflyPatrolAttackPositionProvider(
             _patrolAttackZonesL, 
             _patrolAttackZonesR, 
-            _tailAttackZoneLMin,
-            _tailAttackZoneLMax,
-            _tailAttackZoneRMin,
-            _tailAttackZoneRMax
+            _tailAttackPositionBase
         );
         
         // Initialize the states
@@ -362,6 +361,7 @@ public class Dragonfly : EnemyBase
     private void OnReadyToAttackEnterHandle(IState movementState)
     {
         _patrolAttackMode = (DragonflyPatrolAttackMode)Random.Range(0, 2);
+        _patrolAttackMode = DragonflyPatrolAttackMode.Tail; // TODO: remove this line --------------- DEBUG
         _isReadyToPreAttackWait = true;
     }
     

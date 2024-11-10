@@ -11,18 +11,13 @@ public class DragonflyPatrolAttackPositionProvider
     private DragonflyPatrolAttackZoneRangesData _patrolAttackZonesDataR = new DragonflyPatrolAttackZoneRangesData();
     private DragonflyPatrolAttackZoneRangesData _patrolAttackZonesData;
     
-    private Vector3 _tailAttackZoneLMin;
-    private Vector3 _tailAttackZoneLMax;
-    private Vector3 _tailAttackZoneRMin;
-    private Vector3 _tailAttackZoneRMax;
+    private Vector3 _tailAttackBasePositionL;
+    private Vector3 _tailAttackBasePositionR;
     
     public DragonflyPatrolAttackPositionProvider(
         DragonflyPatrolAttackZoneRanges patrolAttackZonesL,
         DragonflyPatrolAttackZoneRanges patrolAttackZonesR,
-        Vector3 tailAttackZoneLMin,
-        Vector3 tailAttackZoneLMax,
-        Vector3 tailAttackZoneRMin,
-        Vector3 tailAttackZoneRMax
+        Vector3 tailAttackBasePositionBase
         )
     {
         _patrolAttackZonesL = patrolAttackZonesL;
@@ -32,10 +27,9 @@ public class DragonflyPatrolAttackPositionProvider
         _patrolAttackZonesR.GetRanges(_patrolAttackZonesDataR);
         _patrolAttackZonesData = _patrolAttackZonesDataL;
         
-        _tailAttackZoneLMin = tailAttackZoneLMin;
-        _tailAttackZoneLMax = tailAttackZoneLMax;
-        _tailAttackZoneRMin = tailAttackZoneRMin;
-        _tailAttackZoneRMax = tailAttackZoneRMax;
+        _tailAttackBasePositionL = tailAttackBasePositionBase;
+        _tailAttackBasePositionR = tailAttackBasePositionBase;
+        _tailAttackBasePositionR.x *= -1;
     }
     
     public Vector3 GenerateRandomPreAttackHeadPosition(IState movementState)
@@ -94,31 +88,23 @@ public class DragonflyPatrolAttackPositionProvider
     
     public Vector3 GenerateRandomPreAttackTailPosition(IState movementState)
     {
-        Vector3 rangeMin = Vector3.zero;
-        Vector3 rangeMax = Vector3.zero;
+        Vector3 attackPosition = Vector3.zero;
         
         if (movementState.GetType() == typeof(FDragonflyPatrolStateL))
         {
-            rangeMin = _tailAttackZoneLMin;
-            rangeMax = _tailAttackZoneLMax;
+            attackPosition = _tailAttackBasePositionL;
+            
         }
         if (movementState.GetType() == typeof(FDragonflyPatrolStateR))
         {
-            rangeMin = _tailAttackZoneRMin;
-            rangeMax = _tailAttackZoneRMax;
+            attackPosition = _tailAttackBasePositionR;
         }
         
-        Vector3 patrolAttackPosition = Vector3.zero;
-        patrolAttackPosition.x = Random.Range(rangeMin.x, rangeMax.x);
-        patrolAttackPosition.y = Random.Range(rangeMin.y, rangeMax.y);
-        patrolAttackPosition.z = Random.Range(rangeMin.z, rangeMax.z);
-        patrolAttackPosition.Normalize();
+        Debug.DrawRay(Vector3.zero, attackPosition*2, Color.red, 5f);
         
-        Debug.DrawRay(Vector3.zero, patrolAttackPosition*2, Color.red, 5f);
-        
-        patrolAttackPosition.y = 0;
-        patrolAttackPosition.Normalize();
+        attackPosition.y = 0;
+        attackPosition.Normalize();
 
-        return patrolAttackPosition;
+        return attackPosition;
     }
 }
