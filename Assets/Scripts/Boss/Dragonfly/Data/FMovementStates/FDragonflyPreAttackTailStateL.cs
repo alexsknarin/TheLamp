@@ -32,8 +32,8 @@ public class FDragonflyPreAttackTailStateL : ScriptableObject, IState
     public void OnEnter()
     {
         Vector3 currentPosition = _visibleBodyTransform.position;
-        
-        _patrolRotator.SetRotationPhase(currentPosition);
+       
+        _patrolRotator.SetRotationPhase(currentPosition - _visibleBodyTransform.right * 0.2f); // Smooth transition
         _patrolRotator.Play(_sideDirection);
         
         _visibleBodyTransform.SetParent(_patrolTransform);

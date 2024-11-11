@@ -34,7 +34,7 @@ public class FDragonflyAttackTailStateR : ScriptableObject, IState
     
     public void OnEnter()
     {
-        _patrolRotator.SetRotationPhase(_visibleBodyTransform.position);
+        _patrolRotator.SetRotationPhase(_visibleBodyTransform.position + _visibleBodyTransform.right * 0.2f); // Smooth transition
         _patrolRotator.Play(_sideDirection);
         
         _visibleBodyTransform.SetParent(_patrolTransform);
