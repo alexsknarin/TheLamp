@@ -11,18 +11,18 @@ public class Wasp : BossBase
 
     private void OnEnable()
     {
-        _waspMovement.OnBossAttackStarted += UpdateRecievedLampAttackStatus;
-        _waspMovement.OnDeathStateEnded += HandleDeathMoveStateEnd;
-        _waspMovement.OnLeftTheScreen += HandleLeftScreen;
-        Lamp.OnLampDead += HandleLampDead;
+        _waspMovement.OnBossAttackStartedEvent += UpdateRecievedLampAttackStatus;
+        _waspMovement.OnDeathStateEndedEvent += HandleDeathMoveStateEnd;
+        _waspMovement.OnLeftTheScreenEvent += HandleLeftScreen;
+        Lamp.OnLampDeadEvent += HandleLampDead; // TODO: manage from enemy manager
     }
     
     private void OnDisable()
     {
-        _waspMovement.OnBossAttackStarted -= UpdateRecievedLampAttackStatus;
-        _waspMovement.OnDeathStateEnded -= HandleDeathMoveStateEnd;
-        _waspMovement.OnLeftTheScreen -= HandleLeftScreen;
-        Lamp.OnLampDead -= HandleLampDead;
+        _waspMovement.OnBossAttackStartedEvent -= UpdateRecievedLampAttackStatus;
+        _waspMovement.OnDeathStateEndedEvent -= HandleDeathMoveStateEnd;
+        _waspMovement.OnLeftTheScreenEvent -= HandleLeftScreen;
+        Lamp.OnLampDeadEvent -= HandleLampDead;
     }
     public override void Initialize()
     {

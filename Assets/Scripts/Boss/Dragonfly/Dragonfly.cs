@@ -83,60 +83,60 @@ public class Dragonfly : EnemyBase
     
     private void OnEnable()
     {
-        _movement.OnReadyToAttackStateEntered += OnReadyToAttackEnterHandle;
-        _movement.OnReadyToSwarmAttackStateEntered += OnReadyToSwarmAttackEnterHandle;
-        _movement.OnPreattackStarted += OnPreAttackStartHandle;
-        _movement.OnAttackStarted += OnAttackStartedHandle;
-        _movement.OnAttackEnded += OnAttackEndedHandle;
+        _movement.OnReadyToAttackStateEnteredEvent += OnReadyToAttackEnterHandle;
+        _movement.OnReadyToSwarmAttackStateEnteredEvent += OnReadyToSwarmAttackEnterHandle;
+        _movement.OnPreAttackStartedEvent += OnPreAttackStartHandle;
+        _movement.OnAttackStartedEvent += OnAttackStartedHandle;
+        _movement.OnAttackEndedEvent += OnAttackEndedHandle;
         _movement.OnSwarmCallEvent += OnSwarmCallHandle;
         
-        _patrolHeadState.OnEnded += GenerateAttackPosition;
-        _patrolTailState.OnEnded += GenerateAttackPosition;
-        _patrolSpiderState.OnEnded += GenerateAttackPosition;
-        _waitHeadAttackState.OnEnded += StartAttack;
-        _waitTailAttackState.OnEnded += StartAttack;
-        _waitHoverAttackState.OnEnded += StartAttack;
-        _waitSpiderAttackState.OnReadyToPreAttack += StartSpiderPreAttack;
-        _waitSpiderAttackState.OnEnded += StartSpiderAttack;
+        _patrolHeadState.OnEndedEvent += GenerateAttackPosition;
+        _patrolTailState.OnEndedEvent += GenerateAttackPosition;
+        _patrolSpiderState.OnEndedEvent += GenerateAttackPosition;
+        _waitHeadAttackState.OnEndedEvent += StartAttack;
+        _waitTailAttackState.OnEndedEvent += StartAttack;
+        _waitHoverAttackState.OnEndedEvent += StartAttack;
+        _waitSpiderAttackState.OnReadyToPreAttackEvent += StartSpiderPreAttack;
+        _waitSpiderAttackState.OnEndedEvent += StartSpiderAttack;
         
-        _waitForBounceState.OnEnded += HandleBounce;
+        _waitForBounceState.OnEndedEvent += HandleBounce;
         
-        _movement.OnAfterAttackExitEnded += OnAfterAttackExitEndHandle;
-        _movement.OnReadyToSpiderAttackStateEntered += OnReadyToSpiderAttackEnterHandle;
-        _movement.OnCatchSpiderStarted += OnCatchSpiderStartHandle;
-        _spider.OnEnterAnimationEnd += OnSpiderEnterAnimationEndHandle;
-        _movement.OnDeathAnimationEnded += OnDeathAnimationEndedHandle;
+        _movement.OnAfterAttackExitEndedEvent += OnAfterAttackExitEndHandle;
+        _movement.OnReadyToSpiderAttackStateEnteredEvent += OnReadyToSpiderAttackEnterHandle;
+        _movement.OnCatchSpiderStartedEvent += OnCatchSpiderStartHandle;
+        _spider.OnEnterAnimationEndEvent += OnSpiderEnterAnimationEndHandle;
+        _movement.OnDeathAnimationEndedEvent += OnDeathAnimationEndedHandle;
         
-        LampAttackModel.OnLampAttack += TMPHandleLampAttack;
+        LampAttackModel.OnLampAttackEvent += TMPHandleLampAttack;
     }
 
     private void OnDisable()
     {
         
-        _movement.OnReadyToAttackStateEntered -= OnReadyToAttackEnterHandle;
-        _movement.OnReadyToSwarmAttackStateEntered -= OnReadyToSwarmAttackEnterHandle;
-        _movement.OnPreattackStarted -= OnPreAttackStartHandle;
-        _movement.OnAttackStarted -= OnAttackStartedHandle;
-        _movement.OnAttackEnded -= OnAttackEndedHandle;
+        _movement.OnReadyToAttackStateEnteredEvent -= OnReadyToAttackEnterHandle;
+        _movement.OnReadyToSwarmAttackStateEnteredEvent -= OnReadyToSwarmAttackEnterHandle;
+        _movement.OnPreAttackStartedEvent -= OnPreAttackStartHandle;
+        _movement.OnAttackStartedEvent -= OnAttackStartedHandle;
+        _movement.OnAttackEndedEvent -= OnAttackEndedHandle;
         _movement.OnSwarmCallEvent -= OnSwarmCallHandle;
         
-        _patrolHeadState.OnEnded -= GenerateAttackPosition;
-        _patrolTailState.OnEnded -= GenerateAttackPosition;
-        _patrolSpiderState.OnEnded -= GenerateAttackPosition;
-        _waitHeadAttackState.OnEnded -= StartAttack;
-        _waitTailAttackState.OnEnded -= StartAttack;
-        _waitHoverAttackState.OnEnded -= StartAttack;
-        _waitSpiderAttackState.OnReadyToPreAttack -= StartSpiderPreAttack;
-        _waitSpiderAttackState.OnEnded -= StartSpiderAttack;
+        _patrolHeadState.OnEndedEvent -= GenerateAttackPosition;
+        _patrolTailState.OnEndedEvent -= GenerateAttackPosition;
+        _patrolSpiderState.OnEndedEvent -= GenerateAttackPosition;
+        _waitHeadAttackState.OnEndedEvent -= StartAttack;
+        _waitTailAttackState.OnEndedEvent -= StartAttack;
+        _waitHoverAttackState.OnEndedEvent -= StartAttack;
+        _waitSpiderAttackState.OnReadyToPreAttackEvent -= StartSpiderPreAttack;
+        _waitSpiderAttackState.OnEndedEvent -= StartSpiderAttack;
         
-        _waitForBounceState.OnEnded -= HandleBounce;
+        _waitForBounceState.OnEndedEvent -= HandleBounce;
         
-        _movement.OnAfterAttackExitEnded -= OnAfterAttackExitEndHandle;
-        _movement.OnReadyToSpiderAttackStateEntered -= OnReadyToSpiderAttackEnterHandle;
-        _movement.OnCatchSpiderStarted -= OnCatchSpiderStartHandle;
-        _spider.OnEnterAnimationEnd -= OnSpiderEnterAnimationEndHandle;
-        _movement.OnDeathAnimationEnded -= OnDeathAnimationEndedHandle;
-        LampAttackModel.OnLampAttack -= TMPHandleLampAttack;
+        _movement.OnAfterAttackExitEndedEvent -= OnAfterAttackExitEndHandle;
+        _movement.OnReadyToSpiderAttackStateEnteredEvent -= OnReadyToSpiderAttackEnterHandle;
+        _movement.OnCatchSpiderStartedEvent -= OnCatchSpiderStartHandle;
+        _spider.OnEnterAnimationEndEvent -= OnSpiderEnterAnimationEndHandle;
+        _movement.OnDeathAnimationEndedEvent -= OnDeathAnimationEndedHandle;
+        LampAttackModel.OnLampAttackEvent -= TMPHandleLampAttack;
     }
 
     private void Awake()

@@ -64,15 +64,15 @@ public class FDragonflyMovement : MonoBehaviour
     [SerializeField] private FDragonflySpiderPushStateR _spiderPushStateR;
     
     // Events
-    public event Action<IState> OnReadyToAttackStateEntered; // TODO: possibly Use Type instead of IState 
-    public event Action<IState> OnReadyToSwarmAttackStateEntered;
-    public event Action<IState> OnAfterAttackExitEnded; // TODO: possibly Use Type instead of IState
-    public event Action OnAttackStarted;
-    public event Action OnPreattackStarted;
-    public event Action OnAttackEnded;
-    public event Action<int> OnCatchSpiderStarted;
-    public event Action OnReadyToSpiderAttackStateEntered;
-    public event Action OnDeathAnimationEnded;
+    public event Action<IState> OnReadyToAttackStateEnteredEvent; // TODO: possibly Use Type instead of IState 
+    public event Action<IState> OnReadyToSwarmAttackStateEnteredEvent;
+    public event Action<IState> OnAfterAttackExitEndedEvent; // TODO: possibly Use Type instead of IState
+    public event Action OnAttackStartedEvent;
+    public event Action OnPreAttackStartedEvent;
+    public event Action OnAttackEndedEvent;
+    public event Action<int> OnCatchSpiderStartedEvent;
+    public event Action OnReadyToSpiderAttackStateEnteredEvent;
+    public event Action OnDeathAnimationEndedEvent;
     public event Action OnSwarmCallEvent;
 
     private FStateMachine _stateMachine = new FStateMachine();
@@ -118,114 +118,114 @@ public class FDragonflyMovement : MonoBehaviour
     {
         _animationClipEvents.OnClipEndedEvent += OnClipEndedHandle;
         _animationClipEvents.OnSwarmCallEvent += OnSwarmCallHandle;
-        _spiderPushStateL.OnEnded += OnSwarmCallHandle;
+        _spiderPushStateL.OnEndedEvent += OnSwarmCallHandle;
         
-        _hoverState.OnStarted += OnReadyToAttackEnterHandle;
-        _patrolStateL.OnStarted += OnReadyToAttackEnterHandle; // 
-        _patrolStateR.OnStarted += OnReadyToAttackEnterHandle; //
+        _hoverState.OnStartedEvent += OnReadyToAttackEnterHandle;
+        _patrolStateL.OnStartedEvent += OnReadyToAttackEnterHandle; // 
+        _patrolStateR.OnStartedEvent += OnReadyToAttackEnterHandle; //
         
-        _patrolStateL.OnStarted += OnReadyToSwarmAttackEnterHandle;
-        _patrolStateR.OnStarted += OnReadyToSwarmAttackEnterHandle;
+        _patrolStateL.OnStartedEvent += OnReadyToSwarmAttackEnterHandle;
+        _patrolStateR.OnStartedEvent += OnReadyToSwarmAttackEnterHandle;
         
-        _spiderPatrolStateL.OnStarted += OnReadyToSpiderAttackHandle;
-        _spiderPatrolStateR.OnStarted += OnReadyToSpiderAttackHandle;
+        _spiderPatrolStateL.OnStartedEvent += OnReadyToSpiderAttackHandle;
+        _spiderPatrolStateR.OnStartedEvent += OnReadyToSpiderAttackHandle;
         
-        _catchSpiderStateL.OnStarted += OnCatchSpiderStartedLHandle;
-        _catchSpiderStateR.OnStarted += OnCatchSpiderStartedRHandle;
+        _catchSpiderStateL.OnStartedEvent += OnCatchSpiderStartedLHandle;
+        _catchSpiderStateR.OnStartedEvent += OnCatchSpiderStartedRHandle;
         
-        _preAttackHeadStateL.OnStarted += OnPreAttackStartedHandle;
-        _preAttackHeadStateR.OnStarted += OnPreAttackStartedHandle;
-        _preAttackTailStateL.OnStarted += OnPreAttackStartedHandle;
-        _preAttackTailStateR.OnStarted += OnPreAttackStartedHandle;
-        _preAttackHoverState.OnStarted += OnPreAttackStartedHandle;
+        _preAttackHeadStateL.OnStartedEvent += OnPreAttackStartedHandle;
+        _preAttackHeadStateR.OnStartedEvent += OnPreAttackStartedHandle;
+        _preAttackTailStateL.OnStartedEvent += OnPreAttackStartedHandle;
+        _preAttackTailStateR.OnStartedEvent += OnPreAttackStartedHandle;
+        _preAttackHoverState.OnStartedEvent += OnPreAttackStartedHandle;
         
-        _attackHeadState.OnStarted += OnAttackStartedHandle;
-        _attackTailStateL.OnStarted += OnAttackStartedHandle;
-        _attackTailStateR.OnStarted += OnAttackStartedHandle;
-        _attackHoverState.OnStarted += OnAttackStartedHandle;
+        _attackHeadState.OnStartedEvent += OnAttackStartedHandle;
+        _attackTailStateL.OnStartedEvent += OnAttackStartedHandle;
+        _attackTailStateR.OnStartedEvent += OnAttackStartedHandle;
+        _attackHoverState.OnStartedEvent += OnAttackStartedHandle;
         
-        _deathHeadState.OnStarted += OnAttackEndedHandle;
-        _deathTailStateL.OnStarted += OnAttackEndedHandle;
-        _deathTailStateR.OnStarted += OnAttackEndedHandle;
-        _attackHeadSuccessState.OnStarted += OnAttackEndedHandle;
-        _fallHeadState.OnStarted += OnAttackEndedHandle;
-        _attackTailFailL.OnStarted += OnAttackEndedHandle;
-        _attackTailFailR.OnStarted += OnAttackEndedHandle;
-        _attackTailSuccessL.OnStarted += OnAttackEndedHandle;
-        _attackTailSuccessR.OnStarted += OnAttackEndedHandle;
-        _returnHoverState.OnStarted += OnAttackEndedHandle;
+        _deathHeadState.OnStartedEvent += OnAttackEndedHandle;
+        _deathTailStateL.OnStartedEvent += OnAttackEndedHandle;
+        _deathTailStateR.OnStartedEvent += OnAttackEndedHandle;
+        _attackHeadSuccessState.OnStartedEvent += OnAttackEndedHandle;
+        _fallHeadState.OnStartedEvent += OnAttackEndedHandle;
+        _attackTailFailL.OnStartedEvent += OnAttackEndedHandle;
+        _attackTailFailR.OnStartedEvent += OnAttackEndedHandle;
+        _attackTailSuccessL.OnStartedEvent += OnAttackEndedHandle;
+        _attackTailSuccessR.OnStartedEvent += OnAttackEndedHandle;
+        _returnHoverState.OnStartedEvent += OnAttackEndedHandle;
         
-        _attackHeadSuccessState.OnEnded += OnAfterAttackExitEndedHandle;
-        _attackTailSuccessL.OnEnded += OnAfterAttackExitEndedHandle;
-        _attackTailSuccessR.OnEnded += OnAfterAttackExitEndedHandle;
-        _attackTailFailL.OnEnded += OnAfterAttackExitEndedHandle;
-        _attackTailFailR.OnEnded += OnAfterAttackExitEndedHandle;
-        _fallHeadState.OnEnded += OnAfterAttackExitEndedHandle;
-        _returnHoverState.OnEnded += OnAfterAttackExitEndedHandle;
-        _deathHeadState.OnEnded += OnAfterAttackExitEndedHandle;
-        _deathTailStateL.OnEnded += OnAfterAttackExitEndedHandle;
-        _deathTailStateR.OnEnded += OnAfterAttackExitEndedHandle;
+        _attackHeadSuccessState.OnEndedEvent += OnAfterAttackExitEndedHandle;
+        _attackTailSuccessL.OnEndedEvent += OnAfterAttackExitEndedHandle;
+        _attackTailSuccessR.OnEndedEvent += OnAfterAttackExitEndedHandle;
+        _attackTailFailL.OnEndedEvent += OnAfterAttackExitEndedHandle;
+        _attackTailFailR.OnEndedEvent += OnAfterAttackExitEndedHandle;
+        _fallHeadState.OnEndedEvent += OnAfterAttackExitEndedHandle;
+        _returnHoverState.OnEndedEvent += OnAfterAttackExitEndedHandle;
+        _deathHeadState.OnEndedEvent += OnAfterAttackExitEndedHandle;
+        _deathTailStateL.OnEndedEvent += OnAfterAttackExitEndedHandle;
+        _deathTailStateR.OnEndedEvent += OnAfterAttackExitEndedHandle;
         
-        _deathHeadState.OnEnded += OnDeathAnimationEndedHandle;
-        _deathTailStateL.OnEnded += OnDeathAnimationEndedHandle;
-        _deathTailStateR.OnEnded += OnDeathAnimationEndedHandle;
+        _deathHeadState.OnEndedEvent += OnDeathAnimationEndedHandle;
+        _deathTailStateL.OnEndedEvent += OnDeathAnimationEndedHandle;
+        _deathTailStateR.OnEndedEvent += OnDeathAnimationEndedHandle;
     }
 
     private void OnDisable()
     {
         _animationClipEvents.OnClipEndedEvent -= OnClipEndedHandle;
         _animationClipEvents.OnSwarmCallEvent -= OnSwarmCallHandle;
-        _spiderPushStateL.OnEnded -= OnSwarmCallHandle;
+        _spiderPushStateL.OnEndedEvent -= OnSwarmCallHandle;
         
-        _hoverState.OnStarted -= OnReadyToAttackEnterHandle;
-        _patrolStateL.OnStarted -= OnReadyToAttackEnterHandle; // 
-        _patrolStateR.OnStarted -= OnReadyToAttackEnterHandle; //
+        _hoverState.OnStartedEvent -= OnReadyToAttackEnterHandle;
+        _patrolStateL.OnStartedEvent -= OnReadyToAttackEnterHandle; // 
+        _patrolStateR.OnStartedEvent -= OnReadyToAttackEnterHandle; //
         
-        _patrolStateL.OnStarted -= OnReadyToSwarmAttackEnterHandle;
-        _patrolStateR.OnStarted -= OnReadyToSwarmAttackEnterHandle;
+        _patrolStateL.OnStartedEvent -= OnReadyToSwarmAttackEnterHandle;
+        _patrolStateR.OnStartedEvent -= OnReadyToSwarmAttackEnterHandle;
         
-        _spiderPatrolStateL.OnStarted -= OnReadyToSpiderAttackHandle;
-        _spiderPatrolStateR.OnStarted -= OnReadyToSpiderAttackHandle;
+        _spiderPatrolStateL.OnStartedEvent -= OnReadyToSpiderAttackHandle;
+        _spiderPatrolStateR.OnStartedEvent -= OnReadyToSpiderAttackHandle;
         
-        _catchSpiderStateL.OnStarted -= OnCatchSpiderStartedLHandle;
-        _catchSpiderStateR.OnStarted -= OnCatchSpiderStartedRHandle;
+        _catchSpiderStateL.OnStartedEvent -= OnCatchSpiderStartedLHandle;
+        _catchSpiderStateR.OnStartedEvent -= OnCatchSpiderStartedRHandle;
         
-        _preAttackHeadStateL.OnStarted -= OnPreAttackStartedHandle;
-        _preAttackHeadStateR.OnStarted -= OnPreAttackStartedHandle;
-        _preAttackTailStateL.OnStarted -= OnPreAttackStartedHandle;
-        _preAttackTailStateR.OnStarted -= OnPreAttackStartedHandle;
-        _preAttackHoverState.OnStarted -= OnPreAttackStartedHandle;
+        _preAttackHeadStateL.OnStartedEvent -= OnPreAttackStartedHandle;
+        _preAttackHeadStateR.OnStartedEvent -= OnPreAttackStartedHandle;
+        _preAttackTailStateL.OnStartedEvent -= OnPreAttackStartedHandle;
+        _preAttackTailStateR.OnStartedEvent -= OnPreAttackStartedHandle;
+        _preAttackHoverState.OnStartedEvent -= OnPreAttackStartedHandle;
         
-        _attackHeadState.OnStarted -= OnAttackStartedHandle;
-        _attackTailStateL.OnStarted -= OnAttackStartedHandle;
-        _attackTailStateR.OnStarted -= OnAttackStartedHandle;
-        _attackHoverState.OnStarted -= OnAttackStartedHandle;
+        _attackHeadState.OnStartedEvent -= OnAttackStartedHandle;
+        _attackTailStateL.OnStartedEvent -= OnAttackStartedHandle;
+        _attackTailStateR.OnStartedEvent -= OnAttackStartedHandle;
+        _attackHoverState.OnStartedEvent -= OnAttackStartedHandle;
         
-        _deathHeadState.OnStarted -= OnAttackEndedHandle;
-        _deathTailStateL.OnStarted -= OnAttackEndedHandle;
-        _deathTailStateR.OnStarted -= OnAttackEndedHandle;
-        _attackHeadSuccessState.OnStarted -= OnAttackEndedHandle;
-        _fallHeadState.OnStarted -= OnAttackEndedHandle;
-        _attackTailFailL.OnStarted -= OnAttackEndedHandle;
-        _attackTailFailR.OnStarted -= OnAttackEndedHandle;
-        _attackTailSuccessL.OnStarted -= OnAttackEndedHandle;
-        _attackTailSuccessR.OnStarted -= OnAttackEndedHandle;
-        _returnHoverState.OnStarted -= OnAttackEndedHandle;
+        _deathHeadState.OnStartedEvent -= OnAttackEndedHandle;
+        _deathTailStateL.OnStartedEvent -= OnAttackEndedHandle;
+        _deathTailStateR.OnStartedEvent -= OnAttackEndedHandle;
+        _attackHeadSuccessState.OnStartedEvent -= OnAttackEndedHandle;
+        _fallHeadState.OnStartedEvent -= OnAttackEndedHandle;
+        _attackTailFailL.OnStartedEvent -= OnAttackEndedHandle;
+        _attackTailFailR.OnStartedEvent -= OnAttackEndedHandle;
+        _attackTailSuccessL.OnStartedEvent -= OnAttackEndedHandle;
+        _attackTailSuccessR.OnStartedEvent -= OnAttackEndedHandle;
+        _returnHoverState.OnStartedEvent -= OnAttackEndedHandle;
         
-        _attackHeadSuccessState.OnEnded -= OnAfterAttackExitEndedHandle;
-        _attackTailSuccessL.OnEnded -= OnAfterAttackExitEndedHandle;
-        _attackTailSuccessR.OnEnded -= OnAfterAttackExitEndedHandle;
-        _attackTailFailL.OnEnded -= OnAfterAttackExitEndedHandle;
-        _attackTailFailR.OnEnded -= OnAfterAttackExitEndedHandle;
-        _fallHeadState.OnEnded -= OnAfterAttackExitEndedHandle;
-        _returnHoverState.OnEnded -= OnAfterAttackExitEndedHandle;
-        _deathHeadState.OnEnded -= OnAfterAttackExitEndedHandle;
-        _deathTailStateL.OnEnded -= OnAfterAttackExitEndedHandle;
-        _deathTailStateR.OnEnded -= OnAfterAttackExitEndedHandle;
+        _attackHeadSuccessState.OnEndedEvent -= OnAfterAttackExitEndedHandle;
+        _attackTailSuccessL.OnEndedEvent -= OnAfterAttackExitEndedHandle;
+        _attackTailSuccessR.OnEndedEvent -= OnAfterAttackExitEndedHandle;
+        _attackTailFailL.OnEndedEvent -= OnAfterAttackExitEndedHandle;
+        _attackTailFailR.OnEndedEvent -= OnAfterAttackExitEndedHandle;
+        _fallHeadState.OnEndedEvent -= OnAfterAttackExitEndedHandle;
+        _returnHoverState.OnEndedEvent -= OnAfterAttackExitEndedHandle;
+        _deathHeadState.OnEndedEvent -= OnAfterAttackExitEndedHandle;
+        _deathTailStateL.OnEndedEvent -= OnAfterAttackExitEndedHandle;
+        _deathTailStateR.OnEndedEvent -= OnAfterAttackExitEndedHandle;
         
-        _deathHeadState.OnEnded -= OnDeathAnimationEndedHandle;
-        _deathTailStateL.OnEnded -= OnDeathAnimationEndedHandle;
-        _deathTailStateR.OnEnded -= OnDeathAnimationEndedHandle;
+        _deathHeadState.OnEndedEvent -= OnDeathAnimationEndedHandle;
+        _deathTailStateL.OnEndedEvent -= OnDeathAnimationEndedHandle;
+        _deathTailStateR.OnEndedEvent -= OnDeathAnimationEndedHandle;
     }
 
     private void Awake()
@@ -703,52 +703,52 @@ public class FDragonflyMovement : MonoBehaviour
 
     private void OnReadyToAttackEnterHandle()
     {
-        OnReadyToAttackStateEntered?.Invoke(_stateMachine.CurrentState);
+        OnReadyToAttackStateEnteredEvent?.Invoke(_stateMachine.CurrentState);
     }
 
     private void OnReadyToSwarmAttackEnterHandle()
     {
-        OnReadyToSwarmAttackStateEntered?.Invoke(_stateMachine.CurrentState);
+        OnReadyToSwarmAttackStateEnteredEvent?.Invoke(_stateMachine.CurrentState);
     }
 
     private void OnReadyToSpiderAttackHandle()
     {
-        OnReadyToSpiderAttackStateEntered?.Invoke();
+        OnReadyToSpiderAttackStateEnteredEvent?.Invoke();
     }
 
     private void OnCatchSpiderStartedLHandle()
     {
-        OnCatchSpiderStarted?.Invoke(1);
+        OnCatchSpiderStartedEvent?.Invoke(1);
     }
 
     private void OnCatchSpiderStartedRHandle()
     {
-        OnCatchSpiderStarted?.Invoke(-1);
+        OnCatchSpiderStartedEvent?.Invoke(-1);
     }
 
     private void OnPreAttackStartedHandle()
     {
-        OnPreattackStarted?.Invoke();
+        OnPreAttackStartedEvent?.Invoke();
     }
 
     private void OnAttackStartedHandle()
     {
-        OnAttackStarted?.Invoke();
+        OnAttackStartedEvent?.Invoke();
     }
 
     private void OnAttackEndedHandle()
     {
-        OnAttackEnded?.Invoke();
+        OnAttackEndedEvent?.Invoke();
     }
 
     private void OnAfterAttackExitEndedHandle()
     {
-        OnAfterAttackExitEnded?.Invoke(_stateMachine.CurrentState);
+        OnAfterAttackExitEndedEvent?.Invoke(_stateMachine.CurrentState);
     }
 
     private void OnDeathAnimationEndedHandle()
     {
-        OnDeathAnimationEnded?.Invoke();
+        OnDeathAnimationEndedEvent?.Invoke();
     }
 
     #endregion

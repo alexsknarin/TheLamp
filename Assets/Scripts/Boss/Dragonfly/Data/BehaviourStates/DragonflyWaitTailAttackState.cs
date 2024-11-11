@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class DragonflyWaitTailAttackState : IState
 {
-    public event Action<DragonflyPatrolAttackMode> OnEnded;
+    public event Action<DragonflyPatrolAttackMode> OnEndedEvent;
     
     private Vector3 _targetPosition;
     private Transform _transform;
@@ -47,7 +47,7 @@ public class DragonflyWaitTailAttackState : IState
                 float currentPatrolDirection = (int)Mathf.Sign((_targetPosition - currentPosition).normalized.x);
                 if (currentPatrolDirection + _lastPatrolDirection == 0)
                 {
-                    OnEnded?.Invoke(DragonflyPatrolAttackMode.Tail);
+                    OnEndedEvent?.Invoke(DragonflyPatrolAttackMode.Tail);
                 }
             }
         }

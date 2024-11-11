@@ -13,7 +13,7 @@ public class UiIntroAnimation : MonoBehaviour
     private float _localTime;
     private bool _isPlaying;
 
-    public event Action OnIntroFinished;
+    public event Action OnIntroFinishedEvent;
 
     // Update is called once per frame
     
@@ -38,7 +38,7 @@ public class UiIntroAnimation : MonoBehaviour
                 cameraPosition.z = _cameraEndZPosition;
                 _cameraTransform.position = cameraPosition;
                 _colorAdjustments.postExposure.Override(0);
-                OnIntroFinished?.Invoke();
+                OnIntroFinishedEvent?.Invoke();
             }
             _colorAdjustments.postExposure.Override(Mathf.Lerp(-8, 0, phase));
             cameraPosition.z = Mathf.Lerp(_cameraStartZPosition, _cameraEndZPosition, _cameraAnimationCurve.Evaluate(phase));

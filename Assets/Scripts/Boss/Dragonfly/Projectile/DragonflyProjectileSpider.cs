@@ -10,7 +10,7 @@ public class DragonflyProjectileSpider : EnemyBase
     [SerializeField] private TrailRenderer _trailRenderer;
     public override EnemyTypes EnemyType => _enemyType;
     
-    public event Action OnEnterAnimationEnd;
+    public event Action OnEnterAnimationEndEvent;
     
     
     private bool _isDead = false;
@@ -18,17 +18,17 @@ public class DragonflyProjectileSpider : EnemyBase
 
     private void OnEnable()
     {
-        LampAttackModel.OnLampAttack += TMPHandleLampAttack;
-        _movement.OnEnterAnimationEnd += OnEnterAnimationEndHandle;
-        _movement.OnFallEnded += OnFallEndedHandle;
+        LampAttackModel.OnLampAttackEvent += TMPHandleLampAttack;
+        _movement.OnEnterAnimationEndEvent += OnEnterAnimationEndHandle;
+        _movement.OnFallEndedEvent += OnFallEndedHandle;
         
     }
     
     private void OnDisable()
     {
-        LampAttackModel.OnLampAttack -= TMPHandleLampAttack;
-        _movement.OnEnterAnimationEnd -= OnEnterAnimationEndHandle;
-        _movement.OnFallEnded -= OnFallEndedHandle;
+        LampAttackModel.OnLampAttackEvent -= TMPHandleLampAttack;
+        _movement.OnEnterAnimationEndEvent -= OnEnterAnimationEndHandle;
+        _movement.OnFallEndedEvent -= OnFallEndedHandle;
     }
 
     private void OnFallEndedHandle()
@@ -38,7 +38,7 @@ public class DragonflyProjectileSpider : EnemyBase
 
     private void OnEnterAnimationEndHandle()
     {
-        OnEnterAnimationEnd?.Invoke();
+        OnEnterAnimationEndEvent?.Invoke();
     }
 
 

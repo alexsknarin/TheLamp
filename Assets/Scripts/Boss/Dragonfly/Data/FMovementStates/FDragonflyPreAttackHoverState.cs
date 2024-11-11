@@ -8,7 +8,7 @@ public class FDragonflyPreAttackHoverState : ScriptableObject, IState
     [SerializeField] private float _duration = 0.4f;
     [SerializeField] private float _deccelerationPower = 2f;
 
-    public event Action OnStarted;
+    public event Action OnStartedEvent;
     
     private Vector3 _attackDirection;
     private float _localTime = 0f;
@@ -34,7 +34,7 @@ public class FDragonflyPreAttackHoverState : ScriptableObject, IState
         _localTime = 0f;
         _phase = 0f;
         _readyToSwitch = false;
-        OnStarted?.Invoke();
+        OnStartedEvent?.Invoke();
     }
 
     public void Tick()

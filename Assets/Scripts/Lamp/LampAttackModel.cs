@@ -18,25 +18,25 @@ public class LampAttackModel : MonoBehaviour
     private LampStates _lampState = LampStates.Neutral;
     private float _localTime;
     
-    public static event Action<int, float, float, float> OnLampAttack;
-    public static event Action<int, float, float, float> OnLampBlockedAttack;
-    public static event Action<float> OnLampCurrentPowerChanged;
+    public static event Action<int, float, float, float> OnLampAttackEvent;
+    public static event Action<int, float, float, float> OnLampBlockedAttackEvent;
+    public static event Action<float> OnLampCurrentPowerChangedEvent;
 
 
     private void OnEnable()
     {
-        PlayerInputHandler.OnPlayerAttack += StartAttackState; // Possibly move to Lamp????
-        Lamp.OnLampDamaged += HandleDamageWithCooldown;
-        _lampStatsManager.OnAttackDistanceUpgraded += UpdateAttackDistance;
-        _lampStatsManager.OnCooldownUpgraded += UpdateCooldownTime;
+        PlayerInputHandler.OnPlayerAttackEvent += StartAttackState; // Possibly move to Lamp????
+        Lamp.OnLampDamagedEvent += HandleDamageWithCooldown;
+        _lampStatsManager.OnAttackDistanceUpgradedEvent += UpdateAttackDistance;
+        _lampStatsManager.OnCooldownUpgradedEvent += UpdateCooldownTime;
     }
     
     private void OnDisable()
     {
-        PlayerInputHandler.OnPlayerAttack -= StartAttackState;
-        Lamp.OnLampDamaged -= HandleDamageWithCooldown;
-        _lampStatsManager.OnAttackDistanceUpgraded -= UpdateAttackDistance;
-        _lampStatsManager.OnCooldownUpgraded -= UpdateCooldownTime;
+        PlayerInputHandler.OnPlayerAttackEvent -= StartAttackState;
+        Lamp.OnLampDamagedEvent -= HandleDamageWithCooldown;
+        _lampStatsManager.OnAttackDistanceUpgradedEvent -= UpdateAttackDistance;
+        _lampStatsManager.OnCooldownUpgradedEvent -= UpdateCooldownTime;
     }
     
     public void Initialize()
@@ -108,11 +108,11 @@ public class LampAttackModel : MonoBehaviour
         {
             if (_isBlockedAttack)
             {
-                OnLampBlockedAttack?.Invoke(_attackPower, _currentPower, _attackDuration, _attackDistance);
+                OnLampBlockedAttackEvent?.Invoke(_attackPower, _currentPower, _attackDuration, _attackDistance);
             }
             else
             {
-                OnLampAttack?.Invoke(_attackPower, _currentPower, _attackDuration, _attackDistance);
+                OnLampAttackEvent?.Invoke(_attackPower, _currentPower, _attackDuration, _attackDistance);
             }
             _lampState = LampStates.Attack;
             _localTime = 0;
@@ -138,7 +138,7 @@ public class LampAttackModel : MonoBehaviour
     private void StartCooldownState()
     {   
         _currentPower = 0;
-        OnLampCurrentPowerChanged?.Invoke(_currentPower);
+        OnLampCurrentPowerChangedEvent?.Invoke(_currentPower);
         _lampState = LampStates.Cooldown;
     }
     
@@ -152,14 +152,14 @@ public class LampAttackModel : MonoBehaviour
         }
         _currentPower = phase;
         UpdateAttackPower();
-        OnLampCurrentPowerChanged?.Invoke(_currentPower);
+        OnLampCurrentPowerChangedEvent?.Invoke(_currentPower);
         _localTime += Time.deltaTime;
     }
     
     private void StartNeutralState()
     {
         _currentPower = _maxPower;
-        OnLampCurrentPowerChanged?.Invoke(_currentPower);
+        OnLampCurrentPowerChangedEvent?.Invoke(_currentPower);
         UpdateAttackPower();
         _lampState = LampStates.Neutral;
     }

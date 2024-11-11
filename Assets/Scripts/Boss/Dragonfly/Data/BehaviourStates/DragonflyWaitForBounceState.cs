@@ -2,7 +2,7 @@ using System;
 
 public class DragonflyWaitForBounceState : IState
 {
-    public event Action OnEnded;
+    public event Action OnEndedEvent;
     public void OnEnter()
     {
     }
@@ -13,6 +13,6 @@ public class DragonflyWaitForBounceState : IState
 
     public void OnExit()
     {
-        OnEnded?.Invoke();
+        OnEndedEvent?.Invoke();
     }
 }

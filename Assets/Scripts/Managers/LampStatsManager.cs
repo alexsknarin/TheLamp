@@ -46,10 +46,10 @@
     public float CurrentAttackDistance => _currentAttackDistance;
     public int UpgradePoints => _upgradePoints;
     public Vector3 DamageWeights => _damageWeights;
-    public event Action OnHealthChange;
-    public event Action OnHealthUpgraded;
-    public event Action OnCooldownUpgraded;
-    public event Action OnAttackDistanceUpgraded;
+    public event Action OnHealthChangeEvent;
+    public event Action OnHealthUpgradedEvent;
+    public event Action OnCooldownUpgradedEvent;
+    public event Action OnAttackDistanceUpgradedEvent;
     
     private float _initialCooldownTime;
     
@@ -107,12 +107,12 @@
 
     private void OnEnable()
     {
-        ScoresManager.OnScoreChange += UpdateUpgradePoints;
+        ScoresManager.OnScoreChangeEvent += UpdateUpgradePoints;
     }
     
     private void OnDisable()
     {
-        ScoresManager.OnScoreChange -= UpdateUpgradePoints;
+        ScoresManager.OnScoreChangeEvent -= UpdateUpgradePoints;
     }
 
     public void Initialize()
@@ -176,11 +176,11 @@
             {
                 _maxHealth++;
                 _currentHealth++;
-                OnHealthUpgraded?.Invoke();
+                OnHealthUpgradedEvent?.Invoke();
             }
             _lampImpactPointsData.Reset();
             SaveData();
-            OnHealthChange?.Invoke();
+            OnHealthChangeEvent?.Invoke();
         }
     }
     
@@ -192,7 +192,7 @@
             _upgradePoints -= _coolUpgradePrice;
             _currentCooldownTime -= _cooldownDecrement;
             SaveData();
-            OnCooldownUpgraded?.Invoke();
+            OnCooldownUpgradedEvent?.Invoke();
         }
     }
     
@@ -204,7 +204,7 @@
             _upgradePoints -= _attackUpgradePrice;
             _currentAttackDistance += 0.01f;
             SaveData();
-            OnAttackDistanceUpgraded?.Invoke();
+            OnAttackDistanceUpgradedEvent?.Invoke();
         }
     }
     

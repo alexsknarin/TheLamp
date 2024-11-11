@@ -8,7 +8,7 @@ public class FDragonflyPreAttackTailStateL : ScriptableObject, IState
     [SerializeField] private float _distance = -0.5f;
     [SerializeField] private AnimationCurve _curve;
     
-    public event Action OnStarted;
+    public event Action OnStartedEvent;
     
     private readonly int _sideDirection = 1;
     private float _localTime = 0f;
@@ -43,7 +43,7 @@ public class FDragonflyPreAttackTailStateL : ScriptableObject, IState
         _localTime = 0f;
         _phase = 0f;
         _readyToSwitch = false;
-        OnStarted?.Invoke();
+        OnStartedEvent?.Invoke();
     }
 
     public void Tick()

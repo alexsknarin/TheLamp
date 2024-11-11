@@ -18,27 +18,27 @@ public class Enemy : EnemyBase
         set => _objectPool = value;
     }
 
-    public static event Action<Enemy> OnEnemyDeactivated;
-    public static event Action<Enemy> OnEnemyDamaged;
+    public static event Action<Enemy> OnEnemyDeactivatedEvent;
+    public static event Action<Enemy> OnEnemyDamagedEvent;
 
     private void OnEnable()
     {
-        _enemyMovement.OnPreAttackStart += OnPreAttackStart;
-        _enemyMovement.OnPreAttackEnd += OnPreAttackEnd;
-        _enemyMovement.OnAttackEnd += AttackStatusEnable;
-        _enemyMovement.OnEnemyDeactivated += OnDeactivated;
-        _enemyMovement.OnMovementReset += OnMovementReset;
-        _enemyMovement.OnStickStart += StickStatusEnable;
+        _enemyMovement.OnPreAttackStartEvent += OnPreAttackStart;
+        _enemyMovement.OnPreAttackEndEvent += OnPreAttackEnd;
+        _enemyMovement.OnAttackEndEvent += AttackStatusEnable;
+        _enemyMovement.OnEnemyDeactivatedEvent += OnDeactivated;
+        _enemyMovement.OnMovementResetEvent += OnMovementReset;
+        _enemyMovement.OnStickStartEvent += StickStatusEnable;
     }
     
     private void OnDisable()
     {
-        _enemyMovement.OnPreAttackStart -= OnPreAttackStart;
-        _enemyMovement.OnPreAttackEnd -= OnPreAttackEnd;
-        _enemyMovement.OnAttackEnd -= AttackStatusEnable;
-        _enemyMovement.OnEnemyDeactivated -= OnDeactivated;
-        _enemyMovement.OnMovementReset -= OnMovementReset;
-        _enemyMovement.OnStickStart -= StickStatusEnable;
+        _enemyMovement.OnPreAttackStartEvent -= OnPreAttackStart;
+        _enemyMovement.OnPreAttackEndEvent -= OnPreAttackEnd;
+        _enemyMovement.OnAttackEndEvent -= AttackStatusEnable;
+        _enemyMovement.OnEnemyDeactivatedEvent -= OnDeactivated;
+        _enemyMovement.OnMovementResetEvent -= OnMovementReset;
+        _enemyMovement.OnStickStartEvent -= StickStatusEnable;
     }
     
     public override void Initialize()
@@ -186,7 +186,7 @@ public class Enemy : EnemyBase
             ReceivedLampAttack = true;
             _enemyPresentation.DamageFlash();
             _enemyPresentation.HealthUpdate(_currentHealth, _maxHealth);
-            OnEnemyDamaged?.Invoke(this);
+            OnEnemyDamagedEvent?.Invoke(this);
             _enemyMovement.TriggerFall();
         }
         else
@@ -218,7 +218,7 @@ public class Enemy : EnemyBase
 
     private void OnDeactivated()
     {
-        OnEnemyDeactivated?.Invoke(this);
+        OnEnemyDeactivatedEvent?.Invoke(this);
         _objectPool.Release(this);
     }
 }

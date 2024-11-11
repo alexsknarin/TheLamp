@@ -11,9 +11,7 @@ public class DragonflyPresentation : EnemyPresentation
     
     // private bool _isDamageFlashing = false;
     private float _localTime = 0f;
-    
-    
-    
+
     public override void PreAttackStart()
     {
         _preAttackFlash.PreAttackStart();

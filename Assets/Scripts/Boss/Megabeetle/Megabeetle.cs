@@ -11,34 +11,34 @@ public class Megabeetle : BossBase
     [SerializeField] private MegabeetleMovement _enemyMovement;
     [SerializeField] private MegabeetlePresentation _enemyPresentation;
     public override EnemyTypes EnemyType => _enemyType;
-    public static Action<EnemyBase> OnStickAttacked;
+    public static event Action<EnemyBase> OnStickAttackedEvent;
     private int _currentHealthToFall;
     private bool _isDead = false;
     
     private void OnEnable()
     {
-        _enemyMovement.OnPreAttackStart += OnPreAttackStart;
-        _enemyMovement.OnPreAttackEnd += OnPreAttackEnd;
-        _enemyMovement.OnAttackEnd += AttackStatusEnable;
-        _enemyMovement.OnEnemyDeactivated += OnDeactivated;
-        _enemyMovement.OnMovementReset += OnMovementReset;
-        _enemyMovement.OnStickStart += StickStatusEnable;
-        _enemyMovement.OnDeathStateEnded += HandleDeathMoveStateEnd;
-        _enemyMovement.OnStickAttackStateEnded += HandleStickAttack;
-        _enemyMovement.OnTriggerSpread += MegabeetleTriggerSpread;
+        _enemyMovement.OnPreAttackStartEvent += OnPreAttackStartHandle;
+        _enemyMovement.OnPreAttackEndEvent += OnPreAttackEndHandle;
+        _enemyMovement.OnAttackEndEvent += AttackStatusEnable;
+        _enemyMovement.OnEnemyDeactivatedEvent += OnDeactivatedHandle;
+        _enemyMovement.OnMovementResetEvent += OnMovementResetHandle;
+        _enemyMovement.OnStickStartEvent += StickStatusEnable;
+        _enemyMovement.OnDeathStateEndedEvent += HandleDeathMoveStateEnd;
+        _enemyMovement.OnStickAttackStateEndedEvent += HandleStickAttack;
+        _enemyMovement.OnTriggerSpreadEvent += MegabeetleTriggerSpread;
     }
     
     private void OnDisable()
     {
-        _enemyMovement.OnPreAttackStart -= OnPreAttackStart;
-        _enemyMovement.OnPreAttackEnd -= OnPreAttackEnd;
-        _enemyMovement.OnAttackEnd -= AttackStatusEnable;
-        _enemyMovement.OnEnemyDeactivated -= OnDeactivated;
-        _enemyMovement.OnMovementReset -= OnMovementReset;
-        _enemyMovement.OnStickStart -= StickStatusEnable;
-        _enemyMovement.OnDeathStateEnded -= HandleDeathMoveStateEnd;
-        _enemyMovement.OnStickAttackStateEnded -= HandleStickAttack;
-        _enemyMovement.OnTriggerSpread -= MegabeetleTriggerSpread;
+        _enemyMovement.OnPreAttackStartEvent -= OnPreAttackStartHandle;
+        _enemyMovement.OnPreAttackEndEvent -= OnPreAttackEndHandle;
+        _enemyMovement.OnAttackEndEvent -= AttackStatusEnable;
+        _enemyMovement.OnEnemyDeactivatedEvent -= OnDeactivatedHandle;
+        _enemyMovement.OnMovementResetEvent -= OnMovementResetHandle;
+        _enemyMovement.OnStickStartEvent -= StickStatusEnable;
+        _enemyMovement.OnDeathStateEndedEvent -= HandleDeathMoveStateEnd;
+        _enemyMovement.OnStickAttackStateEndedEvent -= HandleStickAttack;
+        _enemyMovement.OnTriggerSpreadEvent -= MegabeetleTriggerSpread;
     }
 
     private void MegabeetleTriggerSpread()
@@ -76,7 +76,7 @@ public class Megabeetle : BossBase
         _enemyMovement.MovementReset();
     }
     
-    private void OnMovementReset()
+    private void OnMovementResetHandle()
     {
         _enemyPresentation.Initialize();
     }
@@ -96,7 +96,7 @@ public class Megabeetle : BossBase
         _enemyMovement.TriggerAttack();
     }
     
-    private void OnPreAttackStart()
+    private void OnPreAttackStartHandle()
     {
         ReceivedLampAttack = false;
         _enemyPresentation.PreAttackStart();
@@ -104,7 +104,7 @@ public class Megabeetle : BossBase
         IsAttacking = true;
     }
     
-    private void OnPreAttackEnd()
+    private void OnPreAttackEndHandle()
     {
         _enemyPresentation.PreAttackEnd();
         ReadyToCollide = true;
@@ -185,7 +185,7 @@ public class Megabeetle : BossBase
         return transform.position;
     }
     
-    private void OnDeactivated()
+    private void OnDeactivatedHandle()
     {
     }
     
@@ -198,6 +198,6 @@ public class Megabeetle : BossBase
     
     private void HandleStickAttack()
     {
-        OnStickAttacked?.Invoke(this);
+        OnStickAttackedEvent?.Invoke(this);
     }
 }

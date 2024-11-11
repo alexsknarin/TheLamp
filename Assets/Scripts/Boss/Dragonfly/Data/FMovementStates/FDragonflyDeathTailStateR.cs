@@ -10,8 +10,8 @@ public class FDragonflyDeathTailStateR : ScriptableObject, IState
     [SerializeField] private float _rotationSpeed = 380f;
     [SerializeField] private float _moveAcceleration = 1.9f;
     
-    public event Action OnStarted;
-    public event Action OnEnded;
+    public event Action OnStartedEvent;
+    public event Action OnEndedEvent;
     
     private readonly int _sideDirection = -1;
     private float _localTime = 0f;
@@ -34,7 +34,7 @@ public class FDragonflyDeathTailStateR : ScriptableObject, IState
         _localTime = 0f;
         _phase = 0f;
         _isAfterDelay = false;
-        OnStarted?.Invoke();
+        OnStartedEvent?.Invoke();
     }
     
     public void Tick()
@@ -74,7 +74,7 @@ public class FDragonflyDeathTailStateR : ScriptableObject, IState
         else if (_isAfterDelay && _localTime > _afterDelay)
         {
             _isAfterDelay = false;
-            OnEnded?.Invoke();
+            OnEndedEvent?.Invoke();
         }
     }
 }

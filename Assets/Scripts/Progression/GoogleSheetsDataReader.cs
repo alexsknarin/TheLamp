@@ -13,13 +13,13 @@ public class GoogleSheetsDataReader : MonoBehaviour, IInitializable
     private string _sheetData;
     public string SheetData => _sheetData;
     
-    public event Action OnDataLoaded; 
+    public event Action OnDataLoadedEvent; 
 
     public void Initialize()
     {
         if (_useCachedSpawnData)
         {
-            OnDataLoaded?.Invoke();
+            OnDataLoadedEvent?.Invoke();
         }
         else
         {
@@ -36,13 +36,13 @@ public class GoogleSheetsDataReader : MonoBehaviour, IInitializable
         {
             Debug.Log("Connection ERROR: " + www.error);
             _sheetData = "";
-            OnDataLoaded?.Invoke();
+            OnDataLoadedEvent?.Invoke();
         }
         else
         {
             _sheetData = www.downloadHandler.text;
             _spawnQueueDataCache.Data = _sheetData;
-            OnDataLoaded?.Invoke();
+            OnDataLoadedEvent?.Invoke();
         }
     }
 }

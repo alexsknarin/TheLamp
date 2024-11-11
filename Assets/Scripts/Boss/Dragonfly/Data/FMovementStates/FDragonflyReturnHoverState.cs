@@ -14,8 +14,8 @@ public class FDragonflyReturnHoverState : ScriptableObject, IState
     [SerializeField] private float _horizontalDistance = 1f;
     [SerializeField] private AnimationCurve _verticalMoveCurve;
     
-    public event Action OnStarted;
-    public event Action OnEnded;
+    public event Action OnStartedEvent;
+    public event Action OnEndedEvent;
     
     private float _localTime = 0f;
     private float _phase = 0f;
@@ -52,7 +52,7 @@ public class FDragonflyReturnHoverState : ScriptableObject, IState
         // Normalize duration by Z distance from camera
         float zPhase = Mathf.InverseLerp(_zMinDistance, _zMaxDistance, _endPos.z);
         _normalizedDuration = Mathf.Lerp(_farDuration, _closeDuration, zPhase);
-        OnStarted?.Invoke();
+        OnStartedEvent?.Invoke();
     }
     
     public void Tick()
@@ -74,7 +74,7 @@ public class FDragonflyReturnHoverState : ScriptableObject, IState
         _phase = _localTime / _normalizedDuration;
         if (_phase > 1)
         {
-            OnEnded?.Invoke();
+            OnEndedEvent?.Invoke();
         }
     }
 }

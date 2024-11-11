@@ -11,7 +11,7 @@ public class DragonflyProjectileMovementMoth : MonoBehaviour
     [SerializeField] private float _noiseAmplitude = 1.0f;
     [SerializeField] private float _startTransitionDistance = 2.0f;
     
-    public event Action OnFallEnded;
+    public event Action OnFallEndedEvent;
     
     
     private bool _isAttacking = false;
@@ -93,7 +93,7 @@ public class DragonflyProjectileMovementMoth : MonoBehaviour
                 _isFalling = false;
                 _isAttacking = false;
                 transform.position = new Vector3(0, -2.294306f, -3.276608f);
-                OnFallEnded?.Invoke();
+                OnFallEndedEvent?.Invoke();
             }
         }
     }

@@ -44,16 +44,16 @@ public class CameraShake : MonoBehaviour
     
     private void OnEnable()
     {
-        Lamp.OnLampDamaged += StartDamageShake;
-        Lamp.OnLampDead += StartDamageShake;
-        EnemyManager.OnFireflyExplosion += StartExplosionShake;
+        Lamp.OnLampDamagedEvent += StartDamageShake;
+        Lamp.OnLampDeadEvent += StartDamageShake;
+        EnemyManager.OnFireflyExplosionEvent += StartExplosionShake;
     }
 
     private void OnDisable()
     {
-        Lamp.OnLampDamaged -= StartDamageShake;
-        Lamp.OnLampDead -= StartDamageShake;
-        EnemyManager.OnFireflyExplosion -= StartExplosionShake;
+        Lamp.OnLampDamagedEvent -= StartDamageShake;
+        Lamp.OnLampDeadEvent -= StartDamageShake;
+        EnemyManager.OnFireflyExplosionEvent -= StartExplosionShake;
     }
     
     private void Start()

@@ -12,8 +12,8 @@ public class FDragonflyAttackTailFailStateL : ScriptableObject, IState
     [SerializeField] private AnimationCurve _rzMixCurve;
     [SerializeField] private float _rzMaxValue;
     
-    public event Action OnStarted;
-    public event Action OnEnded;
+    public event Action OnStartedEvent;
+    public event Action OnEndedEvent;
     
     private float _localTime = 0f;
     private float _phase = 0f;
@@ -38,7 +38,7 @@ public class FDragonflyAttackTailFailStateL : ScriptableObject, IState
         _localTime = 0f;
         _phase = 0f;
         _isAfterDelay = false;
-        OnStarted?.Invoke();
+        OnStartedEvent?.Invoke();
     }
     
     public void Tick()
@@ -80,7 +80,7 @@ public class FDragonflyAttackTailFailStateL : ScriptableObject, IState
         else if (_isAfterDelay && _localTime > _afterDelay)
         {
             _isAfterDelay = false;
-            OnEnded?.Invoke();
+            OnEndedEvent?.Invoke();
         }
     }
 }

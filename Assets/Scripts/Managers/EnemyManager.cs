@@ -74,33 +74,33 @@ public class EnemyManager : MonoBehaviour,IInitializable
     private WaitForSeconds _waitAfterGameOver = new WaitForSeconds(3.9f);
     
     
-    public static event Action<int> OnWaveStarted;
-    public static event Action<int> OnWaveEnded;
-    public static event Action OnFireflyExplosion;
-    public static event Action OnEnemyDamaged; 
-    public static event Action<EnemyBase> OnBossAppear;
-    public static event Action<EnemyBase> OnBossDeath;
+    public static event Action<int> OnWaveStartedEvent;
+    public static event Action<int> OnWaveEndedEvent;
+    public static event Action OnFireflyExplosionEvent;
+    public static event Action OnEnemyDamagedEvent; 
+    public static event Action<EnemyBase> OnBossAppearEvent;
+    public static event Action<EnemyBase> OnBossDeathEvent;
 
     private void OnEnable()
     {
-        Enemy.OnEnemyDeactivated += UpdateEnemiesOnScreen;
-        Enemy.OnEnemyDeactivated += StartExplodeEnemyOnDeath;
-        LampAttackModel.OnLampAttack += LampAttack;
-        LampAttackModel.OnLampBlockedAttack += LampBlockedAttack;
-        Lamp.OnLampCollidedWithStickyEnemy += UpdateLadybugsOnScreen;
-        BossBase.OnTriggerSpread += SpreadEnemies;
-        BossBase.OnDeath += HandleBossEnd;
+        Enemy.OnEnemyDeactivatedEvent += UpdateEnemiesOnScreen;
+        Enemy.OnEnemyDeactivatedEvent += StartExplodeEnemyOnDeath;
+        LampAttackModel.OnLampAttackEvent += LampAttack;
+        LampAttackModel.OnLampBlockedAttackEvent += LampBlockedAttack;
+        Lamp.OnLampCollidedWithStickyEnemyEvent += UpdateLadybugsOnScreen;
+        BossBase.OnTriggerSpreadEvent += SpreadEnemies;
+        BossBase.OnDeathEvent += HandleBossEnd;
     }
     
     private void OnDisable()
     {
-        Enemy.OnEnemyDeactivated -= UpdateEnemiesOnScreen;
-        Enemy.OnEnemyDeactivated -= StartExplodeEnemyOnDeath;
-        LampAttackModel.OnLampAttack -= LampAttack;
-        LampAttackModel.OnLampBlockedAttack -= LampBlockedAttack;
-        Lamp.OnLampCollidedWithStickyEnemy -= UpdateLadybugsOnScreen;
-        BossBase.OnTriggerSpread -= SpreadEnemies;
-        BossBase.OnDeath -= HandleBossEnd;
+        Enemy.OnEnemyDeactivatedEvent -= UpdateEnemiesOnScreen;
+        Enemy.OnEnemyDeactivatedEvent -= StartExplodeEnemyOnDeath;
+        LampAttackModel.OnLampAttackEvent -= LampAttack;
+        LampAttackModel.OnLampBlockedAttackEvent -= LampBlockedAttack;
+        Lamp.OnLampCollidedWithStickyEnemyEvent -= UpdateLadybugsOnScreen;
+        BossBase.OnTriggerSpreadEvent -= SpreadEnemies;
+        BossBase.OnDeathEvent -= HandleBossEnd;
     }
     
     public void Initialize()
@@ -148,7 +148,7 @@ public class EnemyManager : MonoBehaviour,IInitializable
         if (!_isWaveInitialized)
         {
             SetupWave(_currentWave);
-            OnWaveStarted?.Invoke(_currentWave);
+            OnWaveStartedEvent?.Invoke(_currentWave);
         }
     }
     
@@ -252,7 +252,7 @@ public class EnemyManager : MonoBehaviour,IInitializable
         _currentBoss.Play();
         _isBossActive = true;
         _attackLocalTime = 0;
-        OnBossAppear?.Invoke(_currentBoss);
+        OnBossAppearEvent?.Invoke(_currentBoss);
     }
     
     private void LampAttack(int attackPower, float currentPower, float attackDuration, float attackDistance)
@@ -293,7 +293,7 @@ public class EnemyManager : MonoBehaviour,IInitializable
         _explosionSource = explosionSource;
         _explosionPosition = explosionSource.transform.position;
         _fireflyExplosion.Play(_explosionPosition, _fireflyExplosionRadius * 2);
-        OnFireflyExplosion?.Invoke();
+        OnFireflyExplosionEvent?.Invoke();
         _explosionLocalTime = 0;
         _isExplosionActive = true;
     }
@@ -308,7 +308,7 @@ public class EnemyManager : MonoBehaviour,IInitializable
 
     private void HandleBossEnd()
     {
-        OnBossDeath?.Invoke(_currentBoss);
+        OnBossDeathEvent?.Invoke(_currentBoss);
         _isBossActive = false;
         _enemies.Remove(_currentBoss);
         _enemiesKilled++;
@@ -356,7 +356,7 @@ public class EnemyManager : MonoBehaviour,IInitializable
                 _isWaveInitialized = false;
                 _currentWave++;
                 _saveDataContainer.Wave = _currentWave;
-                OnWaveEnded?.Invoke(_currentWave);
+                OnWaveEndedEvent?.Invoke(_currentWave);
                 return;
             }
             
@@ -529,6 +529,6 @@ public class EnemyManager : MonoBehaviour,IInitializable
     // Event Handlers
     private void HandleOnEnemyDamaged()
     {
-        OnEnemyDamaged?.Invoke();
+        OnEnemyDamagedEvent?.Invoke();
     }
 }

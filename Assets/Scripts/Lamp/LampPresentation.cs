@@ -32,16 +32,16 @@ public class LampPresentation : MonoBehaviour
     
     private void OnEnable()
     {
-        LampAttackModel.OnLampAttack += StartAttackState;
-        LampAttackModel.OnLampCurrentPowerChanged += PerformCooldownState;
-        LampAttackModel.OnLampBlockedAttack += StartBlockedAttackState;
+        LampAttackModel.OnLampAttackEvent += StartAttackState;
+        LampAttackModel.OnLampCurrentPowerChangedEvent += PerformCooldownState;
+        LampAttackModel.OnLampBlockedAttackEvent += StartBlockedAttackState;
     }
 
     private void OnDisable()
     {
-        LampAttackModel.OnLampAttack -= StartAttackState;
-        LampAttackModel.OnLampCurrentPowerChanged -= PerformCooldownState;
-        LampAttackModel.OnLampBlockedAttack -= StartBlockedAttackState;
+        LampAttackModel.OnLampAttackEvent -= StartAttackState;
+        LampAttackModel.OnLampCurrentPowerChangedEvent -= PerformCooldownState;
+        LampAttackModel.OnLampBlockedAttackEvent -= StartBlockedAttackState;
     }
     
     public void Initialize(Vector3 damageWeights, LampImpactPointsData impactPointsData)

@@ -4,7 +4,7 @@ using Random = UnityEngine.Random;
 
 public class DragonflyWaitHoverAttackState : IState
 {
-    public event Action<DragonflyPatrolAttackMode> OnEnded;
+    public event Action<DragonflyPatrolAttackMode> OnEndedEvent;
     private readonly float _minWaitTime = 0f;
     private readonly float _maxWaitTime = 1f;
     private float _localTime = 0f;
@@ -27,7 +27,7 @@ public class DragonflyWaitHoverAttackState : IState
         _localTime += Time.deltaTime;
         if (_localTime >= _duration)
         {
-            OnEnded?.Invoke(DragonflyPatrolAttackMode.Head);
+            OnEndedEvent?.Invoke(DragonflyPatrolAttackMode.Head);
         }
     }
 

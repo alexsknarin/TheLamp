@@ -11,8 +11,8 @@ public class FDragonflyAttackTailSuccessStateR : ScriptableObject, IState
     [SerializeField] private AnimationCurve _rxCurve;
     [SerializeField] private AnimationCurve _ryCurve;
     [SerializeField] private AnimationCurve _rzCurve;
-    public event Action OnStarted;
-    public event Action OnEnded;
+    public event Action OnStartedEvent;
+    public event Action OnEndedEvent;
     
     private Vector3 _startPosition;
     private Vector3 _startEuelerRotation;
@@ -36,7 +36,7 @@ public class FDragonflyAttackTailSuccessStateR : ScriptableObject, IState
         _startEuelerRotation = _visibleBodyTransform.eulerAngles;
         _localTime = 0f;
         _phase = 0f;
-        OnStarted?.Invoke();
+        OnStartedEvent?.Invoke();
     }
     
     public void Tick()
@@ -67,7 +67,7 @@ public class FDragonflyAttackTailSuccessStateR : ScriptableObject, IState
         _phase = _localTime / _duration;
         if (_phase > 1)
         {
-            OnEnded?.Invoke();
+            OnEndedEvent?.Invoke();
         }
     }
 }

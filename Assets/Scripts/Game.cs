@@ -30,32 +30,32 @@ public class Game : MonoBehaviour
 
     private void OnEnable()
     {
-        _googleSheetsDataReader.OnDataLoaded += InitializeEnemyManager;
-        _uiManager.OnIntroFinished += OnIntroEnded;
-        _ugsSetup.OnConsentAddressed += HandleDataConsentAddressed;
-        PlayerInputHandler.OnPlayerAttack += HandlePlayerAttackButtonPressed;
-        EnemyManager.OnWaveEnded += HandleWaveEnded;
-        Lamp.OnLampDead += HandleLampDead;
-        _lampStatsManager.OnHealthChange += HandleStatsUpgrade;
-        _lampStatsManager.OnCooldownUpgraded += HandleStatsUpgrade;
-        _lampStatsManager.OnAttackDistanceUpgraded += HandleStatsUpgrade;
-        _adsManager.OnAdFinished += SaveRewards;
-        _uiManager.OnGameoverFinished += HandleGameoverUiAnimationFinished;
+        _googleSheetsDataReader.OnDataLoadedEvent += InitializeEnemyManager;
+        _uiManager.OnIntroFinishedEvent += OnIntroEnded;
+        _ugsSetup.OnConsentAddressedEvent += HandleDataConsentAddressed;
+        PlayerInputHandler.OnPlayerAttackEvent += HandlePlayerAttackButtonPressed;
+        EnemyManager.OnWaveEndedEvent += HandleWaveEnded;
+        Lamp.OnLampDeadEvent += HandleLampDead;
+        _lampStatsManager.OnHealthChangeEvent += HandleStatsUpgrade;
+        _lampStatsManager.OnCooldownUpgradedEvent += HandleStatsUpgrade;
+        _lampStatsManager.OnAttackDistanceUpgradedEvent += HandleStatsUpgrade;
+        _adsManager.OnAdFinishedEvent += SaveRewards;
+        _uiManager.OnGameoverFinishedEvent += HandleGameoverUiAnimationFinished;
     }
 
     private void OnDisable()
     {
-        _googleSheetsDataReader.OnDataLoaded -= InitializeEnemyManager;
-        _uiManager.OnIntroFinished -= OnIntroEnded;
-        _ugsSetup.OnConsentAddressed -= HandleDataConsentAddressed;
-        PlayerInputHandler.OnPlayerAttack -= HandlePlayerAttackButtonPressed;
-        EnemyManager.OnWaveEnded -= HandleWaveEnded;
-        Lamp.OnLampDead -= HandleLampDead;
-        _lampStatsManager.OnHealthChange -= HandleStatsUpgrade;
-        _lampStatsManager.OnCooldownUpgraded -= HandleStatsUpgrade;
-        _lampStatsManager.OnAttackDistanceUpgraded -= HandleStatsUpgrade;
-        _adsManager.OnAdFinished -= SaveRewards;
-        _uiManager.OnGameoverFinished -= HandleGameoverUiAnimationFinished;
+        _googleSheetsDataReader.OnDataLoadedEvent -= InitializeEnemyManager;
+        _uiManager.OnIntroFinishedEvent -= OnIntroEnded;
+        _ugsSetup.OnConsentAddressedEvent -= HandleDataConsentAddressed;
+        PlayerInputHandler.OnPlayerAttackEvent -= HandlePlayerAttackButtonPressed;
+        EnemyManager.OnWaveEndedEvent -= HandleWaveEnded;
+        Lamp.OnLampDeadEvent -= HandleLampDead;
+        _lampStatsManager.OnHealthChangeEvent -= HandleStatsUpgrade;
+        _lampStatsManager.OnCooldownUpgradedEvent -= HandleStatsUpgrade;
+        _lampStatsManager.OnAttackDistanceUpgradedEvent -= HandleStatsUpgrade;
+        _adsManager.OnAdFinishedEvent -= SaveRewards;
+        _uiManager.OnGameoverFinishedEvent -= HandleGameoverUiAnimationFinished;
     }
 
     private void Awake()

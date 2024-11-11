@@ -6,7 +6,6 @@ public class DragonflyProjectilePresentation : EnemyPresentation
     [Header("------ Preattack Flash ------")]
     [SerializeField] private PreAttackFlash _preAttackFlash;
     
-    
     public override void Initialize()
     {
         _deathFlash.Initialize();

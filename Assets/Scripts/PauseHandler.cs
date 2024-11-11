@@ -9,12 +9,12 @@ public class PauseHandler : MonoBehaviour
     
     private void OnEnable()
     {
-        EnemyManager.OnEnemyDamaged += OnDamagedEnemyPauseStart;
+        EnemyManager.OnEnemyDamagedEvent += OnDamagedEnemyPauseStart;
     }
     
     private void OnDisable()
     {
-        EnemyManager.OnEnemyDamaged -= OnDamagedEnemyPauseStart;
+        EnemyManager.OnEnemyDamagedEvent -= OnDamagedEnemyPauseStart;
     }
 
     private void OnDamagedEnemyPauseStart()

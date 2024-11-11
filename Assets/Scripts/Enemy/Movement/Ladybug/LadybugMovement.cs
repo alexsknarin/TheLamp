@@ -32,12 +32,12 @@ public class LadybugMovement : EnemyMovement
 
     private void OnEnable()
     {
-        Lamp.OnLampDead += FallOnLampDestroyed;
+        Lamp.OnLampDeadEvent += FallOnLampDestroyed; // TODO: manage from enemy Manager
     }
     
     private void OnDisable()
     {
-        Lamp.OnLampDead -= FallOnLampDestroyed;
+        Lamp.OnLampDeadEvent -= FallOnLampDestroyed;
     }
 
     public override void Initialize()

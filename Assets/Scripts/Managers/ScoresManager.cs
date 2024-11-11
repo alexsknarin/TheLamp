@@ -18,17 +18,17 @@ public class ScoresManager : MonoBehaviour, IInitializable
     [SerializeField] private SaveDataContainer _saveDataContainer;
     public int CurretScore => _currentScore;
     
-    public static event Action<int> OnScoreChange;
+    public static event Action<int> OnScoreChangeEvent;
 
     private void OnEnable()
     {
-         EnemyBase.OnEnemyDeath += CollectScore;
+         EnemyBase.OnEnemyDeathEvent += CollectScore;
          // EnemyManager.OnBossDeath += CollectScore;
     }
     
     private void OnDisable()
     {
-        EnemyBase.OnEnemyDeath -= CollectScore;
+        EnemyBase.OnEnemyDeathEvent -= CollectScore;
         // EnemyManager.OnBossDeath += CollectScore;
     }
 
@@ -74,6 +74,6 @@ public class ScoresManager : MonoBehaviour, IInitializable
                 break;
         }
         _saveDataContainer.CurrentScore = _currentScore;
-        OnScoreChange?.Invoke(_currentScore);
+        OnScoreChangeEvent?.Invoke(_currentScore);
     }
 }

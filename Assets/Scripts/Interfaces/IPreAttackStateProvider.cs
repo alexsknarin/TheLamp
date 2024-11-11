@@ -2,6 +2,6 @@ using System;
 
 public interface IPreAttackStateProvider
 {
-    public event Action OnPreAttackStart;
-    public event Action OnPreAttackEnd;
+    public event Action OnPreAttackStartEvent;
+    public event Action OnPreAttackEndEvent;
 }
