@@ -17,3 +17,55 @@ MonoBehaviour:
   _fallSpeed: 13
   _rotationSpeed: 380
   _moveAcceleration: 1.9
+  _rzMixCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: -0.00059890747
+      value: 0
+      inSlope: 1.0675819
+      outSlope: 1.0675819
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.41160375
+    - serializedVersion: 3
+      time: 0.02746386
+      value: 0.19312853
+      inSlope: 5.770641
+      outSlope: 5.770641
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.122897886
+      value: 0.7196725
+      inSlope: 2.9083066
+      outSlope: 2.9083066
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.33271778
+      value: 0.979409
+      inSlope: 0.10639042
+      outSlope: 0.10639042
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.28762656
+      outWeight: 0.08483726
+    - serializedVersion: 3
+      time: 1.0030518
+      value: 1.00066
+      inSlope: 0.047433563
+      outSlope: 0.047433563
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.08172714
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _rzMaxValue: 50

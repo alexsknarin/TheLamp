@@ -9,6 +9,8 @@ public class FDragonflyAttackTailFailStateR : ScriptableObject, IState
     [SerializeField] private float _fallSpeed = 100f;
     [SerializeField] private float _rotationSpeed = 380f;
     [SerializeField] private float _moveAcceleration = 1.9f;
+    [SerializeField] private AnimationCurve _rzMixCurve;
+    [SerializeField] private float _rzMaxValue;
     
     public event Action OnStarted;
     public event Action OnEnded;
@@ -17,6 +19,7 @@ public class FDragonflyAttackTailFailStateR : ScriptableObject, IState
     private float _phase = 0f;
     private readonly int _sideDirection = -1;
     private bool _isAfterDelay = false;
+    private float _startRz;
    
     // Dependencies
     private Transform _visibleBodyTransform;
@@ -31,6 +34,7 @@ public class FDragonflyAttackTailFailStateR : ScriptableObject, IState
     public void OnEnter()
     {
         _visibleBodyTransform.SetParent(_baseTransform);
+        _startRz = _visibleBodyTransform.localEulerAngles.z;
         _localTime = 0f;
         _phase = 0f;
         _isAfterDelay = false;
@@ -49,6 +53,7 @@ public class FDragonflyAttackTailFailStateR : ScriptableObject, IState
         
             Vector3 rotation = _visibleBodyTransform.localEulerAngles;
             rotation.y += _rotationSpeed * Time.deltaTime * _sideDirection;
+            rotation.z = _startRz + _rzMixCurve.Evaluate(_phase) * _rzMaxValue;
             _visibleBodyTransform.localEulerAngles = rotation;    
         }
         
