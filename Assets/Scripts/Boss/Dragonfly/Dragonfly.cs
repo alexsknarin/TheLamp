@@ -26,7 +26,6 @@ public class Dragonfly : EnemyBase
     [SerializeField] private DragonflyPatrolAttackZoneRanges _patrolAttackZonesL;
     [SerializeField] private DragonflyPatrolAttackZoneRanges _patrolAttackZonesR;
     [Header("Tail")]
-    [SerializeField] private Transform _tailAttackPositionBaseTRM;
     [SerializeField] private Vector3 _tailAttackPositionBase;
     [SerializeField] private float _patrolTailWaitMin;
     [SerializeField] private float _patrolTailWaitMax;
@@ -78,9 +77,7 @@ public class Dragonfly : EnemyBase
     private bool _isDead = false;
     private DragonflyReturnMode _returnMode;
     
-    [SerializeField] private bool _readyToLampDamage;
-    
-    // TODO: for refactor
+    // Serialized for debug
     [SerializeField] private bool _isInAttackExitZone = false;
     [SerializeField] private bool _isCollidedWithLamp = false;
     
@@ -144,8 +141,6 @@ public class Dragonfly : EnemyBase
 
     private void Awake()
     {
-        _tailAttackPositionBase = _tailAttackPositionBaseTRM.position;
-        
         _patrolAttackPositionProvider = new DragonflyPatrolAttackPositionProvider(
             _patrolAttackZonesL, 
             _patrolAttackZonesR, 
@@ -326,7 +321,7 @@ public class Dragonfly : EnemyBase
     private void StartBossActivePhase()
     {
         _collisionController.DisableColliders();
-        _enterType = (DragonflyEnterType)Random.Range(0, 2); // 0 Patrol, 1 Hover TODO: enum???????????
+        _enterType = (DragonflyEnterType)Random.Range(0, 2);
         int sideDirection = RandomDirection.Generate();
         _movement.Play(_enterType, sideDirection);
         _isActivated = true;
@@ -361,7 +356,6 @@ public class Dragonfly : EnemyBase
     private void OnReadyToAttackEnterHandle(IState movementState)
     {
         _patrolAttackMode = (DragonflyPatrolAttackMode)Random.Range(0, 2);
-        _patrolAttackMode = DragonflyPatrolAttackMode.Tail; // TODO: remove this line --------------- DEBUG
         _isReadyToPreAttackWait = true;
     }
     
@@ -449,7 +443,6 @@ public class Dragonfly : EnemyBase
     public override void HandleEnteringAttackZone()
     {
         ReadyToLampDamage = true;
-        _readyToLampDamage = true;
     }
 
     public void HandleEnteringAttackExitZone()
@@ -461,7 +454,6 @@ public class Dragonfly : EnemyBase
     {
         ReadyToCollide = false;
         ReadyToLampDamage = true;
-        _readyToLampDamage = true;
         _isCollidedWithLamp = true;
     }
 
@@ -474,7 +466,6 @@ public class Dragonfly : EnemyBase
     {
         _isInAttackExitZone = false;
         ReadyToLampDamage = false;
-        _readyToLampDamage = false;
         if (!ReceivedLampAttack)
         {
             _movement.TriggerFall(false);
@@ -523,7 +514,6 @@ public class Dragonfly : EnemyBase
         }
         
         ReadyToLampDamage = false;
-        _readyToLampDamage = false;
     }
 
 
