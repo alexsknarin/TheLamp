@@ -8403,6 +8403,18 @@ MonoBehaviour:
   _adText4: {fileID: 1969851359}
   _progressBaTransform: {fileID: 131244713}
   _duration: 15
+--- !u!114 &1536401419 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 9194556110137074828, guid: 5abdecc64f378fa42a25d190ec1a9a13,
+    type: 3}
+  m_PrefabInstance: {fileID: 5730853438032948457}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 16eae1143c5a2b44390c227e30d912ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1540463159
 GameObject:
   m_ObjectHideFlags: 0
@@ -9828,7 +9840,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1818435498}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a19cb97880c15834aa6cac48223fb88a, type: 3}
   m_Name: 
@@ -9839,14 +9851,15 @@ MonoBehaviour:
   _waspBoss: {fileID: 1966729921}
   _megamothlingBoss: {fileID: 455450631368144087}
   _megabeetleBoss: {fileID: 1180215397}
+  _dragonflyBoss: {fileID: 1536401419}
   _fireflyExplosion: {fileID: 1402077385}
   _fireflyExplosionRadius: 0.8
   _explosionDuration: 0.22
   _maxEnemiesOnScreen: 0
   _aggresionLevel: 0
   _maxAggressionLevel: 6
-  _isStartAtWaveTestMode: 0
-  _startAtWave: 30
+  _isStartAtWaveTestMode: 1
+  _startAtWave: 61
   _currentWave: 0
   _firstEnemySpawnDelay: 0.5
   _spawnDelay: 1
@@ -12528,8 +12541,8 @@ SceneRoots:
   - {fileID: 2929489649649167473}
   - {fileID: 455450631368144086}
   - {fileID: 1180215396}
+  - {fileID: 5730853438032948457}
   - {fileID: 918083000}
   - {fileID: 1054230590}
   - {fileID: 458789824}
   - {fileID: 1297585004}
-  - {fileID: 5730853438032948457}

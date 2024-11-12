@@ -17,6 +17,7 @@ public class EnemyManager : MonoBehaviour,IInitializable
     [SerializeField] private BossBase _waspBoss;
     [SerializeField] private BossBase _megamothlingBoss;
     [SerializeField] private BossBase _megabeetleBoss;
+    [SerializeField] private BossBase _dragonflyBoss;
     private BossBase _currentBoss;
     
     [Header("------ Explosions -------")]
@@ -126,6 +127,7 @@ public class EnemyManager : MonoBehaviour,IInitializable
         _waspBoss.Initialize();
         _megamothlingBoss.Initialize();
         _megabeetleBoss.Initialize();
+        _dragonflyBoss.Initialize();
         _currentWave = _startAtWave;
         
         // Check all waves
@@ -247,6 +249,10 @@ public class EnemyManager : MonoBehaviour,IInitializable
         else if (bossType == EnemyTypes.Megabeetle)
         {
             _currentBoss = _megabeetleBoss;
+        }
+        else if (bossType == EnemyTypes.Dragonfly)
+        {
+            _currentBoss = _dragonflyBoss;
         }
         // _currentBoss.Reset();
         _currentBoss.Play();

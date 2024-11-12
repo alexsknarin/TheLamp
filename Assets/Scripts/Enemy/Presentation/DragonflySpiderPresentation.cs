@@ -10,8 +10,8 @@ public class DragonflySpiderPresentation : EnemyPresentation
     public override void Initialize()
     {
         _deathFlash.Initialize();
-        _preAttackFlash?.Initialize();  // TODO: remove null check later
-        _spiderWeb?.Initialize();
+        _preAttackFlash.Initialize();  // TODO: remove null check later
+        _spiderWeb.Initialize();
     }
     
     public void Play()
@@ -22,17 +22,17 @@ public class DragonflySpiderPresentation : EnemyPresentation
     
     public void SwitchToCaughtState()
     {
-        _spiderWeb?.StartShrink();
+        _spiderWeb.StartShrink();
     }
     
     public override void PreAttackStart()
     {
-        _preAttackFlash?.PreAttackStart();
+        _preAttackFlash.PreAttackStart();
     }
 
     public override void PreAttackEnd()
     {
-        _preAttackFlash?.PreAttackEnd();
+        _preAttackFlash.PreAttackEnd();
     }
 
     public override void DamageFlash()

@@ -3,7 +3,7 @@ using UnityEngine;
 
 using Random = UnityEngine.Random;
 
-public class Dragonfly : EnemyBase
+public class Dragonfly : BossBase
 {
     [SerializeField] private string _stateDebug;
     [SerializeField] private EnemyTypes _enemyType;
@@ -300,7 +300,7 @@ public class Dragonfly : EnemyBase
         _stateDebug = _stateMachine.CurrentState.ToString();
     }
 
-    public void Initialize()
+    public override void Initialize()
     {
         _isDead = false;
         _isActivated = false;
@@ -311,7 +311,12 @@ public class Dragonfly : EnemyBase
         _spider.Initialize();
     }
 
-    public void Play()
+    public override void Reset()
+    {
+        throw new NotImplementedException();
+    }
+
+    public override void Play()
     {
         StartBossActivePhase();
         _presentation.Initialize();
