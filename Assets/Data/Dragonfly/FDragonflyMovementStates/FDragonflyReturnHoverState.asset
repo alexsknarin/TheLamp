@@ -12,34 +12,128 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 044b544aeefa30d48b518666c3248a86, type: 3}
   m_Name: FDragonflyReturnHoverState
   m_EditorClassIdentifier: 
-  duration: 2
+  duration: 2.5
   _zMaxDistance: -1.9
   _zMinDistance: 2
   _farDuration: 1.1
   _closeDuration: 1.7
   _verticalDistance: 9.5
-  _horizontalDistance: 1
-  _verticalMoveCurve:
+  _horizontalDistance: 0.75
+  _bounceMoveCurve:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
       time: 0
       value: 0
-      inSlope: 0.055945076
-      outSlope: 0.055945076
+      inSlope: 3.9268525
+      outSlope: 3.9268525
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
-      outWeight: 0.049670856
+      outWeight: 0.02769707
+    - serializedVersion: 3
+      time: 0.5271082
+      value: 0.90754616
+      inSlope: 0.5046457
+      outSlope: 0.5046457
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.09967984
+      outWeight: 0.156586
+    - serializedVersion: 3
+      time: 0.78235334
+      value: 0.9716436
+      inSlope: 0.019247731
+      outSlope: 0.019247731
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
     - serializedVersion: 3
       time: 1
       value: 1
-      inSlope: 1.5995206
-      outSlope: 1.5995206
+      inSlope: 0
+      outSlope: 0
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0.034709692
+      inWeight: 0.095492244
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  _bounceRotateCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0.169911
+      outSlope: 0.169911
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.038898867
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 1.2324778
+      outSlope: 1.2324778
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.041292667
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _diveMoveCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: -0.014533724
+      outSlope: -0.014533724
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.045481753
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 2.581684
+      outSlope: 2.581684
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.024708986
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _diveRotateCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0.577314
+      outSlope: 0.577314
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.05266308
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 1
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _bouncePhaseDuration: 0.7
+  _divePhaseDuration: 1
+  _maxBounceEulerX: 25
+  _maxDiveEulerX: 60
