@@ -5,7 +5,7 @@ public class DragonflyProjectileSpider : EnemyBase
 {
     [SerializeField] private EnemyTypes _enemyType = EnemyTypes.DragonflyProjectile;
     [SerializeField] private DragonflyProjectileMovementSpider _movement;
-    [SerializeField] private DragonflyProjectilePresentation _presentation;
+    [SerializeField] private DragonflySpiderPresentation _presentation;
     [SerializeField] private Collider2D _collider;
     [SerializeField] private TrailRenderer _trailRenderer;
     public override EnemyTypes EnemyType => _enemyType;
@@ -31,6 +31,11 @@ public class DragonflyProjectileSpider : EnemyBase
         _movement.OnFallEndedEvent -= OnFallEndedHandle;
     }
 
+    public override void Initialize()
+    {
+        _presentation.Initialize();
+    }
+
     private void OnFallEndedHandle()
     {
         gameObject.SetActive(false);
@@ -38,16 +43,16 @@ public class DragonflyProjectileSpider : EnemyBase
 
     private void OnEnterAnimationEndHandle()
     {
+        _presentation.SwitchToCaughtState();
         OnEnterAnimationEndEvent?.Invoke();
     }
-
 
     public void Play(int direction)
     {
         _trailRenderer.Clear();
         _trailRenderer.emitting = false;
-        _movement.Initialize(direction);
-        _presentation.Initialize();
+        _movement.Play(direction);
+        _presentation.Play();
         _isDead = false;
         ReadyToLampDamage = false;
         _collider.enabled = false;

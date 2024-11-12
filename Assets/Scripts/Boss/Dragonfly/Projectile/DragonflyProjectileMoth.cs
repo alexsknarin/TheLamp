@@ -4,7 +4,7 @@ public class DragonflyProjectileMoth : EnemyBase
 {
     [SerializeField] private EnemyTypes _enemyType = EnemyTypes.DragonflyProjectile;
     [SerializeField] private DragonflyProjectileMovementMoth _movement;
-    [SerializeField] private DragonflyProjectilePresentation _presentation;
+    [SerializeField] private DragonflyMothPresentation _presentation;
     public override EnemyTypes EnemyType => _enemyType;
     private bool _isDead = false;
 

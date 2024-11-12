@@ -27,7 +27,7 @@ public class SpiderPresentation : EnemyPresentation
     public override void DeathFlash()
     {
         _deathFlash.Play();
-        _spiderWeb.StartShrink();
+        _spiderWeb.StartShrink(true);
     }
 
     public override void HealthUpdate(int currentHealth, int maxHealth)

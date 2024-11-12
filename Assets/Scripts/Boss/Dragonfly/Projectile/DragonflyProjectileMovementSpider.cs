@@ -34,7 +34,7 @@ public class DragonflyProjectileMovementSpider : MonoBehaviour
     Vector3 _previousPosition;
     
    
-    public void Initialize(int direction)
+    public void Play(int direction)
     {
         _isStartPlaying = true;
         _isFallPlaying = false;

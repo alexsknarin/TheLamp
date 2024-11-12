@@ -308,6 +308,7 @@ public class Dragonfly : EnemyBase
         _isReadyToAttackWait = false;
         _isAttacked = false;
         _presentation.Initialize();
+        _spider.Initialize();
     }
 
     public void Play()
