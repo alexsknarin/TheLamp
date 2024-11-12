@@ -90,7 +90,7 @@ public class Lamp : MonoBehaviour, IInitializable
         
         enemy.transform.parent = transform;
         enemy.HandleCollisionWithStickZone();
-        MoveLamp();
+        MoveLamp(enemy);
         OnLampCollidedWithStickyEnemyEvent?.Invoke(enemy);
     }
     
@@ -170,7 +170,7 @@ public class Lamp : MonoBehaviour, IInitializable
             _lampPresentation.StartDamageState();
             OnLampDamagedEvent?.Invoke(enemy);    
         }
-        MoveLamp();
+        MoveLamp(enemy);
     }
     
     private void HandleUpdateHealth()
@@ -194,9 +194,18 @@ public class Lamp : MonoBehaviour, IInitializable
         _lampPresentation.UpgradeHealthBar();
     }
     
-    private void MoveLamp()
+    private void MoveLamp(EnemyBase enemy)
     {
-        float attackDirection = -(_enemyPosition - transform.position).x * 2;
+        Vector3 enemyPosition;
+        if (enemy.GetType() == typeof(Dragonfly))
+        {
+            enemyPosition = ((Dragonfly)enemy).ProvideImpactPoint(); 
+        }
+        else
+        {
+            enemyPosition = enemy.gameObject.transform.position;
+        }
+        float attackDirection = -(enemyPosition - transform.position).x * 2;
         _lampMovement.AddForce(attackDirection);
     }
     
