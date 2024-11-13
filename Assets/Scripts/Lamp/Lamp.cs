@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 public class Lamp : MonoBehaviour, IInitializable
 {
@@ -22,36 +21,36 @@ public class Lamp : MonoBehaviour, IInitializable
     private bool _isDead = false;
     private Vector3 _enemyPosition;
     
-    public static event Action<EnemyBase> OnLampDamaged;
-    public static event Action<EnemyBase> OnLampDead;
-    public static event Action<EnemyBase> OnLampCollidedWithStickyEnemy;
+    public static event Action<EnemyBase> OnLampDamagedEvent;
+    public static event Action<EnemyBase> OnLampDeadEvent;
+    public static event Action<EnemyBase> OnLampCollidedWithStickyEnemyEvent;
 
     private void OnEnable()
     {
-        _lampCollisionHandler.OnLampCollidedEnemy += RegisterPotentialDamage;
-        _lampCollisionHandler.OnExitLampCollisionEnemy += EnemyExitCollisionHandle;
-        _lampStickZoneCollisionHandler.OnCollidedWithStickyEnemy += StickyEnemyEnterCollisionHandle;
-        _lampAttackExitZoneCollisionHandler.OnExitAttackExitZone += AssessDamage;
-        _lampStatsManager.OnHealthChange += HandleUpdateHealth;
-        _lampStatsManager.OnHealthUpgraded += HandleUpgradeHealth;
-        _lampStatsManager.OnAttackDistanceUpgraded += HandleAttackDistanceUpgrade;
+        _lampCollisionHandler.OnLampCollidedEnemyEvent += RegisterPotentialDamage;
+        _lampCollisionHandler.OnExitLampCollisionEnemyEvent += EnemyExitCollisionHandle;
+        _lampStickZoneCollisionHandler.OnCollidedWithStickyEnemyEvent += StickyEnemyEnterCollisionHandle;
+        _lampAttackExitZoneCollisionHandler.OnExitAttackExitZoneEvent += AssessDamage;
+        _lampStatsManager.OnHealthChangeEvent += HandleUpdateHealth;
+        _lampStatsManager.OnHealthUpgradedEvent += HandleUpgradeHealth;
+        _lampStatsManager.OnAttackDistanceUpgradedEvent += HandleAttackDistanceUpgrade;
         
-        Megabeetle.OnStickAttacked += HandleStickAttack;
+        Megabeetle.OnStickAttackedEvent += HandleStickAttack;
     }
 
 
 
     private void OnDisable()
     {
-        _lampCollisionHandler.OnLampCollidedEnemy -= RegisterPotentialDamage;
-        _lampCollisionHandler.OnExitLampCollisionEnemy -= EnemyExitCollisionHandle;
-        _lampStickZoneCollisionHandler.OnCollidedWithStickyEnemy -= StickyEnemyEnterCollisionHandle;
-        _lampAttackExitZoneCollisionHandler.OnExitAttackExitZone -= AssessDamage;
-        _lampStatsManager.OnHealthChange -= HandleUpdateHealth;
-        _lampStatsManager.OnHealthUpgraded -= HandleUpgradeHealth;
-        _lampStatsManager.OnAttackDistanceUpgraded -= HandleAttackDistanceUpgrade;
+        _lampCollisionHandler.OnLampCollidedEnemyEvent -= RegisterPotentialDamage;
+        _lampCollisionHandler.OnExitLampCollisionEnemyEvent -= EnemyExitCollisionHandle;
+        _lampStickZoneCollisionHandler.OnCollidedWithStickyEnemyEvent -= StickyEnemyEnterCollisionHandle;
+        _lampAttackExitZoneCollisionHandler.OnExitAttackExitZoneEvent -= AssessDamage;
+        _lampStatsManager.OnHealthChangeEvent -= HandleUpdateHealth;
+        _lampStatsManager.OnHealthUpgradedEvent -= HandleUpgradeHealth;
+        _lampStatsManager.OnAttackDistanceUpgradedEvent -= HandleAttackDistanceUpgrade;
         
-        Megabeetle.OnStickAttacked += HandleStickAttack;
+        Megabeetle.OnStickAttackedEvent += HandleStickAttack;
     }
 
     public void Initialize()
@@ -91,8 +90,8 @@ public class Lamp : MonoBehaviour, IInitializable
         
         enemy.transform.parent = transform;
         enemy.HandleCollisionWithStickZone();
-        MoveLamp();
-        OnLampCollidedWithStickyEnemy?.Invoke(enemy);
+        MoveLamp(enemy);
+        OnLampCollidedWithStickyEnemyEvent?.Invoke(enemy);
     }
     
     private void EnemyExitCollisionHandle(EnemyBase enemy)
@@ -146,7 +145,7 @@ public class Lamp : MonoBehaviour, IInitializable
             return;
         }
         
-        Vector3 impactPoint = enemy.transform.position.normalized;
+        Vector3 impactPoint = enemy.ProvideImpactPoint();
         if (!_isInvincible)
         {
             _lampStatsManager.DecreaseCurrentHealth(1, impactPoint);    
@@ -164,14 +163,14 @@ public class Lamp : MonoBehaviour, IInitializable
             _lampAttackModel.HandleLampDeath();
             _lampPresentation.LastEnemyPosition = enemy.transform.position;
             _isDead = true;
-            OnLampDead?.Invoke(enemy);
+            OnLampDeadEvent?.Invoke(enemy);
         }
         else
         {
             _lampPresentation.StartDamageState();
-            OnLampDamaged?.Invoke(enemy);    
+            OnLampDamagedEvent?.Invoke(enemy);    
         }
-        MoveLamp();
+        MoveLamp(enemy);
     }
     
     private void HandleUpdateHealth()
@@ -195,9 +194,18 @@ public class Lamp : MonoBehaviour, IInitializable
         _lampPresentation.UpgradeHealthBar();
     }
     
-    private void MoveLamp()
+    private void MoveLamp(EnemyBase enemy)
     {
-        float attackDirection = -(_enemyPosition - transform.position).x * 2;
+        Vector3 enemyPosition;
+        if (enemy.GetType() == typeof(Dragonfly))
+        {
+            enemyPosition = ((Dragonfly)enemy).ProvideImpactPoint(); 
+        }
+        else
+        {
+            enemyPosition = enemy.gameObject.transform.position;
+        }
+        float attackDirection = -(enemyPosition - transform.position).x * 2;
         _lampMovement.AddForce(attackDirection);
     }
     

@@ -11,6 +11,7 @@ public class SpiderWebHandler : MonoBehaviour
     private bool _isShrinking = false;
     private bool _isActive = true; 
     private float _localTime;
+    private bool _isDamaged = false;
     
     public void Initialize()
     {
@@ -24,9 +25,10 @@ public class SpiderWebHandler : MonoBehaviour
 
     }
     
-    public void StartShrink()
+    public void StartShrink(bool isDamaged)
     {
         _isShrinking = true;
+        _isDamaged = isDamaged;
         _lastPoint = transform.position;
         _spiderWebLineRenderer.positionCount = 10;
         for(int i=0; i<10; i++)
@@ -62,7 +64,11 @@ public class SpiderWebHandler : MonoBehaviour
                     newPos.x += Mathf.PerlinNoise1D(newPos.y) * phase * 3;
                     _spiderWebLineRenderer.SetPosition(i, newPos);
                 }
-                _lineMaterial.SetFloat("_Damage", Mathf.Lerp(0f, 0.9f, phase));
+
+                if (_isDamaged)
+                {
+                    _lineMaterial.SetFloat("_Damage", Mathf.Lerp(0f, 0.9f, phase));    
+                }
                 _localTime += Time.deltaTime;
             }
         }

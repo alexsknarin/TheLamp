@@ -30,9 +30,17 @@ public class CameraShake : MonoBehaviour
     [SerializeField] private float _megabeetleProximityMaxDistance;
     [SerializeField] private float _megabeetleProximityMinDistance;
     
+    [Header("Dragonfly")]
+    [SerializeField] private float _dragonflyProximityShakeAmplitude;
+    [SerializeField] private AnimationCurve _dragonflyProximityCurve;
+    [SerializeField] private Transform _dragonflyTransform;
+    [SerializeField] private float _dragonflyProximityMaxDistance;
+    [SerializeField] private float _dragonflyProximityMinDistance;
+    
     private float _waspShakeDistance;
     private float _megamothlingShakeDistance;
     private float _megabeetleShakeDistance;
+    private float _dragonflyShakeDistance;
     private bool _isWaspNearby;
 
     private Vector3 _originalPos;
@@ -44,16 +52,16 @@ public class CameraShake : MonoBehaviour
     
     private void OnEnable()
     {
-        Lamp.OnLampDamaged += StartDamageShake;
-        Lamp.OnLampDead += StartDamageShake;
-        EnemyManager.OnFireflyExplosion += StartExplosionShake;
+        Lamp.OnLampDamagedEvent += StartDamageShake;
+        Lamp.OnLampDeadEvent += StartDamageShake;
+        EnemyManager.OnFireflyExplosionEvent += StartExplosionShake;
     }
 
     private void OnDisable()
     {
-        Lamp.OnLampDamaged -= StartDamageShake;
-        Lamp.OnLampDead -= StartDamageShake;
-        EnemyManager.OnFireflyExplosion -= StartExplosionShake;
+        Lamp.OnLampDamagedEvent -= StartDamageShake;
+        Lamp.OnLampDeadEvent -= StartDamageShake;
+        EnemyManager.OnFireflyExplosionEvent -= StartExplosionShake;
     }
     
     private void Start()
@@ -62,6 +70,7 @@ public class CameraShake : MonoBehaviour
         _waspShakeDistance = Mathf.Abs(_waspProximityMaxDistance - _waspProximityMinDistance);
         _megamothlingShakeDistance = Mathf.Abs(_megamothlingProximityMaxDistance - _megamothlingProximityMinDistance);
         _megabeetleShakeDistance = Mathf.Abs(_megabeetleProximityMaxDistance - _megabeetleProximityMinDistance);
+        _dragonflyShakeDistance = Mathf.Abs(_dragonflyProximityMaxDistance - _dragonflyProximityMinDistance);
         _isShaking = false;
     }
     
@@ -91,6 +100,13 @@ public class CameraShake : MonoBehaviour
         {
             float shakephase = Mathf.Abs(_megabeetleTransform.position.z - _megabeetleProximityMaxDistance) / _megabeetleShakeDistance;
             transform.position = Vector3.Lerp(_originalPos, _originalPos + (Vector3)(Random.insideUnitCircle * _megabeetleProximityShakeAmplitude), shakephase);   
+        }
+        
+        if (_dragonflyTransform.position.z < _dragonflyProximityMaxDistance)
+        {
+            float shakephase = Mathf.Abs(_dragonflyTransform.position.z - _dragonflyProximityMaxDistance) / _dragonflyShakeDistance;
+            shakephase = _dragonflyProximityCurve.Evaluate(shakephase);
+            transform.position = Vector3.Lerp(_originalPos, _originalPos + (Vector3)(Random.insideUnitCircle * _dragonflyProximityShakeAmplitude), shakephase);   
         }
         
     }

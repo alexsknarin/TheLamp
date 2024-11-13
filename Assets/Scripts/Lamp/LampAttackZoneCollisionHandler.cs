@@ -4,28 +4,19 @@ public class LampAttackZoneCollisionHandler : MonoBehaviour
 {
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.gameObject.CompareTag("Enemy") 
-            || other.gameObject.CompareTag("StickyEnemy"))
+        if (other.gameObject.CompareTag("Enemy") || other.gameObject.CompareTag("StickyEnemy"))
         {
-            EnemyBase enemy = other.GetComponent<EnemyBase>();
-            enemy.HandleEnteringAttackZone();
+            other.GetComponent<EnemyBase>().HandleEnteringAttackZone();
         }
+        
         if (other.gameObject.CompareTag("Boss"))
         {
             other.GetComponent<BossBase>().HandleEnteringAttackZone();
         }
-    }
-    
-    private void OnTriggerExit2D(Collider2D other)
-    {
-        if (other.gameObject.CompareTag("Enemy") || other.gameObject.CompareTag("StickyEnemy"))
+        
+        if (other.gameObject.CompareTag("Dragonfly"))
         {
-            var enemy = other.GetComponent<EnemyBase>();
-            enemy.HandleExitingAttackExitZone();
-        }
-        if (other.gameObject.CompareTag("Boss"))
-        {
-            other.GetComponent<BossBase>().HandleExitingAttackExitZone();
+            other.attachedRigidbody.gameObject.GetComponent<Dragonfly>().HandleEnteringAttackZone();
         }
     }
 }

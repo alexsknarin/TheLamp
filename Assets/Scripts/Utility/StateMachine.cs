@@ -6,14 +6,14 @@ public class StateMachine
     {
         if (_currentState != null)
         {
-            _currentState.ExitState();
+            _currentState.OnExit();
         }
         _currentState = state;
-        _currentState.EnterState();
+        _currentState.OnEnter();
     }
 
     public void Execute()
     {
-        _currentState.ExecuteState();
+        _currentState.Tick();
     }
 }

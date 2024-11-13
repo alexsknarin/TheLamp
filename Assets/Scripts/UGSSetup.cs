@@ -13,20 +13,20 @@ public class UGSSetup : MonoBehaviour
     [SerializeField] private AnalyticsCollector _analyticsCollector;
     private bool _isConnecceted = false;
     
-    public event Action OnConsentAddressed;
+    public event Action OnConsentAddressedEvent;
 
     public void AllowDataCollection()
     {
         PlayerPrefs.SetInt("dataConsent", 1);
         PlayerPrefs.Save();
-        OnConsentAddressed?.Invoke();
+        OnConsentAddressedEvent?.Invoke();
     }
     
     public void RefuseDataCollection()
     {
         PlayerPrefs.SetInt("dataConsent", 0);
         PlayerPrefs.Save();
-        OnConsentAddressed?.Invoke();
+        OnConsentAddressedEvent?.Invoke();
     }
 
     public async void Setup()

@@ -3,8 +3,8 @@ using UnityEngine;
 
 public class LampCollisionHandler : MonoBehaviour
 {
-    public event Action<EnemyBase> OnLampCollidedEnemy;
-    public event Action<EnemyBase> OnExitLampCollisionEnemy;
+    public event Action<EnemyBase> OnLampCollidedEnemyEvent;
+    public event Action<EnemyBase> OnExitLampCollisionEnemyEvent;
     
     private void OnTriggerEnter2D(Collider2D other)
     {
@@ -14,14 +14,20 @@ public class LampCollisionHandler : MonoBehaviour
             if(enemy.ReadyToCollide)
             {
                 enemy.HandleCollisionWithLamp();
-                OnLampCollidedEnemy?.Invoke(enemy); 
+                OnLampCollidedEnemyEvent?.Invoke(enemy); 
             }
         }
         if (other.gameObject.CompareTag("Boss"))
         {
             EnemyBase boss = other.GetComponent<EnemyBase>();
             boss.HandleCollisionWithLamp();
-            OnLampCollidedEnemy?.Invoke(boss); 
+            OnLampCollidedEnemyEvent?.Invoke(boss); 
+        }
+        if (other.gameObject.CompareTag("Dragonfly"))
+        {
+            EnemyBase dragonfly = other.attachedRigidbody.gameObject.GetComponent<EnemyBase>();
+            dragonfly.HandleCollisionWithLamp();
+            OnLampCollidedEnemyEvent?.Invoke(dragonfly);
         }
     }
     
@@ -29,7 +35,12 @@ public class LampCollisionHandler : MonoBehaviour
     {
         if (other.gameObject.CompareTag("StickyEnemy"))
         {
-            OnExitLampCollisionEnemy?.Invoke(other.GetComponent<EnemyBase>());
+            OnExitLampCollisionEnemyEvent?.Invoke(other.GetComponent<EnemyBase>());
+        }
+        
+        if (other.gameObject.CompareTag("Dragonfly"))
+        {
+            other.attachedRigidbody.gameObject.GetComponent<Dragonfly>().HandleExitingLampCollisionZone();
         }
     }
 }

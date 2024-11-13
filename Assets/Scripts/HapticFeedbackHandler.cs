@@ -13,18 +13,18 @@ public class HapticFeedbackHandler : MonoBehaviour
     
     private void OnEnable()
     {
-        PlayerInputHandler.OnPlayerAttack += PerformTouchHaptic;
-        Lamp.OnLampDamaged += PerformDamageVibration;
-        Lamp.OnLampDead += PerformDamageVibration;
-        EnemyManager.OnFireflyExplosion += PerformExplosionVibration;
+        PlayerInputHandler.OnPlayerAttackEvent += PerformTouchHaptic;
+        Lamp.OnLampDamagedEvent += PerformDamageVibration;
+        Lamp.OnLampDeadEvent += PerformDamageVibration;
+        EnemyManager.OnFireflyExplosionEvent += PerformExplosionVibration;
     }
 
     private void OnDisable()
     {
-        PlayerInputHandler.OnPlayerAttack -= PerformTouchHaptic;
-        Lamp.OnLampDamaged -= PerformDamageVibration;
-        Lamp.OnLampDead -= PerformDamageVibration;
-        EnemyManager.OnFireflyExplosion -= PerformExplosionVibration;
+        PlayerInputHandler.OnPlayerAttackEvent -= PerformTouchHaptic;
+        Lamp.OnLampDamagedEvent -= PerformDamageVibration;
+        Lamp.OnLampDeadEvent -= PerformDamageVibration;
+        EnemyManager.OnFireflyExplosionEvent -= PerformExplosionVibration;
     }
 
     private IEnumerator DisableHaptic()
@@ -35,7 +35,7 @@ public class HapticFeedbackHandler : MonoBehaviour
 
     private void PerformTouchHaptic()
     {
-#if UNITY_ANDROID
+#if UNITY_ANDROID && !UNITY_EDITOR
         if (_isDamageVibrationDisabled)
         {
             HapticFeedback.HeavyFeedback();    
@@ -45,7 +45,7 @@ public class HapticFeedbackHandler : MonoBehaviour
     
     private void PerformDamageVibration(EnemyBase enemy)
     {
-#if UNITY_ANDROID
+#if UNITY_ANDROID && !UNITY_EDITOR
         Handheld.Vibrate();
         _isDamageVibrationDisabled = false;
         StartCoroutine(DisableHaptic());
@@ -54,7 +54,7 @@ public class HapticFeedbackHandler : MonoBehaviour
     
     private void PerformExplosionVibration()
     {
-#if UNITY_ANDROID
+#if UNITY_ANDROID && !UNITY_EDITOR
         Handheld.Vibrate();
         _isDamageVibrationDisabled = false;
         StartCoroutine(DisableHaptic());

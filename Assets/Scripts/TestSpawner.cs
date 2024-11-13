@@ -9,12 +9,12 @@ public class TestSpawner : MonoBehaviour
 
     private void OnEnable()
     {
-        BossBase.OnDeath += HandleBossEnd;
+        BossBase.OnDeathEvent += HandleBossEnd;
     }
     
     private void OnDisable()
     {
-        BossBase.OnDeath -= HandleBossEnd;
+        BossBase.OnDeathEvent -= HandleBossEnd;
     }
 
     private void Start()
@@ -43,7 +43,7 @@ public class TestSpawner : MonoBehaviour
             _enemyPrefab.UpdateAttackAvailability();
             if (_enemyPrefab.ReadyToAttack)
             {
-                _enemyPrefab.AttackStart();    
+                _enemyPrefab.StartAttack();    
             }
         }
         if (Input.GetKeyDown(KeyCode.D))

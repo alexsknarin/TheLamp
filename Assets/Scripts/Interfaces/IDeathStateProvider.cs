@@ -2,5 +2,5 @@ using System;
 
 public interface IDeathStateProvider
 {
-    public event Action OnDeath;    
+    public event Action OnDeathEvent;    
 }

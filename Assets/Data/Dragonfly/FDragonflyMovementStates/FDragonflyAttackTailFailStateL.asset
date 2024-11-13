@@ -1,0 +1,71 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c3e2f9b63852ba42be7f29b066b55c6, type: 3}
+  m_Name: FDragonflyAttackTailFailStateL
+  m_EditorClassIdentifier: 
+  _duration: 2
+  _afterDelay: 0.25
+  _fallSpeed: 13
+  _rotationSpeed: 380
+  _moveAcceleration: 1.9
+  _rzMixCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: -0.00059890747
+      value: 0
+      inSlope: 1.801859
+      outSlope: 1.801859
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.7063002
+    - serializedVersion: 3
+      time: 0.021459527
+      value: 0.20039171
+      inSlope: 17.12064
+      outSlope: 17.12064
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.07137338
+    - serializedVersion: 3
+      time: 0.077396795
+      value: 0.84876
+      inSlope: 1.8004035
+      outSlope: 1.8004035
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.32971466
+      value: 0.9761021
+      inSlope: -0.17183739
+      outSlope: -0.17183739
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.28762656
+      outWeight: 0.068144985
+    - serializedVersion: 3
+      time: 1.0030518
+      value: 1.00066
+      inSlope: 0.047433563
+      outSlope: 0.047433563
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.08172714
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _rzMaxValue: 70

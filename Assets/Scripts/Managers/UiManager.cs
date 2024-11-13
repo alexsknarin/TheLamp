@@ -41,8 +41,8 @@ public class UiManager : MonoBehaviour, IInitializable
     [SerializeField] private Volume _postProcessingVolume;
     private UnityEngine.Rendering.Universal.ColorAdjustments _colorAdjustments;
 
-    public event Action OnIntroFinished;
-    public event Action OnGameoverFinished;
+    public event Action OnIntroFinishedEvent;
+    public event Action OnGameoverFinishedEvent;
 
     private float _localTime;
     private bool _isGameOverPlaying = false;
@@ -50,18 +50,18 @@ public class UiManager : MonoBehaviour, IInitializable
     // TODO: find a way to have less events
     private void OnEnable()
     {
-        Lamp.OnLampDamaged += HandleLampDamage;
-        Lamp.OnLampDead += HandleLampDeath;
-        _uiIntroAnimation.OnIntroFinished += OnIntroFinishedHandler;
-        _uiGameOverAnimation.OnGameOverAnimationFinished += HandleGameoverAnimationFinished;
+        Lamp.OnLampDamagedEvent += HandleLampDamage;
+        Lamp.OnLampDeadEvent += HandleLampDeath;
+        _uiIntroAnimation.OnIntroFinishedEvent += OnIntroFinishedHandler;
+        _uiGameOverAnimation.OnGameOverAnimationFinishedEvent += HandleGameoverAnimationFinished;
     }
 
     private void OnDisable()
     {
-        Lamp.OnLampDamaged -= HandleLampDamage;
-        Lamp.OnLampDead -= HandleLampDeath;
-        _uiIntroAnimation.OnIntroFinished -= OnIntroFinishedHandler;
-        _uiGameOverAnimation.OnGameOverAnimationFinished -= HandleGameoverAnimationFinished;
+        Lamp.OnLampDamagedEvent -= HandleLampDamage;
+        Lamp.OnLampDeadEvent -= HandleLampDeath;
+        _uiIntroAnimation.OnIntroFinishedEvent -= OnIntroFinishedHandler;
+        _uiGameOverAnimation.OnGameOverAnimationFinishedEvent -= HandleGameoverAnimationFinished;
     }
 
 
@@ -144,7 +144,7 @@ public class UiManager : MonoBehaviour, IInitializable
 
     private void OnIntroFinishedHandler()
     {
-        OnIntroFinished?.Invoke();
+        OnIntroFinishedEvent?.Invoke();
     }
 
     public void StartPrepare(int wave)
@@ -207,7 +207,7 @@ public class UiManager : MonoBehaviour, IInitializable
     private void HandleGameoverAnimationFinished()
     {
         _gameOverButtonsGroup.SetActive(true);
-        OnGameoverFinished?.Invoke();
+        OnGameoverFinishedEvent?.Invoke();
     }
     
     private void RefreshAllUpgradeButtons()

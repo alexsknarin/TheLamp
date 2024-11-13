@@ -7,7 +7,7 @@ public class UiGameOverAnimation : MonoBehaviour
     [SerializeField] private UiText _gameOverText;
     private UnityEngine.Rendering.Universal.ColorAdjustments _colorAdjustments;
 
-    public event Action OnGameOverAnimationFinished;
+    public event Action OnGameOverAnimationFinishedEvent;
 
     private bool _isPlaying = false;
     private float _localTime;
@@ -32,7 +32,7 @@ public class UiGameOverAnimation : MonoBehaviour
             if (phase > 1)
             {
                 _isPlaying = false;
-                OnGameOverAnimationFinished?.Invoke();
+                OnGameOverAnimationFinishedEvent?.Invoke();
             }
             _colorAdjustments.postExposure.Override(Mathf.Lerp(0, -10, phase));
             _localTime += Time.deltaTime;

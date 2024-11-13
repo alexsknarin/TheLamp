@@ -1,0 +1,36 @@
+using UnityEngine;
+
+[CreateAssetMenu(fileName = "FDragonflyBounceHeadState", menuName = "FDragonflyMovementStates/FDragonflyBounceHeadState")]
+public class FDragonflyBounceHeadState : ScriptableObject, IState
+{
+    [SerializeField] private float _speed = 4.1f;
+    [SerializeField] private float _duration = 0.15f;
+    
+    private Vector3 _attackDirection;
+    
+    // Dependencies
+    private Transform _visibleBodyTransform;
+    private Transform _baseTransform;
+    
+    
+    public void SetDependencies(Transform visibleBodyTransform, Transform baseTransform)
+    {
+        _visibleBodyTransform = visibleBodyTransform;
+        _baseTransform = baseTransform;
+    }
+    
+    public void OnEnter()
+    {
+        _visibleBodyTransform.SetParent(_baseTransform);
+        _attackDirection = -_visibleBodyTransform.position.normalized;
+    }
+
+    public void Tick()
+    {
+        _visibleBodyTransform.position += -_attackDirection * (_speed * Time.deltaTime);
+    }
+
+    public void OnExit()
+    {
+    }
+}

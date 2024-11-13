@@ -4,7 +4,7 @@ using UnityEngine;
 public class PlayerInputHandler : MonoBehaviour,IInitializable
 {
     private bool _isAttackAllowed = false;
-    public static event Action OnPlayerAttack;
+    public static event Action OnPlayerAttackEvent;
    
     private void Update()
     {
@@ -12,7 +12,7 @@ public class PlayerInputHandler : MonoBehaviour,IInitializable
         {
             if (Input.GetKeyDown(KeyCode.Space))
             {
-                OnPlayerAttack?.Invoke();
+                OnPlayerAttackEvent?.Invoke();
             }    
         }
     }
@@ -21,7 +21,7 @@ public class PlayerInputHandler : MonoBehaviour,IInitializable
     {
         if (_isAttackAllowed)
         {
-            OnPlayerAttack?.Invoke();
+            OnPlayerAttackEvent?.Invoke();
         }
     }
 

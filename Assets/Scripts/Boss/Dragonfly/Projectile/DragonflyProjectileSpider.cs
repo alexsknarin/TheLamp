@@ -1,0 +1,140 @@
+using System;
+using UnityEngine;
+
+public class DragonflyProjectileSpider : EnemyBase
+{
+    [SerializeField] private EnemyTypes _enemyType = EnemyTypes.DragonflyProjectile;
+    [SerializeField] private DragonflyProjectileMovementSpider _movement;
+    [SerializeField] private DragonflySpiderPresentation _presentation;
+    [SerializeField] private Collider2D _collider;
+    [SerializeField] private TrailRenderer _trailRenderer;
+    public override EnemyTypes EnemyType => _enemyType;
+    
+    public event Action OnEnterAnimationEndEvent;
+    
+    
+    private bool _isDead = false;
+    
+
+    private void OnEnable()
+    {
+        LampAttackModel.OnLampAttackEvent += TMPHandleLampAttack;
+        _movement.OnEnterAnimationEndEvent += OnEnterAnimationEndHandle;
+        _movement.OnFallEndedEvent += OnFallEndedHandle;
+        
+    }
+    
+    private void OnDisable()
+    {
+        LampAttackModel.OnLampAttackEvent -= TMPHandleLampAttack;
+        _movement.OnEnterAnimationEndEvent -= OnEnterAnimationEndHandle;
+        _movement.OnFallEndedEvent -= OnFallEndedHandle;
+    }
+
+    public override void Initialize()
+    {
+        _presentation.Initialize();
+    }
+
+    private void OnFallEndedHandle()
+    {
+        gameObject.SetActive(false);
+    }
+
+    private void OnEnterAnimationEndHandle()
+    {
+        _presentation.SwitchToCaughtState();
+        OnEnterAnimationEndEvent?.Invoke();
+    }
+
+    public void Play(int direction)
+    {
+        _trailRenderer.Clear();
+        _trailRenderer.emitting = false;
+        _movement.Play(direction);
+        _presentation.Play();
+        _isDead = false;
+        ReadyToLampDamage = false;
+        _collider.enabled = false;
+        
+        // Presentation setup
+    }
+    
+    public void StartPreAttack()
+    {
+        _presentation.PreAttackStart();
+    }
+
+    public override void StartAttack()
+    {
+        ReadyToCollide = true;
+        ReceivedLampAttack = false;
+        _movement.TriggerAttack();
+        _presentation.PreAttackEnd();
+        _collider.enabled = true;
+        _trailRenderer.emitting = true;
+    }
+
+    public override void HandleEnteringAttackZone()
+    {
+        ReadyToLampDamage = true;
+    }
+
+    public override void HandleCollisionWithLamp()
+    {
+        ReadyToCollide = false;
+        ReadyToLampDamage = true;
+        _movement.TriggerFall();
+    }
+
+    public override void HandleExitingAttackExitZone()
+    {
+        ReadyToLampDamage = false;
+    }
+
+    public override void HandleCollisionWithStickZone()
+    {
+        Debug.LogWarning("Spider Projectile: Lamp collision penetrated incorrectly.");
+    }
+
+    public override void ReceiveDamage(int damage)
+    {
+        if (damage < 1f) return;
+        
+        ReceivedLampAttack = true;
+        _isDead = true;
+        _collider.enabled = false;
+        OnEnemyDeathInvoke(this);
+        _movement.TriggerFall();
+        _presentation.DeathFlash();
+        // Presentation - show damage effect    
+    }
+
+    public override void UpdateAttackAvailability()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public override void ReturnToPool()
+    {
+        throw new System.NotImplementedException();
+    }
+    
+    public override Vector3 ProvideImpactPoint()
+    {
+        return transform.position;
+    }
+    
+    public override void SpreadStart()
+    {
+        throw new System.NotImplementedException();
+    }
+    
+    private void TMPHandleLampAttack(int arg1, float arg2, float arg3, float arg4)
+    {
+        if (ReadyToLampDamage)
+        {
+            ReceiveDamage(arg1);
+        }
+    }
+}

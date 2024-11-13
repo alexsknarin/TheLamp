@@ -1,6 +1,4 @@
-using System;
 using UnityEngine;
-using UnityEngine.Pool;
 
 public class Megamothling : BossBase
 {
@@ -14,22 +12,22 @@ public class Megamothling : BossBase
 
     private void OnEnable()
     {
-        _enemyMovement.OnPreAttackStart += OnPreAttackStart;
-        _enemyMovement.OnPreAttackEnd += OnPreAttackEnd;
-        _enemyMovement.OnAttackEnd += AttackStatusEnable;
-        _enemyMovement.OnMovementReset += OnMovementReset;
-        _enemyMovement.OnStickStart += StickStatusEnable;
-        _enemyMovement.OnDeathStateEnded += HandleDeathMoveStateEnd;
+        _enemyMovement.OnPreAttackStartEvent += OnPreAttackStart;
+        _enemyMovement.OnPreAttackEndEvent += OnPreAttackEnd;
+        _enemyMovement.OnAttackEndEvent += AttackStatusEnable;
+        _enemyMovement.OnMovementResetEvent += OnMovementReset;
+        _enemyMovement.OnStickStartEvent += StickStatusEnable;
+        _enemyMovement.OnDeathStateEndedEvent += HandleDeathMoveStateEnd;
     }
     
     private void OnDisable()
     {
-        _enemyMovement.OnPreAttackStart -= OnPreAttackStart;
-        _enemyMovement.OnPreAttackEnd -= OnPreAttackEnd;
-        _enemyMovement.OnAttackEnd -= AttackStatusEnable;
-        _enemyMovement.OnMovementReset -= OnMovementReset;
-        _enemyMovement.OnStickStart -= StickStatusEnable;
-        _enemyMovement.OnDeathStateEnded -= HandleDeathMoveStateEnd;
+        _enemyMovement.OnPreAttackStartEvent -= OnPreAttackStart;
+        _enemyMovement.OnPreAttackEndEvent -= OnPreAttackEnd;
+        _enemyMovement.OnAttackEndEvent -= AttackStatusEnable;
+        _enemyMovement.OnMovementResetEvent -= OnMovementReset;
+        _enemyMovement.OnStickStartEvent -= StickStatusEnable;
+        _enemyMovement.OnDeathStateEndedEvent -= HandleDeathMoveStateEnd;
     }
     
     public override void Initialize()
@@ -72,7 +70,7 @@ public class Megamothling : BossBase
         _enemyMovement.TriggerSpread();
     }
    
-    public override void AttackStart()
+    public override void StartAttack()
     {
         _enemyMovement.TriggerAttack();
     }
@@ -154,6 +152,12 @@ public class Megamothling : BossBase
     public override void ReturnToPool()
     {
     }
+    
+    public override Vector3 ProvideImpactPoint()
+    {
+        return transform.position;
+    }
+    
     
     public override void Reset()
     {

@@ -5,16 +5,16 @@ public class AdsManager : MonoBehaviour, IInitializable
 {
     [SerializeField] private FakeAd _fakeAd;
     
-    public event Action OnAdFinished;
+    public event Action OnAdFinishedEvent;
 
     private void OnEnable()
     {
-        _fakeAd.OnAdFinished += HandleAdFinished;    
+        _fakeAd.OnAdFinishedEvent += HandleAdFinished;    
     }
     
     private void OnDisable()
     {
-        _fakeAd.OnAdFinished -= HandleAdFinished;
+        _fakeAd.OnAdFinishedEvent -= HandleAdFinished;
     }
 
     public void Initialize()
@@ -29,7 +29,7 @@ public class AdsManager : MonoBehaviour, IInitializable
     
     private void HandleAdFinished()
     {
-        OnAdFinished?.Invoke();
+        OnAdFinishedEvent?.Invoke();
     }
     
 }

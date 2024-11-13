@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 public class EnemiesLampAttackHandler
 {
-    public event Action OnEnemyDamaged;
+    public event Action OnEnemyDamagedEvent;
    
     public void HandleLampAttack(int attackPower, float currentPower, float attackDuration, float attackDistance,
         List<EnemyBase> enemies)
@@ -15,7 +15,7 @@ public class EnemiesLampAttackHandler
                 if (attackPower > 0)
                 {
                     enemy.ReceiveDamage(attackPower);
-                    OnEnemyDamaged?.Invoke();    
+                    OnEnemyDamagedEvent?.Invoke();    
                 }
             }
         }
@@ -33,7 +33,7 @@ public class EnemiesLampAttackHandler
                 if (attackPower > 0)
                 {
                     enemy.ReceiveDamage(attackPower);
-                    OnEnemyDamaged?.Invoke();   
+                    OnEnemyDamagedEvent?.Invoke();   
                 }
             }
         }
