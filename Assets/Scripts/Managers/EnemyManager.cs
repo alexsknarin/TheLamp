@@ -82,6 +82,9 @@ public class EnemyManager : MonoBehaviour,IInitializable
     public static event Action<EnemyBase> OnBossAppearEvent;
     public static event Action<EnemyBase> OnBossDeathEvent;
 
+    /// ------
+    private EnemySpawner _enemySpawner;
+    
     private void OnEnable()
     {
         Enemy.OnEnemyDeactivatedEvent += UpdateEnemiesOnScreen;
@@ -143,6 +146,11 @@ public class EnemyManager : MonoBehaviour,IInitializable
         // }
         
         _isWaveInitialized = false;
+        
+        
+        // New enemy spawner
+        _enemySpawner = new EnemySpawner(_spawnQueue, _maxAggressionLevel, _firstEnemySpawnDelay);
+        _enemySpawner.StartWave(20);
     }
 
     public void StartWave()
@@ -211,8 +219,9 @@ public class EnemyManager : MonoBehaviour,IInitializable
 
         // Init Attack
         _attackDelay = GetRandomAttackDelay(4.5f, 1.8f, 6.5f, 2.8f, _aggressionLevelNormalized);
-        
         _attackLocalTime = 0;
+        
+        
         _isWaveInitialized = true;
         
         // Debug
@@ -322,12 +331,17 @@ public class EnemyManager : MonoBehaviour,IInitializable
 
     private void Update()
     {
+
         if (_isWaveInitialized && _isGameActive)
         {
+            _enemySpawner.Tick();  // TODO: 
+            
             if (_enemiesAvailable > 0)
             {
                 SpawnEnemies();
             }
+            
+            
 
             UpdateEnemiesReadyToAttack(_enemiesReadyToAttack, _enemies);
 
