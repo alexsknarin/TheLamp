@@ -8,8 +8,6 @@ using Random = UnityEngine.Random;
 public class EnemyManager : MonoBehaviour,IInitializable
 {
     [SerializeField] private SpawnQueueData _spawnQueueDataCache;
-    private SpawnQueueGenerator _spawnQueueGenerator;
-    private SpawnQueue _spawnQueue;
     
     [Header("------ Enemy Prefabs -------")]
     [SerializeField] private EnemyPool _enemyPool;
@@ -22,10 +20,7 @@ public class EnemyManager : MonoBehaviour,IInitializable
     [Header("------ Explosions -------")]
     [SerializeField] private FireflyExplosion _fireflyExplosion;
     [SerializeField] private float _fireflyExplosionRadius;
-    [SerializeField] private float _explosionDuration;
-    private EnemyBase _explosionSource;
-    private Vector3 _explosionPosition;
-    private bool _isExplosionActive = false;
+    [SerializeField] private float _explosionDuration; // TODO: connect it to the FireflyExplosion component duration
     
     [Header("---- Waves Generation ------")]
     [SerializeField] private int _maxEnemiesOnScreen;
@@ -37,28 +32,33 @@ public class EnemyManager : MonoBehaviour,IInitializable
     [SerializeField] private int _startAtWave = 0;
     [SerializeField] private int _currentWave = 0;
     [SerializeField] private float _firstEnemySpawnDelay;
+
+    [Header("---- Save Data ------")]
+    [SerializeField] private SaveDataContainer _saveDataContainer;
+
     public int CurrentWave => _currentWave;
-    private int _enemiesKilled;
+
+    private SpawnQueueGenerator _spawnQueueGenerator;
+    private SpawnQueue _spawnQueue;
     
     private List<EnemyBase> _enemies;
     private List<EnemyBase> _enemiesReadyToAttack;
     private List<EnemyBase> _ladybugsPatrolling;
+
     private EnemiesLampAttackHandler _enemiesLampAttackHandler;
-    private EnemiesExplosionHandler _enemiesExplosionHandler;
-    
-    [Header("---- Save Data ------")]
-    [SerializeField] private SaveDataContainer _saveDataContainer;
+    private EnemySpawner _enemySpawner;
+    private EnemyAttacker _enemyAttacker;
+    private EnemiesFireflyExploder _enemiesFireflyExploder;
 
     private bool _isWaveInitialized = false;
     private bool _isGameActive = true;
-    
+
     private float _attackDelay;
     private bool _isAttacking;
-    
-    private float _explosionLocalTime;
+
+    private int _enemiesKilled;
     
     private WaitForSeconds _waitAfterGameOver = new WaitForSeconds(3.9f);
-    
     
     public static event Action<int> OnWaveStartedEvent;
     public static event Action<int> OnWaveEndedEvent;
@@ -67,14 +67,10 @@ public class EnemyManager : MonoBehaviour,IInitializable
     public static event Action<EnemyBase> OnBossAppearEvent;
     public static event Action<EnemyBase> OnBossDeathEvent;
 
-    /// ------
-    private EnemySpawner _enemySpawner;
-    private EnemyAttacker _enemyAttacker;
-    
     private void OnEnable()
     {
         Enemy.OnEnemyDeactivatedEvent += UpdateEnemiesOnScreen;
-        Enemy.OnEnemyDeactivatedEvent += StartExplodeEnemyOnDeath;
+        Enemy.OnEnemyDeactivatedEvent += CheckForFireflyExplosion;
         LampAttackModel.OnLampAttackEvent += LampAttack;
         LampAttackModel.OnLampBlockedAttackEvent += LampBlockedAttack;
         Lamp.OnLampCollidedWithStickyEnemyEvent += UpdateLadybugsOnScreen;
@@ -85,7 +81,7 @@ public class EnemyManager : MonoBehaviour,IInitializable
     private void OnDisable()
     {
         Enemy.OnEnemyDeactivatedEvent -= UpdateEnemiesOnScreen;
-        Enemy.OnEnemyDeactivatedEvent -= StartExplodeEnemyOnDeath;
+        Enemy.OnEnemyDeactivatedEvent -= CheckForFireflyExplosion;
         LampAttackModel.OnLampAttackEvent -= LampAttack;
         LampAttackModel.OnLampBlockedAttackEvent -= LampBlockedAttack;
         Lamp.OnLampCollidedWithStickyEnemyEvent -= UpdateLadybugsOnScreen;
@@ -104,7 +100,6 @@ public class EnemyManager : MonoBehaviour,IInitializable
         _ladybugsPatrolling = new List<EnemyBase>();
         _enemiesReadyToAttack = new List<EnemyBase>();
         _enemiesLampAttackHandler = new EnemiesLampAttackHandler();
-        _enemiesExplosionHandler = new EnemiesExplosionHandler();
         
         // Load Game State Data
         if (!_isStartAtWaveTestMode)
@@ -139,6 +134,13 @@ public class EnemyManager : MonoBehaviour,IInitializable
             _enemiesReadyToAttack, 
             _ladybugsPatrolling,
             _maxAggressionLevel
+            );
+        
+        _enemiesFireflyExploder = new EnemiesFireflyExploder(
+            _enemies, 
+            _fireflyExplosion,
+            _fireflyExplosionRadius,
+            _explosionDuration
             );
         
         _currentWave = _startAtWave;
@@ -251,19 +253,14 @@ public class EnemyManager : MonoBehaviour,IInitializable
         _enemiesLampAttackHandler.HandleLampBlockedAttack(attackPower, currentPower, attackDuration, attackDistance, _enemies);
     }
     
-    // Handle Firefly Explosion
-    private void StartExplodeEnemyOnDeath(EnemyBase explosionSource)
+    private void CheckForFireflyExplosion(EnemyBase enemy)
     {
-        if(explosionSource.EnemyType != EnemyTypes.Firefly)
+        if(enemy.EnemyType != EnemyTypes.Firefly)
         {
             return;
         }
-        _explosionSource = explosionSource;
-        _explosionPosition = explosionSource.transform.position;
-        _fireflyExplosion.Play(_explosionPosition, _fireflyExplosionRadius * 2);
+        _enemiesFireflyExploder.StartExplosion(enemy);
         OnFireflyExplosionEvent?.Invoke();
-        _explosionLocalTime = 0;
-        _isExplosionActive = true;
     }
     
     private void SpreadEnemies()
@@ -274,40 +271,6 @@ public class EnemyManager : MonoBehaviour,IInitializable
         }
     }
 
-    private void Update()
-    {
-
-        if (_isWaveInitialized && _isGameActive)
-        {
-            _enemySpawner.Tick();   
-            _enemyAttacker.Tick();
-
-            if (_isExplosionActive)
-            {
-                float explosionPhase = _explosionLocalTime / _explosionDuration;
-                if (explosionPhase > 1)
-                {
-                    _isExplosionActive = false;
-                }
-                else
-                {
-                    _enemiesExplosionHandler.HandleExplosion(_enemies, _explosionSource, _explosionPosition, _fireflyExplosionRadius);
-                }
-            }
-            
-            if (_enemiesKilled == _enemySpawner.EnemiesWaveCount)
-            {
-                _isWaveInitialized = false;
-                _currentWave++;
-                _saveDataContainer.Wave = _currentWave;
-                OnWaveEndedEvent?.Invoke(_currentWave);
-                return;
-            }
-            
-            _explosionLocalTime += Time.deltaTime;
-        }
-    }
-    
     private void ReturnAllActiveEnemiesToPool()
     {
         // Enemies
@@ -322,7 +285,26 @@ public class EnemyManager : MonoBehaviour,IInitializable
             _enemySpawner.Boss.Reset();
         }
     }
-    
+
+    private void Update()
+    {
+
+        if (_isWaveInitialized && _isGameActive)
+        {
+            _enemySpawner.Tick();   
+            _enemyAttacker.Tick();
+            _enemiesFireflyExploder.Tick();
+            
+            if (_enemiesKilled == _enemySpawner.EnemiesWaveCount)
+            {
+                _isWaveInitialized = false;
+                _currentWave++;
+                _saveDataContainer.Wave = _currentWave;
+                OnWaveEndedEvent?.Invoke(_currentWave);
+            }
+        }
+    }
+
     // Event Handlers
     private void HandleOnEnemyDamaged()
     {
