@@ -41,8 +41,8 @@ public class EnemyManager : MonoBehaviour,IInitializable
     private int _enemiesKilled;
     
     [Header("---- Debug ------")]
-    [SerializeField] private int _enemiesInWaveCount;
-    [SerializeField] private int _enemiesLeftUnspawnedCount;
+    [SerializeField] private int _enemiesInWaveCount; // Debug
+    [SerializeField] private int _enemiesLeftUnspawnedCount; // Debug
     private List<EnemyBase> _enemies;
     private List<EnemyBase> _enemiesReadyToAttack;
     private List<EnemyBase> _ladybugsPatrolling;
@@ -62,7 +62,6 @@ public class EnemyManager : MonoBehaviour,IInitializable
     private float _explosionLocalTime;
     
     private bool _isBossActive = false;
-    private int _maxBossCount = 1;
     
     private WaitForSeconds _waitAfterGameOver = new WaitForSeconds(3.9f);
     
@@ -125,8 +124,6 @@ public class EnemyManager : MonoBehaviour,IInitializable
         _megabeetleBoss.Initialize();
         _dragonflyBoss.Initialize();
 
-        _currentWave = _startAtWave;
-        _isWaveInitialized = false;
 
         // Create enemy spawner
         _enemySpawner = new EnemySpawner
@@ -143,6 +140,10 @@ public class EnemyManager : MonoBehaviour,IInitializable
         );
         // And subcribe to its events
         _enemySpawner.OnBossSpawnedEvent += OnBossSpawnedHandle;
+        
+        
+        _currentWave = _startAtWave;
+        _isWaveInitialized = false;
     }
 
     public void StartWave()

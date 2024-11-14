@@ -8,10 +8,6 @@ public class DragonflyPresentation : EnemyPresentation
     [SerializeField] private DragonflyPreAttackFlash _preAttackFlash;
     [SerializeField] private DragonflySwarmCallPresentation _swarmCallPresentation;
 
-    
-    // private bool _isDamageFlashing = false;
-    private float _localTime = 0f;
-
     public override void PreAttackStart()
     {
         _preAttackFlash.PreAttackStart();
@@ -29,8 +25,6 @@ public class DragonflyPresentation : EnemyPresentation
     
     public override void DamageFlash()
     {
-        // _isDamageFlashing = true;
-        // _localTime = 0f;
         _damageIndication.Play();
     }
 

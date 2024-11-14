@@ -36,7 +36,6 @@ public class MegabeetleMovement : EnemyMovement
     [SerializeField] private Vector3 IDLE_POSITION; // For Debug
     // State parameters
     private bool _isDead = false;
-    private bool _isCollided = false;
     private bool _isFalling = false;
     private bool _isSpreading = false;
     private bool _isPlaying = false;
@@ -57,7 +56,6 @@ public class MegabeetleMovement : EnemyMovement
     public override void Initialize()
     {
         _isDead = false;
-        _isCollided = false;
         _isFalling = false;
         _isSpreading = false;
         
@@ -250,7 +248,6 @@ public class MegabeetleMovement : EnemyMovement
                 {
                     newState = _stickLandingState;
                     _position2d = transform.localPosition;
-                    _isCollided = false;
                     OnStickStartInvoke();
                     OnTriggerSpreadEvent?.Invoke();
                 }
@@ -266,7 +263,6 @@ public class MegabeetleMovement : EnemyMovement
                     newState = _fallState;
                     transform.parent = null;
                     _position2d = transform.position;
-                    _isCollided = false;
                     _isFalling = false;
                     _sideDirection = RandomDirection.Generate();
                 }
@@ -274,7 +270,6 @@ public class MegabeetleMovement : EnemyMovement
                 {
                     newState = _stickState;
                     _position2d = transform.localPosition;
-                    _isCollided = false;
                     OnStickStartInvoke();
                         
                 }
@@ -290,7 +285,6 @@ public class MegabeetleMovement : EnemyMovement
                     newState = _fallState;
                     transform.parent = null;
                     _position2d = transform.position;
-                    _isCollided = false;
                     _isFalling = false;
                     _sideDirection = RandomDirection.Generate();
                 }
@@ -298,7 +292,6 @@ public class MegabeetleMovement : EnemyMovement
                 {
                     newState = _stickPreAttackState;
                     _position2d = transform.localPosition;
-                    _isCollided = false;
                 }
                 break;
             case EnemyStates.StickPreAttack:
@@ -312,7 +305,6 @@ public class MegabeetleMovement : EnemyMovement
                     newState = _fallState;
                     transform.parent = null;
                     _position2d = transform.position;
-                    _isCollided = false;
                     _isFalling = false;
                     _sideDirection = RandomDirection.Generate();
                 }
@@ -322,7 +314,6 @@ public class MegabeetleMovement : EnemyMovement
                     OnTriggerSpreadEvent?.Invoke();
                     newState = _stickPreAttackPauseState;
                     _position2d = transform.localPosition;
-                    _isCollided = false;
                 }
                 break;
             case EnemyStates.StickPreAttackPause:
@@ -338,7 +329,6 @@ public class MegabeetleMovement : EnemyMovement
                     newState = _fallState;
                     transform.parent = null;
                     _position2d = transform.position;
-                    _isCollided = false;
                     _isFalling = false;
                     _sideDirection = RandomDirection.Generate();
                 }
@@ -347,7 +337,6 @@ public class MegabeetleMovement : EnemyMovement
                     OnPreAttackEndInvoke();
                     newState = _stickAttackState;
                     _position2d = transform.localPosition;
-                    _isCollided = false;
                 }
                 break;
             case EnemyStates.StickAttack:
@@ -361,7 +350,6 @@ public class MegabeetleMovement : EnemyMovement
                     newState = _fallState;
                     transform.parent = null;
                     _position2d = transform.position;
-                    _isCollided = false;
                     _isFalling = false;
                     _sideDirection = RandomDirection.Generate();
                 }
@@ -371,7 +359,6 @@ public class MegabeetleMovement : EnemyMovement
                     OnTriggerSpreadEvent?.Invoke();
                     newState = _stickState;
                     _position2d = transform.localPosition;
-                    _isCollided = false;
                 }
                 break;
             case EnemyStates.Fall:

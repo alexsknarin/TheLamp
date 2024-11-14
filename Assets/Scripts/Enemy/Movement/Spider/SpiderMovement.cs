@@ -22,7 +22,6 @@ public class SpiderMovement : EnemyMovement
     
     // State parameters
     private bool _isDead = false;
-    private bool _isCollided = false;
     
     // Debug
     [SerializeField] private EnemyStates _stateDebug;
@@ -30,7 +29,6 @@ public class SpiderMovement : EnemyMovement
     public override void Initialize()
     {
         _isDead = false;
-        _isCollided = false;
         _movementStateMachine = new EnemyMovementStateMachine();
         _enterState = new SpiderMovementEnterState(this, _speed, _xCenter, 0);
         _patrolState  = new SpiderMovementPatrolState(this, _speed, _xCenter, 0);
@@ -71,7 +69,6 @@ public class SpiderMovement : EnemyMovement
     {
         if(_currentState.State == EnemyStates.Attack)
         {
-            _isCollided = true;
             SwitchState();
         }
     }
@@ -148,7 +145,6 @@ public class SpiderMovement : EnemyMovement
                 else
                 {
                     newState = _returnState;
-                    _isCollided = false;
                     OnAttackEndInvoke();
                 }
                 break;
@@ -161,7 +157,6 @@ public class SpiderMovement : EnemyMovement
                 else
                 {
                     newState = _patrolState;
-                    _isCollided = false;
                 }
                 break;
             case EnemyStates.Death:

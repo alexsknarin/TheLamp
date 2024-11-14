@@ -1,7 +1,6 @@
 using System;
 using UnityEngine;
-using UnityEngine.Animations;
-using UnityEngine.Playables;
+using Object = System.Object;
 
 public class FDragonflyMovement : MonoBehaviour
 {
@@ -588,9 +587,9 @@ public class FDragonflyMovement : MonoBehaviour
         
         // Immediately switch to the resolved state if possible
         
-        if ((_stateMachine.CurrentState == _attackHeadSuccessState && _visibleBodyTransform.position.x < 0))
+        if ((ReferenceEquals(_stateMachine.CurrentState, _attackHeadSuccessState) && _visibleBodyTransform.position.x < 0))
         {
-            if (resolvedState == _moveToPatrolStateR || resolvedState == _catchSpiderStateL)
+            if (ReferenceEquals(resolvedState, _moveToPatrolStateR) || ReferenceEquals(resolvedState, _catchSpiderStateL))
             {
                 _stateMachine.SetState(resolvedState);
                 
@@ -600,9 +599,9 @@ public class FDragonflyMovement : MonoBehaviour
                 _stateMachine.SetState(_returnTransitionLRTBState);
             }
         }
-        else if (_stateMachine.CurrentState == _attackHeadSuccessState && _visibleBodyTransform.position.x > 0)
+        else if (ReferenceEquals(_stateMachine.CurrentState, _attackHeadSuccessState) && _visibleBodyTransform.position.x > 0)
         {
-            if (resolvedState == _moveToPatrolStateL || resolvedState == _catchSpiderStateR)
+            if (ReferenceEquals(resolvedState, _moveToPatrolStateL) || ReferenceEquals(resolvedState, _catchSpiderStateR))
             {
                 _stateMachine.SetState(resolvedState);
             }else
@@ -610,9 +609,11 @@ public class FDragonflyMovement : MonoBehaviour
                 _stateMachine.SetState(_returnTransitionRLTBState);
             }
         } 
-        else if (_stateMachine.CurrentState == _attackTailSuccessL)
+        else if (ReferenceEquals(_stateMachine.CurrentState, _attackTailSuccessL))
         {
-            if (resolvedState == _moveToPatrolStateR || resolvedState == _catchSpiderStateL || resolvedState == _moveToHoverState)
+            if (ReferenceEquals(resolvedState, _moveToPatrolStateR) || 
+                ReferenceEquals(resolvedState, _catchSpiderStateL) ||
+                ReferenceEquals(resolvedState, _moveToHoverState))
             {
                 _stateMachine.SetState(resolvedState);
             }
@@ -621,9 +622,11 @@ public class FDragonflyMovement : MonoBehaviour
                 _stateMachine.SetState(_returnTransitionLRTBState);
             }
         } 
-        else if (_stateMachine.CurrentState == _attackTailSuccessR)
+        else if (ReferenceEquals(_stateMachine.CurrentState, _attackTailSuccessR))
         {
-            if (resolvedState == _moveToPatrolStateL || resolvedState == _catchSpiderStateR || resolvedState == _moveToHoverState)
+            if (ReferenceEquals(resolvedState, _moveToPatrolStateL) || 
+                ReferenceEquals(resolvedState, _catchSpiderStateR) ||
+                ReferenceEquals(resolvedState, _moveToHoverState))
             {
                 _stateMachine.SetState(resolvedState);
             }
@@ -632,34 +635,36 @@ public class FDragonflyMovement : MonoBehaviour
                 _stateMachine.SetState(_returnTransitionRLTBState);
             }
         } 
-        else if (_stateMachine.CurrentState == _fallHeadState ||
-                   _stateMachine.CurrentState == _returnHoverState ||
-                   _stateMachine.CurrentState == _attackTailFailL ||
-                   _stateMachine.CurrentState == _attackTailFailR)
+        else if (ReferenceEquals(_stateMachine.CurrentState, _fallHeadState) ||
+                   ReferenceEquals(_stateMachine.CurrentState, _returnHoverState) ||
+                   ReferenceEquals(_stateMachine.CurrentState, _attackTailFailL) ||
+                   ReferenceEquals(_stateMachine.CurrentState, _attackTailFailR))
         {
-            if (resolvedState == _moveToPatrolStateL || resolvedState == _moveToPatrolStateR || resolvedState == _moveToHoverState)
+            if (ReferenceEquals(resolvedState, _moveToPatrolStateL) ||
+                ReferenceEquals(resolvedState, _moveToPatrolStateR) ||
+                ReferenceEquals(resolvedState, _moveToHoverState))
             {
                 _stateMachine.SetState(resolvedState);
             }
-            else if (resolvedState == _catchSpiderStateL && _visibleBodyTransform.position.x < 0)
+            else if (ReferenceEquals(resolvedState, _catchSpiderStateL) && _visibleBodyTransform.position.x < 0)
             {
                 _stateMachine.SetState(resolvedState);
             }
-            else if (resolvedState == _catchSpiderStateL && _visibleBodyTransform.position.x > 0)
+            else if (ReferenceEquals(resolvedState, _catchSpiderStateL) && _visibleBodyTransform.position.x > 0)
             {
                 _stateMachine.SetState(_returnTransitionRLBTState);
             }
-            else if (resolvedState == _catchSpiderStateR && _visibleBodyTransform.position.x > 0)
+            else if (ReferenceEquals(resolvedState, _catchSpiderStateR) && _visibleBodyTransform.position.x > 0)
             {
                 _stateMachine.SetState(resolvedState);
             }
-            else if (resolvedState == _catchSpiderStateR && _visibleBodyTransform.position.x < 0)
+            else if (ReferenceEquals(resolvedState, _catchSpiderStateR) && _visibleBodyTransform.position.x < 0)
             {
                 _stateMachine.SetState(_returnTransitionLRBTState);
             }
         }
 #if  UNITY_EDITOR
-        _currentStateType = resolvedState.ToString().Replace("FDragonfly", ""); // DEBUG
+        _currentStateType = resolvedState?.ToString().Replace("FDragonfly", ""); // DEBUG
 #endif 
     }
 

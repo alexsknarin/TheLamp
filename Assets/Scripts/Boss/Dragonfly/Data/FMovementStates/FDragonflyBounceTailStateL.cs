@@ -6,7 +6,6 @@ using UnityEngine;
 public class FDragonflyBounceTailStateL : ScriptableObject, IState
 {
     [SerializeField] private float _rotationSpeed = 125f;
-    [SerializeField] private float _duration = 0.15f;
 
     private readonly int _sideDirection = 1;
 

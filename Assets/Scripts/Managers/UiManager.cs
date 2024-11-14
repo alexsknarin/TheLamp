@@ -45,7 +45,6 @@ public class UiManager : MonoBehaviour, IInitializable
     public event Action OnGameoverFinishedEvent;
 
     private float _localTime;
-    private bool _isGameOverPlaying = false;
 
     // TODO: find a way to have less events
     private void OnEnable()

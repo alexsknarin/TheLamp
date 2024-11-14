@@ -6,11 +6,11 @@ public class DragonflyDamageFlash : DamageIndication
 {
     [SerializeField] private MeshRenderer _bodyMeshRenderer;
     [SerializeField] private MeshRenderer _wingsMeshRenderer;
-    [SerializeField] private float _duration = 0.5f;
+    [SerializeField] private float _duration = 1.2f;
     [SerializeField] private VisualEffect _damageParticles;
     private Material _bodyMaterial;
     private Material _wingsMaterial;
-    private WaitForSeconds _damageFlashDuration = new WaitForSeconds(1.2f);
+    private WaitForSeconds _damageFlashDuration = new WaitForSeconds(1.2f); // TODO: make use parameter - initialize in Initialize()
     private Transform _contactCollisionTransform;
     
     private IEnumerator WaitForDamageFlashEnd()

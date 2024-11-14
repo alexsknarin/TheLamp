@@ -25,7 +25,6 @@ public class LadybugMovement : EnemyMovement
     private Vector3 _prevPosition2d;
     // State parameters
     private bool _isDead = false;
-    private bool _isCollided = false;
     
     // Debug
     [SerializeField] private EnemyStates _stateDebug;
@@ -43,7 +42,6 @@ public class LadybugMovement : EnemyMovement
     public override void Initialize()
     {
         _isDead = false;
-        _isCollided = false;
         _movementStateMachine = new EnemyMovementStateMachine();
         _patrolState  = new LadybugMovementPatrolState(this, _speed, _radius, _verticalAmplitude);
         _preAttackState = new LadybugMovementPreAttackState(this, _speed, _radius, _verticalAmplitude);
@@ -169,7 +167,6 @@ public class LadybugMovement : EnemyMovement
                 else
                 {
                     newState = _stickState;
-                    _isCollided = false;
                     OnStickStartInvoke();
                     break;    
                 }

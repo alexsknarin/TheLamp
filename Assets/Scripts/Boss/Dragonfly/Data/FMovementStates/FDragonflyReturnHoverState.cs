@@ -9,7 +9,6 @@ public class FDragonflyReturnHoverState : ScriptableObject, IState
     [SerializeField] private float _bouncePhaseDuration = 1f;
     [SerializeField] private float _divePhaseDuration = 1f;
     [SerializeField] private float _maxBounceEulerX = 30f;
-    [SerializeField] private float _maxDiveEulerX = 30f;
     [Header("Bounce")]
     [SerializeField] private AnimationCurve _bounceMoveCurve;
     [SerializeField] private AnimationCurve _bounceRotateCurve;
@@ -21,15 +20,12 @@ public class FDragonflyReturnHoverState : ScriptableObject, IState
 
     private float _localTime = 0f;
     private float _phase = 0f;
-    private float _endPosY = 0f;
-    private float _normalizedDuration = 0f;
-
+    
     private Vector3 _startPos = Vector3.zero;
     private Vector3 _endPos = Vector3.zero;
-    
     private float _startEulerX = 0f;
     private float _endEulerX = 0f;
-    
+
     private bool _isBouncePhase = false;
     private bool _isDivePhase = false;
     

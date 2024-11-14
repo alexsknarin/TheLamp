@@ -10,7 +10,6 @@ public class MegabeetleMovementDeathState: EnemyMovementBaseState
     private float _bounceForceMagnitude = 3f;
     private float _gravityForceMagnitude = .17f;
     private float _dragAmount = 0.9f;
-    private float _gravityDecreaseAmount = 0.2f;
     private readonly Vector3 IDLE_POSITION = new Vector3(0f, -4.5f, 0f); 
     
     public MegabeetleMovementDeathState(IStateMachineOwner owner, float speed, float radius, float verticalAmplitude) : base()
