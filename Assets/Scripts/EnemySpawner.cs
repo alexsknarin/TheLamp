@@ -8,8 +8,6 @@ public class EnemySpawner
     public int EnemiesWaveCount { get; private set; }
     public int EnemiesAvailable { get; private set; }
     public int MaxEnemiesOnScreen { get; private set; }
-    public int AgressionLevel { get; private set; }
-    public float AggressionLevelNormalized { get; private set; }
 
     public BossBase Boss { get; private set; }
     
@@ -19,7 +17,6 @@ public class EnemySpawner
     private readonly SpawnQueue _spawnQueue;
     private List<EnemyBase> _enemies; // TODO: replace with actual enemy objects from Enemy Manager
     private EnemyPool _enemyPool;
-    private readonly float _maxAggressionLevel;
     private float _firstEnemySpawnDelay;
     // Bosses
     private BossBase _waspBoss;
@@ -63,14 +60,13 @@ public class EnemySpawner
         _megamothlingBoss = megamothlingBoss;
         _megabeetleBoss = megabeetleBoss;
         _dragonflyBoss = dragonflyBoss;
-        _maxAggressionLevel = maxAggressionLevel;
         _firstEnemySpawnDelay = firstEnemySpawnDelay;
     }
     
-    public void StartWave(int wave)
+    public void StartWave(int waveIndex)
     {
-        _currentWave = wave;
-        _enemyQueue = _spawnQueue.Get(wave);
+        _currentWave = waveIndex;
+        _enemyQueue = _spawnQueue.Get(waveIndex);
         
         // Debug info
         // Debug.Log("---------------------");
@@ -91,8 +87,6 @@ public class EnemySpawner
         EnemiesWaveCount = _enemyQueue.Count();
         EnemiesAvailable = _enemyQueue.Count();
         MaxEnemiesOnScreen = _enemyQueue.MaxEnemiesOnScreen;
-        AgressionLevel = _enemyQueue.AggressionLevel;
-        AggressionLevelNormalized = _enemyQueue.AggressionLevel / _maxAggressionLevel;
         
         _spawnCooldown = _firstEnemySpawnDelay;
         _localTime = 0;
@@ -192,7 +186,4 @@ public class EnemySpawner
             WaitForCooldown();
         }
     }
-    
-    
-    
 }
