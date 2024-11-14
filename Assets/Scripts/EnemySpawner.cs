@@ -1,31 +1,68 @@
+using System;
 using System.Collections.Generic;
+// using System.Linq;
 using UnityEngine;
 
 public class EnemySpawner
 {
+    public int EnemiesWaveCount { get; private set; }
+    public int EnemiesAvailable { get; private set; }
+    public int MaxEnemiesOnScreen { get; private set; }
+    public int AgressionLevel { get; private set; }
+    public float AggressionLevelNormalized { get; private set; }
+
+    public BossBase Boss { get; private set; }
+    
+    public event Action<BossBase> OnBossSpawnedEvent;
+    
     // Dependencies
     private readonly SpawnQueue _spawnQueue;
+    private List<EnemyBase> _enemies; // TODO: replace with actual enemy objects from Enemy Manager
+    private EnemyPool _enemyPool;
     private readonly float _maxAggressionLevel;
     private float _firstEnemySpawnDelay;
-    private List<int> _enemies = new List<int>(); // TODO: replace with actual enemy objects from Enemy Manager
-    
+    // Bosses
+    private BossBase _waspBoss;
+    private BossBase _megamothlingBoss;
+    private BossBase _megabeetleBoss;
+    private BossBase _dragonflyBoss;
+
     private EnemyQueue _enemyQueue;
     private int _currentWave;
     private int _currentEnemyIndex;
     
     private float _spawnCooldown;
-    private float _aggressionLevelNormalized;
     
     private float _localTime;
     private bool _isWaveActive = false;
     
+    private readonly EnemyTypes[] BOSS_TYPES = new EnemyTypes[]
+    {
+        EnemyTypes.Wasp,
+        EnemyTypes.Megamothling,
+        EnemyTypes.Megabeetle,
+        EnemyTypes.Dragonfly
+    };
+    
     public EnemySpawner(
         SpawnQueue spawnQueue, 
+        List<EnemyBase> enemies,
+        EnemyPool enemyPool,
+        BossBase waspBoss,
+        BossBase megamothlingBoss,
+        BossBase megabeetleBoss,
+        BossBase dragonflyBoss,
         float maxAggressionLevel,
         float firstEnemySpawnDelay
         )
     {
         _spawnQueue = spawnQueue;
+        _enemies = enemies;
+        _enemyPool = enemyPool;
+        _waspBoss = waspBoss;
+        _megamothlingBoss = megamothlingBoss;
+        _megabeetleBoss = megabeetleBoss;
+        _dragonflyBoss = dragonflyBoss;
         _maxAggressionLevel = maxAggressionLevel;
         _firstEnemySpawnDelay = firstEnemySpawnDelay;
     }
@@ -34,25 +71,34 @@ public class EnemySpawner
     {
         _currentWave = wave;
         _enemyQueue = _spawnQueue.Get(wave);
-        Debug.Log("---------------------");
-        Debug.Log("Starting wave " + wave);
-        Debug.Log("Max enemies on screen: " + _enemyQueue.MaxEnemiesOnScreen);
-        Debug.Log("Aggression level: " + _enemyQueue.AggressionLevel);
-        Debug.Log("Spawn delay: " + _enemyQueue.SpawnDelay);
-        Debug.Log("Spawn delay acceleration: " + _enemyQueue.SpawnDelayAcceleration);
-        Debug.Log("- Enemy types -");
-        for (int i = 0; i < _enemyQueue.Count(); i++)
-        {
-            Debug.Log(_enemyQueue.Get(i));
-        }
-        Debug.Log("---------------------");
+        
+        // Debug info
+        // Debug.Log("---------------------");
+        // Debug.Log("Starting wave " + wave);
+        // Debug.Log("Max enemies on screen: " + _enemyQueue.MaxEnemiesOnScreen);
+        // Debug.Log("Aggression level: " + _enemyQueue.AggressionLevel);
+        // Debug.Log("Spawn delay: " + _enemyQueue.SpawnDelay);
+        // Debug.Log("Spawn delay acceleration: " + _enemyQueue.SpawnDelayAcceleration);
+        // Debug.Log("- Enemy types -");
+        // for (int i = 0; i < _enemyQueue.Count(); i++)
+        // {
+        //     Debug.Log(_enemyQueue.Get(i));
+        // }
+        // Debug.Log("First enemy spawn delay: " + _firstEnemySpawnDelay);
+        // Debug.Log("---------------------");
         
         // Start spawning enemies
-        _aggressionLevelNormalized = _enemyQueue.AggressionLevel / _maxAggressionLevel;
+        EnemiesWaveCount = _enemyQueue.Count();
+        EnemiesAvailable = _enemyQueue.Count();
+        MaxEnemiesOnScreen = _enemyQueue.MaxEnemiesOnScreen;
+        AgressionLevel = _enemyQueue.AggressionLevel;
+        AggressionLevelNormalized = _enemyQueue.AggressionLevel / _maxAggressionLevel;
+        
         _spawnCooldown = _firstEnemySpawnDelay;
         _localTime = 0;
         _currentEnemyIndex = 0;
         _isWaveActive = true;
+        
     }
 
     private void WaitForCooldown()
@@ -75,13 +121,19 @@ public class EnemySpawner
         {
             if (_enemies.Count < _enemyQueue.MaxEnemiesOnScreen) // TODO: check if it should be <=
             {
-                Debug.Log("Spawning enemy " + _enemyQueue.Get(_currentEnemyIndex));
-                Vector3 debugPos = new Vector3(_currentEnemyIndex+0.1f, 2, 0);
-                Debug.DrawRay(Vector3.zero, debugPos, Color.cyan, 20f);
-                _enemies.Add(_currentEnemyIndex);
-                
-                
+                if(Array.Exists(BOSS_TYPES, x => x == _enemyQueue.Get(_currentEnemyIndex)))
+                {
+                    EnemyBase enemy = SpawnBoss(_enemyQueue.Get(_currentEnemyIndex));
+                    _enemies.Add(enemy);
+                    OnBossSpawnedEvent?.Invoke(Boss);
+                }
+                else
+                {
+                    EnemyBase enemy = SpawnRegularEnemy(_enemyQueue.Get(_currentEnemyIndex));
+                    _enemies.Add(enemy);
+                }
                 _currentEnemyIndex++;
+                EnemiesAvailable--;
             }
             else
             {
@@ -95,6 +147,34 @@ public class EnemySpawner
             _isWaveActive = false;
             Debug.Log("Wave " + _currentWave + " has ended");
         }
+    }
+
+    private EnemyBase SpawnRegularEnemy(EnemyTypes enemyType)
+    {
+        var enemy = _enemyPool.Get(enemyType);
+        enemy.Initialize();
+        return enemy;
+    }
+    
+    private EnemyBase SpawnBoss(EnemyTypes enemyType)
+    {
+        if (enemyType == EnemyTypes.Wasp)
+        {
+            Boss = _waspBoss;
+        }
+        else if (enemyType == EnemyTypes.Megamothling)
+        {
+            Boss = _megamothlingBoss;
+        }
+        else if (enemyType == EnemyTypes.Megabeetle)
+        {
+            Boss = _megabeetleBoss;
+        }
+        else if (enemyType == EnemyTypes.Dragonfly)
+        {
+            Boss = _dragonflyBoss;
+        }
+        return Boss;
     }
 
     private float UpdateSpawnCooldown()

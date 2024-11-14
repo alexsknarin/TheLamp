@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Android;
 using Random = UnityEngine.Random;
 
 public class EnemyManager : MonoBehaviour,IInitializable
@@ -9,7 +10,6 @@ public class EnemyManager : MonoBehaviour,IInitializable
     [SerializeField] private SpawnQueueData _spawnQueueDataCache;
     private SpawnQueueGenerator _spawnQueueGenerator;
     private SpawnQueue _spawnQueue;
-    private EnemyQueue _enemyQueue;
     
     [Header("------ Enemy Prefabs -------")]
     [SerializeField] private EnemyPool _enemyPool;
@@ -18,7 +18,6 @@ public class EnemyManager : MonoBehaviour,IInitializable
     [SerializeField] private BossBase _megamothlingBoss;
     [SerializeField] private BossBase _megabeetleBoss;
     [SerializeField] private BossBase _dragonflyBoss;
-    private BossBase _currentBoss;
     
     [Header("------ Explosions -------")]
     [SerializeField] private FireflyExplosion _fireflyExplosion;
@@ -30,26 +29,20 @@ public class EnemyManager : MonoBehaviour,IInitializable
     
     [Header("---- Waves Generation ------")]
     [SerializeField] private int _maxEnemiesOnScreen;
-    [SerializeField] private int _aggresionLevel;
+    [SerializeField] private int _agressionLevel;
     [SerializeField] private float _maxAggressionLevel;
-    private float _aggressionLevelNormalized;
     
     [Header("")]
     [SerializeField] private bool _isStartAtWaveTestMode = false;
     [SerializeField] private int _startAtWave = 0;
     [SerializeField] private int _currentWave = 0;
     [SerializeField] private float _firstEnemySpawnDelay;
-    [SerializeField] private float _spawnDelay;
-    [SerializeField] private float _spawnDelayAcceleration;
     public int CurrentWave => _currentWave;
-    private int _enemiesInWave;
-    private int _enemiesAvailable;
     private int _enemiesKilled;
-    private int _currentSpawnEnemyIndex;
     
     [Header("---- Debug ------")]
     [SerializeField] private int _enemiesInWaveCount;
-    [SerializeField] private int _enemiesLeftCount;
+    [SerializeField] private int _enemiesLeftUnspawnedCount;
     private List<EnemyBase> _enemies;
     private List<EnemyBase> _enemiesReadyToAttack;
     private List<EnemyBase> _ladybugsPatrolling;
@@ -66,7 +59,6 @@ public class EnemyManager : MonoBehaviour,IInitializable
     private float _attackLocalTime;
     private bool _isAttacking;
     
-    private float _localTime;
     private float _explosionLocalTime;
     
     private bool _isBossActive = false;
@@ -103,6 +95,7 @@ public class EnemyManager : MonoBehaviour,IInitializable
         LampAttackModel.OnLampAttackEvent -= LampAttack;
         LampAttackModel.OnLampBlockedAttackEvent -= LampBlockedAttack;
         Lamp.OnLampCollidedWithStickyEnemyEvent -= UpdateLadybugsOnScreen;
+        _enemySpawner.OnBossSpawnedEvent -= OnBossSpawnedHandle;
         BossBase.OnTriggerSpreadEvent -= SpreadEnemies;
         BossBase.OnDeathEvent -= HandleBossEnd;
     }
@@ -125,32 +118,31 @@ public class EnemyManager : MonoBehaviour,IInitializable
             _startAtWave = _saveDataContainer.Wave;    
         }
         
-        _isBossActive = false;
         // Init all bosses
+        _isBossActive = false;
         _waspBoss.Initialize();
         _megamothlingBoss.Initialize();
         _megabeetleBoss.Initialize();
         _dragonflyBoss.Initialize();
+
         _currentWave = _startAtWave;
-        
-        // Check all waves
-        // for( int i=1; i<_spawnQueue.Count(); i++)
-        // {
-        //     var enemyQueue = _spawnQueue.Get(i);
-        //     Debug.Log("--------------------------");
-        //     Debug.Log("Wave: " + i.ToString());
-        //     for (int j = 0; j < enemyQueue.Count(); j++)
-        //     {
-        //         Debug.Log("Enemy: " + enemyQueue.Get(j).ToString());   
-        //     }
-        // }
-        
         _isWaveInitialized = false;
-        
-        
-        // New enemy spawner
-        _enemySpawner = new EnemySpawner(_spawnQueue, _maxAggressionLevel, _firstEnemySpawnDelay);
-        _enemySpawner.StartWave(20);
+
+        // Create enemy spawner
+        _enemySpawner = new EnemySpawner
+        (
+            _spawnQueue, 
+            _enemies, 
+            _enemyPool,
+            _waspBoss,
+            _megamothlingBoss,
+            _megabeetleBoss,
+            _dragonflyBoss,
+            _maxAggressionLevel, 
+            _firstEnemySpawnDelay
+        );
+        // And subcribe to its events
+        _enemySpawner.OnBossSpawnedEvent += OnBossSpawnedHandle;
     }
 
     public void StartWave()
@@ -170,7 +162,7 @@ public class EnemyManager : MonoBehaviour,IInitializable
         // Disable boss
         if (_isBossActive)
         {
-            _currentBoss.IsGameOver = true;
+            _enemySpawner.Boss.IsGameOver = true;
         }
     }
     
@@ -194,10 +186,13 @@ public class EnemyManager : MonoBehaviour,IInitializable
         _enemies.Clear();
         _ladybugsPatrolling.Clear();
         _enemiesReadyToAttack.Clear();
-        
-        _isBossActive = false;
+
         // Init all bosses
+        _isBossActive = false;
         _waspBoss.Initialize();
+        _megamothlingBoss.Initialize();
+        _megabeetleBoss.Initialize();
+        _dragonflyBoss.Initialize();
         
         _currentWave = _startAtWave;
         _isWaveInitialized = false;
@@ -205,69 +200,29 @@ public class EnemyManager : MonoBehaviour,IInitializable
     
     private void SetupWave(int waveNum)
     {
-        _currentSpawnEnemyIndex = 0;
-        _enemyQueue = _spawnQueue.Get(waveNum);
-        _enemiesInWave = _enemyQueue.Count();
-        _enemiesAvailable = _enemiesInWave;
-        _enemiesKilled = 0;
-        _localTime = 0;
-        _maxEnemiesOnScreen = _enemyQueue.MaxEnemiesOnScreen;
-        _aggresionLevel = _enemyQueue.AggressionLevel;  
-        _aggressionLevelNormalized = _aggresionLevel / _maxAggressionLevel;
-        _spawnDelay = _enemyQueue.SpawnDelay;
-        _spawnDelayAcceleration = _enemyQueue.SpawnDelayAcceleration;
+        _enemySpawner.StartWave(waveNum);
+
+        _maxEnemiesOnScreen = _enemySpawner.MaxEnemiesOnScreen; // TODO: for debug only ????
+        _agressionLevel = _enemySpawner.AgressionLevel; // TODO: for debug only ????
 
         // Init Attack
-        _attackDelay = GetRandomAttackDelay(4.5f, 1.8f, 6.5f, 2.8f, _aggressionLevelNormalized);
+        _attackDelay = GetRandomAttackDelay(4.5f, 1.8f, 6.5f, 2.8f, _enemySpawner.AggressionLevelNormalized);
+        _enemiesKilled = 0;
         _attackLocalTime = 0;
-        
         
         _isWaveInitialized = true;
         
         // Debug
-        _enemiesInWaveCount = _enemiesInWave;
-        _enemiesLeftCount = _enemiesInWave;
-        
-        //
-        // var enemyQueue = _enemyQueue;
-        // Debug.Log("--------------------------");
-        // Debug.Log("Wave: 30");
-        // for (int j = 0; j < enemyQueue.Count(); j++)
-        // {
-        //     Debug.Log("Enemy: " + enemyQueue.Get(j).ToString());   
-        // }
+        _enemiesInWaveCount = _enemySpawner.EnemiesWaveCount;
+        _enemiesLeftUnspawnedCount = _enemySpawner.EnemiesAvailable;
     }
 
-    private Enemy SpawnEnemy(EnemyTypes enemyType)
+    private void OnBossSpawnedHandle(BossBase boss)
     {
-        var enemy = _enemyPool.Get(enemyType);
-        enemy.Initialize();
-        return enemy;
-    }
-    
-    private void SpawnBoss(EnemyTypes bossType)
-    {
-        if (bossType == EnemyTypes.Wasp)
-        {
-            _currentBoss = _waspBoss;
-        }
-        else if (bossType == EnemyTypes.Megamothling)
-        {
-            _currentBoss = _megamothlingBoss;
-        }
-        else if (bossType == EnemyTypes.Megabeetle)
-        {
-            _currentBoss = _megabeetleBoss;
-        }
-        else if (bossType == EnemyTypes.Dragonfly)
-        {
-            _currentBoss = _dragonflyBoss;
-        }
-        // _currentBoss.Reset();
-        _currentBoss.Play();
+        boss.Play();
         _isBossActive = true;
         _attackLocalTime = 0;
-        OnBossAppearEvent?.Invoke(_currentBoss);
+        OnBossAppearEvent?.Invoke(boss);
     }
     
     private void LampAttack(int attackPower, float currentPower, float attackDuration, float attackDistance)
@@ -323,9 +278,9 @@ public class EnemyManager : MonoBehaviour,IInitializable
 
     private void HandleBossEnd()
     {
-        OnBossDeathEvent?.Invoke(_currentBoss);
+        OnBossDeathEvent?.Invoke(_enemySpawner.Boss);
         _isBossActive = false;
-        _enemies.Remove(_currentBoss);
+        _enemies.Remove(_enemySpawner.Boss);
         _enemiesKilled++;
     }
 
@@ -334,15 +289,8 @@ public class EnemyManager : MonoBehaviour,IInitializable
 
         if (_isWaveInitialized && _isGameActive)
         {
-            _enemySpawner.Tick();  // TODO: 
+            _enemySpawner.Tick();   
             
-            if (_enemiesAvailable > 0)
-            {
-                SpawnEnemies();
-            }
-            
-            
-
             UpdateEnemiesReadyToAttack(_enemiesReadyToAttack, _enemies);
 
             if (!_isAttacking)
@@ -371,7 +319,8 @@ public class EnemyManager : MonoBehaviour,IInitializable
                 }
             }
             
-            if (_enemiesKilled == _enemiesInWave)
+            
+            if (_enemiesKilled == _enemySpawner.EnemiesWaveCount)
             {
                 _isWaveInitialized = false;
                 _currentWave++;
@@ -380,68 +329,12 @@ public class EnemyManager : MonoBehaviour,IInitializable
                 return;
             }
             
+            
             // Check if Ladybugs are blocking other enemies from attacking
             bool isAttackTimerUpdateAllowed = CheckIfAttackTimeUpdateIsAllowed(_ladybugsPatrolling.Count, _ladybugsPatrolling);
             
-            UpdateTimers(ref _localTime, ref _attackLocalTime, ref _explosionLocalTime, 
+            UpdateTimers(ref _attackLocalTime, ref _explosionLocalTime, 
                 isAttackTimerUpdateAllowed, _isBossActive);
-        }
-    }
-    
-    private void SpawnEnemies()
-    {
-        // TODO: Extract this part to a separate method and run it onece in the beginning of the wave
-        // Check if it is the first enemy in the wave
-        float localSpawnDelay = _spawnDelay;
-        if(_currentSpawnEnemyIndex == 0)
-        {
-            localSpawnDelay = _firstEnemySpawnDelay;
-            _attackLocalTime = 0;
-        }
-        
-        // Apply spawnDelay Acceleration
-        if(_currentSpawnEnemyIndex > 0)
-        {
-            float spawnDelayPhase = (float)(_currentSpawnEnemyIndex-1) / (_enemiesInWave-1);
-            float spawnDelayAcceleration = 1f/Mathf.Lerp(1, _spawnDelayAcceleration, spawnDelayPhase);
-            localSpawnDelay = _spawnDelay * spawnDelayAcceleration;
-        }
-        
-        //-----------------------------------
-        
-        float phase = (_localTime) / localSpawnDelay;
-        if (phase > 1)
-        {
-            if(_enemies.Count < _maxEnemiesOnScreen)
-            {
-                _localTime = 0;
-                EnemyTypes enemyType = _enemyQueue.Get(_currentSpawnEnemyIndex);
-                if (enemyType == EnemyTypes.Wasp ||
-                    enemyType == EnemyTypes.Megamothling ||
-                    enemyType == EnemyTypes.Megabeetle)
-                {
-                    SpawnBoss(enemyType);
-                    _enemies.Add(_currentBoss);
-                }
-                else
-                {
-                    var enemy = SpawnEnemy(enemyType);
-                    if (enemy != null)
-                    {
-                        _enemies.Add(enemy);
-                        if (enemy.EnemyType == EnemyTypes.Ladybug)
-                        {
-                            _ladybugsPatrolling.Add(enemy);
-                        }
-                    }
-                }
-                _enemiesAvailable--;
-                _currentSpawnEnemyIndex++;
-            }
-            else
-            {
-                _localTime = 0;
-            }
         }
     }
     
@@ -469,7 +362,7 @@ public class EnemyManager : MonoBehaviour,IInitializable
         // Bosses
         if (_isBossActive)
         {
-            _currentBoss.Reset();
+            _enemySpawner.Boss.Reset();
         }
     }
     
@@ -492,19 +385,19 @@ public class EnemyManager : MonoBehaviour,IInitializable
         // IN this case twice as often
         
         if (_isBossActive && 
-            (_currentBoss.EnemyType == EnemyTypes.Megamothling) && 
-            _currentBoss.ReadyToAttack)
+            (_enemySpawner.Boss.EnemyType == EnemyTypes.Megamothling) && 
+            _enemySpawner.Boss.ReadyToAttack)
         {
             int megamothlingAttackChance = Random.Range(0, 2);
             if (megamothlingAttackChance == 0)
             {
-                attackingEnemy = _currentBoss;
+                attackingEnemy = _enemySpawner.Boss;
             }
         }
        
         attackingEnemy.StartAttack();
         _attackLocalTime = 0;
-        _attackDelay = GetRandomAttackDelay(2.5f, 0.8f, 6.1f, 1.8f, _aggressionLevelNormalized);
+        _attackDelay = GetRandomAttackDelay(2.5f, 0.8f, 6.1f, 1.8f, _enemySpawner.AggressionLevelNormalized);
         _isAttacking = false;
     }
     
@@ -526,12 +419,14 @@ public class EnemyManager : MonoBehaviour,IInitializable
         return true;
     }
     
-    private void UpdateTimers(ref float localTime, ref float attackLocalTime, ref float explosionLocalTime, 
+    private void UpdateTimers(ref float attackLocalTime, ref float explosionLocalTime, 
         bool isAttackUpdateAllowed, bool isBossActive)
     {
-        localTime += Time.deltaTime;
         if(isAttackUpdateAllowed && 
-           (!isBossActive || (_currentBoss.EnemyType == EnemyTypes.Megamothling || _currentBoss.EnemyType == EnemyTypes.Megabeetle)))
+           (!isBossActive || 
+            (_enemySpawner.Boss.EnemyType == EnemyTypes.Megamothling ||
+             _enemySpawner.Boss.EnemyType == EnemyTypes.Megabeetle || 
+             _enemySpawner.Boss.EnemyType == EnemyTypes.Dragonfly)))
         {
             attackLocalTime += Time.deltaTime;
         }

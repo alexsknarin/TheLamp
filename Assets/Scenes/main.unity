@@ -9856,16 +9856,14 @@ MonoBehaviour:
   _fireflyExplosionRadius: 0.8
   _explosionDuration: 0.22
   _maxEnemiesOnScreen: 0
-  _aggresionLevel: 0
+  _agressionLevel: 0
   _maxAggressionLevel: 6
   _isStartAtWaveTestMode: 1
-  _startAtWave: 20
+  _startAtWave: 61
   _currentWave: 0
   _firstEnemySpawnDelay: 0.5
-  _spawnDelay: 1
-  _spawnDelayAcceleration: 1
   _enemiesInWaveCount: 0
-  _enemiesLeftCount: 0
+  _enemiesLeftUnspawnedCount: 0
   _saveDataContainer: {fileID: 11400000, guid: 377d55eb1797a24478860b1b98ae759c, type: 2}
 --- !u!114 &1818435503
 MonoBehaviour:

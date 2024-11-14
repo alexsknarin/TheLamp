@@ -531,17 +531,15 @@ public class Dragonfly : BossBase
 
     public override void UpdateAttackAvailability()
     {
-        throw new NotImplementedException();
+        ReadyToAttack = true;
     }
 
     public override void SpreadStart()
     {
-        throw new NotImplementedException();
     }
 
     public override void StartAttack()
     {
-        throw new NotImplementedException();
     }
     #endregion
 
