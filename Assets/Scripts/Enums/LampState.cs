@@ -1,4 +1,4 @@
-enum LampStates
+enum LampState
 {
     Neutral,
     Attack,
