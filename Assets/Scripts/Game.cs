@@ -13,7 +13,7 @@ public class Game : MonoBehaviour
     [SerializeField] private ScoresManager _scoresManager;
     [SerializeField] private SaveLoadManager _saveLoadManager;
     [SerializeField] private AdsManager _adsManager;
-    [SerializeField] private GameStates _currentGameState;
+    [SerializeField] private GameState _currentGameState;
     [SerializeField] private bool _skipIntro;
     [SerializeField] private float _introDuration;
     [SerializeField] private float _deathDuration;
@@ -71,7 +71,7 @@ public class Game : MonoBehaviour
             _introDuration = 0.001f;
         }
         _isLampDead = false;
-        _currentGameState = GameStates.Loading;
+        _currentGameState = GameState.Loading;
 
         // Init all systems
         _saveLoadManager.Initialize();
@@ -101,7 +101,7 @@ public class Game : MonoBehaviour
             _saveLoadManager.SaveGame(GAME_RESET, DONT_SAVE_UPGRADES);
             
             _isLampDead = false;
-            _currentGameState = GameStates.Loading;
+            _currentGameState = GameState.Loading;
             _enemyManager.Restart();
             _uiManager.Initialize();
             _playerInputHandler.Initialize();
@@ -116,7 +116,7 @@ public class Game : MonoBehaviour
         _saveLoadManager.SaveGame(GAME_RESET, SAVE_UPGRADES);
         
         _isLampDead = false;
-        _currentGameState = GameStates.Loading;
+        _currentGameState = GameState.Loading;
         _enemyManager.Restart();
         _uiManager.Initialize();
         _playerInputHandler.Initialize();
@@ -149,7 +149,7 @@ public class Game : MonoBehaviour
     }
     private void HandlePlayerAttackButtonPressed()
     {
-        if (_currentGameState == GameStates.Prepare)
+        if (_currentGameState == GameState.Prepare)
         {
             SwitchGameState();
         }
@@ -180,25 +180,25 @@ public class Game : MonoBehaviour
     {
         switch (_currentGameState)
         {
-            case GameStates.Loading:
-                _currentGameState = GameStates.ConsentScreen;
+            case GameState.Loading:
+                _currentGameState = GameState.ConsentScreen;
                 break;
-            case GameStates.ConsentScreen:
-                _currentGameState = GameStates.Intro;
+            case GameState.ConsentScreen:
+                _currentGameState = GameState.Intro;
                 _uiManager.PlayIntro();
                 _lamp.PlayIntro(_introDuration);
                 break;
-            case GameStates.Intro:
+            case GameState.Intro:
                 _playerInputHandler.EnableAttackInput();
                 _uiManager.StartPrepare(_enemyManager.CurrentWave);
-                _currentGameState = GameStates.Prepare;
+                _currentGameState = GameState.Prepare;
                 break;
-            case GameStates.Prepare:
-                _currentGameState = GameStates.Fight;
+            case GameState.Prepare:
+                _currentGameState = GameState.Fight;
                 _uiManager.StartFight();
                 _enemyManager.StartWave();
                 break;
-            case GameStates.Fight:
+            case GameState.Fight:
                 if (_isLampDead)
                 {
                     _saveLoadManager.SaveTempData();
@@ -206,13 +206,13 @@ public class Game : MonoBehaviour
                     _lamp.PlayDeath(_deathDuration);
                     _enemyManager.HandleGameOver();
                     _uiManager.StartGameOver();
-                    _currentGameState = GameStates.GameOver;   
+                    _currentGameState = GameState.GameOver;   
                 }
                 else
                 {
                     _saveLoadManager.SaveGame(GAME_RUNNING, SAVE_UPGRADES);
                     _uiManager.StartPrepare(_enemyManager.CurrentWave);
-                    _currentGameState = GameStates.Prepare;    
+                    _currentGameState = GameState.Prepare;    
                 }
                 break;
         }
