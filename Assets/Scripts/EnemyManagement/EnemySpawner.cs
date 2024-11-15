@@ -68,9 +68,9 @@ public class EnemySpawner
         _enemyQueue = _spawnQueue.Get(waveIndex);
         
         // Debug info
-        Debug.Log("---------------------");
-        Debug.Log("Starting wave " + waveIndex);
-        Debug.Log("Number of enemies in the wave: " + _enemyQueue.Count());
+        // Debug.Log("---------------------");
+        // Debug.Log("Starting wave " + waveIndex);
+        // Debug.Log("Number of enemies in the wave: " + _enemyQueue.Count());
         // Debug.Log("Max enemies on screen: " + _enemyQueue.MaxEnemiesOnScreen);
         // Debug.Log("Aggression level: " + _enemyQueue.AggressionLevel);
         // Debug.Log("Spawn delay: " + _enemyQueue.SpawnDelay);
@@ -81,7 +81,7 @@ public class EnemySpawner
         //     Debug.Log(_enemyQueue.Get(i));
         // }
         // Debug.Log("First enemy spawn delay: " + _firstEnemySpawnDelay);
-        Debug.Log("---------------------");
+        // Debug.Log("---------------------");
         
         // Start spawning enemies
         EnemiesWaveCount = _enemyQueue.Count();
@@ -113,7 +113,6 @@ public class EnemySpawner
     {
         if (_currentEnemyIndex < _enemyQueue.Count())
         {
-            Debug.Log("Spawning enemy " + _currentEnemyIndex);
             if (_enemies.Count < _enemyQueue.MaxEnemiesOnScreen) // TODO: check if it should be <=
             {
                 if(Array.Exists(BOSS_TYPES, x => x == _enemyQueue.Get(_currentEnemyIndex)))

@@ -13,14 +13,14 @@ public class BrokenGlassEffect : MonoBehaviour
     private float _currentDuration;
     private float _localTime;
     
-    public void Play(BrokenGlassEventTypes eventType)
+    public void Play(BrokenGlassEventType eventType)
     {
         switch (eventType)
         {
-            case BrokenGlassEventTypes.Damage:
+            case BrokenGlassEventType.Damage:
                 _currentDuration = _damageDuration;
                 break;
-            case BrokenGlassEventTypes.Death:
+            case BrokenGlassEventType.Death:
                 _currentDuration = _deathDuration;
                 break;
         }

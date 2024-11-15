@@ -195,12 +195,12 @@ public class UiManager : MonoBehaviour, IInitializable
 
     private void HandleLampDamage(EnemyBase enemy)
     {
-        _brokenGlassEffect.Play(BrokenGlassEventTypes.Damage);
+        _brokenGlassEffect.Play(BrokenGlassEventType.Damage);
     }
 
     private void HandleLampDeath(EnemyBase enemy)
     {
-        _brokenGlassEffect.Play(BrokenGlassEventTypes.Death);
+        _brokenGlassEffect.Play(BrokenGlassEventType.Death);
     }
 
     private void HandleGameoverAnimationFinished()
