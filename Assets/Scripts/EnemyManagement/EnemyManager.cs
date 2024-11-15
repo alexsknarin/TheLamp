@@ -122,8 +122,7 @@ public class EnemyManager : MonoBehaviour,IInitializable
             _megamothlingBoss,
             _megabeetleBoss,
             _dragonflyBoss,
-            _maxAggressionLevel, 
-            _firstEnemySpawnDelay
+                _firstEnemySpawnDelay
         );
         // And subcribe to its events
         _enemySpawner.OnBossSpawnedEvent += OnBossSpawnedHandle;
@@ -227,7 +226,7 @@ public class EnemyManager : MonoBehaviour,IInitializable
     {
         _enemies.Remove(enemy);
         _enemiesKilled++;
-        if (enemy.EnemyType == EnemyTypes.Ladybug)
+        if (enemy.EnemyType == EnemyType.Ladybug)
         {
             _ladybugsPatrolling.Remove(enemy);
         }
@@ -236,7 +235,7 @@ public class EnemyManager : MonoBehaviour,IInitializable
     private void UpdateLadybugsOnScreen(EnemyBase enemy)
     {
         // Remove stick ladybug for damageable list
-        if (enemy.EnemyType == EnemyTypes.Ladybug)
+        if (enemy.EnemyType == EnemyType.Ladybug)
         {
             _ladybugsPatrolling.Remove(enemy);    
         }
@@ -255,7 +254,7 @@ public class EnemyManager : MonoBehaviour,IInitializable
     
     private void CheckForFireflyExplosion(EnemyBase enemy)
     {
-        if(enemy.EnemyType != EnemyTypes.Firefly)
+        if(enemy.EnemyType != EnemyType.Firefly)
         {
             return;
         }

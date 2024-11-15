@@ -42,34 +42,34 @@ public class ScoresManager : MonoBehaviour, IInitializable
     {
         switch (enemy.EnemyType)
         {
-            case EnemyTypes.Mothling:
+            case EnemyType.Mothling:
                 _currentScore += _mothlingScorePrice;
                 break;
-            case EnemyTypes.Megamothling:
+            case EnemyType.Megamothling:
                 _currentScore += _megamothlingScorePrice;
                 break;
-            case  EnemyTypes.Fly:
+            case  EnemyType.Fly:
                 _currentScore += _flyScorePrice;
                 break;
-            case EnemyTypes.Firefly:
+            case EnemyType.Firefly:
                 _currentScore += _fireflyScorePrice;
                 break;
-            case EnemyTypes.Moth:
+            case EnemyType.Moth:
                 _currentScore += _mothScorePrice;
                 break;
-            case EnemyTypes.Ladybug:
+            case EnemyType.Ladybug:
                 _currentScore += _ladybugScorePrice;
                 break;
-            case EnemyTypes.Spider:
+            case EnemyType.Spider:
                 _currentScore += _spiderScorePrice;
                 break;
-            case EnemyTypes.Wasp:
+            case EnemyType.Wasp:
                 _currentScore += _waspsScorePrice;
                 break;
-            case EnemyTypes.Megabeetle:
+            case EnemyType.Megabeetle:
                 _currentScore += _megabeetleScorePrice;
                 break;
-            case EnemyTypes.DragonflyProjectile:
+            case EnemyType.DragonflyProjectile:
                 _currentScore += _dragonflyProjectileScorePrice;
                 break;
         }

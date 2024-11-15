@@ -1,4 +1,4 @@
-public enum EnemyTypes
+public enum EnemyType
 {
     Fly,
     Moth,

@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class MegabeetleMovementStickPreAttackState: EnemyMovementBaseState
 {
-    public override EnemyStates State => EnemyStates.StickPreAttack;
+    public override EnemyState State => EnemyState.StickPreAttack;
     private float _duration = 3f;
     private float _localTime = 0f;
     private float _phase = 0f;

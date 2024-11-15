@@ -109,41 +109,41 @@ public class EnemyPool : MonoBehaviour, IInitializable
         Destroy(pooledObject.gameObject);
     }
     
-    public Enemy Get(EnemyTypes enemyType)
+    public Enemy Get(EnemyType enemyType)
     {
         switch (enemyType)
         {
-            case EnemyTypes.Mothling:
+            case EnemyType.Mothling:
                 if (_mothlingPool.CountAll <= _poolSize)
                 {
                     return _mothlingPool.Get();
                 }
                 break;
-            case EnemyTypes.Fly:
+            case EnemyType.Fly:
                 if (_flyPool.CountAll <= _poolSize)
                 {
                     return _flyPool.Get();
                 }
                 break;
-            case EnemyTypes.Moth:
+            case EnemyType.Moth:
                 if (_mothPool.CountAll <= _poolSize)
                 {
                     return _mothPool.Get();
                 }
                 break;
-            case EnemyTypes.Ladybug:
+            case EnemyType.Ladybug:
                 if (_ladybugPool.CountAll <= _poolSize)
                 {
                     return _ladybugPool.Get();
                 }
                 break;
-            case EnemyTypes.Firefly:
+            case EnemyType.Firefly:
                 if (_fireflyPool.CountAll <= _poolSize)
                 {
                     return _fireflyPool.Get();
                 }
                 break;
-            case EnemyTypes.Spider:
+            case EnemyType.Spider:
                 if (_spiderPool.CountAll <= _poolSize)
                 {
                     return _spiderPool.Get();

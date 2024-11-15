@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 public class EnemyQueue
 {
-    private List<EnemyTypes> _enemies;
+    private List<EnemyType> _enemies;
     public int MaxEnemiesOnScreen { get; set; }
     public int AggressionLevel { get; set; }
     
@@ -18,7 +18,7 @@ public class EnemyQueue
     
     public EnemyQueue()
     {
-        _enemies = new List<EnemyTypes>();
+        _enemies = new List<EnemyType>();
     }
 
     public void Clear()
@@ -26,7 +26,7 @@ public class EnemyQueue
         _enemies.Clear();
     }
     
-    public void Add(EnemyTypes enemy)
+    public void Add(EnemyType enemy)
     {
         _enemies.Add(enemy);
     }
@@ -36,7 +36,7 @@ public class EnemyQueue
         return _enemies.Count;
     }
     
-    public EnemyTypes Get(int index)
+    public EnemyType Get(int index)
     {
         if (index < _enemies.Count)
         {
@@ -44,7 +44,7 @@ public class EnemyQueue
         }
         else
         {
-            return EnemyTypes.None;
+            return EnemyType.None;
         }
     }
 

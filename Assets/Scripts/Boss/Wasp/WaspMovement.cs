@@ -2,6 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.Animations;
 using UnityEngine.Playables;
+using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 [RequireComponent(typeof(Animator))]
@@ -9,9 +10,9 @@ public class WaspMovement : MonoBehaviour, IInitializable
 {
     [SerializeField] private Collider2D _collider;
     [SerializeField] private Animator _animator;
-    [SerializeField] private WaspStates _currentWaspState;
+    [SerializeField] private WaspState _currentWaspState;
     [SerializeField] private Transform _baseTransform;
-    private WaspStates _prevWaspState;
+    private WaspState _prevWaspState;
     private AnimationClipPlayable _currentAnimationClipPlayable;
     private WaspPlayablesContainer _playablesContainer;
     
@@ -73,31 +74,31 @@ public class WaspMovement : MonoBehaviour, IInitializable
         _playableGraph.SetTimeUpdateMode(DirectorUpdateMode.GameTime);
         _playableOutput = AnimationPlayableOutput.Create(_playableGraph, "Animation", _animator);
         _playablesContainer = new WaspPlayablesContainer(_playableGraph);
-        _playablesContainer.AddSingleStateClip(WaspStates.Idle, _waspIdle);
-        _playablesContainer.AddClip(WaspStates.EnterL, WaspStates.EnterR, _waspEnterL);
-        _playablesContainer.AddClip(WaspStates.Attack1_L, WaspStates.Attack1_R, _waspAttackL1);
-        _playablesContainer.AddClip(WaspStates.Attack1_L_Bounce, WaspStates.Attack1_R_Bounce, _waspAttackL_Bounce);
-        _playablesContainer.AddClip(WaspStates.Attack1_L_Fail1, WaspStates.Attack1_R_Fail1, _waspAttackL1_Fail1);
-        _playablesContainer.AddClip(WaspStates.Attack1_L_Success1, WaspStates.Attack1_R_Success1, _waspAttackL1_Success1);
-        _playablesContainer.AddClip(WaspStates.Attack1_L_Success2, WaspStates.Attack1_R_Success2, _waspAttackL1_Success2);
-        _playablesContainer.AddClip(WaspStates.Attack1_L_Success3, WaspStates.Attack1_R_Success3, _waspAttackL1_Success3);
-        _playablesContainer.AddClip(WaspStates.Attack1_L_Death, WaspStates.Attack1_R_Death, _waspAttackL1_Death);
-        _playablesContainer.AddClip(WaspStates.Attack2_L, WaspStates.Attack2_R, _waspAttackL2);
-        _playablesContainer.AddClip(WaspStates.Attack2_L_Bounce, WaspStates.Attack2_R_Bounce, _waspAttackL2_Bounce);
-        _playablesContainer.AddClip(WaspStates.Attack2_L_Fail1, WaspStates.Attack2_R_Fail1, _waspAttackL2_Fail1);
-        _playablesContainer.AddClip(WaspStates.Attack2_L_Fail2, WaspStates.Attack2_R_Fail2, _waspAttackL2_Fail2);
-        _playablesContainer.AddClip(WaspStates.Attack2_L_Success1, WaspStates.Attack2_R_Success1, _waspAttackL2_Success1);
-        _playablesContainer.AddClip(WaspStates.Attack2_L_Death, WaspStates.Attack2_R_Death, _waspAttackL2_Death);
-        _playablesContainer.AddClip(WaspStates.Attack3_L, WaspStates.Attack3_R, _waspAttackL3);
-        _playablesContainer.AddClip(WaspStates.Attack3_L_Bounce, WaspStates.Attack3_R_Bounce, _waspAttackL3_Bounce);
-        _playablesContainer.AddClip(WaspStates.Attack3_L_Fail1, WaspStates.Attack3_R_Fail1, _waspAttackL3_Fail1);
-        _playablesContainer.AddClip(WaspStates.Attack3_L_Success1, WaspStates.Attack3_R_Success1, _waspAttackL3_Success1);
-        _playablesContainer.AddClip(WaspStates.Attack3_L_Death, WaspStates.Attack3_R_Death, _waspAttackL3_Death);
-        _playablesContainer.AddClip(WaspStates.Attack4_L, WaspStates.Attack4_R, _waspAttackL4);
-        _playablesContainer.AddClip(WaspStates.Attack4_L_Bounce, WaspStates.Attack4_R_Bounce, _waspAttackL4_Bounce);
-        _playablesContainer.AddClip(WaspStates.Attack4_L_Fail1, WaspStates.Attack4_R_Fail1, _waspAttackL4_Fail1);
-        _playablesContainer.AddClip(WaspStates.Attack4_L_Success1, WaspStates.Attack4_R_Success1, _waspAttackL4_Success1);
-        _playablesContainer.AddClip(WaspStates.Attack4_L_Death, WaspStates.Attack4_R_Death, _waspAttackL4_Death);
+        _playablesContainer.AddSingleStateClip(WaspState.Idle, _waspIdle);
+        _playablesContainer.AddClip(WaspState.EnterL, WaspState.EnterR, _waspEnterL);
+        _playablesContainer.AddClip(WaspState.Attack1_L, WaspState.Attack1_R, _waspAttackL1);
+        _playablesContainer.AddClip(WaspState.Attack1_L_Bounce, WaspState.Attack1_R_Bounce, _waspAttackL_Bounce);
+        _playablesContainer.AddClip(WaspState.Attack1_L_Fail1, WaspState.Attack1_R_Fail1, _waspAttackL1_Fail1);
+        _playablesContainer.AddClip(WaspState.Attack1_L_Success1, WaspState.Attack1_R_Success1, _waspAttackL1_Success1);
+        _playablesContainer.AddClip(WaspState.Attack1_L_Success2, WaspState.Attack1_R_Success2, _waspAttackL1_Success2);
+        _playablesContainer.AddClip(WaspState.Attack1_L_Success3, WaspState.Attack1_R_Success3, _waspAttackL1_Success3);
+        _playablesContainer.AddClip(WaspState.Attack1_L_Death, WaspState.Attack1_R_Death, _waspAttackL1_Death);
+        _playablesContainer.AddClip(WaspState.Attack2_L, WaspState.Attack2_R, _waspAttackL2);
+        _playablesContainer.AddClip(WaspState.Attack2_L_Bounce, WaspState.Attack2_R_Bounce, _waspAttackL2_Bounce);
+        _playablesContainer.AddClip(WaspState.Attack2_L_Fail1, WaspState.Attack2_R_Fail1, _waspAttackL2_Fail1);
+        _playablesContainer.AddClip(WaspState.Attack2_L_Fail2, WaspState.Attack2_R_Fail2, _waspAttackL2_Fail2);
+        _playablesContainer.AddClip(WaspState.Attack2_L_Success1, WaspState.Attack2_R_Success1, _waspAttackL2_Success1);
+        _playablesContainer.AddClip(WaspState.Attack2_L_Death, WaspState.Attack2_R_Death, _waspAttackL2_Death);
+        _playablesContainer.AddClip(WaspState.Attack3_L, WaspState.Attack3_R, _waspAttackL3);
+        _playablesContainer.AddClip(WaspState.Attack3_L_Bounce, WaspState.Attack3_R_Bounce, _waspAttackL3_Bounce);
+        _playablesContainer.AddClip(WaspState.Attack3_L_Fail1, WaspState.Attack3_R_Fail1, _waspAttackL3_Fail1);
+        _playablesContainer.AddClip(WaspState.Attack3_L_Success1, WaspState.Attack3_R_Success1, _waspAttackL3_Success1);
+        _playablesContainer.AddClip(WaspState.Attack3_L_Death, WaspState.Attack3_R_Death, _waspAttackL3_Death);
+        _playablesContainer.AddClip(WaspState.Attack4_L, WaspState.Attack4_R, _waspAttackL4);
+        _playablesContainer.AddClip(WaspState.Attack4_L_Bounce, WaspState.Attack4_R_Bounce, _waspAttackL4_Bounce);
+        _playablesContainer.AddClip(WaspState.Attack4_L_Fail1, WaspState.Attack4_R_Fail1, _waspAttackL4_Fail1);
+        _playablesContainer.AddClip(WaspState.Attack4_L_Success1, WaspState.Attack4_R_Success1, _waspAttackL4_Success1);
+        _playablesContainer.AddClip(WaspState.Attack4_L_Death, WaspState.Attack4_R_Death, _waspAttackL4_Death);
         
         MovementReset();
     }
@@ -106,7 +107,7 @@ public class WaspMovement : MonoBehaviour, IInitializable
     {
         _isLampDestroyed = false;
         _isDamaged = false;
-        _currentWaspState = WaspStates.Idle;
+        _currentWaspState = WaspState.Idle;
     }
 
     public void Play()
@@ -114,17 +115,17 @@ public class WaspMovement : MonoBehaviour, IInitializable
         int side = Random.Range(0, 2);
         if (side == 0)
         {
-            _currentWaspState = WaspStates.EnterL;
+            _currentWaspState = WaspState.EnterL;
         }
         else
         {
-            _currentWaspState = WaspStates.EnterR;
+            _currentWaspState = WaspState.EnterR;
         }
 
         PlayStateClip(_currentWaspState);
     }
     
-    private void PlayStateClip(WaspStates state)
+    private void PlayStateClip(WaspState state)
     {
         AnimationClipPlayable clipPlayable = _playablesContainer.GetClip(state); 
         int side = _playablesContainer.GetSideDirection(state);    
@@ -175,124 +176,124 @@ public class WaspMovement : MonoBehaviour, IInitializable
         int v = 0;
         switch (_currentWaspState)
         {
-            case WaspStates.EnterL:
+            case WaspState.EnterL:
                 v = Random.Range(0, 2);
                 if (v == 0)
                 {
-                    _currentWaspState = WaspStates.Attack1_L;    
+                    _currentWaspState = WaspState.Attack1_L;    
                 }
                 else
                 {
-                    _currentWaspState = WaspStates.Attack3_L;
+                    _currentWaspState = WaspState.Attack3_L;
                     OnBossAttackStartedEvent?.Invoke();
                 }
                 break;
             // Attack1_L
-            case WaspStates.Attack1_L:
-                _currentWaspState = WaspStates.Attack1_L_Bounce;
+            case WaspState.Attack1_L:
+                _currentWaspState = WaspState.Attack1_L_Bounce;
                 break;
-            case WaspStates.Attack1_L_Bounce:
+            case WaspState.Attack1_L_Bounce:
                 if (_isDead)
                 {
                     _isDead = false;
-                    _currentWaspState = WaspStates.Attack1_L_Death;
+                    _currentWaspState = WaspState.Attack1_L_Death;
                     break;
                 }
                 
                 if (_isDamaged)
                 {
                     _isDamaged = false;
-                    _currentWaspState = WaspStates.Attack1_L_Fail1;
+                    _currentWaspState = WaspState.Attack1_L_Fail1;
                 }
                 else
                 {
                     v = Random.Range(0, 3);
                     if(v == 0)
                     {
-                        _currentWaspState = WaspStates.Attack1_L_Success1;
+                        _currentWaspState = WaspState.Attack1_L_Success1;
                     }
                     else if(v == 1)
                     {
-                        _currentWaspState = WaspStates.Attack1_L_Success2;
+                        _currentWaspState = WaspState.Attack1_L_Success2;
                     }
                     else if(v == 2)
                     {
-                        _currentWaspState = WaspStates.Attack1_L_Success3;
+                        _currentWaspState = WaspState.Attack1_L_Success3;
                     }    
                 }
                 break;
-            case WaspStates.Attack1_L_Fail1:
+            case WaspState.Attack1_L_Fail1:
                 if (_isLampDestroyed)
                 {
-                    _currentWaspState = WaspStates.Idle;
+                    _currentWaspState = WaspState.Idle;
                     break;
                 }
                 OnLeftTheScreenEvent?.Invoke();
                 v = Random.Range(0, 3);
                 if (v == 0)
                 {
-                    _currentWaspState = WaspStates.Attack2_R;
+                    _currentWaspState = WaspState.Attack2_R;
                     OnBossAttackStartedEvent?.Invoke();
                 }
                 else if(v == 1)
                 {
-                    _currentWaspState = WaspStates.Attack3_R;
+                    _currentWaspState = WaspState.Attack3_R;
                     OnBossAttackStartedEvent?.Invoke();
                 }
                 else if(v == 2)
                 {
-                    _currentWaspState = WaspStates.Attack4_L;
+                    _currentWaspState = WaspState.Attack4_L;
                     OnBossAttackStartedEvent?.Invoke();
                 }
                 break;
-            case WaspStates.Attack1_L_Success1:
+            case WaspState.Attack1_L_Success1:
                 if (_isLampDestroyed)
                 {
-                    _currentWaspState = WaspStates.Idle;
+                    _currentWaspState = WaspState.Idle;
                     break;
                 }
                 OnLeftTheScreenEvent?.Invoke();
                 v = Random.Range(0, 2);
                 if (v == 0)
                 {
-                    _currentWaspState = WaspStates.Attack1_R;
+                    _currentWaspState = WaspState.Attack1_R;
                     OnBossAttackStartedEvent?.Invoke();
                 }
                 else
                 {
-                    _currentWaspState = WaspStates.Attack2_R;
+                    _currentWaspState = WaspState.Attack2_R;
                     OnBossAttackStartedEvent?.Invoke();
                 }
                 break;
-            case WaspStates.Attack1_L_Success2:
+            case WaspState.Attack1_L_Success2:
                 if (_isLampDestroyed)
                 {
-                    _currentWaspState = WaspStates.Idle;
+                    _currentWaspState = WaspState.Idle;
                     break;
                 }
                 OnLeftTheScreenEvent?.Invoke();
-                _currentWaspState = WaspStates.Attack4_L;
+                _currentWaspState = WaspState.Attack4_L;
                 OnBossAttackStartedEvent?.Invoke();
                 break;
-            case WaspStates.Attack1_L_Success3:
+            case WaspState.Attack1_L_Success3:
                 if (_isLampDestroyed)
                 {
-                    _currentWaspState = WaspStates.Idle;
+                    _currentWaspState = WaspState.Idle;
                     break;
                 }
                 OnLeftTheScreenEvent?.Invoke();
-                _currentWaspState = WaspStates.Attack2_L;
+                _currentWaspState = WaspState.Attack2_L;
                 OnBossAttackStartedEvent?.Invoke();
                 break;
             // Attack2_L
-            case WaspStates.Attack2_L:
-                _currentWaspState = WaspStates.Attack2_L_Bounce;
+            case WaspState.Attack2_L:
+                _currentWaspState = WaspState.Attack2_L_Bounce;
                 break;
-            case WaspStates.Attack2_L_Bounce:
+            case WaspState.Attack2_L_Bounce:
                 if (_isDead)
                 {
                     _isDead = false;
-                    _currentWaspState = WaspStates.Attack2_L_Death;
+                    _currentWaspState = WaspState.Attack2_L_Death;
                     break;
                 }
                 
@@ -302,311 +303,311 @@ public class WaspMovement : MonoBehaviour, IInitializable
                     v = Random.Range(0, 2);
                     if(v == 0)
                     {
-                        _currentWaspState = WaspStates.Attack2_L_Fail1;
+                        _currentWaspState = WaspState.Attack2_L_Fail1;
                     }
                     if(v == 1)
                     {
-                        _currentWaspState = WaspStates.Attack2_L_Fail2;
+                        _currentWaspState = WaspState.Attack2_L_Fail2;
                     }
                 }
                 else
                 {
-                    _currentWaspState = WaspStates.Attack2_L_Success1;
+                    _currentWaspState = WaspState.Attack2_L_Success1;
                 }
                 break;
-            case WaspStates.Attack2_L_Fail1:
+            case WaspState.Attack2_L_Fail1:
                 if (_isLampDestroyed)
                 {
-                    _currentWaspState = WaspStates.Idle;
+                    _currentWaspState = WaspState.Idle;
                     break;
                 }
                 OnLeftTheScreenEvent?.Invoke();
                 v = Random.Range(0, 2);
                 if (v == 0)
                 {
-                    _currentWaspState = WaspStates.Attack1_R;
+                    _currentWaspState = WaspState.Attack1_R;
                     OnBossAttackStartedEvent?.Invoke();
                 }
                 else
                 {
-                    _currentWaspState = WaspStates.Attack3_R;
+                    _currentWaspState = WaspState.Attack3_R;
                     OnBossAttackStartedEvent?.Invoke();
                 }
                 break;
-            case WaspStates.Attack2_L_Fail2:
+            case WaspState.Attack2_L_Fail2:
                 if (_isLampDestroyed)
                 {
-                    _currentWaspState = WaspStates.Idle;
+                    _currentWaspState = WaspState.Idle;
                     break;
                 }
                 OnLeftTheScreenEvent?.Invoke();
-                _currentWaspState = WaspStates.Attack2_R;
+                _currentWaspState = WaspState.Attack2_R;
                 OnBossAttackStartedEvent?.Invoke();
                 break;
-            case WaspStates.Attack2_L_Success1:
+            case WaspState.Attack2_L_Success1:
                 if (_isLampDestroyed)
                 {
-                    _currentWaspState = WaspStates.Idle;
+                    _currentWaspState = WaspState.Idle;
                     break;
                 }
                 OnLeftTheScreenEvent?.Invoke();
                 v = Random.Range(0, 2);
                 if (v == 0)
                 {
-                    _currentWaspState = WaspStates.Attack2_L;
+                    _currentWaspState = WaspState.Attack2_L;
                     OnBossAttackStartedEvent?.Invoke();
                 }
                 else
                 {
-                    _currentWaspState = WaspStates.Attack4_L;
+                    _currentWaspState = WaspState.Attack4_L;
                     OnBossAttackStartedEvent?.Invoke();
                 }
                 break;
             // Attack3_L
-            case WaspStates.Attack3_L:
-                _currentWaspState = WaspStates.Attack3_L_Bounce;
+            case WaspState.Attack3_L:
+                _currentWaspState = WaspState.Attack3_L_Bounce;
                 break;
-            case WaspStates.Attack3_L_Bounce:
+            case WaspState.Attack3_L_Bounce:
                 if (_isDead)
                 {
                     _isDead = false;
-                    _currentWaspState = WaspStates.Attack3_L_Death;
+                    _currentWaspState = WaspState.Attack3_L_Death;
                     break;
                 }
                 if (_isDamaged)
                 {
                     _isDamaged = false;
-                    _currentWaspState = WaspStates.Attack3_L_Fail1;
+                    _currentWaspState = WaspState.Attack3_L_Fail1;
                     
                 }
                 else
                 {
-                    _currentWaspState = WaspStates.Attack3_L_Success1;
+                    _currentWaspState = WaspState.Attack3_L_Success1;
                 }
                 break;
-            case WaspStates.Attack3_L_Fail1:
+            case WaspState.Attack3_L_Fail1:
                 if (_isLampDestroyed)
                 {
-                    _currentWaspState = WaspStates.Idle;
+                    _currentWaspState = WaspState.Idle;
                     break;
                 }
                 OnLeftTheScreenEvent?.Invoke();
                 v = Random.Range(0, 2);
                 if (v == 0)
                 {
-                    _currentWaspState = WaspStates.Attack1_R;  
+                    _currentWaspState = WaspState.Attack1_R;  
                     OnBossAttackStartedEvent?.Invoke();
                 }
                 else if(v == 1)
                 {
-                    _currentWaspState = WaspStates.Attack3_R;
+                    _currentWaspState = WaspState.Attack3_R;
                     OnBossAttackStartedEvent?.Invoke();
                 }
                 break;
-            case WaspStates.Attack3_L_Success1:
+            case WaspState.Attack3_L_Success1:
                 if (_isLampDestroyed)
                 {
-                    _currentWaspState = WaspStates.Idle;
+                    _currentWaspState = WaspState.Idle;
                     break;
                 }
                 OnLeftTheScreenEvent?.Invoke();
                 v = Random.Range(0, 2);
                 if (v == 0)
                 {
-                    _currentWaspState = WaspStates.Attack1_L; 
+                    _currentWaspState = WaspState.Attack1_L; 
                     OnBossAttackStartedEvent?.Invoke();
                 }
                 else
                 {
-                    _currentWaspState = WaspStates.Attack3_L;
+                    _currentWaspState = WaspState.Attack3_L;
                     OnBossAttackStartedEvent?.Invoke();
                 }
                 break;
             // Attack4_L
-            case WaspStates.Attack4_L:
-                _currentWaspState = WaspStates.Attack4_L_Bounce;
+            case WaspState.Attack4_L:
+                _currentWaspState = WaspState.Attack4_L_Bounce;
                 break;
-            case WaspStates.Attack4_L_Bounce:
+            case WaspState.Attack4_L_Bounce:
                 if (_isDead)
                 {
                     _isDead = false;
-                    _currentWaspState = WaspStates.Attack4_L_Death;
+                    _currentWaspState = WaspState.Attack4_L_Death;
                     break;
                 }
                 
                 if (_isDamaged)
                 {
                     _isDamaged = false;
-                    _currentWaspState = WaspStates.Attack4_L_Fail1;
+                    _currentWaspState = WaspState.Attack4_L_Fail1;
                 }
                 else
                 {
-                    _currentWaspState = WaspStates.Attack4_L_Success1;
+                    _currentWaspState = WaspState.Attack4_L_Success1;
                 }
                 break;
-            case WaspStates.Attack4_L_Fail1:
+            case WaspState.Attack4_L_Fail1:
                 if (_isLampDestroyed)
                 {
-                    _currentWaspState = WaspStates.Idle;
+                    _currentWaspState = WaspState.Idle;
                     break;
                 }
                 OnLeftTheScreenEvent?.Invoke();
                 v = Random.Range(0, 2);
                 if (v == 0)
                 {
-                    _currentWaspState = WaspStates.Attack1_L;    
+                    _currentWaspState = WaspState.Attack1_L;    
                     OnBossAttackStartedEvent?.Invoke();
                 }
                 else if(v == 1)
                 {
-                    _currentWaspState = WaspStates.Attack3_L;
+                    _currentWaspState = WaspState.Attack3_L;
                     OnBossAttackStartedEvent?.Invoke();
                 }
                 break;
-            case WaspStates.Attack4_L_Success1:
+            case WaspState.Attack4_L_Success1:
                 if (_isLampDestroyed)
                 {
-                    _currentWaspState = WaspStates.Idle;
+                    _currentWaspState = WaspState.Idle;
                     break;
                 }
                 OnLeftTheScreenEvent?.Invoke();
                 v = Random.Range(0, 3);
                 if (v == 0)
                 {
-                    _currentWaspState = WaspStates.Attack1_R;  
+                    _currentWaspState = WaspState.Attack1_R;  
                     OnBossAttackStartedEvent?.Invoke();
                 }
                 else if(v == 1)
                 {
-                    _currentWaspState = WaspStates.Attack2_L;
+                    _currentWaspState = WaspState.Attack2_L;
                     OnBossAttackStartedEvent?.Invoke();
                 }
                 else if(v == 2)
                 {
-                    _currentWaspState = WaspStates.Attack3_L;
+                    _currentWaspState = WaspState.Attack3_L;
                     OnBossAttackStartedEvent?.Invoke();
                 }
                 break;
 
             // R
-            case WaspStates.EnterR:
+            case WaspState.EnterR:
                 v = Random.Range(0, 2);
                 if (v == 0)
                 {
-                    _currentWaspState = WaspStates.Attack1_R;   
+                    _currentWaspState = WaspState.Attack1_R;   
                     OnBossAttackStartedEvent?.Invoke();
                 }
                 else
                 {
-                    _currentWaspState = WaspStates.Attack3_R;
+                    _currentWaspState = WaspState.Attack3_R;
                     OnBossAttackStartedEvent?.Invoke();
                 }
                 break;
             // Attack1_R
-            case WaspStates.Attack1_R:
-                _currentWaspState = WaspStates.Attack1_R_Bounce;
+            case WaspState.Attack1_R:
+                _currentWaspState = WaspState.Attack1_R_Bounce;
                 break;
-            case WaspStates.Attack1_R_Bounce:
+            case WaspState.Attack1_R_Bounce:
                 if (_isDead)
                 {
                     _isDead = false;
-                    _currentWaspState = WaspStates.Attack1_R_Death;
+                    _currentWaspState = WaspState.Attack1_R_Death;
                     break;
                 }
                 if (_isDamaged)
                 {
                     _isDamaged = false;
-                    _currentWaspState = WaspStates.Attack1_R_Fail1;
+                    _currentWaspState = WaspState.Attack1_R_Fail1;
                 }
                 else
                 {
                     v = Random.Range(0, 3);
                     if(v == 0)
                     {
-                        _currentWaspState = WaspStates.Attack1_R_Success1;
+                        _currentWaspState = WaspState.Attack1_R_Success1;
                     }
                     else if(v == 1)
                     {
-                        _currentWaspState = WaspStates.Attack1_R_Success2;
+                        _currentWaspState = WaspState.Attack1_R_Success2;
                     }
                     else if(v == 2)
                     {
-                        _currentWaspState = WaspStates.Attack1_R_Success3;
+                        _currentWaspState = WaspState.Attack1_R_Success3;
                     }
                 }
                 break;
-            case WaspStates.Attack1_R_Fail1:
+            case WaspState.Attack1_R_Fail1:
                 if (_isLampDestroyed)
                 {
-                    _currentWaspState = WaspStates.Idle;
+                    _currentWaspState = WaspState.Idle;
                     break;
                 }
                 OnLeftTheScreenEvent?.Invoke();
                 v = Random.Range(0, 3);
                 if (v == 0)
                 {
-                    _currentWaspState = WaspStates.Attack2_L;   
+                    _currentWaspState = WaspState.Attack2_L;   
                     OnBossAttackStartedEvent?.Invoke();
                 }
                 else if(v == 1)
                 {
-                    _currentWaspState = WaspStates.Attack3_L;
+                    _currentWaspState = WaspState.Attack3_L;
                     OnBossAttackStartedEvent?.Invoke();
                 }
                 else if(v == 2)
                 {
-                    _currentWaspState = WaspStates.Attack4_R;
+                    _currentWaspState = WaspState.Attack4_R;
                     OnBossAttackStartedEvent?.Invoke();
                 }
                 break;
-            case WaspStates.Attack1_R_Success1:
+            case WaspState.Attack1_R_Success1:
                 if (_isLampDestroyed)
                 {
-                    _currentWaspState = WaspStates.Idle;
+                    _currentWaspState = WaspState.Idle;
                     break;
                 }
                 OnLeftTheScreenEvent?.Invoke();
                 v = Random.Range(0, 2);
                 if (v == 0)
                 {
-                    _currentWaspState = WaspStates.Attack1_L;
+                    _currentWaspState = WaspState.Attack1_L;
                     OnBossAttackStartedEvent?.Invoke();
                 }
                 else
                 {
-                    _currentWaspState = WaspStates.Attack2_L;
+                    _currentWaspState = WaspState.Attack2_L;
                     OnBossAttackStartedEvent?.Invoke();
                 }
                 break;
-            case WaspStates.Attack1_R_Success2:
+            case WaspState.Attack1_R_Success2:
                 if (_isLampDestroyed)
                 {
-                    _currentWaspState = WaspStates.Idle;
+                    _currentWaspState = WaspState.Idle;
                     break;
                 }
                 OnLeftTheScreenEvent?.Invoke();
-                _currentWaspState = WaspStates.Attack4_R;
+                _currentWaspState = WaspState.Attack4_R;
                 OnBossAttackStartedEvent?.Invoke();
                 break;
-            case WaspStates.Attack1_R_Success3:
+            case WaspState.Attack1_R_Success3:
                 if (_isLampDestroyed)
                 {
-                    _currentWaspState = WaspStates.Idle;
+                    _currentWaspState = WaspState.Idle;
                     break;
                 }
                 OnLeftTheScreenEvent?.Invoke();
-                _currentWaspState = WaspStates.Attack2_R;
+                _currentWaspState = WaspState.Attack2_R;
                 OnBossAttackStartedEvent?.Invoke();
                 break;
             // Attack2_R
-            case WaspStates.Attack2_R:
-                _currentWaspState = WaspStates.Attack2_R_Bounce;
+            case WaspState.Attack2_R:
+                _currentWaspState = WaspState.Attack2_R_Bounce;
                 break;
-            case WaspStates.Attack2_R_Bounce:
+            case WaspState.Attack2_R_Bounce:
                 if (_isDead)
                 {
                     _isDead = false;
-                    _currentWaspState = WaspStates.Attack2_R_Death;
+                    _currentWaspState = WaspState.Attack2_R_Death;
                     break;
                 }
                 
@@ -616,220 +617,220 @@ public class WaspMovement : MonoBehaviour, IInitializable
                     v = Random.Range(0, 2);
                     if (v == 0)
                     {
-                        _currentWaspState = WaspStates.Attack2_R_Fail1;    
+                        _currentWaspState = WaspState.Attack2_R_Fail1;    
                     }
                     else if(v == 1)
                     {
-                        _currentWaspState = WaspStates.Attack2_R_Fail2;
+                        _currentWaspState = WaspState.Attack2_R_Fail2;
                     }    
                 }
                 else
                 {
-                    _currentWaspState = WaspStates.Attack2_R_Success1;
+                    _currentWaspState = WaspState.Attack2_R_Success1;
                 }
                 break;
-            case WaspStates.Attack2_R_Fail1:
+            case WaspState.Attack2_R_Fail1:
                 if (_isLampDestroyed)
                 {
-                    _currentWaspState = WaspStates.Idle;
+                    _currentWaspState = WaspState.Idle;
                     break;
                 }
                 OnLeftTheScreenEvent?.Invoke();
                 v = Random.Range(0, 2);
                 if (v == 0)
                 {
-                    _currentWaspState = WaspStates.Attack1_L; 
+                    _currentWaspState = WaspState.Attack1_L; 
                     OnBossAttackStartedEvent?.Invoke();
                 }
                 else
                 {
-                    _currentWaspState = WaspStates.Attack3_L;
+                    _currentWaspState = WaspState.Attack3_L;
                     OnBossAttackStartedEvent?.Invoke();
                 }
                 break;
-            case WaspStates.Attack2_R_Fail2:
+            case WaspState.Attack2_R_Fail2:
                 if (_isLampDestroyed)
                 {
-                    _currentWaspState = WaspStates.Idle;
+                    _currentWaspState = WaspState.Idle;
                     break;
                 }
                 OnLeftTheScreenEvent?.Invoke();
-                _currentWaspState = WaspStates.Attack2_L;  
+                _currentWaspState = WaspState.Attack2_L;  
                 OnBossAttackStartedEvent?.Invoke();
                 break;
-            case WaspStates.Attack2_R_Success1:
+            case WaspState.Attack2_R_Success1:
                 if (_isLampDestroyed)
                 {
-                    _currentWaspState = WaspStates.Idle;
+                    _currentWaspState = WaspState.Idle;
                     break;
                 }
                 OnLeftTheScreenEvent?.Invoke();
                 v = Random.Range(0, 2);
                 if (v == 0)
                 {
-                    _currentWaspState = WaspStates.Attack2_R;
+                    _currentWaspState = WaspState.Attack2_R;
                     OnBossAttackStartedEvent?.Invoke();
                 }
                 else
                 {
-                    _currentWaspState = WaspStates.Attack4_R;
+                    _currentWaspState = WaspState.Attack4_R;
                     OnBossAttackStartedEvent?.Invoke();
                 }
                 break;
             // Attack3_R
-            case WaspStates.Attack3_R:
-                _currentWaspState = WaspStates.Attack3_R_Bounce;
+            case WaspState.Attack3_R:
+                _currentWaspState = WaspState.Attack3_R_Bounce;
                 break;
-            case WaspStates.Attack3_R_Bounce:
+            case WaspState.Attack3_R_Bounce:
                 if (_isDead)
                 {
                     _isDead = false;
-                    _currentWaspState = WaspStates.Attack3_R_Death;
+                    _currentWaspState = WaspState.Attack3_R_Death;
                     break;
                 }
                 
                 if (_isDamaged)
                 {
                     _isDamaged = false;
-                    _currentWaspState = WaspStates.Attack3_R_Fail1;
+                    _currentWaspState = WaspState.Attack3_R_Fail1;
                 }
                 else
                 {
-                    _currentWaspState = WaspStates.Attack3_R_Success1;
+                    _currentWaspState = WaspState.Attack3_R_Success1;
                 }
                 break;
-            case WaspStates.Attack3_R_Fail1:
+            case WaspState.Attack3_R_Fail1:
                 if (_isLampDestroyed)
                 {
-                    _currentWaspState = WaspStates.Idle;
+                    _currentWaspState = WaspState.Idle;
                     break;
                 }
                 OnLeftTheScreenEvent?.Invoke();
                 v = Random.Range(0, 2);
                 if (v == 0)
                 {
-                    _currentWaspState = WaspStates.Attack1_L;    
+                    _currentWaspState = WaspState.Attack1_L;    
                     OnBossAttackStartedEvent?.Invoke();
                 }
                 else if(v == 1)
                 {
-                    _currentWaspState = WaspStates.Attack3_L;
+                    _currentWaspState = WaspState.Attack3_L;
                     OnBossAttackStartedEvent?.Invoke();
                 }
                 break;
-            case WaspStates.Attack3_R_Success1:
+            case WaspState.Attack3_R_Success1:
                 if (_isLampDestroyed)
                 {
-                    _currentWaspState = WaspStates.Idle;
+                    _currentWaspState = WaspState.Idle;
                     break;
                 }
                 OnLeftTheScreenEvent?.Invoke();
                 v = Random.Range(0, 2);
                 if (v == 0)
                 {
-                    _currentWaspState = WaspStates.Attack1_R; 
+                    _currentWaspState = WaspState.Attack1_R; 
                     OnBossAttackStartedEvent?.Invoke();
                 }
                 else
                 {
-                    _currentWaspState = WaspStates.Attack3_R;
+                    _currentWaspState = WaspState.Attack3_R;
                     OnBossAttackStartedEvent?.Invoke();
                 }
                 break;
             // Attack4_R
-            case WaspStates.Attack4_R:
-                _currentWaspState = WaspStates.Attack4_R_Bounce;
+            case WaspState.Attack4_R:
+                _currentWaspState = WaspState.Attack4_R_Bounce;
                 break;
-            case WaspStates.Attack4_R_Bounce:
+            case WaspState.Attack4_R_Bounce:
                 if (_isDead)
                 {
                     _isDead = false;
-                    _currentWaspState = WaspStates.Attack4_R_Death;
+                    _currentWaspState = WaspState.Attack4_R_Death;
                     break;
                 }
                 if (_isDamaged)
                 {
                     _isDamaged = false;
-                    _currentWaspState = WaspStates.Attack4_R_Fail1;
+                    _currentWaspState = WaspState.Attack4_R_Fail1;
                 }
                 else
                 {
-                    _currentWaspState = WaspStates.Attack4_R_Success1;
+                    _currentWaspState = WaspState.Attack4_R_Success1;
                 }
                 break;
-            case WaspStates.Attack4_R_Fail1:
+            case WaspState.Attack4_R_Fail1:
                 if (_isLampDestroyed)
                 {
-                    _currentWaspState = WaspStates.Idle;
+                    _currentWaspState = WaspState.Idle;
                     break;
                 }
                 OnLeftTheScreenEvent?.Invoke();
                 v = Random.Range(0, 2);
                 if (v == 0)
                 {
-                    _currentWaspState = WaspStates.Attack1_R;   
+                    _currentWaspState = WaspState.Attack1_R;   
                     OnBossAttackStartedEvent?.Invoke();
                 }
                 else if(v == 1)
                 {
-                    _currentWaspState = WaspStates.Attack3_R;
+                    _currentWaspState = WaspState.Attack3_R;
                     OnBossAttackStartedEvent?.Invoke();
                 }
                 break;
-            case WaspStates.Attack4_R_Success1:
+            case WaspState.Attack4_R_Success1:
                 if (_isLampDestroyed)
                 {
-                    _currentWaspState = WaspStates.Idle;
+                    _currentWaspState = WaspState.Idle;
                     break;
                 }
                 OnLeftTheScreenEvent?.Invoke();
                 v = Random.Range(0, 3);
                 if (v == 0)
                 {
-                    _currentWaspState = WaspStates.Attack1_L;   
+                    _currentWaspState = WaspState.Attack1_L;   
                     OnBossAttackStartedEvent?.Invoke();
                 }
                 else if(v == 1)
                 {
-                    _currentWaspState = WaspStates.Attack2_R;
+                    _currentWaspState = WaspState.Attack2_R;
                     OnBossAttackStartedEvent?.Invoke();
                 }
                 else if(v == 2)
                 {
-                    _currentWaspState = WaspStates.Attack3_R;
+                    _currentWaspState = WaspState.Attack3_R;
                     OnBossAttackStartedEvent?.Invoke();
                 }    
                 break;
-            case WaspStates.Attack1_L_Death:
-                _currentWaspState = WaspStates.Idle;
+            case WaspState.Attack1_L_Death:
+                _currentWaspState = WaspState.Idle;
                 OnDeathStateEndedEvent?.Invoke();
                 break;
-            case WaspStates.Attack2_L_Death:
-                _currentWaspState = WaspStates.Idle;
+            case WaspState.Attack2_L_Death:
+                _currentWaspState = WaspState.Idle;
                 OnDeathStateEndedEvent?.Invoke();
                 break; 
-            case WaspStates.Attack3_L_Death:
-                _currentWaspState = WaspStates.Idle;
+            case WaspState.Attack3_L_Death:
+                _currentWaspState = WaspState.Idle;
                 OnDeathStateEndedEvent?.Invoke();
                 break; 
-            case WaspStates.Attack4_L_Death:
-                _currentWaspState = WaspStates.Idle;
+            case WaspState.Attack4_L_Death:
+                _currentWaspState = WaspState.Idle;
                 OnDeathStateEndedEvent?.Invoke();
                 break; 
-            case WaspStates.Attack1_R_Death:
-                _currentWaspState = WaspStates.Idle;
+            case WaspState.Attack1_R_Death:
+                _currentWaspState = WaspState.Idle;
                 OnDeathStateEndedEvent?.Invoke();
                 break;
-            case WaspStates.Attack2_R_Death:
-                _currentWaspState = WaspStates.Idle;
+            case WaspState.Attack2_R_Death:
+                _currentWaspState = WaspState.Idle;
                 OnDeathStateEndedEvent?.Invoke();
                 break; 
-            case WaspStates.Attack3_R_Death:
-                _currentWaspState = WaspStates.Idle;
+            case WaspState.Attack3_R_Death:
+                _currentWaspState = WaspState.Idle;
                 OnDeathStateEndedEvent?.Invoke();
                 break; 
-            case WaspStates.Attack4_R_Death:
-                _currentWaspState = WaspStates.Idle;
+            case WaspState.Attack4_R_Death:
+                _currentWaspState = WaspState.Idle;
                 OnDeathStateEndedEvent?.Invoke();
                 break;
         }

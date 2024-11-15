@@ -1,11 +1,12 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class DragonflyProjectileMoth : EnemyBase
 {
-    [SerializeField] private EnemyTypes _enemyType = EnemyTypes.DragonflyProjectile;
+    [FormerlySerializedAs("_enemyType")] [SerializeField] private EnemyType _enemyType = global::EnemyType.DragonflyProjectile;
     [SerializeField] private DragonflyProjectileMovementMoth _movement;
     [SerializeField] private DragonflyMothPresentation _presentation;
-    public override EnemyTypes EnemyType => _enemyType;
+    public override EnemyType EnemyType => _enemyType;
 
     private void OnEnable()
     {

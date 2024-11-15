@@ -1,4 +1,4 @@
-public enum EnemyStates
+public enum EnemyState
 {
     Enter,
     Patrol,

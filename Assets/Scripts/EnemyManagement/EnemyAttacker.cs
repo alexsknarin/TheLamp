@@ -61,7 +61,7 @@ public class EnemyAttacker
             // and if Boss is not active
             // unless it's Megamothling or Megabeetle
             if (CheckIfAttackTimeUpdateIsAllowed() && 
-                (!_isBossActive || (_boss.EnemyType == EnemyTypes.Megamothling || _boss.EnemyType == EnemyTypes.Megabeetle))) 
+                (!_isBossActive || (_boss.EnemyType == EnemyType.Megamothling || _boss.EnemyType == EnemyType.Megabeetle))) 
             {
                 _localTime += Time.deltaTime;
             }
@@ -70,14 +70,25 @@ public class EnemyAttacker
 
     private void Attack()
     {
-        var attackingEnemy = _enemiesReadyToAttack[Random.Range(0, _enemiesReadyToAttack.Count)];
+        int enemyIndex;
+        if (_enemiesReadyToAttack.Count > 0)
+        {
+            enemyIndex = Random.Range(0, _enemiesReadyToAttack.Count);    
+        }
+        else
+        {
+            return;
+        }
+        
+        var attackingEnemy = _enemiesReadyToAttack[enemyIndex];
+        
 
         // MEGAMOTHLING:
         // It attacks alongside other enemies, but it should be
         // Prioritized to attack more often
         // In this case twice as often
         
-        if (_isBossActive && (_boss.EnemyType == EnemyTypes.Megamothling) && _boss.ReadyToAttack)
+        if (_isBossActive && (_boss.EnemyType == EnemyType.Megamothling) && _boss.ReadyToAttack)
         {
             int megamothlingAttackChance = Random.Range(0, 2);
             if (megamothlingAttackChance == 0)

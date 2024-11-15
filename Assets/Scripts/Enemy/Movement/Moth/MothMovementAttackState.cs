@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class MothMovementAttackState: EnemyMovementBaseState
 {
-    public override EnemyStates State => EnemyStates.Attack;
+    public override EnemyState State => EnemyState.Attack;
     private float _acceleration = 0.02f;
     private float _depthDecrement = 0.2f;
     private float _acceleratedSpeed = 1f;

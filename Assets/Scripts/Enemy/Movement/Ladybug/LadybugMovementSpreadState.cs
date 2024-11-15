@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class LadybugMovementSpreadState: EnemyMovementBaseState
 {
-    public override EnemyStates State => EnemyStates.Spread;
+    public override EnemyState State => EnemyState.Spread;
     private float _maxDistance = 6.4f;
     private float _acceleratedSpeed;
     private float _acceleration = 3.5f;

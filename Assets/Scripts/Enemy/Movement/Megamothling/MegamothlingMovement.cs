@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 public class MegamothlingMovement : EnemyMovement
@@ -52,7 +53,7 @@ public class MegamothlingMovement : EnemyMovement
     private bool _isPlaying = false;
     
     // Debug
-    [SerializeField] private EnemyStates _stateDebug;
+    [SerializeField] private EnemyState _stateDebug;
 
     public override void Initialize()
     {
@@ -102,7 +103,7 @@ public class MegamothlingMovement : EnemyMovement
     
     public override void TriggerFall()
     {
-        if(_currentState.State == EnemyStates.Attack)
+        if(_currentState.State == EnemyState.Attack)
         {
             _isCollided = true;
             SwitchState();
@@ -111,7 +112,7 @@ public class MegamothlingMovement : EnemyMovement
     
     public override void TriggerDeath()
     {
-        if(_currentState.State != EnemyStates.Death)
+        if(_currentState.State != EnemyState.Death)
         {
             _isDead = true;
             SwitchState();
@@ -125,9 +126,9 @@ public class MegamothlingMovement : EnemyMovement
     
     public override void TriggerSpread()
     {
-        if(_currentState.State != EnemyStates.Attack && 
-           _currentState.State != EnemyStates.PreAttack && 
-           _currentState.State != EnemyStates.Death)
+        if(_currentState.State != EnemyState.Attack && 
+           _currentState.State != EnemyState.PreAttack && 
+           _currentState.State != EnemyState.Death)
         {
             _currentState = _spreadState;
             _movementStateMachine.SetState(_currentState, _position2d, _sideDirection, _depthDirection);
@@ -143,7 +144,7 @@ public class MegamothlingMovement : EnemyMovement
         EnemyMovementBaseState newState = _currentState;
         switch (_currentState.State)
         {
-            case EnemyStates.Enter:
+            case EnemyState.Enter:
                 if (_isDead)
                 {
                     newState = _deathState;
@@ -155,7 +156,7 @@ public class MegamothlingMovement : EnemyMovement
                     newState = _patrolState;
                     break;    
                 }
-            case EnemyStates.Patrol:
+            case EnemyState.Patrol:
                 if (_isDead)
                 {
                     newState = _deathState;
@@ -168,7 +169,7 @@ public class MegamothlingMovement : EnemyMovement
                     newState = _preAttackState;
                     break;    
                 }
-            case EnemyStates.PreAttack:
+            case EnemyState.PreAttack:
                 if (_isDead)
                 {
                     newState = _deathState;
@@ -182,7 +183,7 @@ public class MegamothlingMovement : EnemyMovement
                     OnBossAttackStartedEvent?.Invoke();
                     break;    
                 }
-            case EnemyStates.Attack:
+            case EnemyState.Attack:
                 if (_isCollided && !_isDead)
                 {
                     newState = _fallState;
@@ -201,7 +202,7 @@ public class MegamothlingMovement : EnemyMovement
                 {
                     break;    
                 }
-            case EnemyStates.Fall:
+            case EnemyState.Fall:
                 if (_isDead)
                 {
                     newState = _deathState;
@@ -214,10 +215,10 @@ public class MegamothlingMovement : EnemyMovement
                     newState = _enterState;
                     break;
                 }
-            case EnemyStates.Spread:
+            case EnemyState.Spread:
                 MovementReset();
                 return;
-            case EnemyStates.Death:
+            case EnemyState.Death:
                 newState = _patrolState;
                 OnDeathStateEndedEvent?.Invoke();
                 break;
@@ -252,7 +253,7 @@ public class MegamothlingMovement : EnemyMovement
             Vector3 trajectoryNoise1 = TrajectoryNoise.Generate(_noise1Frequency);
             Vector3 trajectoryNoise2 = TrajectoryNoise.Generate(_noise2Frequency);
             
-            if (_currentState.State == EnemyStates.Attack)
+            if (_currentState.State == EnemyState.Attack)
             {
                 float noiseMultiplier = 0.5f;
                 if (_position2d.magnitude < 0.8f)
@@ -263,7 +264,7 @@ public class MegamothlingMovement : EnemyMovement
                 trajectoryNoise2 *= noiseMultiplier;
             }
 
-            if (State == EnemyStates.Death)
+            if (State == EnemyState.Death)
             {
                 trajectoryNoise1 *= 0.1f;
                 trajectoryNoise2 *= 0.25f;

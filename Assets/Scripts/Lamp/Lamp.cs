@@ -96,7 +96,7 @@ public class Lamp : MonoBehaviour, IInitializable
     
     private void EnemyExitCollisionHandle(EnemyBase enemy)
     {
-        if (enemy.EnemyType == EnemyTypes.Ladybug || enemy.EnemyType == EnemyTypes.Megabeetle)
+        if (enemy.EnemyType == EnemyType.Ladybug || enemy.EnemyType == EnemyType.Megabeetle)
         {
             if (_stickyEnemies.Contains(enemy))
             {

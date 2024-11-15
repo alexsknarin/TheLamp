@@ -1,4 +1,4 @@
-public enum WaspStates
+public enum WaspState
 {
     Idle,
     EnterL, 

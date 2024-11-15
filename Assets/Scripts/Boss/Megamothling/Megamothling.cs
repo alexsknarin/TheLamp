@@ -1,13 +1,14 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class Megamothling : BossBase
 {
-    [SerializeField] private EnemyTypes _enemyType;
+    [SerializeField] private EnemyType _enemyType;
     [SerializeField] private int _maxHealth;
     [SerializeField] private int _currentHealth;
     [SerializeField] private MegamothlingMovement _enemyMovement;
     [SerializeField] private MegamothlingPresentation _enemyPresentation;
-    public override EnemyTypes EnemyType => _enemyType;
+    public override EnemyType EnemyType => _enemyType;
     private bool _isDead = false;
 
     private void OnEnable()
@@ -56,7 +57,7 @@ public class Megamothling : BossBase
         
         ReadyToAttack = false;
         
-        if (_enemyType == EnemyTypes.Megamothling && _enemyMovement.State == EnemyStates.Patrol)
+        if (_enemyType == EnemyType.Megamothling && _enemyMovement.State == EnemyState.Patrol)
         {
             if ((y < 0.0f) || (Mathf.Abs(x) > 2.1f && y > 0.0f))
             {
@@ -101,7 +102,7 @@ public class Megamothling : BossBase
     
     public override void HandleEnteringAttackZone()
     {
-        if (_enemyMovement.State == EnemyStates.Attack || _enemyType == EnemyTypes.Ladybug)
+        if (_enemyMovement.State == EnemyState.Attack || _enemyType == EnemyType.Ladybug)
         {
             ReadyToLampDamage = true;    
         }

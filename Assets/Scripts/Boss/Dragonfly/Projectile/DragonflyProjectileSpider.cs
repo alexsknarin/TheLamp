@@ -1,14 +1,15 @@
 using System;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class DragonflyProjectileSpider : EnemyBase
 {
-    [SerializeField] private EnemyTypes _enemyType = EnemyTypes.DragonflyProjectile;
+    [SerializeField] private EnemyType _enemyType = EnemyType.DragonflyProjectile;
     [SerializeField] private DragonflyProjectileMovementSpider _movement;
     [SerializeField] private DragonflySpiderPresentation _presentation;
     [SerializeField] private Collider2D _collider;
     [SerializeField] private TrailRenderer _trailRenderer;
-    public override EnemyTypes EnemyType => _enemyType;
+    public override EnemyType EnemyType => _enemyType;
     public event Action OnEnterAnimationEndEvent;
     
     private void OnEnable()

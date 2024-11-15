@@ -19,7 +19,7 @@ public class MegabeetleMovementDeathState: EnemyMovementBaseState
         _verticalAmplitude = verticalAmplitude;
         _owner = owner;
     }
-    public override EnemyStates State => EnemyStates.Death;
+    public override EnemyState State => EnemyState.Death;
 
     public override void EnterState(Vector3 currentPosition, int sideDirection, int depthDirection)
     {

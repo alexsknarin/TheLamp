@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class MothlingMovementPreAttackState: EnemyMovementBaseState
 {
-    public override EnemyStates State => EnemyStates.PreAttack;
+    public override EnemyState State => EnemyState.PreAttack;
     private float _duration = .35f;
     private float _acceleratedSpeed;
     private float _acceleration = 0.93f;

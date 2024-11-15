@@ -1,16 +1,17 @@
 using System;
 using UnityEngine;
 using UnityEngine.Pool;
+using UnityEngine.Serialization;
 
 public class Megabeetle : BossBase
 {
-    [SerializeField] private EnemyTypes _enemyType;
+    [SerializeField] private EnemyType _enemyType;
     [SerializeField] private int _maxHealth;
     [SerializeField] private int _currentHealth;
     [SerializeField] private int _healthToFallThreshold;
     [SerializeField] private MegabeetleMovement _enemyMovement;
     [SerializeField] private MegabeetlePresentation _enemyPresentation;
-    public override EnemyTypes EnemyType => _enemyType;
+    public override EnemyType EnemyType => _enemyType;
     public static event Action<EnemyBase> OnStickAttackedEvent;
     private int _currentHealthToFall;
     private bool _isDead = false;
@@ -122,7 +123,7 @@ public class Megabeetle : BossBase
 
     public override void HandleEnteringAttackZone()
     {
-        if (_enemyMovement.State == EnemyStates.Attack)
+        if (_enemyMovement.State == EnemyState.Attack)
         {
             ReadyToLampDamage = true;    
         }

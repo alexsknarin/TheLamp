@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class MegamothlingMovementAttackState: EnemyMovementBaseState
 {
-    public override EnemyStates State => EnemyStates.Attack;
+    public override EnemyState State => EnemyState.Attack;
     private float _acceleration = 3.1f; //13.5f;
     private float _depthDecrement = 0.2f;
     private float _acceleratedSpeed = 1f;

@@ -1,15 +1,16 @@
 using System;
 using UnityEngine;
 using UnityEngine.Pool;
+using UnityEngine.Serialization;
 
 public class Enemy : EnemyBase
 {
-    [SerializeField] private EnemyTypes _enemyType;
+    [SerializeField] private EnemyType _enemyType;
     [SerializeField] private int _maxHealth;
     [SerializeField] private int _currentHealth;
     [SerializeField] private EnemyMovement _enemyMovement;
     [SerializeField] private EnemyPresentation _enemyPresentation;
-    public override EnemyTypes EnemyType => _enemyType;
+    public override EnemyType EnemyType => _enemyType;
     private bool _isDead = false;
     
     private IObjectPool<Enemy> _objectPool;
@@ -67,14 +68,14 @@ public class Enemy : EnemyBase
         
         ReadyToAttack = false;
         
-        if(_enemyMovement.State == EnemyStates.Spread)
+        if(_enemyMovement.State == EnemyState.Spread)
         {
             ReadyToAttack = false;
             return;
         }
         
-        if ((_enemyType == EnemyTypes.Fly || _enemyType == EnemyTypes.Firefly) &&
-            _enemyMovement.State == EnemyStates.Patrol )
+        if ((_enemyType == EnemyType.Fly || _enemyType == EnemyType.Firefly) &&
+            _enemyMovement.State == EnemyState.Patrol )
         {
             if (_enemyMovement.SideDirection < 0)
             {
@@ -94,7 +95,7 @@ public class Enemy : EnemyBase
             }
         }
 
-        if (_enemyType == EnemyTypes.Mothling && _enemyMovement.State == EnemyStates.Patrol)
+        if (_enemyType == EnemyType.Mothling && _enemyMovement.State == EnemyState.Patrol)
         {
             if ((y < 0.0f) || (Mathf.Abs(x) > 1.1f && y > 0.0f))
             {
@@ -103,7 +104,7 @@ public class Enemy : EnemyBase
             }
         }
 
-        if (_enemyType == EnemyTypes.Moth && _enemyMovement.State == EnemyStates.Hover)
+        if (_enemyType == EnemyType.Moth && _enemyMovement.State == EnemyState.Hover)
         {
             if ((Mathf.Abs(transform.position.x) > 0.7f && transform.position.y <0.85f) || transform.position.y < 0.0f)
             {
@@ -112,7 +113,7 @@ public class Enemy : EnemyBase
             }
         }
 
-        if (_enemyType == EnemyTypes.Spider && _enemyMovement.State == EnemyStates.Patrol)
+        if (_enemyType == EnemyType.Spider && _enemyMovement.State == EnemyState.Patrol)
         {
             ReadyToAttack = true;
         }
@@ -154,7 +155,7 @@ public class Enemy : EnemyBase
     
     public override void HandleEnteringAttackZone()
     {
-        if (_enemyMovement.State == EnemyStates.Attack || _enemyType == EnemyTypes.Ladybug)
+        if (_enemyMovement.State == EnemyState.Attack || _enemyType == EnemyType.Ladybug)
         {
             ReadyToLampDamage = true;    
         }

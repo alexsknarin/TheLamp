@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class SpiderMovementReturnState: EnemyMovementBaseState
 {
-    public override EnemyStates State => EnemyStates.Return;
+    public override EnemyState State => EnemyState.Return;
     private Vector3 _hangingPoint;
     private float _localTime;
     private float _initialAmplitude;

@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class FlyMovementAttackState: EnemyMovementBaseState
 {
-    public override EnemyStates State => EnemyStates.Attack;
+    public override EnemyState State => EnemyState.Attack;
     private float _acceleration = 13.5f;
     private float _depthDecrement = 0.4f;
     private float _acceleratedSpeed = 1f;

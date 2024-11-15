@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class SpiderMovementEnterState: EnemyMovementBaseState
 {
-    public override EnemyStates State => EnemyStates.Enter;
+    public override EnemyState State => EnemyState.Enter;
     private Vector3 _hangingPoint;
     private float _localTime;
     

@@ -1,12 +1,11 @@
 using System;
 using UnityEngine;
-
 using Random = UnityEngine.Random;
 
 public class Dragonfly : BossBase
 {
     [SerializeField] private string _stateDebug;
-    [SerializeField] private EnemyTypes _enemyType;
+    [SerializeField] private EnemyType _enemyType;
     [SerializeField] private int _maxHealth;
     [SerializeField] private int _currentHealth;
     [SerializeField] private FDragonflyMovement _movement;
@@ -35,7 +34,7 @@ public class Dragonfly : BossBase
     [SerializeField] private float _spiderPatrolWaitMin;
     [SerializeField] private float _spiderPatrolWaitMax;
     [SerializeField] private DragonflyProjectileSpider _spider;
-    public override EnemyTypes EnemyType => _enemyType;
+    public override EnemyType EnemyType => _enemyType;
     private DragonflyPatrolAttackPositionProvider _patrolAttackPositionProvider;
         
     private Vector3 _patrolAttackPosition;

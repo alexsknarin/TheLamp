@@ -7,7 +7,7 @@ public class Wasp : BossBase
     [SerializeField] private WaspPresentation _waspPresentation;
     [SerializeField] private int _maxHealth;
     [SerializeField] private int _currentHealth;
-    public override EnemyTypes EnemyType => EnemyTypes.Wasp;
+    public override EnemyType EnemyType => EnemyType.Wasp;
 
     private void OnEnable()
     {

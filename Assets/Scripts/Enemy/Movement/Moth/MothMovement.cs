@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 public class MothMovement : EnemyMovement
@@ -37,7 +38,7 @@ public class MothMovement : EnemyMovement
     private bool _isAttacking = false; // Debug
 
     // Debug
-    [SerializeField] private EnemyStates _stateDebug;
+    [SerializeField] private EnemyState _stateDebug;
     
     public override void Initialize()
     {
@@ -98,7 +99,7 @@ public class MothMovement : EnemyMovement
    
     public override void TriggerFall()
     {
-        if (_currentState.State == EnemyStates.Attack)
+        if (_currentState.State == EnemyState.Attack)
         {
             fallTriggered = true;
             _isCollided = true;
@@ -108,7 +109,7 @@ public class MothMovement : EnemyMovement
     
     public override void TriggerDeath()
     {
-        if(_currentState.State != EnemyStates.Death)
+        if(_currentState.State != EnemyState.Death)
         {
             _isDead = true;
             SwitchState();
@@ -124,9 +125,9 @@ public class MothMovement : EnemyMovement
     
     public override void TriggerSpread()
     {
-        if(_currentState.State != EnemyStates.Attack && 
-           _currentState.State != EnemyStates.PreAttack && 
-           _currentState.State != EnemyStates.Death)
+        if(_currentState.State != EnemyState.Attack && 
+           _currentState.State != EnemyState.PreAttack && 
+           _currentState.State != EnemyState.Death)
         {
             _currentState = _spreadState;
             _movementStateMachine.SetState(_currentState, _position2d, _sideDirection, _depthDirection);
@@ -142,7 +143,7 @@ public class MothMovement : EnemyMovement
         EnemyMovementBaseState newState = _currentState;
         switch (_currentState.State)
         {
-            case EnemyStates.Enter:
+            case EnemyState.Enter:
                 if (_isDead)
                 {
                     newState = _deathState;
@@ -154,7 +155,7 @@ public class MothMovement : EnemyMovement
                     newState = _hoverState;
                     break;
                 }
-            case EnemyStates.Hover:
+            case EnemyState.Hover:
                 if (_isDead)
                 {
                     newState = _deathState;
@@ -173,7 +174,7 @@ public class MothMovement : EnemyMovement
                     newState = _patrolState;
                     break;
                 }
-            case EnemyStates.PreAttack:
+            case EnemyState.PreAttack:
                 if (_isDead)
                 {
                     newState = _deathState;
@@ -186,7 +187,7 @@ public class MothMovement : EnemyMovement
                     newState = _attackState;
                     break;
                 }
-            case EnemyStates.Patrol:
+            case EnemyState.Patrol:
                 if (_isDead)
                 {
                     newState = _deathState;
@@ -198,7 +199,7 @@ public class MothMovement : EnemyMovement
                     newState = _hoverState;
                     break;    
                 }
-            case EnemyStates.Attack:
+            case EnemyState.Attack:
                 if (_isCollided && !_isDead)
                 {
                     newState = _fallState;
@@ -217,7 +218,7 @@ public class MothMovement : EnemyMovement
                 {
                     break;    
                 }
-            case EnemyStates.Fall:
+            case EnemyState.Fall:
                 if (_isDead)
                 {
                     newState = _deathState;
@@ -230,10 +231,10 @@ public class MothMovement : EnemyMovement
                     newState = _hoverState;
                     break;
                 }
-            case EnemyStates.Spread:
+            case EnemyState.Spread:
                 MovementReset();
                 return;
-            case EnemyStates.Death:
+            case EnemyState.Death:
                 OnEnemyDeactivatedInvoke();
                 break;
         }

@@ -28,7 +28,7 @@ public class EnemiesLampAttackHandler
         {
             if (enemy.gameObject.activeInHierarchy && 
                 enemy.ReadyToLampDamage && enemy.IsStick && 
-                (enemy.EnemyType == EnemyTypes.Ladybug || enemy.EnemyType == EnemyTypes.Megabeetle))
+                (enemy.EnemyType == EnemyType.Ladybug || enemy.EnemyType == EnemyType.Megabeetle))
             {
                 if (attackPower > 0)
                 {

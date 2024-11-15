@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class MothlingMovementAttackState: EnemyMovementBaseState
 {
-    public override EnemyStates State => EnemyStates.Attack;
+    public override EnemyState State => EnemyState.Attack;
     private readonly float DEPTH_DECREMENT = 0.42f;
     private float _startDistance;
     
