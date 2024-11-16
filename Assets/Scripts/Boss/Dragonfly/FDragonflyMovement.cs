@@ -39,6 +39,7 @@ public class FDragonflyMovement : MonoBehaviour
     [SerializeField] private FDragonflyEnterToPatrolStateR _enterToPatrolStateR;
     [SerializeField] private FDragonflyFallHeadState _fallHeadState;
     [SerializeField] private FDragonflyHoverState _hoverState;
+    [SerializeField] private FDragonflyGameoverHoverState _gameoverHoverState;
     [SerializeField] private FDragonflyIdleState _idleState;
     [SerializeField] private FDragonflyMoveToHoverState _moveToHoverState;
     [SerializeField] private FDragonflyMoveToPatrolStateL _moveToPatrolStateL;
@@ -260,6 +261,7 @@ public class FDragonflyMovement : MonoBehaviour
         _enterToPatrolStateR.SetDependencies(_visibleBodyTransform, _animatedTransform, _animator, _enterToPatrolRHash);
         _fallHeadState.SetDependencies(_visibleBodyTransform, _fallPoint);
         _hoverState.SetDependencies(_visibleBodyTransform, transform);
+        _gameoverHoverState.SetDependencies(_visibleBodyTransform, transform);
         _idleState.SetDependencies(_visibleBodyTransform, transform);
         _moveToHoverState.SetDependencies(_visibleBodyTransform, transform);
         _moveToPatrolStateL.SetDependencies(_visibleBodyTransform, _animatedTransform, _animator, _moveToPatrolLHash);
@@ -690,6 +692,11 @@ public class FDragonflyMovement : MonoBehaviour
         _isAttackSuccess = false;
         _isAttackFail = false;
         _isDead = true;
+    }
+    
+    public void TriggerGameOver()
+    {
+        _stateMachine.SetState(_gameoverHoverState);
     }
 
     private void OnClipEndedHandle()

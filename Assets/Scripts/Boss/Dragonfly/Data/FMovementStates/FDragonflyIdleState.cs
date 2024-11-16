@@ -21,11 +21,6 @@ public class FDragonflyIdleState : ScriptableObject, IState
         _visibleBodyTransform.SetParent(_baseTransform);
         _visibleBodyTransform.localPosition = _startPosition;
         _visibleBodyTransform.rotation = Quaternion.identity;
-        
-        Debug.Log("FDragonflyIdleState: OnEnter");
-        Debug.Log("FDragonflyIdleState: _visibleBodyTransform.localPosition: " + _visibleBodyTransform.localPosition);
-        Debug.Log(_startPosition);
-            
     }
 
     public void Tick()

@@ -520,6 +520,11 @@ public class Dragonfly : BossBase
         
         ReadyToLampDamage = false;
     }
+    
+    public override void SetGameover()
+    {
+        _movement.TriggerGameOver();
+    }
 
 
     #region Unused Enemy Base Methods

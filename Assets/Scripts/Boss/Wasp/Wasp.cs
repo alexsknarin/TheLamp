@@ -27,7 +27,7 @@ public class Wasp : BossBase
     public override void Initialize()
     {
         ReceivedLampAttack = false;
-        IsGameOver = false;
+        _isGameover = false;
         _currentHealth = _maxHealth;
         _waspPresentation.Initialize();
         _waspMovement.Initialize();
@@ -114,10 +114,10 @@ public class Wasp : BossBase
 
     private void HandleLeftScreen()
     {
-        if (IsGameOver)
+        if (_isGameover)
         {
             Reset();
-            IsGameOver = false;
+            _isGameover = false;
         }
     }
     
