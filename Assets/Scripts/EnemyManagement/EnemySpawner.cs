@@ -139,7 +139,6 @@ public class EnemySpawner
         else
         {
             _isWaveActive = false;
-            Debug.Log("Wave enemy collection " + _currentWave + " has been depleted");
         }
     }
 

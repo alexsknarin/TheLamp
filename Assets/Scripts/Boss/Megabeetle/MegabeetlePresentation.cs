@@ -40,7 +40,6 @@ public class MegabeetlePresentation : EnemyPresentation
         _damageFlash.Initialize();
         _deathFlash.Initialize();
         _healthIndication.Initialize();
-        _trailResetHandler.Initialize();
     }
     
     public void ResetTrail()

@@ -260,7 +260,7 @@ public class FDragonflyMovement : MonoBehaviour
         _enterToPatrolStateR.SetDependencies(_visibleBodyTransform, _animatedTransform, _animator, _enterToPatrolRHash);
         _fallHeadState.SetDependencies(_visibleBodyTransform, _fallPoint);
         _hoverState.SetDependencies(_visibleBodyTransform, transform);
-        _idleState.SetDependencies();
+        _idleState.SetDependencies(_visibleBodyTransform, transform);
         _moveToHoverState.SetDependencies(_visibleBodyTransform, transform);
         _moveToPatrolStateL.SetDependencies(_visibleBodyTransform, _animatedTransform, _animator, _moveToPatrolLHash);
         _moveToPatrolStateR.SetDependencies(_visibleBodyTransform, _animatedTransform, _animator, _moveToPatrolRHash);
@@ -288,6 +288,7 @@ public class FDragonflyMovement : MonoBehaviour
 
     private void SetupStateMachine()
     {
+        Debug.Log("Dragonfly Movement State Machine Setup");
         // Idle -> Enter States
         At(_idleState, _enterToPatrolStateL, () => _isPlaying && _enterState == DragonflyEnterType.Patrol && _sideDirection == 1);
         At(_idleState, _enterToPatrolStateR, () => _isPlaying && _enterState == DragonflyEnterType.Patrol && _sideDirection == -1);
@@ -376,8 +377,7 @@ public class FDragonflyMovement : MonoBehaviour
         At(_returnTransitionRLBTState, _catchSpiderStateL, IsResolvedToCatchSpiderL());
         At(_returnTransitionRLBTState, _catchSpiderStateR, IsResolvedToCatchSpiderR());
         
-        // Set Initial State
-        _stateMachine.SetState(_idleState);
+        // _stateMachine.SetState(_idleState);
         
         // Transition helper methods
         void At(IState from, IState to, Func<bool> condition) => _stateMachine.AddTransition(from, to, condition);
@@ -519,14 +519,21 @@ public class FDragonflyMovement : MonoBehaviour
         
         #endregion
     }
-    
-    public void Play(DragonflyEnterType state, int sideDirection)
+
+    public void Initialize()
     {
+        _isPlaying = false;
+        _isAnimClipEnded = false;
+        _isBounced = false;
+        _isAttackSuccess = false;
+        _isAttackFail = false;
+        _isDead = false;
+        
         _stateMachine.SetState(_idleState);
-        MovementInit(state, sideDirection);
+        _currentStateType = _stateMachine.CurrentStateType.ToString().Replace("FDragonfly", ""); // DEBUG
     }
 
-    private void MovementInit(DragonflyEnterType state, int sideDirection)
+    public void Play(DragonflyEnterType state, int sideDirection)
     {
         _isDead = false;
         _isAttackSuccess = false;
@@ -538,20 +545,11 @@ public class FDragonflyMovement : MonoBehaviour
 
     private void Update()
     {
-        // _currentStateType = _stateMachine.CurrentStateType.ToString().Replace("FDragonfly", ""); // DEBUG
-        // _previousState = _stateMachine.CurrentState;
-        
         if (_isPlaying)
         {
             _stateMachine.Tick();
+            _currentStateType = _stateMachine.CurrentStateType.ToString().Replace("FDragonfly", ""); // DEBUG
         }
-        _currentStateType = _stateMachine.CurrentStateType.ToString().Replace("FDragonfly", ""); // DEBUG
-        
-        // if (_previousState != _stateMachine.CurrentState)
-        // {
-        //     Debug.Log($"|-- " + _previousState.GetType().ToString().Replace("FDragonfly", "") + " -> " + 
-        //               _stateMachine.CurrentState.GetType().ToString().Replace("FDragonfly", "") + "");
-        // }
     }
 
     public void StartAttack(DragonflyPatrolAttackMode mode)

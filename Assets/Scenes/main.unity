@@ -6036,6 +6036,11 @@ PrefabInstance:
       propertyPath: _duration
       value: 2.3
       objectReference: {fileID: 0}
+    - target: {fileID: 5739919950113420174, guid: b7287b02b66117d41a9878933f72b080,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6281014532624352872, guid: b7287b02b66117d41a9878933f72b080,
         type: 3}
       propertyPath: _maxHealth
@@ -6046,10 +6051,20 @@ PrefabInstance:
       propertyPath: _healthToFallThreshold
       value: 7
       objectReference: {fileID: 0}
+    - target: {fileID: 7403958327134216311, guid: b7287b02b66117d41a9878933f72b080,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8854400779814498794, guid: b7287b02b66117d41a9878933f72b080,
         type: 3}
       propertyPath: m_Name
       value: Megabeetle
+      objectReference: {fileID: 0}
+    - target: {fileID: 8854400779814498794, guid: b7287b02b66117d41a9878933f72b080,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -9859,7 +9874,7 @@ MonoBehaviour:
   _agressionLevel: 0
   _maxAggressionLevel: 6
   _isStartAtWaveTestMode: 1
-  _startAtWave: 20
+  _startAtWave: 61
   _currentWave: 0
   _firstEnemySpawnDelay: 0.5
   _saveDataContainer: {fileID: 11400000, guid: 377d55eb1797a24478860b1b98ae759c, type: 2}
@@ -12304,6 +12319,21 @@ PrefabInstance:
       propertyPath: m_Name
       value: Megamothling
       objectReference: {fileID: 0}
+    - target: {fileID: 625279308698616341, guid: 9db76073115006346a2830d6a3cb2b06,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1990818386139097443, guid: 9db76073115006346a2830d6a3cb2b06,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8704551520160070565, guid: 9db76073115006346a2830d6a3cb2b06,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 9117976817519763160, guid: 9db76073115006346a2830d6a3cb2b06,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -12390,6 +12420,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: WaspBaseTransform
       objectReference: {fileID: 0}
+    - target: {fileID: 816267557849244585, guid: db082986f50fad64f90c5d3f0bd3ddf3,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5791344357560995486, guid: db082986f50fad64f90c5d3f0bd3ddf3,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7141382224798320509, guid: db082986f50fad64f90c5d3f0bd3ddf3,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -12438,6 +12478,11 @@ PrefabInstance:
     - target: {fileID: 7141382224798320509, guid: db082986f50fad64f90c5d3f0bd3ddf3,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9191138948751963205, guid: db082986f50fad64f90c5d3f0bd3ddf3,
+        type: 3}
+      propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

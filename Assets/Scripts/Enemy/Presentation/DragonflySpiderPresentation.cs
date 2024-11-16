@@ -16,7 +16,7 @@ public class DragonflySpiderPresentation : EnemyPresentation
     
     public void Play()
     {
-        _spiderWeb?.Play(transform);
+        _spiderWeb.Play(transform);
         _deathFlash.Initialize();
     }
     

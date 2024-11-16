@@ -4,14 +4,28 @@ using UnityEngine;
 public class FDragonflyIdleState : ScriptableObject, IState
 {
     // Dependencies
+    private Transform _visibleBodyTransform;
+    private Transform _baseTransform;
     
-    public void SetDependencies()
+    private Vector3 _startPosition;
+    
+    public void SetDependencies(Transform visibleBodyTransform, Transform baseTransform)
     {
+        _visibleBodyTransform = visibleBodyTransform;
+        _baseTransform = baseTransform;
+        _startPosition = new Vector3(0f, -8f, 0f);
     }
     
     public void OnEnter()
     {
-        // TODO: set position to under the screen
+        _visibleBodyTransform.SetParent(_baseTransform);
+        _visibleBodyTransform.localPosition = _startPosition;
+        _visibleBodyTransform.rotation = Quaternion.identity;
+        
+        Debug.Log("FDragonflyIdleState: OnEnter");
+        Debug.Log("FDragonflyIdleState: _visibleBodyTransform.localPosition: " + _visibleBodyTransform.localPosition);
+        Debug.Log(_startPosition);
+            
     }
 
     public void Tick()

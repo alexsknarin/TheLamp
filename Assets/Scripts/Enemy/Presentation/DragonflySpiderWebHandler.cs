@@ -10,7 +10,7 @@ public class DragonflySpiderWebHandler : MonoBehaviour
     private Vector3 _endPoint;
     private Vector3 _lastPoint;
     private bool _isShrinking = false;
-    private bool _isActive = true; 
+    private bool _isActive = false; 
     private float _localTime;
     
     public void Initialize()

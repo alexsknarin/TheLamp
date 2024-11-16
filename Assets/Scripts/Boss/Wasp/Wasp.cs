@@ -31,6 +31,7 @@ public class Wasp : BossBase
         _currentHealth = _maxHealth;
         _waspPresentation.Initialize();
         _waspMovement.Initialize();
+        gameObject.SetActive(false);
     }
 
     public override void Reset()
@@ -39,10 +40,12 @@ public class Wasp : BossBase
         _currentHealth = _maxHealth;
         _waspPresentation.Initialize();
         _waspMovement.MovementReset();
+        gameObject.SetActive(false);
     }
     
     public override void Play()
     {
+        gameObject.SetActive(true);
         _waspMovement.Play();
         _waspPresentation.ResetTrail();
         _waspPresentation.Initialize();
@@ -127,6 +130,7 @@ public class Wasp : BossBase
     {
         OnDeathInvoke();
         _waspPresentation.Reset();
+        gameObject.SetActive(false);
     }
 
     private void ResetTrail()

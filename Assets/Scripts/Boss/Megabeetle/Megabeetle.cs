@@ -60,10 +60,12 @@ public class Megabeetle : BossBase
         IsStick = false;
         _isDead = false;
         _currentHealthToFall = 0;
+        gameObject.SetActive(false);
     }
     
     public override void Play()
     {
+        gameObject.SetActive(true);
         _enemyMovement.Play();
         _enemyPresentation.ResetTrail();
     }
@@ -75,6 +77,7 @@ public class Megabeetle : BossBase
         _isDead = false;
         _enemyPresentation.Initialize();
         _enemyMovement.MovementReset();
+        gameObject.SetActive(false);
     }
     
     private void OnMovementResetHandle()
@@ -195,6 +198,7 @@ public class Megabeetle : BossBase
         OnDeathInvoke();
         _enemyMovement.MovementReset();
         _enemyPresentation.Initialize();
+        gameObject.SetActive(false);
     }
     
     private void HandleStickAttack()

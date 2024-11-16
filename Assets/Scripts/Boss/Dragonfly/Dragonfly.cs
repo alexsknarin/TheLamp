@@ -282,23 +282,6 @@ public class Dragonfly : BossBase
         #endregion
     }
 
-    private void Start()
-    {
-        Initialize();
-    }
-
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            _stateMachine.SetState(_inactiveState);
-            Initialize();
-            Play();
-        }
-        _stateMachine.Tick();
-        _stateDebug = _stateMachine.CurrentState.ToString();
-    }
-
     public override void Initialize()
     {
         _isDead = false;
@@ -308,17 +291,34 @@ public class Dragonfly : BossBase
         _isAttacked = false;
         _presentation.Initialize();
         _spider.Initialize();
-    }
-
-    public override void Reset()
-    {
-        throw new NotImplementedException();
+        _movement.Initialize();
+        gameObject.SetActive(false);
     }
 
     public override void Play()
     {
+        gameObject.SetActive(true);
+        _stateMachine.SetState(_inactiveState);        
         StartBossActivePhase();
-        _presentation.Initialize();
+    }
+
+    public override void Reset()
+    {
+        _swarm.Initialize();
+        _movement.Initialize();
+        gameObject.SetActive(false);
+    }
+    
+    private void Update()
+    {
+        // if (Input.GetKeyDown(KeyCode.Space))
+        // {
+        //     _stateMachine.SetState(_inactiveState);
+        //     Initialize();
+        //     Play();
+        // }
+        _stateMachine.Tick();
+        _stateDebug = _stateMachine.CurrentState.ToString();
     }
 
     // State change methods
@@ -428,7 +428,7 @@ public class Dragonfly : BossBase
 
     private void OnDeathAnimationEndedHandle()
     {
-        gameObject.SetActive(false);
+        gameObject.SetActive(false); // TODO: fix naming to be consistent
     }
 
     // Lamp Interaction Methods
@@ -525,7 +525,6 @@ public class Dragonfly : BossBase
     #region Unused Enemy Base Methods
     public override void ReturnToPool()
     {
-        throw new NotImplementedException();
     }
 
     public override void UpdateAttackAvailability()
