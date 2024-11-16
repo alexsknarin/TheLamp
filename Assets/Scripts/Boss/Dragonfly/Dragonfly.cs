@@ -524,6 +524,7 @@ public class Dragonfly : BossBase
     public override void SetGameover()
     {
         _movement.TriggerGameOver();
+        _swarm.TriggerGameover();
     }
 
 

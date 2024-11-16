@@ -161,7 +161,6 @@ public class EnemyManager : MonoBehaviour,IInitializable
         // Disable boss
         if (_enemyAttacker.IsBossActive)
         {
-            Debug.Log("EnemyManager: HandleGameOver: Boss is active");
             _enemySpawner.Boss.SetGameover();
         }
     }

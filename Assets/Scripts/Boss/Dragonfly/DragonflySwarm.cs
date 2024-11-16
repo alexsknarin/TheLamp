@@ -45,7 +45,16 @@ public class DragonflySwarm : MonoBehaviour
         _moths[_attackCount].StartAttack();
         _isWaitingForAttack = true;
     }
-    
+
+    public void TriggerGameover()
+    {
+        _localTime = 0f;
+        _isWaitingForAttack = false;
+        for (int i = 0; i < _moths.Length; i++)
+        {
+            _moths[i].TriggerGameover();
+        }
+    }
     
     private void Update()
     {

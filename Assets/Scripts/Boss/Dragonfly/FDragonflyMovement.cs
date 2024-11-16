@@ -290,7 +290,6 @@ public class FDragonflyMovement : MonoBehaviour
 
     private void SetupStateMachine()
     {
-        Debug.Log("Dragonfly Movement State Machine Setup");
         // Idle -> Enter States
         At(_idleState, _enterToPatrolStateL, () => _isPlaying && _enterState == DragonflyEnterType.Patrol && _sideDirection == 1);
         At(_idleState, _enterToPatrolStateR, () => _isPlaying && _enterState == DragonflyEnterType.Patrol && _sideDirection == -1);

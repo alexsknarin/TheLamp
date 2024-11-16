@@ -1,9 +1,8 @@
 using UnityEngine;
-using UnityEngine.Serialization;
 
 public class DragonflyProjectileMoth : EnemyBase
 {
-    [FormerlySerializedAs("_enemyType")] [SerializeField] private EnemyType _enemyType = global::EnemyType.DragonflyProjectile;
+    [SerializeField] private EnemyType _enemyType = global::EnemyType.DragonflyProjectile;
     [SerializeField] private DragonflyProjectileMovementMoth _movement;
     [SerializeField] private DragonflyMothPresentation _presentation;
     public override EnemyType EnemyType => _enemyType;
@@ -33,6 +32,11 @@ public class DragonflyProjectileMoth : EnemyBase
         // Presentation setup
     }
 
+    public void TriggerGameover()
+    {
+        _movement.TriggerGameover();
+    }
+    
     public override void StartAttack()
     {
         ReadyToCollide = true;
