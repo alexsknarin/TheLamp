@@ -155,10 +155,7 @@ public class Enemy : EnemyBase
     
     public override void HandleEnteringAttackZone()
     {
-        if (_enemyMovement.State == EnemyState.Attack || _enemyType == EnemyType.Ladybug)
-        {
-            ReadyToLampDamage = true;    
-        }
+        ReadyToLampDamage = true;    
     }
     
     public override void HandleCollisionWithLamp()
