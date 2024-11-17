@@ -19,7 +19,8 @@ Material:
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
   stringTagMap: {}
-  disabledShaderPasses: []
+  disabledShaderPasses:
+  - MOTIONVECTORS
   m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
@@ -134,7 +135,7 @@ Material:
     - _EdgeEmission: 0.739
     - _EdgeEmissionPower: 6.11
     - _EdgeEmissionStrength: 1.54
-    - _EmissionStrength: 1.542826
+    - _EmissionStrength: 1.5300975
     - _EnvironmentReflections: 1
     - _GlassIOR: -0.21
     - _GlossMapScale: 0
@@ -173,6 +174,7 @@ Material:
     - _LightEmissionColor: {r: 0.9559748, g: 0.31482676, b: 0.08116753, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []
+  m_AllowLocking: 1
 --- !u!114 &9108830626324274294
 MonoBehaviour:
   m_ObjectHideFlags: 11
@@ -185,4 +187,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0353a89b1f911e48b9e16bdc9f2e058, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  version: 7
+  version: 9
