@@ -2,7 +2,7 @@
 
 public class MegabeetleMovementEnterState: EnemyMovementBaseState
 {
-    public override EnemyStates State => EnemyStates.Enter;
+    public override EnemyState State => EnemyState.Enter;
     private float _patrolStartOffsetAngle;
     private float _enterTimeOffset;
     private float _phase;

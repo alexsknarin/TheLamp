@@ -14,6 +14,17 @@ public class DragonflySwarm : MonoBehaviour
     private bool _isWaitingForAttack = false;
     private int _attackCount = 0;
     
+    public void Initialize()
+    {
+        for (int i = 0; i < _moths.Length; i++)
+        {
+            _moths[i].gameObject.SetActive(false);
+        }
+        _localTime = 0f;
+        _isWaitingForAttack = false;
+        _attackCount = 0;
+    }
+    
     public void PlayAttack(int direction)
     {
         if (direction == 1)
@@ -34,15 +45,19 @@ public class DragonflySwarm : MonoBehaviour
         _moths[_attackCount].StartAttack();
         _isWaitingForAttack = true;
     }
-    
+
+    public void TriggerGameover()
+    {
+        _localTime = 0f;
+        _isWaitingForAttack = false;
+        for (int i = 0; i < _moths.Length; i++)
+        {
+            _moths[i].TriggerGameover();
+        }
+    }
     
     private void Update()
     {
-        if (Input.GetKey(KeyCode.Y))
-        {
-            PlayAttack(1);
-        }
-        
         if (_isWaitingForAttack)
         {
             if (_localTime >= _timeInterval)

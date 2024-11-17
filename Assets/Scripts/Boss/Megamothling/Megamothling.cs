@@ -1,13 +1,14 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class Megamothling : BossBase
 {
-    [SerializeField] private EnemyTypes _enemyType;
+    [SerializeField] private EnemyType _enemyType;
     [SerializeField] private int _maxHealth;
     [SerializeField] private int _currentHealth;
     [SerializeField] private MegamothlingMovement _enemyMovement;
     [SerializeField] private MegamothlingPresentation _enemyPresentation;
-    public override EnemyTypes EnemyType => _enemyType;
+    public override EnemyType EnemyType => _enemyType;
     private bool _isDead = false;
 
     private void OnEnable()
@@ -42,13 +43,31 @@ public class Megamothling : BossBase
         IsAttacking = false;
         IsStick = false;
         _isDead = false;
+        gameObject.SetActive(false);
     }
-    
+
+    public override void Play()
+    {
+        gameObject.SetActive(true);
+        _enemyPresentation.ResetTrail();
+        _enemyMovement.Play();
+    }
+
+    public override void Reset()
+    {
+        ReceivedLampAttack = false;
+        _currentHealth = _maxHealth;
+        _isDead = false;
+        _enemyPresentation.Initialize();
+        _enemyMovement.MovementReset();
+        gameObject.SetActive(false);
+    }
+
     private void OnMovementReset()
     {
         _enemyPresentation.Initialize();
     }
-    
+
     public override void UpdateAttackAvailability()
     {
         float x = transform.position.x;
@@ -56,7 +75,7 @@ public class Megamothling : BossBase
         
         ReadyToAttack = false;
         
-        if (_enemyType == EnemyTypes.Megamothling && _enemyMovement.State == EnemyStates.Patrol)
+        if (_enemyType == EnemyType.Megamothling && _enemyMovement.State == EnemyState.Patrol)
         {
             if ((y < 0.0f) || (Mathf.Abs(x) > 2.1f && y > 0.0f))
             {
@@ -64,17 +83,17 @@ public class Megamothling : BossBase
             }
         }
     }
-    
+
     public override void SpreadStart()
     {
         _enemyMovement.TriggerSpread();
     }
-   
+
     public override void StartAttack()
     {
         _enemyMovement.TriggerAttack();
     }
-    
+
     private void OnPreAttackStart()
     {
         ReceivedLampAttack = false;
@@ -82,43 +101,43 @@ public class Megamothling : BossBase
         ReadyToAttack = false;
         IsAttacking = true;
     }
-    
+
     private void OnPreAttackEnd()
     {
         _enemyPresentation.PreAttackEnd();
         ReadyToCollide = true;
     }
-    
+
     private void AttackStatusEnable()
     {
         IsAttacking = false;
     }
-    
+
     private void StickStatusEnable()
     {
         IsStick = true;
     }
-    
+
     public override void HandleEnteringAttackZone()
     {
-        if (_enemyMovement.State == EnemyStates.Attack || _enemyType == EnemyTypes.Ladybug)
+        if (_enemyMovement.State == EnemyState.Attack || _enemyType == EnemyType.Ladybug)
         {
             ReadyToLampDamage = true;    
         }
     }
-    
+
     public override void HandleCollisionWithLamp()
     {
         ReadyToCollide = false;
         ReadyToLampDamage = true;
         _enemyMovement.TriggerFall();
     }
-    
+
     public override void HandleExitingAttackExitZone()
     {
         ReadyToLampDamage = false;
     }
-    
+
     public override void HandleCollisionWithStickZone()
     {
         _enemyMovement.TriggerStick();
@@ -152,32 +171,18 @@ public class Megamothling : BossBase
     public override void ReturnToPool()
     {
     }
-    
+
     public override Vector3 ProvideImpactPoint()
     {
         return transform.position;
     }
-    
-    
-    public override void Reset()
-    {
-        ReceivedLampAttack = false;
-        _currentHealth = _maxHealth;
-        _isDead = false;
-        _enemyPresentation.Initialize();
-        _enemyMovement.MovementReset();
-    }
 
-    public override void Play()
-    {
-        _enemyPresentation.ResetTrail();
-        _enemyMovement.Play();
-    }
-    
+
     private void HandleDeathMoveStateEnd()
     {
         OnDeathInvoke();
         _enemyMovement.MovementReset();
         _enemyPresentation.Initialize();
+        gameObject.SetActive(false);
     }
 }

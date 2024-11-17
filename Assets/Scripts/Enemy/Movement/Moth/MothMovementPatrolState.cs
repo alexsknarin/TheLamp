@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class MothMovementPatrolState: EnemyMovementBaseState
 {
-    public override EnemyStates State => EnemyStates.Patrol;
+    public override EnemyState State => EnemyState.Patrol;
     private float _patrolStartOffsetAngle;
     private float _enterTimeOffset; // TMP
     private float _phase;

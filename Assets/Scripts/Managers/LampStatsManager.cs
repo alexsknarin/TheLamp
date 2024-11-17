@@ -31,7 +31,6 @@
     [SerializeField] private int _level;
     [SerializeField] private int _upgradePoints;
     [SerializeField] private int _currentUpgradePointThreshold = 5;
-    [SerializeField] private int _upgradeThesholdInitialIncrement = 5;
     [SerializeField] private int _scoresAccountedForUpgrade = 0;
     [SerializeField] private int _upgradeThesholdIncrement;
     [Header("Upgrade prices")]

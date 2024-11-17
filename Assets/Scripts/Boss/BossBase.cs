@@ -3,9 +3,15 @@ using UnityEngine;
 
 public abstract class BossBase : EnemyBase
 {
-    public bool IsGameOver { get; set; }
+    protected bool _isGameover = false;
     public static event Action OnTriggerSpreadEvent;
     public static event Action OnDeathEvent;
+    
+    public virtual void SetGameover()
+    {
+        _isGameover = true;
+    }
+    
     public abstract void Reset();
     public abstract void Play();
     

@@ -5,7 +5,6 @@ using UnityEngine;
 public class FDragonflyBounceHoverState : ScriptableObject, IState
 {
     [SerializeField] private float _speed = 4f;
-    [SerializeField] private float _duration = 0.15f;
     
     private Vector3 _attackDirection;
     

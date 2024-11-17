@@ -2,11 +2,10 @@ using UnityEngine;
 
 public class DragonflyProjectileMoth : EnemyBase
 {
-    [SerializeField] private EnemyTypes _enemyType = EnemyTypes.DragonflyProjectile;
+    [SerializeField] private EnemyType _enemyType = global::EnemyType.DragonflyProjectile;
     [SerializeField] private DragonflyProjectileMovementMoth _movement;
     [SerializeField] private DragonflyMothPresentation _presentation;
-    public override EnemyTypes EnemyType => _enemyType;
-    private bool _isDead = false;
+    public override EnemyType EnemyType => _enemyType;
 
     private void OnEnable()
     {
@@ -29,11 +28,15 @@ public class DragonflyProjectileMoth : EnemyBase
     {
         _movement.Initialize(startPosition);
         _presentation.Initialize();
-        _isDead = false;
         ReadyToLampDamage = false;
         // Presentation setup
     }
 
+    public void TriggerGameover()
+    {
+        _movement.TriggerGameover();
+    }
+    
     public override void StartAttack()
     {
         ReadyToCollide = true;
@@ -68,7 +71,6 @@ public class DragonflyProjectileMoth : EnemyBase
         if (damage < 1f) return;
 
         ReceivedLampAttack = true;
-        _isDead = true;
         OnEnemyDeathInvoke(this);
         _movement.TriggerFall();
         _presentation.DeathFlash();

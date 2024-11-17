@@ -1,12 +1,11 @@
 using System;
 using UnityEngine;
-
 using Random = UnityEngine.Random;
 
 public class Dragonfly : BossBase
 {
     [SerializeField] private string _stateDebug;
-    [SerializeField] private EnemyTypes _enemyType;
+    [SerializeField] private EnemyType _enemyType;
     [SerializeField] private int _maxHealth;
     [SerializeField] private int _currentHealth;
     [SerializeField] private FDragonflyMovement _movement;
@@ -35,7 +34,7 @@ public class Dragonfly : BossBase
     [SerializeField] private float _spiderPatrolWaitMin;
     [SerializeField] private float _spiderPatrolWaitMax;
     [SerializeField] private DragonflyProjectileSpider _spider;
-    public override EnemyTypes EnemyType => _enemyType;
+    public override EnemyType EnemyType => _enemyType;
     private DragonflyPatrolAttackPositionProvider _patrolAttackPositionProvider;
         
     private Vector3 _patrolAttackPosition;
@@ -283,23 +282,6 @@ public class Dragonfly : BossBase
         #endregion
     }
 
-    private void Start()
-    {
-        Initialize();
-    }
-
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            _stateMachine.SetState(_inactiveState);
-            Initialize();
-            Play();
-        }
-        _stateMachine.Tick();
-        _stateDebug = _stateMachine.CurrentState.ToString();
-    }
-
     public override void Initialize()
     {
         _isDead = false;
@@ -309,17 +291,34 @@ public class Dragonfly : BossBase
         _isAttacked = false;
         _presentation.Initialize();
         _spider.Initialize();
-    }
-
-    public override void Reset()
-    {
-        throw new NotImplementedException();
+        _movement.Initialize();
+        gameObject.SetActive(false);
     }
 
     public override void Play()
     {
+        gameObject.SetActive(true);
+        _stateMachine.SetState(_inactiveState);        
         StartBossActivePhase();
-        _presentation.Initialize();
+    }
+
+    public override void Reset()
+    {
+        _swarm.Initialize();
+        _movement.Initialize();
+        gameObject.SetActive(false);
+    }
+    
+    private void Update()
+    {
+        // if (Input.GetKeyDown(KeyCode.Space))
+        // {
+        //     _stateMachine.SetState(_inactiveState);
+        //     Initialize();
+        //     Play();
+        // }
+        _stateMachine.Tick();
+        _stateDebug = _stateMachine.CurrentState.ToString();
     }
 
     // State change methods
@@ -429,7 +428,7 @@ public class Dragonfly : BossBase
 
     private void OnDeathAnimationEndedHandle()
     {
-        gameObject.SetActive(false);
+        gameObject.SetActive(false); // TODO: fix naming to be consistent
     }
 
     // Lamp Interaction Methods
@@ -521,27 +520,30 @@ public class Dragonfly : BossBase
         
         ReadyToLampDamage = false;
     }
+    
+    public override void SetGameover()
+    {
+        _movement.TriggerGameOver();
+        _swarm.TriggerGameover();
+    }
 
 
     #region Unused Enemy Base Methods
     public override void ReturnToPool()
     {
-        throw new NotImplementedException();
     }
 
     public override void UpdateAttackAvailability()
     {
-        throw new NotImplementedException();
+        ReadyToAttack = true;
     }
 
     public override void SpreadStart()
     {
-        throw new NotImplementedException();
     }
 
     public override void StartAttack()
     {
-        throw new NotImplementedException();
     }
     #endregion
 

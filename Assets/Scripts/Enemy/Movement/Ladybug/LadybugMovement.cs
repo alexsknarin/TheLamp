@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 public class LadybugMovement : EnemyMovement
@@ -25,10 +26,9 @@ public class LadybugMovement : EnemyMovement
     private Vector3 _prevPosition2d;
     // State parameters
     private bool _isDead = false;
-    private bool _isCollided = false;
     
     // Debug
-    [SerializeField] private EnemyStates _stateDebug;
+    [SerializeField] private EnemyState _stateDebug;
 
     private void OnEnable()
     {
@@ -43,7 +43,6 @@ public class LadybugMovement : EnemyMovement
     public override void Initialize()
     {
         _isDead = false;
-        _isCollided = false;
         _movementStateMachine = new EnemyMovementStateMachine();
         _patrolState  = new LadybugMovementPatrolState(this, _speed, _radius, _verticalAmplitude);
         _preAttackState = new LadybugMovementPreAttackState(this, _speed, _radius, _verticalAmplitude);
@@ -88,7 +87,7 @@ public class LadybugMovement : EnemyMovement
     public void FallOnLampDestroyed(EnemyBase enemy)
     {
         transform.parent = null;
-        if(_currentState.State == EnemyStates.Stick)
+        if(_currentState.State == EnemyState.Stick)
         {
             _isDead = true;
             SwitchState();
@@ -97,7 +96,7 @@ public class LadybugMovement : EnemyMovement
 
     public override void TriggerDeath()
     {
-        if(_currentState.State != EnemyStates.Death)
+        if(_currentState.State != EnemyState.Death)
         {
             _isDead = true;
             SwitchState();
@@ -109,10 +108,10 @@ public class LadybugMovement : EnemyMovement
     
     public override void TriggerSpread()
     {
-        if(_currentState.State != EnemyStates.Attack && 
-           _currentState.State != EnemyStates.PreAttack && 
-           _currentState.State != EnemyStates.Death &&
-           _currentState.State != EnemyStates.Stick)
+        if(_currentState.State != EnemyState.Attack && 
+           _currentState.State != EnemyState.PreAttack && 
+           _currentState.State != EnemyState.Death &&
+           _currentState.State != EnemyState.Stick)
         {
             _currentState = _spreadState;
             _movementStateMachine.SetState(_currentState, _position2d, _sideDirection, _depthDirection);
@@ -121,7 +120,7 @@ public class LadybugMovement : EnemyMovement
     
     public override void TriggerStick()
     {
-        if (_currentState.State != EnemyStates.Stick)
+        if (_currentState.State != EnemyState.Stick)
         {
             SwitchState();
         }
@@ -132,7 +131,7 @@ public class LadybugMovement : EnemyMovement
         EnemyMovementBaseState newState = _currentState;
         switch (_currentState.State)
         {
-            case EnemyStates.Patrol:
+            case EnemyState.Patrol:
                 if (_isDead)
                 {
                     newState = _deathState;
@@ -145,7 +144,7 @@ public class LadybugMovement : EnemyMovement
                     newState = _preAttackState;
                     break;    
                 }
-            case EnemyStates.PreAttack:
+            case EnemyState.PreAttack:
                 if (_isDead)
                 {
                     newState = _deathState;
@@ -158,7 +157,7 @@ public class LadybugMovement : EnemyMovement
                     newState = _attackState;
                     break;    
                 }
-            case EnemyStates.Attack:
+            case EnemyState.Attack:
                 OnAttackEndInvoke();
                 if (_isDead)
                 {
@@ -169,21 +168,20 @@ public class LadybugMovement : EnemyMovement
                 else
                 {
                     newState = _stickState;
-                    _isCollided = false;
                     OnStickStartInvoke();
                     break;    
                 }
-            case EnemyStates.Stick:
+            case EnemyState.Stick:
                 if (_isDead)
                 {
                     newState = _deathState;
                     _isDead = false;
                 }
                 break;
-            case EnemyStates.Spread:
+            case EnemyState.Spread:
                 MovementReset();
                 return;
-            case EnemyStates.Death:
+            case EnemyState.Death:
                 OnEnemyDeactivatedInvoke();
                 break;
         }
@@ -195,7 +193,7 @@ public class LadybugMovement : EnemyMovement
     
     private void Update()
     {
-        if (_currentState.State != EnemyStates.Stick)
+        if (_currentState.State != EnemyState.Stick)
         {
             _prevPosition2d = _position2d;
             _currentState.ExecuteState(_position2d);

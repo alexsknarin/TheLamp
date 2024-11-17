@@ -2,11 +2,13 @@ using UnityEngine;
 
 public class FireflyMovementAttackState: EnemyMovementBaseState
 {
-    public override EnemyStates State => EnemyStates.Attack;
+    public override EnemyState State => EnemyState.Attack;
     private float _acceleration = 13.5f;
     private float _depthDecrement = 0.4f;
     private float _acceleratedSpeed = 1f;
     private float _startDistance;
+    
+    private readonly float _fireflyRadius = 0.1f;
     
     public FireflyMovementAttackState(IStateMachineOwner owner, float speed, float radius, float verticalAmplitude) : base()
     {
@@ -29,6 +31,14 @@ public class FireflyMovementAttackState: EnemyMovementBaseState
         Vector3 direction = -newPosition.normalized;
         newPosition += direction * (_speed * _acceleratedSpeed * Time.deltaTime);
         _acceleratedSpeed += _acceleration * Time.deltaTime;
+        
+        // Check if lamp was penetrated
+        // TODO: replace with proper DI system
+        if ((newPosition - Lamp.LampTransform.position).magnitude + _fireflyRadius < 0.5f)
+        {
+            newPosition = Lamp.LampTransform.position + newPosition.normalized * (0.5f + _fireflyRadius);
+        }
+        
         Position = newPosition;
         
         Vector3 cameraDirection = (_cameraPosition - Position).normalized;

@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class MothMovementFallState: EnemyMovementBaseState
 { 
-    public override EnemyStates State => EnemyStates.Fall;
+    public override EnemyState State => EnemyState.Fall;
     private Vector3 _bounceForce;
     private Vector3 _gravityForce;
     private float _bounceForceMagnitude = 4f;

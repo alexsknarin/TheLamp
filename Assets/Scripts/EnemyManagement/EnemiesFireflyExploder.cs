@@ -1,0 +1,70 @@
+using System.Collections.Generic;
+using UnityEngine;
+
+public class EnemiesFireflyExploder
+{
+    // Dependencies
+    private List<EnemyBase> _enemies;
+    private FireflyExplosion _fireflyExplosion;
+    private float _fireflyExplosionRadius;
+    private float _duration;
+
+
+    private EnemyBase _explosionSource;
+    private Vector3 _explosionPosition;
+    private bool _isExploding = false;
+    private float _localTime;
+    
+    public EnemiesFireflyExploder(List<EnemyBase> enemies, FireflyExplosion fireflyExplosion, float fireflyExplosionRadius, float duration)
+    {
+        _enemies = enemies;
+        _fireflyExplosion = fireflyExplosion;
+        _fireflyExplosionRadius = fireflyExplosionRadius;
+        _duration = duration;
+    }
+    
+    public void StartExplosion(EnemyBase explosionSource)
+    {
+        _explosionSource = explosionSource;
+        _explosionPosition = explosionSource.transform.position;
+        _fireflyExplosion.Play(_explosionPosition, _fireflyExplosionRadius * 2); // TODO: magic number
+        _isExploding = true;
+        _localTime = 0;
+    }
+    
+    private void PerformExplosion()
+    {
+        foreach (var enemy in _enemies)
+        {
+            if (enemy == _explosionSource)
+            {
+                continue;
+            }
+            Vector3 enemyPosition2d = enemy.transform.position;
+            enemyPosition2d.z = 0; // TODO: take camera projection into account
+            Vector3 explosionPosition2d = _explosionPosition;
+            explosionPosition2d.z = 0;
+            if((explosionPosition2d - enemyPosition2d).magnitude < _fireflyExplosionRadius)
+            {
+                enemy.ReceiveDamage(100);
+            }
+        }
+    }
+
+    public void Tick()
+    {
+        if (_isExploding)
+        {
+            if (_localTime < _duration)
+            {
+                PerformExplosion();
+                _localTime += Time.deltaTime;
+            }
+            else
+            {
+                _isExploding = false;
+            }
+        }
+    }
+    
+}

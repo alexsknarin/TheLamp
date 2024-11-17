@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class LadybugMovementAttackState: EnemyMovementBaseState
 {
-    public override EnemyStates State => EnemyStates.Attack;
+    public override EnemyState State => EnemyState.Attack;
     public LadybugMovementAttackState(IStateMachineOwner owner, float speed, float radius, float verticalAmplitude) : base()
     {
         _speed = speed;

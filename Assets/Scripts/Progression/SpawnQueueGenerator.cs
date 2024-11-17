@@ -43,26 +43,26 @@ public class SpawnQueueGenerator
             string enemyIntro = (jsonObject[2][i][18]).ToString().Replace("\"", "");
             if ( !string.IsNullOrEmpty(enemyIntro))
             {
-                EnemyTypes firstEnemyType = (EnemyTypes)System.Enum.Parse(typeof(EnemyTypes), enemyIntro);
+                EnemyType firstEnemyType = (EnemyType)System.Enum.Parse(typeof(EnemyType), enemyIntro);
                 enemyQueue.Add(firstEnemyType);
                 switch (firstEnemyType)
                 {
-                    case EnemyTypes.Mothling:
+                    case EnemyType.Mothling:
                         mothlingCount--;
                         break;
-                    case EnemyTypes.Fly:
+                    case EnemyType.Fly:
                         flyCount--;
                         break;
-                    case EnemyTypes.Firefly:
+                    case EnemyType.Firefly:
                         fireflyCount--;
                         break;
-                    case EnemyTypes.Moth:
+                    case EnemyType.Moth:
                         mothCount--;
                         break;
-                    case EnemyTypes.Ladybug:
+                    case EnemyType.Ladybug:
                         ladybugCount--;
                         break;
-                    case EnemyTypes.Spider:
+                    case EnemyType.Spider:
                         spiderCount--;
                         break;
                 }
@@ -89,22 +89,22 @@ public class SpawnQueueGenerator
                 {
                     if (bossWaspCount > 0)
                     {
-                        enemyQueue.Add(EnemyTypes.Wasp);
+                        enemyQueue.Add(EnemyType.Wasp);
                         bossWaspCount--;
                     }
                     else if (bossMegamothlingCount > 0)
                     {
-                        enemyQueue.Add(EnemyTypes.Megamothling);
+                        enemyQueue.Add(EnemyType.Megamothling);
                         bossMegamothlingCount--;
                     }
                     else if (bossMegabeetleCount > 0)
                     {
-                        enemyQueue.Add(EnemyTypes.Megabeetle);
+                        enemyQueue.Add(EnemyType.Megabeetle);
                         bossMegabeetleCount--;
                     }
                     else if (bossDragonflyCount > 0)
                     {
-                        enemyQueue.Add(EnemyTypes.Dragonfly);
+                        enemyQueue.Add(EnemyType.Dragonfly);
                         bossDragonflyCount--;
                     }
                 }
@@ -115,32 +115,32 @@ public class SpawnQueueGenerator
                     {
                         if(mothlingCount > 0)
                         {
-                            enemyQueue.Add(EnemyTypes.Mothling);
+                            enemyQueue.Add(EnemyType.Mothling);
                             mothlingCount--;
                         }
                         else if(flyCount > 0)
                         {
-                            enemyQueue.Add(EnemyTypes.Fly);
+                            enemyQueue.Add(EnemyType.Fly);
                             flyCount--;
                         }
                         else if(mothCount > 0)
                         {
-                            enemyQueue.Add(EnemyTypes.Moth);
+                            enemyQueue.Add(EnemyType.Moth);
                             mothCount--;
                         }
                         else if(spiderCount > 0)
                         {
-                            enemyQueue.Add(EnemyTypes.Spider);
+                            enemyQueue.Add(EnemyType.Spider);
                             spiderCount--;
                         }
                         else if(fireflyCount > 0)
                         {
-                            enemyQueue.Add(EnemyTypes.Firefly);
+                            enemyQueue.Add(EnemyType.Firefly);
                             fireflyCount--;
                         }
                         else if(ladybugCount > 0)
                         {
-                            enemyQueue.Add(EnemyTypes.Ladybug);
+                            enemyQueue.Add(EnemyType.Ladybug);
                             ladybugCount--;
                         }
                     }
@@ -148,32 +148,32 @@ public class SpawnQueueGenerator
                     {
                         if(flyCount > 0)
                         {
-                            enemyQueue.Add(EnemyTypes.Fly);
+                            enemyQueue.Add(EnemyType.Fly);
                             flyCount--;
                         }
                         else if(mothlingCount > 0)
                         {
-                            enemyQueue.Add(EnemyTypes.Mothling);
+                            enemyQueue.Add(EnemyType.Mothling);
                             mothlingCount--;
                         }
                         else if(mothCount > 0)
                         {
-                            enemyQueue.Add(EnemyTypes.Moth);
+                            enemyQueue.Add(EnemyType.Moth);
                             mothCount--;
                         }
                         else if(spiderCount > 0)
                         {
-                            enemyQueue.Add(EnemyTypes.Spider);
+                            enemyQueue.Add(EnemyType.Spider);
                             spiderCount--;
                         }
                         else if(fireflyCount > 0)
                         {
-                            enemyQueue.Add(EnemyTypes.Firefly);
+                            enemyQueue.Add(EnemyType.Firefly);
                             fireflyCount--;
                         }
                         else if(ladybugCount > 0)
                         {
-                            enemyQueue.Add(EnemyTypes.Ladybug);
+                            enemyQueue.Add(EnemyType.Ladybug);
                             ladybugCount--;
                         }
                     }
@@ -181,32 +181,32 @@ public class SpawnQueueGenerator
                     {
                         if(mothCount > 0)
                         {
-                            enemyQueue.Add(EnemyTypes.Moth);
+                            enemyQueue.Add(EnemyType.Moth);
                             mothCount--;
                         }
                         else if(flyCount > 0)
                         {
-                            enemyQueue.Add(EnemyTypes.Fly);
+                            enemyQueue.Add(EnemyType.Fly);
                             flyCount--;
                         }
                         else if(mothlingCount > 0)
                         {
-                            enemyQueue.Add(EnemyTypes.Mothling);
+                            enemyQueue.Add(EnemyType.Mothling);
                             mothlingCount--;
                         }
                         else if(spiderCount > 0)
                         {
-                            enemyQueue.Add(EnemyTypes.Spider);
+                            enemyQueue.Add(EnemyType.Spider);
                             spiderCount--;
                         }
                         else if(fireflyCount > 0)
                         {
-                            enemyQueue.Add(EnemyTypes.Firefly);
+                            enemyQueue.Add(EnemyType.Firefly);
                             fireflyCount--;
                         }
                         else if(ladybugCount > 0)
                         {
-                            enemyQueue.Add(EnemyTypes.Ladybug);
+                            enemyQueue.Add(EnemyType.Ladybug);
                             ladybugCount--;
                         }
                     }
@@ -214,32 +214,32 @@ public class SpawnQueueGenerator
                     {
                         if(fireflyCount > 0)
                         {
-                            enemyQueue.Add(EnemyTypes.Firefly);
+                            enemyQueue.Add(EnemyType.Firefly);
                             fireflyCount--;
                         }
                         else if(spiderCount > 0)
                         {
-                            enemyQueue.Add(EnemyTypes.Spider);
+                            enemyQueue.Add(EnemyType.Spider);
                             spiderCount--;
                         }
                         else if(mothCount > 0)
                         {
-                            enemyQueue.Add(EnemyTypes.Moth);
+                            enemyQueue.Add(EnemyType.Moth);
                             mothCount--;
                         }
                         else if(mothlingCount > 0)
                         {
-                            enemyQueue.Add(EnemyTypes.Mothling);
+                            enemyQueue.Add(EnemyType.Mothling);
                             mothlingCount--;
                         }
                         else if(flyCount > 0)
                         {
-                            enemyQueue.Add(EnemyTypes.Fly);
+                            enemyQueue.Add(EnemyType.Fly);
                             flyCount--;
                         }
                         else if(ladybugCount > 0)
                         {
-                            enemyQueue.Add(EnemyTypes.Ladybug);
+                            enemyQueue.Add(EnemyType.Ladybug);
                             ladybugCount--;
                         }
                     }
@@ -247,32 +247,32 @@ public class SpawnQueueGenerator
                     {
                         if(ladybugCount > 0)
                         {
-                            enemyQueue.Add(EnemyTypes.Ladybug);
+                            enemyQueue.Add(EnemyType.Ladybug);
                             ladybugCount--;
                         }
                         else if(spiderCount > 0)
                         {
-                            enemyQueue.Add(EnemyTypes.Spider);
+                            enemyQueue.Add(EnemyType.Spider);
                             spiderCount--;
                         }
                         else if(mothCount > 0)
                         {
-                            enemyQueue.Add(EnemyTypes.Moth);
+                            enemyQueue.Add(EnemyType.Moth);
                             mothCount--;
                         }
                         else if(fireflyCount > 0)
                         {
-                            enemyQueue.Add(EnemyTypes.Firefly);
+                            enemyQueue.Add(EnemyType.Firefly);
                             fireflyCount--;
                         }
                         else if(mothlingCount > 0)
                         {
-                            enemyQueue.Add(EnemyTypes.Mothling);
+                            enemyQueue.Add(EnemyType.Mothling);
                             mothlingCount--;
                         }
                         else if(flyCount > 0)
                         {
-                            enemyQueue.Add(EnemyTypes.Fly);
+                            enemyQueue.Add(EnemyType.Fly);
                             flyCount--;
                         }
                     }
@@ -280,32 +280,32 @@ public class SpawnQueueGenerator
                     {
                         if(spiderCount > 0)
                         {
-                            enemyQueue.Add(EnemyTypes.Spider);
+                            enemyQueue.Add(EnemyType.Spider);
                             spiderCount--;
                         }
                         else if(ladybugCount > 0)
                         {
-                            enemyQueue.Add(EnemyTypes.Ladybug);
+                            enemyQueue.Add(EnemyType.Ladybug);
                             ladybugCount--;
                         }
                         else if(mothCount > 0)
                         {
-                            enemyQueue.Add(EnemyTypes.Moth);
+                            enemyQueue.Add(EnemyType.Moth);
                             mothCount--;
                         }
                         else if(fireflyCount > 0)
                         {
-                            enemyQueue.Add(EnemyTypes.Firefly);
+                            enemyQueue.Add(EnemyType.Firefly);
                             fireflyCount--;
                         }
                         else if(flyCount > 0)
                         {
-                            enemyQueue.Add(EnemyTypes.Fly);
+                            enemyQueue.Add(EnemyType.Fly);
                             flyCount--;
                         }
                         else if(mothlingCount > 0)
                         {
-                            enemyQueue.Add(EnemyTypes.Mothling);
+                            enemyQueue.Add(EnemyType.Mothling);
                             mothlingCount--;
                         }
                     }

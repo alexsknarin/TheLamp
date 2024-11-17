@@ -7,7 +7,7 @@ public class Wasp : BossBase
     [SerializeField] private WaspPresentation _waspPresentation;
     [SerializeField] private int _maxHealth;
     [SerializeField] private int _currentHealth;
-    public override EnemyTypes EnemyType => EnemyTypes.Wasp;
+    public override EnemyType EnemyType => EnemyType.Wasp;
 
     private void OnEnable()
     {
@@ -27,10 +27,11 @@ public class Wasp : BossBase
     public override void Initialize()
     {
         ReceivedLampAttack = false;
-        IsGameOver = false;
+        _isGameover = false;
         _currentHealth = _maxHealth;
         _waspPresentation.Initialize();
         _waspMovement.Initialize();
+        gameObject.SetActive(false);
     }
 
     public override void Reset()
@@ -39,10 +40,12 @@ public class Wasp : BossBase
         _currentHealth = _maxHealth;
         _waspPresentation.Initialize();
         _waspMovement.MovementReset();
+        gameObject.SetActive(false);
     }
     
     public override void Play()
     {
+        gameObject.SetActive(true);
         _waspMovement.Play();
         _waspPresentation.ResetTrail();
         _waspPresentation.Initialize();
@@ -111,10 +114,10 @@ public class Wasp : BossBase
 
     private void HandleLeftScreen()
     {
-        if (IsGameOver)
+        if (_isGameover)
         {
             Reset();
-            IsGameOver = false;
+            _isGameover = false;
         }
     }
     
@@ -127,6 +130,7 @@ public class Wasp : BossBase
     {
         OnDeathInvoke();
         _waspPresentation.Reset();
+        gameObject.SetActive(false);
     }
 
     private void ResetTrail()

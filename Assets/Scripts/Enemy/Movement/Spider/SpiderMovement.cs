@@ -1,5 +1,6 @@
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 public class SpiderMovement : EnemyMovement
@@ -22,15 +23,13 @@ public class SpiderMovement : EnemyMovement
     
     // State parameters
     private bool _isDead = false;
-    private bool _isCollided = false;
     
     // Debug
-    [SerializeField] private EnemyStates _stateDebug;
+    [SerializeField] private EnemyState _stateDebug;
     
     public override void Initialize()
     {
         _isDead = false;
-        _isCollided = false;
         _movementStateMachine = new EnemyMovementStateMachine();
         _enterState = new SpiderMovementEnterState(this, _speed, _xCenter, 0);
         _patrolState  = new SpiderMovementPatrolState(this, _speed, _xCenter, 0);
@@ -69,16 +68,15 @@ public class SpiderMovement : EnemyMovement
     
     public override void TriggerFall()
     {
-        if(_currentState.State == EnemyStates.Attack)
+        if(_currentState.State == EnemyState.Attack)
         {
-            _isCollided = true;
             SwitchState();
         }
     }
     
     public override void TriggerDeath()
     {
-        if(_currentState.State != EnemyStates.Death)
+        if(_currentState.State != EnemyState.Death)
         {
             _isDead = true;
             SwitchState();
@@ -103,7 +101,7 @@ public class SpiderMovement : EnemyMovement
         EnemyMovementBaseState newState = _currentState;
         switch (_currentState.State)
         {
-            case EnemyStates.Enter:
+            case EnemyState.Enter:
                 if (_isDead)
                 {
                     newState = _deathState;
@@ -114,7 +112,7 @@ public class SpiderMovement : EnemyMovement
                     newState = _patrolState;
                 }
                 break;
-            case EnemyStates.Patrol:
+            case EnemyState.Patrol:
                 if (_isDead)
                 {
                     newState = _deathState;
@@ -126,7 +124,7 @@ public class SpiderMovement : EnemyMovement
                     newState = _preAttackState;
                 }
                 break;
-            case EnemyStates.PreAttack:
+            case EnemyState.PreAttack:
                 if (_isDead)
                 {
                     newState = _deathState;
@@ -138,7 +136,7 @@ public class SpiderMovement : EnemyMovement
                     newState = _attackState;
                 }
                 break;
-            case EnemyStates.Attack:
+            case EnemyState.Attack:
                 if (_isDead)
                 {
                     newState = _deathState;
@@ -148,11 +146,10 @@ public class SpiderMovement : EnemyMovement
                 else
                 {
                     newState = _returnState;
-                    _isCollided = false;
                     OnAttackEndInvoke();
                 }
                 break;
-            case EnemyStates.Return:
+            case EnemyState.Return:
                 if (_isDead)
                 {
                     newState = _deathState;
@@ -161,10 +158,9 @@ public class SpiderMovement : EnemyMovement
                 else
                 {
                     newState = _patrolState;
-                    _isCollided = false;
                 }
                 break;
-            case EnemyStates.Death:
+            case EnemyState.Death:
                 OnEnemyDeactivatedInvoke();
                 break;
         }

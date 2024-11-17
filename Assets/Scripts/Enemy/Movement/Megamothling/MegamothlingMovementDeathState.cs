@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class MegamothlingMovementDeathState: EnemyMovementBaseState
 {
-    public override EnemyStates State => EnemyStates.Death;
+    public override EnemyState State => EnemyState.Death;
     private Vector3 _bounceForce;
     private Vector3 _gravityForce;
     private float _bounceForceMagnitude = 2f;

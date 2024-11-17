@@ -4,7 +4,7 @@ public abstract class EnemyMovementBaseState : IMovementState
 {
     public Vector3 Position { get; protected set; }
     public Vector3 Depth { get; protected set; }
-    abstract public EnemyStates State { get; }
+    abstract public EnemyState State { get; }
     
     protected readonly Vector3 _cameraPosition = new Vector3(0, 0, -5.88f);
 

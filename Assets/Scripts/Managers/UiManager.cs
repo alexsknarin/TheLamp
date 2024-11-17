@@ -45,7 +45,6 @@ public class UiManager : MonoBehaviour, IInitializable
     public event Action OnGameoverFinishedEvent;
 
     private float _localTime;
-    private bool _isGameOverPlaying = false;
 
     // TODO: find a way to have less events
     private void OnEnable()
@@ -196,12 +195,12 @@ public class UiManager : MonoBehaviour, IInitializable
 
     private void HandleLampDamage(EnemyBase enemy)
     {
-        _brokenGlassEffect.Play(BrokenGlassEventTypes.Damage);
+        _brokenGlassEffect.Play(BrokenGlassEventType.Damage);
     }
 
     private void HandleLampDeath(EnemyBase enemy)
     {
-        _brokenGlassEffect.Play(BrokenGlassEventTypes.Death);
+        _brokenGlassEffect.Play(BrokenGlassEventType.Death);
     }
 
     private void HandleGameoverAnimationFinished()

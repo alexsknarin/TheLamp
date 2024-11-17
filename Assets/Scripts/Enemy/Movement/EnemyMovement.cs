@@ -3,7 +3,7 @@ using UnityEngine;
 
 public abstract class EnemyMovement : MonoBehaviour, IStateMachineOwner, IInitializable
 {
-    public EnemyStates State { get; protected set; }
+    public EnemyState State { get; protected set; }
     public int SideDirection { get; protected set; }
     public event Action OnPreAttackStartEvent;
     public event Action OnPreAttackEndEvent;

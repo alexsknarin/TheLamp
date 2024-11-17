@@ -45,13 +45,8 @@ public class LampEmissionController : MonoBehaviour
     [SerializeField] private Light _lampLight;
 
     private readonly float _lightNeutralIntensity = 22;
-    private readonly float _lampNeutralEmission = 1f;
     
     private readonly float _lightMinimumIntensity = 0.1f;
-    private readonly float _lampMinimumEmission = 0.01f;
-    
-    private readonly float _lightMaximumIntensity = 130;
-    private readonly float _lampMaximumEmission = 35f;
     
     private Color _ligtMinimumColor = new Color(0.8301f, 0.268f, 0.1331f);
     private Color _ligtMaximumColor = new Color(0.9058824f, 0.6f, 0.3764f);

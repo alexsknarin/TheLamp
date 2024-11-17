@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class LadybugMovementPatrolState: EnemyMovementBaseState
 {
-    public override EnemyStates State => EnemyStates.Patrol;
+    public override EnemyState State => EnemyState.Patrol;
     private float _patrolStartOffsetAngle;
     private float _enterTimeOffset;
     private float _phase;

@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class MothMovementEnterState: EnemyMovementBaseState
 {
-    public override EnemyStates State => EnemyStates.Enter;
+    public override EnemyState State => EnemyState.Enter;
     private Vector3 _endPos = Vector3.zero;
     private Vector3 _enterDirection;
     private float _depthMultiplier = 1.6f;

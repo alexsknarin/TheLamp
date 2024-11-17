@@ -2,12 +2,14 @@ using UnityEngine;
 
 public class LadybugMovementDeathState: EnemyMovementBaseState
 {
+    public override EnemyState State => EnemyState.Death;
     private Vector3 _bounceForce;
     private Vector3 _gravityForce;
     private float _bounceForceMagnitude = 3f;
     private float _gravityForceMagnitude = .17f;
     private float _dragAmount = 0.9f;
-    
+
+
     public LadybugMovementDeathState(IStateMachineOwner owner, float speed, float radius, float verticalAmplitude) : base()
     {
         _speed = speed;
@@ -15,7 +17,6 @@ public class LadybugMovementDeathState: EnemyMovementBaseState
         _verticalAmplitude = verticalAmplitude;
         _owner = owner;
     }
-    public override EnemyStates State => EnemyStates.Death;
 
     public override void EnterState(Vector3 currentPosition, int sideDirection, int depthDirection)
     {
