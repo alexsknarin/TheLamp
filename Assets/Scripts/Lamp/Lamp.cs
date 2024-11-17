@@ -16,6 +16,8 @@ public class Lamp : MonoBehaviour, IInitializable
     [Header("Debug/Testing")]
     [SerializeField] private bool _isInvincible;
     
+    public static Transform LampTransform; // TODO: replace with DI system
+    
     private List<EnemyBase> _stickyEnemies;
     private bool _isAssessingDamage = false;
     private bool _isDead = false;
@@ -70,6 +72,7 @@ public class Lamp : MonoBehaviour, IInitializable
             _stickyEnemies.Clear();
         }
         _attackBlockerCount = 0;
+        LampTransform = transform;
     }
     
     public void PlayDeath(float duration)

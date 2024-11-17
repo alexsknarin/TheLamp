@@ -11,6 +11,7 @@ public class MothMovementAttackState: EnemyMovementBaseState
     private float _noiseAmplitude = 0.08f;
     private float _maxDistance = 0.5f;
     
+    private readonly float _mothRadius = 0.1f;
     public MothMovementAttackState(IStateMachineOwner owner, float speed, float radius, float verticalAmplitude) : base()
     {
         _speed = speed;
@@ -31,6 +32,14 @@ public class MothMovementAttackState: EnemyMovementBaseState
         Vector3 newPosition = currentPosition;
         Vector3 direction = -newPosition.normalized;
         newPosition += direction * (_speed * _acceleratedSpeed * Time.deltaTime);
+        
+        // Check if lamp was penetrated
+        // TODO: replace with proper DI system
+        if ((newPosition - Lamp.LampTransform.position).magnitude + _mothRadius < 0.5f)
+        {
+            newPosition = Lamp.LampTransform.position + newPosition.normalized * (0.5f + _mothRadius);
+        }
+        
         _acceleratedSpeed += _acceleration;
 
         // Add noise
