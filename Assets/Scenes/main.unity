@@ -11699,7 +11699,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63b0a04d60f383e4aab460f1323de273, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _collider: {fileID: 1966729928}
+  _currentStateType: 
   _animator: {fileID: 1966729926}
   _baseTransform: {fileID: 350137866}
 --- !u!95 &1966729926 stripped
@@ -12594,6 +12594,11 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1177802453113491699, guid: db082986f50fad64f90c5d3f0bd3ddf3,
+        type: 3}
+      propertyPath: _collider
+      value: 
+      objectReference: {fileID: 1966729928}
     - target: {fileID: 1177802453113491699, guid: db082986f50fad64f90c5d3f0bd3ddf3,
         type: 3}
       propertyPath: _fWaspMovement

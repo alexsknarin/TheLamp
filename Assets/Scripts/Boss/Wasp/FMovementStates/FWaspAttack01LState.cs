@@ -8,6 +8,7 @@ public class FWaspAttack01LState : FWaspAnimBaseState
     
     public override void OnEnter()
     {
+        Debug.Log("FWaspAttack01LState");
         _baseTransform.localScale = _baseScaleL;
         _animator.Play(_clipHash, -1, 0);
     }

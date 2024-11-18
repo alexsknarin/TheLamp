@@ -8,21 +8,22 @@ public class Wasp : BossBase
     [SerializeField] private WaspPresentation _waspPresentation;
     [SerializeField] private int _maxHealth;
     [SerializeField] private int _currentHealth;
+    [SerializeField] private Collider2D _collider;
     public override EnemyType EnemyType => EnemyType.Wasp;
 
     private void OnEnable()
     {
-        _waspMovement.OnBossAttackStartedEvent += UpdateRecievedLampAttackStatus;
-        _waspMovement.OnDeathStateEndedEvent += HandleDeathMoveStateEnd;
-        _waspMovement.OnLeftTheScreenEvent += HandleLeftScreen;
+        // _waspMovement.OnBossAttackStartedEvent += UpdateRecievedLampAttackStatus;
+        // _waspMovement.OnDeathStateEndedEvent += HandleDeathMoveStateEnd;
+        // _waspMovement.OnLeftTheScreenEvent += HandleLeftScreen;
         Lamp.OnLampDeadEvent += HandleLampDead; // TODO: manage from enemy manager
     }
     
     private void OnDisable()
     {
-        _waspMovement.OnBossAttackStartedEvent -= UpdateRecievedLampAttackStatus;
-        _waspMovement.OnDeathStateEndedEvent -= HandleDeathMoveStateEnd;
-        _waspMovement.OnLeftTheScreenEvent -= HandleLeftScreen;
+        // _waspMovement.OnBossAttackStartedEvent -= UpdateRecievedLampAttackStatus;
+        // _waspMovement.OnDeathStateEndedEvent -= HandleDeathMoveStateEnd;
+        // _waspMovement.OnLeftTheScreenEvent -= HandleLeftScreen;
         Lamp.OnLampDeadEvent -= HandleLampDead;
     }
     public override void Initialize()
@@ -31,7 +32,7 @@ public class Wasp : BossBase
         _isGameover = false;
         _currentHealth = _maxHealth;
         _waspPresentation.Initialize();
-        _waspMovement.Initialize();
+        // _waspMovement.Initialize();
         gameObject.SetActive(false);
     }
 
@@ -40,7 +41,7 @@ public class Wasp : BossBase
         ReceivedLampAttack = false;
         _currentHealth = _maxHealth;
         _waspPresentation.Initialize();
-        _waspMovement.MovementReset();
+        // _waspMovement.MovementReset();
         gameObject.SetActive(false);
     }
     
@@ -84,7 +85,7 @@ public class Wasp : BossBase
         }
         else
         {
-            _waspMovement.SetDead();
+            // _waspMovement.SetDead();
             _waspPresentation.PlayDeath();
             _waspPresentation.PlayDamageParticles();
         }    
@@ -126,7 +127,7 @@ public class Wasp : BossBase
     
     private void HandleLampDead(EnemyBase enemy)
     {
-        _waspMovement.SetLampDestroyed();
+        // _waspMovement.SetLampDestroyed();
     }
     
     private void HandleDeathMoveStateEnd()
@@ -135,9 +136,26 @@ public class Wasp : BossBase
         _waspPresentation.Reset();
         gameObject.SetActive(false);
     }
-
+    
+    
+    // Animation events
     private void ResetTrail()
     {
         _waspPresentation.ResetTrail();
+    }
+    
+    public void ClipEnded()
+    {
+        _fWaspMovement.ClipEnded();
+    }
+    
+    public void EnableCollider()
+    {
+        _collider.enabled = true;
+    }
+    
+    public void DisableCollider()
+    {
+        _collider.enabled = false;
     }
 }

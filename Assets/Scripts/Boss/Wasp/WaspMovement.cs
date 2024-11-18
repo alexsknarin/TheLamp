@@ -140,20 +140,20 @@ public class WaspMovement : MonoBehaviour, IInitializable
         }
     }
     
-    public void EnableCollider()
-    {
-        _collider.enabled = true;
-    }
-    
-    public void DisableCollider()
-    {
-        _collider.enabled = false;
-    }
+    // public void EnableCollider()
+    // {
+    //     _collider.enabled = true;
+    // }
+    //
+    // public void DisableCollider()
+    // {
+    //     _collider.enabled = false;
+    // }
 
-    public void ClipEnded()
-    {
-        SwitchState();
-    }
+    // public void ClipEnded()
+    // {
+    //     SwitchState();
+    // }
 
     public void SetDamaged()
     {

@@ -5,7 +5,6 @@ using Random = UnityEngine.Random;
 public class FWaspMovement : MonoBehaviour, IInitializable
 {
     [SerializeField] private string _currentStateType;
-    [SerializeField] private Collider2D _collider;
     [SerializeField] private Animator _animator;
     [SerializeField] private Transform _baseTransform;
     
@@ -15,6 +14,12 @@ public class FWaspMovement : MonoBehaviour, IInitializable
     
     // State parameters
     private Side _side = Side.Left;
+    
+    private bool _isAnimClipEnded = false;
+    
+    private int _twoOptiosSplit = 0;
+    private int _treeOptiosSplit = 0;
+    
     private bool _isDamaged = false;
     private bool _isDead = false;
     private bool _isLampDestroyed = false;
@@ -103,12 +108,59 @@ public class FWaspMovement : MonoBehaviour, IInitializable
         // Enter
         At(_idleState, _enterLState, () => _isPlaying && _side == Side.Left);
         At(_idleState, _enterRState, () => _isPlaying && _side == Side.Right);
+        // Enter to Attacks
+        At(_enterLState, _attack01LState, IsAnimationEndedOption01());
+        At(_enterLState, _attack03LState, IsAnimationEndedOption02());
+        At(_enterRState, _attack01RState, IsAnimationEndedOption01());
+        At(_enterRState, _attack03RState, IsAnimationEndedOption02());
+        // Attack to bounce transitions
+        At(_attack01LState, _attack01BounceLState, IsAnimationEnded()); // TODO: make it based on collision instead
+        At(_attack02LState, _attack02BounceLState, IsAnimationEnded());
+        At(_attack03LState, _attack03BounceLState, IsAnimationEnded());
+        At(_attack04LState, _attack04BounceLState, IsAnimationEnded());
+        At(_attack01RState, _attack01BounceRState, IsAnimationEnded());
+        At(_attack02RState, _attack02BounceRState, IsAnimationEnded());
+        At(_attack03RState, _attack03BounceRState, IsAnimationEnded());
+        At(_attack04RState, _attack04BounceRState, IsAnimationEnded());
+        
+        
         
         
         _stateMachine.SetState(_idleState);
 
         // Transition helper methods
         void At(IState from, IState to, Func<bool> condition) => _stateMachine.AddTransition(from, to, condition);
+        
+        // Transition Predicates
+        Func<bool> IsAnimationEnded() => () =>
+        {
+            if (_isAnimClipEnded)
+            {
+                _isAnimClipEnded = false;
+                return true;
+            }
+            return false;
+        };
+        
+        Func<bool> IsAnimationEndedOption01() => () =>
+        {
+            if (_isAnimClipEnded && _twoOptiosSplit == 0)
+            {
+                _isAnimClipEnded = false;
+                return true;
+            }
+            return false;
+        };
+        
+        Func<bool> IsAnimationEndedOption02() => () =>
+        {
+            if (_isAnimClipEnded && _twoOptiosSplit == 1)
+            {
+                _isAnimClipEnded = false;
+                return true;
+            }
+            return false;
+        };
     }
 
     private void CreateMovementStates()
@@ -172,8 +224,22 @@ public class FWaspMovement : MonoBehaviour, IInitializable
     public void Play()
     {
         _isPlaying = true;
+        _isAnimClipEnded = false;
         _side = (Side)Random.Range(0, 2);
         Debug.Log(_side);
+    }
+    
+    public void ClipEnded()
+    {
+        Debug.Log("Clip ended!");
+        _isAnimClipEnded = true;
+        
+        if (_stateMachine.CurrentStateType == typeof(FWaspEnterLState) ||
+            _stateMachine.CurrentStateType == typeof(FWaspEnterRState))
+        {
+            Debug.Log("Selecting one of the two attack options");
+            _twoOptiosSplit = Random.Range(0, 2);
+        }
     }
 
     private void Update()
