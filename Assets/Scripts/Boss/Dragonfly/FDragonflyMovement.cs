@@ -75,7 +75,7 @@ public class FDragonflyMovement : MonoBehaviour
     public event Action OnDeathAnimationEndedEvent;
     public event Action OnSwarmCallEvent;
 
-    private FStateMachine _stateMachine = new FStateMachine();
+    private FStateMachine _stateMachine = new();
     public IState MovementState => _stateMachine.CurrentState;
     
     // Animation 
@@ -228,7 +228,7 @@ public class FDragonflyMovement : MonoBehaviour
         _deathTailStateR.OnEndedEvent -= OnDeathAnimationEndedHandle;
     }
 
-    private void Awake()
+    private void Awake() // TODO: Move to Initialize ????
     {
         _isPlaying = false;
         SetMovementStatesDependencies();
