@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class FWaspAttack03LState : FWaspAnimBaseState
@@ -6,9 +7,12 @@ public class FWaspAttack03LState : FWaspAnimBaseState
     {
     }
     
+    public event Action OnStartedEvent;
+    
     public override void OnEnter()
     {
         _baseTransform.localScale = _baseScaleL;
         _animator.Play(_clipHash, -1, 0);
+        OnStartedEvent?.Invoke();
     }
 }

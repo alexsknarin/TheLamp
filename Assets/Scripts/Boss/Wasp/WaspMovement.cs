@@ -15,8 +15,8 @@ public class WaspMovement : MonoBehaviour, IInitializable
     private AnimationClipPlayable _currentAnimationClipPlayable;
     private WaspPlayablesContainer _playablesContainer;
     
-    public event Action OnBossAttackStartedEvent;
-    public event Action OnDeathStateEndedEvent;
+    public event Action OnBossAttackStartedEvent; // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+    public event Action OnDeathStateEndedEvent; 
     public event Action OnLeftTheScreenEvent;
 
     // Idle
