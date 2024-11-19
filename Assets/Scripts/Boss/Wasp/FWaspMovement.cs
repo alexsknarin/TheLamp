@@ -135,6 +135,11 @@ public class FWaspMovement : MonoBehaviour, IInitializable
     private void Awake()
     {
         CreateMovementStates();
+        StateMachineSetup();
+    }
+
+    private void StateMachineSetup()
+    {
         // Enter
         At(_idleState, _enterLState, () => _isPlaying && _side == Side.Left);
         At(_idleState, _enterRState, () => _isPlaying && _side == Side.Right);
@@ -449,7 +454,6 @@ public class FWaspMovement : MonoBehaviour, IInitializable
             }
             return false;
         };
-        
     }
 
     private void CreateMovementStates()

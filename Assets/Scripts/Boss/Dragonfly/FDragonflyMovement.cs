@@ -232,7 +232,7 @@ public class FDragonflyMovement : MonoBehaviour
     {
         _isPlaying = false;
         SetMovementStatesDependencies();
-        SetupStateMachine();
+        StateMachineSetup();
     }
 
     private void SetMovementStatesDependencies()
@@ -288,7 +288,7 @@ public class FDragonflyMovement : MonoBehaviour
         _spiderPushStateR.SetDependencies(_visibleBodyTransform, _spiderPatrolTransform, _spiderPatrolRotator);
     }
 
-    private void SetupStateMachine()
+    private void StateMachineSetup()
     {
         // Idle -> Enter States
         At(_idleState, _enterToPatrolStateL, () => _isPlaying && _enterState == DragonflyEnterType.Patrol && _sideDirection == 1);
