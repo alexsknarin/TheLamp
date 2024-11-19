@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -18,7 +19,7 @@ public class FWaspMovement : MonoBehaviour, IInitializable
     private bool _isAnimClipEnded = false;
     
     private int _twoOptiosSplit = 0;
-    private int _treeOptiosSplit = 0;
+    private int _threeOptiosSplit = 0;
     
     private bool _isDamaged = false;
     private bool _isDead = false;
@@ -101,7 +102,36 @@ public class FWaspMovement : MonoBehaviour, IInitializable
     private FWaspAttack04Success01RState _attack04Success01RState;
     private FWaspAttack04DeathLState _attack04DeathLState;
     private FWaspAttack04DeathRState _attack04DeathRState;
+
+    private readonly List<Type> TWO_OPTION_OUTCOME = new()
+    {
+        typeof(FWaspEnterLState),
+        typeof(FWaspEnterRState),
+        typeof(FWaspAttack01Success01LState),
+        typeof(FWaspAttack01Success01RState),
+        typeof(FWaspAttack02Success01LState),
+        typeof(FWaspAttack02Success01RState),
+        typeof(FWaspAttack03Success01LState),
+        typeof(FWaspAttack03Success01RState),
+        typeof(FWaspAttack02BounceLState),
+        typeof(FWaspAttack02BounceRState),
+        typeof(FWaspAttack02Fail01LState),
+        typeof(FWaspAttack02Fail01RState),
+        typeof(FWaspAttack03Fail01LState),
+        typeof(FWaspAttack03Fail01RState),
+        typeof(FWaspAttack04Fail01LState),
+        typeof(FWaspAttack04Fail01RState)
+    }; 
     
+    private readonly List<Type> THREE_OPTION_OUTCOME = new()
+    {
+        typeof(FWaspAttack01BounceLState),
+        typeof(FWaspAttack01BounceRState),
+        typeof(FWaspAttack04Success01LState),
+        typeof(FWaspAttack04Success01RState),
+        typeof(FWaspAttack01Fail01LState)
+    };
+
     private void Awake()
     {
         CreateMovementStates();
@@ -109,21 +139,156 @@ public class FWaspMovement : MonoBehaviour, IInitializable
         At(_idleState, _enterLState, () => _isPlaying && _side == Side.Left);
         At(_idleState, _enterRState, () => _isPlaying && _side == Side.Right);
         // Enter to Attacks
-        At(_enterLState, _attack01LState, IsAnimationEndedOption01());
-        At(_enterLState, _attack03LState, IsAnimationEndedOption02());
-        At(_enterRState, _attack01RState, IsAnimationEndedOption01());
-        At(_enterRState, _attack03RState, IsAnimationEndedOption02());
-        // Attack to bounce transitions
+        At(_enterLState, _attack01LState, IsAnimationEndedTwoOption01());
+        At(_enterLState, _attack03LState, IsAnimationEndedTwoOption02());
+        At(_enterRState, _attack01RState, IsAnimationEndedTwoOption01());
+        At(_enterRState, _attack03RState, IsAnimationEndedTwoOption02());
+        
+        //---
+        // Attack01 transitions
+        // Bounce
         At(_attack01LState, _attack01BounceLState, IsAnimationEnded()); // TODO: make it based on collision instead
-        At(_attack02LState, _attack02BounceLState, IsAnimationEnded());
-        At(_attack03LState, _attack03BounceLState, IsAnimationEnded());
-        At(_attack04LState, _attack04BounceLState, IsAnimationEnded());
         At(_attack01RState, _attack01BounceRState, IsAnimationEnded());
+        // Success
+        At(_attack01BounceLState, _attack01Success01LState, IsAnimationEndedThreeOptionSuccess01());
+        At(_attack01BounceLState, _attack01Success02LState, IsAnimationEndedThreeOptionSuccess02());
+        At(_attack01BounceLState, _attack01Success03LState, IsAnimationEndedThreeOptionSuccess03());
+        At(_attack01BounceRState, _attack01Success01RState, IsAnimationEndedThreeOptionSuccess01());
+        At(_attack01BounceRState, _attack01Success02RState, IsAnimationEndedThreeOptionSuccess02());
+        At(_attack01BounceRState, _attack01Success03RState, IsAnimationEndedThreeOptionSuccess03());
+        // Fail
+        At(_attack01BounceLState, _attack01Fail01LState, IsAnimationEndedFail());
+        At(_attack01BounceRState, _attack01Fail01RState, IsAnimationEndedFail());
+        // Death
+        At(_attack01BounceLState, _attack01DeathLState, IsAnimationEndedDeath());
+        At(_attack01BounceRState, _attack01DeathRState, IsAnimationEndedDeath());
+        // Next Attack
+        // - Success
+        At(_attack01Success01LState, _attack01RState, IsAnimationEndedTwoOption01());
+        At(_attack01Success01LState, _attack02RState, IsAnimationEndedTwoOption02());
+        At(_attack01Success01RState, _attack01LState, IsAnimationEndedTwoOption01());
+        At(_attack01Success01RState, _attack02LState, IsAnimationEndedTwoOption02());
+        At(_attack01Success02LState, _attack04LState, IsAnimationEnded());
+        At(_attack01Success02RState, _attack04RState, IsAnimationEnded());
+        At(_attack01Success03LState, _attack02LState, IsAnimationEnded());
+        At(_attack01Success03RState, _attack02RState, IsAnimationEnded());
+        // - Fail
+        At(_attack01Fail01LState, _attack02RState, IsAnimationEndedThreeOption01());
+        At(_attack01Fail01LState, _attack03RState, IsAnimationEndedThreeOption02());
+        At(_attack01Fail01LState, _attack04LState, IsAnimationEndedThreeOption03());
+        At(_attack01Fail01RState, _attack02LState, IsAnimationEndedThreeOption01());
+        At(_attack01Fail01RState, _attack03LState, IsAnimationEndedThreeOption02());
+        At(_attack01Fail01RState, _attack04RState, IsAnimationEndedThreeOption03());
+
+        //---       
+        // Attack02 transitions
+        // Bounce
+        At(_attack02LState, _attack02BounceLState, IsAnimationEnded());
         At(_attack02RState, _attack02BounceRState, IsAnimationEnded());
+        // Success
+        At(_attack02BounceLState, _attack02Success01LState, IsAnimationEndedSuccess());
+        At(_attack02BounceRState, _attack02Success01RState, IsAnimationEndedSuccess());
+        // Fail
+        At(_attack02BounceLState, _attack02Fail01LState, IsAnimationEndedTwoOptionFail01());
+        At(_attack02BounceLState, _attack02Fail02LState, IsAnimationEndedTwoOptionFail02());
+        At(_attack02BounceRState, _attack02Fail01RState, IsAnimationEndedTwoOptionFail01());
+        At(_attack02BounceRState, _attack02Fail02RState, IsAnimationEndedTwoOptionFail02());
+        // Death
+        At(_attack02BounceLState, _attack02DeathLState, IsAnimationEndedDeath());
+        At(_attack02BounceRState, _attack02DeathRState, IsAnimationEndedDeath());
+        // Next Attack
+        // - Success
+        At(_attack02Success01LState, _attack02LState, IsAnimationEndedTwoOption01());
+        At(_attack02Success01LState, _attack04LState, IsAnimationEndedTwoOption02());
+        At(_attack02Success01RState, _attack02RState, IsAnimationEndedTwoOption01());
+        At(_attack02Success01RState, _attack04RState, IsAnimationEndedTwoOption02());
+        // - Fail
+        At(_attack02Fail01LState, _attack01RState, IsAnimationEndedTwoOption01());
+        At(_attack02Fail01LState, _attack03RState, IsAnimationEndedTwoOption02());
+        At(_attack02Fail01RState, _attack01LState, IsAnimationEndedTwoOption01());
+        At(_attack02Fail01RState, _attack03LState, IsAnimationEndedTwoOption02());
+        At(_attack02Fail02LState, _attack02RState, IsAnimationEnded());
+        At(_attack02Fail02RState, _attack02LState, IsAnimationEnded());
+        
+        //---
+        // Attack03 transitions
+        // Bounce
+        At(_attack03LState, _attack03BounceLState, IsAnimationEnded());
         At(_attack03RState, _attack03BounceRState, IsAnimationEnded());
+        // Success
+        At(_attack03BounceLState, _attack03Success01LState, IsAnimationEndedSuccess());
+        At(_attack03BounceRState, _attack03Success01RState, IsAnimationEndedSuccess());
+        // Fail
+        At(_attack03BounceLState, _attack03Fail01LState, IsAnimationEndedFail());
+        At(_attack03BounceRState, _attack03Fail01RState, IsAnimationEndedFail());
+        // Death
+        At(_attack03BounceLState, _attack03DeathLState, IsAnimationEndedDeath());
+        At(_attack03BounceRState, _attack03DeathRState, IsAnimationEndedDeath());
+        // Next Attack
+        // - Success
+        At(_attack03Success01LState, _attack01LState, IsAnimationEndedTwoOption01());
+        At(_attack03Success01LState, _attack03LState, IsAnimationEndedTwoOption02());
+        At(_attack03Success01RState, _attack01RState, IsAnimationEndedTwoOption01());
+        At(_attack03Success01RState, _attack03RState, IsAnimationEndedTwoOption02());
+        // - Fail
+        At(_attack03Fail01LState, _attack01RState, IsAnimationEndedTwoOption01());
+        At(_attack03Fail01LState, _attack03RState, IsAnimationEndedTwoOption02());
+        At(_attack03Fail01RState, _attack01LState, IsAnimationEndedTwoOption01());
+        At(_attack03Fail01RState, _attack03LState, IsAnimationEndedTwoOption02());
+        
+        //---
+        // Attack04 transitions
+        // Bounce
+        At(_attack04LState, _attack04BounceLState, IsAnimationEnded());
         At(_attack04RState, _attack04BounceRState, IsAnimationEnded());
+        // Success
+        At(_attack04BounceLState, _attack04Success01LState, IsAnimationEndedSuccess());
+        At(_attack04BounceRState, _attack04Success01RState, IsAnimationEndedSuccess());
+        // Fail
+        At(_attack04BounceLState, _attack04Fail01LState, IsAnimationEndedFail());
+        At(_attack04BounceRState, _attack04Fail01RState, IsAnimationEndedFail());
+        // Death
+        At(_attack04BounceLState, _attack04DeathLState, IsAnimationEndedDeath());
+        At(_attack04BounceRState, _attack04DeathRState, IsAnimationEndedDeath());
+        // Next Attack
+        // - Success
+        At(_attack04Success01LState, _attack01RState, IsAnimationEndedThreeOption01());
+        At(_attack04Success01LState, _attack02LState, IsAnimationEndedThreeOption02());
+        At(_attack04Success01LState, _attack03LState, IsAnimationEndedThreeOption03());
+        At(_attack04Success01RState, _attack01LState, IsAnimationEndedThreeOption01());
+        At(_attack04Success01RState, _attack02RState, IsAnimationEndedThreeOption02());
+        At(_attack04Success01RState, _attack03RState, IsAnimationEndedThreeOption03());
+        // - Fail
+        At(_attack04Fail01LState, _attack01LState, IsAnimationEndedTwoOption01());
+        At(_attack04Fail01LState, _attack03LState, IsAnimationEndedTwoOption02());
+        At(_attack04Fail01RState, _attack01RState, IsAnimationEndedTwoOption01());
+        At(_attack04Fail01RState, _attack03RState, IsAnimationEndedTwoOption02());
         
-        
+        // To Idle state on game over
+        // L
+        At(_attack01Fail01LState, _idleState, IsAnimationEndedLampDeath());
+        At(_attack01Success01LState, _idleState, IsAnimationEndedLampDeath());
+        At(_attack01Success02LState, _idleState, IsAnimationEndedLampDeath());
+        At(_attack01Success03LState, _idleState, IsAnimationEndedLampDeath());
+        At(_attack02Fail01LState, _idleState, IsAnimationEndedLampDeath());
+        At(_attack02Fail02LState, _idleState, IsAnimationEndedLampDeath());
+        At(_attack02Success01LState, _idleState, IsAnimationEndedLampDeath());
+        At(_attack03Fail01LState, _idleState, IsAnimationEndedLampDeath());
+        At(_attack03Success01LState, _idleState, IsAnimationEndedLampDeath());
+        At(_attack04Fail01LState, _idleState, IsAnimationEndedLampDeath());
+        At(_attack04Success01LState, _idleState, IsAnimationEndedLampDeath());
+        // R
+        At(_attack01Fail01RState, _idleState, IsAnimationEndedLampDeath());
+        At(_attack01Success01RState, _idleState, IsAnimationEndedLampDeath());
+        At(_attack01Success02RState, _idleState, IsAnimationEndedLampDeath());
+        At(_attack01Success03RState, _idleState, IsAnimationEndedLampDeath());
+        At(_attack02Fail01RState, _idleState, IsAnimationEndedLampDeath());
+        At(_attack02Fail02RState, _idleState, IsAnimationEndedLampDeath());
+        At(_attack02Success01RState, _idleState, IsAnimationEndedLampDeath());
+        At(_attack03Fail01RState, _idleState, IsAnimationEndedLampDeath());
+        At(_attack03Success01RState, _idleState, IsAnimationEndedLampDeath());
+        At(_attack04Fail01RState, _idleState, IsAnimationEndedLampDeath());
+        At(_attack04Success01RState, _idleState, IsAnimationEndedLampDeath());
         
         
         _stateMachine.SetState(_idleState);
@@ -142,7 +307,50 @@ public class FWaspMovement : MonoBehaviour, IInitializable
             return false;
         };
         
-        Func<bool> IsAnimationEndedOption01() => () =>
+        Func<bool> IsAnimationEndedSuccess() => () =>
+        {
+            if (_isAnimClipEnded && !_isDamaged)
+            {
+                _isAnimClipEnded = false;
+                return true;
+            }
+            return false;
+        };
+        
+        Func<bool> IsAnimationEndedFail() => () =>
+        {
+            if (_isAnimClipEnded && _isDamaged)
+            {
+                _isAnimClipEnded = false;
+                _isDamaged = false;
+                return true;
+            }
+            return false;
+        };
+        
+        Func<bool> IsAnimationEndedDeath() => () =>
+        {
+            if (_isAnimClipEnded && _isDead)
+            {
+                _isAnimClipEnded = false;
+                _isDead = false;
+                return true;
+            }
+            return false;
+        };
+        
+        Func<bool> IsAnimationEndedLampDeath() => () =>
+        {
+            if (_isAnimClipEnded && _isLampDestroyed)
+            {
+                _isAnimClipEnded = false;
+                _isLampDestroyed = false;
+                return true;
+            }
+            return false;
+        };
+        
+        Func<bool> IsAnimationEndedTwoOption01() => () =>
         {
             if (_isAnimClipEnded && _twoOptiosSplit == 0)
             {
@@ -152,7 +360,7 @@ public class FWaspMovement : MonoBehaviour, IInitializable
             return false;
         };
         
-        Func<bool> IsAnimationEndedOption02() => () =>
+        Func<bool> IsAnimationEndedTwoOption02() => () =>
         {
             if (_isAnimClipEnded && _twoOptiosSplit == 1)
             {
@@ -161,6 +369,87 @@ public class FWaspMovement : MonoBehaviour, IInitializable
             }
             return false;
         };
+        
+        Func<bool> IsAnimationEndedTwoOptionFail01() => () =>
+        {
+            if (_isAnimClipEnded && _twoOptiosSplit == 0 && _isDamaged)
+            {
+                _isAnimClipEnded = false;
+                return true;
+            }
+            return false;
+        };
+        
+        Func<bool> IsAnimationEndedTwoOptionFail02() => () =>
+        {
+            if (_isAnimClipEnded && _twoOptiosSplit == 1 && _isDamaged)
+            {
+                _isAnimClipEnded = false;
+                return true;
+            }
+            return false;
+        };
+        
+        Func<bool> IsAnimationEndedThreeOption01() => () =>
+        {
+            if (_isAnimClipEnded && _threeOptiosSplit == 0)
+            {
+                _isAnimClipEnded = false;
+                return true;
+            }
+            return false;
+        };
+        
+        Func<bool> IsAnimationEndedThreeOption02() => () =>
+        {
+            if (_isAnimClipEnded && _threeOptiosSplit == 1)
+            {
+                _isAnimClipEnded = false;
+                return true;
+            }
+            return false;
+        };
+        
+        Func<bool> IsAnimationEndedThreeOption03() => () =>
+        {
+            if (_isAnimClipEnded && _threeOptiosSplit == 2)
+            {
+                _isAnimClipEnded = false;
+                return true;
+            }
+            return false;
+        };
+        
+        Func<bool> IsAnimationEndedThreeOptionSuccess01() => () =>
+        {
+            if (_isAnimClipEnded && _threeOptiosSplit == 0  && !_isDamaged)
+            {
+                _isAnimClipEnded = false;
+                return true;
+            }
+            return false;
+        };
+        
+        Func<bool> IsAnimationEndedThreeOptionSuccess02() => () =>
+        {
+            if (_isAnimClipEnded && _threeOptiosSplit == 1 && !_isDamaged)
+            {
+                _isAnimClipEnded = false;
+                return true;
+            }
+            return false;
+        };
+        
+        Func<bool> IsAnimationEndedThreeOptionSuccess03() => () =>
+        {
+            if (_isAnimClipEnded && _threeOptiosSplit == 2 && !_isDamaged)
+            {
+                _isAnimClipEnded = false;
+                return true;
+            }
+            return false;
+        };
+        
     }
 
     private void CreateMovementStates()
@@ -220,7 +509,7 @@ public class FWaspMovement : MonoBehaviour, IInitializable
     public void Initialize()
     {
     }
-    
+
     public void Play()
     {
         _isPlaying = true;
@@ -228,17 +517,23 @@ public class FWaspMovement : MonoBehaviour, IInitializable
         _side = (Side)Random.Range(0, 2);
         Debug.Log(_side);
     }
-    
+
+
     public void ClipEnded()
     {
         Debug.Log("Clip ended!");
         _isAnimClipEnded = true;
         
-        if (_stateMachine.CurrentStateType == typeof(FWaspEnterLState) ||
-            _stateMachine.CurrentStateType == typeof(FWaspEnterRState))
+        if (TWO_OPTION_OUTCOME.Contains(_stateMachine.CurrentStateType))
         {
             Debug.Log("Selecting one of the two attack options");
             _twoOptiosSplit = Random.Range(0, 2);
+        }
+        
+        if (THREE_OPTION_OUTCOME.Contains(_stateMachine.CurrentStateType))
+        {
+            Debug.Log("Selecting one of the two attack options");
+            _threeOptiosSplit = Random.Range(0, 3);
         }
     }
 
