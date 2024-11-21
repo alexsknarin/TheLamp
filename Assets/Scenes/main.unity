@@ -10499,7 +10499,7 @@ MonoBehaviour:
   _lampAttackExitZoneCollisionHandler: {fileID: 452042971}
   _attackBlockerCount: 0
   _lampStatsManager: {fileID: 1934066249}
-  _isInvincible: 1
+  _isInvincible: 0
 --- !u!114 &1934066248
 MonoBehaviour:
   m_ObjectHideFlags: 0

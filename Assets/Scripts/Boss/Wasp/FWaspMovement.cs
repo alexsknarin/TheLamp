@@ -15,6 +15,8 @@ public class FWaspMovement : MonoBehaviour, IInitializable
     
     private FStateMachine _stateMachine = new();
     
+    private float _colliderRadius = 0.24f;
+    
     private bool _isPlaying = false;
     
     // State parameters
@@ -134,6 +136,18 @@ public class FWaspMovement : MonoBehaviour, IInitializable
         typeof(FWaspAttack04Success01LState),
         typeof(FWaspAttack04Success01RState),
         typeof(FWaspAttack01Fail01LState)
+    };
+    
+    private readonly List<Type> ATTACK_STATES = new()
+    {
+        typeof(FWaspAttack01LState),
+        typeof(FWaspAttack01RState),
+        typeof(FWaspAttack02LState),
+        typeof(FWaspAttack02RState),
+        typeof(FWaspAttack03LState),
+        typeof(FWaspAttack03RState),
+        typeof(FWaspAttack04LState),
+        typeof(FWaspAttack04RState)        
     };
 
     private void OnEnable()
@@ -463,7 +477,7 @@ public class FWaspMovement : MonoBehaviour, IInitializable
         // Transition Predicates
         Func<bool> IsAnimationEnded() => () =>
         {
-            if (_isAnimClipEnded)
+            if (_isAnimClipEnded && !_isLampDestroyed)
             {
                 _isAnimClipEnded = false;
                 return true;
@@ -690,6 +704,22 @@ public class FWaspMovement : MonoBehaviour, IInitializable
         {
             _stateMachine.Tick();
             _currentStateType = _stateMachine.CurrentStateType.ToString().Replace("FWasp", ""); // DEBUG
+        }
+    }
+
+    private void LateUpdate()
+    {
+        // Correct position after animation - fix lamp penetrations
+        if (ATTACK_STATES.Contains(_stateMachine.CurrentStateType))
+        {
+            // Check if lamp was penetrated
+            // TODO: replace with proper DI system
+            Vector3 newPosition = transform.position;
+            if ((newPosition - Lamp.LampTransform.position).magnitude + _colliderRadius < 0.5f)
+            {
+                newPosition = Lamp.LampTransform.position + newPosition.normalized * (0.5f + _colliderRadius);
+            }
+            transform.position = newPosition;
         }
     }
 }
