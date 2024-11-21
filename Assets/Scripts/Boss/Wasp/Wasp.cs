@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Wasp : BossBase
 {
-    [SerializeField] private WaspMovement _waspMovement;
     [SerializeField] private FWaspMovement _fWaspMovement;
     [SerializeField] private WaspPresentation _waspPresentation;
     [SerializeField] private int _maxHealth;
