@@ -12609,6 +12609,16 @@ PrefabInstance:
       propertyPath: _fWaspMovement
       value: 
       objectReference: {fileID: 1966729922}
+    - target: {fileID: 1177802453113491699, guid: db082986f50fad64f90c5d3f0bd3ddf3,
+        type: 3}
+      propertyPath: _attackPauseTime
+      value: 0.005
+      objectReference: {fileID: 0}
+    - target: {fileID: 1177802453113491699, guid: db082986f50fad64f90c5d3f0bd3ddf3,
+        type: 3}
+      propertyPath: _isAttackPauseEnabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5791344357560995486, guid: db082986f50fad64f90c5d3f0bd3ddf3,
         type: 3}
       propertyPath: m_Enabled

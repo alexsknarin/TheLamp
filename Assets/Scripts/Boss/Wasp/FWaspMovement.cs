@@ -30,6 +30,7 @@ public class FWaspMovement : MonoBehaviour, IInitializable
     private bool _isDamaged = false;
     private bool _isDead = false;
     private bool _isLampDestroyed = false; // TODO: replace all this with enum? sucess, damaged, dead, lampDestroyed
+    private bool _isCollided = false;
 
     // Animation 
     private readonly int _idleHash = Animator.StringToHash("Idle");
@@ -149,6 +150,8 @@ public class FWaspMovement : MonoBehaviour, IInitializable
         typeof(FWaspAttack04LState),
         typeof(FWaspAttack04RState)        
     };
+
+    
 
     private void OnEnable()
     {
@@ -317,8 +320,8 @@ public class FWaspMovement : MonoBehaviour, IInitializable
         //---
         // Attack01 transitions
         // Bounce
-        At(_attack01LState, _attack01BounceLState, IsAnimationEnded()); // TODO: make it based on collision instead
-        At(_attack01RState, _attack01BounceRState, IsAnimationEnded());
+        At(_attack01LState, _attack01BounceLState, IsCollidedWithLamp()); // TODO: make it based on collision instead
+        At(_attack01RState, _attack01BounceRState, IsCollidedWithLamp());
         // Success
         At(_attack01BounceLState, _attack01Success01LState, IsAnimationEndedThreeOptionSuccess01());
         At(_attack01BounceLState, _attack01Success02LState, IsAnimationEndedThreeOptionSuccess02());
@@ -353,8 +356,8 @@ public class FWaspMovement : MonoBehaviour, IInitializable
         //---       
         // Attack02 transitions
         // Bounce
-        At(_attack02LState, _attack02BounceLState, IsAnimationEnded());
-        At(_attack02RState, _attack02BounceRState, IsAnimationEnded());
+        At(_attack02LState, _attack02BounceLState, IsCollidedWithLamp());
+        At(_attack02RState, _attack02BounceRState, IsCollidedWithLamp());
         // Success
         At(_attack02BounceLState, _attack02Success01LState, IsAnimationEndedSuccess());
         At(_attack02BounceRState, _attack02Success01RState, IsAnimationEndedSuccess());
@@ -383,8 +386,8 @@ public class FWaspMovement : MonoBehaviour, IInitializable
         //---
         // Attack03 transitions
         // Bounce
-        At(_attack03LState, _attack03BounceLState, IsAnimationEnded());
-        At(_attack03RState, _attack03BounceRState, IsAnimationEnded());
+        At(_attack03LState, _attack03BounceLState, IsCollidedWithLamp());
+        At(_attack03RState, _attack03BounceRState, IsCollidedWithLamp());
         // Success
         At(_attack03BounceLState, _attack03Success01LState, IsAnimationEndedSuccess());
         At(_attack03BounceRState, _attack03Success01RState, IsAnimationEndedSuccess());
@@ -409,8 +412,8 @@ public class FWaspMovement : MonoBehaviour, IInitializable
         //---
         // Attack04 transitions
         // Bounce
-        At(_attack04LState, _attack04BounceLState, IsAnimationEnded());
-        At(_attack04RState, _attack04BounceRState, IsAnimationEnded());
+        At(_attack04LState, _attack04BounceLState, IsCollidedWithLamp());
+        At(_attack04RState, _attack04BounceRState, IsCollidedWithLamp());
         // Success
         At(_attack04BounceLState, _attack04Success01LState, IsAnimationEndedSuccess());
         At(_attack04BounceRState, _attack04Success01RState, IsAnimationEndedSuccess());
@@ -473,6 +476,16 @@ public class FWaspMovement : MonoBehaviour, IInitializable
 
         // Transition helper methods
         void At(IState from, IState to, Func<bool> condition) => _stateMachine.AddTransition(from, to, condition);
+        
+        Func<bool> IsCollidedWithLamp() => () =>
+        {
+            if (_isCollided)
+            {
+                _isCollided = false;
+                return true;
+            }
+            return false;
+        };
         
         // Transition Predicates
         Func<bool> IsAnimationEnded() => () =>
@@ -637,6 +650,7 @@ public class FWaspMovement : MonoBehaviour, IInitializable
         _isAnimClipEnded = false;
         _isLampDestroyed = false;
         _isDamaged = false;
+        _isCollided = false;
     }
 
     public void Play()
@@ -682,10 +696,10 @@ public class FWaspMovement : MonoBehaviour, IInitializable
         }
     }
     
-    // private void OnLeftTheScreenHandle()
-    // {
-    //     OnLeftTheScreenEvent?.Invoke();
-    // }
+    public void SetCollidedWithLamp()
+    {
+        _isCollided = true;
+    }
 
     private void OnDeathStateEndedHandle()
     {

@@ -10,10 +10,19 @@ public class Wasp : BossBase
     [SerializeField] private int _maxHealth;
     [SerializeField] private int _currentHealth;
     [SerializeField] private Collider2D _collider;
+    [SerializeField] private bool _isAttackPauseEnabled = false;
+    [SerializeField] private float _attackPauseTime = 0.5f;
     public override EnemyType EnemyType => EnemyType.Wasp;
     
-    private bool _isDead = false;
+    private WaitForSeconds _attackPause;
     
+    private bool _isDead = false;
+
+    private void Awake()
+    {
+        _attackPause = new WaitForSeconds(_attackPauseTime);
+    }
+
     private void OnEnable()
     {
         _fWaspMovement.OnBossAttackStartedEvent += UpdateRecievedLampAttackStatus;
@@ -114,6 +123,20 @@ public class Wasp : BossBase
     
     public override void HandleCollisionWithLamp()
     {
+        if (_isAttackPauseEnabled)
+        {
+            StartCoroutine(AttackPause());    
+        }
+        else
+        {
+            _fWaspMovement.SetCollidedWithLamp();
+        }
+    }
+    
+    private IEnumerator AttackPause()
+    {
+        yield return _attackPause;
+        _fWaspMovement.SetCollidedWithLamp();
     }
     
     public override Vector3 ProvideImpactPoint()
