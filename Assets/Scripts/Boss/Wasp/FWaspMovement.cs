@@ -712,10 +712,11 @@ public class FWaspMovement : MonoBehaviour, IInitializable
         // Correct position after animation - fix lamp penetrations
         if (ATTACK_STATES.Contains(_stateMachine.CurrentStateType))
         {
+            Debug.Log("LateUpdate - check lamp penetration");
             // Check if lamp was penetrated
             // TODO: replace with proper DI system
             Vector3 newPosition = transform.position;
-            if ((newPosition - Lamp.LampTransform.position).magnitude + _colliderRadius < 0.5f)
+            if ((newPosition - Lamp.LampTransform.position).magnitude < _colliderRadius + 0.5f)
             {
                 newPosition = Lamp.LampTransform.position + newPosition.normalized * (0.5f + _colliderRadius);
             }

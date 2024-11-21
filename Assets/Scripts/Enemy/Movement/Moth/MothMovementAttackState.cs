@@ -35,7 +35,7 @@ public class MothMovementAttackState: EnemyMovementBaseState
         
         // Check if lamp was penetrated
         // TODO: replace with proper DI system
-        if ((newPosition - Lamp.LampTransform.position).magnitude + _mothRadius < 0.5f)
+        if ((newPosition - Lamp.LampTransform.position).magnitude < _mothRadius + 0.5f)
         {
             newPosition = Lamp.LampTransform.position + newPosition.normalized * (0.5f + _mothRadius);
         }
