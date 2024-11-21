@@ -27,7 +27,6 @@ public class Wasp : BossBase
     {
         _fWaspMovement.OnBossAttackStartedEvent += UpdateRecievedLampAttackStatus;
         _fWaspMovement.OnDeathStateEndedEvent += HandleDeathMoveStateEnd;
-        // _fWaspMovement.OnLeftTheScreenEvent += HandleLeftScreen;
         Lamp.OnLampDeadEvent += HandleLampDead; // TODO: manage from enemy manager
     }
     
@@ -35,7 +34,6 @@ public class Wasp : BossBase
     {
         _fWaspMovement.OnBossAttackStartedEvent -= UpdateRecievedLampAttackStatus;
         _fWaspMovement.OnDeathStateEndedEvent -= HandleDeathMoveStateEnd;
-        // _fWaspMovement.OnLeftTheScreenEvent -= HandleLeftScreen;
         Lamp.OnLampDeadEvent -= HandleLampDead;
     }
     public override void Initialize()
@@ -62,7 +60,6 @@ public class Wasp : BossBase
         ReceivedLampAttack = false;
         _currentHealth = _maxHealth;
         _waspPresentation.Initialize();
-        // _fWaspMovement.MovementReset();
         gameObject.SetActive(false);
     }
 
@@ -162,7 +159,6 @@ public class Wasp : BossBase
         yield return null;
         gameObject.SetActive(false);
     }
-    
     
     // Animation events
     private void ResetTrail()

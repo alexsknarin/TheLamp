@@ -7,11 +7,8 @@ public class FWaspIdleState: FWaspAnimBaseState
     {
     }
     
-    public event Action OnStartedEvent;
-
     public override void OnEnter()
     {
         _animator.Play(_clipHash, -1, 0);
-        OnStartedEvent?.Invoke();
     }
 }

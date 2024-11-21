@@ -7,16 +7,9 @@ public class FWaspAttack01Success01RState : FWaspAnimBaseState
     {
     }
     
-    public event Action OnEndedEvent;
-    
     public override void OnEnter()
     {
         _baseTransform.localScale = _baseScaleR;
         _animator.Play(_clipHash, -1, 0);
-    }
-    
-    public override void OnExit()
-    {
-        OnEndedEvent?.Invoke();
     }
 }

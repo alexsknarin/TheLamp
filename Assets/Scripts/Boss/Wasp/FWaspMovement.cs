@@ -11,7 +11,6 @@ public class FWaspMovement : MonoBehaviour, IInitializable
     
     public event Action OnBossAttackStartedEvent;
     public event Action OnDeathStateEndedEvent;
-    public event Action OnLeftTheScreenEvent;
     
     private FStateMachine _stateMachine = new();
     
@@ -172,31 +171,6 @@ public class FWaspMovement : MonoBehaviour, IInitializable
         _attack03DeathRState.OnEndedEvent += OnDeathStateEndedHandle;
         _attack04DeathLState.OnEndedEvent += OnDeathStateEndedHandle;
         _attack04DeathRState.OnEndedEvent += OnDeathStateEndedHandle;
-        
-        // _idleState.OnStartedEvent += OnLeftTheScreenHandle;
-        
-        // _attack01Fail01LState.OnEndedEvent += OnLeftTheScreenHandle;
-        // _attack01Fail01RState.OnEndedEvent += OnLeftTheScreenHandle;
-        // _attack02Fail01LState.OnEndedEvent += OnLeftTheScreenHandle;
-        // _attack02Fail01RState.OnEndedEvent += OnLeftTheScreenHandle;
-        // _attack02Fail02LState.OnEndedEvent += OnLeftTheScreenHandle;
-        // _attack02Fail02RState.OnEndedEvent += OnLeftTheScreenHandle;
-        // _attack03Fail01LState.OnEndedEvent += OnLeftTheScreenHandle;
-        // _attack03Fail01RState.OnEndedEvent += OnLeftTheScreenHandle;
-        // _attack04Fail01LState.OnEndedEvent += OnLeftTheScreenHandle;
-        // _attack04Fail01RState.OnEndedEvent += OnLeftTheScreenHandle;
-        // _attack01Success01LState.OnEndedEvent += OnLeftTheScreenHandle;
-        // _attack01Success01RState.OnEndedEvent += OnLeftTheScreenHandle;
-        // _attack01Success02LState.OnEndedEvent += OnLeftTheScreenHandle;
-        // _attack01Success02RState.OnEndedEvent += OnLeftTheScreenHandle;
-        // _attack01Success03LState.OnEndedEvent += OnLeftTheScreenHandle;
-        // _attack01Success03RState.OnEndedEvent += OnLeftTheScreenHandle;
-        // _attack02Success01LState.OnEndedEvent += OnLeftTheScreenHandle;
-        // _attack02Success01RState.OnEndedEvent += OnLeftTheScreenHandle;
-        // _attack03Success01LState.OnEndedEvent += OnLeftTheScreenHandle;
-        // _attack03Success01RState.OnEndedEvent += OnLeftTheScreenHandle;
-        // _attack04Success01LState.OnEndedEvent += OnLeftTheScreenHandle;
-        // _attack04Success01RState.OnEndedEvent += OnLeftTheScreenHandle;
     }
 
     private void OnDisable()
@@ -218,34 +192,7 @@ public class FWaspMovement : MonoBehaviour, IInitializable
         _attack03DeathRState.OnEndedEvent -= OnDeathStateEndedHandle;
         _attack04DeathLState.OnEndedEvent -= OnDeathStateEndedHandle;
         _attack04DeathRState.OnEndedEvent -= OnDeathStateEndedHandle;
-        
-        // _idleState.OnStartedEvent -= OnLeftTheScreenHandle;
-        
-        // _attack01Fail01LState.OnEndedEvent -= OnLeftTheScreenHandle;
-        // _attack01Fail01RState.OnEndedEvent -= OnLeftTheScreenHandle;
-        // _attack02Fail01LState.OnEndedEvent -= OnLeftTheScreenHandle;
-        // _attack02Fail01RState.OnEndedEvent -= OnLeftTheScreenHandle;
-        // _attack02Fail02LState.OnEndedEvent -= OnLeftTheScreenHandle;
-        // _attack02Fail02RState.OnEndedEvent -= OnLeftTheScreenHandle;
-        // _attack03Fail01LState.OnEndedEvent -= OnLeftTheScreenHandle;
-        // _attack03Fail01RState.OnEndedEvent -= OnLeftTheScreenHandle;
-        // _attack04Fail01LState.OnEndedEvent -= OnLeftTheScreenHandle;
-        // _attack04Fail01RState.OnEndedEvent -= OnLeftTheScreenHandle;
-        // _attack01Success01LState.OnEndedEvent -= OnLeftTheScreenHandle;
-        // _attack01Success01RState.OnEndedEvent -= OnLeftTheScreenHandle;
-        // _attack01Success02LState.OnEndedEvent -= OnLeftTheScreenHandle;
-        // _attack01Success02RState.OnEndedEvent -= OnLeftTheScreenHandle;
-        // _attack01Success03LState.OnEndedEvent -= OnLeftTheScreenHandle;
-        // _attack01Success03RState.OnEndedEvent -= OnLeftTheScreenHandle;
-        // _attack02Success01LState.OnEndedEvent -= OnLeftTheScreenHandle;
-        // _attack02Success01RState.OnEndedEvent -= OnLeftTheScreenHandle;
-        // _attack03Success01LState.OnEndedEvent -= OnLeftTheScreenHandle;
-        // _attack03Success01RState.OnEndedEvent -= OnLeftTheScreenHandle;
-        // _attack04Success01LState.OnEndedEvent -= OnLeftTheScreenHandle;
-        // _attack04Success01RState.OnEndedEvent -= OnLeftTheScreenHandle;
     }
-
-
 
     private void Awake()
     {
