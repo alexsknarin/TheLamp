@@ -10499,7 +10499,7 @@ MonoBehaviour:
   _lampAttackExitZoneCollisionHandler: {fileID: 452042971}
   _attackBlockerCount: 0
   _lampStatsManager: {fileID: 1934066249}
-  _isInvincible: 0
+  _isInvincible: 1
 --- !u!114 &1934066248
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12584,6 +12584,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 455753279381236210, guid: db082986f50fad64f90c5d3f0bd3ddf3,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 508564934166301182, guid: db082986f50fad64f90c5d3f0bd3ddf3,
         type: 3}
       propertyPath: m_Name
@@ -12592,7 +12597,7 @@ PrefabInstance:
     - target: {fileID: 816267557849244585, guid: db082986f50fad64f90c5d3f0bd3ddf3,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1177802453113491699, guid: db082986f50fad64f90c5d3f0bd3ddf3,
         type: 3}
@@ -12607,7 +12612,7 @@ PrefabInstance:
     - target: {fileID: 5791344357560995486, guid: db082986f50fad64f90c5d3f0bd3ddf3,
         type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7141382224798320509, guid: db082986f50fad64f90c5d3f0bd3ddf3,
         type: 3}
@@ -12662,7 +12667,7 @@ PrefabInstance:
     - target: {fileID: 9191138948751963205, guid: db082986f50fad64f90c5d3f0bd3ddf3,
         type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -27,7 +27,7 @@ public class FWaspMovement : MonoBehaviour, IInitializable
     
     private bool _isDamaged = false;
     private bool _isDead = false;
-    private bool _isLampDestroyed = false;
+    private bool _isLampDestroyed = false; // TODO: replace all this with enum? sucess, damaged, dead, lampDestroyed
 
     // Animation 
     private readonly int _idleHash = Animator.StringToHash("Idle");
@@ -156,28 +156,30 @@ public class FWaspMovement : MonoBehaviour, IInitializable
         _attack04DeathLState.OnEndedEvent += OnDeathStateEndedHandle;
         _attack04DeathRState.OnEndedEvent += OnDeathStateEndedHandle;
         
-        _attack01Fail01LState.OnEndedEvent += OnLeftTheScreenHandle;
-        _attack01Fail01RState.OnEndedEvent += OnLeftTheScreenHandle;
-        _attack02Fail01LState.OnEndedEvent += OnLeftTheScreenHandle;
-        _attack02Fail01RState.OnEndedEvent += OnLeftTheScreenHandle;
-        _attack02Fail02LState.OnEndedEvent += OnLeftTheScreenHandle;
-        _attack02Fail02RState.OnEndedEvent += OnLeftTheScreenHandle;
-        _attack03Fail01LState.OnEndedEvent += OnLeftTheScreenHandle;
-        _attack03Fail01RState.OnEndedEvent += OnLeftTheScreenHandle;
-        _attack04Fail01LState.OnEndedEvent += OnLeftTheScreenHandle;
-        _attack04Fail01RState.OnEndedEvent += OnLeftTheScreenHandle;
-        _attack01Success01LState.OnEndedEvent += OnLeftTheScreenHandle;
-        _attack01Success01RState.OnEndedEvent += OnLeftTheScreenHandle;
-        _attack01Success02LState.OnEndedEvent += OnLeftTheScreenHandle;
-        _attack01Success02RState.OnEndedEvent += OnLeftTheScreenHandle;
-        _attack01Success03LState.OnEndedEvent += OnLeftTheScreenHandle;
-        _attack01Success03RState.OnEndedEvent += OnLeftTheScreenHandle;
-        _attack02Success01LState.OnEndedEvent += OnLeftTheScreenHandle;
-        _attack02Success01RState.OnEndedEvent += OnLeftTheScreenHandle;
-        _attack03Success01LState.OnEndedEvent += OnLeftTheScreenHandle;
-        _attack03Success01RState.OnEndedEvent += OnLeftTheScreenHandle;
-        _attack04Success01LState.OnEndedEvent += OnLeftTheScreenHandle;
-        _attack04Success01RState.OnEndedEvent += OnLeftTheScreenHandle;
+        // _idleState.OnStartedEvent += OnLeftTheScreenHandle;
+        
+        // _attack01Fail01LState.OnEndedEvent += OnLeftTheScreenHandle;
+        // _attack01Fail01RState.OnEndedEvent += OnLeftTheScreenHandle;
+        // _attack02Fail01LState.OnEndedEvent += OnLeftTheScreenHandle;
+        // _attack02Fail01RState.OnEndedEvent += OnLeftTheScreenHandle;
+        // _attack02Fail02LState.OnEndedEvent += OnLeftTheScreenHandle;
+        // _attack02Fail02RState.OnEndedEvent += OnLeftTheScreenHandle;
+        // _attack03Fail01LState.OnEndedEvent += OnLeftTheScreenHandle;
+        // _attack03Fail01RState.OnEndedEvent += OnLeftTheScreenHandle;
+        // _attack04Fail01LState.OnEndedEvent += OnLeftTheScreenHandle;
+        // _attack04Fail01RState.OnEndedEvent += OnLeftTheScreenHandle;
+        // _attack01Success01LState.OnEndedEvent += OnLeftTheScreenHandle;
+        // _attack01Success01RState.OnEndedEvent += OnLeftTheScreenHandle;
+        // _attack01Success02LState.OnEndedEvent += OnLeftTheScreenHandle;
+        // _attack01Success02RState.OnEndedEvent += OnLeftTheScreenHandle;
+        // _attack01Success03LState.OnEndedEvent += OnLeftTheScreenHandle;
+        // _attack01Success03RState.OnEndedEvent += OnLeftTheScreenHandle;
+        // _attack02Success01LState.OnEndedEvent += OnLeftTheScreenHandle;
+        // _attack02Success01RState.OnEndedEvent += OnLeftTheScreenHandle;
+        // _attack03Success01LState.OnEndedEvent += OnLeftTheScreenHandle;
+        // _attack03Success01RState.OnEndedEvent += OnLeftTheScreenHandle;
+        // _attack04Success01LState.OnEndedEvent += OnLeftTheScreenHandle;
+        // _attack04Success01RState.OnEndedEvent += OnLeftTheScreenHandle;
     }
 
     private void OnDisable()
@@ -200,28 +202,30 @@ public class FWaspMovement : MonoBehaviour, IInitializable
         _attack04DeathLState.OnEndedEvent -= OnDeathStateEndedHandle;
         _attack04DeathRState.OnEndedEvent -= OnDeathStateEndedHandle;
         
-        _attack01Fail01LState.OnEndedEvent -= OnLeftTheScreenHandle;
-        _attack01Fail01RState.OnEndedEvent -= OnLeftTheScreenHandle;
-        _attack02Fail01LState.OnEndedEvent -= OnLeftTheScreenHandle;
-        _attack02Fail01RState.OnEndedEvent -= OnLeftTheScreenHandle;
-        _attack02Fail02LState.OnEndedEvent -= OnLeftTheScreenHandle;
-        _attack02Fail02RState.OnEndedEvent -= OnLeftTheScreenHandle;
-        _attack03Fail01LState.OnEndedEvent -= OnLeftTheScreenHandle;
-        _attack03Fail01RState.OnEndedEvent -= OnLeftTheScreenHandle;
-        _attack04Fail01LState.OnEndedEvent -= OnLeftTheScreenHandle;
-        _attack04Fail01RState.OnEndedEvent -= OnLeftTheScreenHandle;
-        _attack01Success01LState.OnEndedEvent -= OnLeftTheScreenHandle;
-        _attack01Success01RState.OnEndedEvent -= OnLeftTheScreenHandle;
-        _attack01Success02LState.OnEndedEvent -= OnLeftTheScreenHandle;
-        _attack01Success02RState.OnEndedEvent -= OnLeftTheScreenHandle;
-        _attack01Success03LState.OnEndedEvent -= OnLeftTheScreenHandle;
-        _attack01Success03RState.OnEndedEvent -= OnLeftTheScreenHandle;
-        _attack02Success01LState.OnEndedEvent -= OnLeftTheScreenHandle;
-        _attack02Success01RState.OnEndedEvent -= OnLeftTheScreenHandle;
-        _attack03Success01LState.OnEndedEvent -= OnLeftTheScreenHandle;
-        _attack03Success01RState.OnEndedEvent -= OnLeftTheScreenHandle;
-        _attack04Success01LState.OnEndedEvent -= OnLeftTheScreenHandle;
-        _attack04Success01RState.OnEndedEvent -= OnLeftTheScreenHandle;
+        // _idleState.OnStartedEvent -= OnLeftTheScreenHandle;
+        
+        // _attack01Fail01LState.OnEndedEvent -= OnLeftTheScreenHandle;
+        // _attack01Fail01RState.OnEndedEvent -= OnLeftTheScreenHandle;
+        // _attack02Fail01LState.OnEndedEvent -= OnLeftTheScreenHandle;
+        // _attack02Fail01RState.OnEndedEvent -= OnLeftTheScreenHandle;
+        // _attack02Fail02LState.OnEndedEvent -= OnLeftTheScreenHandle;
+        // _attack02Fail02RState.OnEndedEvent -= OnLeftTheScreenHandle;
+        // _attack03Fail01LState.OnEndedEvent -= OnLeftTheScreenHandle;
+        // _attack03Fail01RState.OnEndedEvent -= OnLeftTheScreenHandle;
+        // _attack04Fail01LState.OnEndedEvent -= OnLeftTheScreenHandle;
+        // _attack04Fail01RState.OnEndedEvent -= OnLeftTheScreenHandle;
+        // _attack01Success01LState.OnEndedEvent -= OnLeftTheScreenHandle;
+        // _attack01Success01RState.OnEndedEvent -= OnLeftTheScreenHandle;
+        // _attack01Success02LState.OnEndedEvent -= OnLeftTheScreenHandle;
+        // _attack01Success02RState.OnEndedEvent -= OnLeftTheScreenHandle;
+        // _attack01Success03LState.OnEndedEvent -= OnLeftTheScreenHandle;
+        // _attack01Success03RState.OnEndedEvent -= OnLeftTheScreenHandle;
+        // _attack02Success01LState.OnEndedEvent -= OnLeftTheScreenHandle;
+        // _attack02Success01RState.OnEndedEvent -= OnLeftTheScreenHandle;
+        // _attack03Success01LState.OnEndedEvent -= OnLeftTheScreenHandle;
+        // _attack03Success01RState.OnEndedEvent -= OnLeftTheScreenHandle;
+        // _attack04Success01LState.OnEndedEvent -= OnLeftTheScreenHandle;
+        // _attack04Success01RState.OnEndedEvent -= OnLeftTheScreenHandle;
     }
 
 
@@ -230,6 +234,59 @@ public class FWaspMovement : MonoBehaviour, IInitializable
     {
         CreateMovementStates();
         StateMachineSetup();
+    }
+
+    private void CreateMovementStates()
+    {
+        _idleState = new FWaspIdleState(_animator, _idleHash, _baseTransform);
+        _enterLState = new FWaspEnterLState(_animator, _enterHash, _baseTransform);
+        _enterRState = new FWaspEnterRState(_animator, _enterHash, _baseTransform);
+        _attack01LState = new FWaspAttack01LState(_animator, _attack01Hash, _baseTransform);
+        _attack01RState = new FWaspAttack01RState(_animator, _attack01Hash, _baseTransform);
+        _attack01BounceLState = new FWaspAttack01BounceLState(_animator, _attack01BounceHash, _baseTransform);
+        _attack01BounceRState = new FWaspAttack01BounceRState(_animator, _attack01BounceHash, _baseTransform);
+        _attack01Fail01LState = new FWaspAttack01Fail01LState(_animator, _attack01Fail01Hash, _baseTransform);
+        _attack01Fail01RState = new FWaspAttack01Fail01RState(_animator, _attack01Fail01Hash, _baseTransform);
+        _attack01Success01LState = new FWaspAttack01Success01LState(_animator, _attack01Success01Hash, _baseTransform);
+        _attack01Success01RState = new FWaspAttack01Success01RState(_animator, _attack01Success01Hash, _baseTransform);
+        _attack01Success02LState = new FWaspAttack01Success02LState(_animator, _attack01Success02Hash, _baseTransform);
+        _attack01Success02RState = new FWaspAttack01Success02RState(_animator, _attack01Success02Hash, _baseTransform);
+        _attack01Success03LState = new FWaspAttack01Success03LState(_animator, _attack01Success03Hash, _baseTransform);
+        _attack01Success03RState = new FWaspAttack01Success03RState(_animator, _attack01Success03Hash, _baseTransform);
+        _attack01DeathLState = new FWaspAttack01DeathLState(_animator, _attack01Death01Hash, _baseTransform);
+        _attack01DeathRState = new FWaspAttack01DeathRState(_animator, _attack01Death01Hash, _baseTransform);
+        _attack02LState = new FWaspAttack02LState(_animator, _attack02Hash, _baseTransform);
+        _attack02RState = new FWaspAttack02RState(_animator, _attack02Hash, _baseTransform);
+        _attack02BounceLState = new FWaspAttack02BounceLState(_animator, _attack02BounceHash, _baseTransform);
+        _attack02BounceRState = new FWaspAttack02BounceRState(_animator, _attack02BounceHash, _baseTransform);
+        _attack02Fail01LState = new FWaspAttack02Fail01LState(_animator, _attack02Fail01Hash, _baseTransform);
+        _attack02Fail01RState = new FWaspAttack02Fail01RState(_animator, _attack02Fail01Hash, _baseTransform);
+        _attack02Fail02LState = new FWaspAttack02Fail02LState(_animator, _attack02Fail02Hash, _baseTransform);
+        _attack02Fail02RState = new FWaspAttack02Fail02RState(_animator, _attack02Fail02Hash, _baseTransform);
+        _attack02Success01LState = new FWaspAttack02Success01LState(_animator, _attack02Success01Hash, _baseTransform);
+        _attack02Success01RState = new FWaspAttack02Success01RState(_animator, _attack02Success01Hash, _baseTransform);
+        _attack02DeathLState = new FWaspAttack02DeathLState(_animator, _attack02Death01Hash, _baseTransform);
+        _attack02DeathRState = new FWaspAttack02DeathRState(_animator, _attack02Death01Hash, _baseTransform);
+        _attack03LState = new FWaspAttack03LState(_animator, _attack03Hash, _baseTransform);
+        _attack03RState = new FWaspAttack03RState(_animator, _attack03Hash, _baseTransform);
+        _attack03BounceLState = new FWaspAttack03BounceLState(_animator, _attack03BounceHash, _baseTransform);
+        _attack03BounceRState = new FWaspAttack03BounceRState(_animator, _attack03BounceHash, _baseTransform);
+        _attack03Fail01LState = new FWaspAttack03Fail01LState(_animator, _attack03Fail01Hash, _baseTransform);
+        _attack03Fail01RState = new FWaspAttack03Fail01RState(_animator, _attack03Fail01Hash, _baseTransform);
+        _attack03Success01LState = new FWaspAttack03Success01LState(_animator, _attack03Success01Hash, _baseTransform);
+        _attack03Success01RState = new FWaspAttack03Success01RState(_animator, _attack03Success01Hash, _baseTransform);
+        _attack03DeathLState = new FWaspAttack03DeathLState(_animator, _attack03Death01Hash, _baseTransform);
+        _attack03DeathRState = new FWaspAttack03DeathRState(_animator, _attack03Death01Hash, _baseTransform);
+        _attack04LState = new FWaspAttack04LState(_animator, _attack04Hash, _baseTransform);
+        _attack04RState = new FWaspAttack04RState(_animator, _attack04Hash, _baseTransform);
+        _attack04BounceLState = new FWaspAttack04BounceLState(_animator, _attack04BounceHash, _baseTransform);
+        _attack04BounceRState = new FWaspAttack04BounceRState(_animator, _attack04BounceHash, _baseTransform);
+        _attack04Fail01LState = new FWaspAttack04Fail01LState(_animator, _attack04Fail01Hash, _baseTransform);
+        _attack04Fail01RState = new FWaspAttack04Fail01RState(_animator, _attack04Fail01Hash, _baseTransform);
+        _attack04Success01LState = new FWaspAttack04Success01LState(_animator, _attack04Success01Hash, _baseTransform);
+        _attack04Success01RState = new FWaspAttack04Success01RState(_animator, _attack04Success01Hash, _baseTransform);
+        _attack04DeathLState = new FWaspAttack04DeathLState(_animator, _attack04Death01Hash, _baseTransform);
+        _attack04DeathRState = new FWaspAttack04DeathRState(_animator, _attack04Death01Hash, _baseTransform);
     }
 
     private void StateMachineSetup()
@@ -388,7 +445,15 @@ public class FWaspMovement : MonoBehaviour, IInitializable
         At(_attack03Success01RState, _idleState, IsAnimationEndedLampDeath());
         At(_attack04Fail01RState, _idleState, IsAnimationEndedLampDeath());
         At(_attack04Success01RState, _idleState, IsAnimationEndedLampDeath());
-        
+        // To Idle state on death
+        At(_attack01DeathLState, _idleState, IsAnimationEnded());
+        At(_attack01DeathRState, _idleState, IsAnimationEnded());
+        At(_attack02DeathLState, _idleState, IsAnimationEnded());
+        At(_attack02DeathRState, _idleState, IsAnimationEnded());
+        At(_attack03DeathLState, _idleState, IsAnimationEnded());
+        At(_attack03DeathRState, _idleState, IsAnimationEnded());
+        At(_attack04DeathLState, _idleState, IsAnimationEnded());
+        At(_attack04DeathRState, _idleState, IsAnimationEnded());
         
         _stateMachine.SetState(_idleState);
 
@@ -408,7 +473,7 @@ public class FWaspMovement : MonoBehaviour, IInitializable
         
         Func<bool> IsAnimationEndedSuccess() => () =>
         {
-            if (_isAnimClipEnded && !_isDamaged)
+            if (_isAnimClipEnded && !_isDamaged && !_isDead)
             {
                 _isAnimClipEnded = false;
                 return true;
@@ -418,7 +483,7 @@ public class FWaspMovement : MonoBehaviour, IInitializable
         
         Func<bool> IsAnimationEndedFail() => () =>
         {
-            if (_isAnimClipEnded && _isDamaged)
+            if (_isAnimClipEnded && _isDamaged && !_isDead)
             {
                 _isAnimClipEnded = false;
                 _isDamaged = false;
@@ -440,10 +505,11 @@ public class FWaspMovement : MonoBehaviour, IInitializable
         
         Func<bool> IsAnimationEndedLampDeath() => () =>
         {
-            if (_isAnimClipEnded && _isLampDestroyed)
+            if (_isAnimClipEnded && _isLampDestroyed && !_isDead)
             {
                 _isAnimClipEnded = false;
                 _isLampDestroyed = false;
+                _isPlaying = false;
                 return true;
             }
             return false;
@@ -451,7 +517,7 @@ public class FWaspMovement : MonoBehaviour, IInitializable
         
         Func<bool> IsAnimationEndedTwoOption01() => () =>
         {
-            if (_isAnimClipEnded && _twoOptiosSplit == 0)
+            if (_isAnimClipEnded && _twoOptiosSplit == 0 && !_isLampDestroyed )
             {
                 _isAnimClipEnded = false;
                 return true;
@@ -461,7 +527,7 @@ public class FWaspMovement : MonoBehaviour, IInitializable
         
         Func<bool> IsAnimationEndedTwoOption02() => () =>
         {
-            if (_isAnimClipEnded && _twoOptiosSplit == 1)
+            if (_isAnimClipEnded && _twoOptiosSplit == 1 && !_isLampDestroyed )
             {
                 _isAnimClipEnded = false;
                 return true;
@@ -471,7 +537,7 @@ public class FWaspMovement : MonoBehaviour, IInitializable
         
         Func<bool> IsAnimationEndedTwoOptionFail01() => () =>
         {
-            if (_isAnimClipEnded && _twoOptiosSplit == 0 && _isDamaged)
+            if (_isAnimClipEnded && _twoOptiosSplit == 0 && _isDamaged && !_isDead)
             {
                 _isAnimClipEnded = false;
                 return true;
@@ -481,7 +547,7 @@ public class FWaspMovement : MonoBehaviour, IInitializable
         
         Func<bool> IsAnimationEndedTwoOptionFail02() => () =>
         {
-            if (_isAnimClipEnded && _twoOptiosSplit == 1 && _isDamaged)
+            if (_isAnimClipEnded && _twoOptiosSplit == 1 && _isDamaged && !_isDead)
             {
                 _isAnimClipEnded = false;
                 return true;
@@ -491,7 +557,7 @@ public class FWaspMovement : MonoBehaviour, IInitializable
         
         Func<bool> IsAnimationEndedThreeOption01() => () =>
         {
-            if (_isAnimClipEnded && _threeOptiosSplit == 0)
+            if (_isAnimClipEnded && _threeOptiosSplit == 0 && !_isLampDestroyed)
             {
                 _isAnimClipEnded = false;
                 return true;
@@ -501,7 +567,7 @@ public class FWaspMovement : MonoBehaviour, IInitializable
         
         Func<bool> IsAnimationEndedThreeOption02() => () =>
         {
-            if (_isAnimClipEnded && _threeOptiosSplit == 1)
+            if (_isAnimClipEnded && _threeOptiosSplit == 1 && !_isLampDestroyed)
             {
                 _isAnimClipEnded = false;
                 return true;
@@ -511,7 +577,7 @@ public class FWaspMovement : MonoBehaviour, IInitializable
         
         Func<bool> IsAnimationEndedThreeOption03() => () =>
         {
-            if (_isAnimClipEnded && _threeOptiosSplit == 2)
+            if (_isAnimClipEnded && _threeOptiosSplit == 2 && !_isLampDestroyed)
             {
                 _isAnimClipEnded = false;
                 return true;
@@ -521,7 +587,7 @@ public class FWaspMovement : MonoBehaviour, IInitializable
         
         Func<bool> IsAnimationEndedThreeOptionSuccess01() => () =>
         {
-            if (_isAnimClipEnded && _threeOptiosSplit == 0  && !_isDamaged)
+            if (_isAnimClipEnded && _threeOptiosSplit == 0  && !_isDamaged && !_isDead)
             {
                 _isAnimClipEnded = false;
                 return true;
@@ -531,7 +597,7 @@ public class FWaspMovement : MonoBehaviour, IInitializable
         
         Func<bool> IsAnimationEndedThreeOptionSuccess02() => () =>
         {
-            if (_isAnimClipEnded && _threeOptiosSplit == 1 && !_isDamaged)
+            if (_isAnimClipEnded && _threeOptiosSplit == 1 && !_isDamaged && !_isDead)
             {
                 _isAnimClipEnded = false;
                 return true;
@@ -541,7 +607,7 @@ public class FWaspMovement : MonoBehaviour, IInitializable
         
         Func<bool> IsAnimationEndedThreeOptionSuccess03() => () =>
         {
-            if (_isAnimClipEnded && _threeOptiosSplit == 2 && !_isDamaged)
+            if (_isAnimClipEnded && _threeOptiosSplit == 2 && !_isDamaged && !_isDead)
             {
                 _isAnimClipEnded = false;
                 return true;
@@ -550,62 +616,13 @@ public class FWaspMovement : MonoBehaviour, IInitializable
         };
     }
 
-    private void CreateMovementStates()
-    {
-        _idleState = new FWaspIdleState(_animator, _idleHash, _baseTransform);
-        _enterLState = new FWaspEnterLState(_animator, _enterHash, _baseTransform);
-        _enterRState = new FWaspEnterRState(_animator, _enterHash, _baseTransform);
-        _attack01LState = new FWaspAttack01LState(_animator, _attack01Hash, _baseTransform);
-        _attack01RState = new FWaspAttack01RState(_animator, _attack01Hash, _baseTransform);
-        _attack01BounceLState = new FWaspAttack01BounceLState(_animator, _attack01BounceHash, _baseTransform);
-        _attack01BounceRState = new FWaspAttack01BounceRState(_animator, _attack01BounceHash, _baseTransform);
-        _attack01Fail01LState = new FWaspAttack01Fail01LState(_animator, _attack01Fail01Hash, _baseTransform);
-        _attack01Fail01RState = new FWaspAttack01Fail01RState(_animator, _attack01Fail01Hash, _baseTransform);
-        _attack01Success01LState = new FWaspAttack01Success01LState(_animator, _attack01Success01Hash, _baseTransform);
-        _attack01Success01RState = new FWaspAttack01Success01RState(_animator, _attack01Success01Hash, _baseTransform);
-        _attack01Success02LState = new FWaspAttack01Success02LState(_animator, _attack01Success02Hash, _baseTransform);
-        _attack01Success02RState = new FWaspAttack01Success02RState(_animator, _attack01Success02Hash, _baseTransform);
-        _attack01Success03LState = new FWaspAttack01Success03LState(_animator, _attack01Success03Hash, _baseTransform);
-        _attack01Success03RState = new FWaspAttack01Success03RState(_animator, _attack01Success03Hash, _baseTransform);
-        _attack01DeathLState = new FWaspAttack01DeathLState(_animator, _attack01Death01Hash, _baseTransform);
-        _attack01DeathRState = new FWaspAttack01DeathRState(_animator, _attack01Death01Hash, _baseTransform);
-        _attack02LState = new FWaspAttack02LState(_animator, _attack02Hash, _baseTransform);
-        _attack02RState = new FWaspAttack02RState(_animator, _attack02Hash, _baseTransform);
-        _attack02BounceLState = new FWaspAttack02BounceLState(_animator, _attack02BounceHash, _baseTransform);
-        _attack02BounceRState = new FWaspAttack02BounceRState(_animator, _attack02BounceHash, _baseTransform);
-        _attack02Fail01LState = new FWaspAttack02Fail01LState(_animator, _attack02Fail01Hash, _baseTransform);
-        _attack02Fail01RState = new FWaspAttack02Fail01RState(_animator, _attack02Fail01Hash, _baseTransform);
-        _attack02Fail02LState = new FWaspAttack02Fail02LState(_animator, _attack02Fail02Hash, _baseTransform);
-        _attack02Fail02RState = new FWaspAttack02Fail02RState(_animator, _attack02Fail02Hash, _baseTransform);
-        _attack02Success01LState = new FWaspAttack02Success01LState(_animator, _attack02Success01Hash, _baseTransform);
-        _attack02Success01RState = new FWaspAttack02Success01RState(_animator, _attack02Success01Hash, _baseTransform);
-        _attack02DeathLState = new FWaspAttack02DeathLState(_animator, _attack02Death01Hash, _baseTransform);
-        _attack02DeathRState = new FWaspAttack02DeathRState(_animator, _attack02Death01Hash, _baseTransform);
-        _attack03LState = new FWaspAttack03LState(_animator, _attack03Hash, _baseTransform);
-        _attack03RState = new FWaspAttack03RState(_animator, _attack03Hash, _baseTransform);
-        _attack03BounceLState = new FWaspAttack03BounceLState(_animator, _attack03BounceHash, _baseTransform);
-        _attack03BounceRState = new FWaspAttack03BounceRState(_animator, _attack03BounceHash, _baseTransform);
-        _attack03Fail01LState = new FWaspAttack03Fail01LState(_animator, _attack03Fail01Hash, _baseTransform);
-        _attack03Fail01RState = new FWaspAttack03Fail01RState(_animator, _attack03Fail01Hash, _baseTransform);
-        _attack03Success01LState = new FWaspAttack03Success01LState(_animator, _attack03Success01Hash, _baseTransform);
-        _attack03Success01RState = new FWaspAttack03Success01RState(_animator, _attack03Success01Hash, _baseTransform);
-        _attack03DeathLState = new FWaspAttack03DeathLState(_animator, _attack03Death01Hash, _baseTransform);
-        _attack03DeathRState = new FWaspAttack03DeathRState(_animator, _attack03Death01Hash, _baseTransform);
-        _attack04LState = new FWaspAttack04LState(_animator, _attack04Hash, _baseTransform);
-        _attack04RState = new FWaspAttack04RState(_animator, _attack04Hash, _baseTransform);
-        _attack04BounceLState = new FWaspAttack04BounceLState(_animator, _attack04BounceHash, _baseTransform);
-        _attack04BounceRState = new FWaspAttack04BounceRState(_animator, _attack04BounceHash, _baseTransform);
-        _attack04Fail01LState = new FWaspAttack04Fail01LState(_animator, _attack04Fail01Hash, _baseTransform);
-        _attack04Fail01RState = new FWaspAttack04Fail01RState(_animator, _attack04Fail01Hash, _baseTransform);
-        _attack04Success01LState = new FWaspAttack04Success01LState(_animator, _attack04Success01Hash, _baseTransform);
-        _attack04Success01RState = new FWaspAttack04Success01RState(_animator, _attack04Success01Hash, _baseTransform);
-        _attack04DeathLState = new FWaspAttack04DeathLState(_animator, _attack04Death01Hash, _baseTransform);
-        _attack04DeathRState = new FWaspAttack04DeathRState(_animator, _attack04Death01Hash, _baseTransform);
-    }
-
 
     public void Initialize()
     {
+        _isPlaying = false;
+        _isAnimClipEnded = false;
+        _isLampDestroyed = false;
+        _isDamaged = false;
     }
 
     public void Play()
@@ -613,35 +630,52 @@ public class FWaspMovement : MonoBehaviour, IInitializable
         _isPlaying = true;
         _isAnimClipEnded = false;
         _side = (Side)Random.Range(0, 2);
-        Debug.Log(_side);
+    }
+    
+    public void SetDamaged()
+    {
+        _isDamaged = true;
+    }
+    
+    public void SetDead()
+    {
+        _isDead = true;
+    }
+    
+    public void SetLampDestroyed()
+    {
+        _isLampDestroyed = true;
     }
 
 
     public void ClipEnded()
     {
-        Debug.Log("Clip ended!");
         _isAnimClipEnded = true;
+
+        if (_isDead || _isLampDestroyed)
+        {
+            return;
+        }
         
         if (TWO_OPTION_OUTCOME.Contains(_stateMachine.CurrentStateType))
         {
-            Debug.Log("Selecting one of the two attack options");
             _twoOptiosSplit = Random.Range(0, 2);
         }
         
         if (THREE_OPTION_OUTCOME.Contains(_stateMachine.CurrentStateType))
         {
-            Debug.Log("Selecting one of the two attack options");
             _threeOptiosSplit = Random.Range(0, 3);
         }
     }
     
-    private void OnLeftTheScreenHandle()
-    {
-        OnLeftTheScreenEvent?.Invoke();
-    }
+    // private void OnLeftTheScreenHandle()
+    // {
+    //     OnLeftTheScreenEvent?.Invoke();
+    // }
 
     private void OnDeathStateEndedHandle()
     {
+        _isPlaying = false;
         OnDeathStateEndedEvent?.Invoke();
     }
 

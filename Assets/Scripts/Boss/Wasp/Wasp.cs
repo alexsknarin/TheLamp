@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 
 public class Wasp : BossBase
@@ -10,20 +11,22 @@ public class Wasp : BossBase
     [SerializeField] private int _currentHealth;
     [SerializeField] private Collider2D _collider;
     public override EnemyType EnemyType => EnemyType.Wasp;
-
+    
+    private bool _isDead = false;
+    
     private void OnEnable()
     {
-        // _waspMovement.OnBossAttackStartedEvent += UpdateRecievedLampAttackStatus;
-        // _waspMovement.OnDeathStateEndedEvent += HandleDeathMoveStateEnd;
-        // _waspMovement.OnLeftTheScreenEvent += HandleLeftScreen;
+        _fWaspMovement.OnBossAttackStartedEvent += UpdateRecievedLampAttackStatus;
+        _fWaspMovement.OnDeathStateEndedEvent += HandleDeathMoveStateEnd;
+        // _fWaspMovement.OnLeftTheScreenEvent += HandleLeftScreen;
         Lamp.OnLampDeadEvent += HandleLampDead; // TODO: manage from enemy manager
     }
     
     private void OnDisable()
     {
-        // _waspMovement.OnBossAttackStartedEvent -= UpdateRecievedLampAttackStatus;
-        // _waspMovement.OnDeathStateEndedEvent -= HandleDeathMoveStateEnd;
-        // _waspMovement.OnLeftTheScreenEvent -= HandleLeftScreen;
+        _fWaspMovement.OnBossAttackStartedEvent -= UpdateRecievedLampAttackStatus;
+        _fWaspMovement.OnDeathStateEndedEvent -= HandleDeathMoveStateEnd;
+        // _fWaspMovement.OnLeftTheScreenEvent -= HandleLeftScreen;
         Lamp.OnLampDeadEvent -= HandleLampDead;
     }
     public override void Initialize()
@@ -32,8 +35,17 @@ public class Wasp : BossBase
         _isGameover = false;
         _currentHealth = _maxHealth;
         _waspPresentation.Initialize();
-        // _waspMovement.Initialize();
+        _fWaspMovement.Initialize();
         gameObject.SetActive(false);
+    }
+
+    public override void Play()
+    {
+        _isDead = false;
+        gameObject.SetActive(true);
+        _waspPresentation.ResetTrail();
+        _waspPresentation.Initialize();
+        _fWaspMovement.Play();
     }
 
     public override void Reset()
@@ -41,18 +53,8 @@ public class Wasp : BossBase
         ReceivedLampAttack = false;
         _currentHealth = _maxHealth;
         _waspPresentation.Initialize();
-        // _waspMovement.MovementReset();
+        // _fWaspMovement.MovementReset();
         gameObject.SetActive(false);
-    }
-    
-    public override void Play()
-    {
-        gameObject.SetActive(true);
-        _waspPresentation.ResetTrail();
-        _waspPresentation.Initialize();
-        
-        // _waspMovement.Play();
-        _fWaspMovement.Play();
     }
 
     public void TriggerSpread()
@@ -82,12 +84,15 @@ public class Wasp : BossBase
             damagePhase = Mathf.Clamp(damagePhase, 0, 1);
             _waspPresentation.SetDamage(damagePhase);
             _waspPresentation.PlayDamageParticles();
+            _fWaspMovement.SetDamaged();
         }
         else
         {
-            // _waspMovement.SetDead();
+            _currentHealth = 0;
+            _fWaspMovement.SetDead();
             _waspPresentation.PlayDeath();
             _waspPresentation.PlayDamageParticles();
+            _isDead = true;
         }    
     }
 
@@ -116,24 +121,22 @@ public class Wasp : BossBase
         return transform.position;
     }
 
-    private void HandleLeftScreen()
-    {
-        if (_isGameover)
-        {
-            Reset();
-            _isGameover = false;
-        }
-    }
-    
     private void HandleLampDead(EnemyBase enemy)
     {
-        // _waspMovement.SetLampDestroyed();
+        _fWaspMovement.SetLampDestroyed();
     }
     
     private void HandleDeathMoveStateEnd()
     {
         OnDeathInvoke();
         _waspPresentation.Reset();
+        StartCoroutine(DeactivateOnDeath());
+    }
+    
+    // Let movement FSM to switch to idle state properly and then deactivate
+    private IEnumerator DeactivateOnDeath()
+    {
+        yield return null;
         gameObject.SetActive(false);
     }
     
