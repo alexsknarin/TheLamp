@@ -81,6 +81,7 @@ public class Wasp : BossBase
 
     public override void ReceiveDamage(int damage)
     {
+        ReadyToLampDamage = false;
         _currentHealth -= damage;
         ReceivedLampAttack = true;
         if (_currentHealth > 0)
