@@ -494,6 +494,7 @@ public class Dragonfly : BossBase
 
     public override void ReceiveDamage(int damage)
     {
+        ReadyToLampDamage = false;
         _currentHealth -= damage;
 
         if (_currentHealth > 0)

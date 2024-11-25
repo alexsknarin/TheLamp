@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.Serialization;
 
 public class Megamothling : BossBase
 {
@@ -122,14 +121,13 @@ public class Megamothling : BossBase
     {
         if (_enemyMovement.State == EnemyState.Attack || _enemyType == EnemyType.Ladybug)
         {
-            ReadyToLampDamage = true;    
+            ReadyToLampDamage = true;
         }
     }
 
     public override void HandleCollisionWithLamp()
     {
         ReadyToCollide = false;
-        ReadyToLampDamage = true;
         _enemyMovement.TriggerFall();
     }
 
@@ -145,8 +143,8 @@ public class Megamothling : BossBase
 
     public override void ReceiveDamage(int damage)
     {
+        ReadyToLampDamage = false;
         _currentHealth -= damage;
-
         if (_currentHealth > 0)
         {
             ReceivedLampAttack = true;

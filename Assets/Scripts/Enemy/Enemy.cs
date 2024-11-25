@@ -177,6 +177,7 @@ public class Enemy : EnemyBase
 
     public override void ReceiveDamage(int damage)
     {
+        ReadyToLampDamage = false;
         _currentHealth -= damage;
 
         if (_currentHealth > 0)

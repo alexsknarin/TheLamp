@@ -75,7 +75,7 @@ public class FDragonflyMovement : MonoBehaviour
     public event Action OnDeathAnimationEndedEvent;
     public event Action OnSwarmCallEvent;
 
-    private FStateMachine _stateMachine = new FStateMachine();
+    private FStateMachine _stateMachine = new();
     public IState MovementState => _stateMachine.CurrentState;
     
     // Animation 
@@ -228,11 +228,11 @@ public class FDragonflyMovement : MonoBehaviour
         _deathTailStateR.OnEndedEvent -= OnDeathAnimationEndedHandle;
     }
 
-    private void Awake()
+    private void Awake() // TODO: Move to Initialize ????
     {
         _isPlaying = false;
         SetMovementStatesDependencies();
-        SetupStateMachine();
+        StateMachineSetup();
     }
 
     private void SetMovementStatesDependencies()
@@ -288,7 +288,7 @@ public class FDragonflyMovement : MonoBehaviour
         _spiderPushStateR.SetDependencies(_visibleBodyTransform, _spiderPatrolTransform, _spiderPatrolRotator);
     }
 
-    private void SetupStateMachine()
+    private void StateMachineSetup()
     {
         // Idle -> Enter States
         At(_idleState, _enterToPatrolStateL, () => _isPlaying && _enterState == DragonflyEnterType.Patrol && _sideDirection == 1);

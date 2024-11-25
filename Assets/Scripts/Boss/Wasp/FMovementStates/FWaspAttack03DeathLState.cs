@@ -1,0 +1,22 @@
+using System;
+using UnityEngine;
+
+public class FWaspAttack03DeathLState : FWaspAnimBaseState
+{
+    public FWaspAttack03DeathLState(Animator animator, int clipHash, Transform baseTransform) : base(animator, clipHash, baseTransform)
+    {
+    }
+    
+    public event Action OnEndedEvent;
+    
+    public override void OnEnter()
+    {
+        _baseTransform.localScale = _baseScaleL;
+        _animator.Play(_clipHash, -1, 0);
+    }
+    
+    public override void OnExit()
+    {
+        OnEndedEvent?.Invoke();
+    }
+}
