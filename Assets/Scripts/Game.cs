@@ -10,7 +10,6 @@ public class Game : MonoBehaviour
     [SerializeField] private UiManager _uiManager;
     [SerializeField] private LampStatsManager _lampStatsManager;
     [SerializeField] private PlayerInputHandler _playerInputHandler;
-    [SerializeField] private UGSAuthenticationService _ugsAuthenticationService; // Inject this
     [SerializeField] private ScoresManager _scoresManager;
     [SerializeField] private SaveLoadManager _saveLoadManager;
     [SerializeField] private AdsManager _adsManager;
@@ -20,7 +19,8 @@ public class Game : MonoBehaviour
     [SerializeField] private float _deathDuration;
     
     // Dependencies
-    private IAnalyticsService _analyticsService; // Inject this
+    private IAnalyticsService _analyticsService;
+    private IUGSAuthenticationService _ugsAuthenticationService;
 
 
     // State paremeters  
@@ -31,11 +31,11 @@ public class Game : MonoBehaviour
     private readonly bool SAVE_UPGRADES = true;
     private readonly bool DONT_SAVE_UPGRADES = false;
 
-    public void Inject(IAnalyticsService analyticsService)
+    public void Inject(IAnalyticsService analyticsService, IUGSAuthenticationService ugsAuthenticationService)
     {
         _analyticsService = analyticsService;
         _analyticsService.OnConsentAddressedEvent += HandleDataConsentAddressed;
-        Debug.Log("Game: Injected Analytics Service - Awake");
+        _ugsAuthenticationService = ugsAuthenticationService;
     }
 
     private void OnEnable()

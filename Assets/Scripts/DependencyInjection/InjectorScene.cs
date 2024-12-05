@@ -4,6 +4,7 @@ public class InjectorScene : MonoBehaviour
 {
     [Header("Dependency Providers")]
     [SerializeField] private UnityAnalyticsService _analyticsService;
+    [SerializeField] private UGSAuthenticationService _ugsAuthenticationService;
     
     [Header("Dependency Clients")]
     [SerializeField] private Game _game;
@@ -11,9 +12,15 @@ public class InjectorScene : MonoBehaviour
     
     private void Awake()
     {
-        _game.Inject(_analyticsService);             // TODO: Use Fluent Buider to inject many things ???
+        _game.Inject(
+            _analyticsService, 
+            _ugsAuthenticationService
+            );                                                 // TODO: Use Fluent Builder to inject many things ???
         _uiManager.Inject(_analyticsService);
+        
+        
         Debug.Log("Dpendencies are Injected");
+        
     }
     
 }

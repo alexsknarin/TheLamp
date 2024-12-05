@@ -33,6 +33,9 @@ public class EnemyManager : MonoBehaviour,IInitializable
 
     [Header("---- Save Data ------")]
     [SerializeField] private SaveDataContainer _saveDataContainer;
+    
+    // Dependencies
+    private IAnalyticsService _analyticsService;
 
     public int CurrentWave => _currentWave;
 
@@ -65,6 +68,11 @@ public class EnemyManager : MonoBehaviour,IInitializable
     public static event Action<EnemyBase> OnBossAppearEvent;
     public static event Action<EnemyBase> OnBossDeathEvent;
 
+    public void Inject(IAnalyticsService analyticsService)
+    {
+        _analyticsService = analyticsService;
+    }
+    
     private void OnEnable()
     {
         Enemy.OnEnemyDeactivatedEvent += UpdateEnemiesOnScreen;
@@ -149,6 +157,7 @@ public class EnemyManager : MonoBehaviour,IInitializable
         if (!_isWaveInitialized)
         {
             SetupWave(_currentWave);
+            _analyticsService.SubmitWaveStartEvent(_currentWave);
             OnWaveStartedEvent?.Invoke(_currentWave);
         }
     }

@@ -25,7 +25,7 @@ public class UnityAnalyticsService : MonoBehaviour, IAnalyticsService // TODO: R
 
     private void OnEnable()
     {
-        EnemyManager.OnWaveStartedEvent += HandleWaveStart; // Inject
+        EnemyManager.OnWaveStartedEvent += SubmitWaveStartEvent; // Inject
         EnemyManager.OnWaveEndedEvent += SubmitWaveEndEvent; // Inject
         Lamp.OnLampDamagedEvent += SubmitLampDamageEvent; // Inject
         _lampStatsManager.OnHealthChangeEvent += SubmitHealthUpgradeEvent; // Inject
@@ -34,7 +34,7 @@ public class UnityAnalyticsService : MonoBehaviour, IAnalyticsService // TODO: R
 
     private void OnDisable()
     {
-        EnemyManager.OnWaveStartedEvent -= HandleWaveStart;
+        EnemyManager.OnWaveStartedEvent -= SubmitWaveStartEvent;
         EnemyManager.OnWaveEndedEvent -= SubmitWaveEndEvent;
         Lamp.OnLampDamagedEvent -= SubmitLampDamageEvent;
         _lampStatsManager.OnHealthChangeEvent -= SubmitHealthUpgradeEvent;
@@ -109,7 +109,6 @@ public class UnityAnalyticsService : MonoBehaviour, IAnalyticsService // TODO: R
         PlayerPrefs.Save();
         _isConsentGiven = true;
         OnConsentAddressedEvent?.Invoke();  // What is this used for?
-        
         AnalyticsService.Instance.StartDataCollection(); 
         Debug.Log("Analytics: Consent has been provided. The SDK is now collecting data");
     }
@@ -125,12 +124,12 @@ public class UnityAnalyticsService : MonoBehaviour, IAnalyticsService // TODO: R
         Debug.Log("Analytics: Consent has been refused. The SDK is not collecting data");
     }
 
-    private void HandleWaveStart(int wave)
+    public void SubmitWaveStartEvent(int wave)
     {
         _waveTime = Time.time;
     }
 
-    private void SubmitWaveEndEvent(int wave)
+    public void SubmitWaveEndEvent(int wave)
     {
         _waveTime = Time.time - _waveTime;
         if (_isConsentGiven)

@@ -6,4 +6,6 @@ public interface IAnalyticsService
     public void Initialize();
     public void SetConsentData(bool isConsentGiven);
     public void UpdateCollectionBehavior(bool isConsentGiven);
+    public void SubmitWaveStartEvent(int wave);
+    public void SubmitWaveEndEvent(int wave);
 }
