@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class AdsManager : MonoBehaviour, IInitializable
+public class AdsManager : MonoBehaviour, IAdvertisementService
 {
     [SerializeField] private FakeAd _fakeAd;
     

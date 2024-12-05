@@ -7,7 +7,6 @@ public class UnityAnalyticsService : MonoBehaviour, IAnalyticsService // TODO: R
 {
     // TODO: Extract User Consent provider ??? 
     // TODO: test if it works properly - maybe still need to wait until connected??? - check this 
-    
     public event Action OnConsentAddressedEvent;
     
     private bool _isConsentSet = false;

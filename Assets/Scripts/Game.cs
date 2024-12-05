@@ -12,7 +12,6 @@ public class Game : MonoBehaviour
     [SerializeField] private PlayerInputHandler _playerInputHandler;
     [SerializeField] private ScoresManager _scoresManager;
     [SerializeField] private SaveLoadManager _saveLoadManager;
-    [SerializeField] private AdsManager _adsManager;
     [SerializeField] private GameState _currentGameState;
     [SerializeField] private bool _skipIntro;
     [SerializeField] private float _introDuration;
@@ -21,6 +20,7 @@ public class Game : MonoBehaviour
     // Dependencies
     private IAnalyticsService _analyticsService;
     private IUGSAuthenticationService _ugsAuthenticationService;
+    private IAdvertisementService _advertisementService;
 
 
     // State paremeters  
@@ -31,16 +31,22 @@ public class Game : MonoBehaviour
     private readonly bool SAVE_UPGRADES = true;
     private readonly bool DONT_SAVE_UPGRADES = false;
 
-    public void Inject(IAnalyticsService analyticsService, IUGSAuthenticationService ugsAuthenticationService)
+    public void Inject(IAnalyticsService analyticsService, 
+        IUGSAuthenticationService ugsAuthenticationService,
+        IAdvertisementService advertisementService)
     {
         _analyticsService = analyticsService;
         _analyticsService.OnConsentAddressedEvent += HandleDataConsentAddressed;
+        
         _ugsAuthenticationService = ugsAuthenticationService;
+        
+        _advertisementService = advertisementService;
+        _advertisementService.OnAdFinishedEvent += SaveRewards;
     }
 
     private void OnEnable()
     {
-        _googleSheetsDataReader.OnDataLoadedEvent += InitializeEnemyManager;
+        _googleSheetsDataReader.OnDataLoadedEvent += InitializeEnemyManager; // TODO: use coroutine to wait?
         _uiManager.OnIntroFinishedEvent += OnIntroEnded;
         PlayerInputHandler.OnPlayerAttackEvent += HandlePlayerAttackButtonPressed;
         EnemyManager.OnWaveEndedEvent += HandleWaveEnded;
@@ -48,7 +54,6 @@ public class Game : MonoBehaviour
         _lampStatsManager.OnHealthChangeEvent += HandleStatsUpgrade;
         _lampStatsManager.OnCooldownUpgradedEvent += HandleStatsUpgrade;
         _lampStatsManager.OnAttackDistanceUpgradedEvent += HandleStatsUpgrade;
-        _adsManager.OnAdFinishedEvent += SaveRewards;
         _uiManager.OnGameoverFinishedEvent += HandleGameoverUiAnimationFinished;
     }
 
@@ -63,7 +68,7 @@ public class Game : MonoBehaviour
         _lampStatsManager.OnHealthChangeEvent -= HandleStatsUpgrade;
         _lampStatsManager.OnCooldownUpgradedEvent -= HandleStatsUpgrade;
         _lampStatsManager.OnAttackDistanceUpgradedEvent -= HandleStatsUpgrade;
-        _adsManager.OnAdFinishedEvent -= SaveRewards;
+        _advertisementService.OnAdFinishedEvent -= SaveRewards;
         _uiManager.OnGameoverFinishedEvent -= HandleGameoverUiAnimationFinished;
     }
 
@@ -90,7 +95,7 @@ public class Game : MonoBehaviour
         _saveLoadManager.LoadGame();
         _scoresManager.Initialize();
         _lamp.Initialize();
-        _adsManager.Initialize();
+        _advertisementService.Initialize();
 
         _uiManager.SetIntroDuration(_introDuration);
         _uiManager.Initialize();
@@ -103,7 +108,7 @@ public class Game : MonoBehaviour
         if (mode == 0)
         {
             // Save Upgrades AFTER add is finished
-            _adsManager.ShowAd();
+            _advertisementService.ShowAd();
         }
         else
         {

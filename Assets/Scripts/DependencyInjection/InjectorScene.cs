@@ -7,6 +7,7 @@ public class InjectorScene : MonoBehaviour
     [Header("Dependency Providers")]
     [SerializeField] private UnityAnalyticsService _analyticsService;
     [SerializeField] private UGSAuthenticationService _ugsAuthenticationService;
+    [SerializeField] private AdsManager _adsManager;
     
     [Header("Dependency Clients")]
     [SerializeField] private Game _game;
@@ -19,7 +20,8 @@ public class InjectorScene : MonoBehaviour
     {
         _game.Inject(
             _analyticsService, 
-            _ugsAuthenticationService
+            _ugsAuthenticationService,
+            _adsManager
             );                                                 // TODO: Use Fluent Builder to inject many things ???
         _uiManager.Inject(_analyticsService);
         _enemyManager.Inject(_analyticsService);

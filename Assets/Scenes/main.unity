@@ -9020,8 +9020,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5326b0212424aa044ad8e795ca99010f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _lampStatsManager: {fileID: 1934066249}
-  _sceneUiManager: {fileID: 1291610354}
 --- !u!1 &1605744537
 GameObject:
   m_ObjectHideFlags: 0
@@ -9965,7 +9963,6 @@ MonoBehaviour:
   _playerInputHandler: {fileID: 1818435500}
   _scoresManager: {fileID: 1818435508}
   _saveLoadManager: {fileID: 1818435509}
-  _adsManager: {fileID: 1665985692}
   _currentGameState: 0
   _skipIntro: 1
   _introDuration: 4
@@ -12499,6 +12496,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _analyticsService: {fileID: 1595482322}
   _ugsAuthenticationService: {fileID: 1595482321}
+  _adsManager: {fileID: 1665985692}
   _game: {fileID: 1818435501}
   _uiManager: {fileID: 1291610354}
   _enemyManager: {fileID: 1818435502}
