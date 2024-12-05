@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class Game : MonoBehaviour
 {
@@ -9,7 +10,8 @@ public class Game : MonoBehaviour
     [SerializeField] private UiManager _uiManager;
     [SerializeField] private LampStatsManager _lampStatsManager;
     [SerializeField] private PlayerInputHandler _playerInputHandler;
-    [SerializeField] private UGSSetup _ugsSetup;
+    [SerializeField] private UGSAuthenticationService _ugsAuthenticationService; // Inject this
+    [SerializeField] private UnityAnalyticsService _unityAnalyticsService; // Inject this
     [SerializeField] private ScoresManager _scoresManager;
     [SerializeField] private SaveLoadManager _saveLoadManager;
     [SerializeField] private AdsManager _adsManager;
@@ -27,12 +29,16 @@ public class Game : MonoBehaviour
     private readonly bool SAVE_UPGRADES = true;
     private readonly bool DONT_SAVE_UPGRADES = false;
 
+    public void Construct()
+    {
+        
+    }
 
     private void OnEnable()
     {
         _googleSheetsDataReader.OnDataLoadedEvent += InitializeEnemyManager;
         _uiManager.OnIntroFinishedEvent += OnIntroEnded;
-        _ugsSetup.OnConsentAddressedEvent += HandleDataConsentAddressed;
+        _unityAnalyticsService.OnConsentAddressedEvent += HandleDataConsentAddressed;
         PlayerInputHandler.OnPlayerAttackEvent += HandlePlayerAttackButtonPressed;
         EnemyManager.OnWaveEndedEvent += HandleWaveEnded;
         Lamp.OnLampDeadEvent += HandleLampDead;
@@ -47,7 +53,7 @@ public class Game : MonoBehaviour
     {
         _googleSheetsDataReader.OnDataLoadedEvent -= InitializeEnemyManager;
         _uiManager.OnIntroFinishedEvent -= OnIntroEnded;
-        _ugsSetup.OnConsentAddressedEvent -= HandleDataConsentAddressed;
+        _unityAnalyticsService.OnConsentAddressedEvent -= HandleDataConsentAddressed;
         PlayerInputHandler.OnPlayerAttackEvent -= HandlePlayerAttackButtonPressed;
         EnemyManager.OnWaveEndedEvent -= HandleWaveEnded;
         Lamp.OnLampDeadEvent -= HandleLampDead;
@@ -66,6 +72,8 @@ public class Game : MonoBehaviour
 
     private void Start()
     {
+        Debug.Log("---------------------------------");
+        Debug.Log("Starting The Game ...............");
         if (_skipIntro)
         {
             _introDuration = 0.001f;
@@ -89,7 +97,6 @@ public class Game : MonoBehaviour
 
     public void RestartGame(int mode)
     {
-        
         if (mode == 0)
         {
             // Save Upgrades AFTER add is finished
@@ -133,7 +140,8 @@ public class Game : MonoBehaviour
         _enemyManager.Initialize();
         if (PlayerPrefs.HasKey("dataConsent"))
         {
-            _ugsSetup.Setup();
+            _ugsAuthenticationService.Initialize(); // TODO: move to init area, or find out why it should be there
+            _unityAnalyticsService.Initialize();    // The same
             SwitchGameState();
         }
     }

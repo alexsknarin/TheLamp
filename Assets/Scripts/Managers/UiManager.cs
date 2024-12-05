@@ -1,10 +1,12 @@
 using System;
 using UnityEngine;
 using UnityEngine.Rendering;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class UiManager : MonoBehaviour, IInitializable
 {
+    // TODO: Switch button presses to AddListener
     [SerializeField] private UiText _waveText;
     [SerializeField] private Transform _cameraTransform;
     [SerializeField] private AnimationCurve _cameraAnimationCurve;
@@ -25,7 +27,6 @@ public class UiManager : MonoBehaviour, IInitializable
     [Header("Analytics")] [SerializeField] private GameObject _analyticsConsentPanel;
     [SerializeField] private GameObject _analyticsConsentEnableButton;
     [SerializeField] private GameObject _analyticsConsentDisableButton;
-    [SerializeField] private UGSSetup _ugsSetup;
 
     [Header("Animation:")] [Header("Intro")] [SerializeField]
     private UiIntroAnimation _uiIntroAnimation;
@@ -40,9 +41,10 @@ public class UiManager : MonoBehaviour, IInitializable
     [SerializeField] private GameObject _gameOverButtonsGroup;
     [SerializeField] private Volume _postProcessingVolume;
     private UnityEngine.Rendering.Universal.ColorAdjustments _colorAdjustments;
-
     public event Action OnIntroFinishedEvent;
     public event Action OnGameoverFinishedEvent;
+    public event Action<bool> OnDataConsentSetEvent;
+    public event Action<bool> OnAnalyticsCollectionChangeEvent;
 
     private float _localTime;
 
@@ -79,24 +81,21 @@ public class UiManager : MonoBehaviour, IInitializable
         _gameOverPanel.SetActive(false);
         _gameOverButtonsGroup.SetActive(false);
 
-        if (PlayerPrefs.HasKey("dataConsent"))
-        {
-            _analyticsConsentPanel.SetActive(false);
-            if (PlayerPrefs.GetInt("dataConsent") == 1)
-            {
-                _analyticsConsentEnableButton.SetActive(false);
-                _analyticsConsentDisableButton.SetActive(true);
-            }
-            else
-            {
-                _analyticsConsentEnableButton.SetActive(true);
-                _analyticsConsentDisableButton.SetActive(false);
-            }
-        }
-        else
+        // TODO: Checking prefs directly - potentially need a service to handle this later
+        if (PlayerPrefs.GetInt("dataConsentSet") == 0)
         {
             _analyticsConsentPanel.SetActive(true);
+        }
+        else if (PlayerPrefs.GetInt("dataConsentSet") == 1 && PlayerPrefs.GetInt("dataConsentSet") == 1)
+        {
+            _analyticsConsentPanel.SetActive(false);
             _analyticsConsentEnableButton.SetActive(false);
+            _analyticsConsentDisableButton.SetActive(true);
+        }
+        else if (PlayerPrefs.GetInt("dataConsentSet") == 1 && PlayerPrefs.GetInt("dataConsentSet") == 0)
+        {
+            _analyticsConsentPanel.SetActive(false);
+            _analyticsConsentEnableButton.SetActive(true);
             _analyticsConsentDisableButton.SetActive(false);
         }
     }
@@ -108,7 +107,7 @@ public class UiManager : MonoBehaviour, IInitializable
 
     public void HandleYesDataCollectionBtn()
     {
-        _ugsSetup.AllowDataCollection();
+        OnDataConsentSetEvent?.Invoke(true);
         _analyticsConsentPanel.SetActive(false);
         _analyticsConsentEnableButton.SetActive(false);
         _analyticsConsentDisableButton.SetActive(true);
@@ -116,7 +115,7 @@ public class UiManager : MonoBehaviour, IInitializable
 
     public void HandleNoDataCollectionBtn()
     {
-        _ugsSetup.RefuseDataCollection();
+        OnDataConsentSetEvent?.Invoke(false);
         _analyticsConsentPanel.SetActive(false);
         _analyticsConsentEnableButton.SetActive(true);
         _analyticsConsentDisableButton.SetActive(false);
@@ -124,14 +123,14 @@ public class UiManager : MonoBehaviour, IInitializable
 
     public void HandleEnableDataCollectionBtn()
     {
-        _ugsSetup.StartAnalyticsCollection();
+        OnAnalyticsCollectionChangeEvent?.Invoke(true);
         _analyticsConsentEnableButton.SetActive(false);
         _analyticsConsentDisableButton.SetActive(true);
     }
 
     public void HandleDisableDataCollectionBtn()
     {
-        _ugsSetup.StopAnalyticsCollection();
+        OnAnalyticsCollectionChangeEvent?.Invoke(false);
         _analyticsConsentEnableButton.SetActive(true);
         _analyticsConsentDisableButton.SetActive(false);
     }

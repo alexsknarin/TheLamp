@@ -6855,7 +6855,6 @@ MonoBehaviour:
   _analyticsConsentPanel: {fileID: 670812975}
   _analyticsConsentEnableButton: {fileID: 1959847705}
   _analyticsConsentDisableButton: {fileID: 229163331}
-  _ugsSetup: {fileID: 1595482321}
   _uiIntroAnimation: {fileID: 1291610355}
   _introDuration: 4
   _uiStartPrepareAnimation: {fileID: 1291610357}
@@ -9009,7 +9008,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 504890f0bccbe12429963f5fca0a79a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _analyticsCollector: {fileID: 1595482322}
 --- !u!114 &1595482322
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9023,6 +9021,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _lampStatsManager: {fileID: 1934066249}
+  _sceneUiManager: {fileID: 1291610354}
 --- !u!1 &1605744537
 GameObject:
   m_ObjectHideFlags: 0
@@ -9964,7 +9963,8 @@ MonoBehaviour:
   _uiManager: {fileID: 1291610354}
   _lampStatsManager: {fileID: 1934066249}
   _playerInputHandler: {fileID: 1818435500}
-  _ugsSetup: {fileID: 1595482321}
+  _ugsAuthenticationService: {fileID: 1595482321}
+  _unityAnalyticsService: {fileID: 1595482322}
   _scoresManager: {fileID: 1818435508}
   _saveLoadManager: {fileID: 1818435509}
   _adsManager: {fileID: 1665985692}
@@ -12470,6 +12470,50 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2095301580}
   m_CullTransparentMesh: 1
+--- !u!1 &2121366739
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2121366741}
+  - component: {fileID: 2121366740}
+  m_Layer: 0
+  m_Name: Injector_Scene
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &2121366740
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2121366739}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8189ef6e91947cb479adb19ed36687c1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &2121366741
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2121366739}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &455450631368144086
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -12776,6 +12820,7 @@ PrefabInstance:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
+  - {fileID: 2121366741}
   - {fileID: 1595482320}
   - {fileID: 1818435499}
   - {fileID: 1665985693}
