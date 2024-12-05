@@ -12,7 +12,7 @@ public class UGSAuthenticationService : MonoBehaviour, IUGSAuthenticationService
         var options = new InitializationOptions();
         options.SetEnvironmentName("production");
         await UnityServices.InitializeAsync(options);
-        SignInAnonymously();
+        await SignInAnonymously();
     }
     
     private async Task SignInAnonymously()

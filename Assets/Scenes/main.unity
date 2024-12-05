@@ -9964,7 +9964,6 @@ MonoBehaviour:
   _lampStatsManager: {fileID: 1934066249}
   _playerInputHandler: {fileID: 1818435500}
   _ugsAuthenticationService: {fileID: 1595482321}
-  _unityAnalyticsService: {fileID: 1595482322}
   _scoresManager: {fileID: 1818435508}
   _saveLoadManager: {fileID: 1818435509}
   _adsManager: {fileID: 1665985692}
@@ -12500,6 +12499,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _analyticsService: {fileID: 1595482322}
+  _game: {fileID: 1818435501}
   _uiManager: {fileID: 1291610354}
 --- !u!4 &2121366741
 Transform:

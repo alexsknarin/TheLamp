@@ -12,7 +12,7 @@ public class UnityAnalyticsService : MonoBehaviour, IAnalyticsService // TODO: R
     [SerializeField] private LampStatsManager _lampStatsManager; // Inject
     [SerializeField] private UiManager _sceneUiManager; // Inject
     public event Action OnConsentAddressedEvent;
-
+    
     private bool _isConsentSet = false;
     private bool _isConsentGiven = false;
 
@@ -40,6 +40,8 @@ public class UnityAnalyticsService : MonoBehaviour, IAnalyticsService // TODO: R
         _lampStatsManager.OnHealthChangeEvent -= SubmitHealthUpgradeEvent;
         _lampStatsManager.OnCooldownUpgradedEvent -= SubmitCoolUpgradeEvent;
     }
+
+    
 
     public void Initialize()
     {
@@ -100,7 +102,7 @@ public class UnityAnalyticsService : MonoBehaviour, IAnalyticsService // TODO: R
         }
     }
 
-    public void StartAnalyticsCollection()
+    private void StartAnalyticsCollection()
     {
         PlayerPrefs.SetInt("dataConsentSet", 1);
         PlayerPrefs.SetInt("dataConsent", 1);
@@ -112,7 +114,7 @@ public class UnityAnalyticsService : MonoBehaviour, IAnalyticsService // TODO: R
         Debug.Log("Analytics: Consent has been provided. The SDK is now collecting data");
     }
 
-    public void StopAnalyticsCollection()
+    private void StopAnalyticsCollection()
     {
         PlayerPrefs.SetInt("dataConsentSet", 1);
         PlayerPrefs.SetInt("dataConsent", 0);

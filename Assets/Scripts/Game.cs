@@ -11,7 +11,6 @@ public class Game : MonoBehaviour
     [SerializeField] private LampStatsManager _lampStatsManager;
     [SerializeField] private PlayerInputHandler _playerInputHandler;
     [SerializeField] private UGSAuthenticationService _ugsAuthenticationService; // Inject this
-    [SerializeField] private UnityAnalyticsService _unityAnalyticsService; // Inject this
     [SerializeField] private ScoresManager _scoresManager;
     [SerializeField] private SaveLoadManager _saveLoadManager;
     [SerializeField] private AdsManager _adsManager;
@@ -19,6 +18,9 @@ public class Game : MonoBehaviour
     [SerializeField] private bool _skipIntro;
     [SerializeField] private float _introDuration;
     [SerializeField] private float _deathDuration;
+    
+    // Dependencies
+    private IAnalyticsService _analyticsService; // Inject this
 
 
     // State paremeters  
@@ -29,16 +31,17 @@ public class Game : MonoBehaviour
     private readonly bool SAVE_UPGRADES = true;
     private readonly bool DONT_SAVE_UPGRADES = false;
 
-    public void Construct()
+    public void Inject(IAnalyticsService analyticsService)
     {
-        
+        _analyticsService = analyticsService;
+        _analyticsService.OnConsentAddressedEvent += HandleDataConsentAddressed;
+        Debug.Log("Game: Injected Analytics Service - Awake");
     }
 
     private void OnEnable()
     {
         _googleSheetsDataReader.OnDataLoadedEvent += InitializeEnemyManager;
         _uiManager.OnIntroFinishedEvent += OnIntroEnded;
-        _unityAnalyticsService.OnConsentAddressedEvent += HandleDataConsentAddressed;
         PlayerInputHandler.OnPlayerAttackEvent += HandlePlayerAttackButtonPressed;
         EnemyManager.OnWaveEndedEvent += HandleWaveEnded;
         Lamp.OnLampDeadEvent += HandleLampDead;
@@ -53,7 +56,7 @@ public class Game : MonoBehaviour
     {
         _googleSheetsDataReader.OnDataLoadedEvent -= InitializeEnemyManager;
         _uiManager.OnIntroFinishedEvent -= OnIntroEnded;
-        _unityAnalyticsService.OnConsentAddressedEvent -= HandleDataConsentAddressed;
+        _analyticsService.OnConsentAddressedEvent -= HandleDataConsentAddressed;
         PlayerInputHandler.OnPlayerAttackEvent -= HandlePlayerAttackButtonPressed;
         EnemyManager.OnWaveEndedEvent -= HandleWaveEnded;
         Lamp.OnLampDeadEvent -= HandleLampDead;
@@ -141,7 +144,7 @@ public class Game : MonoBehaviour
         if (PlayerPrefs.HasKey("dataConsent"))
         {
             _ugsAuthenticationService.Initialize(); // TODO: move to init area, or find out why it should be there
-            _unityAnalyticsService.Initialize();    // The same
+            _analyticsService.Initialize();    // The same
             SwitchGameState();
         }
     }
