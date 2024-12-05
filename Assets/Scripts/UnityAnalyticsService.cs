@@ -6,11 +6,8 @@ using UnityEngine;
 public class UnityAnalyticsService : MonoBehaviour, IAnalyticsService // TODO: Remove monobehaviour - use DI container
 {
     // TODO: Extract User Consent provider ??? 
-    // TODO: Invert Dependencies - it should provide service to other classes
     // TODO: test if it works properly - maybe still need to wait until connected??? - check this 
     
-    [SerializeField] private LampStatsManager _lampStatsManager; // Inject
-    [SerializeField] private UiManager _sceneUiManager; // Inject
     public event Action OnConsentAddressedEvent;
     
     private bool _isConsentSet = false;
@@ -22,26 +19,6 @@ public class UnityAnalyticsService : MonoBehaviour, IAnalyticsService // TODO: R
     private CustomEvent _lampDamageEvent;
     private CustomEvent _healthUpgradeEvent;
     private CustomEvent _coolUpgradeEvent;
-
-    private void OnEnable()
-    {
-        EnemyManager.OnWaveStartedEvent += SubmitWaveStartEvent; // Inject
-        EnemyManager.OnWaveEndedEvent += SubmitWaveEndEvent; // Inject
-        Lamp.OnLampDamagedEvent += SubmitLampDamageEvent; // Inject
-        _lampStatsManager.OnHealthChangeEvent += SubmitHealthUpgradeEvent; // Inject
-        _lampStatsManager.OnCooldownUpgradedEvent += SubmitCoolUpgradeEvent; // Inject
-    }
-
-    private void OnDisable()
-    {
-        EnemyManager.OnWaveStartedEvent -= SubmitWaveStartEvent;
-        EnemyManager.OnWaveEndedEvent -= SubmitWaveEndEvent;
-        Lamp.OnLampDamagedEvent -= SubmitLampDamageEvent;
-        _lampStatsManager.OnHealthChangeEvent -= SubmitHealthUpgradeEvent;
-        _lampStatsManager.OnCooldownUpgradedEvent -= SubmitCoolUpgradeEvent;
-    }
-
-    
 
     public void Initialize()
     {
@@ -138,11 +115,10 @@ public class UnityAnalyticsService : MonoBehaviour, IAnalyticsService // TODO: R
             _waveEndEvent.Add("waveNum", wave);
             _waveEndEvent.Add("waveTime", _waveTime);
             AnalyticsService.Instance.RecordEvent(_waveEndEvent);
-            
         }
     }
 
-    private void SubmitLampDamageEvent(EnemyBase enemy)
+    public void SubmitLampDamageEvent(EnemyBase enemy)
     {
         if (_isConsentGiven)
         {
@@ -152,7 +128,7 @@ public class UnityAnalyticsService : MonoBehaviour, IAnalyticsService // TODO: R
         }
     }
 
-    private void SubmitHealthUpgradeEvent()
+    public void SubmitHealthUpgradeEvent()
     {
         if (_isConsentGiven)
         {
@@ -161,7 +137,7 @@ public class UnityAnalyticsService : MonoBehaviour, IAnalyticsService // TODO: R
         }
     }
 
-    private void SubmitCoolUpgradeEvent()
+    public void SubmitCoolUpgradeEvent()
     {
         if (_isConsentGiven)
         {

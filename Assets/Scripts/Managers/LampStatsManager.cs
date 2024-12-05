@@ -5,7 +5,6 @@
 
  public class LampStatsManager : MonoBehaviour, IInitializable
 {
-    
     [Header("Save Data")]
     [SerializeField] private SaveDataContainer _saveDataContainer;
     private int _maxHealth;
@@ -49,6 +48,9 @@
     public event Action OnHealthUpgradedEvent;
     public event Action OnCooldownUpgradedEvent;
     public event Action OnAttackDistanceUpgradedEvent;
+    
+    // Dependencies
+    private IAnalyticsService _analyticsService;
     
     private float _initialCooldownTime;
     
@@ -103,6 +105,10 @@
         }
     }
     
+    public void Inject(IAnalyticsService analyticsService)
+    {
+        _analyticsService = analyticsService;
+    }
 
     private void OnEnable()
     {
@@ -179,6 +185,7 @@
             }
             _lampImpactPointsData.Reset();
             SaveData();
+            _analyticsService.SubmitHealthUpgradeEvent();
             OnHealthChangeEvent?.Invoke();
         }
     }
@@ -191,6 +198,7 @@
             _upgradePoints -= _coolUpgradePrice;
             _currentCooldownTime -= _cooldownDecrement;
             SaveData();
+            _analyticsService.SubmitCoolUpgradeEvent();
             OnCooldownUpgradedEvent?.Invoke();
         }
     }

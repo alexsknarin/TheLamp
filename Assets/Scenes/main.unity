@@ -12501,6 +12501,9 @@ MonoBehaviour:
   _ugsAuthenticationService: {fileID: 1595482321}
   _game: {fileID: 1818435501}
   _uiManager: {fileID: 1291610354}
+  _enemyManager: {fileID: 1818435502}
+  _lamp: {fileID: 1934066246}
+  _lampStatsManager: {fileID: 1934066249}
 --- !u!4 &2121366741
 Transform:
   m_ObjectHideFlags: 0

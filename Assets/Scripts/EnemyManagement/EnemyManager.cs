@@ -306,6 +306,7 @@ public class EnemyManager : MonoBehaviour,IInitializable
                 _isWaveInitialized = false;
                 _currentWave++;
                 _saveDataContainer.Wave = _currentWave;
+                _analyticsService.SubmitWaveEndEvent(_currentWave);
                 OnWaveEndedEvent?.Invoke(_currentWave);
             }
         }

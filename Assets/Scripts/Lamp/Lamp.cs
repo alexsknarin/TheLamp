@@ -16,6 +16,9 @@ public class Lamp : MonoBehaviour, IInitializable
     [Header("Debug/Testing")]
     [SerializeField] private bool _isInvincible;
     
+    // Dependencies
+    private IAnalyticsService _analyticsService;
+
     public static Transform LampTransform; // TODO: replace with DI system
     
     private List<EnemyBase> _stickyEnemies;
@@ -26,6 +29,11 @@ public class Lamp : MonoBehaviour, IInitializable
     public static event Action<EnemyBase> OnLampDamagedEvent;
     public static event Action<EnemyBase> OnLampDeadEvent;
     public static event Action<EnemyBase> OnLampCollidedWithStickyEnemyEvent;
+    
+    public void Inject(IAnalyticsService analyticsService)
+    {
+        _analyticsService = analyticsService;
+    }
 
     private void OnEnable()
     {
@@ -39,8 +47,6 @@ public class Lamp : MonoBehaviour, IInitializable
         
         Megabeetle.OnStickAttackedEvent += HandleStickAttack;
     }
-
-
 
     private void OnDisable()
     {
@@ -171,6 +177,7 @@ public class Lamp : MonoBehaviour, IInitializable
         else
         {
             _lampPresentation.StartDamageState();
+            _analyticsService.SubmitLampDamageEvent(enemy);
             OnLampDamagedEvent?.Invoke(enemy);    
         }
         MoveLamp(enemy);
