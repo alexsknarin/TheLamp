@@ -4,7 +4,7 @@ using Unity.Services.Core;
 using Unity.Services.Core.Environments;
 using UnityEngine;
 
-public class UGSAuthenticationService : MonoBehaviour, IUGSAuthenticationService
+public class UGSAuthenticationService : MonoBehaviour, IUGSAuthenticationService // Remove monobehaviour - use DI container
 {
     public async void Initialize()
     {

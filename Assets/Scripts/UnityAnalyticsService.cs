@@ -3,7 +3,7 @@ using System.Collections;
 using Unity.Services.Analytics;
 using UnityEngine;
 
-public class UnityAnalyticsService : MonoBehaviour // TODO: Remove monobehaviour - use DI container
+public class UnityAnalyticsService : MonoBehaviour, IAnalyticsService // TODO: Remove monobehaviour - use DI container
 {
     // TODO: Extract User Consent provider ??? 
     // TODO: Invert Dependencies - it should provide service to other classes
@@ -30,15 +30,6 @@ public class UnityAnalyticsService : MonoBehaviour // TODO: Remove monobehaviour
         Lamp.OnLampDamagedEvent += SubmitLampDamageEvent; // Inject
         _lampStatsManager.OnHealthChangeEvent += SubmitHealthUpgradeEvent; // Inject
         _lampStatsManager.OnCooldownUpgradedEvent += SubmitCoolUpgradeEvent; // Inject
-        
-        
-        _sceneUiManager.OnDataConsentSetEvent += SetConsentData; // Inject
-        _sceneUiManager.OnAnalyticsCollectionChangeEvent += UpdateCollectionBehavior; // Inject
-        
-        _waveEndEvent = new CustomEvent("waveFinished");
-        _lampDamageEvent = new CustomEvent("LampDamaged");
-        _healthUpgradeEvent = new CustomEvent("healthUpgrade");
-        _coolUpgradeEvent = new CustomEvent("coolUpgrade");
     }
 
     private void OnDisable()
@@ -48,19 +39,35 @@ public class UnityAnalyticsService : MonoBehaviour // TODO: Remove monobehaviour
         Lamp.OnLampDamagedEvent -= SubmitLampDamageEvent;
         _lampStatsManager.OnHealthChangeEvent -= SubmitHealthUpgradeEvent;
         _lampStatsManager.OnCooldownUpgradedEvent -= SubmitCoolUpgradeEvent;
-        _sceneUiManager.OnDataConsentSetEvent -= SetConsentData;
     }
 
-    private void SetConsentData(bool isConsentGiven)
+    public void Initialize()
+    {
+        _waveEndEvent = new CustomEvent("waveFinished");
+        _lampDamageEvent = new CustomEvent("LampDamaged");
+        _healthUpgradeEvent = new CustomEvent("healthUpgrade");
+        _coolUpgradeEvent = new CustomEvent("coolUpgrade");
+        
+        Debug.Log("Analytics: Initializing Unity Analytics Service.");
+        CheckIfConsentIsProvided();
+    }
+
+    public void SetConsentData(bool isConsentGiven)
     {
         _isConsentSet = true;
         _isConsentGiven = isConsentGiven;
     }
 
-    public void Initialize()
+    public void UpdateCollectionBehavior(bool isConsentGiven)
     {
-        Debug.Log("Analytics: Initializing Unity Analytics Service.");
-        CheckIfConsentIsProvided();
+        if (isConsentGiven)
+        {
+            StartAnalyticsCollection();
+        }
+        else
+        {
+            StopAnalyticsCollection();
+        }
     }
 
     private void CheckIfConsentIsProvided()
@@ -114,18 +121,6 @@ public class UnityAnalyticsService : MonoBehaviour // TODO: Remove monobehaviour
         OnConsentAddressedEvent?.Invoke(); // What is this used for?
         AnalyticsService.Instance.StopDataCollection();
         Debug.Log("Analytics: Consent has been refused. The SDK is not collecting data");
-    }
-
-    private void UpdateCollectionBehavior(bool isConsentGiven)
-    {
-        if (isConsentGiven)
-        {
-            StartAnalyticsCollection();
-        }
-        else
-        {
-            StopAnalyticsCollection();
-        }
     }
 
     private void HandleWaveStart(int wave)

@@ -1,8 +1,6 @@
 using System;
 using UnityEngine;
 using UnityEngine.Rendering;
-using UnityEngine.Serialization;
-using UnityEngine.UI;
 
 public class UiManager : MonoBehaviour, IInitializable
 {
@@ -40,6 +38,10 @@ public class UiManager : MonoBehaviour, IInitializable
     [SerializeField] private UiText _gameOverText;
     [SerializeField] private GameObject _gameOverButtonsGroup;
     [SerializeField] private Volume _postProcessingVolume;
+
+    // Dependencies
+    private IAnalyticsService _analyticsService;
+    
     private UnityEngine.Rendering.Universal.ColorAdjustments _colorAdjustments;
     public event Action OnIntroFinishedEvent;
     public event Action OnGameoverFinishedEvent;
@@ -64,7 +66,11 @@ public class UiManager : MonoBehaviour, IInitializable
         _uiIntroAnimation.OnIntroFinishedEvent -= OnIntroFinishedHandler;
         _uiGameOverAnimation.OnGameOverAnimationFinishedEvent -= HandleGameoverAnimationFinished;
     }
-
+    
+    public void Inject(IAnalyticsService analyticsService)
+    {
+        _analyticsService = analyticsService;
+    }
 
     public void Initialize()
     {
@@ -107,7 +113,7 @@ public class UiManager : MonoBehaviour, IInitializable
 
     public void HandleYesDataCollectionBtn()
     {
-        OnDataConsentSetEvent?.Invoke(true);
+        _analyticsService.SetConsentData(true);
         _analyticsConsentPanel.SetActive(false);
         _analyticsConsentEnableButton.SetActive(false);
         _analyticsConsentDisableButton.SetActive(true);
@@ -115,7 +121,7 @@ public class UiManager : MonoBehaviour, IInitializable
 
     public void HandleNoDataCollectionBtn()
     {
-        OnDataConsentSetEvent?.Invoke(false);
+        _analyticsService.SetConsentData(false);
         _analyticsConsentPanel.SetActive(false);
         _analyticsConsentEnableButton.SetActive(true);
         _analyticsConsentDisableButton.SetActive(false);
@@ -123,14 +129,14 @@ public class UiManager : MonoBehaviour, IInitializable
 
     public void HandleEnableDataCollectionBtn()
     {
-        OnAnalyticsCollectionChangeEvent?.Invoke(true);
+        _analyticsService.UpdateCollectionBehavior(true);
         _analyticsConsentEnableButton.SetActive(false);
         _analyticsConsentDisableButton.SetActive(true);
     }
 
     public void HandleDisableDataCollectionBtn()
     {
-        OnAnalyticsCollectionChangeEvent?.Invoke(false);
+        _analyticsService.UpdateCollectionBehavior(false);
         _analyticsConsentEnableButton.SetActive(true);
         _analyticsConsentDisableButton.SetActive(false);
     }
