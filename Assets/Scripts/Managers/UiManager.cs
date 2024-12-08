@@ -6,7 +6,7 @@ public class UiManager : MonoBehaviour, IInitializable
 {
     // TODO: Switch button presses to AddListener
     [SerializeField] private UiText _waveText;
-    [SerializeField] private Transform _cameraTransform;
+    [SerializeField] private Transform _cameraTransform; // TODO: Remove this - not used
     [SerializeField] private AnimationCurve _cameraAnimationCurve;
 
     [Header("Upgrade Panel")] [SerializeField]

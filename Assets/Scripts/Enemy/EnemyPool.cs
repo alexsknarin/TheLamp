@@ -3,6 +3,7 @@ using UnityEngine.Pool;
 
 public class EnemyPool : MonoBehaviour, IInitializable
 {
+    // TODO: remove mono behaviour
     [SerializeField] private Enemy _mothlingPrefab;
     [SerializeField] private Enemy _flyPrefab;
     [SerializeField] private Enemy _mothPrefab;

@@ -8,12 +8,12 @@ public class InjectorScene : MonoBehaviour
     [SerializeField] private UnityAnalyticsService _analyticsService;
     [SerializeField] private UGSAuthenticationService _ugsAuthenticationService;
     [SerializeField] private AdsManager _adsManager;
-    
+    [Header("Mixed")]
+    [SerializeField] private Lamp _lamp;
     [Header("Dependency Clients")]
     [SerializeField] private Game _game;
     [SerializeField] private UiManager _uiManager;
     [SerializeField] private EnemyManager _enemyManager;
-    [SerializeField] private Lamp _lamp;
     [SerializeField] private LampStatsManager _lampStatsManager;
     
     private void Awake()

@@ -213,7 +213,7 @@ public class Lamp : MonoBehaviour, IInitializable
         }
         else
         {
-            enemyPosition = enemy.gameObject.transform.position;
+            enemyPosition = enemy.gameObject.transform.position; // TODO - unify for all enemies
         }
         float attackDirection = -(enemyPosition - transform.position).x * 2;
         _lampMovement.AddForce(attackDirection);
