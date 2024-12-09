@@ -27,10 +27,6 @@ public class InjectorScene : MonoBehaviour
         _enemyManager.Inject(_analyticsService);
         _lamp.Inject(_analyticsService);
         _lampStatsManager.Inject(_analyticsService);
-        
-        
-        Debug.Log("Dpendencies are Injected");
-        
     }
     
 }

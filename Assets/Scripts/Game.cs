@@ -78,8 +78,6 @@ public class Game : MonoBehaviour
 
     private void Start()
     {
-        Debug.Log("---------------------------------");
-        Debug.Log("Starting The Game ...............");
         if (_skipIntro)
         {
             _introDuration = 0.001f;
