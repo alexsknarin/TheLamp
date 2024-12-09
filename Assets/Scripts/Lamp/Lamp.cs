@@ -30,7 +30,7 @@ public class Lamp : MonoBehaviour, IInitializable
     public static event Action<EnemyBase> OnLampDeadEvent;
     public static event Action<EnemyBase> OnLampCollidedWithStickyEnemyEvent;
     
-    public void Inject(IAnalyticsService analyticsService)
+    public void Construct(IAnalyticsService analyticsService)
     {
         _analyticsService = analyticsService;
     }

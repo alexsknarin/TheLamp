@@ -68,7 +68,7 @@ public class EnemyManager : MonoBehaviour,IInitializable
     public static event Action<EnemyBase> OnBossAppearEvent;
     public static event Action<EnemyBase> OnBossDeathEvent;
 
-    public void Inject(IAnalyticsService analyticsService)
+    public void Construct(IAnalyticsService analyticsService)
     {
         _analyticsService = analyticsService;
     }

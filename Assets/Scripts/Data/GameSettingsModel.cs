@@ -1,32 +1,52 @@
 // TODO: settings as dictionary - unified interface to change them
 // TODO: separate view models for different settings ???? 
+
+using System;
 using UnityEngine;
 
 public class GameSettingsModel
 {
-    private IGameSettingsService _gameSettingsService;
     private GameSettings _gameSettings;
-    
-    public Observable<bool> IsConsentSet = new Observable<bool>();
-    public Observable<bool> IsDataCollectionEnabled = new Observable<bool>();
-    
-    public GameSettingsModel(GameSettings gameSettings, IGameSettingsService gameSettingsService)
+
+    public bool IsConsentSet
+    {
+        get => _gameSettings.IsConsentSet;
+        private set
+        {
+            var oldValue = _gameSettings.IsConsentSet;
+            _gameSettings.IsConsentSet = value;
+            if (!oldValue.Equals(value))
+            {
+                OnIsConsentSetChangedEvent?.Invoke(value);
+            }
+        }
+    }
+
+    public bool IsDataCollectionEnabled
+    {
+        get => _gameSettings.IsDataCollectionEnabled;
+        private set
+        {
+            var oldValue = _gameSettings.IsDataCollectionEnabled;
+            _gameSettings.IsDataCollectionEnabled = value;
+            if (!oldValue.Equals(value))
+            {
+                OnIsDataCollectionEnabledChangedEvent?.Invoke(value);
+            }
+        }
+    }
+
+    public event Action<bool> OnIsConsentSetChangedEvent;
+    public event Action<bool> OnIsDataCollectionEnabledChangedEvent;
+
+    public GameSettingsModel(GameSettings gameSettings)
     {
         _gameSettings = gameSettings;
-        _gameSettingsService = gameSettingsService;
-        
-        IsConsentSet.Value = _gameSettings.IsConsentSet;
-        IsDataCollectionEnabled.Value = _gameSettings.IsDataCollectionEnabled;
     }
-    
+
     public void AnalyticsConsentSet(bool value)
     {
-        IsConsentSet.Value = true;
-        _gameSettings.IsConsentSet = IsConsentSet.Value;
-
-        IsDataCollectionEnabled.Value = value;
-        _gameSettings.IsDataCollectionEnabled = IsDataCollectionEnabled.Value;
-        
-        _gameSettingsService.Save();
+        IsConsentSet = true;
+        IsDataCollectionEnabled = value;
     }
 }

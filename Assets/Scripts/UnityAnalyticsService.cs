@@ -1,74 +1,78 @@
+// TODO: remove Monobehaviour - provide this object via DI
+// TODO: make dependable on UGS - to wait until connected to UGS
+// TODO: Extract proper intefaces for both
+
 using System;
 using System.Collections;
 using Unity.Services.Analytics;
 using UnityEngine;
 
-public class UnityAnalyticsService : MonoBehaviour, IAnalyticsService // TODO: Remove monobehaviour - use DI container
+public class UnityAnalyticsService : MonoBehaviour, IAnalyticsService, IInitializable
 {
-    // TODO: Extract User Consent provider ??? 
-    // TODO: test if it works properly - maybe still need to wait until connected??? - check this 
+    IGameSettingsService _gameSettingsService;
+    private IUGSAuthenticationService _ugsAuthenticationService;
     public event Action OnConsentAddressedEvent;
     
-    private bool _isConsentSet = false;
-    private bool _isConsentGiven = false;
-
     // Analytics Data
     private float _waveTime;
     private CustomEvent _waveEndEvent;
     private CustomEvent _lampDamageEvent;
     private CustomEvent _healthUpgradeEvent;
     private CustomEvent _coolUpgradeEvent;
-
+    
+    private bool _isEnabled;
+    
+    // Dependency Injection
+    public void Construct(IGameSettingsService gameSettingsService, IUGSAuthenticationService ugsAuthenticationService)
+    {
+        _gameSettingsService = gameSettingsService;
+        _ugsAuthenticationService = ugsAuthenticationService;
+    }
+    
     public void Initialize()
     {
         _waveEndEvent = new CustomEvent("waveFinished");
         _lampDamageEvent = new CustomEvent("LampDamaged");
         _healthUpgradeEvent = new CustomEvent("healthUpgrade");
         _coolUpgradeEvent = new CustomEvent("coolUpgrade");
+        _gameSettingsService.OnIsDataCollectionEnabledChangedEvent += UpdateCollectionBehavior;
         
         Debug.Log("Analytics: Initializing Unity Analytics Service.");
+        StartCoroutine(WaitUntilUGSConnected());
+    }
+    
+    private IEnumerator WaitUntilUGSConnected() // TODO: check this later - need timeout and error handling
+    {
+        yield return new WaitUntil(() => _ugsAuthenticationService.IsConnected);
         CheckIfConsentIsProvided();
     }
 
-    public void SetConsentData(bool isConsentGiven)
+    private void OnDestroy()
     {
-        _isConsentSet = true;
-        _isConsentGiven = isConsentGiven;
-    }
-
-    public void UpdateCollectionBehavior(bool isConsentGiven)
-    {
-        if (isConsentGiven)
-        {
-            StartAnalyticsCollection();
-        }
-        else
-        {
-            StopAnalyticsCollection();
-        }
+        _gameSettingsService.OnIsDataCollectionEnabledChangedEvent -= UpdateCollectionBehavior;
     }
 
     private void CheckIfConsentIsProvided()
     {
-        if (PlayerPrefs.GetInt("dataConsentSet") == 1 && PlayerPrefs.GetInt("dataConsent") == 1) // Consent yes 
+        if (_gameSettingsService.IsConsentSet && _gameSettingsService.IsDataCollectionEnabled)
         {
             StartAnalyticsCollection();
         }
-        else if (PlayerPrefs.GetInt("dataConsentSet") == 0) // Consent not set
+        else if (_gameSettingsService.IsConsentSet && !_gameSettingsService.IsDataCollectionEnabled)
         {
-            Debug.Log("Analytics: Consent data doesn't exist. Awaiting User Input");
-            StartCoroutine(GetUserConsent());
+            StopAnalyticsCollection();
         }
         else
         {
-            Debug.Log("Analytics: Consent has not been provided. The SDK is not collecting data");
+            Debug.Log("Analytics: Consent data doesn't exist. Awaiting User Input");
+            StartCoroutine(GetUserConsent());
         }
     }
 
     private IEnumerator GetUserConsent()
     {
-        yield return new WaitUntil(() => _isConsentSet);
-        if (_isConsentGiven)
+        yield return new WaitUntil(() => _gameSettingsService.IsConsentSet);
+        if (_isEnabled)
         {
             StartAnalyticsCollection();
         }
@@ -80,26 +84,35 @@ public class UnityAnalyticsService : MonoBehaviour, IAnalyticsService // TODO: R
 
     private void StartAnalyticsCollection()
     {
-        PlayerPrefs.SetInt("dataConsentSet", 1);
-        PlayerPrefs.SetInt("dataConsent", 1);
-        PlayerPrefs.Save();
-        _isConsentGiven = true;
-        OnConsentAddressedEvent?.Invoke();  // What is this used for?
+        _isEnabled = true;
+        OnConsentAddressedEvent?.Invoke();  // TODO: needed for Game  class to know when to start the game - need to remove it from here
         AnalyticsService.Instance.StartDataCollection(); 
         Debug.Log("Analytics: Consent has been provided. The SDK is now collecting data");
     }
 
     private void StopAnalyticsCollection()
     {
-        PlayerPrefs.SetInt("dataConsentSet", 1);
-        PlayerPrefs.SetInt("dataConsent", 0);
-        PlayerPrefs.Save();
-        _isConsentGiven = false;
+        _isEnabled = false;
         OnConsentAddressedEvent?.Invoke(); // What is this used for?
         AnalyticsService.Instance.StopDataCollection();
         Debug.Log("Analytics: Consent has been refused. The SDK is not collecting data");
     }
 
+    private void UpdateCollectionBehavior(bool isConsentGiven)
+    {
+        if (isConsentGiven)
+        {
+            StartAnalyticsCollection();
+            Debug.Log("Disable Enabled");
+        }
+        else
+        {
+            StopAnalyticsCollection();
+            Debug.Log("Analytics Disabled");
+        }
+    }
+    
+    // Analytics Event Calls
     public void SubmitWaveStartEvent(int wave)
     {
         _waveTime = Time.time;
@@ -108,7 +121,7 @@ public class UnityAnalyticsService : MonoBehaviour, IAnalyticsService // TODO: R
     public void SubmitWaveEndEvent(int wave)
     {
         _waveTime = Time.time - _waveTime;
-        if (_isConsentGiven)
+        if (_isEnabled)
         {
             _waveEndEvent.Reset();
             _waveEndEvent.Add("waveNum", wave);
@@ -119,7 +132,7 @@ public class UnityAnalyticsService : MonoBehaviour, IAnalyticsService // TODO: R
 
     public void SubmitLampDamageEvent(EnemyBase enemy)
     {
-        if (_isConsentGiven)
+        if (_isEnabled)
         {
             _lampDamageEvent.Reset();
             _lampDamageEvent.Add("enemyType", enemy.EnemyType.ToString());
@@ -129,7 +142,7 @@ public class UnityAnalyticsService : MonoBehaviour, IAnalyticsService // TODO: R
 
     public void SubmitHealthUpgradeEvent()
     {
-        if (_isConsentGiven)
+        if (_isEnabled)
         {
             _healthUpgradeEvent.Reset();
             AnalyticsService.Instance.RecordEvent(_healthUpgradeEvent);
@@ -138,7 +151,7 @@ public class UnityAnalyticsService : MonoBehaviour, IAnalyticsService // TODO: R
 
     public void SubmitCoolUpgradeEvent()
     {
-        if (_isConsentGiven)
+        if (_isEnabled)
         {
             _coolUpgradeEvent.Reset();
             AnalyticsService.Instance.RecordEvent(_coolUpgradeEvent);

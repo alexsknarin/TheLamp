@@ -29,7 +29,7 @@ public class Game : MonoBehaviour
     private readonly bool SAVE_UPGRADES = true;
     private readonly bool DONT_SAVE_UPGRADES = false;
 
-    public void Inject(IAnalyticsService analyticsService, 
+    public void Construct(IAnalyticsService analyticsService, 
         IUGSAuthenticationService ugsAuthenticationService,
         IAdvertisementService advertisementService)
     {
@@ -91,7 +91,7 @@ public class Game : MonoBehaviour
         _saveLoadManager.LoadGame();
         _scoresManager.Initialize();
         _lamp.Initialize();
-        _advertisementService.Initialize();
+        // _advertisementService.Initialize();
 
         _uiManager.SetIntroDuration(_introDuration);
         _uiManager.Initialize();
@@ -144,8 +144,8 @@ public class Game : MonoBehaviour
         _enemyManager.Initialize();
         if (PlayerPrefs.HasKey("dataConsent"))
         {
-            _ugsAuthenticationService.Initialize(); // TODO: move to init area, or find out why it should be there
-            _analyticsService.Initialize();    // The same
+            // _ugsAuthenticationService.Initialize(); // TODO: move to init area, or find out why it should be there
+            // _analyticsService.Initialize();    // The same
             SwitchGameState();
         }
     }

@@ -2,11 +2,17 @@ using UnityEngine;
 
 public class PlayerPrefsGameSettingsProvider : IGameSettingsProvider
 {
-    private GameSettings _gameSettings;
+    private GameSettings _gameSettings = null;
     public GameSettings Get()
     {
+        if (_gameSettings != null)
+        {
+            return _gameSettings;
+        }
+        
         if (PlayerPrefs.HasKey("GameSettings"))
         {
+            Debug.Log("GameSettings found in PlayerPrefs");
             string settingsJson = PlayerPrefs.GetString("GameSettings");
             var s = JsonUtility.FromJson<GameSettings>(settingsJson);
             _gameSettings = JsonUtility.FromJson<GameSettings>(settingsJson);
@@ -14,6 +20,7 @@ public class PlayerPrefsGameSettingsProvider : IGameSettingsProvider
         }
         else
         {
+            Debug.Log("GameSettings not found in PlayerPrefs - Generating a new one");
             // Generate default settings TODO: Move to a separate storage
             _gameSettings = new GameSettings();
             _gameSettings.IsConsentSet = false;

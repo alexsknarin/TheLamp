@@ -2,5 +2,5 @@ using System;
 
 public interface IUGSAuthenticationService
 {
-    public void Initialize();
+    public bool IsConnected { get; }
 }

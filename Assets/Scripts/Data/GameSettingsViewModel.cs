@@ -8,34 +8,33 @@ public class GameSettingsViewModel : IInitializable, IDisposable
     public GameSettingsViewModel(GameSettingsModel gameSettingsModel)
     {
         _gameSettingsModel = gameSettingsModel;
-        IsConsentSetView.Value = _gameSettingsModel.IsConsentSet.Value;
-        IsDataCollectionEnabledView.Value = _gameSettingsModel.IsDataCollectionEnabled.Value;
+        IsConsentSetView.Value = _gameSettingsModel.IsConsentSet;
+        IsDataCollectionEnabledView.Value = _gameSettingsModel.IsDataCollectionEnabled;
     }
     
     public void Initialize()
     {
-        _gameSettingsModel.IsConsentSet.OnChangedEvent += HandleConsentSetOnChangedEvent;
-        _gameSettingsModel.IsDataCollectionEnabled.OnChangedEvent += HandleDataCollectionEnabledChanged;
+        _gameSettingsModel.OnIsConsentSetChangedEvent += HandleConsentSetOnChangedEvent;
+        _gameSettingsModel.OnIsDataCollectionEnabledChangedEvent += HandleDataCollectionEnabledChanged;
     }
 
     public void Dispose()
     {
-        _gameSettingsModel.IsConsentSet.OnChangedEvent -= HandleConsentSetOnChangedEvent;
-        _gameSettingsModel.IsDataCollectionEnabled.OnChangedEvent -= HandleDataCollectionEnabledChanged;
+        _gameSettingsModel.OnIsConsentSetChangedEvent -= HandleConsentSetOnChangedEvent;
+        _gameSettingsModel.OnIsDataCollectionEnabledChangedEvent -= HandleDataCollectionEnabledChanged;
     }
     
     // Handle Model Events
     
-    private void HandleConsentSetOnChangedEvent(object sender, Observable<bool>.ChangedEventArgs e)
+    private void HandleConsentSetOnChangedEvent(bool value)
     {
-        IsConsentSetView.Value = e.NewValue;
+        IsConsentSetView.Value = value;
     }
 
-    private void HandleDataCollectionEnabledChanged(object sender, Observable<bool>.ChangedEventArgs e)
+    private void HandleDataCollectionEnabledChanged(bool value)
     {
-        IsDataCollectionEnabledView.Value = e.NewValue;
+        IsDataCollectionEnabledView.Value = value;
     }
-    
     
     // Handle View Events
     public void HandleYesInitialConsentButtonClicked()

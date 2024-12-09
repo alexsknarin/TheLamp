@@ -1,18 +1,50 @@
+// TODO: Settings as dictionary
+
+using System;
 using UnityEngine;
 
-public class GameSettingsService: IGameSettingsService
+public class GameSettingsService: IGameSettingsService, IInitializable, IDisposable
 {
-    private GameSettingsModel _gameSettingsModel;
     private IGameSettingsProvider _gameSettingsProvider;
+    private GameSettingsModel _gameSettingsModel;
     
-    public GameSettingsService(IGameSettingsProvider gameSettingsProvider)
+    public bool IsConsentSet => _gameSettingsModel.IsConsentSet;
+    public bool IsDataCollectionEnabled => _gameSettingsModel.IsDataCollectionEnabled;
+    public event Action<bool> OnIsConsentSetChangedEvent;
+    public event Action<bool> OnIsDataCollectionEnabledChangedEvent;
+    
+    public GameSettingsService(IGameSettingsProvider gameSettingsProvider, GameSettingsModel gameSettingsModel)
     {
+        _gameSettingsModel = gameSettingsModel;
         _gameSettingsProvider = gameSettingsProvider;
-        Debug.Log("GameSettingsService created, dependencies injected");
     }
-    
-    public void Save()
+
+    public void Initialize()
+    {
+        _gameSettingsModel.OnIsConsentSetChangedEvent += HandleConsentSetOnChangedEvent;
+        _gameSettingsModel.OnIsDataCollectionEnabledChangedEvent += HandleDataCollectionEnabledChanged;
+    }
+
+    public void Dispose()
+    {
+        _gameSettingsModel.OnIsConsentSetChangedEvent += HandleConsentSetOnChangedEvent;
+        _gameSettingsModel.OnIsDataCollectionEnabledChangedEvent += HandleDataCollectionEnabledChanged;
+    }
+
+    private void Save()
     {
         _gameSettingsProvider.Save();
+    }
+
+    private void HandleConsentSetOnChangedEvent(bool value)
+    {
+        Save();
+        OnIsConsentSetChangedEvent?.Invoke(value);
+    }
+
+    private void HandleDataCollectionEnabledChanged(bool value)
+    {
+        Save();
+        OnIsDataCollectionEnabledChangedEvent?.Invoke(value);
     }
 }

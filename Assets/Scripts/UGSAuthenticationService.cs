@@ -4,8 +4,10 @@ using Unity.Services.Core;
 using Unity.Services.Core.Environments;
 using UnityEngine;
 
-public class UGSAuthenticationService : MonoBehaviour, IUGSAuthenticationService // Remove monobehaviour - use DI container
+public class UGSAuthenticationService : IUGSAuthenticationService, IInitializable // Remove monobehaviour - use DI container
 {
+    public bool IsConnected { get; private set; }
+
     public async void Initialize()
     {
         Debug.Log("UGS: Initializing UGS");
@@ -27,5 +29,6 @@ public class UGSAuthenticationService : MonoBehaviour, IUGSAuthenticationService
             Debug.Log(s);
         };
         await AuthenticationService.Instance.SignInAnonymouslyAsync();
+        IsConnected = true;
     }
 }

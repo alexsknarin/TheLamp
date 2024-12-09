@@ -22,10 +22,6 @@ public class UiManager : MonoBehaviour, IInitializable
     [Header("Overlay Images")] [SerializeField]
     private BrokenGlassEffect _brokenGlassEffect;
 
-    [Header("Analytics")] [SerializeField] private GameObject _analyticsConsentPanel;
-    [SerializeField] private GameObject _analyticsConsentEnableButton;
-    [SerializeField] private GameObject _analyticsConsentDisableButton;
-
     [Header("Animation:")] [Header("Intro")] [SerializeField]
     private UiIntroAnimation _uiIntroAnimation;
 
@@ -40,7 +36,7 @@ public class UiManager : MonoBehaviour, IInitializable
     [SerializeField] private Volume _postProcessingVolume;
 
     // Dependencies
-    private IAnalyticsService _analyticsService;
+    // private IAnalyticsService _analyticsService;
     
     private UnityEngine.Rendering.Universal.ColorAdjustments _colorAdjustments;
     public event Action OnIntroFinishedEvent;
@@ -67,11 +63,6 @@ public class UiManager : MonoBehaviour, IInitializable
         _uiGameOverAnimation.OnGameOverAnimationFinishedEvent -= HandleGameoverAnimationFinished;
     }
     
-    public void Inject(IAnalyticsService analyticsService)
-    {
-        _analyticsService = analyticsService;
-    }
-
     public void Initialize()
     {
         VolumeProfile volumeProfile = _postProcessingVolume.profile;
@@ -86,59 +77,11 @@ public class UiManager : MonoBehaviour, IInitializable
         _upgradeButtonsPanel.SetActive(false);
         _gameOverPanel.SetActive(false);
         _gameOverButtonsGroup.SetActive(false);
-
-        // TODO: Checking prefs directly - potentially need a service to handle this later
-        if (PlayerPrefs.GetInt("dataConsentSet") == 0)
-        {
-            _analyticsConsentPanel.SetActive(true);
-        }
-        else if (PlayerPrefs.GetInt("dataConsentSet") == 1 && PlayerPrefs.GetInt("dataConsentSet") == 1)
-        {
-            _analyticsConsentPanel.SetActive(false);
-            _analyticsConsentEnableButton.SetActive(false);
-            _analyticsConsentDisableButton.SetActive(true);
-        }
-        else if (PlayerPrefs.GetInt("dataConsentSet") == 1 && PlayerPrefs.GetInt("dataConsentSet") == 0)
-        {
-            _analyticsConsentPanel.SetActive(false);
-            _analyticsConsentEnableButton.SetActive(true);
-            _analyticsConsentDisableButton.SetActive(false);
-        }
     }
 
     public void SetIntroDuration(float duration)
     {
         _introDuration = duration;
-    }
-
-    public void HandleYesDataCollectionBtn()
-    {
-        _analyticsService.SetConsentData(true);
-        _analyticsConsentPanel.SetActive(false);
-        _analyticsConsentEnableButton.SetActive(false);
-        _analyticsConsentDisableButton.SetActive(true);
-    }
-
-    public void HandleNoDataCollectionBtn()
-    {
-        _analyticsService.SetConsentData(false);
-        _analyticsConsentPanel.SetActive(false);
-        _analyticsConsentEnableButton.SetActive(true);
-        _analyticsConsentDisableButton.SetActive(false);
-    }
-
-    public void HandleEnableDataCollectionBtn()
-    {
-        _analyticsService.UpdateCollectionBehavior(true);
-        _analyticsConsentEnableButton.SetActive(false);
-        _analyticsConsentDisableButton.SetActive(true);
-    }
-
-    public void HandleDisableDataCollectionBtn()
-    {
-        _analyticsService.UpdateCollectionBehavior(false);
-        _analyticsConsentEnableButton.SetActive(true);
-        _analyticsConsentDisableButton.SetActive(false);
     }
 
     public void PlayIntro()
