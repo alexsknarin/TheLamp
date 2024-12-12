@@ -44,9 +44,16 @@ public class GameRootContext : MonoBehaviour
         
         
         Debug.Log("------ Game Initialization ------");
+        // IGameStateProvider gameStateProvider = new PlayerPrefsGameStateProvider();
+        // var gameState = gameStateProvider.Get();
+        // gameStateProvider.Save();
+        
+        
         _enemyManager.Construct(_unityAnalyticsService);
         _lamp.Construct(_unityAnalyticsService);
         _game.Construct(_unityAnalyticsService, _ugsAuthenticationService, _adsManager);
+        
+        
         
     }
     

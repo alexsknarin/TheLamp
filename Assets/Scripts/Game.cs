@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class Game : MonoBehaviour
 {
@@ -10,7 +11,7 @@ public class Game : MonoBehaviour
     [SerializeField] private PlayerInputHandler _playerInputHandler;
     [SerializeField] private ScoresManager _scoresManager;
     [SerializeField] private SaveLoadManager _saveLoadManager;
-    [SerializeField] private GameState _currentGameState;
+    [FormerlySerializedAs("_currentGameState")] [SerializeField] private GameStage _currentGameStage;
     [SerializeField] private bool _skipIntro;
     [SerializeField] private float _introDuration;
     [SerializeField] private float _deathDuration;
@@ -83,7 +84,7 @@ public class Game : MonoBehaviour
             _introDuration = 0.001f;
         }
         _isLampDead = false;
-        _currentGameState = GameState.Loading;
+        _currentGameStage = GameStage.Loading;
 
         // Init all systems
         _saveLoadManager.Initialize();
@@ -112,7 +113,7 @@ public class Game : MonoBehaviour
             _saveLoadManager.SaveGame(GAME_RESET, DONT_SAVE_UPGRADES);
             
             _isLampDead = false;
-            _currentGameState = GameState.Loading;
+            _currentGameStage = GameStage.Loading;
             _enemyManager.Restart();
             _uiManager.Initialize();
             _playerInputHandler.Initialize();
@@ -127,7 +128,7 @@ public class Game : MonoBehaviour
         _saveLoadManager.SaveGame(GAME_RESET, SAVE_UPGRADES);
         
         _isLampDead = false;
-        _currentGameState = GameState.Loading;
+        _currentGameStage = GameStage.Loading;
         _enemyManager.Restart();
         _uiManager.Initialize();
         _playerInputHandler.Initialize();
@@ -161,7 +162,7 @@ public class Game : MonoBehaviour
     }
     private void HandlePlayerAttackButtonPressed()
     {
-        if (_currentGameState == GameState.Prepare)
+        if (_currentGameStage == GameStage.Prepare)
         {
             SwitchGameState();
         }
@@ -190,27 +191,27 @@ public class Game : MonoBehaviour
    
     private void SwitchGameState()
     {
-        switch (_currentGameState)
+        switch (_currentGameStage)
         {
-            case GameState.Loading:
-                _currentGameState = GameState.ConsentScreen;
+            case GameStage.Loading:
+                _currentGameStage = GameStage.ConsentScreen;
                 break;
-            case GameState.ConsentScreen:
-                _currentGameState = GameState.Intro;
+            case GameStage.ConsentScreen:
+                _currentGameStage = GameStage.Intro;
                 _uiManager.PlayIntro();
                 _lamp.PlayIntro(_introDuration);
                 break;
-            case GameState.Intro:
+            case GameStage.Intro:
                 _playerInputHandler.EnableAttackInput();
                 _uiManager.StartPrepare(_enemyManager.CurrentWave);
-                _currentGameState = GameState.Prepare;
+                _currentGameStage = GameStage.Prepare;
                 break;
-            case GameState.Prepare:
-                _currentGameState = GameState.Fight;
+            case GameStage.Prepare:
+                _currentGameStage = GameStage.Fight;
                 _uiManager.StartFight();
                 _enemyManager.StartWave();
                 break;
-            case GameState.Fight:
+            case GameStage.Fight:
                 if (_isLampDead)
                 {
                     _saveLoadManager.SaveTempData();
@@ -218,13 +219,13 @@ public class Game : MonoBehaviour
                     _lamp.PlayDeath(_deathDuration);
                     _enemyManager.HandleGameOver();
                     _uiManager.StartGameOver();
-                    _currentGameState = GameState.GameOver;   
+                    _currentGameStage = GameStage.GameOver;   
                 }
                 else
                 {
                     _saveLoadManager.SaveGame(GAME_RUNNING, SAVE_UPGRADES);
                     _uiManager.StartPrepare(_enemyManager.CurrentWave);
-                    _currentGameState = GameState.Prepare;    
+                    _currentGameStage = GameStage.Prepare;    
                 }
                 break;
         }

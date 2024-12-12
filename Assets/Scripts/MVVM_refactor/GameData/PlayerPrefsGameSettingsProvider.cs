@@ -14,14 +14,13 @@ public class PlayerPrefsGameSettingsProvider : IGameSettingsProvider
         {
             Debug.Log("GameSettings found in PlayerPrefs");
             string settingsJson = PlayerPrefs.GetString("GameSettings");
-            var s = JsonUtility.FromJson<GameSettings>(settingsJson);
             _gameSettings = JsonUtility.FromJson<GameSettings>(settingsJson);
             return _gameSettings;
         }
         else
         {
             Debug.Log("GameSettings not found in PlayerPrefs - Generating a new one");
-            // Generate default settings TODO: Move to a separate storage
+            // Generate default settings TODO: Move to a separate storage, Use factory
             _gameSettings = new GameSettings();
             _gameSettings.IsConsentSet = false;
             _gameSettings.IsDataCollectionEnabled = false;
