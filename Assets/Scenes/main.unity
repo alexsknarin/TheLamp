@@ -6052,11 +6052,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _consentSettingsUIView: {fileID: 1291610359}
+  _gameStageView: {fileID: 1736170224}
   _unityAnalyticsService: {fileID: 1595482322}
   _adsManager: {fileID: 1665985692}
   _game: {fileID: 1818435501}
   _enemyManager: {fileID: 1818435502}
   _lamp: {fileID: 1934066246}
+  _gameConfig: {fileID: 11400000, guid: 194d016c84ad8bb468bac5bf03c1f861, type: 2}
 --- !u!4 &1037269785
 Transform:
   m_ObjectHideFlags: 0
@@ -9762,6 +9764,54 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1733480388}
   m_CullTransparentMesh: 1
+--- !u!1 &1736170223
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1736170225}
+  - component: {fileID: 1736170224}
+  m_Layer: 0
+  m_Name: GameStageVew
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1736170224
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1736170223}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 267229e38d145144d9b83d5c8ada923c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _introDuration: 1
+  _waveDuration: 1
+  _prepareDuration: 1
+  _gameoverDuration: 1
+--- !u!4 &1736170225
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1736170223}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &1755611450 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 92097553111088338, guid: 556ccd576c35d634e88ba039c8700cfa,
@@ -10006,7 +10056,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1818435499
 Transform:
   m_ObjectHideFlags: 0
@@ -10054,7 +10104,7 @@ MonoBehaviour:
   _playerInputHandler: {fileID: 1818435500}
   _scoresManager: {fileID: 1818435508}
   _saveLoadManager: {fileID: 1818435509}
-  _currentGameState: 0
+  _currentGameStage: 0
   _skipIntro: 1
   _introDuration: 4
   _deathDuration: 3
@@ -10190,7 +10240,7 @@ MonoBehaviour:
   _spiderScorePrice: 3
   _waspsScorePrice: 25
   _megabeetleScorePrice: 50
-  _dragonflyProjectileScorePrice: 1
+  _dragonflyProjectileScorePrice: 100
   _currentScore: 0
   _saveDataContainer: {fileID: 11400000, guid: 377d55eb1797a24478860b1b98ae759c, type: 2}
 --- !u!114 &1818435509
@@ -12889,6 +12939,7 @@ SceneRoots:
   m_Roots:
   - {fileID: 1037269785}
   - {fileID: 1595482320}
+  - {fileID: 1736170225}
   - {fileID: 1818435499}
   - {fileID: 1665985693}
   - {fileID: 1449376469}

@@ -1,39 +1,50 @@
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 public class GameRootContext : MonoBehaviour
 {
+    [Header("Views")]
     [SerializeField] private ConsentSettingsUIView _consentSettingsUIView;
+    [SerializeField] private GameStageView _gameStageView;
+    [Header("Services")]
     [SerializeField] private UnityAnalyticsService _unityAnalyticsService;
     [SerializeField] private AdsManager _adsManager;
     [SerializeField] private Game _game;
     [SerializeField] private EnemyManager _enemyManager;
     [SerializeField] private Lamp _lamp;
+    [SerializeField] private GameConfig _gameConfig;
     
     private GameSettingsService _gameSettingsService;
     private UGSAuthenticationService _ugsAuthenticationService;
     
     private List<IDisposable> _disposables = new List<IDisposable>();
-    
-    
-    
+    private IGameSettingsProvider _gameSettingsProvider;
+    private GameSettingsModel _gameSettingsModel;
+    private GameSettingsViewModel _gameSettingsViewModel;
+    private IGameStateProvider _gameStateProvider;
+    private GameModel _gameModel;
+    private GameStageViewModel _gameStageViewModel;
+
+
     private void Awake()
     {
+        Application.targetFrameRate = 60;
+        Screen.sleepTimeout = SleepTimeout.NeverSleep;
+        
         Debug.Log("------------------------------------------");
         Debug.Log("------ Starting Game Initialization ------");
         Debug.Log("------ Game Settings Initialization ------");
         // TODO: Make game services as fields ????
-        IGameSettingsProvider gameSettingsProvider = new PlayerPrefsGameSettingsProvider();
-        GameSettingsModel gameSettingsModel = new GameSettingsModel(gameSettingsProvider.Get());
-        _gameSettingsService = new GameSettingsService(gameSettingsProvider, gameSettingsModel);
+        _gameSettingsProvider = new PlayerPrefsGameSettingsProvider();
+        _gameSettingsModel = new GameSettingsModel(_gameSettingsProvider.Get());
+        _gameSettingsService = new GameSettingsService(_gameSettingsProvider, _gameSettingsModel);
         _gameSettingsService.Initialize();
-        GameSettingsViewModel gameSettingsViewModel = new GameSettingsViewModel(gameSettingsModel);
-        _disposables.Add(gameSettingsViewModel);
-        gameSettingsViewModel.Initialize();
+        _gameSettingsViewModel = new GameSettingsViewModel(_gameSettingsModel);
+        _disposables.Add(_gameSettingsViewModel);
+        _gameSettingsViewModel.Initialize();
         
         Debug.Log("------ UI Initialization ------");
-        _consentSettingsUIView.Bind(gameSettingsViewModel);
+        _consentSettingsUIView.Bind(_gameSettingsViewModel);
         _consentSettingsUIView.Initialize();
         
         Debug.Log("------ Analytics Initialization ------");
@@ -44,11 +55,25 @@ public class GameRootContext : MonoBehaviour
         
         
         Debug.Log("------ Game Initialization ------");
-        // IGameStateProvider gameStateProvider = new PlayerPrefsGameStateProvider();
-        // var gameState = gameStateProvider.Get();
-        // gameStateProvider.Save();
+        _gameStateProvider = new PlayerPrefsGameStateProvider();
+        _gameModel = new GameModel(_gameStateProvider.Get());
+        _gameStageViewModel = new GameStageViewModel(_gameModel);
+        _disposables.Add(_gameStageViewModel);
+        _gameStageView.Bind(_gameStageViewModel);
         
         
+        
+        
+        // Start Game
+        _gameModel.Start();
+        
+        
+        
+        
+        
+        
+        
+        // Configure legcy systems
         _enemyManager.Construct(_unityAnalyticsService);
         _lamp.Construct(_unityAnalyticsService);
         _game.Construct(_unityAnalyticsService, _ugsAuthenticationService, _adsManager);
