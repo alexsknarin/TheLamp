@@ -3,7 +3,19 @@ using UnityEngine;
 
 public class GameModel
 {
-    private GameState _gameState;
+    private GameState _currentGameState;
+    public GameState CurrentGameState
+    {
+        get => _currentGameState;
+        private set
+        {
+            _currentGameState = value;
+            OnGameStateChangedEvent?.Invoke(value);
+        }
+    }
+    public event Action<GameState> OnGameStateChangedEvent; // TODO: do we need this event?
+    
+    
     private GameStageState _currentGameStageState = GameStageState.Loading;
     public GameStageState CurrentGameStageState
     {
@@ -23,7 +35,7 @@ public class GameModel
     
     public GameModel(GameState _gameState)
     {
-        _gameState = _gameState;
+        _currentGameState = _gameState;
         Debug.Log("GameModel created");
         Debug.Log("GameState: " + _gameState.LampCooldownTime);
     }

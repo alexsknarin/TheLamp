@@ -4174,6 +4174,77 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _button: {fileID: 619549487}
   _text: {fileID: 874044065}
+--- !u!1 &646836953
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 646836955}
+  - component: {fileID: 646836954}
+  m_Layer: 0
+  m_Name: GameStateView
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &646836954
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 646836953}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de43cdf74a78eae408d28eb13d9f8aae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _gameState:
+    Wave: 0
+    Scores: 0
+    LampHealth: 0
+    LampMaxHealth: 0
+    LampCooldownTime: 0
+    LampAttackDistance: 0
+    LampLevel: 0
+    LampXp: 0
+    LampXpThreshold: 0
+    LampXpIncrement: 0
+    ImpactLastPointNumber: 0
+    LampDamageWeightRight: 0
+    LampDamageWeightLeft: 0
+    LampDamageWeightBottom: 0
+    LampDamagePoint01:
+      Strength: 0
+      LocalAngle: 0
+      GlobalAngle: 0
+    LampDamagePoint02:
+      Strength: 0
+      LocalAngle: 0
+      GlobalAngle: 0
+    LampDamagePoint03:
+      Strength: 0
+      LocalAngle: 0
+      GlobalAngle: 0
+--- !u!4 &646836955
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 646836953}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &651099611
 GameObject:
   m_ObjectHideFlags: 0
@@ -6053,6 +6124,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _consentSettingsUIView: {fileID: 1291610359}
   _gameStageView: {fileID: 1736170224}
+  _gameStateView: {fileID: 646836954}
   _unityAnalyticsService: {fileID: 1595482322}
   _adsManager: {fileID: 1665985692}
   _game: {fileID: 1818435501}
@@ -12940,6 +13012,7 @@ SceneRoots:
   - {fileID: 1037269785}
   - {fileID: 1595482320}
   - {fileID: 1736170225}
+  - {fileID: 646836955}
   - {fileID: 1818435499}
   - {fileID: 1665985693}
   - {fileID: 1449376469}

@@ -6,6 +6,7 @@ public class GameRootContext : MonoBehaviour
     [Header("Views")]
     [SerializeField] private ConsentSettingsUIView _consentSettingsUIView;
     [SerializeField] private GameStageView _gameStageView;
+    [SerializeField] private GameStateView _gameStateView;
     [Header("Services")]
     [SerializeField] private UnityAnalyticsService _unityAnalyticsService;
     [SerializeField] private AdsManager _adsManager;
@@ -24,6 +25,7 @@ public class GameRootContext : MonoBehaviour
     private IGameStateProvider _gameStateProvider;
     private GameModel _gameModel;
     private GameStageViewModel _gameStageViewModel;
+    private GameStateViewModel _gameStateViewModel;
 
 
     private void Awake()
@@ -61,8 +63,8 @@ public class GameRootContext : MonoBehaviour
         _disposables.Add(_gameStageViewModel);
         _gameStageView.Bind(_gameStageViewModel);
         
-        
-        
+        _gameStateViewModel = new GameStateViewModel(_gameModel);
+        _gameStateView.Bind(_gameStateViewModel);
         
         // Start Game
         _gameModel.Start();
