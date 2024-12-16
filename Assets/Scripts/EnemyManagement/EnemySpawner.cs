@@ -16,7 +16,7 @@ public class EnemySpawner
     // Dependencies
     private readonly SpawnQueue _spawnQueue;
     private List<EnemyBase> _enemies; // TODO: replace with actual enemy objects from Enemy Manager
-    private EnemyPool _enemyPool;
+    private IEnemyPool _enemyPool;
     private float _firstEnemySpawnDelay;
     // Bosses
     private BossBase _waspBoss;
@@ -44,7 +44,7 @@ public class EnemySpawner
     public EnemySpawner(
         SpawnQueue spawnQueue, 
         List<EnemyBase> enemies,
-        EnemyPool enemyPool,
+        IEnemyPool enemyPool,
         BossBase waspBoss,
         BossBase megamothlingBoss,
         BossBase megabeetleBoss,

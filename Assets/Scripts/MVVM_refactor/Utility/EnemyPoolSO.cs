@@ -1,9 +1,9 @@
 using UnityEngine;
 using UnityEngine.Pool;
 
-public class EnemyPool : MonoBehaviour, IInitializable, IEnemyPool
+[CreateAssetMenu(fileName = "EnemyPoolSO", menuName = "Utility/EnemyPoolSO")]
+public class EnemyPoolSO : ScriptableObject, IInitializable, IEnemyPool
 {
-    // TODO: remove mono behaviour - scriptable object to get prefab links
     [SerializeField] private Enemy _mothlingPrefab;
     [SerializeField] private Enemy _flyPrefab;
     [SerializeField] private Enemy _mothPrefab;
@@ -23,7 +23,6 @@ public class EnemyPool : MonoBehaviour, IInitializable, IEnemyPool
     private int _ladybugCount;
     private int _fireflyCount;
     private int _spiderCount;
-
 
     public void Initialize()
     {
@@ -154,4 +153,3 @@ public class EnemyPool : MonoBehaviour, IInitializable, IEnemyPool
         return null;
     }
 }
-

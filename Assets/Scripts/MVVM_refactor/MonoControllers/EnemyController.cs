@@ -5,7 +5,7 @@ using UnityEngine;
 public class EnemyController : MonoBehaviour, IInitializable
 {
     [Header("------ Enemy Prefabs -------")]
-    [SerializeField] private EnemyPool _enemyPool;
+    [SerializeField] private EnemyPoolSO _enemyPool;
     [Header("------ Boss Prefabs -------")]
     [SerializeField] private BossBase _waspBoss;
     [SerializeField] private BossBase _megamothlingBoss;
