@@ -1,54 +1,61 @@
 using System.Collections;
 using UnityEngine;
 
-public class GameStageView : MonoBehaviour
+public class GameStageView : MonoBehaviour, IInitializable
 {
-    [SerializeField] private float _introDuration;
+    [SerializeField] private IntroGameStageAnimationController _introGameStageAnimationController;
     [SerializeField] private float _waveDuration;
     [SerializeField] private float _prepareDuration;
     [SerializeField] private float _gameoverDuration;
     
     GameStageViewModel _gameStageViewModel;
     
-    public void Bind(GameStageViewModel viewModel)
+    public void Construct(GameStageViewModel viewModel)
     {
         _gameStageViewModel = viewModel;
-        
         _gameStageViewModel.CurrentGameStageState.OnChangedEvent += OnGameStageStateChanged;
-        
+        _introGameStageAnimationController.OnFinishedEvent += OnAnimationFinishedHandler;
+    }
+
+    public void Initialize()
+    {
+        _introGameStageAnimationController.Initialize();
+    }
+
+    private void OnDestroy()
+    {
+        _gameStageViewModel.CurrentGameStageState.OnChangedEvent -= OnGameStageStateChanged;
+        _introGameStageAnimationController.OnFinishedEvent -= OnAnimationFinishedHandler;
     }
 
     private void OnGameStageStateChanged(object sender, Observable<GameStageState>.ChangedEventArgs e)
     {
         switch (e.NewValue)
         {
-            case GameStageState.Intro:
+            case GameStageState.IntroAnimation:
                 Debug.Log(" >> Startinf Intro");
-                StartCoroutine(PlayIntro());
+                _introGameStageAnimationController.Play(8, 8);
                 break;
             case GameStageState.Wave:
                 Debug.Log(" >> Starting Wave");
                 StartCoroutine(PlayWave());
                 break;
-            case GameStageState.Prepare:
+            case GameStageState.PrepareInAnimation:
                 Debug.Log(" >> Starting Prepare");
                 StartCoroutine(PlayPrepare());
                 break;
-            case GameStageState.Gameover:
+            case GameStageState.GameOverAnimation:
                 Debug.Log(" >> Starting Gameover");
                 StartCoroutine(PlayGameover());
                 break;
         }
     }
-    
-    private IEnumerator PlayIntro()
+
+    private void OnAnimationFinishedHandler()
     {
-        Debug.Log("...");
-        yield return new WaitForSeconds(_introDuration);
-        Debug.Log("Intro Finished");
         _gameStageViewModel.HandleCurrentStageStateFinished();
     }
-    
+
     private IEnumerator PlayWave()
     {
         Debug.Log("...");
@@ -56,7 +63,7 @@ public class GameStageView : MonoBehaviour
         Debug.Log("Wave Finished");
         _gameStageViewModel.HandleCurrentStageStateFinished();
     }
-    
+
     private IEnumerator PlayPrepare()
     {
         Debug.Log("...");
@@ -64,7 +71,7 @@ public class GameStageView : MonoBehaviour
         Debug.Log("Prepare Finished");
         _gameStageViewModel.HandleCurrentStageStateFinished();
     }
-    
+
     private IEnumerator PlayGameover()
     {
         Debug.Log("...");
@@ -72,5 +79,4 @@ public class GameStageView : MonoBehaviour
         Debug.Log("Gameover Finished");
         _gameStageViewModel.HandleCurrentStageStateFinished();
     }
-    
 }

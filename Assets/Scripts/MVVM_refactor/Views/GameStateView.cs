@@ -6,7 +6,7 @@ public class GameStateView : MonoBehaviour
     [SerializeField] private GameState _gameState;
     private GameStateViewModel _gameStateViewModel;
     
-    public void Bind(GameStateViewModel viewModel)
+    public void Construct(GameStateViewModel viewModel)
     {
         _gameStateViewModel = viewModel;
         _gameState = _gameStateViewModel.GameState;        

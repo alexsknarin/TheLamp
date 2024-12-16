@@ -44,23 +44,23 @@ public class GameModel
     {
         Debug.Log("!!!!! The Game Has Been Started !!!!!");
         // Start the game
-        CurrentGameStageState = GameStageState.Intro;
+        CurrentGameStageState = GameStageState.IntroAnimation;
     }
     
     public void HandleCurrentStageStateFinished()
     {
         switch (_currentGameStageState)
         {
-            case GameStageState.Intro:
+            case GameStageState.IntroAnimation:
                 CurrentGameStageState = GameStageState.Wave;
                 break;
             case GameStageState.Wave:
-                CurrentGameStageState = GameStageState.Prepare;
+                CurrentGameStageState = GameStageState.PrepareInAnimation;
                 break;
-            case GameStageState.Prepare:
-                CurrentGameStageState = GameStageState.Gameover;
+            case GameStageState.PrepareInAnimation:
+                CurrentGameStageState = GameStageState.GameOverAnimation;
                 break;
-            case GameStageState.Gameover:
+            case GameStageState.GameOverAnimation:
                 Debug.Log("<<<<<<<   Game Finished.  >>>>>>>");
                 break;
         }

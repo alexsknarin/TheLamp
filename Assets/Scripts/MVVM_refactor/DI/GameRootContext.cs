@@ -13,7 +13,9 @@ public class GameRootContext : MonoBehaviour
     [SerializeField] private Game _game;
     [SerializeField] private EnemyManager _enemyManager;
     [SerializeField] private Lamp _lamp;
-    [SerializeField] private GameConfig _gameConfig;
+    [SerializeField] private LampHealthBar _lampHealthBar;
+    // [SerializeField] private GameConfig _gameConfig;
+    
     
     private GameSettingsService _gameSettingsService;
     private UGSAuthenticationService _ugsAuthenticationService;
@@ -46,7 +48,7 @@ public class GameRootContext : MonoBehaviour
         _gameSettingsViewModel.Initialize();
         
         Debug.Log("------ UI Initialization ------");
-        _consentSettingsUIView.Bind(_gameSettingsViewModel);
+        _consentSettingsUIView.Construct(_gameSettingsViewModel);
         _consentSettingsUIView.Initialize();
         
         Debug.Log("------ Analytics Initialization ------");
@@ -61,10 +63,12 @@ public class GameRootContext : MonoBehaviour
         _gameModel = new GameModel(_gameStateProvider.Get());
         _gameStageViewModel = new GameStageViewModel(_gameModel);
         _disposables.Add(_gameStageViewModel);
-        _gameStageView.Bind(_gameStageViewModel);
+        _gameStageView.Construct(_gameStageViewModel);
+        _gameStageView.Initialize();
         
         _gameStateViewModel = new GameStateViewModel(_gameModel);
-        _gameStateView.Bind(_gameStateViewModel);
+        _gameStateView.Construct(_gameStateViewModel);
+        _lampHealthBar.Initialize();
         
         // Start Game
         _gameModel.Start();
