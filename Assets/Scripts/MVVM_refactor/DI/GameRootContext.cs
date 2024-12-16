@@ -3,6 +3,9 @@ using UnityEngine;
 
 public class GameRootContext : MonoBehaviour
 {
+    [Header("Data")]
+    [SerializeField] private GoogleSheetsDataReader _googleSheetsDataReader;
+    [SerializeField] private SOGameConfigProvider _gameConfigProvider;
     [Header("Views")]
     [SerializeField] private ConsentSettingsUIView _consentSettingsUIView;
     [SerializeField] private GameStageView _gameStageView;
@@ -14,6 +17,9 @@ public class GameRootContext : MonoBehaviour
     [SerializeField] private EnemyManager _enemyManager;
     [SerializeField] private Lamp _lamp;
     [SerializeField] private LampHealthBar _lampHealthBar;
+    [Header("Controllers")]
+    [SerializeField] private EnemyController _enemyController;
+    
     // [SerializeField] private GameConfig _gameConfig;
     
     
@@ -28,6 +34,8 @@ public class GameRootContext : MonoBehaviour
     private GameModel _gameModel;
     private GameStageViewModel _gameStageViewModel;
     private GameStateViewModel _gameStateViewModel;
+    private SOGameConfigProvider _soGameConfigProvider;
+    private GameConfigService _gameConfigService;
 
 
     private void Awake()
@@ -59,6 +67,10 @@ public class GameRootContext : MonoBehaviour
         
         
         Debug.Log("------ Game Initialization ------");
+        // Game Config
+        _gameConfigService = new GameConfigService(_gameConfigProvider);
+        _enemyController.Construct(_gameConfigService);
+        // Game State       
         _gameStateProvider = new PlayerPrefsGameStateProvider();
         _gameModel = new GameModel(_gameStateProvider.Get());
         _gameStageViewModel = new GameStageViewModel(_gameModel);
@@ -70,27 +82,31 @@ public class GameRootContext : MonoBehaviour
         _gameStateView.Construct(_gameStateViewModel);
         _lampHealthBar.Initialize();
         
-        // Start Game
-        _gameModel.Start();
         
-        
-        
-        
-        
-        
-        
-        // Configure legcy systems
+        // Configure legacy systems - TEMPORARY
         _enemyManager.Construct(_unityAnalyticsService);
         _lamp.Construct(_unityAnalyticsService);
         _game.Construct(_unityAnalyticsService, _ugsAuthenticationService, _adsManager);
         
         
         
+        // Load Game Config
+        _googleSheetsDataReader.OnDataLoadedEvent += OnGameConfigLoaded;
+        _googleSheetsDataReader.Initialize();
     }
-    
-    
+
+    private void OnGameConfigLoaded()
+    {
+        // Start Game
+        Debug.Log("------ Game Config Loaded ------");
+        _enemyController.Initialize();
+        _gameModel.Start();
+    }
+
+
     private void OnDestroy()
     {
+        _googleSheetsDataReader.OnDataLoadedEvent -= OnGameConfigLoaded;
         foreach (var disposable in _disposables)
         {
             disposable.Dispose();

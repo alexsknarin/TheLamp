@@ -6103,6 +6103,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1037269785}
   - component: {fileID: 1037269784}
+  - component: {fileID: 1037269786}
   m_Layer: 0
   m_Name: GameRootContext
   m_TagString: Untagged
@@ -6122,6 +6123,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 053fe976f149bae4aafcae0b68b4015b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _googleSheetsDataReader: {fileID: 1037269786}
+  _gameConfigProvider: {fileID: 11400000, guid: 3f3efefe08686ca42805053945790993,
+    type: 2}
   _consentSettingsUIView: {fileID: 1291610359}
   _gameStageView: {fileID: 1736170224}
   _gameStateView: {fileID: 646836954}
@@ -6131,7 +6135,7 @@ MonoBehaviour:
   _enemyManager: {fileID: 1818435502}
   _lamp: {fileID: 1934066246}
   _lampHealthBar: {fileID: 969163317}
-  _gameConfig: {fileID: 11400000, guid: 194d016c84ad8bb468bac5bf03c1f861, type: 2}
+  _enemyController: {fileID: 2110688078}
 --- !u!4 &1037269785
 Transform:
   m_ObjectHideFlags: 0
@@ -6147,6 +6151,24 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1037269786
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1037269783}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e1513354e463ec84ab3132f1e9139ab9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _sheetId: 1m_MzdQxi0d-f-TbDgvYGiN5OfjoJGgDTMzX2N5Ci8BY
+  _sheetName: Sheet2
+  _apiKey: AIzaSyCesP8iY_CsymaobmUcWUGS_kvOUuNO_7s
+  _useCachedSpawnData: 0
+  _spawnQueueDataCache: {fileID: 11400000, guid: beab91cd3dcd8c44b88194a9986f9a99,
+    type: 2}
 --- !u!1001 &1037585458
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -12966,6 +12988,65 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2095301580}
   m_CullTransparentMesh: 1
+--- !u!1 &2110688076
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2110688077}
+  - component: {fileID: 2110688078}
+  m_Layer: 0
+  m_Name: GameControllers
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2110688077
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2110688076}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2110688078
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2110688076}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 04361be27104d534d9e668219e8b0e6e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _enemyPool: {fileID: 1818435504}
+  _waspBoss: {fileID: 1966729921}
+  _megamothlingBoss: {fileID: 455450631368144087}
+  _megabeetleBoss: {fileID: 1180215397}
+  _dragonflyBoss: {fileID: 1536401419}
+  _fireflyExplosion: {fileID: 1402077385}
+  _fireflyExplosionRadius: 0.8
+  _explosionDuration: 0.22
+  _maxEnemiesOnScreen: 0
+  _agressionLevel: 0
+  _maxAggressionLevel: 0
+  _isStartAtWaveTestMode: 0
+  _startAtWave: 0
+  _currentWave: 0
+  _firstEnemySpawnDelay: 0
 --- !u!1001 &455450631368144086
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -13276,6 +13357,7 @@ SceneRoots:
   - {fileID: 1595482320}
   - {fileID: 1736170225}
   - {fileID: 646836955}
+  - {fileID: 2110688077}
   - {fileID: 1818435499}
   - {fileID: 1665985693}
   - {fileID: 1449376469}
