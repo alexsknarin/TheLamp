@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class GameModel
+public class GameModel : IDisposable
 {
     private GameState _currentGameState;
     public GameState CurrentGameState
@@ -32,37 +32,114 @@ public class GameModel
     }
     public event Action<GameStageState> OnGameStageStateChangedEvent; 
     
+    private EnemyController _enemyController;
     
-    public GameModel(GameState _gameState)
+    public GameModel(GameState _gameState, EnemyController enemyController)
     {
         _currentGameState = _gameState;
+        _enemyController = enemyController;
+        _enemyController.OnWaveEndEvent += HandleWaveEnd;
         Debug.Log("GameModel created");
         Debug.Log("GameState: " + _gameState.LampCooldownTime);
     }
-    
-    public void Start()
+
+    public void StartGame()
     {
         Debug.Log("!!!!! The Game Has Been Started !!!!!");
         // Start the game
-        CurrentGameStageState = GameStageState.IntroAnimation;
+        CurrentGameStageState = GameStageState.Intro;
     }
     
-    public void HandleCurrentStageStateFinished()
+    private void StartPrepareIn()
+    {
+        CurrentGameStageState = GameStageState.PrepareIn;
+        Debug.Log("Starting PrepareIn");
+    }
+    
+    private void StartPrepare()
+    {
+        CurrentGameStageState = GameStageState.Prepare;
+        Debug.Log("Starting Prepare");
+    }
+    
+    private void StartPrepareOut()
+    {
+        CurrentGameStageState = GameStageState.PrepareOut;
+        Debug.Log("Starting PrepareOut");
+    }
+    
+    private void StartWave()
+    {
+        CurrentGameStageState = GameStageState.Wave;
+        _enemyController.StartWave();
+    }
+
+    public void HandleCurrentStageStateFinished() // TODO: viewModels Should not call this method directly
     {
         switch (_currentGameStageState)
         {
-            case GameStageState.IntroAnimation:
-                CurrentGameStageState = GameStageState.Wave;
+            case GameStageState.Intro:
+                StartPrepareIn();
+                break;
+            case GameStageState.PrepareIn:
+                StartPrepare();
+                break;
+            case GameStageState.Prepare:
+                StartPrepareOut();
+                break;
+            case GameStageState.PrepareOut:
+                StartWave();
                 break;
             case GameStageState.Wave:
-                CurrentGameStageState = GameStageState.PrepareInAnimation;
+                CurrentGameStageState = GameStageState.GameOverOut;
                 break;
-            case GameStageState.PrepareInAnimation:
-                CurrentGameStageState = GameStageState.GameOverAnimation;
-                break;
-            case GameStageState.GameOverAnimation:
+            case GameStageState.GameOverOut:
                 Debug.Log("<<<<<<<   Game Finished.  >>>>>>>");
                 break;
         }
+    }
+
+    // TODO: rename public methods from Handle... to something else 
+    public void HandleIntroEnd()
+    {
+        StartPrepareIn();    
+    }
+    
+    public void HandlePrepareInEnd()
+    {
+        StartPrepare();
+    }
+    
+    private void HandlePrepareEnd()
+    {
+        StartPrepareOut();
+    }
+    
+    public void HandlePrepareOutEnd()
+    {
+        StartWave();
+    }
+    
+    private void HandleWaveEnd()
+    {
+        HandleCurrentStageStateFinished();
+    }
+
+    public void HandleAttackButtonClicked()
+    {
+        if (_currentGameStageState == GameStageState.Prepare)
+        {
+            HandlePrepareEnd(); 
+        }
+        if (_currentGameStageState == GameStageState.Wave)
+        {
+            _enemyController.HandleAttackButtonClicked();
+        }
+        
+    }
+
+    public void Dispose()
+    {
+        throw new NotImplementedException();
     }
 }

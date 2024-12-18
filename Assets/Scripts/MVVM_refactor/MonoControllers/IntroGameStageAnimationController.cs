@@ -5,7 +5,7 @@ using UnityEngine.Rendering;
 public class IntroGameStageAnimationController : MonoBehaviour, IInitializable
 {
     [Header("Settings")]
-    [SerializeField] private bool _skipIntro = false;   
+    [SerializeField] private bool _skip = false;   
     [SerializeField] private float _duration;
     [SerializeField] private float _cameraStartZPosition = -7.1f;
     [SerializeField] private float _cameraEndZPosition = -5.88f;
@@ -47,7 +47,7 @@ public class IntroGameStageAnimationController : MonoBehaviour, IInitializable
     
     public void Play(int currentHealth, int maxHealth)
     {
-        if (_skipIntro)
+        if (_skip)
         {
             SetFinalState();
             return;

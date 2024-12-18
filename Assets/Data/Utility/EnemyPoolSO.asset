@@ -12,10 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f238eba38991224186fcd8fdbe422c9, type: 3}
   m_Name: EnemyPoolSO
   m_EditorClassIdentifier: 
-  _mothlingPrefab: {fileID: 0}
-  _flyPrefab: {fileID: 0}
-  _mothPrefab: {fileID: 0}
-  _ladybugPrefab: {fileID: 0}
-  _fireflyPrefab: {fileID: 0}
-  _spiderPrefab: {fileID: 0}
-  _poolSize: 0
+  _mothlingPrefab: {fileID: 2472047005642060682, guid: 0f4fc343559e8c644a5b39155c7c9079,
+    type: 3}
+  _flyPrefab: {fileID: 5065817594616091563, guid: fb0c5c6a78e6cfa4b9c5530e8ae2c067,
+    type: 3}
+  _mothPrefab: {fileID: 3291430470506879424, guid: c997318186f1bda4f852c425e75498e5,
+    type: 3}
+  _ladybugPrefab: {fileID: 8958940323544418024, guid: 6e04665d54889b4419c7eefc9f74ce61,
+    type: 3}
+  _fireflyPrefab: {fileID: 5128008993713504180, guid: 30693d0a7256f2e4fa015da56e117fa3,
+    type: 3}
+  _spiderPrefab: {fileID: 855794049538210572, guid: 29e249a43a6a16b4c8ae5c14da092490,
+    type: 3}
+  _poolSize: 5

@@ -10,6 +10,7 @@ public class GameRootContext : MonoBehaviour
     [SerializeField] private ConsentSettingsUIView _consentSettingsUIView;
     [SerializeField] private GameStageView _gameStageView;
     [SerializeField] private GameStateView _gameStateView;
+    [SerializeField] private PlayerAttackUIView _playerAttackUIView;
     [Header("Services")]
     [SerializeField] private UnityAnalyticsService _unityAnalyticsService;
     [SerializeField] private AdsManager _adsManager;
@@ -31,11 +32,12 @@ public class GameRootContext : MonoBehaviour
     private GameSettingsModel _gameSettingsModel;
     private GameSettingsViewModel _gameSettingsViewModel;
     private IGameStateProvider _gameStateProvider;
-    private GameModel _gameModel;
     private GameStageViewModel _gameStageViewModel;
     private GameStateViewModel _gameStateViewModel;
     private SOGameConfigProvider _soGameConfigProvider;
     private GameConfigService _gameConfigService;
+    private PlayerAttackViewModel _playerAttackViewModel;
+    private GameModel _gameModel;
 
 
     private void Awake()
@@ -72,12 +74,13 @@ public class GameRootContext : MonoBehaviour
         _enemyController.Construct(_gameConfigService);
         // Game State       
         _gameStateProvider = new PlayerPrefsGameStateProvider();
-        _gameModel = new GameModel(_gameStateProvider.Get());
+        _gameModel = new GameModel(_gameStateProvider.Get(), _enemyController);
         _gameStageViewModel = new GameStageViewModel(_gameModel);
         _disposables.Add(_gameStageViewModel);
         _gameStageView.Construct(_gameStageViewModel);
         _gameStageView.Initialize();
-        
+        _playerAttackViewModel = new PlayerAttackViewModel(_gameModel);
+        _playerAttackUIView.Construct(_playerAttackViewModel); // TODO: need binders instead of construct for views
         _gameStateViewModel = new GameStateViewModel(_gameModel);
         _gameStateView.Construct(_gameStateViewModel);
         _lampHealthBar.Initialize();
@@ -100,7 +103,7 @@ public class GameRootContext : MonoBehaviour
         // Start Game
         Debug.Log("------ Game Config Loaded ------");
         _enemyController.Initialize();
-        _gameModel.Start();
+        _gameModel.StartGame();
     }
 
 

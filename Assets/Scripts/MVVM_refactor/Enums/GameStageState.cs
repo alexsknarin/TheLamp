@@ -1,10 +1,11 @@
 public enum GameStageState
 {
     Loading,
-    IntroAnimation,
-    Wave,
-    PrepareInAnimation,
+    Intro,
+    PrepareIn,
     Prepare,
-    PrepareOutAnimation,
-    GameOverAnimation
+    PrepareOut,
+    Wave,
+    GameOverIn,
+    GameOverOut
 }

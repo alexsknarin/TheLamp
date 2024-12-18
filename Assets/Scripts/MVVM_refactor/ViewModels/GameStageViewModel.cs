@@ -1,9 +1,12 @@
-using UnityEngine;
+using System;
 
 public class GameStageViewModel : IDisposable
 {
     GameModel _gameModel;
-    public Observable<GameStageState> CurrentGameStageState = new Observable<GameStageState>();
+    public event Action<int, int> OnIntroStartedEvent;
+    public event Action<bool, int> OnPrepareInStartedEvent;
+    public event Action OnPrepareOutStartedEvent;
+    
     
     public GameStageViewModel(GameModel gameModel)
     {
@@ -18,11 +21,34 @@ public class GameStageViewModel : IDisposable
 
     private void OnGameStageStateChanged(GameStageState newState)
     {
-        CurrentGameStageState.Value = newState;
+        switch (newState)
+        {
+            case GameStageState.Intro:
+                OnIntroStartedEvent?.Invoke(8, 8);
+                break;
+            case GameStageState.PrepareIn:
+                OnPrepareInStartedEvent?.Invoke(true, 1);
+                break;
+            case GameStageState.PrepareOut:
+                OnPrepareOutStartedEvent?.Invoke();
+                break;
+        }
     }
-
-    public void HandleCurrentStageStateFinished()
+    
+    
+    // External methods to call from views
+    public void HandleIntroEnd()
     {
-        _gameModel.HandleCurrentStageStateFinished();
+        _gameModel.HandleIntroEnd();    
+    }
+    
+    public void HandlePrepareInEnd()
+    {
+        _gameModel.HandlePrepareInEnd();    
+    }
+    
+    public void HandlePrepareOutEnd()
+    {
+        _gameModel.HandlePrepareOutEnd();    
     }
 }
