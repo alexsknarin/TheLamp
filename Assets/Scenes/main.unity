@@ -10262,6 +10262,13 @@ MonoBehaviour:
   _skip: 0
   _duration: 2
   _waveText: {fileID: 537243428}
+  _upgradeButtonsPanel: {fileID: 1256375426}
+  _upgradeHealthButton: {fileID: 949593468}
+  _upgradeAttackButton: {fileID: 619549490}
+  _upgradeCooldownButton: {fileID: 651099616}
+  _hintText1: {fileID: 1733480390}
+  _hintText2: {fileID: 40797313}
+  _hintText3: {fileID: 1450694833}
 --- !u!114 &1736170228
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10277,6 +10284,13 @@ MonoBehaviour:
   _skip: 0
   _duration: 2
   _waveText: {fileID: 537243428}
+  _upgradeButtonsPanel: {fileID: 1256375426}
+  _upgradeHealthButton: {fileID: 949593468}
+  _upgradeAttackButton: {fileID: 619549490}
+  _upgradeCooldownButton: {fileID: 651099616}
+  _hintText1: {fileID: 1733480390}
+  _hintText2: {fileID: 40797313}
+  _hintText3: {fileID: 1450694833}
 --- !u!4 &1755611450 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 92097553111088338, guid: 556ccd576c35d634e88ba039c8700cfa,

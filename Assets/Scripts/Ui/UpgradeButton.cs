@@ -18,4 +18,15 @@ public class UpgradeButton : MonoBehaviour
         _button.interactable = false;
         _text.color = Color.grey;
     }
+    
+    public void SetVisibilityLevel(float visibilityLevel)
+    {
+        Color textColor = _text.color;
+        textColor.a = visibilityLevel;
+        _text.color = textColor;
+        
+        Color buttonColor = _button.image.color;
+        buttonColor.a = visibilityLevel;
+        _button.image.color = buttonColor;
+    }
 }
