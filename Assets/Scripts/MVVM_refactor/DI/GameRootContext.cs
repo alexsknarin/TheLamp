@@ -11,6 +11,7 @@ public class GameRootContext : MonoBehaviour
     [SerializeField] private GameStageView _gameStageView;
     [SerializeField] private GameStateView _gameStateView;
     [SerializeField] private PlayerAttackUIView _playerAttackUIView;
+    [SerializeField] private LampAttackView _lampAttackView;
     [Header("Services")]
     [SerializeField] private UnityAnalyticsService _unityAnalyticsService;
     [SerializeField] private AdsManager _adsManager;
@@ -20,6 +21,7 @@ public class GameRootContext : MonoBehaviour
     [SerializeField] private LampHealthBar _lampHealthBar;
     [Header("Controllers")]
     [SerializeField] private EnemyController _enemyController;
+    [SerializeField] private PlayerAttackController _playerAttackController;
     
     // [SerializeField] private GameConfig _gameConfig;
     
@@ -34,6 +36,7 @@ public class GameRootContext : MonoBehaviour
     private IGameStateProvider _gameStateProvider;
     private GameStageViewModel _gameStageViewModel;
     private GameStateViewModel _gameStateViewModel;
+    private PlayerWaveViewModel _playerWaveViewModel;
     private SOGameConfigProvider _soGameConfigProvider;
     private GameConfigService _gameConfigService;
     private PlayerAttackViewModel _playerAttackViewModel;
@@ -74,7 +77,7 @@ public class GameRootContext : MonoBehaviour
         _enemyController.Construct(_gameConfigService);
         // Game State       
         _gameStateProvider = new PlayerPrefsGameStateProvider();
-        _gameModel = new GameModel(_gameStateProvider.Get(), _enemyController);
+        _gameModel = new GameModel(_gameStateProvider.Get(), _enemyController, _gameConfigService, _playerAttackController);
         _gameStageViewModel = new GameStageViewModel(_gameModel);
         _disposables.Add(_gameStageViewModel);
         _gameStageView.Construct(_gameStageViewModel);
@@ -84,6 +87,11 @@ public class GameRootContext : MonoBehaviour
         _gameStateViewModel = new GameStateViewModel(_gameModel);
         _gameStateView.Construct(_gameStateViewModel);
         _lampHealthBar.Initialize();
+        _playerWaveViewModel = new PlayerWaveViewModel(_gameModel);
+        _lampAttackView.Construct(_playerWaveViewModel, _gameConfigService);
+        _lampAttackView.Initialize();
+        _disposables.Add(_playerWaveViewModel);
+        
         
         
         // Configure legacy systems - TEMPORARY

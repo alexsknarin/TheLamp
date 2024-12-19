@@ -31,16 +31,35 @@ public class GameModel : IDisposable
         }
     }
     public event Action<GameStageState> OnGameStageStateChangedEvent; 
+    public event Action<float> OnLampAttackStartedEvent;
     
+    // Dependencies
+    private IGameConfigService _gameConfigService;
     private EnemyController _enemyController;
+    private PlayerAttackController _playerAttackController;
     
-    public GameModel(GameState _gameState, EnemyController enemyController)
+    
+    public GameModel(
+        GameState _gameState, 
+        EnemyController enemyController, 
+        IGameConfigService gameConfigService,
+        PlayerAttackController playerAttackController)
     {
         _currentGameState = _gameState;
         _enemyController = enemyController;
+        _gameConfigService = gameConfigService;
+        _playerAttackController = playerAttackController;
+        
         _enemyController.OnWaveEndEvent += HandleWaveEnd;
+        _playerAttackController.OnAttackEndedEvent += HandleLampAttackEnded;
         Debug.Log("GameModel created");
         Debug.Log("GameState: " + _gameState.LampCooldownTime);
+    }
+
+    public void Dispose()
+    {
+        _enemyController.OnWaveEndEvent -= HandleWaveEnd;
+        _playerAttackController.OnAttackEndedEvent -= HandleLampAttackEnded;
     }
 
     public void StartGame()
@@ -48,26 +67,27 @@ public class GameModel : IDisposable
         Debug.Log("!!!!! The Game Has Been Started !!!!!");
         // Start the game
         CurrentGameStageState = GameStageState.Intro;
+        _playerAttackController.SetDuration(_gameConfigService.PlayerConfig.AttackDuration); // Attack Duration
     }
-    
+
     private void StartPrepareIn()
     {
         CurrentGameStageState = GameStageState.PrepareIn;
         Debug.Log("Starting PrepareIn");
     }
-    
+
     private void StartPrepare()
     {
         CurrentGameStageState = GameStageState.Prepare;
         Debug.Log("Starting Prepare");
     }
-    
+
     private void StartPrepareOut()
     {
         CurrentGameStageState = GameStageState.PrepareOut;
         Debug.Log("Starting PrepareOut");
     }
-    
+
     private void StartWave()
     {
         CurrentGameStageState = GameStageState.Wave;
@@ -100,26 +120,28 @@ public class GameModel : IDisposable
     }
 
     // TODO: rename public methods from Handle... to something else 
+
+
     public void HandleIntroEnd()
     {
         StartPrepareIn();    
     }
-    
+
     public void HandlePrepareInEnd()
     {
         StartPrepare();
     }
-    
+
     private void HandlePrepareEnd()
     {
         StartPrepareOut();
     }
-    
+
     public void HandlePrepareOutEnd()
     {
         StartWave();
     }
-    
+
     private void HandleWaveEnd()
     {
         HandleCurrentStageStateFinished();
@@ -129,17 +151,22 @@ public class GameModel : IDisposable
     {
         if (_currentGameStageState == GameStageState.Prepare)
         {
-            HandlePrepareEnd(); 
+            HandlePrepareEnd();
+            OnLampAttackStartedEvent?.Invoke(1.0f); // Attack Power
+            _playerAttackController.Play();
         }
         if (_currentGameStageState == GameStageState.Wave)
         {
-            _enemyController.HandleAttackButtonClicked();
+            Debug.Log("Attack button clicked");
+            OnLampAttackStartedEvent?.Invoke(1.0f); // Attack Power
+            _playerAttackController.Play();
+            // _enemyController.HandleAttackButtonClicked();
         }
         
     }
 
-    public void Dispose()
+    private void HandleLampAttackEnded()
     {
-        throw new NotImplementedException();
+        Debug.Log("Lamp Attack Ended");
     }
 }

@@ -39,15 +39,19 @@ public class EnemyController : MonoBehaviour, IInitializable
     private EnemiesFireflyExploder _enemiesFireflyExploder;
     
     private bool _isWaveInitialized = false;
+    private bool _isGameActive = false;
+    private int _enemiesKilled;
+    
     // Dependencies    
     private IGameConfigService _gameConfigService;
-    
+
     public void Construct(IGameConfigService gameConfigService)
     {
         _gameConfigService = gameConfigService;
     }
     
     // Events
+    public event Action OnWaveStartEvent;
     public event Action<EnemyBase> OnEnemySpawnedEvent;
     public event Action<EnemyBase> OnEnemyDeadEvent;
     public event Action<EnemyBase> OnBossSpawnedEvent;
@@ -110,6 +114,7 @@ public class EnemyController : MonoBehaviour, IInitializable
         
         _currentWave = _startAtWave;
         _isWaveInitialized = false;
+        _isGameActive = true;
         
         
         // Debug Spawn Queue
@@ -128,8 +133,42 @@ public class EnemyController : MonoBehaviour, IInitializable
     public void StartWave() // TODO: add wave as parameter
     {
         Debug.Log("Wave started");
+        if(!_isWaveInitialized)
+        {
+            SetupWave(1);
+            OnWaveStartEvent?.Invoke();
+        }
     }
+    
+    private void SetupWave(int waveNum)
+    {
+        _enemySpawner.StartWave(waveNum);
+        _enemyAttacker.StartWave(waveNum);
 
+        _enemiesKilled = 0;
+        _isWaveInitialized = true;
+    }
+    
+
+    private void Update()
+    {
+
+        if (_isWaveInitialized && _isGameActive)
+        {
+            _enemySpawner.Tick();   
+            _enemyAttacker.Tick();
+            _enemiesFireflyExploder.Tick();
+            
+            if (_enemiesKilled == _enemySpawner.EnemiesWaveCount)
+            {
+                _isWaveInitialized = false;
+                _currentWave++;
+                OnWaveEndEvent?.Invoke(); // TODO: we need to for animation to end
+            }
+        }
+    }
+    
+    
     public void HandleAttackButtonClicked()
     {
         Debug.Log("Attack button clicked");

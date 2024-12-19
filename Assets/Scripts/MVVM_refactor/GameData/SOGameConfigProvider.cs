@@ -8,4 +8,7 @@ public class SOGameConfigProvider : ScriptableObject, IGameConfigProvider
     
     [SerializeField] private ScoreConfig _scoreConfig;
     public ScoreConfig ScoreConfig => _scoreConfig;
+    
+    [SerializeField] private PlayerConfig _playerConfig;
+    public PlayerConfig PlayerConfig => _playerConfig;
 }

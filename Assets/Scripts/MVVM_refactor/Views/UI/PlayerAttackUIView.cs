@@ -1,7 +1,8 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class PlayerAttackUIView : MonoBehaviour
+public class PlayerAttackUIView : MonoBehaviour, IPointerDownHandler
 {
     [SerializeField] private Button _button;
     private PlayerAttackViewModel _playerAttackViewModel;
@@ -9,12 +10,10 @@ public class PlayerAttackUIView : MonoBehaviour
     public void Construct(PlayerAttackViewModel playerAttackViewModel)
     {
         _playerAttackViewModel = playerAttackViewModel;
-        _button.onClick.AddListener(_playerAttackViewModel.HandleAttackButtonClicked);
     }
     
-    private void OnDestroy()
+    public void OnPointerDown(PointerEventData eventData)
     {
-        _button.onClick.RemoveListener(_playerAttackViewModel.HandleAttackButtonClicked);
+        _playerAttackViewModel.HandleAttackButtonClicked();
     }
-    
 }
