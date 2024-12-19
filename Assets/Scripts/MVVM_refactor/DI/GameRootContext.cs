@@ -12,6 +12,7 @@ public class GameRootContext : MonoBehaviour
     [SerializeField] private GameStateView _gameStateView;
     [SerializeField] private PlayerAttackUIView _playerAttackUIView;
     [SerializeField] private LampAttackView _lampAttackView;
+    [SerializeField] private LampCooldownView _lampCooldownView;
     [Header("Services")]
     [SerializeField] private UnityAnalyticsService _unityAnalyticsService;
     [SerializeField] private AdsManager _adsManager;
@@ -22,6 +23,7 @@ public class GameRootContext : MonoBehaviour
     [Header("Controllers")]
     [SerializeField] private EnemyController _enemyController;
     [SerializeField] private PlayerAttackController _playerAttackController;
+    [SerializeField] private PlayerCooldownController _playerCooldownController;
     
     // [SerializeField] private GameConfig _gameConfig;
     
@@ -77,7 +79,12 @@ public class GameRootContext : MonoBehaviour
         _enemyController.Construct(_gameConfigService);
         // Game State       
         _gameStateProvider = new PlayerPrefsGameStateProvider();
-        _gameModel = new GameModel(_gameStateProvider.Get(), _enemyController, _gameConfigService, _playerAttackController);
+        _gameModel = new GameModel(
+            _gameStateProvider.Get(), 
+            _enemyController, 
+            _gameConfigService, 
+            _playerAttackController, 
+            _playerCooldownController);
         _gameStageViewModel = new GameStageViewModel(_gameModel);
         _disposables.Add(_gameStageViewModel);
         _gameStageView.Construct(_gameStageViewModel);
@@ -90,6 +97,8 @@ public class GameRootContext : MonoBehaviour
         _playerWaveViewModel = new PlayerWaveViewModel(_gameModel);
         _lampAttackView.Construct(_playerWaveViewModel, _gameConfigService);
         _lampAttackView.Initialize();
+        _lampCooldownView.Construct(_playerWaveViewModel);
+        _lampCooldownView.Initialize();
         _disposables.Add(_playerWaveViewModel);
         
         

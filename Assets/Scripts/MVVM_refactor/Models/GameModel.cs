@@ -13,7 +13,7 @@ public class GameModel : IDisposable
             OnGameStateChangedEvent?.Invoke(value);
         }
     }
-    public event Action<GameState> OnGameStateChangedEvent; // TODO: do we need this event?
+    public event Action<GameState> OnGameStateChangedEvent; // TODO: do we need this event? Expose separate properties instead of the whole GameState
     
     
     private GameStageState _currentGameStageState = GameStageState.Loading;
@@ -30,28 +30,54 @@ public class GameModel : IDisposable
             }
         }
     }
-    public event Action<GameStageState> OnGameStageStateChangedEvent; 
+    public event Action<GameStageState> OnGameStageStateChangedEvent;
+    
+    
+    private float _currentPower;
+    public float CurrentPower
+    {
+        get => _currentPower;
+        private set
+        {
+            _currentPower = value;
+            OnPowerChangedEvent?.Invoke(value);
+        }
+    }
+    public event Action<float> OnPowerChangedEvent;
+    
+    
+    
+    
+    
     public event Action<float> OnLampAttackStartedEvent;
+    
+    
+    
+    
+
     
     // Dependencies
     private IGameConfigService _gameConfigService;
     private EnemyController _enemyController;
     private PlayerAttackController _playerAttackController;
+    private PlayerCooldownController _playerCooldownController;
     
     
     public GameModel(
         GameState _gameState, 
         EnemyController enemyController, 
         IGameConfigService gameConfigService,
-        PlayerAttackController playerAttackController)
+        PlayerAttackController playerAttackController,
+        PlayerCooldownController playerCooldownController)
     {
         _currentGameState = _gameState;
         _enemyController = enemyController;
         _gameConfigService = gameConfigService;
         _playerAttackController = playerAttackController;
-        
+        _playerCooldownController = playerCooldownController;
         _enemyController.OnWaveEndEvent += HandleWaveEnd;
         _playerAttackController.OnAttackEndedEvent += HandleLampAttackEnded;
+        _playerCooldownController.OnPowerChangedEvent += HandlePowerChanged;
         Debug.Log("GameModel created");
         Debug.Log("GameState: " + _gameState.LampCooldownTime);
     }
@@ -68,6 +94,8 @@ public class GameModel : IDisposable
         // Start the game
         CurrentGameStageState = GameStageState.Intro;
         _playerAttackController.SetDuration(_gameConfigService.PlayerConfig.AttackDuration); // Attack Duration
+        _playerCooldownController.SetDuration(_currentGameState.LampCooldownTime); // Cooldown Duration
+        _currentPower = 1.0f;
     }
 
     private void StartPrepareIn()
@@ -119,8 +147,8 @@ public class GameModel : IDisposable
         }
     }
 
-    // TODO: rename public methods from Handle... to something else 
 
+    // TODO: rename public methods from Handle... to something else 
 
     public void HandleIntroEnd()
     {
@@ -158,7 +186,7 @@ public class GameModel : IDisposable
         if (_currentGameStageState == GameStageState.Wave)
         {
             Debug.Log("Attack button clicked");
-            OnLampAttackStartedEvent?.Invoke(1.0f); // Attack Power
+            OnLampAttackStartedEvent?.Invoke(CurrentPower); // Attack Power
             _playerAttackController.Play();
             // _enemyController.HandleAttackButtonClicked();
         }
@@ -168,5 +196,11 @@ public class GameModel : IDisposable
     private void HandleLampAttackEnded()
     {
         Debug.Log("Lamp Attack Ended");
+        _playerCooldownController.StartCooldown();
+    }
+
+    private void HandlePowerChanged(float power)
+    {
+        CurrentPower = power;
     }
 }

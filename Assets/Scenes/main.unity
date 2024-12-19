@@ -6145,6 +6145,7 @@ MonoBehaviour:
   _gameStateView: {fileID: 646836954}
   _playerAttackUIView: {fileID: 1477144268}
   _lampAttackView: {fileID: 1934066256}
+  _lampCooldownView: {fileID: 1934066257}
   _unityAnalyticsService: {fileID: 1595482322}
   _adsManager: {fileID: 1665985692}
   _game: {fileID: 1818435501}
@@ -6153,6 +6154,7 @@ MonoBehaviour:
   _lampHealthBar: {fileID: 969163317}
   _enemyController: {fileID: 2110688078}
   _playerAttackController: {fileID: 2110688079}
+  _playerCooldownController: {fileID: 2110688080}
 --- !u!4 &1037269785
 Transform:
   m_ObjectHideFlags: 0
@@ -11020,6 +11022,7 @@ GameObject:
   - component: {fileID: 1934066253}
   - component: {fileID: 1934066255}
   - component: {fileID: 1934066256}
+  - component: {fileID: 1934066257}
   m_Layer: 0
   m_Name: LampObject
   m_TagString: Lamp
@@ -12109,6 +12112,266 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &1934066257
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1934066237}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5bd789ffb2c43c04786b0e4a7235d13c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _lampEmissionController: {fileID: 23663153}
+  _lampCooldownAnimCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0.17993754
+      outSlope: 0.17993754
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.21181126
+      value: 0.038112797
+      inSlope: -0.1403405
+      outSlope: -0.1403405
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.54146755
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.2879696
+      value: 0.15626255
+      inSlope: 3.37209
+      outSlope: 3.37209
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 1
+    - serializedVersion: 3
+      time: 0.30096856
+      value: 0.3
+      inSlope: 6.68039
+      outSlope: 13.134765
+      tangentMode: 1
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.5541632
+    - serializedVersion: 3
+      time: 0.30470696
+      value: 0.5181764
+      inSlope: -0.04001982
+      outSlope: 0.1016665
+      tangentMode: 1
+      weightedMode: 0
+      inWeight: 1
+      outWeight: 1
+    - serializedVersion: 3
+      time: 0.33520097
+      value: 0.32089195
+      inSlope: 0.6580151
+      outSlope: 0.08265123
+      tangentMode: 1
+      weightedMode: 0
+      inWeight: 1
+      outWeight: 0.16502763
+    - serializedVersion: 3
+      time: 0.5725509
+      value: 0.39363065
+      inSlope: 0.8766273
+      outSlope: 2.7873766
+      tangentMode: 1
+      weightedMode: 0
+      inWeight: 0.193909
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.60035527
+      value: 0.6
+      inSlope: 5.294428
+      outSlope: 1.0015469
+      tangentMode: 1
+      weightedMode: 0
+      inWeight: 0.05733992
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.6100238
+      value: 0.9070914
+      inSlope: 1.0014366
+      outSlope: 1.0014366
+      tangentMode: 1
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.6489571
+      value: 0.642481
+      inSlope: 1.0013088
+      outSlope: 0.08471012
+      tangentMode: 1
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.16395243
+    - serializedVersion: 3
+      time: 0.886227
+      value: 0.7074358
+      inSlope: 0.5724607
+      outSlope: 1.5647085
+      tangentMode: 1
+      weightedMode: 0
+      inWeight: 0.21072757
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.914254
+      value: 0.9551433
+      inSlope: 6.2328267
+      outSlope: 1.0006784
+      tangentMode: 1
+      weightedMode: 0
+      inWeight: 0.07015556
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.9163337
+      value: 1.2561011
+      inSlope: 0.5974351
+      outSlope: 0.5974351
+      tangentMode: 1
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.9621628
+      value: 0.984661
+      inSlope: 0.38064367
+      outSlope: 0.38064367
+      tangentMode: 1
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0.40539506
+      outSlope: 0.40539506
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _lampNoiseAmountAnimCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0.44055176
+      inSlope: 0.1251002
+      outSlope: 0.1251002
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.9844447
+    - serializedVersion: 3
+      time: 0.1456307
+      value: 0.30615857
+      inSlope: -1.6062567
+      outSlope: 0.060977515
+      tangentMode: 1
+      weightedMode: 0
+      inWeight: 0.1427346
+      outWeight: 0.5716428
+    - serializedVersion: 3
+      time: 0.29466638
+      value: 0.17962885
+      inSlope: 0.09134563
+      outSlope: 0.09134563
+      tangentMode: 1
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.2992417
+      value: 0.02874114
+      inSlope: 0.09000846
+      outSlope: 0.09000846
+      tangentMode: 1
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.3831259
+      value: 0.049923435
+      inSlope: 0.082297735
+      outSlope: 0.082297735
+      tangentMode: 1
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.59146327
+      value: 0.13583758
+      inSlope: 0.02766793
+      outSlope: 0.02766793
+      tangentMode: 1
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.5993227
+      value: 0.053939044
+      inSlope: 0.08698518
+      outSlope: 0.08698518
+      tangentMode: 1
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.7021455
+      value: 0.06305802
+      inSlope: 0.09003914
+      outSlope: 0.09003914
+      tangentMode: 1
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.8818094
+      value: 0.11492254
+      inSlope: 0.090955414
+      outSlope: 0.090955414
+      tangentMode: 1
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.9018412
+      value: 0.081165716
+      inSlope: 0.08999999
+      outSlope: 0.08999999
+      tangentMode: 1
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.99938965
+      value: 0.07364258
+      inSlope: -0.07712205
+      outSlope: -0.07712205
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _lampAttackZoneRenderer: {fileID: 1464268262}
 --- !u!1 &1944166815
 GameObject:
   m_ObjectHideFlags: 0
@@ -13240,6 +13503,7 @@ GameObject:
   - component: {fileID: 2110688077}
   - component: {fileID: 2110688078}
   - component: {fileID: 2110688079}
+  - component: {fileID: 2110688080}
   m_Layer: 0
   m_Name: GameControllers
   m_TagString: Untagged
@@ -13299,6 +13563,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 948e0ca97dd498349b419f2d15ef189c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2110688080
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2110688076}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c3ab67ed5a2d77469135adc505bbf7c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1001 &455450631368144086
