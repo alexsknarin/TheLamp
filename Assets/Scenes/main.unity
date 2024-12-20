@@ -6172,7 +6172,6 @@ MonoBehaviour:
   _lampHealthBarController: {fileID: 969163320}
   _enemyController: {fileID: 2110688078}
   _playerAttackController: {fileID: 2110688079}
-  _playerCooldownController: {fileID: 2110688080}
   _playerCollidersPropertyController: {fileID: 1934066258}
 --- !u!4 &1037269785
 Transform:
@@ -13549,7 +13548,6 @@ GameObject:
   - component: {fileID: 2110688077}
   - component: {fileID: 2110688078}
   - component: {fileID: 2110688079}
-  - component: {fileID: 2110688080}
   m_Layer: 0
   m_Name: GameControllers
   m_TagString: Untagged
@@ -13609,18 +13607,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 948e0ca97dd498349b419f2d15ef189c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &2110688080
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2110688076}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4c3ab67ed5a2d77469135adc505bbf7c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1001 &455450631368144086
