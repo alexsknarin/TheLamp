@@ -25,6 +25,7 @@ public class GameRootContext : MonoBehaviour
     [SerializeField] private EnemyController _enemyController;
     [SerializeField] private PlayerAttackController _playerAttackController;
     [SerializeField] private PlayerCollidersPropertyController _playerCollidersPropertyController;
+    [SerializeField] private PlayerEnemyInteractionHandler _playerEnemyInteractionHandler;
     
     // [SerializeField] private GameConfig _gameConfig;
     
@@ -85,7 +86,8 @@ public class GameRootContext : MonoBehaviour
             _enemyController, 
             _gameConfigService, 
             _playerAttackController, 
-            _playerCollidersPropertyController);
+            _playerCollidersPropertyController,
+            _playerEnemyInteractionHandler);
         _lampHealthBarController.Initialize();
         _gameStageViewModel = new GameStageViewModel(_gameModel);
         _disposables.Add(_gameStageViewModel);
@@ -102,6 +104,7 @@ public class GameRootContext : MonoBehaviour
         _lampCooldownView.Initialize();
         _disposables.Add(_playerGameplayViewModel);
         _lampHealthBarView.Construct(_playerGameplayViewModel);
+        _playerEnemyInteractionHandler.Initialize();
         
         
         

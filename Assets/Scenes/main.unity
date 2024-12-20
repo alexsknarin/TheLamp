@@ -6173,6 +6173,7 @@ MonoBehaviour:
   _enemyController: {fileID: 2110688078}
   _playerAttackController: {fileID: 2110688079}
   _playerCollidersPropertyController: {fileID: 1934066258}
+  _playerEnemyInteractionHandler: {fileID: 1934066260}
 --- !u!4 &1037269785
 Transform:
   m_ObjectHideFlags: 0
@@ -11038,8 +11039,9 @@ GameObject:
   - component: {fileID: 1934066255}
   - component: {fileID: 1934066256}
   - component: {fileID: 1934066257}
-  - component: {fileID: 1934066258}
   - component: {fileID: 1934066259}
+  - component: {fileID: 1934066258}
+  - component: {fileID: 1934066260}
   m_Layer: 0
   m_Name: LampObject
   m_TagString: Lamp
@@ -12417,6 +12419,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _lampHealthBarController: {fileID: 969163320}
+--- !u!114 &1934066260
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1934066237}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe81fab216af44d4fab520f98b8565a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _lampCollisionHandler: {fileID: 1010240888}
+  _lampAttackExitZoneCollisionHandler: {fileID: 452042971}
 --- !u!1 &1944166815
 GameObject:
   m_ObjectHideFlags: 0

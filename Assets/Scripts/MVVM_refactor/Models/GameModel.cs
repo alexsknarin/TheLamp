@@ -76,19 +76,22 @@ public class GameModel : IDisposable
     private EnemyController _enemyController;
     private PlayerAttackController _playerAttackController;
     PlayerCollidersPropertyController _playerCollidersPropertyController;
+    PlayerEnemyInteractionHandler _playerEnemyInteractionHandler;
    
     public GameModel(
         GameState _gameState, 
         EnemyController enemyController, 
         IGameConfigService gameConfigService,
         PlayerAttackController playerAttackController,
-        PlayerCollidersPropertyController playerCollidersPropertyController)
+        PlayerCollidersPropertyController playerCollidersPropertyController,
+        PlayerEnemyInteractionHandler playerEnemyInteractionHandler)
     {
         _currentGameState = _gameState;
         _enemyController = enemyController;
         _gameConfigService = gameConfigService;
         _playerAttackController = playerAttackController;
         _playerCollidersPropertyController = playerCollidersPropertyController;
+        _playerEnemyInteractionHandler = playerEnemyInteractionHandler;
         
         _enemyController.OnWaveEndEvent += HandleWaveEnd;
         _playerAttackController.OnAttackEndedEvent += HandleLampAttackEnded;
@@ -211,6 +214,7 @@ public class GameModel : IDisposable
                 _isAttacking = true;
                 _playerAttackController.PlayAttack();
                 OnLampAttackStartedEvent?.Invoke(CurrentPower); // Attack Power
+                _playerEnemyInteractionHandler.LampAttack();
             }
         }
         
