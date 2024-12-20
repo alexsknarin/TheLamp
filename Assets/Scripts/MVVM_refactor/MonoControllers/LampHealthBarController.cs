@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class LampHealthBar : MonoBehaviour, IInitializable
+public class LampHealthBarController : MonoBehaviour, IInitializable
 {
     [SerializeField] private MeshRenderer _healthBarMeshRenderer;
     private Transform _healthBarTransform;
@@ -14,22 +14,23 @@ public class LampHealthBar : MonoBehaviour, IInitializable
         _healthBarTransform = transform;
         _healthBarMaterial = _healthBarMeshRenderer.material;
     }
-
-    public void UpdateHealth(float normalizedHealth, int actualHealth)
+    
+    public void SetHealth(float health)
     {
-        _healthBarMaterial.SetFloat("_Health", normalizedHealth);
-        if (actualHealth == 1)
-        {
-            _healthBarMaterial.SetInt("_isLastHealth", 1);    
-        }
-        else
-        {
-            _healthBarMaterial.SetInt("_isLastHealth", 0);
-        }
-        
+        _healthBarMaterial.SetFloat("_Health", health);
         Vector3 rotation = Vector3.zero;
-        rotation.y = Mathf.Lerp(109, 0, normalizedHealth);
+        rotation.y = Mathf.Lerp(109, 0, health);
         _healthBarTransform.localEulerAngles = rotation;
+    }
+    
+    public void EnableLastHealth()
+    {
+        _healthBarMaterial.SetInt("_isLastHealth", 1);
+    }
+    
+    public void DisableLastHealth()
+    {
+        _healthBarMaterial.SetInt("_isLastHealth", 0);
     }
     
     public void PlayUpgrade()

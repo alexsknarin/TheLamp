@@ -15,7 +15,7 @@ public class IntroGameStageAnimationController : MonoBehaviour, IInitializable
     [SerializeField] private Volume _postProcessingVolume;
     [Header("Lamp Dependencies")]
     [SerializeField] private AnimationCurve _animCurve;
-    [SerializeField] private LampHealthBar _lampHealthBar;
+    [SerializeField] private LampHealthBarController _lampHealthBarController;
     [SerializeField] private LampEmissionController _lampEmissionController;
     [SerializeField] private MeshRenderer _lampAttackZoneRenderer;
     [SerializeField] private AnimationCurve _lampIntensityAnimCurve;
@@ -26,8 +26,7 @@ public class IntroGameStageAnimationController : MonoBehaviour, IInitializable
 
     private float _localTime;
     private bool _isPlaying;
-    private int _currentHealth;
-    private float _currentHealthNormalized;
+    private float _currentHealth;
     
     public event Action OnFinishedEvent;
 
@@ -45,15 +44,14 @@ public class IntroGameStageAnimationController : MonoBehaviour, IInitializable
         _isPlaying = false;
     }
     
-    public void Play(int currentHealth, int maxHealth)
+    public void Play(float normalizedHealth)
     {
         if (_skip)
         {
             SetFinalState();
             return;
         }
-        _currentHealth = currentHealth;
-        _currentHealthNormalized = (float)currentHealth / maxHealth;
+        _currentHealth = normalizedHealth;
         _lampAttackZoneRenderer.gameObject.SetActive(true);
         
         _localTime = 0;
@@ -75,8 +73,8 @@ public class IntroGameStageAnimationController : MonoBehaviour, IInitializable
             _cameraTransform.position = cameraPosition;
             
             float phaseAnimated = _animCurve.Evaluate(phase);
-            float health = Mathf.Lerp(0, _currentHealthNormalized, phaseAnimated);
-            _lampHealthBar.UpdateHealth(health, 2);
+            float health = Mathf.Lerp(0, _currentHealth, phaseAnimated);
+            _lampHealthBarController.SetHealth(health);
             _lampEmissionController.Intensity = _lampIntensityAnimCurve.Evaluate(phase);
             _lampEmissionController.BlockedModeMix = _lampNoiseAmountAnimCurve.Evaluate(phase);
             _lampAttackZoneMaterial.SetFloat("_Alpha", Mathf.Lerp(0, 0.005f, _lampIntensityAnimCurve.Evaluate(phase)));
@@ -94,7 +92,7 @@ public class IntroGameStageAnimationController : MonoBehaviour, IInitializable
         _cameraTransform.position = cameraPosition;
         _colorAdjustments.postExposure.Override(0);
         // Lamp
-        _lampHealthBar.UpdateHealth(_currentHealthNormalized, _currentHealth);
+        _lampHealthBarController.SetHealth(_currentHealth);
         _lampEmissionController.Intensity = _lampIntensityAnimCurve.Evaluate(1);
         _lampEmissionController.BlockedModeMix = _lampNoiseAmountAnimCurve.Evaluate(1);
         _lampAttackZoneMaterial.SetFloat("_Alpha", 0.005f);    

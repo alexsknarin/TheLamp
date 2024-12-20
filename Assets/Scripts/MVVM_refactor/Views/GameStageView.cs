@@ -6,10 +6,6 @@ public class GameStageView : MonoBehaviour, IInitializable
     [SerializeField] private IntroGameStageAnimationController _introGameStageAnimationController;
     [SerializeField] private PrepareInGameStageAnimationController _prepareInGameStageAnimationController;
     [SerializeField] private PrepareOutGameStageAnimationController _prepareOutGameStageAnimationController;
-    [SerializeField] private float _waveDuration;
-    [SerializeField] private float _prepareDuration;
-    [SerializeField] private float _gameoverDuration;
-    
     GameStageViewModel _gameStageViewModel;
     
     public void Construct(GameStageViewModel viewModel)
@@ -40,9 +36,9 @@ public class GameStageView : MonoBehaviour, IInitializable
     }
     
     
-    public void StartIntro(int currentHealth, int maxHealth)
+    public void StartIntro(float normalizedHealth)
     {
-        _introGameStageAnimationController.Play(currentHealth, maxHealth);
+        _introGameStageAnimationController.Play(normalizedHealth);
     }
     
     private void StartPrepareIn(bool isUpgradeUiRequired, int waveNum)

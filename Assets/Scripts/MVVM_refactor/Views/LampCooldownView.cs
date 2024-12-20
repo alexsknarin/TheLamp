@@ -9,17 +9,17 @@ public class LampCooldownView : MonoBehaviour, IInitializable
     [SerializeField] private MeshRenderer _lampAttackZoneRenderer;
     private Material _lampAttackZoneMaterial;
     
-    private PlayerWaveViewModel _playerWaveViewModel;
+    private PlayerGameplayViewModel _playerGameplayViewModel;
 
-    public void Construct(PlayerWaveViewModel playerWaveViewModel)
+    public void Construct(PlayerGameplayViewModel playerGameplayViewModel)
     {
-        _playerWaveViewModel = playerWaveViewModel;
-        _playerWaveViewModel.Power.OnChangedEvent += SetPower;
+        _playerGameplayViewModel = playerGameplayViewModel;
+        _playerGameplayViewModel.Power.OnChangedEvent += SetPower;
     }
 
     private void OnDestroy()
     {
-        _playerWaveViewModel.Power.OnChangedEvent += SetPower;
+        _playerGameplayViewModel.Power.OnChangedEvent += SetPower;
     }
 
     public void Initialize()

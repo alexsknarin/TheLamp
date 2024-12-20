@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 public class LampAttackView : MonoBehaviour, IInitializable
@@ -15,14 +14,14 @@ public class LampAttackView : MonoBehaviour, IInitializable
     private float _lightPower;
     private float _attackZonePower;
     
-    private PlayerWaveViewModel _playerWaveViewModel;
+    private PlayerGameplayViewModel _playerGameplayViewModel;
     private IGameConfigService _gameConfigService;
     
-    public void Construct(PlayerWaveViewModel playerWaveViewModel, IGameConfigService gameConfigService)
+    public void Construct(PlayerGameplayViewModel playerGameplayViewModel, IGameConfigService gameConfigService)
     {
-        _playerWaveViewModel = playerWaveViewModel;
+        _playerGameplayViewModel = playerGameplayViewModel;
         _gameConfigService = gameConfigService;
-        _playerWaveViewModel.OnAttackStartEvent += AttackStart;
+        _playerGameplayViewModel.OnAttackStartEvent += AttackStart;
     }
 
     public void Initialize()
@@ -32,16 +31,16 @@ public class LampAttackView : MonoBehaviour, IInitializable
 
     private void OnDestroy()
     {
-        _playerWaveViewModel.OnAttackStartEvent -= AttackStart;
+        _playerGameplayViewModel.OnAttackStartEvent -= AttackStart;
     }
 
     private void AttackStart(float power)
     {
         _lightPower = _emissionPowerCurve.Evaluate(power);
         _attackZonePower = _attackZonePowerCurve.Evaluate(power);
-        _isPlaying = true;
         _duration = _gameConfigService.PlayerConfig.AttackDuration;
         _localTime = 0;
+        _isPlaying = true;
     }
 
     private void PerformAttack()

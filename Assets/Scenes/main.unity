@@ -513,6 +513,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 969163317}
+    - targetCorrespondingSourceObject: {fileID: 4557419227544725734, guid: 3fc8442acd052ac4f9c1e690f3aa5d74,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 969163320}
   m_SourcePrefab: {fileID: 100100000, guid: 3fc8442acd052ac4f9c1e690f3aa5d74, type: 3}
 --- !u!4 &23663151 stripped
 Transform:
@@ -3771,7 +3775,7 @@ CircleCollider2D:
   m_CompositeOperation: 0
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
-  m_Radius: 0.68
+  m_Radius: 0.75
 --- !u!4 &596536475 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 928630626186778045, guid: 556ccd576c35d634e88ba039c8700cfa,
@@ -5513,6 +5517,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _healthBarMeshRenderer: {fileID: 969163315}
+--- !u!114 &969163320
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 969163313}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae1b665e238fbc343974e34be3ce2f07, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _healthBarMeshRenderer: {fileID: 969163315}
 --- !u!1 &973111867
 GameObject:
   m_ObjectHideFlags: 0
@@ -6146,15 +6163,17 @@ MonoBehaviour:
   _playerAttackUIView: {fileID: 1477144268}
   _lampAttackView: {fileID: 1934066256}
   _lampCooldownView: {fileID: 1934066257}
+  _lampHealthBarView: {fileID: 1934066259}
   _unityAnalyticsService: {fileID: 1595482322}
   _adsManager: {fileID: 1665985692}
   _game: {fileID: 1818435501}
   _enemyManager: {fileID: 1818435502}
   _lamp: {fileID: 1934066246}
-  _lampHealthBar: {fileID: 969163317}
+  _lampHealthBarController: {fileID: 969163320}
   _enemyController: {fileID: 2110688078}
   _playerAttackController: {fileID: 2110688079}
   _playerCooldownController: {fileID: 2110688080}
+  _playerCollidersPropertyController: {fileID: 1934066258}
 --- !u!4 &1037269785
 Transform:
   m_ObjectHideFlags: 0
@@ -8377,7 +8396,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 1934066241}
@@ -9972,9 +9991,6 @@ MonoBehaviour:
   _introGameStageAnimationController: {fileID: 1736170226}
   _prepareInGameStageAnimationController: {fileID: 1736170227}
   _prepareOutGameStageAnimationController: {fileID: 1736170228}
-  _waveDuration: 1
-  _prepareDuration: 1
-  _gameoverDuration: 1
 --- !u!4 &1736170225
 Transform:
   m_ObjectHideFlags: 0
@@ -10056,7 +10072,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  _lampHealthBar: {fileID: 969163317}
+  _lampHealthBarController: {fileID: 969163320}
   _lampEmissionController: {fileID: 23663153}
   _lampAttackZoneRenderer: {fileID: 1464268262}
   _lampIntensityAnimCurve:
@@ -10263,7 +10279,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b24545b221f14f1499ca9b8cf59109b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _skip: 0
+  _skip: 1
   _duration: 0.5
   _waveText: {fileID: 537243428}
   _upgradeButtonsPanel: {fileID: 1256375426}
@@ -10285,7 +10301,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f9e8a42fc42b0240b1f990966f9098b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _skip: 0
+  _skip: 1
   _duration: 0.5
   _waveText: {fileID: 537243428}
   _upgradeButtonsPanel: {fileID: 1256375426}
@@ -11023,6 +11039,8 @@ GameObject:
   - component: {fileID: 1934066255}
   - component: {fileID: 1934066256}
   - component: {fileID: 1934066257}
+  - component: {fileID: 1934066258}
+  - component: {fileID: 1934066259}
   m_Layer: 0
   m_Name: LampObject
   m_TagString: Lamp
@@ -12372,6 +12390,34 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   _lampAttackZoneRenderer: {fileID: 1464268262}
+--- !u!114 &1934066258
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1934066237}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fafdd573ee1c9d44791b834c2cffb9e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _attackZoneCollider: {fileID: 594908877}
+  _attackZonePresentationTransform: {fileID: 1464268264}
+  _attackExitZoneCollider: {fileID: 452042969}
+--- !u!114 &1934066259
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1934066237}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9af5bb568b1b7e4e9f8d95690203791, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _lampHealthBarController: {fileID: 969163320}
 --- !u!1 &1944166815
 GameObject:
   m_ObjectHideFlags: 0

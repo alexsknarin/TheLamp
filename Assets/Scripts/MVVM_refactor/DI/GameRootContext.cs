@@ -13,17 +13,19 @@ public class GameRootContext : MonoBehaviour
     [SerializeField] private PlayerAttackUIView _playerAttackUIView;
     [SerializeField] private LampAttackView _lampAttackView;
     [SerializeField] private LampCooldownView _lampCooldownView;
+    [SerializeField] private LampHealthBarView _lampHealthBarView;
     [Header("Services")]
     [SerializeField] private UnityAnalyticsService _unityAnalyticsService;
-    [SerializeField] private AdsManager _adsManager;
+    [SerializeField] private AdsManager _adsManager; // TODO: turn into a service
     [SerializeField] private Game _game;
     [SerializeField] private EnemyManager _enemyManager;
     [SerializeField] private Lamp _lamp;
-    [SerializeField] private LampHealthBar _lampHealthBar;
     [Header("Controllers")]
+    [SerializeField] private LampHealthBarController _lampHealthBarController;
     [SerializeField] private EnemyController _enemyController;
     [SerializeField] private PlayerAttackController _playerAttackController;
     [SerializeField] private PlayerCooldownController _playerCooldownController;
+    [SerializeField] private PlayerCollidersPropertyController _playerCollidersPropertyController;
     
     // [SerializeField] private GameConfig _gameConfig;
     
@@ -38,7 +40,7 @@ public class GameRootContext : MonoBehaviour
     private IGameStateProvider _gameStateProvider;
     private GameStageViewModel _gameStageViewModel;
     private GameStateViewModel _gameStateViewModel;
-    private PlayerWaveViewModel _playerWaveViewModel;
+    private PlayerGameplayViewModel _playerGameplayViewModel;
     private SOGameConfigProvider _soGameConfigProvider;
     private GameConfigService _gameConfigService;
     private PlayerAttackViewModel _playerAttackViewModel;
@@ -84,7 +86,9 @@ public class GameRootContext : MonoBehaviour
             _enemyController, 
             _gameConfigService, 
             _playerAttackController, 
-            _playerCooldownController);
+            _playerCooldownController,
+            _playerCollidersPropertyController);
+        _lampHealthBarController.Initialize();
         _gameStageViewModel = new GameStageViewModel(_gameModel);
         _disposables.Add(_gameStageViewModel);
         _gameStageView.Construct(_gameStageViewModel);
@@ -93,17 +97,19 @@ public class GameRootContext : MonoBehaviour
         _playerAttackUIView.Construct(_playerAttackViewModel); // TODO: need binders instead of construct for views
         _gameStateViewModel = new GameStateViewModel(_gameModel);
         _gameStateView.Construct(_gameStateViewModel);
-        _lampHealthBar.Initialize();
-        _playerWaveViewModel = new PlayerWaveViewModel(_gameModel);
-        _lampAttackView.Construct(_playerWaveViewModel, _gameConfigService);
+        _playerGameplayViewModel = new PlayerGameplayViewModel(_gameModel);
+        _lampAttackView.Construct(_playerGameplayViewModel, _gameConfigService);
         _lampAttackView.Initialize();
-        _lampCooldownView.Construct(_playerWaveViewModel);
+        _lampCooldownView.Construct(_playerGameplayViewModel);
         _lampCooldownView.Initialize();
-        _disposables.Add(_playerWaveViewModel);
+        _disposables.Add(_playerGameplayViewModel);
+        _lampHealthBarView.Construct(_playerGameplayViewModel);
         
         
         
         // Configure legacy systems - TEMPORARY
+                
+        
         _enemyManager.Construct(_unityAnalyticsService);
         _lamp.Construct(_unityAnalyticsService);
         _game.Construct(_unityAnalyticsService, _ugsAuthenticationService, _adsManager);

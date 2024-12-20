@@ -4,19 +4,11 @@ using UnityEngine;
 public class GameModel : IDisposable
 {
     private GameState _currentGameState;
-    public GameState CurrentGameState
-    {
-        get => _currentGameState;
-        private set
-        {
-            _currentGameState = value;
-            OnGameStateChangedEvent?.Invoke(value);
-        }
-    }
-    public event Action<GameState> OnGameStateChangedEvent; // TODO: do we need this event? Expose separate properties instead of the whole GameState
-    
+    public GameState CurrentGameState => _currentGameState; // Debug Only
     
     private GameStageState _currentGameStageState = GameStageState.Loading;
+
+    #region CurrentGameStageState Reactive Property
     public GameStageState CurrentGameStageState
     {
         get => _currentGameStageState;
@@ -31,8 +23,9 @@ public class GameModel : IDisposable
         }
     }
     public event Action<GameStageState> OnGameStageStateChangedEvent;
-    
-    
+    #endregion
+
+    #region CurrentPower Reactive Property
     private float _currentPower;
     public float CurrentPower
     {
@@ -44,23 +37,45 @@ public class GameModel : IDisposable
         }
     }
     public event Action<float> OnPowerChangedEvent;
+    #endregion
+
+    #region LampHealth Reactive Property 
+    public int LampHealth
+    {
+        get => _currentGameState.LampHealth;
+        private set
+        {
+            _currentGameState.LampHealth = value;
+            OnLampHealthChangedEvent?.Invoke(value);
+        }
+    }
+    public event Action<int> OnLampHealthChangedEvent;
+    #endregion
     
-    
-    
+    #region LampMaxHealth Reactive Property 
+    public int LampMaxHealth
+    {
+        get => _currentGameState.LampMaxHealth;
+        private set
+        {
+            _currentGameState.LampMaxHealth = value;
+            OnLampMaxHealthChangedEvent?.Invoke(value);
+        }
+    }
+    public event Action<int> OnLampMaxHealthChangedEvent;
+    #endregion
     
     
     public event Action<float> OnLampAttackStartedEvent;
-    
-    
-    
-    
-
     
     // Dependencies
     private IGameConfigService _gameConfigService;
     private EnemyController _enemyController;
     private PlayerAttackController _playerAttackController;
     private PlayerCooldownController _playerCooldownController;
+    PlayerCollidersPropertyController _playerCollidersPropertyController;
+    
+    private bool _isAttacking = false;
     
     
     public GameModel(
@@ -68,13 +83,16 @@ public class GameModel : IDisposable
         EnemyController enemyController, 
         IGameConfigService gameConfigService,
         PlayerAttackController playerAttackController,
-        PlayerCooldownController playerCooldownController)
+        PlayerCooldownController playerCooldownController,
+        PlayerCollidersPropertyController playerCollidersPropertyController)
     {
         _currentGameState = _gameState;
         _enemyController = enemyController;
         _gameConfigService = gameConfigService;
         _playerAttackController = playerAttackController;
         _playerCooldownController = playerCooldownController;
+        _playerCollidersPropertyController = playerCollidersPropertyController;
+        
         _enemyController.OnWaveEndEvent += HandleWaveEnd;
         _playerAttackController.OnAttackEndedEvent += HandleLampAttackEnded;
         _playerCooldownController.OnPowerChangedEvent += HandlePowerChanged;
@@ -95,6 +113,7 @@ public class GameModel : IDisposable
         CurrentGameStageState = GameStageState.Intro;
         _playerAttackController.SetDuration(_gameConfigService.PlayerConfig.AttackDuration); // Attack Duration
         _playerCooldownController.SetDuration(_currentGameState.LampCooldownTime); // Cooldown Duration
+        _playerCollidersPropertyController.SetAttackZoneRadius(_currentGameState.LampAttackDistance); // Attack Distance
         _currentPower = 1.0f;
     }
 
@@ -180,22 +199,30 @@ public class GameModel : IDisposable
         if (_currentGameStageState == GameStageState.Prepare)
         {
             HandlePrepareEnd();
-            OnLampAttackStartedEvent?.Invoke(1.0f); // Attack Power
-            _playerAttackController.Play();
+            if (!_isAttacking)
+            {
+                _isAttacking = true;
+                _playerCooldownController.StopCooldown();
+                _playerAttackController.Play();
+                OnLampAttackStartedEvent?.Invoke(CurrentPower); // Attack Power
+            }
         }
         if (_currentGameStageState == GameStageState.Wave)
         {
-            Debug.Log("Attack button clicked");
-            OnLampAttackStartedEvent?.Invoke(CurrentPower); // Attack Power
-            _playerAttackController.Play();
-            // _enemyController.HandleAttackButtonClicked();
+            if (!_isAttacking)
+            {
+                _isAttacking = true;
+                _playerCooldownController.StopCooldown();
+                _playerAttackController.Play();
+                OnLampAttackStartedEvent?.Invoke(CurrentPower); // Attack Power
+            }
         }
         
     }
 
     private void HandleLampAttackEnded()
     {
-        Debug.Log("Lamp Attack Ended");
+        _isAttacking = false;
         _playerCooldownController.StartCooldown();
     }
 

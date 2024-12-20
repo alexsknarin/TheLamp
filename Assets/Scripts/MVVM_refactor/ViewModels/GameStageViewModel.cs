@@ -2,12 +2,11 @@ using System;
 
 public class GameStageViewModel : IDisposable
 {
-    GameModel _gameModel;
-    public event Action<int, int> OnIntroStartedEvent;
+    private GameModel _gameModel;
+    public event Action<float> OnIntroStartedEvent;
     public event Action<bool, int> OnPrepareInStartedEvent;
     public event Action OnPrepareOutStartedEvent;
-    
-    
+
     public GameStageViewModel(GameModel gameModel)
     {
         _gameModel = gameModel;
@@ -24,7 +23,7 @@ public class GameStageViewModel : IDisposable
         switch (newState)
         {
             case GameStageState.Intro:
-                OnIntroStartedEvent?.Invoke(8, 8);
+                OnIntroStartedEvent?.Invoke((float)_gameModel.LampHealth / (float)_gameModel.LampMaxHealth);
                 break;
             case GameStageState.PrepareIn:
                 OnPrepareInStartedEvent?.Invoke(true, 1);

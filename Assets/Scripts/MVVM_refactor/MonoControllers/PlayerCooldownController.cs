@@ -32,6 +32,11 @@ public class PlayerCooldownController : MonoBehaviour
         _localTime = 0;
         _isPlaying = true;
     }
+    
+    public void StopCooldown()
+    {
+        _isPlaying = false;
+    }
 
     private void PerformCooldown()
     {
