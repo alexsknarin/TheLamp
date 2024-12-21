@@ -2,7 +2,6 @@
 // TODO: separate view models for different settings ???? 
 
 using System;
-using UnityEngine;
 
 public class GameSettingsModel
 {

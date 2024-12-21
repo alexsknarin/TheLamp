@@ -1,7 +1,3 @@
-// TODO: remove Monobehaviour - provide this object via DI
-// TODO: make dependable on UGS - to wait until connected to UGS
-// TODO: Extract proper intefaces for both
-
 using System;
 using System.Collections;
 using Unity.Services.Analytics;

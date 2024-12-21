@@ -16,7 +16,7 @@ public class GameRootContext : MonoBehaviour
     [SerializeField] private LampHealthBarView _lampHealthBarView;
     [Header("Services")]
     [SerializeField] private UnityAnalyticsService _unityAnalyticsService;
-    [SerializeField] private AdsManager _adsManager; // TODO: turn into a service
+    [SerializeField] private AdsManager _adsManager;
     [SerializeField] private Game _game;
     [SerializeField] private EnemyManager _enemyManager;
     [SerializeField] private Lamp _lamp;
@@ -55,7 +55,6 @@ public class GameRootContext : MonoBehaviour
         Debug.Log("------------------------------------------");
         Debug.Log("------ Starting Game Initialization ------");
         Debug.Log("------ Game Settings Initialization ------");
-        // TODO: Make game services as fields ????
         _gameSettingsProvider = new PlayerPrefsGameSettingsProvider();
         _gameSettingsModel = new GameSettingsModel(_gameSettingsProvider.Get());
         _gameSettingsService = new GameSettingsService(_gameSettingsProvider, _gameSettingsModel);
@@ -94,7 +93,7 @@ public class GameRootContext : MonoBehaviour
         _gameStageView.Construct(_gameStageViewModel);
         _gameStageView.Initialize();
         _playerAttackViewModel = new PlayerAttackViewModel(_gameModel);
-        _playerAttackUIView.Construct(_playerAttackViewModel); // TODO: need binders instead of construct for views
+        _playerAttackUIView.Construct(_playerAttackViewModel);
         _gameStateViewModel = new GameStateViewModel(_gameModel);
         _gameStateView.Construct(_gameStateViewModel);
         _playerGameplayViewModel = new PlayerGameplayViewModel(_gameModel);

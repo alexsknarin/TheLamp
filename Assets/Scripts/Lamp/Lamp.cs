@@ -19,7 +19,7 @@ public class Lamp : MonoBehaviour, IInitializable
     // Dependencies
     private IAnalyticsService _analyticsService;
 
-    public static Transform LampTransform; // TODO: replace with DI system
+    public static Transform LampTransform;
     
     private List<EnemyBase> _stickyEnemies;
     private bool _isAssessingDamage = false;
@@ -221,7 +221,7 @@ public class Lamp : MonoBehaviour, IInitializable
     
     public void PlayIntro(float duration)
     {
-        _lampPresentation.StartIntroState(duration, _lampStatsManager.CurrentHealth, _lampStatsManager.MaxHealth); // TODO: support loading health from the last session
+        _lampPresentation.StartIntroState(duration, _lampStatsManager.CurrentHealth, _lampStatsManager.MaxHealth);
     }
     
     private void HandleStickAttack(EnemyBase enemy)

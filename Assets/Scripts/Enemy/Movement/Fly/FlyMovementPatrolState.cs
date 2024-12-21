@@ -3,7 +3,7 @@ using UnityEngine;
 public class FlyMovementPatrolState: EnemyMovementBaseState
 {
     public override EnemyState State => EnemyState.Patrol;
-    private float _verticalAdaptDuration = 2f; // TODO: Serialized Field
+    private float _verticalAdaptDuration = 2f;
     private float _patrolStartOffsetAngle;
     private float _enterTimeOffset; // TMP
     private float _depthMultiplier = 1f;

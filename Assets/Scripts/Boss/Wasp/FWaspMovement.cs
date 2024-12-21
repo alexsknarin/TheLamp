@@ -674,7 +674,6 @@ public class FWaspMovement : MonoBehaviour, IInitializable
         if (ATTACK_STATES.Contains(_stateMachine.CurrentStateType))
         {
             // Check if lamp was penetrated
-            // TODO: replace with proper DI system
             Vector3 newPosition = transform.position;
             if ((newPosition - Lamp.LampTransform.position).magnitude < _colliderRadius + 0.5f)
             {

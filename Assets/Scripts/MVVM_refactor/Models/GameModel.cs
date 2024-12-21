@@ -142,7 +142,7 @@ public class GameModel : IDisposable
         _enemyController.StartWave();
     }
 
-    public void HandleCurrentStageStateFinished() // TODO: viewModels Should not call this method directly
+    private void HandleCurrentStageStateFinished()
     {
         switch (_currentGameStageState)
         {
@@ -166,9 +166,6 @@ public class GameModel : IDisposable
                 break;
         }
     }
-
-
-    // TODO: rename public methods from Handle... to something else 
 
     public void HandleIntroEnd()
     {

@@ -1,6 +1,5 @@
 using System;
 using UnityEngine;
-using Object = System.Object;
 
 public class FDragonflyMovement : MonoBehaviour
 {
@@ -228,7 +227,7 @@ public class FDragonflyMovement : MonoBehaviour
         _deathTailStateR.OnEndedEvent -= OnDeathAnimationEndedHandle;
     }
 
-    private void Awake() // TODO: Move to Initialize ????
+    private void Awake() 
     {
         _isPlaying = false;
         SetMovementStatesDependencies();

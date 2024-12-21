@@ -1,4 +1,3 @@
-using System.Collections;
 using UnityEngine;
 
 public class GameStageView : MonoBehaviour, IInitializable
@@ -43,7 +42,6 @@ public class GameStageView : MonoBehaviour, IInitializable
     
     private void StartPrepareIn(bool isUpgradeUiRequired, int waveNum)
     {
-        // TODO: add upgrade UI logic
         _prepareInGameStageAnimationController.Play(isUpgradeUiRequired, waveNum);
     }
     

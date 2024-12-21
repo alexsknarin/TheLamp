@@ -33,7 +33,6 @@ public class FireflyMovementAttackState: EnemyMovementBaseState
         _acceleratedSpeed += _acceleration * Time.deltaTime;
         
         // Check if lamp was penetrated
-        // TODO: replace with proper DI system, oprimize
         if ((newPosition - Lamp.LampTransform.position).magnitude < _fireflyRadius + 0.5f)
         {
             newPosition = Lamp.LampTransform.position + newPosition.normalized * (0.5f + _fireflyRadius);

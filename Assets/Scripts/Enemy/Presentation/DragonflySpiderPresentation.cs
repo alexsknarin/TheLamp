@@ -10,7 +10,7 @@ public class DragonflySpiderPresentation : EnemyPresentation
     public override void Initialize()
     {
         _deathFlash.Initialize();
-        _preAttackFlash.Initialize();  // TODO: remove null check later
+        _preAttackFlash.Initialize();
         _spiderWeb.Initialize();
     }
     

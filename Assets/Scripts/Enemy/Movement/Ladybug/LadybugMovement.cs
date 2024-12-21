@@ -1,6 +1,4 @@
-using System;
 using UnityEngine;
-using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 public class LadybugMovement : EnemyMovement
@@ -32,7 +30,7 @@ public class LadybugMovement : EnemyMovement
 
     private void OnEnable()
     {
-        Lamp.OnLampDeadEvent += FallOnLampDestroyed; // TODO: manage from enemy Manager
+        Lamp.OnLampDeadEvent += FallOnLampDestroyed;
     }
     
     private void OnDisable()

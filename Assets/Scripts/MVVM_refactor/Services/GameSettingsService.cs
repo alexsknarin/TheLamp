@@ -1,7 +1,4 @@
-// TODO: Settings as dictionary
-
 using System;
-using UnityEngine;
 
 public class GameSettingsService: IGameSettingsService, IInitializable, IDisposable
 {

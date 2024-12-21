@@ -1,6 +1,6 @@
 using TMPro;
 using UnityEngine;
-// TODO: add interface
+
 public class TextFader : MonoBehaviour
 {
     [SerializeField] private TMP_Text _uiText;

@@ -21,8 +21,6 @@ public class PlayerPrefsGameStateProvider : IGameStateProvider
         else
         {
             Debug.Log("GameState not found in PlayerPrefs - Generating a new one");
-            // Generate default settings TODO: Move to a separate storage, use factory
-            // TODO: Implement a factory
             // TODO: use a spreadsheet to generate the default values
             // TODO: make in updateble after deployment !!! 
             

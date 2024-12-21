@@ -26,7 +26,7 @@ public class Wasp : BossBase
     {
         _fWaspMovement.OnBossAttackStartedEvent += UpdateRecievedLampAttackStatus;
         _fWaspMovement.OnDeathStateEndedEvent += HandleDeathMoveStateEnd;
-        Lamp.OnLampDeadEvent += HandleLampDead; // TODO: manage from enemy manager
+        Lamp.OnLampDeadEvent += HandleLampDead;
     }
     
     private void OnDisable()

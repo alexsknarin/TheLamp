@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-// TODO: add tickable interface remove update method and monobehaviour
 public class PlayerAttackController : MonoBehaviour
 {
     private float _power;

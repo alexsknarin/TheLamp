@@ -130,7 +130,7 @@ public class EnemyController : MonoBehaviour, IInitializable
         }
     }
     
-    public void StartWave() // TODO: add wave as parameter
+    public void StartWave()
     {
         Debug.Log("Wave started");
         if(!_isWaveInitialized)
@@ -163,7 +163,7 @@ public class EnemyController : MonoBehaviour, IInitializable
             {
                 _isWaveInitialized = false;
                 _currentWave++;
-                OnWaveEndEvent?.Invoke(); // TODO: we need to for animation to end
+                OnWaveEndEvent?.Invoke();
             }
         }
     }

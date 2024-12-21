@@ -18,7 +18,6 @@ public class PlayerGameplayViewModel : IDisposable
         _gameModel.OnLampAttackStartedEvent += StartLampAttack;
         _gameModel.OnPowerChangedEvent += UpdatePower;
         _gameModel.OnLampHealthChangedEvent += UpdateLampHealth;
-        // TODO: add event for health upgrade
     }
 
     public void Dispose()

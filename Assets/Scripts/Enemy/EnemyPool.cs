@@ -3,7 +3,6 @@ using UnityEngine.Pool;
 
 public class EnemyPool : MonoBehaviour, IInitializable, IEnemyPool
 {
-    // TODO: remove mono behaviour - scriptable object to get prefab links
     [SerializeField] private Enemy _mothlingPrefab;
     [SerializeField] private Enemy _flyPrefab;
     [SerializeField] private Enemy _mothPrefab;

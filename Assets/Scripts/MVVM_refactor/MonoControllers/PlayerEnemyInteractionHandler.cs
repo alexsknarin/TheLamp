@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 public class PlayerEnemyInteractionHandler : MonoBehaviour, IInitializable
@@ -30,8 +29,6 @@ public class PlayerEnemyInteractionHandler : MonoBehaviour, IInitializable
         }
     }
     
-
-    // TODO: use Interface for Enemies
     private void RegisterPotentialDamage(EnemyBase enemy)
     {
         _enemyPosition = enemy.transform.position;

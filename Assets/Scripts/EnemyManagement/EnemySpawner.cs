@@ -113,7 +113,7 @@ public class EnemySpawner
     {
         if (_currentEnemyIndex < _enemyQueue.Count())
         {
-            if (_enemies.Count < _enemyQueue.MaxEnemiesOnScreen) // TODO: check if it should be <=
+            if (_enemies.Count < _enemyQueue.MaxEnemiesOnScreen)
             {
                 if(Array.Exists(BOSS_TYPES, x => x == _enemyQueue.Get(_currentEnemyIndex)))
                 {

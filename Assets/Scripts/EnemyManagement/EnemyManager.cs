@@ -18,7 +18,7 @@ public class EnemyManager : MonoBehaviour,IInitializable
     [Header("------ Explosions -------")]
     [SerializeField] private FireflyExplosion _fireflyExplosion;
     [SerializeField] private float _fireflyExplosionRadius;
-    [SerializeField] private float _explosionDuration; // TODO: connect it to the FireflyExplosion component duration
+    [SerializeField] private float _explosionDuration;
     
     [Header("---- Waves Generation ------")]
     [SerializeField] private int _maxEnemiesOnScreen;

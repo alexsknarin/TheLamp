@@ -18,7 +18,6 @@ public class PrepareInGameStageAnimationController : MonoBehaviour
     [SerializeField] private TMP_Text _hintText1;
     [SerializeField] private TMP_Text _hintText2;
     [SerializeField] private TMP_Text _hintText3;
-    // TODO: add upgrade points
     
     private float _localTime;
     private bool _isPlaying;
