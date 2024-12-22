@@ -1,23 +1,39 @@
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerEnemyInteractionHandler : MonoBehaviour, IInitializable
 {
     [SerializeField] private LampCollisionHandler _lampCollisionHandler;
     [SerializeField] private LampAttackExitZoneCollisionHandler _lampAttackExitZoneCollisionHandler;
-
+    [SerializeField] private LampStickZoneCollisionHandler _lampStickZoneCollisionHandler;
+    
+    public event Action<bool> OnLampBlockedSetEvent;
+    
     private bool _isAssessingDamage = false;
     private Vector3 _enemyPosition;
+    
+    private List<EnemyBase> _stickyEnemies; // TODO: replace Enemy with ISticky Interface
     
     public void Initialize()
     {
         _lampCollisionHandler.OnLampCollidedEnemyEvent += RegisterPotentialDamage;
+        _lampCollisionHandler.OnExitLampCollisionEnemyEvent += EnemyExitCollisionHandle;
         _lampAttackExitZoneCollisionHandler.OnExitAttackExitZoneEvent += AssessDamage;
+        _lampStickZoneCollisionHandler.OnCollidedWithStickyEnemyEvent += StickyEnemyEnterCollisionHandle;
+        
+        if (_stickyEnemies == null)
+            _stickyEnemies = new List<EnemyBase>();
+        else
+            _stickyEnemies.Clear();
     }
 
     private void OnDestroy()
     {
         _lampCollisionHandler.OnLampCollidedEnemyEvent -= RegisterPotentialDamage;
+        _lampCollisionHandler.OnExitLampCollisionEnemyEvent -= EnemyExitCollisionHandle;
         _lampAttackExitZoneCollisionHandler.OnExitAttackExitZoneEvent -= AssessDamage;
+        _lampStickZoneCollisionHandler.OnCollidedWithStickyEnemyEvent -= StickyEnemyEnterCollisionHandle;
     }
 
     public void LampAttack()
@@ -28,7 +44,7 @@ public class PlayerEnemyInteractionHandler : MonoBehaviour, IInitializable
             _isAssessingDamage = false;
         }
     }
-    
+
     private void RegisterPotentialDamage(EnemyBase enemy)
     {
         _enemyPosition = enemy.transform.position;
@@ -55,9 +71,47 @@ public class PlayerEnemyInteractionHandler : MonoBehaviour, IInitializable
         }
     }
 
+    private void StickyEnemyEnterCollisionHandle(EnemyBase enemy)
+    {
+        _enemyPosition = enemy.transform.position;
+        enemy.transform.parent = transform;
+        enemy.HandleCollisionWithStickZone();
+        
+        if (!_stickyEnemies.Contains(enemy))
+        {
+            _stickyEnemies.Add(enemy);
+        }
+        
+        // TODO:
+        // _lampAttackModel.AddAttackBlocker();
+        // _lampPresentation.EnableBlockedMode();
+        // MoveLamp(enemy);
+        OnLampBlockedSetEvent?.Invoke(true);
+    }
+    
+    // TODO: refactor this
+    private void EnemyExitCollisionHandle(EnemyBase enemy)
+    {
+        if (enemy.EnemyType == EnemyType.Ladybug || enemy.EnemyType == EnemyType.Megabeetle) // Use ISticky interface
+        {
+            if (_stickyEnemies.Contains(enemy))
+            {
+                _stickyEnemies.Remove(enemy);
+                if( _stickyEnemies.Count <= 0)
+                {
+                    OnLampBlockedSetEvent?.Invoke(false);
+                    //TODO: reimplement this outside of this class
+                    // _lampAttackModel.RemoveAttackBlocker();
+                    // _lampPresentation.DisableBlockedMode(_isDead);
+                }    
+            }
+            enemy.transform.parent = null;
+        }
+    }
+
     private void ApplyDamage(EnemyBase enemy)
     {
-        Debug.Log("Lamp is damaged");
+        Debug.Log($"Lamp is damaged by {enemy.gameObject.name}");
     }
 }
 

@@ -23,6 +23,7 @@ public class LampAttackAnimation : MonoBehaviour, IInitializable
     
     public void Play(float duration, bool isBlockedAttack, float currentPower, float attackDistance)
     {
+        /*
         _isBlockedAttack = isBlockedAttack;
         _lightPower = _emissionPowerCurve.Evaluate(currentPower);
         _attackZonePower = _attackZonePowerCurve.Evaluate(currentPower);
@@ -30,6 +31,7 @@ public class LampAttackAnimation : MonoBehaviour, IInitializable
         _isPlaying = true;
         _duration = duration;
         _localTime = 0;
+        */
     }
 
     void Update()

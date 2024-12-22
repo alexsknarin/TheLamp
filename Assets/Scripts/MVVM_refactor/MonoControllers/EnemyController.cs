@@ -176,7 +176,6 @@ public class EnemyController : MonoBehaviour, IInitializable
     
     public void HandleAttackButtonClicked(float power)
     {
-        Debug.Log("Enemy Manager Attack button clicked");
         // TODO: blocked attack support
         // we will use blocked bool as a parameter to have the only one method to call attack
         _enemiesLampAttackHandler.HandleLampAttack(_enemies, Converters.PowerToAttackPower(power));

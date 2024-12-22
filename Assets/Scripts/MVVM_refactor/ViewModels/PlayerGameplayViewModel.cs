@@ -4,6 +4,7 @@ public class PlayerGameplayViewModel : IDisposable
 {
     public Observable<float> Power = new Observable<float>();
     public Observable<float> LampNormalizedHealth = new Observable<float>();
+    public Observable<bool> IsBlocked = new Observable<bool>();
     public event Action OnLastHealthPointStartedEvent;
     public event Action OnLastHealthPointEndedEvent;
     
@@ -18,6 +19,7 @@ public class PlayerGameplayViewModel : IDisposable
         _gameModel.OnLampAttackStartedEvent += StartLampAttack;
         _gameModel.OnPowerChangedEvent += UpdatePower;
         _gameModel.OnLampHealthChangedEvent += UpdateLampHealth;
+        _gameModel.OnLampBlockedModeSetEvent += SetBlockedMode;
     }
 
     public void Dispose()
@@ -25,6 +27,12 @@ public class PlayerGameplayViewModel : IDisposable
         _gameModel.OnLampAttackStartedEvent -= StartLampAttack;
         _gameModel.OnPowerChangedEvent -= UpdatePower;
         _gameModel.OnLampHealthChangedEvent -= UpdateLampHealth;
+        _gameModel.OnLampBlockedModeSetEvent -= SetBlockedMode;
+    }
+
+    private void SetBlockedMode(bool isBlocked)
+    {
+        IsBlocked.Value = isBlocked;
     }
 
     private void UpdatePower(float power)

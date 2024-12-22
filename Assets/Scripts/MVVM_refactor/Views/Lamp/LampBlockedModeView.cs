@@ -1,0 +1,27 @@
+using System;
+using UnityEngine;
+
+public class LampBlockedModeView : MonoBehaviour
+{
+    [SerializeField] private LampEmissionController _lampEmissionController;
+    
+    private PlayerGameplayViewModel _playerGameplayViewModel;
+
+    public void Construct(PlayerGameplayViewModel playerGameplayViewModel)
+    {
+        _playerGameplayViewModel = playerGameplayViewModel;
+        _playerGameplayViewModel.IsBlocked.OnChangedEvent += SetBlockedMode;
+    }
+
+    private void OnDestroy()
+    {
+        _lampEmissionController.IsBlockedMode = false;
+        _playerGameplayViewModel.IsBlocked.OnChangedEvent += SetBlockedMode;
+    }
+
+    private void SetBlockedMode(object sender, Observable<bool>.ChangedEventArgs e)
+    {
+        Debug.Log("Set Blocked Mode: " + e.NewValue);
+        _lampEmissionController.IsBlockedMode = e.NewValue;
+    }
+}

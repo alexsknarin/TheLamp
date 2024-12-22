@@ -14,6 +14,7 @@ public class GameRootContext : MonoBehaviour
     [SerializeField] private LampAttackView _lampAttackView;
     [SerializeField] private LampCooldownView _lampCooldownView;
     [SerializeField] private LampHealthBarView _lampHealthBarView;
+    [SerializeField] private LampBlockedModeView _lampBlockedModeView;
     [Header("Services")]
     [SerializeField] private UnityAnalyticsService _unityAnalyticsService;
     [SerializeField] private AdsManager _adsManager;
@@ -101,6 +102,7 @@ public class GameRootContext : MonoBehaviour
         _lampAttackView.Initialize();
         _lampCooldownView.Construct(_playerGameplayViewModel);
         _lampCooldownView.Initialize();
+        _lampBlockedModeView.Construct(_playerGameplayViewModel);
         _disposables.Add(_playerGameplayViewModel);
         _lampHealthBarView.Construct(_playerGameplayViewModel);
         _playerEnemyInteractionHandler.Initialize();

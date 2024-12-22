@@ -65,6 +65,19 @@ public class GameModel : IDisposable
     public event Action<int> OnLampMaxHealthChangedEvent;
     #endregion
     
+    #region LampBlocked Reactive Property
+    private bool _isLampBlocked;
+    public bool IsLampBlocked
+    {
+        get => _isLampBlocked;
+        private set
+        {
+            _isLampBlocked = value;
+            OnLampBlockedModeSetEvent?.Invoke(value);
+        }
+    }
+    public event Action<bool> OnLampBlockedModeSetEvent;
+    #endregion
     
     
     public event Action<float> OnLampAttackStartedEvent;
@@ -94,9 +107,12 @@ public class GameModel : IDisposable
         _playerCollidersPropertyController = playerCollidersPropertyController;
         _playerEnemyInteractionHandler = playerEnemyInteractionHandler;
         
+        // Subscriptions
         _enemyController.OnWaveEndEvent += HandleWaveEnd;
         _playerAttackController.OnAttackEndedEvent += HandleLampAttackEnded;
         _playerAttackController.OnPowerChangedEvent += HandlePowerChanged;
+        _playerEnemyInteractionHandler.OnLampBlockedSetEvent += SetLampBlockedState;
+        
         Debug.Log("GameModel created");
         Debug.Log("GameState: " + _gameState.LampCooldownTime);
     }
@@ -234,5 +250,18 @@ public class GameModel : IDisposable
     private void HandlePowerChanged(float power)
     {
         CurrentPower = power;
+    }
+
+    private void SetLampBlockedState(bool isBlocked)
+    {
+        IsLampBlocked = isBlocked;
+        if (isBlocked)
+        {
+            Debug.Log("Lamp is blocked");
+        }
+        else
+        {
+            Debug.Log("Lamp is not blocked");
+        }
     }
 }

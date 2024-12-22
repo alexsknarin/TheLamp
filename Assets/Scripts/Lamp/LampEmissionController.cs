@@ -10,6 +10,13 @@ public class LampEmissionController : MonoBehaviour
         get => _intensity;
     }
     
+    [SerializeField] private bool _isBlockedMode;
+    public bool IsBlockedMode
+    {
+        set => _isBlockedMode = value;
+        get => _isBlockedMode;
+    }
+    
     [Range(0f, 1f)]
     [SerializeField] private float _blockedModeMix;
     public float BlockedModeMix
@@ -102,14 +109,15 @@ public class LampEmissionController : MonoBehaviour
     
     private void Update()
     {
-        float blockedNoise = 1;
         float intensity = _intensity;
-        if (_blockedModeMix > 0)
+
+        if (_isBlockedMode)
         {
-            blockedNoise = Mathf.PerlinNoise1D(Time.time * _blockedModeNoseFrequency) * 1.35f - 0.35f;
-            blockedNoise = Mathf.Clamp01(blockedNoise);
-            blockedNoise = Mathf.Lerp(1, blockedNoise, _blockedModeMix);
-            intensity = _intensity * blockedNoise;
+            intensity = BlockedModeNoise(_intensity, 1f);
+        }
+        else if (_blockedModeMix > 0)
+        {
+            intensity = BlockedModeNoise(intensity, _blockedModeMix);
         }
         
         _filamentMaterial.SetFloat("_EmissionStrength", intensity * 0.4f);
@@ -131,7 +139,17 @@ public class LampEmissionController : MonoBehaviour
             _lampLight.color = Color.Lerp(_lampLight.color, _ligtDamageColor, _damageMix);
         }
     }
-    
+
+    private float BlockedModeNoise(float intensity, float mix)
+    {
+        float blockedNoise = 1;
+        blockedNoise = Mathf.PerlinNoise1D(Time.time * _blockedModeNoseFrequency) * 1.35f - 0.35f;
+        blockedNoise = Mathf.Clamp01(blockedNoise);
+        blockedNoise = Mathf.Lerp(1, blockedNoise, mix);
+        return intensity * blockedNoise;
+    }
+
+
     public static float LerpExtrapolated( float a, float b, float t ){
         return t*b + (1-t)*a;
     }

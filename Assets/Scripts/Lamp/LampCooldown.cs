@@ -15,6 +15,7 @@ public class LampCooldown : MonoBehaviour
     
     public void PerformCooldown(float phase, bool isBlocked)
     {
+        /*
         _lampEmissionController.Intensity = _lampCooldownAnimCurve.Evaluate(phase);
         if (isBlocked)
         {
@@ -22,5 +23,7 @@ public class LampCooldown : MonoBehaviour
         }
         _lampEmissionController.BlockedModeMix = _lampNoiseAmountAnimCurve.Evaluate(phase);
         _lampAttackZoneMaterial.SetFloat("_Alpha", Mathf.Lerp(0, 0.005f, _lampCooldownAnimCurve.Evaluate(phase)));
+    */
+        
     }
 }
