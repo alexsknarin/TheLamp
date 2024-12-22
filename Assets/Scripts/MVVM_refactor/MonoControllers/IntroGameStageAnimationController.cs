@@ -46,13 +46,14 @@ public class IntroGameStageAnimationController : MonoBehaviour, IInitializable
     
     public void Play(float normalizedHealth)
     {
+        _currentHealth = normalizedHealth;
+        _lampAttackZoneRenderer.gameObject.SetActive(true);
+        
         if (_skip)
         {
             SetFinalState();
             return;
         }
-        _currentHealth = normalizedHealth;
-        _lampAttackZoneRenderer.gameObject.SetActive(true);
         
         _localTime = 0;
         _isPlaying = true;
@@ -95,7 +96,7 @@ public class IntroGameStageAnimationController : MonoBehaviour, IInitializable
         _lampHealthBarController.SetHealth(_currentHealth);
         _lampEmissionController.Intensity = _lampIntensityAnimCurve.Evaluate(1);
         _lampEmissionController.BlockedModeMix = _lampNoiseAmountAnimCurve.Evaluate(1);
-        _lampAttackZoneMaterial.SetFloat("_Alpha", 0.005f);    
+        _lampAttackZoneMaterial.SetFloat("_Alpha", 0.005f);
         
         OnFinishedEvent?.Invoke();
     }
