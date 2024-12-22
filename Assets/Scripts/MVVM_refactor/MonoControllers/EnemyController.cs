@@ -14,15 +14,11 @@ public class EnemyController : MonoBehaviour, IInitializable
     [SerializeField] private BossBase _dragonflyBoss;
     [Header("------ Explosions -------")]
     [SerializeField] private FireflyExplosion _fireflyExplosion;
-    [SerializeField] private float _fireflyExplosionRadius;
-    [SerializeField] private float _explosionDuration; // TODO: connect it to the FireflyExplosion component duration
     [Header("---- Waves Generation ------")]
     [SerializeField] private int _maxEnemiesOnScreen;
     [SerializeField] private int _agressionLevel;
     [SerializeField] private float _maxAggressionLevel;
     [Header("")]
-    [SerializeField] private bool _isStartAtWaveTestMode = false;
-    [SerializeField] private int _startAtWaveTest = 0;
     [SerializeField] private float _firstEnemySpawnDelay;
     
     private SpawnQueueGenerator _spawnQueueGenerator;
@@ -130,8 +126,8 @@ public class EnemyController : MonoBehaviour, IInitializable
         _enemiesFireflyExploder = new EnemiesFireflyExploder(
             _enemies, 
             _fireflyExplosion,
-            _fireflyExplosionRadius,
-            _explosionDuration
+            _gameConfigService.GameConfig.FireflyExplosionRadius,
+            _gameConfigService.GameConfig.FireflyExplosionDuration
         );
         _tickables.Add(_enemiesFireflyExploder);
         

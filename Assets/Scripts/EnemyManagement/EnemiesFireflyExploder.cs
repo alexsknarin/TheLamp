@@ -27,7 +27,7 @@ public class EnemiesFireflyExploder : ITickable
     {
         _explosionSource = explosionSource;
         _explosionPosition = explosionSource.transform.position;
-        _fireflyExplosion.Play(_explosionPosition, _fireflyExplosionRadius * 2); // TODO: magic number
+        _fireflyExplosion.Play(_explosionPosition, _fireflyExplosionRadius * 2, _duration); 
         _isExploding = true;
         _localTime = 0;
     }
