@@ -142,13 +142,11 @@ public class EnemyController : MonoBehaviour, IInitializable
     
     public void StartWave(int wave)
     {
-        int startAtWave = _isStartAtWaveTestMode ? _startAtWaveTest : wave;
-        
         Debug.Log("Wave started");
         if(!_isWaveInitialized)
         {
-            SetupWave(startAtWave);
-            OnWaveStartEvent?.Invoke();
+            SetupWave(wave);
+            OnWaveStartEvent?.Invoke(); // TODO: What we use this event for?
         }
     }
     
@@ -159,7 +157,7 @@ public class EnemyController : MonoBehaviour, IInitializable
         _enemiesKilled = 0;
         _isWaveInitialized = true;
     }
-
+    
     private void Update()
     {
         if (_isWaveInitialized && _isGameActive)

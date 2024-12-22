@@ -13749,6 +13749,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: WaspBaseTransform
       objectReference: {fileID: 0}
+    - target: {fileID: 508564934166301182, guid: db082986f50fad64f90c5d3f0bd3ddf3,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 816267557849244585, guid: db082986f50fad64f90c5d3f0bd3ddf3,
         type: 3}
       propertyPath: m_IsActive
@@ -13777,7 +13782,7 @@ PrefabInstance:
     - target: {fileID: 5791344357560995486, guid: db082986f50fad64f90c5d3f0bd3ddf3,
         type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7141382224798320509, guid: db082986f50fad64f90c5d3f0bd3ddf3,
         type: 3}
@@ -13832,7 +13837,7 @@ PrefabInstance:
     - target: {fileID: 9191138948751963205, guid: db082986f50fad64f90c5d3f0bd3ddf3,
         type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -13855,6 +13860,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Dragonfly
+      objectReference: {fileID: 0}
+    - target: {fileID: 1489340059461961505, guid: 5abdecc64f378fa42a25d190ec1a9a13,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2800351027539773626, guid: 5abdecc64f378fa42a25d190ec1a9a13,
         type: 3}
@@ -13906,6 +13916,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2949075063346376704, guid: 5abdecc64f378fa42a25d190ec1a9a13,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4239300212263848995, guid: 5abdecc64f378fa42a25d190ec1a9a13,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8134831335528203179, guid: 5abdecc64f378fa42a25d190ec1a9a13,
         type: 3}
       propertyPath: _fleeGoalBase.x
@@ -13916,12 +13936,27 @@ PrefabInstance:
       propertyPath: _fleeGoalBase.y
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 8424250967755403106, guid: 5abdecc64f378fa42a25d190ec1a9a13,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8495470468900444152, guid: 5abdecc64f378fa42a25d190ec1a9a13,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8953583610499858097, guid: 5abdecc64f378fa42a25d190ec1a9a13,
         type: 3}
       propertyPath: _gameoverHoverState
       value: 
       objectReference: {fileID: 11400000, guid: 4aaafcd14496a9b4da296cd068a817a7,
         type: 2}
+    - target: {fileID: 8985430870367809322, guid: 5abdecc64f378fa42a25d190ec1a9a13,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

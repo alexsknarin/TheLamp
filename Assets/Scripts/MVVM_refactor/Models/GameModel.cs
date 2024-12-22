@@ -112,6 +112,10 @@ public class GameModel : IDisposable
     {
         Debug.Log("!!!!! The Game Has Been Started !!!!!");
         // Start the game
+        if (_gameConfigService.GameConfig.IsTestStartWave)
+        {
+            _currentGameState.Wave = _gameConfigService.GameConfig.TestStartWave;
+        }
         CurrentGameStageState = GameStageState.Intro;
         _playerAttackController.SetAttackDuration(_gameConfigService.PlayerConfig.AttackDuration); // Attack Duration
         _playerAttackController.SetCooldownDuration(_currentGameState.LampCooldownTime); // Cooldown Duration
