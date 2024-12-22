@@ -68,8 +68,8 @@ public class EnemyController : MonoBehaviour, IInitializable
         Enemy.OnEnemyDeactivatedEvent += UpdateEnemiesOnScreen;     // TODO: replace with an Interface
         Enemy.OnEnemyDeactivatedEvent += CheckForFireflyExplosion;  // TODO: replace with an Interface
         LampStickZoneCollisionHandler.OnCollidedWithStickyEnemyStaticEvent += UpdateLadybugsOnScreen;
-        // BossBase.OnTriggerSpreadEvent += SpreadEnemies;
-        // BossBase.OnDeathEvent += OnBossDeathHandle;
+        BossBase.OnTriggerSpreadEvent += SpreadEnemies;
+        BossBase.OnDeathEvent += OnBossDeathHandle;
     }
     
     private void OnDisable()
@@ -78,8 +78,8 @@ public class EnemyController : MonoBehaviour, IInitializable
         Enemy.OnEnemyDeactivatedEvent -= CheckForFireflyExplosion;
         LampStickZoneCollisionHandler.OnCollidedWithStickyEnemyStaticEvent -= UpdateLadybugsOnScreen;
         _enemySpawner.OnBossSpawnedEvent -= OnBossSpawnedHandle;
-        // BossBase.OnTriggerSpreadEvent -= SpreadEnemies;
-        // BossBase.OnDeathEvent -= OnBossDeathHandle;
+        BossBase.OnTriggerSpreadEvent -= SpreadEnemies;
+        BossBase.OnDeathEvent -= OnBossDeathHandle;
     }
     
     public void Initialize()
@@ -235,5 +235,21 @@ public class EnemyController : MonoBehaviour, IInitializable
         boss.Play();
         _enemyAttacker.ActivateBoss(boss); // Boss appearance should stop any ongoing attack
         OnBossSpawnedEvent?.Invoke(boss);
+    }
+    
+    private void SpreadEnemies()
+    {
+        foreach (var enemy in _enemies)
+        {
+            enemy.SpreadStart();
+        }
+    }
+    
+    private void OnBossDeathHandle()
+    {
+        OnBossDeadEvent?.Invoke(_enemySpawner.Boss);
+        _enemyAttacker.DeactivateBoss();
+        _enemies.Remove(_enemySpawner.Boss);
+        _enemiesKilled++;
     }
 }

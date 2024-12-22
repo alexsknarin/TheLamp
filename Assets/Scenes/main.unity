@@ -11129,7 +11129,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1934066237}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2e45411fb5fea2b4ea6f6e142983f945, type: 3}
   m_Name: 
@@ -13769,7 +13769,7 @@ PrefabInstance:
     - target: {fileID: 508564934166301182, guid: db082986f50fad64f90c5d3f0bd3ddf3,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 816267557849244585, guid: db082986f50fad64f90c5d3f0bd3ddf3,
         type: 3}
@@ -13799,7 +13799,7 @@ PrefabInstance:
     - target: {fileID: 5791344357560995486, guid: db082986f50fad64f90c5d3f0bd3ddf3,
         type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7141382224798320509, guid: db082986f50fad64f90c5d3f0bd3ddf3,
         type: 3}
@@ -13854,7 +13854,7 @@ PrefabInstance:
     - target: {fileID: 9191138948751963205, guid: db082986f50fad64f90c5d3f0bd3ddf3,
         type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
