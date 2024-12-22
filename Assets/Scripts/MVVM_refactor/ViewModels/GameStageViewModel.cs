@@ -26,7 +26,7 @@ public class GameStageViewModel : IDisposable
                 OnIntroStartedEvent?.Invoke((float)_gameModel.LampHealth / (float)_gameModel.LampMaxHealth);
                 break;
             case GameStageState.PrepareIn:
-                OnPrepareInStartedEvent?.Invoke(true, 1);
+                OnPrepareInStartedEvent?.Invoke(true, _gameModel.Wave);
                 break;
             case GameStageState.PrepareOut:
                 OnPrepareOutStartedEvent?.Invoke();

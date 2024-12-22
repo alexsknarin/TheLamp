@@ -5,10 +5,10 @@ public class GameModel : IDisposable
 {
     private GameState _currentGameState;
     public GameState CurrentGameState => _currentGameState; // Debug Only
+    public int Wave => _currentGameState.Wave;
     
-    private GameStageState _currentGameStageState = GameStageState.Loading;
-
     #region CurrentGameStageState Reactive Property
+    private GameStageState _currentGameStageState = GameStageState.Loading;
     public GameStageState CurrentGameStageState
     {
         get => _currentGameStageState;
@@ -64,6 +64,7 @@ public class GameModel : IDisposable
     }
     public event Action<int> OnLampMaxHealthChangedEvent;
     #endregion
+    
     
     
     public event Action<float> OnLampAttackStartedEvent;
