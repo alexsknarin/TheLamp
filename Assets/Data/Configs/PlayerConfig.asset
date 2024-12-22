@@ -13,3 +13,12 @@ MonoBehaviour:
   m_Name: PlayerConfig
   m_EditorClassIdentifier: 
   _attackDuration: 0.15
+  _healthCap: 50
+  _cooldownTimeCap: 0.75
+  _cooldownDecrement: 0.06
+  _attackDistanceCap: 0.82
+  <AttackDuration>k__BackingField: 0.15
+  <HealthCap>k__BackingField: 50
+  <CooldownTimeCap>k__BackingField: 0.75
+  <CooldownDecrement>k__BackingField: 0.06
+  <AttackDistanceCap>k__BackingField: 0.82

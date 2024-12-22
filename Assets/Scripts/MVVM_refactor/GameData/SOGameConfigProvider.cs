@@ -3,12 +3,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "SOGameConfigProvider", menuName = "Configs/SOGameConfigProvider")]
 public class SOGameConfigProvider : ScriptableObject, IGameConfigProvider
 {
-    [SerializeField] private SpawnQueueData _spawnQueueData;
-    public SpawnQueueData SpawnQueueData => _spawnQueueData;
-    
-    [SerializeField] private ScoreConfig _scoreConfig;
-    public ScoreConfig ScoreConfig => _scoreConfig;
-    
-    [SerializeField] private PlayerConfig _playerConfig;
-    public PlayerConfig PlayerConfig => _playerConfig;
+    [field:SerializeField] public SpawnQueueData SpawnQueueData { get; private set; }
+    [field:SerializeField] public ScoreConfig ScoreConfig { get; private set; }
+    [field:SerializeField] public PlayerConfig PlayerConfig { get; private set; }
 }
