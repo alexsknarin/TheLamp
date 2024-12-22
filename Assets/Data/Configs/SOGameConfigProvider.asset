@@ -12,6 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dce643fdfe127b14d8eecd33199d65b3, type: 3}
   m_Name: SOGameConfigProvider
   m_EditorClassIdentifier: 
-  _spawnQueueData: {fileID: 11400000, guid: beab91cd3dcd8c44b88194a9986f9a99, type: 2}
-  _scoreConfig: {fileID: 11400000, guid: c0caca80ac8a8c74aad78da8c5b180d9, type: 2}
-  _playerConfig: {fileID: 11400000, guid: e583335462737014891efa42ae7d0ef6, type: 2}
+  <SpawnQueueData>k__BackingField: {fileID: 11400000, guid: beab91cd3dcd8c44b88194a9986f9a99,
+    type: 2}
+  <ScoreConfig>k__BackingField: {fileID: 11400000, guid: c0caca80ac8a8c74aad78da8c5b180d9,
+    type: 2}
+  <PlayerConfig>k__BackingField: {fileID: 11400000, guid: e583335462737014891efa42ae7d0ef6,
+    type: 2}

@@ -3,6 +3,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "ScoreConfig", menuName = "Configs/ScoreConfig")]
 public class ScoreConfig : ScriptableObject
 {
+    [field:Header("------ Score Prices -------")]
     [field:SerializeField] public int MothlingScorePrice { get; private set; } = 1;
     [field: SerializeField] public int MegamothlingScorePrice { get; private set; } = 15;
     [field: SerializeField] public int FlyScorePrice { get; private set; } = 2;
