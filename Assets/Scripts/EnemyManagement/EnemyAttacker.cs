@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyAttacker
+public class EnemyAttacker : ITickable
 {
     public bool IsBossActive => _isBossActive;
     
@@ -156,7 +156,7 @@ public class EnemyAttacker
         );
     }
 
-    public void Tick()
+    public void Tick(float deltaTime)
     {
         UpdateEnemiesReadyToAttack();
         WaitForCooldown();

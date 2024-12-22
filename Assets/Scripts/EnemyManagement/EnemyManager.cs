@@ -294,12 +294,12 @@ public class EnemyManager : MonoBehaviour,IInitializable
 
     private void Update()
     {
-
+/*
         if (_isWaveInitialized && _isGameActive)
         {
-            _enemySpawner.Tick();   
-            _enemyAttacker.Tick();
-            _enemiesFireflyExploder.Tick();
+            _enemySpawner.Tick(Time.deltaTime);   
+            _enemyAttacker.Tick(Time.deltaTime);
+            _enemiesFireflyExploder.Tick(Time.deltaTime);
             
             if (_enemiesKilled == _enemySpawner.EnemiesWaveCount)
             {
@@ -310,6 +310,7 @@ public class EnemyManager : MonoBehaviour,IInitializable
                 OnWaveEndedEvent?.Invoke(_currentWave);
             }
         }
+        */
     }
 
     // Event Handlers

@@ -39,6 +39,7 @@ public class EnemyController : MonoBehaviour, IInitializable
     private EnemySpawner _enemySpawner;
     private EnemyAttacker _enemyAttacker;
     private EnemiesFireflyExploder _enemiesFireflyExploder;
+    private List<ITickable> _tickables;
     
     [SerializeField] private bool _isWaveInitialized = false;
     private bool _isGameActive = false;
@@ -100,6 +101,7 @@ public class EnemyController : MonoBehaviour, IInitializable
         _megabeetleBoss.Initialize();
         _dragonflyBoss.Initialize();
 
+        _tickables = new List<ITickable>();
         // Create enemy spawner
         _enemySpawner = new EnemySpawner(
             _spawnQueue, 
@@ -111,6 +113,8 @@ public class EnemyController : MonoBehaviour, IInitializable
             _dragonflyBoss,
             _firstEnemySpawnDelay
         );
+        _tickables.Add(_enemySpawner);
+        
         // And subcribe to its events
         _enemySpawner.OnBossSpawnedEvent += OnBossSpawnedHandle;
         
@@ -121,6 +125,7 @@ public class EnemyController : MonoBehaviour, IInitializable
             _ladybugsPatrolling,
             _maxAggressionLevel
         );
+        _tickables.Add(_enemyAttacker);
         
         _enemiesFireflyExploder = new EnemiesFireflyExploder(
             _enemies, 
@@ -128,6 +133,7 @@ public class EnemyController : MonoBehaviour, IInitializable
             _fireflyExplosionRadius,
             _explosionDuration
         );
+        _tickables.Add(_enemiesFireflyExploder);
         
         _isWaveInitialized = false;
         _isGameActive = true;
@@ -167,9 +173,10 @@ public class EnemyController : MonoBehaviour, IInitializable
     {
         if (_isWaveInitialized && _isGameActive)
         {
-            _enemySpawner.Tick();   
-            _enemyAttacker.Tick();
-            _enemiesFireflyExploder.Tick();
+            foreach (var tickable in _tickables)
+            {
+                tickable.Tick(Time.deltaTime);
+            }
             
             if (_enemiesKilled == _enemySpawner.EnemiesWaveCount)
             {

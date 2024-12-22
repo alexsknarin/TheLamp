@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemiesFireflyExploder
+public class EnemiesFireflyExploder : ITickable
 {
     // Dependencies
     private List<EnemyBase> _enemies;
@@ -51,14 +51,14 @@ public class EnemiesFireflyExploder
         }
     }
 
-    public void Tick()
+    public void Tick(float deltaTime)
     {
         if (_isExploding)
         {
             if (_localTime < _duration)
             {
                 PerformExplosion();
-                _localTime += Time.deltaTime;
+                _localTime += deltaTime;
             }
             else
             {

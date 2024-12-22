@@ -3,7 +3,7 @@ using System.Collections.Generic;
 // using System.Linq;
 using UnityEngine;
 
-public class EnemySpawner
+public class EnemySpawner : ITickable
 {
     public int EnemiesWaveCount { get; private set; }
     public int EnemiesAvailable { get; private set; }
@@ -95,7 +95,7 @@ public class EnemySpawner
         
     }
 
-    private void WaitForCooldown()
+    private void WaitForCooldown(float deltaTime)
     {
         if (_localTime >= _spawnCooldown)
         {
@@ -105,7 +105,7 @@ public class EnemySpawner
         }
         else
         {
-            _localTime += Time.deltaTime;
+            _localTime += deltaTime;
         }
     }
 
@@ -178,11 +178,11 @@ public class EnemySpawner
     }
 
 
-    public void Tick()
+    public void Tick(float deltaTime)
     {
         if (_isWaveActive)
         {
-            WaitForCooldown();
+            WaitForCooldown(deltaTime);
         }
     }
 }
