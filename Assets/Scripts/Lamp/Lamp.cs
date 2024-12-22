@@ -34,6 +34,11 @@ public class Lamp : MonoBehaviour, IInitializable
     {
         _analyticsService = analyticsService;
     }
+    
+    private void Awake()
+    {
+        LampTransform = transform;
+    }
 
     private void OnEnable()
     {
@@ -67,6 +72,7 @@ public class Lamp : MonoBehaviour, IInitializable
 
     public void Initialize()
     {
+        /*
         _isDead = false;
         _lampStatsManager.Initialize();
         _lampAttackModel.Initialize();
@@ -83,11 +89,12 @@ public class Lamp : MonoBehaviour, IInitializable
         }
         _attackBlockerCount = 0;
         LampTransform = transform;
+        */
     }
     
     public void PlayDeath(float duration)
     {
-        _lampPresentation.StartDeathState(duration);
+        // _lampPresentation.StartDeathState(duration);
     }
   
     private void StickyEnemyEnterCollisionHandle(EnemyBase enemy)
@@ -153,6 +160,7 @@ public class Lamp : MonoBehaviour, IInitializable
     
     private void ApplyDamage(EnemyBase enemy)
     {
+        /*
         if (_isDead)
         {
             return;
@@ -185,6 +193,7 @@ public class Lamp : MonoBehaviour, IInitializable
             OnLampDamagedEvent?.Invoke(enemy);    
         }
         MoveLamp(enemy);
+        */
     }
     
     private void HandleUpdateHealth()
@@ -210,6 +219,7 @@ public class Lamp : MonoBehaviour, IInitializable
     
     private void MoveLamp(EnemyBase enemy)
     {
+        /*
         Vector3 enemyPosition;
         if (enemy.GetType() == typeof(Dragonfly))
         {
@@ -221,11 +231,14 @@ public class Lamp : MonoBehaviour, IInitializable
         }
         float attackDirection = -(enemyPosition - transform.position).x * 2;
         _lampMovement.AddForce(attackDirection);
+        */
     }
     
     public void PlayIntro(float duration)
     {
+        /*
         _lampPresentation.StartIntroState(duration, _lampStatsManager.CurrentHealth, _lampStatsManager.MaxHealth);
+        */
     }
     
     private void HandleStickAttack(EnemyBase enemy)

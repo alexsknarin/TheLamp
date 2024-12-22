@@ -30,7 +30,10 @@ public class EnemyController : MonoBehaviour, IInitializable
     
     private List<EnemyBase> _enemies;
     private List<EnemyBase> _enemiesReadyToAttack;
-    private List<EnemyBase> _ladybugsPatrolling;
+    // TODO: use interfaces to build these lists
+    // Ldybugs in this list are used to check if some of them close enough to the player,
+    // in this case all other enemies should stop attacking - TODO: refactor this
+    private List<EnemyBase> _ladybugsPatrolling;  
 
     private FEnemiesLampAttackHandler _enemiesLampAttackHandler;
     private EnemySpawner _enemySpawner;
@@ -64,7 +67,7 @@ public class EnemyController : MonoBehaviour, IInitializable
     {
         Enemy.OnEnemyDeactivatedEvent += UpdateEnemiesOnScreen;     // TODO: replace with an Interface
         Enemy.OnEnemyDeactivatedEvent += CheckForFireflyExplosion;  // TODO: replace with an Interface
-        // Lamp.OnLampCollidedWithStickyEnemyEvent += UpdateLadybugsOnScreen;
+        LampStickZoneCollisionHandler.OnCollidedWithStickyEnemyStaticEvent += UpdateLadybugsOnScreen;
         // BossBase.OnTriggerSpreadEvent += SpreadEnemies;
         // BossBase.OnDeathEvent += OnBossDeathHandle;
     }
@@ -73,7 +76,7 @@ public class EnemyController : MonoBehaviour, IInitializable
     {
         Enemy.OnEnemyDeactivatedEvent -= UpdateEnemiesOnScreen;
         Enemy.OnEnemyDeactivatedEvent -= CheckForFireflyExplosion;
-        // Lamp.OnLampCollidedWithStickyEnemyEvent -= UpdateLadybugsOnScreen;
+        LampStickZoneCollisionHandler.OnCollidedWithStickyEnemyStaticEvent -= UpdateLadybugsOnScreen;
         _enemySpawner.OnBossSpawnedEvent -= OnBossSpawnedHandle;
         // BossBase.OnTriggerSpreadEvent -= SpreadEnemies;
         // BossBase.OnDeathEvent -= OnBossDeathHandle;
@@ -189,8 +192,6 @@ public class EnemyController : MonoBehaviour, IInitializable
             else
                 _enemiesLampAttackHandler.HandleLampAttack(_enemies, attackPower);
         }
-        
-        // OnWaveEndEvent?.Invoke();
     }
     
     public void SetBlockedMode(bool isBlocked)
@@ -204,18 +205,18 @@ public class EnemyController : MonoBehaviour, IInitializable
     {
         _enemies.Remove(enemy);
         _enemiesKilled++;
-        if (enemy.EnemyType == EnemyType.Ladybug)
+        if (enemy.EnemyType == EnemyType.Ladybug) // TODO: Interfaces check interface instead of a type variable
         {
-            _ladybugsPatrolling.Remove(enemy);
+            _ladybugsPatrolling.Remove(enemy); // TODO: Interfaces
         }
     }
     
     private void UpdateLadybugsOnScreen(EnemyBase enemy)
     {
         // Remove stick ladybug for damageable list
-        if (enemy.EnemyType == EnemyType.Ladybug)
+        if (enemy.EnemyType == EnemyType.Ladybug) // TODO: Interfaces
         {
-            _ladybugsPatrolling.Remove(enemy);    
+            _ladybugsPatrolling.Remove(enemy); // TODO: Interfaces
         }
     }
     

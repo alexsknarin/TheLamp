@@ -137,7 +137,8 @@ public class EnemyAttacker
                 Vector3 pos = ladybug.transform.position;
                 pos.z = 0;
                 // if any Ladybug is at 0.87f distance or close - no enemy attack is allowed
-                // TODO: fix magic number
+                // TODO: need to get the dependency to the lamp's actual position
+                // TODO: fix magic number - extract to a config
                 if (pos.magnitude < 0.87f || ladybug.IsAttacking)
                 {
                     return false;
