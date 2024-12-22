@@ -139,7 +139,8 @@ public class GameModel : IDisposable
     private void StartWave()
     {
         CurrentGameStageState = GameStageState.Wave;
-        _enemyController.StartWave();
+        Debug.Log("Starting Wave: " +_currentGameState.Wave);
+        _enemyController.StartWave(_currentGameState.Wave);
     }
 
     private void HandleCurrentStageStateFinished()
@@ -212,9 +213,9 @@ public class GameModel : IDisposable
                 _playerAttackController.PlayAttack();
                 OnLampAttackStartedEvent?.Invoke(CurrentPower); // Attack Power
                 _playerEnemyInteractionHandler.LampAttack();
+                _enemyController.HandleAttackButtonClicked(CurrentPower);
             }
         }
-        
     }
 
     private void HandleLampAttackEnded()

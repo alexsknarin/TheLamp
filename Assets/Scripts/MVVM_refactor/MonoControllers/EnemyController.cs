@@ -22,8 +22,7 @@ public class EnemyController : MonoBehaviour, IInitializable
     [SerializeField] private float _maxAggressionLevel;
     [Header("")]
     [SerializeField] private bool _isStartAtWaveTestMode = false;
-    [SerializeField] private int _startAtWave = 0;
-    [SerializeField] private int _currentWave = 0;
+    [SerializeField] private int _startAtWaveTest = 0;
     [SerializeField] private float _firstEnemySpawnDelay;
     
     private SpawnQueueGenerator _spawnQueueGenerator;
@@ -33,12 +32,12 @@ public class EnemyController : MonoBehaviour, IInitializable
     private List<EnemyBase> _enemiesReadyToAttack;
     private List<EnemyBase> _ladybugsPatrolling;
 
-    private EnemiesLampAttackHandler _enemiesLampAttackHandler;
+    private FEnemiesLampAttackHandler _enemiesLampAttackHandler;
     private EnemySpawner _enemySpawner;
     private EnemyAttacker _enemyAttacker;
     private EnemiesFireflyExploder _enemiesFireflyExploder;
     
-    private bool _isWaveInitialized = false;
+    [SerializeField] private bool _isWaveInitialized = false;
     private bool _isGameActive = false;
     private int _enemiesKilled;
     
@@ -56,8 +55,27 @@ public class EnemyController : MonoBehaviour, IInitializable
     public event Action<EnemyBase> OnEnemyDeadEvent;
     public event Action<EnemyBase> OnBossSpawnedEvent;
     public event Action<EnemyBase> OnBossDeadEvent;
-    public event Action<Vector3> OnFireflyExplosionEvent;
+    public event Action OnFireflyExplosionEvent;
     public event Action OnWaveEndEvent;
+    
+    private void OnEnable()
+    {
+        Enemy.OnEnemyDeactivatedEvent += UpdateEnemiesOnScreen;     // TODO: replace with an Interface
+        Enemy.OnEnemyDeactivatedEvent += CheckForFireflyExplosion;  // TODO: replace with an Interface
+        // Lamp.OnLampCollidedWithStickyEnemyEvent += UpdateLadybugsOnScreen;
+        // BossBase.OnTriggerSpreadEvent += SpreadEnemies;
+        // BossBase.OnDeathEvent += OnBossDeathHandle;
+    }
+    
+    private void OnDisable()
+    {
+        Enemy.OnEnemyDeactivatedEvent -= UpdateEnemiesOnScreen;
+        Enemy.OnEnemyDeactivatedEvent -= CheckForFireflyExplosion;
+        // Lamp.OnLampCollidedWithStickyEnemyEvent -= UpdateLadybugsOnScreen;
+        _enemySpawner.OnBossSpawnedEvent -= OnBossSpawnedHandle;
+        // BossBase.OnTriggerSpreadEvent -= SpreadEnemies;
+        // BossBase.OnDeathEvent -= OnBossDeathHandle;
+    }
     
     public void Initialize()
     {
@@ -69,14 +87,8 @@ public class EnemyController : MonoBehaviour, IInitializable
         _enemies = new List<EnemyBase>();
         _ladybugsPatrolling = new List<EnemyBase>();
         _enemiesReadyToAttack = new List<EnemyBase>();
-        _enemiesLampAttackHandler = new EnemiesLampAttackHandler();
+        _enemiesLampAttackHandler = new FEnemiesLampAttackHandler();
 
-        // Load Game State Data
-        if (!_isStartAtWaveTestMode)
-        {
-            _startAtWave = 1; // TODO: load should be provided by the game model
-        }
-        
         // Init all bosses
         _waspBoss.Initialize();
         _megamothlingBoss.Initialize();
@@ -95,7 +107,7 @@ public class EnemyController : MonoBehaviour, IInitializable
             _firstEnemySpawnDelay
         );
         // And subcribe to its events
-        // _enemySpawner.OnBossSpawnedEvent += OnBossSpawnedHandle; TODO:
+        _enemySpawner.OnBossSpawnedEvent += OnBossSpawnedHandle;
         
         _enemyAttacker = new EnemyAttacker(
             _spawnQueue, 
@@ -112,10 +124,8 @@ public class EnemyController : MonoBehaviour, IInitializable
             _explosionDuration
         );
         
-        _currentWave = _startAtWave;
         _isWaveInitialized = false;
         _isGameActive = true;
-        
         
         // Debug Spawn Queue
         for(int i=0; i<_spawnQueue.Count(); i++)
@@ -130,12 +140,14 @@ public class EnemyController : MonoBehaviour, IInitializable
         }
     }
     
-    public void StartWave()
+    public void StartWave(int wave)
     {
+        int startAtWave = _isStartAtWaveTestMode ? _startAtWaveTest : wave;
+        
         Debug.Log("Wave started");
         if(!_isWaveInitialized)
         {
-            SetupWave(1);
+            SetupWave(startAtWave);
             OnWaveStartEvent?.Invoke();
         }
     }
@@ -144,15 +156,12 @@ public class EnemyController : MonoBehaviour, IInitializable
     {
         _enemySpawner.StartWave(waveNum);
         _enemyAttacker.StartWave(waveNum);
-
         _enemiesKilled = 0;
         _isWaveInitialized = true;
     }
-    
 
     private void Update()
     {
-
         if (_isWaveInitialized && _isGameActive)
         {
             _enemySpawner.Tick();   
@@ -162,16 +171,54 @@ public class EnemyController : MonoBehaviour, IInitializable
             if (_enemiesKilled == _enemySpawner.EnemiesWaveCount)
             {
                 _isWaveInitialized = false;
-                _currentWave++;
                 OnWaveEndEvent?.Invoke();
             }
         }
     }
     
-    
-    public void HandleAttackButtonClicked()
+    public void HandleAttackButtonClicked(float power)
     {
-        Debug.Log("Attack button clicked");
-        OnWaveEndEvent?.Invoke();
+        Debug.Log("Enemy Manager Attack button clicked");
+        // TODO: blocked attack support
+        // we will use blocked bool as a parameter to have the only one method to call attack
+        _enemiesLampAttackHandler.HandleLampAttack(_enemies, Converters.PowerToAttackPower(power));
+        // OnWaveEndEvent?.Invoke();
+    }
+    
+    // Event Handlers
+    private void UpdateEnemiesOnScreen(EnemyBase enemy)
+    {
+        _enemies.Remove(enemy);
+        _enemiesKilled++;
+        if (enemy.EnemyType == EnemyType.Ladybug)
+        {
+            _ladybugsPatrolling.Remove(enemy);
+        }
+    }
+    
+    private void UpdateLadybugsOnScreen(EnemyBase enemy)
+    {
+        // Remove stick ladybug for damageable list
+        if (enemy.EnemyType == EnemyType.Ladybug)
+        {
+            _ladybugsPatrolling.Remove(enemy);    
+        }
+    }
+    
+    private void CheckForFireflyExplosion(EnemyBase enemy)
+    {
+        if(enemy.EnemyType != EnemyType.Firefly)
+        {
+            return;
+        }
+        _enemiesFireflyExploder.StartExplosion(enemy);
+        OnFireflyExplosionEvent?.Invoke();
+    }
+    
+    private void OnBossSpawnedHandle(BossBase boss)
+    {
+        boss.Play();
+        _enemyAttacker.ActivateBoss(boss); // Boss appearance should stop any ongoing attack
+        OnBossSpawnedEvent?.Invoke(boss);
     }
 }
