@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-// TODO: Remeake without MONOBHEAVIOR ???
+// TODO: Remeake without MONOBHEAVIOR ??? SO + Tickable - after bosses are made into prefabs
 
 public class EnemyController : MonoBehaviour, IInitializable
 {
