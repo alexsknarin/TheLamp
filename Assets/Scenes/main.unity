@@ -6136,6 +6136,7 @@ GameObject:
   - component: {fileID: 1037269785}
   - component: {fileID: 1037269784}
   - component: {fileID: 1037269786}
+  - component: {fileID: 1037269787}
   m_Layer: 0
   m_Name: GameRootContext
   m_TagString: Untagged
@@ -6173,7 +6174,6 @@ MonoBehaviour:
   _lamp: {fileID: 1934066246}
   _lampHealthBarController: {fileID: 969163320}
   _enemyController: {fileID: 2110688078}
-  _playerAttackController: {fileID: 2110688079}
   _playerCollidersPropertyController: {fileID: 1934066258}
   _playerEnemyInteractionHandler: {fileID: 1934066260}
 --- !u!4 &1037269785
@@ -6209,6 +6209,18 @@ MonoBehaviour:
   _useCachedSpawnData: 0
   _spawnQueueDataCache: {fileID: 11400000, guid: beab91cd3dcd8c44b88194a9986f9a99,
     type: 2}
+--- !u!114 &1037269787
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1037269783}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e25d6179fa29ed44e847f7c38b589eaf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1037585458
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -13580,7 +13592,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2110688077}
   - component: {fileID: 2110688078}
-  - component: {fileID: 2110688079}
   m_Layer: 0
   m_Name: GameControllers
   m_TagString: Untagged
@@ -13630,18 +13641,6 @@ MonoBehaviour:
   _startAtWaveTest: 3
   _firstEnemySpawnDelay: 0.5
   _isWaveInitialized: 0
---- !u!114 &2110688079
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2110688076}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 948e0ca97dd498349b419f2d15ef189c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &455450631368144086
 PrefabInstance:
   m_ObjectHideFlags: 0

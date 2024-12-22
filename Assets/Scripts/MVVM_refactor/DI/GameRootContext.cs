@@ -24,17 +24,14 @@ public class GameRootContext : MonoBehaviour
     [Header("Controllers")]
     [SerializeField] private LampHealthBarController _lampHealthBarController;
     [SerializeField] private EnemyController _enemyController;
-    [SerializeField] private PlayerAttackController _playerAttackController;
+    private PlayerAttackController _playerAttackController;
     [SerializeField] private PlayerCollidersPropertyController _playerCollidersPropertyController;
     [SerializeField] private PlayerEnemyInteractionHandler _playerEnemyInteractionHandler;
     
     // [SerializeField] private GameConfig _gameConfig;
-    
-    
     private GameSettingsService _gameSettingsService;
     private UGSAuthenticationService _ugsAuthenticationService;
     
-    private List<IDisposable> _disposables = new List<IDisposable>();
     private IGameSettingsProvider _gameSettingsProvider;
     private GameSettingsModel _gameSettingsModel;
     private GameSettingsViewModel _gameSettingsViewModel;
@@ -47,11 +44,14 @@ public class GameRootContext : MonoBehaviour
     private PlayerAttackViewModel _playerAttackViewModel;
     private GameModel _gameModel;
 
-
+    private List<IDisposable> _disposables = new List<IDisposable>();
+    private List<ITickable> _tickables = new List<ITickable>();
+    
     private void Awake()
     {
         Application.targetFrameRate = 60;
         Screen.sleepTimeout = SleepTimeout.NeverSleep;
+        CoroutineHost coroutineHost = GetComponent<CoroutineHost>();
         
         Debug.Log("------------------------------------------");
         Debug.Log("------ Starting Game Initialization ------");
@@ -81,6 +81,7 @@ public class GameRootContext : MonoBehaviour
         _enemyController.Construct(_gameConfigService);
         // Game State       
         _gameStateProvider = new PlayerPrefsGameStateProvider();
+        _playerAttackController = new PlayerAttackController(coroutineHost);
         _gameModel = new GameModel(
             _gameStateProvider.Get(), 
             _enemyController, 
@@ -88,6 +89,7 @@ public class GameRootContext : MonoBehaviour
             _playerAttackController, 
             _playerCollidersPropertyController,
             _playerEnemyInteractionHandler);
+        _tickables.Add(_playerAttackController);
         _lampHealthBarController.Initialize();
         _gameStageViewModel = new GameStageViewModel(_gameModel);
         _disposables.Add(_gameStageViewModel);
@@ -129,6 +131,14 @@ public class GameRootContext : MonoBehaviour
         Debug.Log("------ Game Config Loaded ------");
         _enemyController.Initialize();
         _gameModel.StartGame();
+    }
+    
+    private void Update()
+    {
+        foreach (var tickable in _tickables)
+        {
+            tickable.Tick(Time.deltaTime);
+        }
     }
 
 

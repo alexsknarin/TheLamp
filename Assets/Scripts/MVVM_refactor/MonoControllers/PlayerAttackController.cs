@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-public class PlayerAttackController : MonoBehaviour
+public class PlayerAttackController : ITickable
 {
     private float _power;
     public float Power 
@@ -22,6 +22,13 @@ public class PlayerAttackController : MonoBehaviour
     private bool _isCooldownPlaying = false;
     public event Action OnAttackEndedEvent; 
     
+    // Dependencies
+    private MonoBehaviour _coroutineHost; 
+    public PlayerAttackController(MonoBehaviour monoBehaviour)
+    {
+        _coroutineHost = monoBehaviour;
+    }
+    
     public void SetAttackDuration(float attackDuration)
     {
         _attackEndWaitDuraiton = new WaitForSeconds(attackDuration);
@@ -37,7 +44,7 @@ public class PlayerAttackController : MonoBehaviour
         {
             StopCooldown();
         }
-        StartCoroutine(WaitForAttackEnd());
+        _coroutineHost.StartCoroutine(WaitForAttackEnd());
     }
     
     private IEnumerator WaitForAttackEnd()
@@ -59,7 +66,7 @@ public class PlayerAttackController : MonoBehaviour
         _isCooldownPlaying = false;
     }
     
-    private void PerformCooldown()
+    private void PerformCooldown(float deltaTime)
     {
         float phase = _localTime / _cooldownDuration;
         if (phase > 1)
@@ -70,15 +77,14 @@ public class PlayerAttackController : MonoBehaviour
             return;
         }
         Power = phase;
-        _localTime += Time.deltaTime;
+        _localTime += deltaTime;
     }
     
-    private void Update()
+    public void Tick(float deltaTime)
     {
         if (_isCooldownPlaying)
         {
-            PerformCooldown();
+            PerformCooldown(deltaTime);
         }
     }
-    
 }
