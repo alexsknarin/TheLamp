@@ -10018,7 +10018,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f7068c7d2ed1f84db4f302f148a127b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _skip: 0
+  _skip: 1
   _duration: 2
   _cameraStartZPosition: -7.1
   _cameraEndZPosition: -5.88
@@ -13609,9 +13609,9 @@ MonoBehaviour:
   _maxEnemiesOnScreen: 0
   _agressionLevel: 0
   _maxAggressionLevel: 6
-  _isStartAtWaveTestMode: 1
+  _isStartAtWaveTestMode: 0
   _startAtWaveTest: 3
-  _firstEnemySpawnDelay: 0
+  _firstEnemySpawnDelay: 0.5
   _isWaveInitialized: 0
 --- !u!114 &2110688079
 MonoBehaviour:

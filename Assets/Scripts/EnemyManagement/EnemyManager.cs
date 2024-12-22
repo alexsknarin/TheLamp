@@ -128,7 +128,7 @@ public class EnemyManager : MonoBehaviour,IInitializable
             _megamothlingBoss,
             _megabeetleBoss,
             _dragonflyBoss,
-                _firstEnemySpawnDelay
+            _firstEnemySpawnDelay
         );
         // And subcribe to its events
         _enemySpawner.OnBossSpawnedEvent += OnBossSpawnedHandle;

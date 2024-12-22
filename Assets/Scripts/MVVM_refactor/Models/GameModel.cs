@@ -160,7 +160,8 @@ public class GameModel : IDisposable
                 StartWave();
                 break;
             case GameStageState.Wave:
-                CurrentGameStageState = GameStageState.GameOverOut;
+                CurrentGameStageState = GameStageState.PrepareIn;
+                StartPrepareIn();
                 break;
             case GameStageState.GameOverOut:
                 Debug.Log("<<<<<<<   Game Finished.  >>>>>>>");
@@ -190,6 +191,8 @@ public class GameModel : IDisposable
 
     private void HandleWaveEnd()
     {
+        Debug.Log($"Wave {_currentGameState.Wave} Ended");
+        _currentGameState.Wave++;
         HandleCurrentStageStateFinished();
     }
 
