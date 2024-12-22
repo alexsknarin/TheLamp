@@ -56,10 +56,10 @@ public class PlayerGameplayViewModel : IDisposable
         }
     }
 
-    public event Action<float> OnAttackStartEvent;
+    public event Action<float, bool> OnAttackStartEvent;
 
     private void StartLampAttack(float currentPower)
     {
-        OnAttackStartEvent?.Invoke(currentPower);
+        OnAttackStartEvent?.Invoke(currentPower, _gameModel.IsLampBlocked);
     }
 }

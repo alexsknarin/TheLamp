@@ -41,6 +41,8 @@ public class EnemyController : MonoBehaviour, IInitializable
     private bool _isGameActive = false;
     private int _enemiesKilled;
     
+    private bool _isPlayerBlocked = false;
+    
     // Dependencies    
     private IGameConfigService _gameConfigService;
 
@@ -178,9 +180,24 @@ public class EnemyController : MonoBehaviour, IInitializable
     {
         // TODO: blocked attack support
         // we will use blocked bool as a parameter to have the only one method to call attack
-        _enemiesLampAttackHandler.HandleLampAttack(_enemies, Converters.PowerToAttackPower(power));
+        
+        int attackPower = Converters.PowerToAttackPower(power);
+        if (attackPower > 0)
+        {
+            if (_isPlayerBlocked)
+                _enemiesLampAttackHandler.HandleLampBlockedAttack(_enemies, attackPower);
+            else
+                _enemiesLampAttackHandler.HandleLampAttack(_enemies, attackPower);
+        }
+        
         // OnWaveEndEvent?.Invoke();
     }
+    
+    public void SetBlockedMode(bool isBlocked)
+    {
+        _isPlayerBlocked = isBlocked;
+    }
+    
     
     // Event Handlers
     private void UpdateEnemiesOnScreen(EnemyBase enemy)

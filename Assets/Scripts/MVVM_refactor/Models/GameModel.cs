@@ -255,6 +255,7 @@ public class GameModel : IDisposable
     private void SetLampBlockedState(bool isBlocked)
     {
         IsLampBlocked = isBlocked;
+        _enemyController.SetBlockedMode(isBlocked);
         if (isBlocked)
         {
             Debug.Log("Lamp is blocked");

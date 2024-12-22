@@ -13,6 +13,7 @@ public class LampAttackView : MonoBehaviour, IInitializable
     private float _duration;
     private float _lightPower;
     private float _attackZonePower;
+    private bool _isBlockedAttack = false;
     
     private PlayerGameplayViewModel _playerGameplayViewModel;
     private IGameConfigService _gameConfigService;
@@ -34,10 +35,12 @@ public class LampAttackView : MonoBehaviour, IInitializable
         _playerGameplayViewModel.OnAttackStartEvent -= AttackStart;
     }
 
-    private void AttackStart(float power)
+    private void AttackStart(float power, bool isBlockedAttack)
     {
+        _isBlockedAttack = isBlockedAttack;
         _lightPower = _emissionPowerCurve.Evaluate(power);
-        _attackZonePower = _attackZonePowerCurve.Evaluate(power);
+        if (!_isBlockedAttack)
+            _attackZonePower = _attackZonePowerCurve.Evaluate(power);
         _duration = _gameConfigService.PlayerConfig.AttackDuration;
         _localTime = 0;
         _isPlaying = true;
@@ -54,7 +57,8 @@ public class LampAttackView : MonoBehaviour, IInitializable
             return;
         }
         _lampEmissionController.Intensity = Mathf.Lerp(_lightPower, 0, phase);
-        _lampAttackZoneMaterial.SetFloat("_Alpha", Mathf.Lerp(_attackZonePower, 0, phase));
+        if (!_isBlockedAttack)
+            _lampAttackZoneMaterial.SetFloat("_Alpha", Mathf.Lerp(_attackZonePower, 0, phase));
         _localTime += Time.deltaTime;
     }
 

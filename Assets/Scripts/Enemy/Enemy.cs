@@ -150,6 +150,7 @@ public class Enemy : EnemyBase
     
     private void StickStatusEnable()
     {
+        Debug.Log("Stick status enabled");
         IsStick = true;
     }
     
@@ -177,7 +178,9 @@ public class Enemy : EnemyBase
 
     public override void ReceiveDamage(int damage)
     {
-        ReadyToLampDamage = false;
+        if (!IsStick)
+            ReadyToLampDamage = false; // TODO: better mechanism - separate IStickyDamageable class or somthing
+
         _currentHealth -= damage;
 
         if (_currentHealth > 0)
