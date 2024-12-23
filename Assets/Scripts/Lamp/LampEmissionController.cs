@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class LampEmissionController : MonoBehaviour
+public class LampEmissionController : MonoBehaviour, IInitializable
 {
     [Range(0f, 10f)]
     [SerializeField] public float _intensity = 0;
@@ -25,6 +25,7 @@ public class LampEmissionController : MonoBehaviour
         get => _blockedModeMix;
     }
     [SerializeField] private float _blockedModeNoseFrequency;
+    
     [Header("--------")]
     [SerializeField] private bool _isDamageEnabled;
     public bool IsDamageEnabled
@@ -58,8 +59,8 @@ public class LampEmissionController : MonoBehaviour
     private Color _ligtMinimumColor = new Color(0.8301f, 0.268f, 0.1331f);
     private Color _ligtMaximumColor = new Color(0.9058824f, 0.6f, 0.3764f);
     private Color _ligtDamageColor = new Color(0.931f, 0.1254f, 0.0671f);
-        
-    private void Start()
+
+    public void Initialize()
     {
         Material[] materials = _lampInternalMeshRenderer.materials;
         _filamentMaterial = materials[0];
@@ -67,10 +68,7 @@ public class LampEmissionController : MonoBehaviour
         _glassTubeMaterial = materials[2];
         _lampGlassMaterial = _lampGlassMeshRenderer.sharedMaterial;
         _lampSocketAluminiumMaterial = _lampSocketMeshRenderer.materials[0];
-    }
-
-    public void Initialize()
-    {
+        
         _filamentMaterial.SetFloat("_DamageMix", 0);
         _electrodeMaterial.SetFloat("_DamageMix", 0);
         _glassTubeMaterial.SetFloat("_DamageMix", 0);
@@ -92,6 +90,26 @@ public class LampEmissionController : MonoBehaviour
         _lampGlassMaterial.SetFloat("_CracksAmountR", damageWeights.x);
         _lampGlassMaterial.SetFloat("_CracksAmountL", damageWeights.y);
         _lampGlassMaterial.SetFloat("_CracksAmountB", damageWeights.z);
+    }
+    
+    public void LampGlassDamageUpdate(GlassDamageData glassDamageData)
+    {
+        _lampGlassMaterial.SetFloat("_CracksAmountR", glassDamageData.CracksAmountRight);
+        _lampGlassMaterial.SetFloat("_CracksAmountL", glassDamageData.CracksAmountLeft);
+        _lampGlassMaterial.SetFloat("_CracksAmountB", glassDamageData.CracksAmountBottom);
+        
+        _lampGlassMaterial.SetFloat("_ImpactPoint01Strength", glassDamageData.LampDamagePoint01.Strength);
+        _lampGlassMaterial.SetFloat("_ImpactPoint01LocalAngle", glassDamageData.LampDamagePoint01.LocalAngle);
+        _lampGlassMaterial.SetFloat("_ImpactPoint01GlobalAngle", glassDamageData.LampDamagePoint01.GlobalAngle);
+        
+        _lampGlassMaterial.SetFloat("_ImpactPoint02Strength", glassDamageData.LampDamagePoint02.Strength);
+        _lampGlassMaterial.SetFloat("_ImpactPoint02LocalAngle", glassDamageData.LampDamagePoint02.LocalAngle);
+        _lampGlassMaterial.SetFloat("_ImpactPoint02GlobalAngle", glassDamageData.LampDamagePoint02.GlobalAngle);
+        
+        _lampGlassMaterial.SetFloat("_ImpactPoint03Strength", glassDamageData.LampDamagePoint03.Strength);
+        _lampGlassMaterial.SetFloat("_ImpactPoint03LocalAngle", glassDamageData.LampDamagePoint03.LocalAngle);
+        _lampGlassMaterial.SetFloat("_ImpactPoint03GlobalAngle", glassDamageData.LampDamagePoint03.GlobalAngle);
+        
     }
     
     public void LampImpactDamageUpdate(LampImpactPointsData impactPointsData)

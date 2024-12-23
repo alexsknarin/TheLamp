@@ -65,6 +65,22 @@ public class GameModel : IDisposable
     public event Action<int> OnLampMaxHealthChangedEvent;
     #endregion
     
+    #region LampGlassDamage Reactive Property 
+    public GlassDamageData LampGlassDamage
+    
+    {
+        get => _currentGameState.GlassDamageData;
+        private set
+        {
+            _currentGameState.GlassDamageData = value;
+            OnLampGlassDamageChangedEvent?.Invoke(value);
+        }
+    }
+    public event Action<GlassDamageData> OnLampGlassDamageChangedEvent;
+    #endregion
+    
+    
+    
     #region LampBlocked Reactive Property
     private bool _isLampBlocked;
     public bool IsLampBlocked
@@ -79,6 +95,8 @@ public class GameModel : IDisposable
     public event Action<bool> OnLampBlockedModeSetEvent;
     #endregion
     
+    
+    
     public event Action<float> OnLampAttackStartedEvent;
     public event Action<float> OnLampDamageStartedEvent;
     public event Action OnLampDeathEvent;
@@ -92,6 +110,7 @@ public class GameModel : IDisposable
     private PlayerAttackHandler _playerAttackHandler;
     PlayerCollidersPropertyController _playerCollidersPropertyController;
     PlayerEnemyInteractionHandler _playerEnemyInteractionHandler;
+    LampDamageDataHandler _lampDamageDataHandler = new LampDamageDataHandler();
    
     public GameModel(
         GameState _gameState, 
@@ -141,6 +160,8 @@ public class GameModel : IDisposable
         _playerAttackHandler.SetCooldownDuration(_currentGameState.LampCooldownTime); // Cooldown Duration
         _playerCollidersPropertyController.SetAttackZoneRadius(_currentGameState.LampAttackDistance); // Attack Distance
         _currentPower = 1.0f;
+        LampGlassDamage = _currentGameState.GlassDamageData;
+        _lampDamageDataHandler.MaxHealth = _currentGameState.LampMaxHealth;
     }
 
     private void StartPrepareIn()
@@ -281,6 +302,7 @@ public class GameModel : IDisposable
                 // Play Game Over In state
             }
             
+            LampGlassDamage = _lampDamageDataHandler.UpdateGlassDamageDataDamage(LampGlassDamage, enemy.ProvideImpactPoint().normalized);
             OnLampDamageStartedEvent?.Invoke(_gameConfigService.PlayerConfig.DamageDuration);
         }
     }

@@ -2,9 +2,12 @@
 public struct GlassDamageData
 {
     public int ImpactLastPointNumber;
-    public int LampDamageWeightRight;
-    public int LampDamageWeightLeft;
-    public int LampDamageWeightBottom;
+    public int CracksNumberRight;
+    public int CracksNumberLeft;
+    public int CracksNumberBottom;
+    public float CracksAmountRight;
+    public float CracksAmountLeft;
+    public float CracksAmountBottom;
     public LampDamagePoint LampDamagePoint01;
     public LampDamagePoint LampDamagePoint02;
     public LampDamagePoint LampDamagePoint03;

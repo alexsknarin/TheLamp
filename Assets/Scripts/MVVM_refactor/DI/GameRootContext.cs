@@ -26,10 +26,11 @@ public class GameRootContext : MonoBehaviour
     [Header("Controllers")]
     [SerializeField] private LampHealthBarController _lampHealthBarController;
     [SerializeField] private EnemyController _enemyController;
-    private PlayerAttackHandler _playerAttackHandler;
     [SerializeField] private PlayerCollidersPropertyController _playerCollidersPropertyController;
     [SerializeField] private PlayerEnemyInteractionHandler _playerEnemyInteractionHandler;
-    
+    [SerializeField] private LampEmissionController _lampEmissionController;
+    private PlayerAttackHandler _playerAttackHandler;
+
     // [SerializeField] private GameConfig _gameConfig;
     private GameSettingsService _gameSettingsService;
     private UGSAuthenticationService _ugsAuthenticationService;
@@ -112,6 +113,7 @@ public class GameRootContext : MonoBehaviour
         _playerEnemyInteractionHandler.Initialize();
         _lampDamageViewUI.Construct(_playerGameplayViewModel);
         _lampDamageView.Construct(_playerGameplayViewModel);
+        _lampEmissionController.Initialize();
         
         
         

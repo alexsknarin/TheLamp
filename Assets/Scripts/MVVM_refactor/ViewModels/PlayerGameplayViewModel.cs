@@ -1,10 +1,14 @@
 using System;
+using UnityEngine;
 
 public class PlayerGameplayViewModel : IDisposable
 {
     public Observable<float> Power = new Observable<float>();
     public Observable<float> LampNormalizedHealth = new Observable<float>();
     public Observable<bool> IsBlocked = new Observable<bool>();
+
+    public Action<GlassDamageData> OnLampGlassDamageChangedEvent;
+    
     public event Action OnLastHealthPointStartedEvent;
     public event Action OnLastHealthPointEndedEvent;
     public event Action<float, bool> OnAttackStartEvent;
@@ -25,6 +29,7 @@ public class PlayerGameplayViewModel : IDisposable
         _gameModel.OnLampBlockedModeSetEvent += SetBlockedMode;
         _gameModel.OnLampDamageStartedEvent += StartLampDamage;
         _gameModel.OnLampDeathEvent += StartLampDeath;
+        _gameModel.OnLampGlassDamageChangedEvent += UpdateLampGlassDamage;
     }
 
     public void Dispose()
@@ -35,6 +40,7 @@ public class PlayerGameplayViewModel : IDisposable
         _gameModel.OnLampBlockedModeSetEvent -= SetBlockedMode;
         _gameModel.OnLampDamageStartedEvent -= StartLampDamage;
         _gameModel.OnLampDeathEvent -= StartLampDeath;
+        _gameModel.OnLampGlassDamageChangedEvent -= UpdateLampGlassDamage;
     }
 
     public void HandleDamageStateEnded()
@@ -81,5 +87,10 @@ public class PlayerGameplayViewModel : IDisposable
     private void StartLampDeath()
     {
         OnLampDeadEvent?.Invoke();
+    }
+
+    private void UpdateLampGlassDamage(GlassDamageData damageData)
+    {
+        OnLampGlassDamageChangedEvent?.Invoke(damageData);
     }
 }

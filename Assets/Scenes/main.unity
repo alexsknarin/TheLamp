@@ -4233,22 +4233,26 @@ MonoBehaviour:
     LampXp: 0
     LampXpThreshold: 0
     LampXpIncrement: 0
-    ImpactLastPointNumber: 0
-    LampDamageWeightRight: 0
-    LampDamageWeightLeft: 0
-    LampDamageWeightBottom: 0
-    LampDamagePoint01:
-      Strength: 0
-      LocalAngle: 0
-      GlobalAngle: 0
-    LampDamagePoint02:
-      Strength: 0
-      LocalAngle: 0
-      GlobalAngle: 0
-    LampDamagePoint03:
-      Strength: 0
-      LocalAngle: 0
-      GlobalAngle: 0
+    GlassDamageData:
+      ImpactLastPointNumber: 0
+      CracksNumberRight: 0
+      CracksNumberLeft: 0
+      CracksNumberBottom: 0
+      CracksAmountRight: 0
+      CracksAmountLeft: 0
+      CracksAmountBottom: 0
+      LampDamagePoint01:
+        Strength: 0
+        LocalAngle: 0
+        GlobalAngle: 0
+      LampDamagePoint02:
+        Strength: 0
+        LocalAngle: 0
+        GlobalAngle: 0
+      LampDamagePoint03:
+        Strength: 0
+        LocalAngle: 0
+        GlobalAngle: 0
 --- !u!4 &646836955
 Transform:
   m_ObjectHideFlags: 0
@@ -6178,6 +6182,7 @@ MonoBehaviour:
   _enemyController: {fileID: 2110688078}
   _playerCollidersPropertyController: {fileID: 1934066258}
   _playerEnemyInteractionHandler: {fileID: 1934066260}
+  _lampEmissionController: {fileID: 23663153}
 --- !u!4 &1037269785
 Transform:
   m_ObjectHideFlags: 0
@@ -12491,6 +12496,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _lampDamageAnimation: {fileID: 1934066252}
+  _lampEmissionController: {fileID: 23663153}
 --- !u!1 &1944166815
 GameObject:
   m_ObjectHideFlags: 0
