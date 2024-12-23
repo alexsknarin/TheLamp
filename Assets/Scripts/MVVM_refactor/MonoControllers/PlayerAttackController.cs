@@ -47,6 +47,15 @@ public class PlayerAttackController : ITickable
         _coroutineHost.StartCoroutine(WaitForAttackEnd());
     }
     
+    public void PlayCooldown()
+    {
+        if (_isCooldownPlaying)
+        {
+            StopCooldown();
+        }
+        StartCooldown();
+    }
+    
     private IEnumerator WaitForAttackEnd()
     {
         yield return _attackEndWaitDuraiton;

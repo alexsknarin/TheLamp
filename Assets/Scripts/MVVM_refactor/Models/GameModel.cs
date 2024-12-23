@@ -79,8 +79,9 @@ public class GameModel : IDisposable
     public event Action<bool> OnLampBlockedModeSetEvent;
     #endregion
     
-    
     public event Action<float> OnLampAttackStartedEvent;
+    public event Action<float> OnLampDamageStartedEvent;
+    public event Action OnLampDeathEvent;
     
     private bool _isAttacking = false;
     
@@ -112,6 +113,7 @@ public class GameModel : IDisposable
         _playerAttackController.OnAttackEndedEvent += HandleLampAttackEnded;
         _playerAttackController.OnPowerChangedEvent += HandlePowerChanged;
         _playerEnemyInteractionHandler.OnLampBlockedSetEvent += SetLampBlockedState;
+        _playerEnemyInteractionHandler.OnEnemyAttackDeflectedEvent += HandleEnemyAttackDeflected;
         
         Debug.Log("GameModel created");
         Debug.Log("GameState: " + _gameState.LampCooldownTime);
@@ -122,6 +124,8 @@ public class GameModel : IDisposable
         _enemyController.OnWaveEndEvent -= HandleWaveEnd;
         _playerAttackController.OnAttackEndedEvent -= HandleLampAttackEnded;
         _playerAttackController.OnPowerChangedEvent -= HandlePowerChanged;
+        _playerEnemyInteractionHandler.OnLampBlockedSetEvent -= SetLampBlockedState;
+        _playerEnemyInteractionHandler.OnEnemyAttackDeflectedEvent -= HandleEnemyAttackDeflected;
     }
 
     public void StartGame()
@@ -241,6 +245,11 @@ public class GameModel : IDisposable
             }
         }
     }
+    
+    public void HandleDamageStateEnded()
+    {
+        _playerAttackController.PlayCooldown();
+    }
 
     private void HandleLampAttackEnded()
     {
@@ -252,17 +261,27 @@ public class GameModel : IDisposable
         CurrentPower = power;
     }
 
-    private void SetLampBlockedState(bool isBlocked)
+    private void SetLampBlockedState(bool isBlocked, EnemyBase enemy)
     {
         IsLampBlocked = isBlocked;
         _enemyController.SetBlockedMode(isBlocked);
-        if (isBlocked)
+    }
+
+    private void HandleEnemyAttackDeflected(bool isDeflected, EnemyBase enemy)
+    {
+        if (!isDeflected || IsLampBlocked)
         {
-            Debug.Log("Lamp is blocked");
-        }
-        else
-        {
-            Debug.Log("Lamp is not blocked");
+            LampHealth -= 1;
+
+            if (LampHealth <= 0)
+            {
+                OnLampDeathEvent?.Invoke();
+                Debug.Log("++++++++++ Game Over ++++++++++");
+                return;
+                // Play Game Over In state
+            }
+            
+            OnLampDamageStartedEvent?.Invoke(_gameConfigService.PlayerConfig.DamageDuration);
         }
     }
 }

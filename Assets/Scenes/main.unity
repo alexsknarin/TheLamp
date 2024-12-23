@@ -6167,6 +6167,8 @@ MonoBehaviour:
   _lampCooldownView: {fileID: 1934066257}
   _lampHealthBarView: {fileID: 1934066259}
   _lampBlockedModeView: {fileID: 1934066261}
+  _lampDamageViewUI: {fileID: 1266635122}
+  _lampDamageView: {fileID: 1934066262}
   _unityAnalyticsService: {fileID: 1595482322}
   _adsManager: {fileID: 1665985692}
   _game: {fileID: 1818435501}
@@ -7134,6 +7136,7 @@ GameObject:
   - component: {fileID: 1266635121}
   - component: {fileID: 1266635120}
   - component: {fileID: 1266635119}
+  - component: {fileID: 1266635122}
   m_Layer: 2
   m_Name: BrokenGlass_Image
   m_TagString: Untagged
@@ -7211,6 +7214,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1266635117}
   m_CullTransparentMesh: 1
+--- !u!114 &1266635122
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1266635117}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f09d43bb693ede24da6c886539b286e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _brokenGlassEffect: {fileID: 1266635119}
 --- !u!1 &1282432607
 GameObject:
   m_ObjectHideFlags: 0
@@ -7918,7 +7934,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc2f22d13a8e7cc458ca9fda15513204, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _duration: 0.4
   _explosionCurve:
     serializedVersion: 2
     m_Curve:
@@ -11057,6 +11072,7 @@ GameObject:
   - component: {fileID: 1934066257}
   - component: {fileID: 1934066259}
   - component: {fileID: 1934066261}
+  - component: {fileID: 1934066262}
   m_Layer: 0
   m_Name: LampObject
   m_TagString: Lamp
@@ -12462,6 +12478,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _lampEmissionController: {fileID: 23663153}
+--- !u!114 &1934066262
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1934066237}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f05272bd1097cf240a6ade4e56d3a52d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _lampDamageAnimation: {fileID: 1934066252}
 --- !u!1 &1944166815
 GameObject:
   m_ObjectHideFlags: 0
@@ -13632,13 +13661,9 @@ MonoBehaviour:
   _megabeetleBoss: {fileID: 1180215397}
   _dragonflyBoss: {fileID: 1536401419}
   _fireflyExplosion: {fileID: 1402077385}
-  _fireflyExplosionRadius: 0.8
-  _explosionDuration: 0.22
   _maxEnemiesOnScreen: 0
   _agressionLevel: 0
   _maxAggressionLevel: 6
-  _isStartAtWaveTestMode: 0
-  _startAtWaveTest: 3
   _firstEnemySpawnDelay: 0.5
   _isWaveInitialized: 0
 --- !u!1001 &455450631368144086
@@ -13880,7 +13905,7 @@ PrefabInstance:
     - target: {fileID: 1489340059461961505, guid: 5abdecc64f378fa42a25d190ec1a9a13,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2800351027539773626, guid: 5abdecc64f378fa42a25d190ec1a9a13,
         type: 3}
@@ -13935,12 +13960,12 @@ PrefabInstance:
     - target: {fileID: 2949075063346376704, guid: 5abdecc64f378fa42a25d190ec1a9a13,
         type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4239300212263848995, guid: 5abdecc64f378fa42a25d190ec1a9a13,
         type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8134831335528203179, guid: 5abdecc64f378fa42a25d190ec1a9a13,
         type: 3}
@@ -13955,12 +13980,12 @@ PrefabInstance:
     - target: {fileID: 8424250967755403106, guid: 5abdecc64f378fa42a25d190ec1a9a13,
         type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8495470468900444152, guid: 5abdecc64f378fa42a25d190ec1a9a13,
         type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8953583610499858097, guid: 5abdecc64f378fa42a25d190ec1a9a13,
         type: 3}
@@ -13971,7 +13996,7 @@ PrefabInstance:
     - target: {fileID: 8985430870367809322, guid: 5abdecc64f378fa42a25d190ec1a9a13,
         type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

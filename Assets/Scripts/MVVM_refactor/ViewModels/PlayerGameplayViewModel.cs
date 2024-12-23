@@ -7,6 +7,9 @@ public class PlayerGameplayViewModel : IDisposable
     public Observable<bool> IsBlocked = new Observable<bool>();
     public event Action OnLastHealthPointStartedEvent;
     public event Action OnLastHealthPointEndedEvent;
+    public event Action<float, bool> OnAttackStartEvent;
+    public event Action<float> OnLampDamagedEvent;
+    public event Action OnLampDeadEvent;
     
     private GameModel _gameModel;
     
@@ -20,6 +23,8 @@ public class PlayerGameplayViewModel : IDisposable
         _gameModel.OnPowerChangedEvent += UpdatePower;
         _gameModel.OnLampHealthChangedEvent += UpdateLampHealth;
         _gameModel.OnLampBlockedModeSetEvent += SetBlockedMode;
+        _gameModel.OnLampDamageStartedEvent += StartLampDamage;
+        _gameModel.OnLampDeathEvent += StartLampDeath;
     }
 
     public void Dispose()
@@ -28,6 +33,13 @@ public class PlayerGameplayViewModel : IDisposable
         _gameModel.OnPowerChangedEvent -= UpdatePower;
         _gameModel.OnLampHealthChangedEvent -= UpdateLampHealth;
         _gameModel.OnLampBlockedModeSetEvent -= SetBlockedMode;
+        _gameModel.OnLampDamageStartedEvent -= StartLampDamage;
+        _gameModel.OnLampDeathEvent -= StartLampDeath;
+    }
+
+    public void HandleDamageStateEnded()
+    {
+        _gameModel.HandleDamageStateEnded();
     }
 
     private void SetBlockedMode(bool isBlocked)
@@ -38,6 +50,11 @@ public class PlayerGameplayViewModel : IDisposable
     private void UpdatePower(float power)
     {
         Power.Value = power;
+    }
+
+    private void StartLampAttack(float currentPower)
+    {
+        OnAttackStartEvent?.Invoke(currentPower, _gameModel.IsLampBlocked);
     }
 
     private void UpdateLampHealth(int newHealth)
@@ -56,10 +73,13 @@ public class PlayerGameplayViewModel : IDisposable
         }
     }
 
-    public event Action<float, bool> OnAttackStartEvent;
-
-    private void StartLampAttack(float currentPower)
+    private void StartLampDamage(float duration)
     {
-        OnAttackStartEvent?.Invoke(currentPower, _gameModel.IsLampBlocked);
+        OnLampDamagedEvent?.Invoke(duration);
+    }
+
+    private void StartLampDeath()
+    {
+        OnLampDeadEvent?.Invoke();
     }
 }
