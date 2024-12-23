@@ -108,6 +108,7 @@ public class GameModel : IDisposable
     private PlayerEnemyInteractionHandler _playerEnemyInteractionHandler;
     private LampDamageDataHandler _lampDamageDataHandler = new LampDamageDataHandler();
     private LampMovementController _lampMovementController;
+    private ScoresCollectionHandler _scoresCollectionHandler;
    
     public GameModel(
         GameState _gameState, 
@@ -116,7 +117,8 @@ public class GameModel : IDisposable
         PlayerAttackHandler playerAttackHandler,
         PlayerCollidersPropertyController playerCollidersPropertyController,
         PlayerEnemyInteractionHandler playerEnemyInteractionHandler,
-        LampMovementController lampMovementController)
+        LampMovementController lampMovementController,
+        ScoresCollectionHandler scoresCollectionHandler)
     {
         _currentGameState = _gameState;
         _enemyController = enemyController;
@@ -125,6 +127,7 @@ public class GameModel : IDisposable
         _playerCollidersPropertyController = playerCollidersPropertyController;
         _playerEnemyInteractionHandler = playerEnemyInteractionHandler;
         _lampMovementController = lampMovementController;
+        _scoresCollectionHandler = scoresCollectionHandler;
         
         // Subscriptions
         _enemyController.OnWaveEndEvent += HandleWaveEnd;
@@ -132,6 +135,7 @@ public class GameModel : IDisposable
         _playerAttackHandler.OnPowerChangedEvent += HandlePowerChanged;
         _playerEnemyInteractionHandler.OnLampBlockedSetEvent += SetLampBlockedState;
         _playerEnemyInteractionHandler.OnEnemyAttackDeflectedEvent += HandleEnemyAttackDeflected;
+        _scoresCollectionHandler.OnScoreChangeEvent += HandleScoreChange;
         
         Debug.Log("GameModel created");
         Debug.Log("GameState: " + _gameState.LampCooldownTime);
@@ -144,6 +148,7 @@ public class GameModel : IDisposable
         _playerAttackHandler.OnPowerChangedEvent -= HandlePowerChanged;
         _playerEnemyInteractionHandler.OnLampBlockedSetEvent -= SetLampBlockedState;
         _playerEnemyInteractionHandler.OnEnemyAttackDeflectedEvent -= HandleEnemyAttackDeflected;
+        _scoresCollectionHandler.OnScoreChangeEvent -= HandleScoreChange;
     }
 
     public void StartGame()
@@ -265,7 +270,7 @@ public class GameModel : IDisposable
             }
         }
     }
-    
+
     public void HandleDamageStateEnded()
     {
         _playerAttackHandler.PlayCooldown();
@@ -309,5 +314,10 @@ public class GameModel : IDisposable
             _lampMovementController.AddForce(-enemy.ProvideImpactPoint().normalized.x * 2); 
             OnLampDamageStartedEvent?.Invoke(_gameConfigService.PlayerConfig.DamageDuration);
         }
+    }
+
+    private void HandleScoreChange(int newScore)
+    {
+        _currentGameState.Scores += newScore;
     }
 }

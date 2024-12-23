@@ -46,6 +46,7 @@ public class GameRootContext : MonoBehaviour
     private SOGameConfigProvider _soGameConfigProvider;
     private GameConfigService _gameConfigService;
     private PlayerAttackViewModel _playerAttackViewModel;
+    private ScoresCollectionHandler _scoresCollectionHandler;
     private GameModel _gameModel;
 
     private List<IDisposable> _disposables = new List<IDisposable>();
@@ -87,6 +88,7 @@ public class GameRootContext : MonoBehaviour
         // Game State       
         _gameStateProvider = new PlayerPrefsGameStateProvider();
         _playerAttackHandler = new PlayerAttackHandler(coroutineHost);
+        _scoresCollectionHandler = new ScoresCollectionHandler(_gameConfigService);
         _gameModel = new GameModel(
             _gameStateProvider.Get(), 
             _enemyController, 
@@ -94,7 +96,8 @@ public class GameRootContext : MonoBehaviour
             _playerAttackHandler, 
             _playerCollidersPropertyController,
             _playerEnemyInteractionHandler,
-            _lampMovementController);
+            _lampMovementController,
+            _scoresCollectionHandler);
         _tickables.Add(_playerAttackHandler);
         _lampHealthBarController.Initialize();
         _gameStageViewModel = new GameStageViewModel(_gameModel);
@@ -117,6 +120,8 @@ public class GameRootContext : MonoBehaviour
         _lampDamageViewUI.Construct(_playerGameplayViewModel);
         _lampDamageView.Construct(_playerGameplayViewModel);
         _lampEmissionController.Initialize();
+        _scoresCollectionHandler.Initialize();
+        _disposables.Add(_scoresCollectionHandler);
         
         
         
