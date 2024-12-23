@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-public class PlayerAttackController : ITickable
+public class PlayerAttackHandler : ITickable
 {
     private float _power;
     public float Power 
@@ -24,7 +24,7 @@ public class PlayerAttackController : ITickable
     
     // Dependencies
     private MonoBehaviour _coroutineHost; 
-    public PlayerAttackController(MonoBehaviour monoBehaviour)
+    public PlayerAttackHandler(MonoBehaviour monoBehaviour)
     {
         _coroutineHost = monoBehaviour;
     }

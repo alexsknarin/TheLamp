@@ -36,14 +36,7 @@ public class PlayerPrefsGameStateProvider : IGameStateProvider
             _gameState.LampXp = 0;
             _gameState.LampXpThreshold = 5;
             _gameState.LampXpIncrement = 5;
-            _gameState.ImpactLastPointNumber = 0;
-            _gameState.LampDamageWeightRight = 0;
-            _gameState.LampDamageWeightLeft = 0;
-            _gameState.LampDamageWeightBottom = 0;
-            _gameState.LampDamagePoint01 = new ();
-            _gameState.LampDamagePoint02 = new ();
-            _gameState.LampDamagePoint03 = new();
-            
+            _gameState.GlassDamageData = new GlassDamageData();
             return _gameState;
         }
     }

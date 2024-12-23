@@ -89,7 +89,7 @@ public class GameModel : IDisposable
     // Dependencies
     private IGameConfigService _gameConfigService;
     private EnemyController _enemyController;
-    private PlayerAttackController _playerAttackController;
+    private PlayerAttackHandler _playerAttackHandler;
     PlayerCollidersPropertyController _playerCollidersPropertyController;
     PlayerEnemyInteractionHandler _playerEnemyInteractionHandler;
    
@@ -97,21 +97,21 @@ public class GameModel : IDisposable
         GameState _gameState, 
         EnemyController enemyController, 
         IGameConfigService gameConfigService,
-        PlayerAttackController playerAttackController,
+        PlayerAttackHandler playerAttackHandler,
         PlayerCollidersPropertyController playerCollidersPropertyController,
         PlayerEnemyInteractionHandler playerEnemyInteractionHandler)
     {
         _currentGameState = _gameState;
         _enemyController = enemyController;
         _gameConfigService = gameConfigService;
-        _playerAttackController = playerAttackController;
+        _playerAttackHandler = playerAttackHandler;
         _playerCollidersPropertyController = playerCollidersPropertyController;
         _playerEnemyInteractionHandler = playerEnemyInteractionHandler;
         
         // Subscriptions
         _enemyController.OnWaveEndEvent += HandleWaveEnd;
-        _playerAttackController.OnAttackEndedEvent += HandleLampAttackEnded;
-        _playerAttackController.OnPowerChangedEvent += HandlePowerChanged;
+        _playerAttackHandler.OnAttackEndedEvent += HandleLampAttackEnded;
+        _playerAttackHandler.OnPowerChangedEvent += HandlePowerChanged;
         _playerEnemyInteractionHandler.OnLampBlockedSetEvent += SetLampBlockedState;
         _playerEnemyInteractionHandler.OnEnemyAttackDeflectedEvent += HandleEnemyAttackDeflected;
         
@@ -122,8 +122,8 @@ public class GameModel : IDisposable
     public void Dispose()
     {
         _enemyController.OnWaveEndEvent -= HandleWaveEnd;
-        _playerAttackController.OnAttackEndedEvent -= HandleLampAttackEnded;
-        _playerAttackController.OnPowerChangedEvent -= HandlePowerChanged;
+        _playerAttackHandler.OnAttackEndedEvent -= HandleLampAttackEnded;
+        _playerAttackHandler.OnPowerChangedEvent -= HandlePowerChanged;
         _playerEnemyInteractionHandler.OnLampBlockedSetEvent -= SetLampBlockedState;
         _playerEnemyInteractionHandler.OnEnemyAttackDeflectedEvent -= HandleEnemyAttackDeflected;
     }
@@ -137,8 +137,8 @@ public class GameModel : IDisposable
             _currentGameState.Wave = _gameConfigService.GameConfig.TestStartWave;
         }
         CurrentGameStageState = GameStageState.Intro;
-        _playerAttackController.SetAttackDuration(_gameConfigService.PlayerConfig.AttackDuration); // Attack Duration
-        _playerAttackController.SetCooldownDuration(_currentGameState.LampCooldownTime); // Cooldown Duration
+        _playerAttackHandler.SetAttackDuration(_gameConfigService.PlayerConfig.AttackDuration); // Attack Duration
+        _playerAttackHandler.SetCooldownDuration(_currentGameState.LampCooldownTime); // Cooldown Duration
         _playerCollidersPropertyController.SetAttackZoneRadius(_currentGameState.LampAttackDistance); // Attack Distance
         _currentPower = 1.0f;
     }
@@ -229,7 +229,7 @@ public class GameModel : IDisposable
             if (!_isAttacking)
             {
                 _isAttacking = true;
-                _playerAttackController.PlayAttack();
+                _playerAttackHandler.PlayAttack();
                 OnLampAttackStartedEvent?.Invoke(CurrentPower); // Attack Power
             }
         }
@@ -238,7 +238,7 @@ public class GameModel : IDisposable
             if (!_isAttacking)
             {
                 _isAttacking = true;
-                _playerAttackController.PlayAttack();
+                _playerAttackHandler.PlayAttack();
                 OnLampAttackStartedEvent?.Invoke(CurrentPower); // Attack Power
                 _playerEnemyInteractionHandler.LampAttack();
                 _enemyController.HandleAttackButtonClicked(CurrentPower);
@@ -248,7 +248,7 @@ public class GameModel : IDisposable
     
     public void HandleDamageStateEnded()
     {
-        _playerAttackController.PlayCooldown();
+        _playerAttackHandler.PlayCooldown();
     }
 
     private void HandleLampAttackEnded()

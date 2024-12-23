@@ -13,11 +13,5 @@ public class GameState
     public int LampXp;
     public int LampXpThreshold;
     public int LampXpIncrement;
-    public int ImpactLastPointNumber;
-    public int LampDamageWeightRight;
-    public int LampDamageWeightLeft;
-    public int LampDamageWeightBottom;
-    public LampDamagePoint LampDamagePoint01;
-    public LampDamagePoint LampDamagePoint02;
-    public LampDamagePoint LampDamagePoint03;
+    public GlassDamageData GlassDamageData; 
 }

@@ -26,7 +26,7 @@ public class GameRootContext : MonoBehaviour
     [Header("Controllers")]
     [SerializeField] private LampHealthBarController _lampHealthBarController;
     [SerializeField] private EnemyController _enemyController;
-    private PlayerAttackController _playerAttackController;
+    private PlayerAttackHandler _playerAttackHandler;
     [SerializeField] private PlayerCollidersPropertyController _playerCollidersPropertyController;
     [SerializeField] private PlayerEnemyInteractionHandler _playerEnemyInteractionHandler;
     
@@ -83,15 +83,15 @@ public class GameRootContext : MonoBehaviour
         _enemyController.Construct(_gameConfigService);
         // Game State       
         _gameStateProvider = new PlayerPrefsGameStateProvider();
-        _playerAttackController = new PlayerAttackController(coroutineHost);
+        _playerAttackHandler = new PlayerAttackHandler(coroutineHost);
         _gameModel = new GameModel(
             _gameStateProvider.Get(), 
             _enemyController, 
             _gameConfigService, 
-            _playerAttackController, 
+            _playerAttackHandler, 
             _playerCollidersPropertyController,
             _playerEnemyInteractionHandler);
-        _tickables.Add(_playerAttackController);
+        _tickables.Add(_playerAttackHandler);
         _lampHealthBarController.Initialize();
         _gameStageViewModel = new GameStageViewModel(_gameModel);
         _disposables.Add(_gameStageViewModel);
