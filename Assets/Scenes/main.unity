@@ -6183,6 +6183,7 @@ MonoBehaviour:
   _playerCollidersPropertyController: {fileID: 1934066258}
   _playerEnemyInteractionHandler: {fileID: 1934066260}
   _lampEmissionController: {fileID: 23663153}
+  _lampMovementController: {fileID: 1934066248}
 --- !u!4 &1037269785
 Transform:
   m_ObjectHideFlags: 0
@@ -11170,7 +11171,7 @@ MonoBehaviour:
   _lampAttackModel: {fileID: 1934066245}
   _lampPresentation: {fileID: 1934066244}
   _lampCollisionHandler: {fileID: 1010240888}
-  _lampMovement: {fileID: 1934066248}
+  _lampMovementController: {fileID: 1934066248}
   _lampStickZoneCollisionHandler: {fileID: 815775906}
   _lampAttackExitZoneCollisionHandler: {fileID: 452042971}
   _attackBlockerCount: 0

@@ -7,7 +7,7 @@ public enum LampMotionState
     Force
 }
 
-public class LampMovement : MonoBehaviour, IInitializable
+public class LampMovementController : MonoBehaviour, IInitializable
 {
     [Header("|---- Force ----|")]
     [SerializeField] private float _forceMaxMagnitude;

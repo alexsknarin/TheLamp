@@ -79,8 +79,6 @@ public class GameModel : IDisposable
     public event Action<GlassDamageData> OnLampGlassDamageChangedEvent;
     #endregion
     
-    
-    
     #region LampBlocked Reactive Property
     private bool _isLampBlocked;
     public bool IsLampBlocked
@@ -95,8 +93,6 @@ public class GameModel : IDisposable
     public event Action<bool> OnLampBlockedModeSetEvent;
     #endregion
     
-    
-    
     public event Action<float> OnLampAttackStartedEvent;
     public event Action<float> OnLampDamageStartedEvent;
     public event Action OnLampDeathEvent;
@@ -108,9 +104,10 @@ public class GameModel : IDisposable
     private IGameConfigService _gameConfigService;
     private EnemyController _enemyController;
     private PlayerAttackHandler _playerAttackHandler;
-    PlayerCollidersPropertyController _playerCollidersPropertyController;
-    PlayerEnemyInteractionHandler _playerEnemyInteractionHandler;
-    LampDamageDataHandler _lampDamageDataHandler = new LampDamageDataHandler();
+    private PlayerCollidersPropertyController _playerCollidersPropertyController;
+    private PlayerEnemyInteractionHandler _playerEnemyInteractionHandler;
+    private LampDamageDataHandler _lampDamageDataHandler = new LampDamageDataHandler();
+    private LampMovementController _lampMovementController;
    
     public GameModel(
         GameState _gameState, 
@@ -118,7 +115,8 @@ public class GameModel : IDisposable
         IGameConfigService gameConfigService,
         PlayerAttackHandler playerAttackHandler,
         PlayerCollidersPropertyController playerCollidersPropertyController,
-        PlayerEnemyInteractionHandler playerEnemyInteractionHandler)
+        PlayerEnemyInteractionHandler playerEnemyInteractionHandler,
+        LampMovementController lampMovementController)
     {
         _currentGameState = _gameState;
         _enemyController = enemyController;
@@ -126,6 +124,7 @@ public class GameModel : IDisposable
         _playerAttackHandler = playerAttackHandler;
         _playerCollidersPropertyController = playerCollidersPropertyController;
         _playerEnemyInteractionHandler = playerEnemyInteractionHandler;
+        _lampMovementController = lampMovementController;
         
         // Subscriptions
         _enemyController.OnWaveEndEvent += HandleWaveEnd;
@@ -286,6 +285,8 @@ public class GameModel : IDisposable
     {
         IsLampBlocked = isBlocked;
         _enemyController.SetBlockedMode(isBlocked);
+        // TODO: take lamp position into consideration
+        _lampMovementController.AddForce(-enemy.ProvideImpactPoint().normalized.x * 2);
     }
 
     private void HandleEnemyAttackDeflected(bool isDeflected, EnemyBase enemy)
@@ -303,6 +304,9 @@ public class GameModel : IDisposable
             }
             
             LampGlassDamage = _lampDamageDataHandler.UpdateGlassDamageDataDamage(LampGlassDamage, enemy.ProvideImpactPoint().normalized);
+            // TODO: take lamp position into consideration
+            // Or calculate it in the LampMovementController because it knows about lamp position
+            _lampMovementController.AddForce(-enemy.ProvideImpactPoint().normalized.x * 2); 
             OnLampDamageStartedEvent?.Invoke(_gameConfigService.PlayerConfig.DamageDuration);
         }
     }

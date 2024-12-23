@@ -1,13 +1,14 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class Lamp : MonoBehaviour, IInitializable
 {
     [SerializeField] private LampAttackModel _lampAttackModel;
     [SerializeField] private LampPresentation _lampPresentation;
     [SerializeField] private LampCollisionHandler _lampCollisionHandler;
-    [SerializeField] private LampMovement _lampMovement;
+    [FormerlySerializedAs("_lampMovement")] [SerializeField] private LampMovementController _lampMovementController;
     [SerializeField] private LampStickZoneCollisionHandler _lampStickZoneCollisionHandler;
     [SerializeField] private LampAttackExitZoneCollisionHandler _lampAttackExitZoneCollisionHandler;    
     [SerializeField] private int _attackBlockerCount;

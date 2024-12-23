@@ -29,6 +29,7 @@ public class GameRootContext : MonoBehaviour
     [SerializeField] private PlayerCollidersPropertyController _playerCollidersPropertyController;
     [SerializeField] private PlayerEnemyInteractionHandler _playerEnemyInteractionHandler;
     [SerializeField] private LampEmissionController _lampEmissionController;
+    [SerializeField] private LampMovementController _lampMovementController;
     private PlayerAttackHandler _playerAttackHandler;
 
     // [SerializeField] private GameConfig _gameConfig;
@@ -82,6 +83,7 @@ public class GameRootContext : MonoBehaviour
         // Game Config
         _gameConfigService = new GameConfigService(_gameConfigProvider);
         _enemyController.Construct(_gameConfigService);
+        _lampMovementController.Initialize();
         // Game State       
         _gameStateProvider = new PlayerPrefsGameStateProvider();
         _playerAttackHandler = new PlayerAttackHandler(coroutineHost);
@@ -91,7 +93,8 @@ public class GameRootContext : MonoBehaviour
             _gameConfigService, 
             _playerAttackHandler, 
             _playerCollidersPropertyController,
-            _playerEnemyInteractionHandler);
+            _playerEnemyInteractionHandler,
+            _lampMovementController);
         _tickables.Add(_playerAttackHandler);
         _lampHealthBarController.Initialize();
         _gameStageViewModel = new GameStageViewModel(_gameModel);
