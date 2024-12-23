@@ -1,6 +1,4 @@
-using System;
-
-[Serializable]
+[System.Serializable]
 public class GameSettings
 {
     public bool IsConsentSet;

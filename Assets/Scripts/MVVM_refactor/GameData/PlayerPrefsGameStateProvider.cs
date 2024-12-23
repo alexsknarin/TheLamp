@@ -27,15 +27,19 @@ public class PlayerPrefsGameStateProvider : IGameStateProvider
             _gameState = new GameState();
             
             _gameState.Wave = 0;
-            _gameState.Scores = 0;
             _gameState.LampHealth = 8;
             _gameState.LampMaxHealth = 8;
             _gameState.LampCooldownTime = 3.0f;
             _gameState.LampAttackDistance = 0.62f;
             _gameState.LampLevel = 0;
-            _gameState.LampXp = 0;
-            _gameState.LampXpThreshold = 5;
-            _gameState.LampXpIncrement = 5;
+            _gameState.LampUpgradePoints = 0;
+            _gameState.UpgradeData = new UpgradeData
+            {
+                Score = 0,
+                UsedScore = 0,
+                CurrentScoreUpgradePrice = 5,
+                CurrentScoreUpgradePriceIncrement = 5
+            };
             _gameState.GlassDamageData = new GlassDamageData();
             return _gameState;
         }

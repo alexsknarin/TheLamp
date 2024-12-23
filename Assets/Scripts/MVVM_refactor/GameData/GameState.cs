@@ -1,6 +1,4 @@
-using System;
-
-[Serializable]
+[System.Serializable]
 public class GameState
 {
     public int Wave;
@@ -8,10 +6,8 @@ public class GameState
     public int LampMaxHealth;
     public float LampCooldownTime;
     public float LampAttackDistance;
-    public int Scores;
     public int LampLevel;
-    public int LampXp;
-    public int LampXpThreshold;
-    public int LampXpIncrement;
+    public int LampUpgradePoints;
+    public UpgradeData UpgradeData;
     public GlassDamageData GlassDamageData; 
 }

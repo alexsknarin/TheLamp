@@ -1,6 +1,4 @@
-using System;
-
-[Serializable]
+[System.Serializable]
 public struct LampDamagePoint
 {
     public float Strength;

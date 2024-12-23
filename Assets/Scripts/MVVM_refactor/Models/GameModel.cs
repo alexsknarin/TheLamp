@@ -109,6 +109,7 @@ public class GameModel : IDisposable
     private LampDamageDataHandler _lampDamageDataHandler = new LampDamageDataHandler();
     private LampMovementController _lampMovementController;
     private ScoresCollectionHandler _scoresCollectionHandler;
+    private UpgradeHandler _upgradeHandler = new UpgradeHandler();
    
     public GameModel(
         GameState _gameState, 
@@ -318,6 +319,12 @@ public class GameModel : IDisposable
 
     private void HandleScoreChange(int newScore)
     {
-        _currentGameState.Scores += newScore;
+        _currentGameState.UpgradeData.Score += newScore;
+        int newUpgradePoints = _upgradeHandler.GetUpgradePointsAndUpdateScoreData(ref _currentGameState.UpgradeData);
+        if (newUpgradePoints > 0)
+        {
+            _currentGameState.LampUpgradePoints += newUpgradePoints;
+            // TODO: mabe add event to indicate it somehow
+        }
     }
 }
