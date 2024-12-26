@@ -1,6 +1,7 @@
 using System;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class PrepareOutGameStageAnimationController : MonoBehaviour
 {
@@ -12,9 +13,9 @@ public class PrepareOutGameStageAnimationController : MonoBehaviour
     [SerializeField] private float _duration;
     [SerializeField] private TextFader _waveText;
     [SerializeField] private GameObject _upgradeButtonsPanel;
-    [SerializeField] private UpgradeButton _upgradeHealthButton;
-    [SerializeField] private UpgradeButton _upgradeAttackButton;
-    [SerializeField] private UpgradeButton _upgradeCooldownButton;
+    [FormerlySerializedAs("_upgradeHealthButton")] [SerializeField] private UpgradeButtonPresentation _upgradeHealthButtonPresentation;
+    [FormerlySerializedAs("_upgradeAttackButton")] [SerializeField] private UpgradeButtonPresentation _upgradeAttackButtonPresentation;
+    [FormerlySerializedAs("_upgradeCooldownButton")] [SerializeField] private UpgradeButtonPresentation _upgradeCooldownButtonPresentation;
     [SerializeField] private TMP_Text _hintText1;
     [SerializeField] private TMP_Text _hintText2;
     [SerializeField] private TMP_Text _hintText3;
@@ -27,9 +28,9 @@ public class PrepareOutGameStageAnimationController : MonoBehaviour
     {
         _waveText.SetVisibilityLevel(1);
         
-        _upgradeHealthButton.SetVisibilityLevel(1);
-        _upgradeAttackButton.SetVisibilityLevel(1);
-        _upgradeCooldownButton.SetVisibilityLevel(1);
+        _upgradeHealthButtonPresentation.SetVisibilityLevel(1);
+        _upgradeAttackButtonPresentation.SetVisibilityLevel(1);
+        _upgradeCooldownButtonPresentation.SetVisibilityLevel(1);
         _hintText1.color = HINT_TEXT_FULL_COLOR;
         _hintText2.color = HINT_TEXT_FULL_COLOR;
         _hintText3.color = HINT_TEXT_FULL_COLOR;
@@ -47,9 +48,9 @@ public class PrepareOutGameStageAnimationController : MonoBehaviour
     {
         _waveText.SetVisibilityLevel(0);
         _waveText.gameObject.SetActive(false);
-        _upgradeHealthButton.SetVisibilityLevel(0);
-        _upgradeAttackButton.SetVisibilityLevel(0);
-        _upgradeCooldownButton.SetVisibilityLevel(0);
+        _upgradeHealthButtonPresentation.SetVisibilityLevel(0);
+        _upgradeAttackButtonPresentation.SetVisibilityLevel(0);
+        _upgradeCooldownButtonPresentation.SetVisibilityLevel(0);
         _hintText1.color = HINT_TEXT_OFF_COLOR;
         _hintText2.color = HINT_TEXT_OFF_COLOR;
         _hintText3.color = HINT_TEXT_OFF_COLOR;
@@ -69,9 +70,9 @@ public class PrepareOutGameStageAnimationController : MonoBehaviour
                 return;
             }
             _waveText.SetVisibilityLevel(1-phase);
-            _upgradeHealthButton.SetVisibilityLevel(1-phase);
-            _upgradeAttackButton.SetVisibilityLevel(1-phase);
-            _upgradeCooldownButton.SetVisibilityLevel(1-phase);
+            _upgradeHealthButtonPresentation.SetVisibilityLevel(1-phase);
+            _upgradeAttackButtonPresentation.SetVisibilityLevel(1-phase);
+            _upgradeCooldownButtonPresentation.SetVisibilityLevel(1-phase);
             _hintText1.color = Color.Lerp(HINT_TEXT_OFF_COLOR, HINT_TEXT_FULL_COLOR, 1-phase);
             _hintText2.color = Color.Lerp(HINT_TEXT_OFF_COLOR, HINT_TEXT_FULL_COLOR, 1-phase);
             _hintText3.color = Color.Lerp(HINT_TEXT_OFF_COLOR, HINT_TEXT_FULL_COLOR, 1-phase);

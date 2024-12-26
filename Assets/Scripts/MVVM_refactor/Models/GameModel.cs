@@ -7,6 +7,7 @@ public class GameModel : IDisposable
     public GameState CurrentGameState => _currentGameState; // Debug Only
     public int Wave => _currentGameState.Wave;
     
+    
     #region CurrentGameStageState Reactive Property
     private GameStageState _currentGameStageState = GameStageState.Loading;
     public GameStageState CurrentGameStageState
@@ -92,6 +93,46 @@ public class GameModel : IDisposable
     }
     public event Action<bool> OnLampBlockedModeSetEvent;
     #endregion
+    
+    #region UpgradePoints Reactive Property
+    public int UpgradePoints
+    {
+        get => _currentGameState.LampUpgradePoints;
+        private set
+        {
+            _currentGameState.LampUpgradePoints = value;
+            OnUpgradePointsChangedEvent?.Invoke(value);
+        }
+    }
+    public event Action<int> OnUpgradePointsChangedEvent;
+    #endregion
+    
+    #region LampAttackDistance Reactive Property
+    public float LampAttackDistance
+    {
+        get => _currentGameState.LampAttackDistance;
+        private set
+        {
+            _currentGameState.LampAttackDistance = value;
+            OnLampAttackDistanceChangedEvent?.Invoke(value);
+        }
+    }
+    public event Action<float> OnLampAttackDistanceChangedEvent;
+    #endregion
+    
+    #region LampCooldownTime Reactive Property
+    public float LampCooldownTime
+    {
+        get => _currentGameState.LampCooldownTime;
+        private set
+        {
+            _currentGameState.LampCooldownTime = value;
+            OnLampCooldownTimeChangedEvent?.Invoke(value);
+        }
+    }
+    public event Action<float> OnLampCooldownTimeChangedEvent;
+    #endregion
+    
     
     public event Action<float> OnLampAttackStartedEvent;
     public event Action<float> OnLampDamageStartedEvent;
@@ -326,5 +367,67 @@ public class GameModel : IDisposable
             _currentGameState.LampUpgradePoints += newUpgradePoints;
             // TODO: mabe add event to indicate it somehow
         }
+    }
+
+    public void HandleHealthUpgrade()
+    {
+        if (UpgradePoints <= 0)
+        {
+            Debug.LogWarning("GameModel: Health: Not enough upgrade points!");
+            return;
+        }
+        
+        UpgradePoints--;
+        LampHealth++;
+        
+        if (LampHealth > _gameConfigService.PlayerConfig.HealthCap)
+        {
+            Debug.LogWarning("GameModel: Health: Lamp health got over the heal cap!");
+        }
+        
+        if (LampHealth > LampMaxHealth)
+        {
+            LampMaxHealth = LampHealth;
+        }
+    }
+
+    public void HandleCooldownUpgrade()
+    {
+        if (UpgradePoints <= 0)
+        {
+            Debug.LogWarning("Not enough upgrade points");
+            return;
+        }
+        
+        UpgradePoints--;
+        LampCooldownTime -= _gameConfigService.PlayerConfig.CooldownDecrement;
+        
+        // Lamp Cooldown is decreasing with upgrade, therefore Cap is set to smaller number then current
+        if (LampCooldownTime < _gameConfigService.PlayerConfig.CooldownTimeCap)
+        {
+            LampCooldownTime = _gameConfigService.PlayerConfig.CooldownTimeCap;
+        }
+        
+        _playerAttackHandler.SetCooldownDuration(LampCooldownTime); // TODO: maybe combine it with PlayCooldown
+        _playerAttackHandler.PlayCooldown();
+    }
+
+    public void HandleAttackDistanceUpgrade()
+    {
+        if (UpgradePoints <= 0)
+        {
+            Debug.LogWarning("Not enough upgrade points");
+            return;
+        }
+        
+        UpgradePoints--;
+        LampAttackDistance += _gameConfigService.PlayerConfig.AttackDistanceIncrement;
+        
+        if (LampAttackDistance > _gameConfigService.PlayerConfig.AttackDistanceCap)
+        {
+            LampAttackDistance = _gameConfigService.PlayerConfig.AttackDistanceCap;
+        }
+        
+        // TODO: presentation????? - what class should be responsible for it???
     }
 }

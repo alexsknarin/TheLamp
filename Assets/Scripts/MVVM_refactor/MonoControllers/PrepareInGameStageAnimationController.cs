@@ -1,6 +1,7 @@
 using System;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class PrepareInGameStageAnimationController : MonoBehaviour
 {
@@ -12,30 +13,36 @@ public class PrepareInGameStageAnimationController : MonoBehaviour
     [SerializeField] private float _duration;
     [SerializeField] private TextFader _waveText;
     [SerializeField] private GameObject _upgradeButtonsPanel;
-    [SerializeField] private UpgradeButton _upgradeHealthButton;
-    [SerializeField] private UpgradeButton _upgradeAttackButton;
-    [SerializeField] private UpgradeButton _upgradeCooldownButton;
+    [FormerlySerializedAs("_upgradeHealthButton")] [SerializeField] private UpgradeButtonPresentation _upgradeHealthButtonPresentation;
+    [FormerlySerializedAs("_upgradeAttackButton")] [SerializeField] private UpgradeButtonPresentation _upgradeAttackButtonPresentation;
+    [FormerlySerializedAs("_upgradeCooldownButton")] [SerializeField] private UpgradeButtonPresentation _upgradeCooldownButtonPresentation;
     [SerializeField] private TMP_Text _hintText1;
     [SerializeField] private TMP_Text _hintText2;
     [SerializeField] private TMP_Text _hintText3;
     
     private float _localTime;
     private bool _isPlaying;
+    private bool _isUpgradeRequired;
     public event Action OnFinishedEvent;
     
-    public void Play(bool upgradeRequired, int waveNum)
+    public void Play(bool isUpgradeRequired, int waveNum)
     {
+        _isUpgradeRequired = isUpgradeRequired;
+        
         _waveText.gameObject.SetActive(true);
         _waveText.SetText("Start Wave " + waveNum.ToString());
         _waveText.SetVisibilityLevel(0);
-        
-        _upgradeButtonsPanel.SetActive(true);
-        _upgradeHealthButton.SetVisibilityLevel(0);
-        _upgradeAttackButton.SetVisibilityLevel(0);
-        _upgradeCooldownButton.SetVisibilityLevel(0);
-        _hintText1.color = HINT_TEXT_OFF_COLOR;
-        _hintText2.color = HINT_TEXT_OFF_COLOR;
-        _hintText3.color = HINT_TEXT_OFF_COLOR;
+
+        if (_isUpgradeRequired)
+        {
+            _upgradeButtonsPanel.SetActive(true);
+            _upgradeHealthButtonPresentation.SetVisibilityLevel(0);
+            _upgradeAttackButtonPresentation.SetVisibilityLevel(0);
+            _upgradeCooldownButtonPresentation.SetVisibilityLevel(0);
+            _hintText1.color = HINT_TEXT_OFF_COLOR;
+            _hintText2.color = HINT_TEXT_OFF_COLOR;
+            _hintText3.color = HINT_TEXT_OFF_COLOR;    
+        }
         
         if (_skip)
         {
@@ -49,12 +56,15 @@ public class PrepareInGameStageAnimationController : MonoBehaviour
     private void SetFinalState()
     {
         _waveText.SetVisibilityLevel(1);
-        _upgradeHealthButton.SetVisibilityLevel(1);
-        _upgradeAttackButton.SetVisibilityLevel(1);
-        _upgradeCooldownButton.SetVisibilityLevel(1);
-        _hintText1.color = HINT_TEXT_FULL_COLOR;
-        _hintText2.color = HINT_TEXT_FULL_COLOR;
-        _hintText3.color = HINT_TEXT_FULL_COLOR;
+        if (_isUpgradeRequired)
+        {
+            _upgradeHealthButtonPresentation.SetVisibilityLevel(1);
+            _upgradeAttackButtonPresentation.SetVisibilityLevel(1);
+            _upgradeCooldownButtonPresentation.SetVisibilityLevel(1);
+            _hintText1.color = HINT_TEXT_FULL_COLOR;
+            _hintText2.color = HINT_TEXT_FULL_COLOR;
+            _hintText3.color = HINT_TEXT_FULL_COLOR;    
+        }
         OnFinishedEvent?.Invoke();
     }
 
@@ -70,12 +80,15 @@ public class PrepareInGameStageAnimationController : MonoBehaviour
                 return;
             }
             _waveText.SetVisibilityLevel(phase);
-            _upgradeHealthButton.SetVisibilityLevel(phase);
-            _upgradeAttackButton.SetVisibilityLevel(phase);
-            _upgradeCooldownButton.SetVisibilityLevel(phase);
-            _hintText1.color = Color.Lerp(HINT_TEXT_OFF_COLOR, HINT_TEXT_FULL_COLOR, phase);
-            _hintText2.color = Color.Lerp(HINT_TEXT_OFF_COLOR, HINT_TEXT_FULL_COLOR, phase);
-            _hintText3.color = Color.Lerp(HINT_TEXT_OFF_COLOR, HINT_TEXT_FULL_COLOR, phase);
+            if (_isUpgradeRequired)
+            {
+                _upgradeHealthButtonPresentation.SetVisibilityLevel(phase);
+                _upgradeAttackButtonPresentation.SetVisibilityLevel(phase);
+                _upgradeCooldownButtonPresentation.SetVisibilityLevel(phase);
+                _hintText1.color = Color.Lerp(HINT_TEXT_OFF_COLOR, HINT_TEXT_FULL_COLOR, phase);
+                _hintText2.color = Color.Lerp(HINT_TEXT_OFF_COLOR, HINT_TEXT_FULL_COLOR, phase);
+                _hintText3.color = Color.Lerp(HINT_TEXT_OFF_COLOR, HINT_TEXT_FULL_COLOR, phase);   
+            }
             _localTime += Time.deltaTime;
         }
     }

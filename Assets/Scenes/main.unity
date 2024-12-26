@@ -4128,19 +4128,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 619549488}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1291610354}
-        m_TargetAssemblyTypeName: UiManager, Assembly-CSharp
-        m_MethodName: HandleUpgradeButtonClick
-        m_Mode: 3
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 2
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &619549488
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4224,15 +4212,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _gameState:
     Wave: 0
-    Scores: 0
     LampHealth: 0
     LampMaxHealth: 0
     LampCooldownTime: 0
     LampAttackDistance: 0
     LampLevel: 0
-    LampXp: 0
-    LampXpThreshold: 0
-    LampXpIncrement: 0
+    LampUpgradePoints: 0
+    UpgradeData:
+      Score: 0
+      UsedScore: 0
+      CurrentScoreUpgradePrice: 0
+      CurrentScoreUpgradePriceIncrement: 0
     GlassDamageData:
       ImpactLastPointNumber: 0
       CracksNumberRight: 0
@@ -4351,19 +4341,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 651099614}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1291610354}
-        m_TargetAssemblyTypeName: UiManager, Assembly-CSharp
-        m_MethodName: HandleUpgradeButtonClick
-        m_Mode: 3
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 1
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &651099614
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5299,19 +5277,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 949593466}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1291610354}
-        m_TargetAssemblyTypeName: UiManager, Assembly-CSharp
-        m_MethodName: HandleUpgradeButtonClick
-        m_Mode: 3
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &949593466
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6173,6 +6139,7 @@ MonoBehaviour:
   _lampBlockedModeView: {fileID: 1934066261}
   _lampDamageViewUI: {fileID: 1266635122}
   _lampDamageView: {fileID: 1934066262}
+  _playerUpgradeViewUI: {fileID: 1291610360}
   _unityAnalyticsService: {fileID: 1595482322}
   _adsManager: {fileID: 1665985692}
   _game: {fileID: 1818435501}
@@ -7337,6 +7304,7 @@ GameObject:
   - component: {fileID: 1291610358}
   - component: {fileID: 1291610354}
   - component: {fileID: 1291610359}
+  - component: {fileID: 1291610360}
   m_Layer: 5
   m_Name: MainUi_canvas
   m_TagString: Untagged
@@ -7481,9 +7449,9 @@ MonoBehaviour:
   _upgradeButtonsPanel: {fileID: 1256375426}
   _uiUpgradePoints: {fileID: 896500833}
   _upgradeHintsPanel: {fileID: 1368674107}
-  _upgradeHealthButton: {fileID: 949593468}
-  _upgradeCooldownButton: {fileID: 651099616}
-  _upgradeAttackDistanceButton: {fileID: 619549490}
+  _upgradeHealthButtonPresentation: {fileID: 949593468}
+  _upgradeCooldownButtonPresentation: {fileID: 651099616}
+  _upgradeAttackDistanceButtonPresentation: {fileID: 619549490}
   _brokenGlassEffect: {fileID: 1266635119}
   _uiIntroAnimation: {fileID: 1291610355}
   _introDuration: 4
@@ -7593,6 +7561,21 @@ MonoBehaviour:
   _noButton: {fileID: 59961782}
   _enableDataCollectionButton: {fileID: 2038342199}
   _disableDataCollectionButton: {fileID: 687115817}
+--- !u!114 &1291610360
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1291610349}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6527022d9f16f0340b8f18398ef4d025, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _healthButtonPresentation: {fileID: 949593468}
+  _cooldownButtonPresentation: {fileID: 651099616}
+  _attackDistanceButtonPresentation: {fileID: 619549490}
 --- !u!1 &1297585003
 GameObject:
   m_ObjectHideFlags: 0
@@ -10318,9 +10301,9 @@ MonoBehaviour:
   _duration: 0.5
   _waveText: {fileID: 537243428}
   _upgradeButtonsPanel: {fileID: 1256375426}
-  _upgradeHealthButton: {fileID: 949593468}
-  _upgradeAttackButton: {fileID: 619549490}
-  _upgradeCooldownButton: {fileID: 651099616}
+  _upgradeHealthButtonPresentation: {fileID: 949593468}
+  _upgradeAttackButtonPresentation: {fileID: 619549490}
+  _upgradeCooldownButtonPresentation: {fileID: 651099616}
   _hintText1: {fileID: 1733480390}
   _hintText2: {fileID: 40797313}
   _hintText3: {fileID: 1450694833}
@@ -10340,9 +10323,9 @@ MonoBehaviour:
   _duration: 0.5
   _waveText: {fileID: 537243428}
   _upgradeButtonsPanel: {fileID: 1256375426}
-  _upgradeHealthButton: {fileID: 949593468}
-  _upgradeAttackButton: {fileID: 619549490}
-  _upgradeCooldownButton: {fileID: 651099616}
+  _upgradeHealthButtonPresentation: {fileID: 949593468}
+  _upgradeAttackButtonPresentation: {fileID: 619549490}
+  _upgradeCooldownButtonPresentation: {fileID: 651099616}
   _hintText1: {fileID: 1733480390}
   _hintText2: {fileID: 40797313}
   _hintText3: {fileID: 1450694833}

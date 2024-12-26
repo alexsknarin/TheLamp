@@ -17,6 +17,7 @@ public class GameRootContext : MonoBehaviour
     [SerializeField] private LampBlockedModeView _lampBlockedModeView;
     [SerializeField] private LampDamageViewUI _lampDamageViewUI;
     [SerializeField] private LampDamageView _lampDamageView;
+    [SerializeField] private PlayerUpgradeViewUI _playerUpgradeViewUI;
     [Header("Services")]
     [SerializeField] private UnityAnalyticsService _unityAnalyticsService;
     [SerializeField] private AdsManager _adsManager;
@@ -47,6 +48,7 @@ public class GameRootContext : MonoBehaviour
     private GameConfigService _gameConfigService;
     private PlayerAttackViewModel _playerAttackViewModel;
     private ScoresCollectionHandler _scoresCollectionHandler;
+    private PlayerUpgradeViewModel _playerUpgradeViewModel;
     private GameModel _gameModel;
 
     private List<IDisposable> _disposables = new List<IDisposable>();
@@ -122,6 +124,9 @@ public class GameRootContext : MonoBehaviour
         _lampEmissionController.Initialize();
         _scoresCollectionHandler.Initialize();
         _disposables.Add(_scoresCollectionHandler);
+        _playerUpgradeViewModel = new PlayerUpgradeViewModel(_gameModel, _gameConfigService);
+        _playerUpgradeViewUI.Construct(_playerUpgradeViewModel);
+        _playerUpgradeViewUI.Initialize();
         
         
         

@@ -1,4 +1,5 @@
 using System;
+using UnityEngine;
 
 public class GameStageViewModel : IDisposable
 {
@@ -26,7 +27,7 @@ public class GameStageViewModel : IDisposable
                 OnIntroStartedEvent?.Invoke((float)_gameModel.LampHealth / (float)_gameModel.LampMaxHealth);
                 break;
             case GameStageState.PrepareIn:
-                OnPrepareInStartedEvent?.Invoke(true, _gameModel.Wave);
+                OnPrepareInStartedEvent?.Invoke(_gameModel.UpgradePoints>0, _gameModel.Wave);
                 break;
             case GameStageState.PrepareOut:
                 OnPrepareOutStartedEvent?.Invoke();

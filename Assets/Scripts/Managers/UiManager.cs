@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using UnityEngine.Rendering;
+using UnityEngine.Serialization;
 
 public class UiManager : MonoBehaviour, IInitializable
 {
@@ -15,9 +16,9 @@ public class UiManager : MonoBehaviour, IInitializable
     [SerializeField] private GameObject _upgradeButtonsPanel;
     [SerializeField] private UiUpgradePoints _uiUpgradePoints;
     [SerializeField] private GameObject _upgradeHintsPanel;
-    [SerializeField] private UpgradeButton _upgradeHealthButton;
-    [SerializeField] private UpgradeButton _upgradeCooldownButton;
-    [SerializeField] private UpgradeButton _upgradeAttackDistanceButton;
+    [FormerlySerializedAs("_upgradeHealthButton")] [SerializeField] private UpgradeButtonPresentation _upgradeHealthButtonPresentation;
+    [FormerlySerializedAs("_upgradeCooldownButton")] [SerializeField] private UpgradeButtonPresentation _upgradeCooldownButtonPresentation;
+    [FormerlySerializedAs("_upgradeAttackDistanceButton")] [SerializeField] private UpgradeButtonPresentation _upgradeAttackDistanceButtonPresentation;
 
     [Header("Overlay Images")] [SerializeField]
     private BrokenGlassEffect _brokenGlassEffect;
@@ -159,23 +160,23 @@ public class UiManager : MonoBehaviour, IInitializable
     
     private void RefreshAllUpgradeButtons()
     {
-        RefreshUpgradeButton(_lampStatsManager.HealthUpgradeStatus(), _upgradeHealthButton);
-        RefreshUpgradeButton(_lampStatsManager.CooldownUpgradeStatus(), _upgradeCooldownButton);
-        RefreshUpgradeButton(_lampStatsManager.AttackDistanceUpgradeStatus(), _upgradeAttackDistanceButton);
+        RefreshUpgradeButton(_lampStatsManager.HealthUpgradeStatus(), _upgradeHealthButtonPresentation);
+        RefreshUpgradeButton(_lampStatsManager.CooldownUpgradeStatus(), _upgradeCooldownButtonPresentation);
+        RefreshUpgradeButton(_lampStatsManager.AttackDistanceUpgradeStatus(), _upgradeAttackDistanceButtonPresentation);
     }
 
-    private void RefreshUpgradeButton(UpgradeStatus status, UpgradeButton button)
+    private void RefreshUpgradeButton(UpgradeStatus status, UpgradeButtonPresentation buttonPresentation)
     {
         switch (status)
         {
             case UpgradeStatus.MaxedOut:
-                button.DisableButton();
+                buttonPresentation.DisableButton();
                 break;
             case UpgradeStatus.ReadyForUpgrade:
-                button.EnableButton();
+                buttonPresentation.EnableButton();
                 break;
             case UpgradeStatus.NotEnoughPoints:
-                button.DisableButton();
+                buttonPresentation.DisableButton();
                 break;
         }
     }

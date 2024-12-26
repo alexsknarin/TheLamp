@@ -2,7 +2,9 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UpgradeButton : MonoBehaviour
+[RequireComponent(typeof(Button))]
+[RequireComponent(typeof(TMP_Text))]
+public class UpgradeButtonPresentation : MonoBehaviour
 {
     [SerializeField] private Button _button;
     [SerializeField] private TMP_Text _text;
@@ -12,13 +14,13 @@ public class UpgradeButton : MonoBehaviour
         _button.interactable = true;
         _text.color = Color.white;
     }
-    
+
     public void DisableButton()
     {
         _button.interactable = false;
         _text.color = Color.grey;
     }
-    
+
     public void SetVisibilityLevel(float visibilityLevel)
     {
         Color textColor = _text.color;
