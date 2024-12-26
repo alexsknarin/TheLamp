@@ -10,6 +10,17 @@ public class UiUpgradePoints : MonoBehaviour
     
     public void ShowUpgradePoints(int points)
     {
+        Debug.Log("Applying Points: " + points);
+        
+        if (points == 0)
+        {
+            foreach (var point in _upgradePointImages)
+            {
+                point.SetActive(false);
+            }
+            return;
+        }
+        
         if(_upgradePointImages.Count < points)
         {
             int pointsToAdd = points - _upgradePointImages.Count;
@@ -31,5 +42,7 @@ public class UiUpgradePoints : MonoBehaviour
         {
             _upgradePointImages[i].SetActive(true);
         }
+        
+        
     }
 }

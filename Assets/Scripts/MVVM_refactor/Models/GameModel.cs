@@ -429,5 +429,6 @@ public class GameModel : IDisposable
         }
         
         // TODO: presentation????? - what class should be responsible for it???
+        // UPgrade actual distance
     }
 }

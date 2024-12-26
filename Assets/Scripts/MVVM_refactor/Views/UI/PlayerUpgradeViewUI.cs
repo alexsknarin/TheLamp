@@ -6,6 +6,7 @@ public class PlayerUpgradeViewUI : MonoBehaviour, IInitializable
     [SerializeField] private UpgradeButtonPresentation _healthButtonPresentation;
     [SerializeField] private UpgradeButtonPresentation _cooldownButtonPresentation;
     [SerializeField] private UpgradeButtonPresentation _attackDistanceButtonPresentation;
+    [SerializeField] private UiUpgradePoints _uiUpgradePoints;
     private Button _healthButton;
     private Button _cooldownButton;
     private Button _attackDistanceButton;
@@ -30,6 +31,7 @@ public class PlayerUpgradeViewUI : MonoBehaviour, IInitializable
         _playerUpgradeViewModel.OnHealthUpgradeEnabledChangedEvent += HandleHealthButtonEnabled;
         _playerUpgradeViewModel.OnCooldownUpgradeEnabledChangedEvent += HandleCooldownButtonEnabled;
         _playerUpgradeViewModel.OnAttackDistanceUpgradeEnabledChangedEvent += HandleAttackDistanceButtonEnabled;
+        _playerUpgradeViewModel.OnUpgradePointsChangedEvent += HandleUpgradePointsChanged;
     }
 
     private void OnDestroy()
@@ -41,6 +43,7 @@ public class PlayerUpgradeViewUI : MonoBehaviour, IInitializable
         _playerUpgradeViewModel.OnHealthUpgradeEnabledChangedEvent -= HandleHealthButtonEnabled;
         _playerUpgradeViewModel.OnCooldownUpgradeEnabledChangedEvent -= HandleCooldownButtonEnabled;
         _playerUpgradeViewModel.OnAttackDistanceUpgradeEnabledChangedEvent -= HandleAttackDistanceButtonEnabled;
+        _playerUpgradeViewModel.OnUpgradePointsChangedEvent += HandleUpgradePointsChanged;
     }
 
     private void OnHealthButtonClicked()
@@ -99,5 +102,11 @@ public class PlayerUpgradeViewUI : MonoBehaviour, IInitializable
         {
             _attackDistanceButtonPresentation.DisableButton();
         }
+    }
+
+    private void HandleUpgradePointsChanged(int upgradePoints)
+    {
+        Debug.Log("+++++++++++++++++UPGRADE POINT WAS USED!!!!");
+        _uiUpgradePoints.ShowUpgradePoints(upgradePoints);
     }
 }

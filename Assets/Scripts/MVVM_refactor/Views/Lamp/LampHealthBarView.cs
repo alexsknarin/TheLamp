@@ -10,12 +10,14 @@ public class LampHealthBarView : MonoBehaviour
         _playerGameplayViewModel.LampNormalizedHealth.OnChangedEvent += UpdateHealth;
         _playerGameplayViewModel.OnLastHealthPointStartedEvent += EnableLastHealth;
         _playerGameplayViewModel.OnLastHealthPointEndedEvent += DisableLastHealth;
+        _playerGameplayViewModel.OnHealthUpgradedEvent += PlayUpgrade;
     }
     private void OnDestroy()
     {
         _playerGameplayViewModel.LampNormalizedHealth.OnChangedEvent -= UpdateHealth;
         _playerGameplayViewModel.OnLastHealthPointStartedEvent -= EnableLastHealth;
         _playerGameplayViewModel.OnLastHealthPointEndedEvent -= DisableLastHealth;
+        _playerGameplayViewModel.OnHealthUpgradedEvent -= PlayUpgrade;
     }
 
     private void UpdateHealth(object sender, Observable<float>.ChangedEventArgs e)

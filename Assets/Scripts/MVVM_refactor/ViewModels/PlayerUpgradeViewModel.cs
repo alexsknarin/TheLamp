@@ -47,6 +47,21 @@ public class PlayerUpgradeViewModel : IDisposable
     public event Action<bool> OnAttackDistanceUpgradeEnabledChangedEvent; 
     #endregion
     
+    #region HealthUpgradeEnabled
+    private int _upgradePoints;
+    public int UpgradePoints
+    {
+        get => _upgradePoints;
+        private set
+        {
+            _upgradePoints = value;
+            OnUpgradePointsChangedEvent?.Invoke(value);
+        }
+    }
+    public event Action<int> OnUpgradePointsChangedEvent; 
+    #endregion
+    
+    
     private GameModel _gameModel;
     private IGameConfigService _gameConfigService;
 
@@ -56,11 +71,9 @@ public class PlayerUpgradeViewModel : IDisposable
         _gameConfigService = gameConfigService;
         
         _gameModel.OnGameStageStateChangedEvent += HandleStartUpgrade;
-        
         _gameModel.OnLampHealthChangedEvent += HandleHealthChanged;
         _gameModel.OnLampCooldownTimeChangedEvent += HandleCooldownChanged;
         _gameModel.OnLampAttackDistanceChangedEvent += HandleAttackDistanceChanged;
-        
         _gameModel.OnUpgradePointsChangedEvent += HandleUpgradePointsChanged;
     }
 
@@ -100,6 +113,9 @@ public class PlayerUpgradeViewModel : IDisposable
         {
             AttackDistanceUpgradeEnabled = true;
         }
+        
+        // Check Upgrade Points
+        UpgradePoints = _gameModel.UpgradePoints;
     }
 
     private void HandleHealthChanged(int health)
@@ -140,14 +156,19 @@ public class PlayerUpgradeViewModel : IDisposable
         AttackDistanceUpgradeEnabled = true;
     }
 
-    private void HandleUpgradePointsChanged(int obj)
+    private void HandleUpgradePointsChanged(int upgradePoints)
     {
         // Disable all buttons if no upgrade points
-        if(_gameModel.UpgradePoints <= 0)
+        if(upgradePoints <= 0)
         {
             HealthUpgradeEnabled = false;
             CooldownUpgradeEnabled = false;
             AttackDistanceUpgradeEnabled = false;
+            UpgradePoints = upgradePoints;
+        }
+        else
+        {
+            UpgradePoints = upgradePoints;    
         }
     }
 

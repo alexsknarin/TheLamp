@@ -14,6 +14,7 @@ public class PlayerGameplayViewModel : IDisposable
     public event Action<float, bool> OnAttackStartEvent;
     public event Action<float> OnLampDamagedEvent;
     public event Action OnLampDeadEvent;
+    public event Action OnHealthUpgradedEvent;
     
     private GameModel _gameModel;
     
@@ -26,6 +27,7 @@ public class PlayerGameplayViewModel : IDisposable
         _gameModel.OnLampAttackStartedEvent += StartLampAttack;
         _gameModel.OnPowerChangedEvent += UpdatePower;
         _gameModel.OnLampHealthChangedEvent += UpdateLampHealth;
+        _gameModel.OnLampMaxHealthChangedEvent += UpdateLampMaxHealth;
         _gameModel.OnLampBlockedModeSetEvent += SetBlockedMode;
         _gameModel.OnLampDamageStartedEvent += StartLampDamage;
         _gameModel.OnLampDeathEvent += StartLampDeath;
@@ -37,6 +39,7 @@ public class PlayerGameplayViewModel : IDisposable
         _gameModel.OnLampAttackStartedEvent -= StartLampAttack;
         _gameModel.OnPowerChangedEvent -= UpdatePower;
         _gameModel.OnLampHealthChangedEvent -= UpdateLampHealth;
+        _gameModel.OnLampMaxHealthChangedEvent -= UpdateLampMaxHealth;
         _gameModel.OnLampBlockedModeSetEvent -= SetBlockedMode;
         _gameModel.OnLampDamageStartedEvent -= StartLampDamage;
         _gameModel.OnLampDeathEvent -= StartLampDeath;
@@ -69,6 +72,7 @@ public class PlayerGameplayViewModel : IDisposable
         _currentHealth = newHealth;
         LampNormalizedHealth.Value = (float)_currentHealth / _gameModel.LampMaxHealth;
         
+        // check for the last health point
         if (newHealth == 1)
         {
             OnLastHealthPointStartedEvent?.Invoke();
@@ -77,6 +81,11 @@ public class PlayerGameplayViewModel : IDisposable
         {
             OnLastHealthPointEndedEvent?.Invoke();
         }
+    }
+
+    private void UpdateLampMaxHealth(int newMaxPoints)
+    {   
+        OnHealthUpgradedEvent?.Invoke();
     }
 
     private void StartLampDamage(float duration)
