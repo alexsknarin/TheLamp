@@ -68,6 +68,7 @@ public class LampAttackView : MonoBehaviour, IInitializable
 
     private void UpdateAttackZoneRadius(object sender, Observable<float>.ChangedEventArgs e)
     {
+        _attackDistanceUpgradeAnimationController.enabled = true;
         _attackDistanceUpgradeAnimationController.Play(_gameConfigService.PlayerConfig.AttackDistanceUpgradeAnimationTime);
     }
 
