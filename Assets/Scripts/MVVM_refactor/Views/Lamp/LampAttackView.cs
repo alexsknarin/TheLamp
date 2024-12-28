@@ -3,6 +3,7 @@ using UnityEngine;
 public class LampAttackView : MonoBehaviour, IInitializable
 {
     [SerializeField] private GameObject _lampAttackZoneObject;
+    [SerializeField] private AttackDistanceUpgradeAnimationController _attackDistanceUpgradeAnimationController;
     [SerializeField] private LampEmissionController _lampEmissionController;
     [SerializeField] private AnimationCurve _emissionPowerCurve;
     [SerializeField] private AnimationCurve _attackZonePowerCurve;
@@ -23,16 +24,19 @@ public class LampAttackView : MonoBehaviour, IInitializable
         _playerGameplayViewModel = playerGameplayViewModel;
         _gameConfigService = gameConfigService;
         _playerGameplayViewModel.OnAttackStartEvent += AttackStart;
+        _playerGameplayViewModel.AttackDistance.OnChangedEvent += UpdateAttackZoneRadius;
     }
 
     public void Initialize()
     {
         _lampAttackZoneMaterial = _lampAttackZoneObject.GetComponent<MeshRenderer>().material;
+        _attackDistanceUpgradeAnimationController.Initialize();
     }
 
     private void OnDestroy()
     {
         _playerGameplayViewModel.OnAttackStartEvent -= AttackStart;
+        _playerGameplayViewModel.AttackDistance.OnChangedEvent -= UpdateAttackZoneRadius;
     }
 
     private void AttackStart(float power, bool isBlockedAttack)
@@ -60,6 +64,11 @@ public class LampAttackView : MonoBehaviour, IInitializable
         if (!_isBlockedAttack)
             _lampAttackZoneMaterial.SetFloat("_Alpha", Mathf.Lerp(_attackZonePower, 0, phase));
         _localTime += Time.deltaTime;
+    }
+
+    private void UpdateAttackZoneRadius(object sender, Observable<float>.ChangedEventArgs e)
+    {
+        _attackDistanceUpgradeAnimationController.Play(_gameConfigService.PlayerConfig.AttackDistanceUpgradeAnimationTime);
     }
 
     void Update()

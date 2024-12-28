@@ -10,4 +10,5 @@ public class PlayerConfig : ScriptableObject
     [field:SerializeField] public float CooldownDecrement { get; private set; } = 0.06f;
     [field: SerializeField] public float AttackDistanceCap { get; private set; } = 0.82f;
     [field: SerializeField] public float AttackDistanceIncrement { get; private set; } = 0.01f;
+    [field: SerializeField] public float AttackDistanceUpgradeAnimationTime { get; private set; } = 0.45f;
 }

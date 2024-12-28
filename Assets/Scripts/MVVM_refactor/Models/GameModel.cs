@@ -426,9 +426,9 @@ public class GameModel : IDisposable
         if (LampAttackDistance > _gameConfigService.PlayerConfig.AttackDistanceCap)
         {
             LampAttackDistance = _gameConfigService.PlayerConfig.AttackDistanceCap;
+            return;
         }
         
-        // TODO: presentation????? - what class should be responsible for it???
-        // UPgrade actual distance
+        _playerCollidersPropertyController.SetAttackZoneRadius(LampAttackDistance);
     }
 }

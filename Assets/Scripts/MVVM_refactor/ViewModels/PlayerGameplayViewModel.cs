@@ -3,9 +3,10 @@ using UnityEngine;
 
 public class PlayerGameplayViewModel : IDisposable
 {
-    public Observable<float> Power = new Observable<float>();
-    public Observable<float> LampNormalizedHealth = new Observable<float>();
-    public Observable<bool> IsBlocked = new Observable<bool>();
+    public Observable<float> Power = new();
+    public Observable<float> LampNormalizedHealth = new();
+    public Observable<bool> IsBlocked = new();
+    public Observable<float> AttackDistance = new();
 
     public Action<GlassDamageData> OnLampGlassDamageChangedEvent;
     
@@ -32,6 +33,7 @@ public class PlayerGameplayViewModel : IDisposable
         _gameModel.OnLampDamageStartedEvent += StartLampDamage;
         _gameModel.OnLampDeathEvent += StartLampDeath;
         _gameModel.OnLampGlassDamageChangedEvent += UpdateLampGlassDamage;
+        _gameModel.OnLampAttackDistanceChangedEvent += UpdateAttackDistance;
     }
 
     public void Dispose()
@@ -44,6 +46,7 @@ public class PlayerGameplayViewModel : IDisposable
         _gameModel.OnLampDamageStartedEvent -= StartLampDamage;
         _gameModel.OnLampDeathEvent -= StartLampDeath;
         _gameModel.OnLampGlassDamageChangedEvent -= UpdateLampGlassDamage;
+        _gameModel.OnLampAttackDistanceChangedEvent -= UpdateAttackDistance;
     }
 
     public void HandleDamageStateEnded()
@@ -101,5 +104,10 @@ public class PlayerGameplayViewModel : IDisposable
     private void UpdateLampGlassDamage(GlassDamageData damageData)
     {
         OnLampGlassDamageChangedEvent?.Invoke(damageData);
+    }
+
+    private void UpdateAttackDistance(float distance)
+    {
+        AttackDistance.Value = distance;
     }
 }
