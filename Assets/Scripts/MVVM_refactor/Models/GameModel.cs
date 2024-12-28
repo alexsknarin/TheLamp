@@ -234,32 +234,14 @@ public class GameModel : IDisposable
         Debug.Log("Starting Wave: " +_currentGameState.Wave);
         _enemyController.StartWave(_currentGameState.Wave);
     }
-
-    private void HandleCurrentStageStateFinished()
+    
+    private void StartGameOver()
     {
-        switch (_currentGameStageState)
-        {
-            case GameStageState.Intro:
-                StartPrepareIn();
-                break;
-            case GameStageState.PrepareIn:
-                StartPrepare();
-                break;
-            case GameStageState.Prepare:
-                StartPrepareOut();
-                break;
-            case GameStageState.PrepareOut:
-                StartWave();
-                break;
-            case GameStageState.Wave:
-                CurrentGameStageState = GameStageState.PrepareIn;
-                StartPrepareIn();
-                break;
-            case GameStageState.GameOverOut:
-                Debug.Log("<<<<<<<   Game Finished.  >>>>>>>");
-                break;
-        }
+        CurrentGameStageState = GameStageState.GameOverIn;
+        Debug.Log("Starting Game Over");
     }
+    
+    //
 
     public void HandleIntroEnd()
     {
@@ -285,7 +267,7 @@ public class GameModel : IDisposable
     {
         Debug.Log($"Wave {_currentGameState.Wave} Ended");
         _currentGameState.Wave++;
-        HandleCurrentStageStateFinished();
+        StartPrepareIn();
     }
 
     public void HandleAttackButtonClicked()
