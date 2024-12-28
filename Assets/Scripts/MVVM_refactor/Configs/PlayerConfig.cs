@@ -3,6 +3,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "PlayerConfig", menuName = "Configs/PlayerConfig")]
 public class PlayerConfig : ScriptableObject
 {
+    [field:SerializeField] public bool IsDamageable { get; private set; } = true;
     [field:SerializeField] public float AttackDuration { get; private set; } = 0.15f;
     [field: SerializeField] public float DamageDuration { get; private set; } = 0.2f;
     [field:SerializeField] public int HealthCap { get; private set; } = 50;

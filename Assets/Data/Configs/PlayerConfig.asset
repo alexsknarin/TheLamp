@@ -12,13 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3564bbbed3c280c44a99d6c5a21b6da0, type: 3}
   m_Name: PlayerConfig
   m_EditorClassIdentifier: 
-  _attackDuration: 0.15
-  _healthCap: 50
-  _cooldownTimeCap: 0.75
-  _cooldownDecrement: 0.06
-  _attackDistanceCap: 0.82
+  <IsDamageable>k__BackingField: 1
   <AttackDuration>k__BackingField: 0.15
+  <DamageDuration>k__BackingField: 0.2
   <HealthCap>k__BackingField: 50
   <CooldownTimeCap>k__BackingField: 0.75
   <CooldownDecrement>k__BackingField: 0.06
   <AttackDistanceCap>k__BackingField: 0.82
+  <AttackDistanceIncrement>k__BackingField: 0.01
+  <AttackDistanceUpgradeAnimationTime>k__BackingField: 0.45

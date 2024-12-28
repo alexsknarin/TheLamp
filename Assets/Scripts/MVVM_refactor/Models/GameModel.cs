@@ -340,7 +340,8 @@ public class GameModel : IDisposable
     {
         if (!isDeflected || IsLampBlocked)
         {
-            LampHealth -= 1;
+            if(_gameConfigService.PlayerConfig.IsDamageable)
+                LampHealth -= 1;
 
             if (LampHealth <= 0)
             {
