@@ -3,6 +3,13 @@ using UnityEngine;
 public class PlayerPrefsGameSettingsProvider : IGameSettingsProvider
 {
     private GameSettings _gameSettings = null;
+    private GameSettings _defaultGameSettings;
+    
+    public PlayerPrefsGameSettingsProvider(GameSettings defaultGameSettings)
+    {
+        _defaultGameSettings = defaultGameSettings;
+    }
+    
     public GameSettings Get()
     {
         if (_gameSettings != null)
@@ -20,9 +27,7 @@ public class PlayerPrefsGameSettingsProvider : IGameSettingsProvider
         else
         {
             Debug.Log("GameSettings not found in PlayerPrefs - Generating a new one");
-            _gameSettings = new GameSettings();
-            _gameSettings.IsConsentSet = false;
-            _gameSettings.IsDataCollectionEnabled = false;
+            _gameSettings = new GameSettings(_defaultGameSettings);
             return _gameSettings;
         }
     }

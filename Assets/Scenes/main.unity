@@ -6205,6 +6205,10 @@ MonoBehaviour:
   _googleSheetsDataReader: {fileID: 1037269786}
   _gameConfigProvider: {fileID: 11400000, guid: 3f3efefe08686ca42805053945790993,
     type: 2}
+  _defaultGameStateData: {fileID: 11400000, guid: 3ff52fe343e4e854fa10511aaf897c66,
+    type: 2}
+  _defaultGameSettingsData: {fileID: 11400000, guid: 81bc3d07cdcbd48499ac435952e88713,
+    type: 2}
   _consentSettingsUIView: {fileID: 1291610359}
   _gameStageView: {fileID: 1736170224}
   _gameStateView: {fileID: 646836954}

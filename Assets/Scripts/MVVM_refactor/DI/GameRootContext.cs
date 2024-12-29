@@ -7,6 +7,7 @@ public class GameRootContext : MonoBehaviour
     [SerializeField] private GoogleSheetsDataReader _googleSheetsDataReader;
     [SerializeField] private SOGameConfigProvider _gameConfigProvider;
     [SerializeField] private DefaultGameStateData _defaultGameStateData;
+    [SerializeField] private DefaultGameSettingsData _defaultGameSettingsData;
     [Header("Views")]
     [SerializeField] private ConsentSettingsUIView _consentSettingsUIView;
     [SerializeField] private GameStageView _gameStageView;
@@ -64,7 +65,7 @@ public class GameRootContext : MonoBehaviour
         Debug.Log("------------------------------------------");
         Debug.Log("------ Starting Game Initialization ------");
         Debug.Log("------ Game Settings Initialization ------");
-        _gameSettingsProvider = new PlayerPrefsGameSettingsProvider();
+        _gameSettingsProvider = new PlayerPrefsGameSettingsProvider(_defaultGameSettingsData.GameSettings);
         _gameSettingsModel = new GameSettingsModel(_gameSettingsProvider.Get());
         _gameSettingsService = new GameSettingsService(_gameSettingsProvider, _gameSettingsModel);
         _gameSettingsService.Initialize();
