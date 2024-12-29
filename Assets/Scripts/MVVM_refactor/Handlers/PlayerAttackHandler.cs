@@ -70,7 +70,7 @@ public class PlayerAttackHandler : ITickable
         _isCooldownPlaying = true;
     }
     
-    private void StopCooldown()
+    public void StopCooldown()
     {
         _isCooldownPlaying = false;
     }

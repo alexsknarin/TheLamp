@@ -6,6 +6,7 @@ public class GameModel : IDisposable
     private GameState _currentGameState;
     public GameState CurrentGameState => _currentGameState; // Debug Only
     public int Wave => _currentGameState.Wave;
+    public Vector3 LastEnemyPosition { get; private set; }
     
     #region CurrentGameStageState Reactive Property
     private GameStageState _currentGameStageState = GameStageState.Loading;
@@ -135,7 +136,7 @@ public class GameModel : IDisposable
     
     public event Action<float> OnLampAttackStartedEvent;
     public event Action<float> OnLampDamageStartedEvent;
-    public event Action OnLampDeathEvent;
+    public event Action<Vector3> OnLampDeathEvent;
     
     private bool _isAttacking = false;
     
@@ -237,7 +238,8 @@ public class GameModel : IDisposable
     private void StartGameOver()
     {
         CurrentGameStageState = GameStageState.GameOverIn;
-        _enemyController.SetGameOver();
+        _playerAttackHandler.StopCooldown();
+        _enemyController.HandleGameOver();
         Debug.Log("Starting Game Over");
     }
     
@@ -327,16 +329,18 @@ public class GameModel : IDisposable
 
             if (LampHealth <= 0)
             {
-                OnLampDeathEvent?.Invoke();
-                Debug.Log("++++++++++ Game Over ++++++++++");
+                LastEnemyPosition = enemy.ProvideImpactPoint();
+                OnLampDeathEvent?.Invoke(enemy.ProvideImpactPoint());
                 StartGameOver();
+                Debug.Log("++++++++++ Game Over ++++++++++");
                 return;
-                // Play Game Over In state
             }
             
             LampGlassDamage = _lampDamageDataHandler.UpdateGlassDamageDataDamage(LampGlassDamage, enemy.ProvideImpactPoint().normalized);
+            
             // TODO: take lamp position into consideration
             // Or calculate it in the LampMovementController because it knows about lamp position
+            
             _lampMovementController.AddForce(-enemy.ProvideImpactPoint().normalized.x * 2); 
             OnLampDamageStartedEvent?.Invoke(_gameConfigService.PlayerConfig.DamageDuration);
         }
@@ -349,10 +353,12 @@ public class GameModel : IDisposable
         if (newUpgradePoints > 0)
         {
             _currentGameState.LampUpgradePoints += newUpgradePoints;
-            // TODO: mabe add event to indicate it somehow
+            // TODO: maybe add event to indicate it somehow
         }
     }
-
+    
+    
+    // --- Upgrades ---
     public void HandleHealthUpgrade()
     {
         if (UpgradePoints <= 0)

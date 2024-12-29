@@ -3,7 +3,7 @@ using UnityEngine.Rendering;
 
 public class LampPresentation : MonoBehaviour
 {
-    [SerializeField] private LampEmissionController _lampEmissionController;
+    // [SerializeField] private LampEmissionController _lampEmissionController;
     [SerializeField] private GameObject _lampAttackZoneObject;
     [Range(0, 1)]
     [SerializeField] private float _blockedModeStrength;
@@ -12,14 +12,14 @@ public class LampPresentation : MonoBehaviour
     [Header("Intro")]
     [SerializeField] private LampIntroAnimation _lampIntroAnimation;
     [Header("Cooldown")]
-    [SerializeField] private LampCooldown _lampCooldown;
+    // [SerializeField] private LampCooldown _lampCooldown;
     [Header("Death")]
     [SerializeField] private LampDeathAnimation _lampDeathAnimation;
     [Header("Damage")]
     [SerializeField] private LampDamageAnimation _lampDamageAnimation;
     [SerializeField] private float _lightDamageDuration;
     [Header("Attack")]
-    [SerializeField] private LampAttackAnimation _lampAttackAnimation;
+    // [SerializeField] private LampAttackAnimation _lampAttackAnimation;
     [SerializeField] private LampAttackDistanceUpgradeAnimation _lampAttackDistanceUpgradeAnimation;
     
     private Vector3 _lastEnemyPosition;
@@ -48,23 +48,23 @@ public class LampPresentation : MonoBehaviour
     {
         
         ResetLightNeutralState();
-        _lampEmissionController.Initialize();
+        // _lampEmissionController.Initialize();
         _lampHealthBar.Initialize();
-        _lampAttackAnimation.Initialize();
+        // _lampAttackAnimation.Initialize();
         _lampDeathAnimation.Initialize();
         _lampAttackDistanceUpgradeAnimation.Initialize();
 
         // arrange before the intro
         _lampHealthBar.UpdateHealth(0, 0);
-        _lampEmissionController.LampDamageUpdate(damageWeights);
-        _lampEmissionController.LampImpactDamageUpdate(impactPointsData);
+        // _lampEmissionController.LampDamageUpdate(damageWeights);
+        // _lampEmissionController.LampImpactDamageUpdate(impactPointsData);
     }
     
     public void UpdateHealthBar(float normalizedHealth, int actualHealth, Vector3 damageWeights, LampImpactPointsData impactPointsData)
     {
         _lampHealthBar.UpdateHealth(normalizedHealth, actualHealth);
-        _lampEmissionController.LampDamageUpdate(damageWeights);
-        _lampEmissionController.LampImpactDamageUpdate(impactPointsData);
+        // _lampEmissionController.LampDamageUpdate(damageWeights);
+        // _lampEmissionController.LampImpactDamageUpdate(impactPointsData);
     }
     
     public void UpgradeHealthBar()
@@ -74,22 +74,22 @@ public class LampPresentation : MonoBehaviour
 
     private void ResetLightNeutralState()
     {
-        _lampEmissionController.Intensity = 0;
-        _lampEmissionController.BlockedModeMix = 0;
-        _lampEmissionController.DamageMix = 0;
-        _lampEmissionController.IsDamageEnabled = false;
+        // _lampEmissionController.Intensity = 0;
+        // _lampEmissionController.BlockedModeMix = 0;
+        // _lampEmissionController.DamageMix = 0;
+        // _lampEmissionController.IsDamageEnabled = false;
     }
     
     public void EnableBlockedMode()
     {
-        _lampEmissionController.BlockedModeMix = _blockedModeStrength;
+        // _lampEmissionController.BlockedModeMix = _blockedModeStrength;
         isBlocked = true;
         _lampAttackZoneObject.SetActive(false);
     }
     
     public void DisableBlockedMode(bool isDead)
     {
-        _lampEmissionController.BlockedModeMix = 0;
+        // _lampEmissionController.BlockedModeMix = 0;
         isBlocked = false;
         if (!isDead)
         {
@@ -99,17 +99,17 @@ public class LampPresentation : MonoBehaviour
    
     private void StartAttackState(int attackPower, float currentPower, float attackDuration, float attackDistance)
     {
-        _lampAttackAnimation.Play(attackDuration, false, currentPower, attackDistance);
+        // _lampAttackAnimation.Play(attackDuration, false, currentPower, attackDistance);
     }
     
     private void StartBlockedAttackState(int attackPower, float currentPower, float attackDuration, float attackDistance)
     {
-        _lampAttackAnimation.Play(attackDuration, true, currentPower, attackDistance);
+        // _lampAttackAnimation.Play(attackDuration, true, currentPower, attackDistance);
     }
     
     private void PerformCooldownState(float currentPower)
     {
-        _lampCooldown.PerformCooldown(currentPower, isBlocked);
+        // _lampCooldown.PerformCooldown(currentPower, isBlocked);
     }
     
     public void StartIntroState(float introDuration, int currentHealth, int maxHealth)

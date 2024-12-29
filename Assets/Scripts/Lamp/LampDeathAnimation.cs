@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -7,7 +6,6 @@ public class LampDeathAnimation : MonoBehaviour
 {
     [SerializeField] private AnimationCurve _animCurve;
     [SerializeField] private AnimationCurve _damageAnimCurve;
-    [SerializeField] private LampHealthBar _lampHealthBar;
     [SerializeField] private LampEmissionController _lampEmissionController;
     [SerializeField] private GameObject _lampAttackZoneObject;
     
@@ -33,8 +31,8 @@ public class LampDeathAnimation : MonoBehaviour
     private bool _isPlaying = false;
     private float _duration;
     private float _localTime = 0;
-
-    private void Awake()
+    
+    public void Initialize()
     {
         _boneDirections = new Vector3[_bones.Length];
         _boneRotations = new float[_bones.Length];
@@ -46,10 +44,7 @@ public class LampDeathAnimation : MonoBehaviour
             _boneOriginalPositions[i] = _bones[i].position;
             _boneOriginalRotations[i] = _bones[i].localRotation;
         }
-    }
-
-    public void Initialize()
-    {
+        
         for (int i = 0; i < _bones.Length; i++)
         {
             _bones[i].position = _boneOriginalPositions[i];
@@ -118,8 +113,6 @@ public class LampDeathAnimation : MonoBehaviour
                 _lampEmissionController.Intensity = 0;
                 _lampEmissionController.DamageMix = 0;
                 _lampEmissionController.IsDamageEnabled = false;
-                
-                _lampHealthBar.UpdateHealth(0, 0);
                 return;
             }
         

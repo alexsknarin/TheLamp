@@ -7,14 +7,17 @@ public class GameOverInGameStageAnimationController : MonoBehaviour
     [Header("Settings")]
     [SerializeField] private bool _skip = false;   
     [SerializeField] private float _duration;
+    [SerializeField] private float _lampDestructionDuration = 3;
     [SerializeField] private float _cameraStartZPosition = -5.88f;
     [SerializeField] private float _cameraEndZPosition = -7.1f;
     [SerializeField] private float _startExposure = 0;
     [SerializeField] private float _endExposure = -8;
     [Header("Scene Dependencies")]
+    [Header("Scene")]
     [SerializeField] private Transform _cameraTransform;
     [SerializeField] private AnimationCurve _cameraAnimationCurve;
     [SerializeField] private Volume _postProcessingVolume;
+    [Header("UI")]
     [SerializeField] private GameObject _gameOverUi;
     [SerializeField] private AnimationCurve _gameOverTextAnimationCurve;
     [SerializeField] private TextFader _gameOverText;
@@ -22,6 +25,9 @@ public class GameOverInGameStageAnimationController : MonoBehaviour
     [SerializeField] private FadableButtonPresentation _restartWithAdButton;
     [SerializeField] private FadableButtonPresentation _restartNoAdButton;
     [SerializeField] private FadableButtonPresentation _exitButton;
+    [SerializeField] private GameObject _ingameUi;
+    [Header("Lamp")]
+    [SerializeField] private LampDeathAnimation _lampDeathAnimation;
     
     public event Action OnFinishedEvent;
     
@@ -38,10 +44,13 @@ public class GameOverInGameStageAnimationController : MonoBehaviour
         if (!volumeProfile.TryGet(out _colorAdjustments))
             throw new NullReferenceException(nameof(_colorAdjustments));
         _colorAdjustments.postExposure.Override(_startExposure);
+        
+        _lampDeathAnimation.Initialize();
+        
         _isPlaying = false;
     }
     
-    public void Play()
+    public void Play(Vector3 enemyPosition)
     {
         if (_skip)
         {
@@ -54,7 +63,9 @@ public class GameOverInGameStageAnimationController : MonoBehaviour
         _restartWithAdButton.SetVisibilityLevel(0);
         _restartNoAdButton.SetVisibilityLevel(0);
         _exitButton.SetVisibilityLevel(0);
+        _ingameUi.SetActive(false);
         
+        _lampDeathAnimation.Play(_lampDestructionDuration, enemyPosition);
         
         _localTime = 0;
         _isPlaying = true;

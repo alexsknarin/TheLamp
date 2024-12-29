@@ -26,12 +26,11 @@ public class PlayerGameplayViewModel : IDisposable
     {
         _gameModel = gameModel;
         _gameModel.OnLampAttackStartedEvent += StartLampAttack;
-        _gameModel.OnPowerChangedEvent += UpdatePower;
+        _gameModel.OnPowerChangedEvent += HandlePowerChange;
         _gameModel.OnLampHealthChangedEvent += UpdateLampHealth;
         _gameModel.OnLampMaxHealthChangedEvent += UpdateLampMaxHealth;
         _gameModel.OnLampBlockedModeSetEvent += SetBlockedMode;
         _gameModel.OnLampDamageStartedEvent += StartLampDamage;
-        _gameModel.OnLampDeathEvent += StartLampDeath;
         _gameModel.OnLampGlassDamageChangedEvent += UpdateLampGlassDamage;
         _gameModel.OnLampAttackDistanceChangedEvent += UpdateAttackDistance;
     }
@@ -39,12 +38,11 @@ public class PlayerGameplayViewModel : IDisposable
     public void Dispose()
     {
         _gameModel.OnLampAttackStartedEvent -= StartLampAttack;
-        _gameModel.OnPowerChangedEvent -= UpdatePower;
+        _gameModel.OnPowerChangedEvent -= HandlePowerChange;
         _gameModel.OnLampHealthChangedEvent -= UpdateLampHealth;
         _gameModel.OnLampMaxHealthChangedEvent -= UpdateLampMaxHealth;
         _gameModel.OnLampBlockedModeSetEvent -= SetBlockedMode;
         _gameModel.OnLampDamageStartedEvent -= StartLampDamage;
-        _gameModel.OnLampDeathEvent -= StartLampDeath;
         _gameModel.OnLampGlassDamageChangedEvent -= UpdateLampGlassDamage;
         _gameModel.OnLampAttackDistanceChangedEvent -= UpdateAttackDistance;
     }
@@ -59,7 +57,7 @@ public class PlayerGameplayViewModel : IDisposable
         IsBlocked.Value = isBlocked;
     }
 
-    private void UpdatePower(float power)
+    private void HandlePowerChange(float power)
     {
         Power.Value = power;
     }
@@ -71,6 +69,7 @@ public class PlayerGameplayViewModel : IDisposable
 
     private void UpdateLampHealth(int newHealth)
     {
+        
         _previousHealth = _currentHealth;
         _currentHealth = newHealth;
         LampNormalizedHealth.Value = (float)_currentHealth / _gameModel.LampMaxHealth;
@@ -94,11 +93,6 @@ public class PlayerGameplayViewModel : IDisposable
     private void StartLampDamage(float duration)
     {
         OnLampDamagedEvent?.Invoke(duration);
-    }
-
-    private void StartLampDeath()
-    {
-        OnLampDeadEvent?.Invoke();
     }
 
     private void UpdateLampGlassDamage(GlassDamageData damageData)

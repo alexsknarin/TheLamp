@@ -1,6 +1,8 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
 // TODO: Remeake without MONOBHEAVIOR ??? SO + Tickable - after bosses are made into prefabs
 
 public class EnemyController : MonoBehaviour, IInitializable
@@ -40,8 +42,9 @@ public class EnemyController : MonoBehaviour, IInitializable
     [SerializeField] private bool _isWaveInitialized = false;
     private bool _isGameActive = false;
     private int _enemiesKilled;
-    
     private bool _isPlayerBlocked = false;
+    
+    private WaitForSeconds _waitAfterGameOver = new WaitForSeconds(3.9f); // TODO: Magic Number
     
     // Dependencies    
     private IGameConfigService _gameConfigService;
@@ -157,6 +160,43 @@ public class EnemyController : MonoBehaviour, IInitializable
         }
     }
     
+    public void HandleGameOver()
+    {
+        _isGameActive = false;
+        // Wait for 5 seconds, call enemies to spread and the return them all to the pool
+        StartCoroutine(SpreadEnemiesAfterGameOver());
+        // Disable boss
+        if (_enemyAttacker.IsBossActive)
+        {
+            _enemySpawner.Boss.SetGameover();
+        }
+    }
+    
+    private IEnumerator SpreadEnemiesAfterGameOver()
+    {
+        yield return _waitAfterGameOver;
+        SpreadEnemies();
+    }
+    
+    public void Restart()
+    {
+        ReturnAllActiveEnemiesToPool();
+        _isGameActive = true;
+        _spawnQueue = _spawnQueueGenerator.Generate();
+        
+        _enemies.Clear();
+        _ladybugsPatrolling.Clear();
+        _enemiesReadyToAttack.Clear();
+
+        // Init all bosses
+        _waspBoss.Initialize();
+        _megamothlingBoss.Initialize();
+        _megabeetleBoss.Initialize();
+        _dragonflyBoss.Initialize();
+        
+        _isWaveInitialized = false;
+    }
+    
     private void SetupWave(int waveNum)
     {
         _enemySpawner.StartWave(waveNum);
@@ -164,7 +204,96 @@ public class EnemyController : MonoBehaviour, IInitializable
         _enemiesKilled = 0;
         _isWaveInitialized = true;
     }
+
+    public void HandleAttackButtonClicked(float power)
+    {
+        // TODO: blocked attack support
+        // we will use blocked bool as a parameter to have the only one method to call attack
+        
+        int attackPower = Converters.PowerToAttackPower(power);
+        if (attackPower > 0)
+        {
+            if (_isPlayerBlocked)
+                _enemiesLampAttackHandler.HandleLampBlockedAttack(_enemies, attackPower);
+            else
+                _enemiesLampAttackHandler.HandleLampAttack(_enemies, attackPower);
+        }
+    }
+
+    public void SetBlockedMode(bool isBlocked)
+    {
+        _isPlayerBlocked = isBlocked;
+    }
+
+    // Event Handlers
+
+    private void UpdateEnemiesOnScreen(EnemyBase enemy)
+    {
+        _enemies.Remove(enemy);
+        _enemiesKilled++;
+        if (enemy.EnemyType == EnemyType.Ladybug) // TODO: Interfaces check interface instead of a type variable
+        {
+            _ladybugsPatrolling.Remove(enemy); // TODO: Interfaces
+        }
+    }
+
+    private void UpdateLadybugsOnScreen(EnemyBase enemy)
+    {
+        // Remove stick ladybug for damageable list
+        if (enemy.EnemyType == EnemyType.Ladybug) // TODO: Interfaces
+        {
+            _ladybugsPatrolling.Remove(enemy); // TODO: Interfaces
+        }
+    }
+
+    private void CheckForFireflyExplosion(EnemyBase enemy)
+    {
+        if(enemy.EnemyType != EnemyType.Firefly)
+        {
+            return;
+        }
+        _enemiesFireflyExploder.StartExplosion(enemy);
+        OnFireflyExplosionEvent?.Invoke();
+    }
+
+    private void OnBossSpawnedHandle(BossBase boss)
+    {
+        boss.Play();
+        _enemyAttacker.ActivateBoss(boss); // Boss appearance should stop any ongoing attack
+        OnBossSpawnedEvent?.Invoke(boss);
+    }
+
+    private void SpreadEnemies()
+    {
+        foreach (var enemy in _enemies)
+        {
+            enemy.SpreadStart();
+        }
+    }
+
+    private void OnBossDeathHandle()
+    {
+        OnBossDeadEvent?.Invoke(_enemySpawner.Boss);
+        _enemyAttacker.DeactivateBoss();
+        _enemies.Remove(_enemySpawner.Boss);
+        _enemiesKilled++;
+    }
     
+    private void ReturnAllActiveEnemiesToPool()
+    {
+        // Enemies
+        foreach (var enemy in _enemies)
+        {
+            enemy.ReturnToPool();
+        }
+        
+        // Bosses
+        if (_enemyAttacker.IsBossActive)
+        {
+            _enemySpawner.Boss.Reset();
+        }
+    }
+
     private void Update()
     {
         if (_isWaveInitialized && _isGameActive)
@@ -180,84 +309,5 @@ public class EnemyController : MonoBehaviour, IInitializable
                 OnWaveEndEvent?.Invoke();
             }
         }
-    }
-    
-    public void HandleAttackButtonClicked(float power)
-    {
-        // TODO: blocked attack support
-        // we will use blocked bool as a parameter to have the only one method to call attack
-        
-        int attackPower = Converters.PowerToAttackPower(power);
-        if (attackPower > 0)
-        {
-            if (_isPlayerBlocked)
-                _enemiesLampAttackHandler.HandleLampBlockedAttack(_enemies, attackPower);
-            else
-                _enemiesLampAttackHandler.HandleLampAttack(_enemies, attackPower);
-        }
-    }
-    
-    public void SetBlockedMode(bool isBlocked)
-    {
-        _isPlayerBlocked = isBlocked;
-    }
-    
-    public void SetGameOver()
-    {
-        _isGameActive = false;
-    }
-    
-    
-    // Event Handlers
-    private void UpdateEnemiesOnScreen(EnemyBase enemy)
-    {
-        _enemies.Remove(enemy);
-        _enemiesKilled++;
-        if (enemy.EnemyType == EnemyType.Ladybug) // TODO: Interfaces check interface instead of a type variable
-        {
-            _ladybugsPatrolling.Remove(enemy); // TODO: Interfaces
-        }
-    }
-    
-    private void UpdateLadybugsOnScreen(EnemyBase enemy)
-    {
-        // Remove stick ladybug for damageable list
-        if (enemy.EnemyType == EnemyType.Ladybug) // TODO: Interfaces
-        {
-            _ladybugsPatrolling.Remove(enemy); // TODO: Interfaces
-        }
-    }
-    
-    private void CheckForFireflyExplosion(EnemyBase enemy)
-    {
-        if(enemy.EnemyType != EnemyType.Firefly)
-        {
-            return;
-        }
-        _enemiesFireflyExploder.StartExplosion(enemy);
-        OnFireflyExplosionEvent?.Invoke();
-    }
-    
-    private void OnBossSpawnedHandle(BossBase boss)
-    {
-        boss.Play();
-        _enemyAttacker.ActivateBoss(boss); // Boss appearance should stop any ongoing attack
-        OnBossSpawnedEvent?.Invoke(boss);
-    }
-    
-    private void SpreadEnemies()
-    {
-        foreach (var enemy in _enemies)
-        {
-            enemy.SpreadStart();
-        }
-    }
-    
-    private void OnBossDeathHandle()
-    {
-        OnBossDeadEvent?.Invoke(_enemySpawner.Boss);
-        _enemyAttacker.DeactivateBoss();
-        _enemies.Remove(_enemySpawner.Boss);
-        _enemiesKilled++;
     }
 }

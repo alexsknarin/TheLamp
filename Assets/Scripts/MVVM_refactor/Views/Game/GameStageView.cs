@@ -53,9 +53,9 @@ public class GameStageView : MonoBehaviour, IInitializable
         _prepareOutGameStageAnimationController.Play();   
     }
     
-    private void StartGameOverIn()
+    private void StartGameOverIn(Vector3 enemyPosition)
     {
-        _gameOverInGameStageAnimationController.Play();
+        _gameOverInGameStageAnimationController.Play(enemyPosition);
     }
 
     public void HandleIntroEnd()
