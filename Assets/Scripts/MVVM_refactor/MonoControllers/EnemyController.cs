@@ -202,6 +202,11 @@ public class EnemyController : MonoBehaviour, IInitializable
         _isPlayerBlocked = isBlocked;
     }
     
+    public void SetGameOver()
+    {
+        _isGameActive = false;
+    }
+    
     
     // Event Handlers
     private void UpdateEnemiesOnScreen(EnemyBase enemy)

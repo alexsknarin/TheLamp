@@ -3,8 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(Button))]
-[RequireComponent(typeof(TMP_Text))]
-public class UpgradeButtonPresentation : MonoBehaviour
+public class FadableButtonPresentation : MonoBehaviour
 {
     [SerializeField] private Button _button;
     [SerializeField] private TMP_Text _text;

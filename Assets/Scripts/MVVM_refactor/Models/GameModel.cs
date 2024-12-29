@@ -7,7 +7,6 @@ public class GameModel : IDisposable
     public GameState CurrentGameState => _currentGameState; // Debug Only
     public int Wave => _currentGameState.Wave;
     
-    
     #region CurrentGameStageState Reactive Property
     private GameStageState _currentGameStageState = GameStageState.Loading;
     public GameStageState CurrentGameStageState
@@ -238,10 +237,11 @@ public class GameModel : IDisposable
     private void StartGameOver()
     {
         CurrentGameStageState = GameStageState.GameOverIn;
+        _enemyController.SetGameOver();
         Debug.Log("Starting Game Over");
     }
     
-    //
+    // --- Event Handlers ---
 
     public void HandleIntroEnd()
     {
@@ -329,6 +329,7 @@ public class GameModel : IDisposable
             {
                 OnLampDeathEvent?.Invoke();
                 Debug.Log("++++++++++ Game Over ++++++++++");
+                StartGameOver();
                 return;
                 // Play Game Over In state
             }

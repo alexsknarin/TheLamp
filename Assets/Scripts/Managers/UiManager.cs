@@ -16,9 +16,9 @@ public class UiManager : MonoBehaviour, IInitializable
     [SerializeField] private GameObject _upgradeButtonsPanel;
     [SerializeField] private UiUpgradePoints _uiUpgradePoints;
     [SerializeField] private GameObject _upgradeHintsPanel;
-    [FormerlySerializedAs("_upgradeHealthButton")] [SerializeField] private UpgradeButtonPresentation _upgradeHealthButtonPresentation;
-    [FormerlySerializedAs("_upgradeCooldownButton")] [SerializeField] private UpgradeButtonPresentation _upgradeCooldownButtonPresentation;
-    [FormerlySerializedAs("_upgradeAttackDistanceButton")] [SerializeField] private UpgradeButtonPresentation _upgradeAttackDistanceButtonPresentation;
+    [FormerlySerializedAs("_upgradeHealthButton")] [SerializeField] private FadableButtonPresentation _upgradeHealthButtonPresentation;
+    [FormerlySerializedAs("_upgradeCooldownButton")] [SerializeField] private FadableButtonPresentation _upgradeCooldownButtonPresentation;
+    [FormerlySerializedAs("_upgradeAttackDistanceButton")] [SerializeField] private FadableButtonPresentation _upgradeAttackDistanceButtonPresentation;
 
     [Header("Overlay Images")] [SerializeField]
     private BrokenGlassEffect _brokenGlassEffect;
@@ -165,7 +165,7 @@ public class UiManager : MonoBehaviour, IInitializable
         RefreshUpgradeButton(_lampStatsManager.AttackDistanceUpgradeStatus(), _upgradeAttackDistanceButtonPresentation);
     }
 
-    private void RefreshUpgradeButton(UpgradeStatus status, UpgradeButtonPresentation buttonPresentation)
+    private void RefreshUpgradeButton(UpgradeStatus status, FadableButtonPresentation buttonPresentation)
     {
         switch (status)
         {

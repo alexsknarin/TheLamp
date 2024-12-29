@@ -5,6 +5,7 @@ public class GameStageView : MonoBehaviour, IInitializable
     [SerializeField] private IntroGameStageAnimationController _introGameStageAnimationController;
     [SerializeField] private PrepareInGameStageAnimationController _prepareInGameStageAnimationController;
     [SerializeField] private PrepareOutGameStageAnimationController _prepareOutGameStageAnimationController;
+    [SerializeField] private GameOverInGameStageAnimationController _gameOverInGameStageAnimationController;
     GameStageViewModel _gameStageViewModel;
     
     public void Construct(GameStageViewModel viewModel)
@@ -13,6 +14,7 @@ public class GameStageView : MonoBehaviour, IInitializable
         _gameStageViewModel.OnIntroStartedEvent += StartIntro;
         _gameStageViewModel.OnPrepareInStartedEvent += StartPrepareIn;
         _gameStageViewModel.OnPrepareOutStartedEvent += StartPrepareOut;
+        _gameStageViewModel.OnGameOverInStartedEvent += StartGameOverIn;
         
         _introGameStageAnimationController.OnFinishedEvent += HandleIntroEnd;
         _prepareInGameStageAnimationController.OnFinishedEvent += HandlePrepareInEnd;
@@ -22,6 +24,7 @@ public class GameStageView : MonoBehaviour, IInitializable
     public void Initialize()
     {
         _introGameStageAnimationController.Initialize();
+        _gameOverInGameStageAnimationController.Initialize();
     }
 
     private void OnDestroy()
@@ -48,6 +51,11 @@ public class GameStageView : MonoBehaviour, IInitializable
     private void StartPrepareOut()
     {
         _prepareOutGameStageAnimationController.Play();   
+    }
+    
+    private void StartGameOverIn()
+    {
+        _gameOverInGameStageAnimationController.Play();
     }
 
     public void HandleIntroEnd()

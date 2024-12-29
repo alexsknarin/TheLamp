@@ -7,6 +7,7 @@ public class GameStageViewModel : IDisposable
     public event Action<float> OnIntroStartedEvent;
     public event Action<bool, int> OnPrepareInStartedEvent;
     public event Action OnPrepareOutStartedEvent;
+    public event Action OnGameOverInStartedEvent;
 
     public GameStageViewModel(GameModel gameModel)
     {
@@ -31,6 +32,9 @@ public class GameStageViewModel : IDisposable
                 break;
             case GameStageState.PrepareOut:
                 OnPrepareOutStartedEvent?.Invoke();
+                break;
+            case GameStageState.GameOverIn:
+                OnGameOverInStartedEvent?.Invoke();
                 break;
         }
     }

@@ -13,9 +13,9 @@ public class PrepareOutGameStageAnimationController : MonoBehaviour
     [SerializeField] private float _duration;
     [SerializeField] private TextFader _waveText;
     [SerializeField] private GameObject _upgradeButtonsPanel;
-    [FormerlySerializedAs("_upgradeHealthButton")] [SerializeField] private UpgradeButtonPresentation _upgradeHealthButtonPresentation;
-    [FormerlySerializedAs("_upgradeAttackButton")] [SerializeField] private UpgradeButtonPresentation _upgradeAttackButtonPresentation;
-    [FormerlySerializedAs("_upgradeCooldownButton")] [SerializeField] private UpgradeButtonPresentation _upgradeCooldownButtonPresentation;
+    [FormerlySerializedAs("_upgradeHealthButton")] [SerializeField] private FadableButtonPresentation _upgradeHealthButtonPresentation;
+    [FormerlySerializedAs("_upgradeAttackButton")] [SerializeField] private FadableButtonPresentation _upgradeAttackButtonPresentation;
+    [FormerlySerializedAs("_upgradeCooldownButton")] [SerializeField] private FadableButtonPresentation _upgradeCooldownButtonPresentation;
     [SerializeField] private TMP_Text _hintText1;
     [SerializeField] private TMP_Text _hintText2;
     [SerializeField] private TMP_Text _hintText3;

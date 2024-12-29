@@ -1240,7 +1240,7 @@ MonoBehaviour:
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 1
-  m_ActiveFontFeatures: 00000000
+  m_ActiveFontFeatures: 6e72656b
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
@@ -1427,8 +1427,9 @@ GameObject:
   - component: {fileID: 155560125}
   - component: {fileID: 155560124}
   - component: {fileID: 155560123}
+  - component: {fileID: 155560126}
   m_Layer: 5
-  m_Name: Exit_Button
+  m_Name: Exit_button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1536,6 +1537,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 155560121}
   m_CullTransparentMesh: 1
+--- !u!114 &155560126
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 155560121}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08f70821550cde7468983ebfe4092acc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _button: {fileID: 155560123}
+  _text: {fileID: 101221586}
 --- !u!4 &189989795 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -2494737611447067790, guid: 556ccd576c35d634e88ba039c8700cfa,
@@ -5318,8 +5333,9 @@ GameObject:
   - component: {fileID: 949782839}
   - component: {fileID: 949782838}
   - component: {fileID: 949782837}
+  - component: {fileID: 949782840}
   m_Layer: 5
-  m_Name: RestartNoAd_Button
+  m_Name: RestartNoAd_button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5427,6 +5443,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 949782835}
   m_CullTransparentMesh: 1
+--- !u!114 &949782840
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 949782835}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08f70821550cde7468983ebfe4092acc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _button: {fileID: 949782837}
+  _text: {fileID: 2010221170}
 --- !u!1 &969163313 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4557419227544725734, guid: 3fc8442acd052ac4f9c1e690f3aa5d74,
@@ -6553,7 +6583,7 @@ MonoBehaviour:
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 1
-  m_ActiveFontFeatures: 00000000
+  m_ActiveFontFeatures: 6e72656b
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
@@ -6710,8 +6740,9 @@ GameObject:
   - component: {fileID: 1197657947}
   - component: {fileID: 1197657946}
   - component: {fileID: 1197657945}
+  - component: {fileID: 1197657948}
   m_Layer: 5
-  m_Name: RestartWithAd_Button
+  m_Name: RestartWithAd_button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6819,6 +6850,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1197657943}
   m_CullTransparentMesh: 1
+--- !u!114 &1197657948
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1197657943}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08f70821550cde7468983ebfe4092acc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _button: {fileID: 1197657945}
+  _text: {fileID: 1125547987}
 --- !u!1 &1202550117 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 816267557849244585, guid: db082986f50fad64f90c5d3f0bd3ddf3,
@@ -9924,6 +9969,7 @@ GameObject:
   - component: {fileID: 1736170226}
   - component: {fileID: 1736170227}
   - component: {fileID: 1736170228}
+  - component: {fileID: 1736170229}
   m_Layer: 0
   m_Name: GameStageVew
   m_TagString: Untagged
@@ -9946,6 +9992,7 @@ MonoBehaviour:
   _introGameStageAnimationController: {fileID: 1736170226}
   _prepareInGameStageAnimationController: {fileID: 1736170227}
   _prepareOutGameStageAnimationController: {fileID: 1736170228}
+  _gameOverInGameStageAnimationController: {fileID: 1736170229}
 --- !u!4 &1736170225
 Transform:
   m_ObjectHideFlags: 0
@@ -9973,10 +10020,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f7068c7d2ed1f84db4f302f148a127b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _skip: 1
+  _skip: 0
   _duration: 2
   _cameraStartZPosition: -7.1
   _cameraEndZPosition: -5.88
+  _startExposure: -8
+  _endExposure: 0
   _cameraTransform: {fileID: 330585546}
   _cameraAnimationCurve:
     serializedVersion: 2
@@ -10266,6 +10315,148 @@ MonoBehaviour:
   _hintText1: {fileID: 1733480390}
   _hintText2: {fileID: 40797313}
   _hintText3: {fileID: 1450694833}
+--- !u!114 &1736170229
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1736170223}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28340f31946cbbc4fa5c7722941a7e5e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _skip: 0
+  _duration: 5.5
+  _cameraStartZPosition: -5.88
+  _cameraEndZPosition: -7.1
+  _startExposure: 0
+  _endExposure: -8
+  _cameraTransform: {fileID: 330585546}
+  _cameraAnimationCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0.017049192
+      outSlope: 0.017049192
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.04840206
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0.25939333
+      outSlope: 0.25939333
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.06584966
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _postProcessingVolume: {fileID: 832575518}
+  _gameOverUi: {fileID: 1889387872}
+  _gameOverTextAnimationCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0.056137905
+      outSlope: 0.056137905
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.17814612
+      value: 0.01000075
+      inSlope: 0.10379866
+      outSlope: 0.10379866
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.21267776
+      outWeight: 0.06938237
+    - serializedVersion: 3
+      time: 0.707052
+      value: 0.9881235
+      inSlope: 0.08649998
+      outSlope: 0.08649998
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.16902365
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0.040541403
+      outSlope: 0.040541403
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _gameOverText: {fileID: 1969879655}
+  _gameOverButtonsAnimationCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.362073
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.6395383
+      value: 0.08402375
+      inSlope: 0.56085
+      outSlope: 0.56085
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.26892316
+      outWeight: 0.15634064
+    - serializedVersion: 3
+      time: 0.98891234
+      value: 0.99935776
+      inSlope: 0.08649998
+      outSlope: 0.08649998
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.16902365
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0.05792388
+      outSlope: 0.05792388
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _restartWithAdButton: {fileID: 1197657948}
+  _restartNoAdButton: {fileID: 949782840}
+  _exitButton: {fileID: 155560126}
 --- !u!4 &1755611450 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 92097553111088338, guid: 556ccd576c35d634e88ba039c8700cfa,
@@ -12788,6 +12979,7 @@ GameObject:
   - component: {fileID: 1969879651}
   - component: {fileID: 1969879654}
   - component: {fileID: 1969879653}
+  - component: {fileID: 1969879655}
   - component: {fileID: 1969879652}
   m_Layer: 5
   m_Name: GameOver_Text
@@ -12898,7 +13090,7 @@ MonoBehaviour:
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 1
-  m_ActiveFontFeatures: 00000000
+  m_ActiveFontFeatures: 6e72656b
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
@@ -12928,6 +13120,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1969879650}
   m_CullTransparentMesh: 1
+--- !u!114 &1969879655
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1969879650}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 18313241f619f244e8e8d6b023187def, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _uiText: {fileID: 1969879653}
 --- !u!1 &1986056729 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 556ccd576c35d634e88ba039c8700cfa,
@@ -13132,7 +13337,7 @@ MonoBehaviour:
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 1
-  m_ActiveFontFeatures: 00000000
+  m_ActiveFontFeatures: 6e72656b
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1

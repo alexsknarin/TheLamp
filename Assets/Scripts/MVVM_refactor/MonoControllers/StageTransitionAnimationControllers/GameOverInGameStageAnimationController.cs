@@ -2,36 +2,33 @@ using System;
 using UnityEngine;
 using UnityEngine.Rendering;
 
-public class IntroGameStageAnimationController : MonoBehaviour, IInitializable
+public class GameOverInGameStageAnimationController : MonoBehaviour
 {
     [Header("Settings")]
     [SerializeField] private bool _skip = false;   
     [SerializeField] private float _duration;
-    [SerializeField] private float _cameraStartZPosition = -7.1f;
-    [SerializeField] private float _cameraEndZPosition = -5.88f;
-    [SerializeField] private float _startExposure = -8;
-    [SerializeField] private float _endExposure = 0;
+    [SerializeField] private float _cameraStartZPosition = -5.88f;
+    [SerializeField] private float _cameraEndZPosition = -7.1f;
+    [SerializeField] private float _startExposure = 0;
+    [SerializeField] private float _endExposure = -8;
     [Header("Scene Dependencies")]
     [SerializeField] private Transform _cameraTransform;
     [SerializeField] private AnimationCurve _cameraAnimationCurve;
     [SerializeField] private Volume _postProcessingVolume;
-    [Header("Lamp Dependencies")]
-    [SerializeField] private AnimationCurve _animCurve;
-    [SerializeField] private LampHealthBarController _lampHealthBarController;
-    [SerializeField] private LampEmissionController _lampEmissionController;
-    [SerializeField] private MeshRenderer _lampAttackZoneRenderer;
-    [SerializeField] private AnimationCurve _lampIntensityAnimCurve;
-    [SerializeField] private AnimationCurve _lampNoiseAmountAnimCurve;
-    private Material _lampAttackZoneMaterial;
-    
-    private UnityEngine.Rendering.Universal.ColorAdjustments _colorAdjustments;
-
-    private float _localTime;
-    private bool _isPlaying;
-    private float _currentHealth;
+    [SerializeField] private GameObject _gameOverUi;
+    [SerializeField] private AnimationCurve _gameOverTextAnimationCurve;
+    [SerializeField] private TextFader _gameOverText;
+    [SerializeField] private AnimationCurve _gameOverButtonsAnimationCurve;
+    [SerializeField] private FadableButtonPresentation _restartWithAdButton;
+    [SerializeField] private FadableButtonPresentation _restartNoAdButton;
+    [SerializeField] private FadableButtonPresentation _exitButton;
     
     public event Action OnFinishedEvent;
-
+    
+    private UnityEngine.Rendering.Universal.ColorAdjustments _colorAdjustments;
+    private float _localTime;
+    private bool _isPlaying;
+    
     public void Initialize()
     {
         // Get Control over Exposure
@@ -41,27 +38,30 @@ public class IntroGameStageAnimationController : MonoBehaviour, IInitializable
         if (!volumeProfile.TryGet(out _colorAdjustments))
             throw new NullReferenceException(nameof(_colorAdjustments));
         _colorAdjustments.postExposure.Override(_startExposure);
-        _lampAttackZoneMaterial = _lampAttackZoneRenderer.material;
-
         _isPlaying = false;
     }
     
-    public void Play(float normalizedHealth)
+    public void Play()
     {
-        _currentHealth = normalizedHealth;
-        _lampAttackZoneRenderer.gameObject.SetActive(true);
-        
         if (_skip)
         {
             SetFinalState();
             return;
         }
         
+        _gameOverUi.SetActive(true);
+        _gameOverText.SetVisibilityLevel(0);
+        _restartWithAdButton.SetVisibilityLevel(0);
+        _restartNoAdButton.SetVisibilityLevel(0);
+        _exitButton.SetVisibilityLevel(0);
+        
+        
         _localTime = 0;
         _isPlaying = true;
+
     }
-    
-    void Update()
+
+    private void Update()
     {
         if (_isPlaying)
         {
@@ -70,18 +70,18 @@ public class IntroGameStageAnimationController : MonoBehaviour, IInitializable
             {
                 SetFinalState();
             }
-
-            _colorAdjustments.postExposure.Override(Mathf.Lerp(_startExposure, _endExposure, phase));
+            
             Vector3 cameraPosition = _cameraTransform.position;
             cameraPosition.z = Mathf.Lerp(_cameraStartZPosition, _cameraEndZPosition, _cameraAnimationCurve.Evaluate(phase));
             _cameraTransform.position = cameraPosition;
+            _colorAdjustments.postExposure.Override(Mathf.Lerp(_startExposure, _endExposure, phase));
             
-            float phaseAnimated = _animCurve.Evaluate(phase);
-            float health = Mathf.Lerp(0, _currentHealth, phaseAnimated);
-            _lampHealthBarController.SetHealth(health);
-            _lampEmissionController.Intensity = _lampIntensityAnimCurve.Evaluate(phase);
-            _lampEmissionController.BlockedModeMix = _lampNoiseAmountAnimCurve.Evaluate(phase);
-            _lampAttackZoneMaterial.SetFloat("_Alpha", Mathf.Lerp(0, 0.005f, _lampIntensityAnimCurve.Evaluate(phase)));
+            _gameOverText.SetVisibilityLevel(_gameOverTextAnimationCurve.Evaluate(phase));
+            
+            _restartWithAdButton.SetVisibilityLevel(_gameOverButtonsAnimationCurve.Evaluate(phase));
+            _restartNoAdButton.SetVisibilityLevel(_gameOverButtonsAnimationCurve.Evaluate(phase));
+            _exitButton.SetVisibilityLevel(_gameOverButtonsAnimationCurve.Evaluate(phase));
+            
             
             _localTime += Time.deltaTime;
         }
@@ -91,18 +91,18 @@ public class IntroGameStageAnimationController : MonoBehaviour, IInitializable
     {
         _isPlaying = false;
         _localTime = 0;
+        
         // Environment
         Vector3 cameraPosition = _cameraTransform.position;
         cameraPosition.z = _cameraEndZPosition;
         _cameraTransform.position = cameraPosition;
         _colorAdjustments.postExposure.Override(_endExposure);
-        // Lamp
-        _lampHealthBarController.SetHealth(_currentHealth);
-        _lampEmissionController.Intensity = _lampIntensityAnimCurve.Evaluate(1);
-        _lampEmissionController.BlockedModeMix = _lampNoiseAmountAnimCurve.Evaluate(1);
-        _lampAttackZoneMaterial.SetFloat("_Alpha", 0.005f);
+        //UI
+        _gameOverText.SetVisibilityLevel(1);
+        _restartWithAdButton.SetVisibilityLevel(1);
+        _restartNoAdButton.SetVisibilityLevel(1);
+        _exitButton.SetVisibilityLevel(1);
         
         OnFinishedEvent?.Invoke();
     }
-    
 }

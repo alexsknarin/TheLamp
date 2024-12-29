@@ -3,9 +3,9 @@ using UnityEngine.UI;
 
 public class PlayerUpgradeViewUI : MonoBehaviour, IInitializable
 {
-    [SerializeField] private UpgradeButtonPresentation _healthButtonPresentation;
-    [SerializeField] private UpgradeButtonPresentation _cooldownButtonPresentation;
-    [SerializeField] private UpgradeButtonPresentation _attackDistanceButtonPresentation;
+    [SerializeField] private FadableButtonPresentation _healthButtonPresentation;
+    [SerializeField] private FadableButtonPresentation _cooldownButtonPresentation;
+    [SerializeField] private FadableButtonPresentation _attackDistanceButtonPresentation;
     [SerializeField] private UiUpgradePoints _uiUpgradePoints;
     private Button _healthButton;
     private Button _cooldownButton;
