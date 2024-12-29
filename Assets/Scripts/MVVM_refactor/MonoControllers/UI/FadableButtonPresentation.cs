@@ -7,11 +7,13 @@ public class FadableButtonPresentation : MonoBehaviour
 {
     [SerializeField] private Button _button;
     [SerializeField] private TMP_Text _text;
+    [SerializeField] private Color _enabledTextColor = Color.white;
+    [SerializeField] private Color _disabledTextColor = Color.grey;
 
     public void EnableButton()
     {
         _button.interactable = true;
-        _text.color = Color.white;
+        _text.color = _enabledTextColor;
     }
 
     public void DisableButton()

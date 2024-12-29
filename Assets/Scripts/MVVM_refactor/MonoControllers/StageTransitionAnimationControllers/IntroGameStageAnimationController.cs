@@ -22,6 +22,15 @@ public class IntroGameStageAnimationController : MonoBehaviour, IInitializable
     [SerializeField] private MeshRenderer _lampAttackZoneRenderer;
     [SerializeField] private AnimationCurve _lampIntensityAnimCurve;
     [SerializeField] private AnimationCurve _lampNoiseAmountAnimCurve;
+    [Header("UI Dependencies")]
+    [SerializeField] private GameObject _ingameUi;
+    [SerializeField] private AnimationCurve _uiAnimationCurve;
+    [SerializeField] private FadableButtonPresentation _exitButton;
+    [SerializeField] private FadableButtonPresentation _restartButton;
+    [SerializeField] private FadableButtonPresentation _enableDataButton;
+    [SerializeField] private FadableButtonPresentation _disableDataButton;
+
+    
     private Material _lampAttackZoneMaterial;
     
     private UnityEngine.Rendering.Universal.ColorAdjustments _colorAdjustments;
@@ -50,6 +59,11 @@ public class IntroGameStageAnimationController : MonoBehaviour, IInitializable
     {
         _currentHealth = normalizedHealth;
         _lampAttackZoneRenderer.gameObject.SetActive(true);
+        _ingameUi.SetActive(true);
+        _exitButton.SetVisibilityLevel(0);
+        _restartButton.SetVisibilityLevel(0);
+        _enableDataButton.SetVisibilityLevel(0);
+        _disableDataButton.SetVisibilityLevel(0);
         
         if (_skip)
         {
@@ -70,18 +84,23 @@ public class IntroGameStageAnimationController : MonoBehaviour, IInitializable
             {
                 SetFinalState();
             }
-
+            // Environment  
             _colorAdjustments.postExposure.Override(Mathf.Lerp(_startExposure, _endExposure, phase));
             Vector3 cameraPosition = _cameraTransform.position;
             cameraPosition.z = Mathf.Lerp(_cameraStartZPosition, _cameraEndZPosition, _cameraAnimationCurve.Evaluate(phase));
             _cameraTransform.position = cameraPosition;
-            
+            // Lamp
             float phaseAnimated = _animCurve.Evaluate(phase);
             float health = Mathf.Lerp(0, _currentHealth, phaseAnimated);
             _lampHealthBarController.SetHealth(health);
             _lampEmissionController.Intensity = _lampIntensityAnimCurve.Evaluate(phase);
             _lampEmissionController.BlockedModeMix = _lampNoiseAmountAnimCurve.Evaluate(phase);
             _lampAttackZoneMaterial.SetFloat("_Alpha", Mathf.Lerp(0, 0.005f, _lampIntensityAnimCurve.Evaluate(phase)));
+            // UI
+            _exitButton.SetVisibilityLevel(_uiAnimationCurve.Evaluate(phase));
+            _restartButton.SetVisibilityLevel(_uiAnimationCurve.Evaluate(phase));
+            _enableDataButton.SetVisibilityLevel(_uiAnimationCurve.Evaluate(phase));
+            _disableDataButton.SetVisibilityLevel(_uiAnimationCurve.Evaluate(phase));
             
             _localTime += Time.deltaTime;
         }
@@ -101,6 +120,11 @@ public class IntroGameStageAnimationController : MonoBehaviour, IInitializable
         _lampEmissionController.Intensity = _lampIntensityAnimCurve.Evaluate(1);
         _lampEmissionController.BlockedModeMix = _lampNoiseAmountAnimCurve.Evaluate(1);
         _lampAttackZoneMaterial.SetFloat("_Alpha", 0.005f);
+        // UI
+        _exitButton.SetVisibilityLevel(1);
+        _restartButton.SetVisibilityLevel(1);
+        _enableDataButton.SetVisibilityLevel(1);
+        _disableDataButton.SetVisibilityLevel(1);
         
         OnFinishedEvent?.Invoke();
     }
