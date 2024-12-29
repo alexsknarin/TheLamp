@@ -1,11 +1,12 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class GameRootContext : MonoBehaviour
 {
     [Header("Data")]
     [SerializeField] private GoogleSheetsDataReader _googleSheetsDataReader;
-    [SerializeField] private SOGameConfigProvider _gameConfigProvider;
+    [FormerlySerializedAs("_gameConfigProviderServiceService")] [FormerlySerializedAs("_gameConfigProvider")] [SerializeField] private SoGameConfigProviderService _gameConfigProviderService;
     [SerializeField] private DefaultGameStateData _defaultGameStateData;
     [SerializeField] private DefaultGameSettingsData _defaultGameSettingsData;
     [Header("Views")]
@@ -41,14 +42,14 @@ public class GameRootContext : MonoBehaviour
     private GameSettingsService _gameSettingsService;
     private UGSAuthenticationService _ugsAuthenticationService;
     
-    private IGameSettingsProvider _gameSettingsProvider;
+    private IGameSettingsProviderService _gameSettingsProviderService;
     private GameSettingsModel _gameSettingsModel;
     private GameSettingsViewModel _gameSettingsViewModel;
-    private IGameStateProvider _gameStateProvider;
+    private IGameStateProviderService _gameStateProviderService;
     private GameStageViewModel _gameStageViewModel;
     private GameStateViewModel _gameStateViewModel;
     private PlayerGameplayViewModel _playerGameplayViewModel;
-    private SOGameConfigProvider _soGameConfigProvider;
+    private SoGameConfigProviderService _soGameConfigProviderService;
     private GameConfigService _gameConfigService;
     private PlayerAttackViewModel _playerAttackViewModel;
     private ScoresCollectionHandler _scoresCollectionHandler;
@@ -68,9 +69,9 @@ public class GameRootContext : MonoBehaviour
         Debug.Log("------------------------------------------");
         Debug.Log("------ Starting Game Initialization ------");
         Debug.Log("------ Game Settings Initialization ------");
-        _gameSettingsProvider = new PlayerPrefsGameSettingsProvider(_defaultGameSettingsData.GameSettings);
-        _gameSettingsModel = new GameSettingsModel(_gameSettingsProvider.Get());
-        _gameSettingsService = new GameSettingsService(_gameSettingsProvider, _gameSettingsModel);
+        _gameSettingsProviderService = new PlayerPrefsGameSettingsProviderService(_defaultGameSettingsData.GameSettings);
+        _gameSettingsModel = new GameSettingsModel(_gameSettingsProviderService.Get());
+        _gameSettingsService = new GameSettingsService(_gameSettingsProviderService, _gameSettingsModel);
         _gameSettingsService.Initialize();
         _gameSettingsViewModel = new GameSettingsViewModel(_gameSettingsModel);
         _disposables.Add(_gameSettingsViewModel);
@@ -89,15 +90,15 @@ public class GameRootContext : MonoBehaviour
         
         Debug.Log("------ Game Initialization ------");
         // Game Config
-        _gameConfigService = new GameConfigService(_gameConfigProvider);
+        _gameConfigService = new GameConfigService(_gameConfigProviderService);
         _enemyController.Construct(_gameConfigService);
         _lampMovementController.Initialize();
         // Game State       
-        _gameStateProvider = new PlayerPrefsGameStateProvider(_defaultGameStateData.GameState);
+        _gameStateProviderService = new PlayerPrefsGameStateProviderService(_defaultGameStateData.GameState);
         _playerAttackHandler = new PlayerAttackHandler(coroutineHost);
         _scoresCollectionHandler = new ScoresCollectionHandler(_gameConfigService);
         _gameModel = new GameModel(
-            _gameStateProvider, 
+            _gameStateProviderService, 
             _enemyController, 
             _gameConfigService, 
             _playerAttackHandler, 

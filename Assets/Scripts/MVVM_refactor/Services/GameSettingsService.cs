@@ -2,7 +2,7 @@ using System;
 
 public class GameSettingsService: IGameSettingsService, IInitializable, IDisposable
 {
-    private IGameSettingsProvider _gameSettingsProvider;
+    private IGameSettingsProviderService _gameSettingsProviderService;
     private GameSettingsModel _gameSettingsModel;
     
     public bool IsConsentSet => _gameSettingsModel.IsConsentSet;
@@ -10,10 +10,10 @@ public class GameSettingsService: IGameSettingsService, IInitializable, IDisposa
     public event Action<bool> OnIsConsentSetChangedEvent;
     public event Action<bool> OnIsDataCollectionEnabledChangedEvent;
     
-    public GameSettingsService(IGameSettingsProvider gameSettingsProvider, GameSettingsModel gameSettingsModel)
+    public GameSettingsService(IGameSettingsProviderService gameSettingsProviderService, GameSettingsModel gameSettingsModel)
     {
         _gameSettingsModel = gameSettingsModel;
-        _gameSettingsProvider = gameSettingsProvider;
+        _gameSettingsProviderService = gameSettingsProviderService;
     }
 
     public void Initialize()
@@ -30,7 +30,7 @@ public class GameSettingsService: IGameSettingsService, IInitializable, IDisposa
 
     private void Save()
     {
-        _gameSettingsProvider.Save();
+        _gameSettingsProviderService.Save();
     }
 
     private void HandleConsentSetOnChangedEvent(bool value)

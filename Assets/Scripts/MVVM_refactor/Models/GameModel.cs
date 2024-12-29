@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class GameModel : IDisposable
 {
-    IGameStateProvider _gameStateProvider;
+    IGameStateProviderService _gameStateProviderService;
     private GameState _currentGameState;
     public GameState CurrentGameState => _currentGameState; // Debug Only
     public int Wave => _currentGameState.Wave;
@@ -154,7 +154,7 @@ public class GameModel : IDisposable
     private UpgradeHandler _upgradeHandler = new UpgradeHandler();
    
     public GameModel(
-        IGameStateProvider gameStateProvider, 
+        IGameStateProviderService gameStateProviderService, 
         EnemyController enemyController, 
         IGameConfigService gameConfigService,
         PlayerAttackHandler playerAttackHandler,
@@ -163,8 +163,8 @@ public class GameModel : IDisposable
         LampMovementController lampMovementController,
         ScoresCollectionHandler scoresCollectionHandler)
     {
-        _gameStateProvider = gameStateProvider;
-        _currentGameState = gameStateProvider.Get();
+        _gameStateProviderService = gameStateProviderService;
+        _currentGameState = gameStateProviderService.Get();
         _enemyController = enemyController;
         _gameConfigService = gameConfigService;
         _playerAttackHandler = playerAttackHandler;
@@ -274,7 +274,7 @@ public class GameModel : IDisposable
     {
         Debug.Log($"Wave {_currentGameState.Wave} Ended");
         _currentGameState.Wave++;
-        _gameStateProvider.SaveCurrentState();
+        _gameStateProviderService.SaveCurrentState();
         StartPrepareIn();
     }
 

@@ -1,4 +1,4 @@
-public interface IGameConfigProvider
+public interface IGameConfigProviderService
 {
     public SpawnQueueData SpawnQueueData { get; }
     public ScoreConfig ScoreConfig { get; }

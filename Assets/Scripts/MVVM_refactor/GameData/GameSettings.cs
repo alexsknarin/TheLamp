@@ -1,9 +1,7 @@
 [System.Serializable]
 public class GameSettings
 {
-    public GameSettings()
-    {
-    }
+    public GameSettings() { }
     
     public GameSettings(GameSettings gameSettings)
     {

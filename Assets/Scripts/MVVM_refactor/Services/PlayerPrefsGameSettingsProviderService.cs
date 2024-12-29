@@ -1,11 +1,11 @@
 using UnityEngine;
 
-public class PlayerPrefsGameSettingsProvider : IGameSettingsProvider
+public class PlayerPrefsGameSettingsProviderService : IGameSettingsProviderService
 {
     private GameSettings _gameSettings = null;
     private GameSettings _defaultGameSettings;
     
-    public PlayerPrefsGameSettingsProvider(GameSettings defaultGameSettings)
+    public PlayerPrefsGameSettingsProviderService(GameSettings defaultGameSettings)
     {
         _defaultGameSettings = defaultGameSettings;
     }

@@ -1,13 +1,13 @@
 public class GameConfigService : IGameConfigService
 {
-    private readonly IGameConfigProvider _gameConfigProvider;
-    public SpawnQueueData SpawnQueueConfig => _gameConfigProvider.SpawnQueueData;
-    public ScoreConfig ScoreConfig => _gameConfigProvider.ScoreConfig;
-    public PlayerConfig PlayerConfig => _gameConfigProvider.PlayerConfig;
-    public GameConfig GameConfig => _gameConfigProvider.GameConfig;
+    private readonly IGameConfigProviderService _gameConfigProviderService;
+    public SpawnQueueData SpawnQueueConfig => _gameConfigProviderService.SpawnQueueData;
+    public ScoreConfig ScoreConfig => _gameConfigProviderService.ScoreConfig;
+    public PlayerConfig PlayerConfig => _gameConfigProviderService.PlayerConfig;
+    public GameConfig GameConfig => _gameConfigProviderService.GameConfig;
 
-    public GameConfigService(IGameConfigProvider gameConfigProvider)
+    public GameConfigService(IGameConfigProviderService gameConfigProviderService)
     {
-        _gameConfigProvider = gameConfigProvider;
+        _gameConfigProviderService = gameConfigProviderService;
     }
 }

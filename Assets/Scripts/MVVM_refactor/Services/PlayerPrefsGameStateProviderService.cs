@@ -1,10 +1,10 @@
 using UnityEngine;
 
-public class PlayerPrefsGameStateProvider : IGameStateProvider
+public class PlayerPrefsGameStateProviderService : IGameStateProviderService
 {
     private GameState _gameState = null;
     private GameState _defaultGameState;
-    public PlayerPrefsGameStateProvider(GameState defaultGameState)
+    public PlayerPrefsGameStateProviderService(GameState defaultGameState)
     {
         _defaultGameState = defaultGameState;
     }
@@ -44,5 +44,19 @@ public class PlayerPrefsGameStateProvider : IGameStateProvider
         PlayerPrefs.Save();
         Debug.Log("GameState saved to PlayerPrefs");
         Debug.Log(gameStateJson);
+    }
+    
+    public void SaveDefaultState()
+    {
+        string gameStateJson = JsonUtility.ToJson(_defaultGameState);
+        PlayerPrefs.SetString("GameState", gameStateJson);
+        PlayerPrefs.Save();
+        Debug.Log("Default GameState saved to PlayerPrefs");
+        Debug.Log(gameStateJson);
+    }
+
+    public void SaveUpgradesOnly()
+    {
+        throw new System.NotImplementedException();
     }
 }
