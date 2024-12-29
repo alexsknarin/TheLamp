@@ -37,7 +37,7 @@ public class PlayerPrefsGameStateProvider : IGameStateProvider
         }
     }
 
-    public void Save()
+    public void SaveCurrentState()
     {
         string gameStateJson = JsonUtility.ToJson(_gameState);
         PlayerPrefs.SetString("GameState", gameStateJson);

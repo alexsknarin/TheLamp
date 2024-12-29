@@ -6220,6 +6220,8 @@ MonoBehaviour:
   _lampDamageViewUI: {fileID: 1266635122}
   _lampDamageView: {fileID: 1934066262}
   _playerUpgradeViewUI: {fileID: 1291610360}
+  _gameOverViewUI: {fileID: 1291610361}
+  _playerGameplayViewUI: {fileID: 1291610362}
   _unityAnalyticsService: {fileID: 1595482322}
   _adsManager: {fileID: 1665985692}
   _game: {fileID: 1818435501}
@@ -7390,6 +7392,8 @@ GameObject:
   - component: {fileID: 1291610354}
   - component: {fileID: 1291610359}
   - component: {fileID: 1291610360}
+  - component: {fileID: 1291610361}
+  - component: {fileID: 1291610362}
   m_Layer: 5
   m_Name: MainUi_canvas
   m_TagString: Untagged
@@ -7660,6 +7664,35 @@ MonoBehaviour:
   _cooldownButtonPresentation: {fileID: 651099616}
   _attackDistanceButtonPresentation: {fileID: 619549490}
   _uiUpgradePoints: {fileID: 896500833}
+--- !u!114 &1291610361
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1291610349}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3fdce3f46feff24b84ff9c222c280b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _restartWithAdButton: {fileID: 1197657945}
+  _restartNoAdButton: {fileID: 949782837}
+  _exitButton: {fileID: 155560123}
+--- !u!114 &1291610362
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1291610349}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 58678b2ded5ebc4468cd258f1e5c3e1f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _exitButton: {fileID: 2095301582}
+  _restartButton: {fileID: 259332191}
 --- !u!1 &1297585003
 GameObject:
   m_ObjectHideFlags: 0

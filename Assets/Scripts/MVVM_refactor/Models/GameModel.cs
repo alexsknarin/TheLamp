@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class GameModel : IDisposable
 {
+    IGameStateProvider _gameStateProvider;
     private GameState _currentGameState;
     public GameState CurrentGameState => _currentGameState; // Debug Only
     public int Wave => _currentGameState.Wave;
@@ -153,7 +154,7 @@ public class GameModel : IDisposable
     private UpgradeHandler _upgradeHandler = new UpgradeHandler();
    
     public GameModel(
-        GameState _gameState, 
+        IGameStateProvider gameStateProvider, 
         EnemyController enemyController, 
         IGameConfigService gameConfigService,
         PlayerAttackHandler playerAttackHandler,
@@ -162,7 +163,8 @@ public class GameModel : IDisposable
         LampMovementController lampMovementController,
         ScoresCollectionHandler scoresCollectionHandler)
     {
-        _currentGameState = _gameState;
+        _gameStateProvider = gameStateProvider;
+        _currentGameState = gameStateProvider.Get();
         _enemyController = enemyController;
         _gameConfigService = gameConfigService;
         _playerAttackHandler = playerAttackHandler;
@@ -178,9 +180,6 @@ public class GameModel : IDisposable
         _playerEnemyInteractionHandler.OnLampBlockedSetEvent += SetLampBlockedState;
         _playerEnemyInteractionHandler.OnEnemyAttackDeflectedEvent += HandleEnemyAttackDeflected;
         _scoresCollectionHandler.OnScoreChangeEvent += HandleScoreChange;
-        
-        Debug.Log("GameModel created");
-        Debug.Log("GameState: " + _gameState.LampCooldownTime);
     }
 
     public void Dispose()
@@ -275,6 +274,7 @@ public class GameModel : IDisposable
     {
         Debug.Log($"Wave {_currentGameState.Wave} Ended");
         _currentGameState.Wave++;
+        _gameStateProvider.SaveCurrentState();
         StartPrepareIn();
     }
 
@@ -426,5 +426,35 @@ public class GameModel : IDisposable
         }
         
         _playerCollidersPropertyController.SetAttackZoneRadius(LampAttackDistance);
+    }
+    
+    // --- Game Over ---
+    public void RestartGameWitAd()
+    {
+        Debug.Log("Making temp save of upgrades....");
+        Debug.Log("Making temp save showing ad ....");
+        Debug.Log("Making full save of upgrades....");
+        Debug.Log("Restarting Game");
+    }
+
+    public void RestartGameNoAd()
+    {
+        Debug.Log("Cleaning Game State....");
+        Debug.Log("Restarting Game");
+    }
+
+    public void ExitGame()
+    {
+#if UNITY_STANDALONE
+        Application.Quit();
+#endif
+        
+#if UNITY_ANDROID
+        Application.Quit();
+#endif
+
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#endif
     }
 }

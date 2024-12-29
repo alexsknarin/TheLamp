@@ -104,4 +104,18 @@ public class PlayerGameplayViewModel : IDisposable
     {
         AttackDistance.Value = distance;
     }
+    
+    // Called from the view
+    public void HandleExitButtonClicked()
+    {
+        _gameModel.ExitGame();
+    }
+    
+    public void HandleRestartButtonClicked()
+    {
+        // TODO: show popup that progress will be lost
+        // TODO: turn into restart a wave
+        // TODO: maybe remove this button at all
+        _gameModel.RestartGameNoAd();
+    }
 }

@@ -106,7 +106,6 @@ public class PlayerUpgradeViewUI : MonoBehaviour, IInitializable
 
     private void HandleUpgradePointsChanged(int upgradePoints)
     {
-        Debug.Log("+++++++++++++++++UPGRADE POINT WAS USED!!!!");
         _uiUpgradePoints.ShowUpgradePoints(upgradePoints);
     }
 }
