@@ -264,6 +264,12 @@ public class GameModel : IDisposable
     {
         StartWave();
     }
+    
+    public void HandleGameOverInEnd()
+    {
+        CurrentGameStageState = GameStageState.GameOver;
+        Debug.Log("Finally Game is Over");
+    }
 
     private void HandleWaveEnd()
     {

@@ -55,4 +55,9 @@ public class GameStageViewModel : IDisposable
     {
         _gameModel.HandlePrepareOutEnd();    
     }
+    
+    public void HandleGameOverInEnd()
+    {
+        _gameModel.HandleGameOverInEnd();    
+    }
 }

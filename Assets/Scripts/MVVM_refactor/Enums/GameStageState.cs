@@ -7,5 +7,6 @@ public enum GameStageState
     PrepareOut,
     Wave,
     GameOverIn,
+    GameOver,
     GameOverOut
 }

@@ -19,8 +19,9 @@ public class GameStageView : MonoBehaviour, IInitializable
         _introGameStageAnimationController.OnFinishedEvent += HandleIntroEnd;
         _prepareInGameStageAnimationController.OnFinishedEvent += HandlePrepareInEnd;
         _prepareOutGameStageAnimationController.OnFinishedEvent += HandlePrepareOutEnd;
+        _gameOverInGameStageAnimationController.OnFinishedEvent += HandleGameOverInEnd;
     }
-    
+
     public void Initialize()
     {
         _introGameStageAnimationController.Initialize();
@@ -35,24 +36,25 @@ public class GameStageView : MonoBehaviour, IInitializable
         _introGameStageAnimationController.OnFinishedEvent -= HandleIntroEnd;
         _prepareInGameStageAnimationController.OnFinishedEvent -= HandlePrepareInEnd;
         _prepareOutGameStageAnimationController.OnFinishedEvent -= HandlePrepareOutEnd;
+        _gameOverInGameStageAnimationController.OnFinishedEvent -= HandleGameOverInEnd;
     }
-    
-    
+
+
     public void StartIntro(float normalizedHealth)
     {
         _introGameStageAnimationController.Play(normalizedHealth);
     }
-    
+
     private void StartPrepareIn(bool isUpgradeUiRequired, int waveNum)
     {
         _prepareInGameStageAnimationController.Play(isUpgradeUiRequired, waveNum);
     }
-    
+
     private void StartPrepareOut()
     {
         _prepareOutGameStageAnimationController.Play();   
     }
-    
+
     private void StartGameOverIn(Vector3 enemyPosition)
     {
         _gameOverInGameStageAnimationController.Play(enemyPosition);
@@ -62,14 +64,19 @@ public class GameStageView : MonoBehaviour, IInitializable
     {
         _gameStageViewModel.HandleIntroEnd();    
     }
-    
+
     public void HandlePrepareInEnd()
     {
         _gameStageViewModel.HandlePrepareInEnd();    
     }
-    
+
     public void HandlePrepareOutEnd()
     {
         _gameStageViewModel.HandlePrepareOutEnd();    
+    }
+
+    private void HandleGameOverInEnd()
+    {
+        _gameStageViewModel.HandleGameOverInEnd();
     }
 }
