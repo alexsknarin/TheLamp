@@ -336,6 +336,7 @@ public class GameModel : IDisposable
             if (LampHealth <= 0)
             {
                 LastEnemyPosition = enemy.ProvideImpactPoint();
+                _lampMovementController.AddForce(-LastEnemyPosition.normalized.x * 2);
                 OnLampDeathEvent?.Invoke(enemy.ProvideImpactPoint());
                 StartGameOver();
                 Debug.Log("++++++++++ Game Over ++++++++++");
@@ -375,6 +376,7 @@ public class GameModel : IDisposable
         
         UpgradePoints--;
         LampHealth++;
+        _gameStateProviderService.SaveCurrentState();
         
         if (LampHealth > _gameConfigService.PlayerConfig.HealthCap)
         {
@@ -397,6 +399,7 @@ public class GameModel : IDisposable
         
         UpgradePoints--;
         LampCooldownTime -= _gameConfigService.PlayerConfig.CooldownDecrement;
+        _gameStateProviderService.SaveCurrentState();
         
         // Lamp Cooldown is decreasing with upgrade, therefore Cap is set to smaller number then current
         if (LampCooldownTime < _gameConfigService.PlayerConfig.CooldownTimeCap)
@@ -418,6 +421,7 @@ public class GameModel : IDisposable
         
         UpgradePoints--;
         LampAttackDistance += _gameConfigService.PlayerConfig.AttackDistanceIncrement;
+        _gameStateProviderService.SaveCurrentState();
         
         if (LampAttackDistance > _gameConfigService.PlayerConfig.AttackDistanceCap)
         {
