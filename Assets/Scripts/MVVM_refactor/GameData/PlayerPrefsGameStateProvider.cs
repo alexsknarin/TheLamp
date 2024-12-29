@@ -3,6 +3,11 @@ using UnityEngine;
 public class PlayerPrefsGameStateProvider : IGameStateProvider
 {
     private GameState _gameState = null;
+    private GameState _defaultGameState;
+    public PlayerPrefsGameStateProvider(GameState defaultGameState)
+    {
+        _defaultGameState = defaultGameState;
+    }
     
     public GameState Get()
     {
@@ -21,26 +26,13 @@ public class PlayerPrefsGameStateProvider : IGameStateProvider
         else
         {
             Debug.Log("GameState not found in PlayerPrefs - Generating a new one");
+            
             // TODO: use a spreadsheet to generate the default values
-            // TODO: make in updateble after deployment !!! 
+            // TODO: make in updatable after deployment !!!
+            // Use ScriptableObject to store default values for now
             
-            _gameState = new GameState();
+            _gameState = new GameState(_defaultGameState);
             
-            _gameState.Wave = 0;
-            _gameState.LampHealth = 8;
-            _gameState.LampMaxHealth = 8;
-            _gameState.LampCooldownTime = 3.0f;
-            _gameState.LampAttackDistance = 0.62f;
-            _gameState.LampLevel = 0;
-            _gameState.LampUpgradePoints = 0;
-            _gameState.UpgradeData = new UpgradeData
-            {
-                Score = 0,
-                UsedScore = 0,
-                CurrentScoreUpgradePrice = 5,
-                CurrentScoreUpgradePriceIncrement = 5
-            };
-            _gameState.GlassDamageData = new GlassDamageData();
             return _gameState;
         }
     }

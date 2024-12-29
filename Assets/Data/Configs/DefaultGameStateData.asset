@@ -1,0 +1,47 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f21c17c3ffe20214fa03cf80d913ffd5, type: 3}
+  m_Name: DefaultGameStateData
+  m_EditorClassIdentifier: 
+  <GameState>k__BackingField:
+    Wave: 0
+    LampHealth: 8
+    LampMaxHealth: 8
+    LampCooldownTime: 3
+    LampAttackDistance: 0.62
+    LampLevel: 0
+    LampUpgradePoints: 0
+    UpgradeData:
+      Score: 0
+      UsedScore: 0
+      CurrentScoreUpgradePrice: 5
+      CurrentScoreUpgradePriceIncrement: 5
+    GlassDamageData:
+      ImpactLastPointNumber: 0
+      CracksNumberRight: 0
+      CracksNumberLeft: 0
+      CracksNumberBottom: 0
+      CracksAmountRight: 0
+      CracksAmountLeft: 0
+      CracksAmountBottom: 0
+      LampDamagePoint01:
+        Strength: 0
+        LocalAngle: 0
+        GlobalAngle: 0
+      LampDamagePoint02:
+        Strength: 0
+        LocalAngle: 0
+        GlobalAngle: 0
+      LampDamagePoint03:
+        Strength: 0
+        LocalAngle: 0
+        GlobalAngle: 0

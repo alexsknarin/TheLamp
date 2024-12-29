@@ -6,6 +6,7 @@ public class GameRootContext : MonoBehaviour
     [Header("Data")]
     [SerializeField] private GoogleSheetsDataReader _googleSheetsDataReader;
     [SerializeField] private SOGameConfigProvider _gameConfigProvider;
+    [SerializeField] private DefaultGameStateData _defaultGameStateData;
     [Header("Views")]
     [SerializeField] private ConsentSettingsUIView _consentSettingsUIView;
     [SerializeField] private GameStageView _gameStageView;
@@ -88,7 +89,7 @@ public class GameRootContext : MonoBehaviour
         _enemyController.Construct(_gameConfigService);
         _lampMovementController.Initialize();
         // Game State       
-        _gameStateProvider = new PlayerPrefsGameStateProvider();
+        _gameStateProvider = new PlayerPrefsGameStateProvider(_defaultGameStateData.GameState);
         _playerAttackHandler = new PlayerAttackHandler(coroutineHost);
         _scoresCollectionHandler = new ScoresCollectionHandler(_gameConfigService);
         _gameModel = new GameModel(
