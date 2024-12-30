@@ -63,6 +63,7 @@ public class IntroGameStageAnimationController : MonoBehaviour, IInitializable
         _lampFracturedGlassObject.SetActive(false);
         
         _currentHealth = normalizedHealth;
+        _lampHealthBarController.DisableLastHealth();
         _lampAttackZoneRenderer.gameObject.SetActive(true);
         _ingameUi.SetActive(true);
         _exitButton.SetVisibilityLevel(0);

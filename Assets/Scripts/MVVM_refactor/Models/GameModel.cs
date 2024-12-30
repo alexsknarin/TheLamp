@@ -228,6 +228,7 @@ public class GameModel : IDisposable
         Debug.Log("New GameState Generated");
         Debug.Log($"Wave: {CurrentGameState.Wave}");
         _enemyController.Restart();
+        _lampMovementController.Restart();
         StartGame();
     }
 
@@ -474,9 +475,15 @@ public class GameModel : IDisposable
     public void HandleRestartGameNoAdFromGameOver()
     {
         _gameStateProviderService.SaveDefaultState();
-        Debug.Log("Restarting Game");
         _isAdPlaying = false;
         CurrentGameStageState = GameStageState.GameOverOut;
+    }
+
+    public void HandleImmediateRestartGame()
+    {
+        _gameStateProviderService.SaveDefaultState();
+        _isAdPlaying = false;
+        RestartGame();
     }
     
     public void ExitGame()

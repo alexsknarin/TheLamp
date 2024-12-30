@@ -20,7 +20,6 @@ public class PlayerGameplayViewModel : IDisposable
     private GameModel _gameModel;
     
     private int _currentHealth = 8;
-    private int _previousHealth = 8;
     
     public PlayerGameplayViewModel(GameModel gameModel)
     {
@@ -70,7 +69,6 @@ public class PlayerGameplayViewModel : IDisposable
     private void UpdateLampHealth(int newHealth)
     {
         
-        _previousHealth = _currentHealth;
         _currentHealth = newHealth;
         LampNormalizedHealth.Value = (float)_currentHealth / _gameModel.LampMaxHealth;
         
@@ -79,7 +77,7 @@ public class PlayerGameplayViewModel : IDisposable
         {
             OnLastHealthPointStartedEvent?.Invoke();
         }
-        else if (_previousHealth == 1 && newHealth > 1)
+        else
         {
             OnLastHealthPointEndedEvent?.Invoke();
         }
@@ -113,9 +111,6 @@ public class PlayerGameplayViewModel : IDisposable
     
     public void HandleRestartButtonClicked()
     {
-        // TODO: show popup that progress will be lost
-        // TODO: turn into restart a wave
-        // TODO: maybe remove this button at all
-        _gameModel.HandleRestartGameNoAdFromGameOver();
+        _gameModel.HandleImmediateRestartGame();
     }
 }

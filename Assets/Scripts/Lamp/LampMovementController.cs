@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public enum LampMotionState
@@ -39,7 +40,16 @@ public class LampMovementController : MonoBehaviour, IInitializable
         _newPos = transform.position;
         _deviationAngle = 0;
     }
-    
+
+    public void Restart()
+    {
+        transform.position = Vector3.zero;
+        transform.localRotation = Quaternion.identity;
+        _lampMotionState = LampMotionState.Idle;
+        _newPos = transform.position;
+        _deviationAngle = 0;
+    }
+
     public void AddForce(float force)
     {
         if(_lampMotionState == LampMotionState.Idle)
