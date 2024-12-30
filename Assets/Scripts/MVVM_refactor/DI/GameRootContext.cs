@@ -25,7 +25,6 @@ public class GameRootContext : MonoBehaviour
     [SerializeField] private PlayerGameplayViewUI _playerGameplayViewUI;
     [Header("Services")]
     [SerializeField] private UnityAnalyticsService _unityAnalyticsService;
-    [SerializeField] private AdsManager _adsManager;
     [SerializeField] private Game _game;
     [SerializeField] private EnemyManager _enemyManager;
     [SerializeField] private Lamp _lamp;
@@ -146,7 +145,7 @@ public class GameRootContext : MonoBehaviour
         
         _enemyManager.Construct(_unityAnalyticsService);
         _lamp.Construct(_unityAnalyticsService);
-        _game.Construct(_unityAnalyticsService, _ugsAuthenticationService, _adsManager);
+        _game.Construct(_unityAnalyticsService, _ugsAuthenticationService);
         
         
         

@@ -19,7 +19,7 @@ public class Game : MonoBehaviour
     // Dependencies
     private IAnalyticsService _analyticsService;
     private IUGSAuthenticationService _ugsAuthenticationService;
-    private IAdvertisementService _advertisementService;
+    // private IAdvertisementService _advertisementService;
 
 
     // State paremeters  
@@ -31,16 +31,15 @@ public class Game : MonoBehaviour
     private readonly bool DONT_SAVE_UPGRADES = false;
 
     public void Construct(IAnalyticsService analyticsService, 
-        IUGSAuthenticationService ugsAuthenticationService,
-        IAdvertisementService advertisementService)
+        IUGSAuthenticationService ugsAuthenticationService)
     {
         _analyticsService = analyticsService;
         _analyticsService.OnConsentAddressedEvent += HandleDataConsentAddressed;
         
         _ugsAuthenticationService = ugsAuthenticationService;
         
-        _advertisementService = advertisementService;
-        _advertisementService.OnAdFinishedEvent += SaveRewards;
+        // _advertisementService = advertisementService;
+        // _advertisementService.OnAdFinishedEvent += SaveRewards;
     }
 
     private void OnEnable()
@@ -67,7 +66,7 @@ public class Game : MonoBehaviour
         _lampStatsManager.OnHealthChangeEvent -= HandleStatsUpgrade;
         _lampStatsManager.OnCooldownUpgradedEvent -= HandleStatsUpgrade;
         _lampStatsManager.OnAttackDistanceUpgradedEvent -= HandleStatsUpgrade;
-        _advertisementService.OnAdFinishedEvent -= SaveRewards;
+        // _advertisementService.OnAdFinishedEvent -= SaveRewards;
         _uiManager.OnGameoverFinishedEvent -= HandleGameoverUiAnimationFinished;
     }
 
@@ -105,7 +104,7 @@ public class Game : MonoBehaviour
         if (mode == 0)
         {
             // Save Upgrades AFTER add is finished
-            _advertisementService.ShowAd();
+            // _advertisementService.ShowAd();
         }
         else
         {

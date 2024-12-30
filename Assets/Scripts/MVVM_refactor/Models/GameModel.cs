@@ -38,6 +38,19 @@ public class GameModel : IDisposable
     }
     public event Action<GameStageState> OnGameStageStateChangedEvent;
     #endregion
+    
+    #region LampLevel Reactive Property
+    public int LampLevel
+    {
+        get => _currentGameState.LampLevel;
+        private set
+        {
+            _currentGameState.LampLevel = value;
+            OnLampLevelChangedEvent?.Invoke(value);
+        }
+    }
+    public event Action<int> OnLampLevelChangedEvent;
+    #endregion
 
     #region CurrentPower Reactive Property
     private float _currentPower;
@@ -298,6 +311,13 @@ public class GameModel : IDisposable
         Debug.Log("Game Over Out Ended ... Starting game Again");
         RestartGame();
     }
+    
+    public void HandleAdvertisementEnd()
+    {
+        Debug.Log("Game Over Out Ended after watching ad ... Starting game again");
+        _gameStateProviderService.SaveUpgradesOnly();
+        RestartGame();
+    }
 
     private void HandleWaveEnd()
     {
@@ -405,6 +425,7 @@ public class GameModel : IDisposable
         }
         
         UpgradePoints--;
+        LampLevel++;
         LampHealth++;
         _gameStateProviderService.SaveCurrentState();
         
@@ -428,6 +449,7 @@ public class GameModel : IDisposable
         }
         
         UpgradePoints--;
+        LampLevel++;
         LampCooldownTime -= _gameConfigService.PlayerConfig.CooldownDecrement;
         _gameStateProviderService.SaveCurrentState();
         
@@ -450,6 +472,7 @@ public class GameModel : IDisposable
         }
         
         UpgradePoints--;
+        LampLevel++;
         LampAttackDistance += _gameConfigService.PlayerConfig.AttackDistanceIncrement;
         _gameStateProviderService.SaveCurrentState();
         
@@ -466,10 +489,8 @@ public class GameModel : IDisposable
 
     public void HandleRestartGameWitAdFromGameOver()
     {
-        Debug.Log("Making temp save of upgrades....");
-        Debug.Log("Making temp save showing ad ....");
-        Debug.Log("Making full save of upgrades....");
-        Debug.Log("Restarting Game");
+        _isAdPlaying = true;
+        CurrentGameStageState = GameStageState.Advertisement;
     }
 
     public void HandleRestartGameNoAdFromGameOver()

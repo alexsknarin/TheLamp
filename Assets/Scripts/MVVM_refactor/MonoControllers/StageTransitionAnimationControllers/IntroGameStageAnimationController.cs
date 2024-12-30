@@ -26,6 +26,7 @@ public class IntroGameStageAnimationController : MonoBehaviour, IInitializable
     [SerializeField] private AnimationCurve _lampNoiseAmountAnimCurve;
     [Header("UI Dependencies")]
     [SerializeField] private GameObject _ingameUi;
+    [SerializeField] private GameObject _waveText;
     [SerializeField] private AnimationCurve _uiAnimationCurve;
     [SerializeField] private FadableButtonPresentation _exitButton;
     [SerializeField] private FadableButtonPresentation _restartButton;
@@ -66,6 +67,7 @@ public class IntroGameStageAnimationController : MonoBehaviour, IInitializable
         _lampHealthBarController.DisableLastHealth();
         _lampAttackZoneRenderer.gameObject.SetActive(true);
         _ingameUi.SetActive(true);
+        _waveText.SetActive(false);
         _exitButton.SetVisibilityLevel(0);
         _restartButton.SetVisibilityLevel(0);
         _enableDataButton.SetVisibilityLevel(0);

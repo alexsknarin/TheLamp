@@ -6228,7 +6228,6 @@ MonoBehaviour:
   _gameOverViewUI: {fileID: 1291610361}
   _playerGameplayViewUI: {fileID: 1291610362}
   _unityAnalyticsService: {fileID: 1595482322}
-  _adsManager: {fileID: 1665985692}
   _game: {fileID: 1818435501}
   _enemyManager: {fileID: 1818435502}
   _lamp: {fileID: 1934066246}
@@ -9663,51 +9662,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1037585458}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1665985691
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1665985693}
-  - component: {fileID: 1665985692}
-  m_Layer: 0
-  m_Name: AdsManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1665985692
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1665985691}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 905532819c876534a8a97e9721baa7d1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _fakeAd: {fileID: 1516525759}
---- !u!4 &1665985693
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1665985691}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1681254403
 GameObject:
   m_ObjectHideFlags: 0
@@ -10101,6 +10055,7 @@ GameObject:
   - component: {fileID: 1736170228}
   - component: {fileID: 1736170229}
   - component: {fileID: 1736170230}
+  - component: {fileID: 1736170231}
   m_Layer: 0
   m_Name: GameStageVew
   m_TagString: Untagged
@@ -10125,6 +10080,7 @@ MonoBehaviour:
   _prepareOutGameStageAnimationController: {fileID: 1736170228}
   _gameOverInGameStageAnimationController: {fileID: 1736170229}
   _gameOverOutGameStageAnimationController: {fileID: 1736170230}
+  _advertisementAnimationController: {fileID: 1736170231}
 --- !u!4 &1736170225
 Transform:
   m_ObjectHideFlags: 0
@@ -10406,6 +10362,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   _ingameUi: {fileID: 234870344}
+  _waveText: {fileID: 537243422}
   _uiAnimationCurve:
     serializedVersion: 2
     m_Curve:
@@ -10675,6 +10632,22 @@ MonoBehaviour:
   _restartWithAdButton: {fileID: 1197657948}
   _restartNoAdButton: {fileID: 949782840}
   _exitButton: {fileID: 155560126}
+--- !u!114 &1736170231
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1736170223}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d53b050df604fb418d14c69e465336c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _fakeAd: {fileID: 1516525759}
+  _ingameUi: {fileID: 234870344}
+  _gameOverUi: {fileID: 1889387872}
+  _waveText: {fileID: 537243422}
 --- !u!4 &1755611450 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 92097553111088338, guid: 556ccd576c35d634e88ba039c8700cfa,
@@ -14004,7 +13977,6 @@ SceneRoots:
   - {fileID: 646836955}
   - {fileID: 2110688077}
   - {fileID: 1818435499}
-  - {fileID: 1665985693}
   - {fileID: 1449376469}
   - {fileID: 1934066241}
   - {fileID: 1037585458}

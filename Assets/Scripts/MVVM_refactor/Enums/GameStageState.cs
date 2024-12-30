@@ -8,5 +8,6 @@ public enum GameStageState
     Wave,
     GameOverIn,
     GameOver,
-    GameOverOut
+    GameOverOut,
+    Advertisement
 }

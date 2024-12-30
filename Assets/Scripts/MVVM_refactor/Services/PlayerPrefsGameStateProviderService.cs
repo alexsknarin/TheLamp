@@ -53,6 +53,17 @@ public class PlayerPrefsGameStateProviderService : IGameStateProviderService
 
     public void SaveUpgradesOnly()
     {
-        throw new System.NotImplementedException();
+        var gameState = new GameState(_defaultGameState);
+        gameState.LampMaxHealth = _gameState.LampMaxHealth;
+        gameState.LampHealth = _gameState.LampMaxHealth;
+        gameState.LampAttackDistance = _gameState.LampAttackDistance;
+        gameState.LampCooldownTime = _gameState.LampCooldownTime;
+        gameState.LampLevel = _gameState.LampLevel;
+        
+        string gameStateJson = JsonUtility.ToJson(gameState);
+        PlayerPrefs.SetString("GameState", gameStateJson);
+        PlayerPrefs.Save();
+        Debug.Log("upgrades Only GameState saved to PlayerPrefs");
+        Debug.Log(gameStateJson);
     }
 }

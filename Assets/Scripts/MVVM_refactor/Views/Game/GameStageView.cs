@@ -7,8 +7,16 @@ public class GameStageView : MonoBehaviour, IInitializable
     [SerializeField] private PrepareOutGameStageAnimationController _prepareOutGameStageAnimationController;
     [SerializeField] private GameOverInGameStageAnimationController _gameOverInGameStageAnimationController;
     [SerializeField] private GameOverOutGameStageAnimationController _gameOverOutGameStageAnimationController;
+    [SerializeField] private AdvertisementAnimationController _advertisementAnimationController;
     GameStageViewModel _gameStageViewModel;
-    
+
+    public void Initialize()
+    {
+        _introGameStageAnimationController.Initialize();
+        _gameOverInGameStageAnimationController.Initialize();
+        _advertisementAnimationController.Initialize();
+    }
+
     public void Construct(GameStageViewModel viewModel)
     {
         _gameStageViewModel = viewModel;
@@ -17,18 +25,14 @@ public class GameStageView : MonoBehaviour, IInitializable
         _gameStageViewModel.OnPrepareOutStartedEvent += StartPrepareOut;
         _gameStageViewModel.OnGameOverInStartedEvent += StartGameOverIn;
         _gameStageViewModel.OnGameOverOutStartedEvent += StartGameOverOut;
+        _gameStageViewModel.OnAdvertisementStartedEvent += StartAdvertisement;
         
         _introGameStageAnimationController.OnFinishedEvent += HandleIntroEnd;
         _prepareInGameStageAnimationController.OnFinishedEvent += HandlePrepareInEnd;
         _prepareOutGameStageAnimationController.OnFinishedEvent += HandlePrepareOutEnd;
         _gameOverInGameStageAnimationController.OnFinishedEvent += HandleGameOverInEnd;
         _gameOverOutGameStageAnimationController.OnFinishedEvent += HandleGameOverOutEnd;
-    }
-
-    public void Initialize()
-    {
-        _introGameStageAnimationController.Initialize();
-        _gameOverInGameStageAnimationController.Initialize();
+        _advertisementAnimationController.OnFinishedEvent += HandleAdvertisementEnd;
     }
 
     private void OnDestroy()
@@ -36,10 +40,16 @@ public class GameStageView : MonoBehaviour, IInitializable
         _gameStageViewModel.OnIntroStartedEvent -= StartIntro;
         _gameStageViewModel.OnPrepareInStartedEvent -= StartPrepareIn;
         _gameStageViewModel.OnPrepareOutStartedEvent -= StartPrepareOut;
+        _gameStageViewModel.OnGameOverInStartedEvent -= StartGameOverIn;
+        _gameStageViewModel.OnGameOverOutStartedEvent -= StartGameOverOut;
+        _gameStageViewModel.OnAdvertisementStartedEvent -= StartAdvertisement;
+        
         _introGameStageAnimationController.OnFinishedEvent -= HandleIntroEnd;
         _prepareInGameStageAnimationController.OnFinishedEvent -= HandlePrepareInEnd;
         _prepareOutGameStageAnimationController.OnFinishedEvent -= HandlePrepareOutEnd;
         _gameOverInGameStageAnimationController.OnFinishedEvent -= HandleGameOverInEnd;
+        _gameOverOutGameStageAnimationController.OnFinishedEvent -= HandleGameOverOutEnd;
+        _advertisementAnimationController.OnFinishedEvent += HandleAdvertisementEnd;
     }
 
 
@@ -68,6 +78,14 @@ public class GameStageView : MonoBehaviour, IInitializable
         _gameOverOutGameStageAnimationController.Play();
     }
 
+    private void StartAdvertisement()
+    {
+        _advertisementAnimationController.Play();
+    }
+
+
+    // Event Handlers
+
     public void HandleIntroEnd()
     {
         _gameStageViewModel.HandleIntroEnd();    
@@ -91,5 +109,10 @@ public class GameStageView : MonoBehaviour, IInitializable
     private void HandleGameOverOutEnd()
     {
         _gameStageViewModel.HandleGameOverOutEnd();
+    }
+
+    private void HandleAdvertisementEnd()
+    {
+        _gameStageViewModel.HandleAdvertisementEnd();
     }
 }
