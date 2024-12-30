@@ -12,7 +12,9 @@ public abstract class EnemyMovement : MonoBehaviour, IStateMachineOwner, IInitia
     public event Action OnEnemyDeactivatedEvent; 
     public event Action OnMovementResetEvent;
 
+    public virtual void Construct(ILampPositionProviderService lampPositionProviderService) { }
     public abstract void Initialize();
+    public virtual void HandleLampDestroyed() { }
     public abstract void TriggerFall();
     public abstract void TriggerDeath();
     public abstract void TriggerAttack();

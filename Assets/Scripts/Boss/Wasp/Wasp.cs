@@ -12,11 +12,17 @@ public class Wasp : BossBase
     [SerializeField] private bool _isAttackPauseEnabled = false;
     [SerializeField] private float _attackPauseTime = 0.5f;
     public override EnemyType EnemyType => EnemyType.Wasp;
-    
     private WaitForSeconds _attackPause;
     
     private bool _isDead = false;
-
+    
+    private ILampDeadEventProviderService _lampDeadEventProvider;
+    
+    public void Construct(ILampDeadEventProviderService lampDeadEventProviderService)
+    {
+        _lampDeadEventProvider = lampDeadEventProviderService;
+    }
+    
     private void Awake()
     {
         _attackPause = new WaitForSeconds(_attackPauseTime);
@@ -26,16 +32,16 @@ public class Wasp : BossBase
     {
         _fWaspMovement.OnBossAttackStartedEvent += UpdateRecievedLampAttackStatus;
         _fWaspMovement.OnDeathStateEndedEvent += HandleDeathMoveStateEnd;
-        Lamp.OnLampDeadEvent += HandleLampDead;
+        _lampDeadEventProvider.OnLampDeadEvent += HandleLampDead;
     }
     
     private void OnDisable()
     {
         _fWaspMovement.OnBossAttackStartedEvent -= UpdateRecievedLampAttackStatus;
         _fWaspMovement.OnDeathStateEndedEvent -= HandleDeathMoveStateEnd;
-        Lamp.OnLampDeadEvent -= HandleLampDead;
+        _lampDeadEventProvider.OnLampDeadEvent -= HandleLampDead;
     }
-    public override void Initialize()
+    public override void Initialize() // TODO: reuse Initialze for global initialization. Ths is Setup
     {
         ReceivedLampAttack = false;
         _isGameover = false;

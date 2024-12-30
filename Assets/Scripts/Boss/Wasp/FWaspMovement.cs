@@ -8,14 +8,18 @@ public class FWaspMovement : MonoBehaviour, IInitializable
     [SerializeField] private string _currentStateType;
     [SerializeField] private Animator _animator;
     [SerializeField] private Transform _baseTransform;
-    
     public event Action OnBossAttackStartedEvent;
     public event Action OnDeathStateEndedEvent;
+    
+    private ILampPositionProviderService _lampPositionProvider;
+    public void Construct(ILampPositionProviderService lampPositionProvider)
+    {
+        _lampPositionProvider = lampPositionProvider;
+    }
     
     private FStateMachine _stateMachine = new();
     
     private float _colliderRadius = 0.24f;
-    
     private bool _isPlaying = false;
     
     // State parameters
@@ -675,9 +679,9 @@ public class FWaspMovement : MonoBehaviour, IInitializable
         {
             // Check if lamp was penetrated
             Vector3 newPosition = transform.position;
-            if ((newPosition - Lamp.LampTransform.position).magnitude < _colliderRadius + 0.5f)
+            if ((newPosition - _lampPositionProvider.GetLampPosition()).magnitude < _colliderRadius + 0.5f)
             {
-                newPosition = Lamp.LampTransform.position + newPosition.normalized * (0.5f + _colliderRadius);
+                newPosition = _lampPositionProvider.GetLampPosition() + newPosition.normalized * (0.5f + _colliderRadius);
             }
             transform.position = newPosition;
         }

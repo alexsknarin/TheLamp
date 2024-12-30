@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ConsentSettingsUIView : MonoBehaviour, IInitializable
+public class ConsentSettingsViewUI : MonoBehaviour, IInitializable
 {
     [SerializeField] private GameObject _consentPanel;
     [SerializeField] private Button _yesButton;

@@ -15,6 +15,12 @@ public class MegabeetleMovement : EnemyMovement
     public event Action OnDeathStateEndedEvent;
     public event Action OnStickAttackStateEndedEvent;
     public event Action OnTriggerSpreadEvent;
+    private ILampDeadEventProviderService _lampDeadEventProvider;
+    public void Construct(ILampDeadEventProviderService lampDeadEventProviderService)
+    {
+        _lampDeadEventProvider = lampDeadEventProviderService;
+    }
+    
     // Movement States
     private EnemyMovementStateMachine _movementStateMachine;
     private EnemyMovementBaseState _currentState;
@@ -46,12 +52,12 @@ public class MegabeetleMovement : EnemyMovement
 
     private void OnEnable()
     {
-        Lamp.OnLampDeadEvent += FallOnLampDestroyed;
+        _lampDeadEventProvider.OnLampDeadEvent += FallOnLampDestroyed;
     }
     
     private void OnDisable()
     {
-        Lamp.OnLampDeadEvent -= FallOnLampDestroyed;
+        _lampDeadEventProvider.OnLampDeadEvent -= FallOnLampDestroyed;
     }
 
     public override void Initialize()

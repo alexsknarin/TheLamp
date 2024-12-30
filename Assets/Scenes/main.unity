@@ -517,10 +517,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 4557419227544725734, guid: 3fc8442acd052ac4f9c1e690f3aa5d74,
         type: 3}
       insertIndex: -1
-      addedObject: {fileID: 969163317}
-    - targetCorrespondingSourceObject: {fileID: 4557419227544725734, guid: 3fc8442acd052ac4f9c1e690f3aa5d74,
-        type: 3}
-      insertIndex: -1
       addedObject: {fileID: 969163320}
   m_SourcePrefab: {fileID: 100100000, guid: 3fc8442acd052ac4f9c1e690f3aa5d74, type: 3}
 --- !u!4 &23663151 stripped
@@ -5556,19 +5552,6 @@ MeshRenderer:
     type: 3}
   m_PrefabInstance: {fileID: 23663150}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &969163317
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 969163313}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e004f8a82706bc47890f03438f9ac10, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _healthBarMeshRenderer: {fileID: 969163315}
 --- !u!114 &969163320
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6214,7 +6197,7 @@ MonoBehaviour:
     type: 2}
   _defaultGameSettingsData: {fileID: 11400000, guid: 81bc3d07cdcbd48499ac435952e88713,
     type: 2}
-  _consentSettingsUIView: {fileID: 1291610359}
+  _consentSettingsViewUI: {fileID: 1291610359}
   _gameStageView: {fileID: 1736170224}
   _gameStateView: {fileID: 646836954}
   _playerAttackUIView: {fileID: 1477144268}
@@ -6228,15 +6211,16 @@ MonoBehaviour:
   _gameOverViewUI: {fileID: 1291610361}
   _playerGameplayViewUI: {fileID: 1291610362}
   _unityAnalyticsService: {fileID: 1595482322}
-  _game: {fileID: 1818435501}
-  _enemyManager: {fileID: 1818435502}
-  _lamp: {fileID: 1934066246}
+  _lampPositionProviderService: {fileID: 1934066263}
   _lampHealthBarController: {fileID: 969163320}
   _enemyController: {fileID: 2110688078}
   _playerCollidersPropertyController: {fileID: 1934066258}
   _playerEnemyInteractionHandler: {fileID: 1934066260}
   _lampEmissionController: {fileID: 23663153}
   _lampMovementController: {fileID: 1934066248}
+  _wasp: {fileID: 1966729921}
+  _waspMovement: {fileID: 1966729922}
+  _megabeetleMovement: {fileID: 1657476345}
 --- !u!4 &1037269785
 Transform:
   m_ObjectHideFlags: 0
@@ -7389,11 +7373,6 @@ GameObject:
   - component: {fileID: 1291610352}
   - component: {fileID: 1291610351}
   - component: {fileID: 1291610350}
-  - component: {fileID: 1291610355}
-  - component: {fileID: 1291610356}
-  - component: {fileID: 1291610357}
-  - component: {fileID: 1291610358}
-  - component: {fileID: 1291610354}
   - component: {fileID: 1291610359}
   - component: {fileID: 1291610360}
   - component: {fileID: 1291610361}
@@ -7498,143 +7477,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
---- !u!114 &1291610354
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1291610349}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ac9dfcca59d74d940ae5eed0ca069c23, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _waveText: {fileID: 537243426}
-  _cameraTransform: {fileID: 330585546}
-  _cameraAnimationCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 1.3750154
-      outSlope: 1.3750154
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0.073141485
-    - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  _lampStatsManager: {fileID: 1934066249}
-  _upgradeButtonsPanel: {fileID: 1256375426}
-  _uiUpgradePoints: {fileID: 896500833}
-  _upgradeHintsPanel: {fileID: 1368674107}
-  _upgradeHealthButtonPresentation: {fileID: 949593468}
-  _upgradeCooldownButtonPresentation: {fileID: 651099616}
-  _upgradeAttackDistanceButtonPresentation: {fileID: 619549490}
-  _brokenGlassEffect: {fileID: 1266635119}
-  _uiIntroAnimation: {fileID: 1291610355}
-  _introDuration: 4
-  _uiStartPrepareAnimation: {fileID: 1291610357}
-  _uiStartFightAnimation: {fileID: 1291610358}
-  _uiGameOverAnimation: {fileID: 1291610356}
-  _gameOverDuration: 5.5
-  _gameOverPanel: {fileID: 1889387872}
-  _gameOverText: {fileID: 1969879652}
-  _gameOverButtonsGroup: {fileID: 610558093}
-  _postProcessingVolume: {fileID: 832575518}
---- !u!114 &1291610355
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1291610349}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0fa41487c8fa28c41b6bca1df7393d2d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _cameraTransform: {fileID: 330585546}
-  _cameraAnimationCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 1.3750154
-      outSlope: 1.3750154
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0.073141485
-    - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
---- !u!114 &1291610356
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1291610349}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 57d4d9239c2b2be4591139bd7b506749, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _gameOverPanel: {fileID: 1889387872}
-  _gameOverText: {fileID: 1969879652}
---- !u!114 &1291610357
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1291610349}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 33d0b0ecbf1c32547931a2670d55a4e6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _waveText: {fileID: 537243426}
-  _upgradeButtonsPanel: {fileID: 1256375426}
-  _uiUpgradePoints: {fileID: 896500833}
-  _upgradeHintsPanel: {fileID: 1368674107}
---- !u!114 &1291610358
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1291610349}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2bc1b5b02cee6594b8e900dd7061e10b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _waveText: {fileID: 537243426}
-  _upgradeButtonsPanel: {fileID: 1256375426}
 --- !u!114 &1291610359
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9656,6 +9498,18 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1180215396}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1657476345 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1362534363766813855, guid: b7287b02b66117d41a9878933f72b080,
+    type: 3}
+  m_PrefabInstance: {fileID: 1180215396}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b5b11db87f3ea54688bfd2fd077c25d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &1658422302 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -309351109396681045, guid: 556ccd576c35d634e88ba039c8700cfa,
@@ -10867,233 +10721,6 @@ Light:
   m_LightUnit: 1
   m_LuxAtDistance: 1
   m_EnableSpotReflector: 1
---- !u!1 &1818435498
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1818435499}
-  - component: {fileID: 1818435500}
-  - component: {fileID: 1818435501}
-  - component: {fileID: 1818435504}
-  - component: {fileID: 1818435502}
-  - component: {fileID: 1818435503}
-  - component: {fileID: 1818435505}
-  - component: {fileID: 1818435506}
-  - component: {fileID: 1818435507}
-  - component: {fileID: 1818435508}
-  - component: {fileID: 1818435509}
-  m_Layer: 0
-  m_Name: Game
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!4 &1818435499
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1818435498}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1818435500
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1818435498}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fa6bb80a9a1322c47830ddfaa5971ec2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &1818435501
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1818435498}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 31947360c76e1cb4c8cb0006fa6ff47f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _lamp: {fileID: 1934066246}
-  _googleSheetsDataReader: {fileID: 1818435503}
-  _enemyManager: {fileID: 1818435502}
-  _uiManager: {fileID: 1291610354}
-  _lampStatsManager: {fileID: 1934066249}
-  _playerInputHandler: {fileID: 1818435500}
-  _scoresManager: {fileID: 1818435508}
-  _saveLoadManager: {fileID: 1818435509}
-  _currentGameStage: 0
-  _skipIntro: 1
-  _introDuration: 4
-  _deathDuration: 3
---- !u!114 &1818435502
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1818435498}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a19cb97880c15834aa6cac48223fb88a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _spawnQueueDataCache: {fileID: 11400000, guid: beab91cd3dcd8c44b88194a9986f9a99,
-    type: 2}
-  _enemyPool: {fileID: 1818435504}
-  _waspBoss: {fileID: 1966729921}
-  _megamothlingBoss: {fileID: 455450631368144087}
-  _megabeetleBoss: {fileID: 1180215397}
-  _dragonflyBoss: {fileID: 1536401419}
-  _fireflyExplosion: {fileID: 1402077385}
-  _fireflyExplosionRadius: 0.8
-  _explosionDuration: 0.22
-  _maxEnemiesOnScreen: 0
-  _agressionLevel: 0
-  _maxAggressionLevel: 6
-  _isStartAtWaveTestMode: 1
-  _startAtWave: 4
-  _currentWave: 0
-  _firstEnemySpawnDelay: 0.5
-  _saveDataContainer: {fileID: 11400000, guid: 377d55eb1797a24478860b1b98ae759c, type: 2}
---- !u!114 &1818435503
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1818435498}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e1513354e463ec84ab3132f1e9139ab9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _sheetId: 1m_MzdQxi0d-f-TbDgvYGiN5OfjoJGgDTMzX2N5Ci8BY
-  _sheetName: Sheet2
-  _apiKey: AIzaSyCesP8iY_CsymaobmUcWUGS_kvOUuNO_7s
-  _useCachedSpawnData: 0
-  _spawnQueueDataCache: {fileID: 11400000, guid: beab91cd3dcd8c44b88194a9986f9a99,
-    type: 2}
---- !u!114 &1818435504
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1818435498}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5dfa96e0952dfb04884e8cca62118031, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _mothlingPrefab: {fileID: 2472047005642060682, guid: 0f4fc343559e8c644a5b39155c7c9079,
-    type: 3}
-  _flyPrefab: {fileID: 5065817594616091563, guid: fb0c5c6a78e6cfa4b9c5530e8ae2c067,
-    type: 3}
-  _mothPrefab: {fileID: 3291430470506879424, guid: c997318186f1bda4f852c425e75498e5,
-    type: 3}
-  _ladybugPrefab: {fileID: 8958940323544418024, guid: 6e04665d54889b4419c7eefc9f74ce61,
-    type: 3}
-  _fireflyPrefab: {fileID: 5128008993713504180, guid: 30693d0a7256f2e4fa015da56e117fa3,
-    type: 3}
-  _spiderPrefab: {fileID: 855794049538210572, guid: 29e249a43a6a16b4c8ae5c14da092490,
-    type: 3}
-  _poolSize: 5
---- !u!114 &1818435505
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1818435498}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ef12726ead088e8409d659d6707130fd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _enemyDamagePauseTime: 0.075
---- !u!114 &1818435506
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1818435498}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 08d8c20ef294cba4aaa224352c244d18, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _enemyPrefab: {fileID: 1180215397}
---- !u!114 &1818435507
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1818435498}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: de064e384353e864d96b0edde5be907f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &1818435508
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1818435498}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7b27dc0aa59c9414ba9d147361bd0639, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _mothlingScorePrice: 1
-  _megamothlingScorePrice: 15
-  _flyScorePrice: 2
-  _fireflyScorePrice: 3
-  _mothScorePrice: 3
-  _ladybugScorePrice: 4
-  _spiderScorePrice: 3
-  _waspsScorePrice: 25
-  _megabeetleScorePrice: 50
-  _dragonflyProjectileScorePrice: 100
-  _currentScore: 0
-  _saveDataContainer: {fileID: 11400000, guid: 377d55eb1797a24478860b1b98ae759c, type: 2}
---- !u!114 &1818435509
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1818435498}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d5b0ac36f69cec44ba9fcf4de7b48b27, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _saveDataContainer: {fileID: 11400000, guid: 377d55eb1797a24478860b1b98ae759c, type: 2}
-  _defaultStatsContainer: {fileID: 11400000, guid: 2edc06669af2ab4408c1d4a02e2f4e7c,
-    type: 2}
 --- !u!4 &1830749193 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1807186840977798697, guid: 556ccd576c35d634e88ba039c8700cfa,
@@ -11363,15 +10990,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1934066241}
-  - component: {fileID: 1934066246}
-  - component: {fileID: 1934066249}
   - component: {fileID: 1934066248}
-  - component: {fileID: 1934066245}
-  - component: {fileID: 1934066244}
-  - component: {fileID: 1934066250}
   - component: {fileID: 1934066251}
   - component: {fileID: 1934066252}
-  - component: {fileID: 1934066255}
   - component: {fileID: 1934066260}
   - component: {fileID: 1934066258}
   - component: {fileID: 1934066256}
@@ -11379,6 +11000,7 @@ GameObject:
   - component: {fileID: 1934066259}
   - component: {fileID: 1934066261}
   - component: {fileID: 1934066262}
+  - component: {fileID: 1934066263}
   m_Layer: 0
   m_Name: LampObject
   m_TagString: Lamp
@@ -11410,70 +11032,6 @@ Transform:
   - {fileID: 136017524}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1934066244
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1934066237}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 63796c3c8eefa94468ddd875a958c497, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _lampAttackZoneObject: {fileID: 1464268261}
-  _blockedModeStrength: 0.5
-  _lampHealthBar: {fileID: 969163317}
-  _lampIntroAnimation: {fileID: 1934066250}
-  _lampDeathAnimation: {fileID: 1934066251}
-  _lampDamageAnimation: {fileID: 1934066252}
-  _lightDamageDuration: 0.2
-  _lampAttackDistanceUpgradeAnimation: {fileID: 1934066255}
---- !u!114 &1934066245
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1934066237}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5ab5d815efe66a5409b29e137bb7cfce, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _lampStatsManager: {fileID: 1934066249}
-  _attackZone: {fileID: 594908877}
-  _attackExitZone: {fileID: 452042969}
-  _currentPower: 1
-  _maxPower: 1
-  _attackPower: 3
-  _attackDuration: 0.15
-  _fullCooldownTime: 2
-  _attackDistance: 0.82
-  _attackExitDistance: 0.72
-  _isBlockedAttack: 0
---- !u!114 &1934066246
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1934066237}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2e45411fb5fea2b4ea6f6e142983f945, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _lampAttackModel: {fileID: 1934066245}
-  _lampPresentation: {fileID: 1934066244}
-  _lampCollisionHandler: {fileID: 1010240888}
-  _lampMovementController: {fileID: 1934066248}
-  _lampStickZoneCollisionHandler: {fileID: 815775906}
-  _lampAttackExitZoneCollisionHandler: {fileID: 452042971}
-  _attackBlockerCount: 0
-  _lampStatsManager: {fileID: 1934066249}
-  _isInvincible: 0
 --- !u!114 &1934066248
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11516,277 +11074,6 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   _lampMotionState: 0
---- !u!114 &1934066249
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1934066237}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5631710f569fd134ba31a2370e332f7c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _saveDataContainer: {fileID: 11400000, guid: 377d55eb1797a24478860b1b98ae759c, type: 2}
-  _currentHealth: 0
-  _healthCap: 50
-  _currentCooldownTime: 0
-  _cooldownTimeCap: 0.75
-  _cooldownDecrement: 0.06
-  _currentAttackDistance: 0
-  _attackDistanceCap: 0.82
-  _lampDamageWeightRight: 0
-  _lampDamageWeightLeft: 0
-  _lampDamageWeightBottom: 0
-  _damageWeights: {x: 0, y: 0, z: 0}
-  _lampImpactPointsData:
-    ImpactLastPointNumber: 0
-    ImpactPoint01Strength: 0
-    ImpactPoint01LocalAngle: 0
-    ImpactPoint01GlobalAngle: 0
-    ImpactPoint02Strength: 0
-    ImpactPoint02LocalAngle: 0
-    ImpactPoint02GlobalAngle: 0
-    ImpactPoint03Strength: 0
-    ImpactPoint03LocalAngle: 0
-    ImpactPoint03GlobalAngle: 0
-  _level: 0
-  _upgradePoints: 0
-  _currentUpgradePointThreshold: 5
-  _scoresAccountedForUpgrade: 0
-  _upgradeThesholdIncrement: 0
---- !u!114 &1934066250
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1934066237}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 16d2c42f943389844a3aa3f68dcccff8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _animCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0.10216005
-      value: 0
-      inSlope: 0.4091157
-      outSlope: 0.4091157
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0.056645773
-    - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: 1.1137842
-      outSlope: 1.1137842
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  _lampHealthBar: {fileID: 969163317}
-  _lampEmissionController: {fileID: 23663153}
-  _lampAttackZoneRenderer: {fileID: 1464268262}
-  _lampIntensityAnimCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0.0007418051
-      value: 0.0019630599
-      inSlope: 0.084597066
-      outSlope: 0.084597066
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0.5323486
-    - serializedVersion: 3
-      time: 0.0218653
-      value: 0.025433825
-      inSlope: 0.07295569
-      outSlope: 0.07295569
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.55108654
-    - serializedVersion: 3
-      time: 0.065804146
-      value: 0.052607454
-      inSlope: -0.06736077
-      outSlope: -0.06736077
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.32477134
-    - serializedVersion: 3
-      time: 0.3171133
-      value: 0.089578696
-      inSlope: 0.43685028
-      outSlope: 0.43685028
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 0.39989844
-      value: 0.17029935
-      inSlope: 0.3185787
-      outSlope: 0.3185787
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.74233425
-      outWeight: 0.06499651
-    - serializedVersion: 3
-      time: 0.57380307
-      value: 0.21902809
-      inSlope: 0.65471023
-      outSlope: 0.65471023
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 0.6438854
-      value: 0.29097566
-      inSlope: 0.08465338
-      outSlope: 0.08465338
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.2819798
-    - serializedVersion: 3
-      time: 0.89075935
-      value: 0.88473743
-      inSlope: 1.3659996
-      outSlope: 1.3659996
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 0.93672496
-      value: 1.3293887
-      inSlope: 0.32405058
-      outSlope: 0.32405058
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 1
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: -5.205666
-      outSlope: -5.205666
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  _lampNoiseAmountAnimCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0.0020715129
-      value: 0.7278538
-      inSlope: -0.3527459
-      outSlope: -0.3527459
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0.28141057
-    - serializedVersion: 3
-      time: 0.1734848
-      value: 0.5987274
-      inSlope: 0.0033734902
-      outSlope: 0.0033734902
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.077612005
-    - serializedVersion: 3
-      time: 0.20858032
-      value: 0.43111712
-      inSlope: -0.9393397
-      outSlope: -0.9393397
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.40124148
-      outWeight: 0.16868153
-    - serializedVersion: 3
-      time: 0.42270422
-      value: 0.56365025
-      inSlope: 3.5157816
-      outSlope: 3.5157816
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 0.5047159
-      value: 0.9330257
-      inSlope: 3.0300756
-      outSlope: 3.0300756
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.16956474
-    - serializedVersion: 3
-      time: 0.5797854
-      value: 0.90997064
-      inSlope: 0.73927903
-      outSlope: 0.73927903
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.087195836
-    - serializedVersion: 3
-      time: 0.6151662
-      value: 0.25130543
-      inSlope: -3.851156
-      outSlope: -3.851156
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.6779563
-      outWeight: 0.15402849
-    - serializedVersion: 3
-      time: 0.75832814
-      value: 0.03904169
-      inSlope: -0.17849039
-      outSlope: -0.17849039
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 0.9006395
-      value: 0.0068783835
-      inSlope: -0.18984514
-      outSlope: -0.18984514
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 0.99979454
-      value: 0.049500823
-      inSlope: 1.2549024
-      outSlope: 1.2549024
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.44431534
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
 --- !u!114 &1934066251
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11958,20 +11245,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _lampEmissionController: {fileID: 23663153}
---- !u!114 &1934066255
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1934066237}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 835ffb84c89bddc4cafd4512ddc01948, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _attackZonePresentationRenderer: {fileID: 1464268262}
-  _duration: 1
 --- !u!114 &1934066256
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12419,6 +11692,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _lampDamageAnimation: {fileID: 1934066252}
   _lampEmissionController: {fileID: 23663153}
+--- !u!114 &1934066263
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1934066237}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67b59e27a2a6369438a0d6b6b5f690ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1944166815
 GameObject:
   m_ObjectHideFlags: 0
@@ -13976,7 +13261,6 @@ SceneRoots:
   - {fileID: 1736170225}
   - {fileID: 646836955}
   - {fileID: 2110688077}
-  - {fileID: 1818435499}
   - {fileID: 1449376469}
   - {fileID: 1934066241}
   - {fileID: 1037585458}

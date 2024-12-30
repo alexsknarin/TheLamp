@@ -9,8 +9,9 @@ public class GameRootContext : MonoBehaviour
     [FormerlySerializedAs("_gameConfigProviderServiceService")] [FormerlySerializedAs("_gameConfigProvider")] [SerializeField] private SoGameConfigProviderService _gameConfigProviderService;
     [SerializeField] private DefaultGameStateData _defaultGameStateData;
     [SerializeField] private DefaultGameSettingsData _defaultGameSettingsData;
+    [FormerlySerializedAs("_consentSettingsUIView")]
     [Header("Views")]
-    [SerializeField] private ConsentSettingsUIView _consentSettingsUIView;
+    [SerializeField] private ConsentSettingsViewUI _consentSettingsViewUI;
     [SerializeField] private GameStageView _gameStageView;
     [SerializeField] private GameStateView _gameStateView;
     [SerializeField] private PlayerAttackUIView _playerAttackUIView;
@@ -25,9 +26,7 @@ public class GameRootContext : MonoBehaviour
     [SerializeField] private PlayerGameplayViewUI _playerGameplayViewUI;
     [Header("Services")]
     [SerializeField] private UnityAnalyticsService _unityAnalyticsService;
-    [SerializeField] private Game _game;
-    [SerializeField] private EnemyManager _enemyManager;
-    [SerializeField] private Lamp _lamp;
+    [SerializeField] private LampPositionProviderService _lampPositionProviderService;
     [Header("Controllers")]
     [SerializeField] private LampHealthBarController _lampHealthBarController;
     [SerializeField] private EnemyController _enemyController;
@@ -35,9 +34,12 @@ public class GameRootContext : MonoBehaviour
     [SerializeField] private PlayerEnemyInteractionHandler _playerEnemyInteractionHandler;
     [SerializeField] private LampEmissionController _lampEmissionController;
     [SerializeField] private LampMovementController _lampMovementController;
+    [Header("Bosses")]
+    [SerializeField] private Wasp _wasp;
+    [SerializeField] private FWaspMovement _waspMovement;
+    [SerializeField] private MegabeetleMovement _megabeetleMovement;
+    
     private PlayerAttackHandler _playerAttackHandler;
-
-    // [SerializeField] private GameConfig _gameConfig;
     private GameSettingsService _gameSettingsService;
     private UGSAuthenticationService _ugsAuthenticationService;
     
@@ -77,8 +79,8 @@ public class GameRootContext : MonoBehaviour
         _gameSettingsViewModel.Initialize();
         
         Debug.Log("------ UI Initialization ------");
-        _consentSettingsUIView.Bind(_gameSettingsViewModel);
-        _consentSettingsUIView.Initialize();
+        _consentSettingsViewUI.Bind(_gameSettingsViewModel);
+        _consentSettingsViewUI.Initialize();
         
         Debug.Log("------ Analytics Initialization ------");
         _ugsAuthenticationService = new UGSAuthenticationService();
@@ -138,16 +140,10 @@ public class GameRootContext : MonoBehaviour
         _gameOverViewUI.Bind(_gameOverViewModel);
         _gameOverViewUI.Initialize();
         
-        
-        
-        // Configure legacy systems - TEMPORARY
-                
-        
-        _enemyManager.Construct(_unityAnalyticsService);
-        _lamp.Construct(_unityAnalyticsService);
-        _game.Construct(_unityAnalyticsService, _ugsAuthenticationService);
-        
-        
+        // Bosses
+        _wasp.Construct(_gameModel);
+        _waspMovement.Construct(_lampPositionProviderService);
+        _megabeetleMovement.Construct(_gameModel);
         
         // Load Game Config
         _googleSheetsDataReader.OnDataLoadedEvent += OnGameConfigLoaded;

@@ -13,18 +13,19 @@ public class HapticFeedbackHandler : MonoBehaviour
     
     private void OnEnable()
     {
-        PlayerInputHandler.OnPlayerAttackEvent += PerformTouchHaptic;
-        Lamp.OnLampDamagedEvent += PerformDamageVibration;
-        Lamp.OnLampDeadEvent += PerformDamageVibration;
-        EnemyManager.OnFireflyExplosionEvent += PerformExplosionVibration;
+        // TODO: add Haptic support via DI
+        // PlayerInputHandler.OnPlayerAttackEvent += PerformTouchHaptic;
+        // Lamp.OnLampDamagedEvent += PerformDamageVibration;
+        // Lamp.OnLampDeadEvent += PerformDamageVibration;
+        // EnemyManager.OnFireflyExplosionEvent += PerformExplosionVibration;
     }
 
     private void OnDisable()
     {
-        PlayerInputHandler.OnPlayerAttackEvent -= PerformTouchHaptic;
-        Lamp.OnLampDamagedEvent -= PerformDamageVibration;
-        Lamp.OnLampDeadEvent -= PerformDamageVibration;
-        EnemyManager.OnFireflyExplosionEvent -= PerformExplosionVibration;
+        // PlayerInputHandler.OnPlayerAttackEvent -= PerformTouchHaptic;
+        // Lamp.OnLampDamagedEvent -= PerformDamageVibration;
+        // Lamp.OnLampDeadEvent -= PerformDamageVibration;
+        // EnemyManager.OnFireflyExplosionEvent -= PerformExplosionVibration;
     }
 
     private IEnumerator DisableHaptic()

@@ -159,7 +159,15 @@ public class EnemyController : MonoBehaviour, IInitializable
             OnWaveStartEvent?.Invoke(); // TODO: What we use this event for?
         }
     }
-    
+
+    public void HandleLampDestroyed()
+    {
+        foreach (var enemy in _enemies)
+        {
+            enemy.HandleLampDestroyed();
+        }
+    }
+
     public void HandleGameOver()
     {
         _isGameActive = false;

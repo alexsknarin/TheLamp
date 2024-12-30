@@ -5,6 +5,7 @@ using UnityEngine;
 /// </summary>
 public class CameraShake : MonoBehaviour
 {
+    // TODO: remake into a service
     [SerializeField] private float _shakeAmplitude;
     [SerializeField] private float _shakeDuration;
     [SerializeField] private AnimationCurve _shakeProfileCurve;
@@ -52,16 +53,17 @@ public class CameraShake : MonoBehaviour
     
     private void OnEnable()
     {
-        Lamp.OnLampDamagedEvent += StartDamageShake;
-        Lamp.OnLampDeadEvent += StartDamageShake;
-        EnemyManager.OnFireflyExplosionEvent += StartExplosionShake;
+        // TODO: Inject via DI
+        // Lamp.OnLampDamagedEvent += StartDamageShake;
+        // Lamp.OnLampDeadEvent += StartDamageShake;
+        // EnemyManager.OnFireflyExplosionEvent += StartExplosionShake;
     }
 
     private void OnDisable()
     {
-        Lamp.OnLampDamagedEvent -= StartDamageShake;
-        Lamp.OnLampDeadEvent -= StartDamageShake;
-        EnemyManager.OnFireflyExplosionEvent -= StartExplosionShake;
+        // Lamp.OnLampDamagedEvent -= StartDamageShake;
+        // Lamp.OnLampDeadEvent -= StartDamageShake;
+        // EnemyManager.OnFireflyExplosionEvent -= StartExplosionShake;
     }
     
     private void Start()

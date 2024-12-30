@@ -14,7 +14,7 @@ public class DragonflyProjectileSpider : EnemyBase
     
     private void OnEnable()
     {
-        LampAttackModel.OnLampAttackEvent += TMPHandleLampAttack;
+        // LampAttackModel.OnLampAttackEvent += TMPHandleLampAttack; // TODO: fix this
         _movement.OnEnterAnimationEndEvent += OnEnterAnimationEndHandle;
         _movement.OnFallEndedEvent += OnFallEndedHandle;
         
@@ -22,7 +22,7 @@ public class DragonflyProjectileSpider : EnemyBase
     
     private void OnDisable()
     {
-        LampAttackModel.OnLampAttackEvent -= TMPHandleLampAttack;
+        // LampAttackModel.OnLampAttackEvent -= TMPHandleLampAttack;
         _movement.OnEnterAnimationEndEvent -= OnEnterAnimationEndHandle;
         _movement.OnFallEndedEvent -= OnFallEndedHandle;
     }

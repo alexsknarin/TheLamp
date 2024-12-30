@@ -13,6 +13,13 @@ public class Enemy : EnemyBase
     public override EnemyType EnemyType => _enemyType;
     private bool _isDead = false;
     
+    private ILampPositionProviderService _lampPositionProviderService;
+    
+    public void Construct(ILampPositionProviderService lampPositionProviderService)
+    {
+        _lampPositionProviderService = lampPositionProviderService;
+    }
+    
     private IObjectPool<Enemy> _objectPool;
     public IObjectPool<Enemy> ObjectPool
     {
@@ -21,6 +28,8 @@ public class Enemy : EnemyBase
 
     public static event Action<Enemy> OnEnemyDeactivatedEvent;
     public static event Action<Enemy> OnEnemyDamagedEvent;
+    
+    
 
     private void OnEnable()
     {
@@ -44,6 +53,8 @@ public class Enemy : EnemyBase
     
     public override void Initialize()
     {
+        
+        _enemyMovement.Construct(_lampPositionProviderService);
         _enemyMovement.Initialize();
         _enemyPresentation.Initialize();
         _currentHealth = _maxHealth;
@@ -211,6 +222,11 @@ public class Enemy : EnemyBase
         {
             _objectPool.Release(this);    
         }
+    }
+    
+    public override void HandleLampDestroyed()
+    {
+        _enemyMovement.HandleLampDestroyed();
     }
 
     public override Vector3 ProvideImpactPoint()

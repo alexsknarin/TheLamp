@@ -105,8 +105,6 @@ public class Dragonfly : BossBase
         _movement.OnCatchSpiderStartedEvent += OnCatchSpiderStartHandle;
         _spider.OnEnterAnimationEndEvent += OnSpiderEnterAnimationEndHandle;
         _movement.OnDeathAnimationEndedEvent += OnDeathAnimationEndedHandle;
-        
-        LampAttackModel.OnLampAttackEvent += TMPHandleLampAttack;
     }
 
     private void OnDisable()
@@ -135,7 +133,6 @@ public class Dragonfly : BossBase
         _movement.OnCatchSpiderStartedEvent -= OnCatchSpiderStartHandle;
         _spider.OnEnterAnimationEndEvent -= OnSpiderEnterAnimationEndHandle;
         _movement.OnDeathAnimationEndedEvent -= OnDeathAnimationEndedHandle;
-        LampAttackModel.OnLampAttackEvent -= TMPHandleLampAttack;
     }
 
     private void Awake()
@@ -429,15 +426,6 @@ public class Dragonfly : BossBase
     private void OnDeathAnimationEndedHandle()
     {
         gameObject.SetActive(false); // TODO: fix naming to be consistent
-    }
-
-    // Lamp Interaction Methods
-    private void TMPHandleLampAttack(int arg1, float arg2, float arg3, float arg4)
-    {
-        if (ReadyToLampDamage)
-        {
-            ReceiveDamage(arg1);
-        }
     }
 
     public void CatchFirstCollider()

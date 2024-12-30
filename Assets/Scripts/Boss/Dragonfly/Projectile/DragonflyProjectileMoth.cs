@@ -2,20 +2,21 @@ using UnityEngine;
 
 public class DragonflyProjectileMoth : EnemyBase
 {
-    [SerializeField] private EnemyType _enemyType = global::EnemyType.DragonflyProjectile;
+    [SerializeField] private EnemyType _enemyType = EnemyType.DragonflyProjectile;
     [SerializeField] private DragonflyProjectileMovementMoth _movement;
     [SerializeField] private DragonflyMothPresentation _presentation;
     public override EnemyType EnemyType => _enemyType;
 
     private void OnEnable()
     {
-        LampAttackModel.OnLampAttackEvent += TMPHandleLampAttack;
+        // LampAttackModel.OnLampAttackEvent += TMPHandleLampAttack;
+        // TODO: fix this - Projectiles should work via EnemyController
         _movement.OnFallEndedEvent += OnFallEndedHandle;
     }
 
     private void OnDisable()
     {
-        LampAttackModel.OnLampAttackEvent -= TMPHandleLampAttack;
+        // LampAttackModel.OnLampAttackEvent -= TMPHandleLampAttack;
         _movement.OnFallEndedEvent -= OnFallEndedHandle;
     }
 

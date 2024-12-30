@@ -10,14 +10,23 @@ public class MothMovementAttackState: EnemyMovementBaseState
     private float _noiseFrequency = 13f;
     private float _noiseAmplitude = 0.08f;
     private float _maxDistance = 0.5f;
-    
     private readonly float _mothRadius = 0.1f;
-    public MothMovementAttackState(IStateMachineOwner owner, float speed, float radius, float verticalAmplitude) : base()
+    
+    private ILampPositionProviderService _lampPositionProvider;
+    
+    public MothMovementAttackState(
+        IStateMachineOwner owner, 
+        ILampPositionProviderService lampPositionProvider,
+        float speed, 
+        float radius, 
+        float verticalAmplitude 
+        ) : base()
     {
+        _owner = owner;
+        _lampPositionProvider = lampPositionProvider;
         _speed = speed;
         _radius = radius;
         _verticalAmplitude = verticalAmplitude;
-        _owner = owner;
     }
     
     public override void EnterState(Vector3 currentPosition, int sideDirection, int depthDirection)
@@ -34,9 +43,9 @@ public class MothMovementAttackState: EnemyMovementBaseState
         newPosition += direction * (_speed * _acceleratedSpeed * Time.deltaTime);
         
         // Check if lamp was penetrated
-        if ((newPosition - Lamp.LampTransform.position).magnitude < _mothRadius + 0.5f)
+        if ((newPosition - _lampPositionProvider.GetLampPosition()).magnitude < _mothRadius + 0.5f)
         {
-            newPosition = Lamp.LampTransform.position + newPosition.normalized * (0.5f + _mothRadius);
+            newPosition = _lampPositionProvider.GetLampPosition() + newPosition.normalized * (0.5f + _mothRadius);
         }
         
         _acceleratedSpeed += _acceleration;

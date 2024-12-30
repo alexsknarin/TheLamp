@@ -16,6 +16,14 @@ public class MothMovement : EnemyMovement
     [SerializeField] bool _isDepthEnabled;
     private int _sideDirection;
     private int _depthDirection;
+   
+    private ILampPositionProviderService _lampPositionProviderService;
+    
+    public override void Construct(ILampPositionProviderService lampPositionProviderService)
+    {
+        _lampPositionProviderService = lampPositionProviderService;
+    }
+    
     // Movement States
     private EnemyMovementStateMachine _movementStateMachine;
     private EnemyMovementBaseState _currentState;
@@ -50,7 +58,13 @@ public class MothMovement : EnemyMovement
         _enterState = new MothMovementEnterState(this, _speed, _radius, _verticalAmplitude);
         _hoverState = new MothMovementHoverState(this, _speed, _radius, _verticalAmplitude);
         _preAttackState = new MothMovementPreAttackState(this, _speed, _radius, _verticalAmplitude);
-        _attackState = new MothMovementAttackState(this, _speed, _radius, _verticalAmplitude);
+        _attackState = new MothMovementAttackState(
+            this,
+            _lampPositionProviderService,
+            _speed,
+            _radius,
+            _verticalAmplitude
+            );
         _fallState = new MothMovementFallState(this, _speed, _radius, _verticalAmplitude);
         _deathState = new MothMovementDeathState(this, _speed, _radius, _verticalAmplitude);
         _spreadState = new FlyMovementSpreadState(this, _speed, _radius, _verticalAmplitude);

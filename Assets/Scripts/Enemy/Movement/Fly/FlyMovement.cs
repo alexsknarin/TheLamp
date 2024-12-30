@@ -24,7 +24,13 @@ public class FlyMovement : EnemyMovement
     private Vector3 _velocity = Vector3.zero;
     private int _depthDirection;
     
-    
+    private ILampPositionProviderService _lampPositionProvider;
+
+    public override void Construct(ILampPositionProviderService lampPositionProviderService)
+    {
+        _lampPositionProvider = lampPositionProviderService;
+    }
+
     // Movement States
     private EnemyMovementStateMachine _movementStateMachine;
     private EnemyMovementBaseState _currentState;
@@ -56,7 +62,13 @@ public class FlyMovement : EnemyMovement
         _enterState = new FlyMovementEnterState(this, _speed, _radius, _verticalAmplitude);
         _patrolState  = new FlyMovementPatrolState(this, _speed, _radius, _verticalAmplitude);
         _preAttackState = new FlyMovementPreAttackState(this, _speed, _radius, _verticalAmplitude);
-        _attackState = new FlyMovementAttackState(this, _speed, _radius, _verticalAmplitude);
+        _attackState = new FlyMovementAttackState(
+            this,
+            _lampPositionProvider,
+            _speed,
+            _radius,
+            _verticalAmplitude
+            );
         _fallState = new FlyMovementFallState(this, _speed, _radius, _verticalAmplitude);
         _deathState = new FlyMovementDeathState(this, _speed, _radius, _verticalAmplitude);
         _spreadState = new FlyMovementSpreadState(this, _speed, _radius, _verticalAmplitude);

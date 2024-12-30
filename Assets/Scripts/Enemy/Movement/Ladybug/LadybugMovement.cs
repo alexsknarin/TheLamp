@@ -28,16 +28,6 @@ public class LadybugMovement : EnemyMovement
     // Debug
     [SerializeField] private EnemyState _stateDebug;
 
-    private void OnEnable()
-    {
-        Lamp.OnLampDeadEvent += FallOnLampDestroyed;
-    }
-    
-    private void OnDisable()
-    {
-        Lamp.OnLampDeadEvent -= FallOnLampDestroyed;
-    }
-
     public override void Initialize()
     {
         _isDead = false;
@@ -80,6 +70,16 @@ public class LadybugMovement : EnemyMovement
     
     public override void TriggerFall()
     {
+    }
+    
+    public override void HandleLampDestroyed()
+    {
+        transform.parent = null;
+        if(_currentState.State == EnemyState.Stick)
+        {
+            _isDead = true;
+            SwitchState();
+        }
     }
 
     public void FallOnLampDestroyed(EnemyBase enemy)

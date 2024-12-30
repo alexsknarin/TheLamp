@@ -1,14 +1,16 @@
 using System;
 using UnityEngine;
 
-public class GameModel : IDisposable
+public class GameModel : IDisposable, ILampDeadEventProviderService
 {
     public int Wave => _currentGameState.Wave;
     public Vector3 LastEnemyPosition { get; private set; }
-    
-    
+
+
     #region CurrentGameState Reactive Property
+
     private GameState _currentGameState;
+
     public GameState CurrentGameState 
     {
         get => _currentGameState;
@@ -18,11 +20,16 @@ public class GameModel : IDisposable
             OnGameStateChangedEvent?.Invoke(value);
         }
     }
-    public event Action<GameState> OnGameStateChangedEvent; 
+
+
+    public event Action<GameState> OnGameStateChangedEvent;
+
     #endregion
-    
+
     #region CurrentGameStageState Reactive Property
+
     private GameStageState _currentGameStageState = GameStageState.Loading;
+
     public GameStageState CurrentGameStageState
     {
         get => _currentGameStageState;
@@ -36,10 +43,14 @@ public class GameModel : IDisposable
             }
         }
     }
+
+
     public event Action<GameStageState> OnGameStageStateChangedEvent;
+
     #endregion
-    
+
     #region LampLevel Reactive Property
+
     public int LampLevel
     {
         get => _currentGameState.LampLevel;
@@ -49,11 +60,16 @@ public class GameModel : IDisposable
             OnLampLevelChangedEvent?.Invoke(value);
         }
     }
+
+
     public event Action<int> OnLampLevelChangedEvent;
+
     #endregion
 
     #region CurrentPower Reactive Property
+
     private float _currentPower;
+
     public float CurrentPower
     {
         get => _currentPower;
@@ -63,10 +79,14 @@ public class GameModel : IDisposable
             OnPowerChangedEvent?.Invoke(value);
         }
     }
+
+
     public event Action<float> OnPowerChangedEvent;
+
     #endregion
 
-    #region LampHealth Reactive Property 
+    #region LampHealth Reactive Property
+
     public int LampHealth
     {
         get => _currentGameState.LampHealth;
@@ -76,10 +96,14 @@ public class GameModel : IDisposable
             OnLampHealthChangedEvent?.Invoke(value);
         }
     }
+
+
     public event Action<int> OnLampHealthChangedEvent;
+
     #endregion
-    
-    #region LampMaxHealth Reactive Property 
+
+    #region LampMaxHealth Reactive Property
+
     public int LampMaxHealth
     {
         get => _currentGameState.LampMaxHealth;
@@ -89,10 +113,14 @@ public class GameModel : IDisposable
             OnLampMaxHealthChangedEvent?.Invoke(value);
         }
     }
+
+
     public event Action<int> OnLampMaxHealthChangedEvent;
+
     #endregion
-    
-    #region LampGlassDamage Reactive Property 
+
+    #region LampGlassDamage Reactive Property
+
     public GlassDamageData LampGlassDamage
     
     {
@@ -103,11 +131,16 @@ public class GameModel : IDisposable
             OnLampGlassDamageChangedEvent?.Invoke(value);
         }
     }
+
+
     public event Action<GlassDamageData> OnLampGlassDamageChangedEvent;
+
     #endregion
-    
+
     #region LampBlocked Reactive Property
+
     private bool _isLampBlocked;
+
     public bool IsLampBlocked
     {
         get => _isLampBlocked;
@@ -117,10 +150,14 @@ public class GameModel : IDisposable
             OnLampBlockedModeSetEvent?.Invoke(value);
         }
     }
+
+
     public event Action<bool> OnLampBlockedModeSetEvent;
+
     #endregion
-    
+
     #region UpgradePoints Reactive Property
+
     public int UpgradePoints
     {
         get => _currentGameState.LampUpgradePoints;
@@ -130,10 +167,14 @@ public class GameModel : IDisposable
             OnUpgradePointsChangedEvent?.Invoke(value);
         }
     }
+
+
     public event Action<int> OnUpgradePointsChangedEvent;
+
     #endregion
-    
+
     #region LampAttackDistance Reactive Property
+
     public float LampAttackDistance
     {
         get => _currentGameState.LampAttackDistance;
@@ -143,10 +184,14 @@ public class GameModel : IDisposable
             OnLampAttackDistanceChangedEvent?.Invoke(value);
         }
     }
+
+
     public event Action<float> OnLampAttackDistanceChangedEvent;
+
     #endregion
-    
+
     #region LampCooldownTime Reactive Property
+
     public float LampCooldownTime
     {
         get => _currentGameState.LampCooldownTime;
@@ -156,17 +201,22 @@ public class GameModel : IDisposable
             OnLampCooldownTimeChangedEvent?.Invoke(value);
         }
     }
+
+
     public event Action<float> OnLampCooldownTimeChangedEvent;
+
     #endregion
-    
-    
+
+
     public event Action<float> OnLampAttackStartedEvent;
     public event Action<float> OnLampDamageStartedEvent;
-    public event Action<Vector3> OnLampDeathEvent;
-    
+    public event Action<Vector3> OnLampDeathEvent; // TODO: make single event for all lamp death events
+    public event Action<EnemyBase> OnLampDeadEvent;
+
     private bool _isAttacking = false;
     private bool _isAdPlaying = false;
-    
+
+
     // Dependencies
     private IGameStateProviderService _gameStateProviderService;
     private IGameConfigService _gameConfigService;
@@ -178,7 +228,8 @@ public class GameModel : IDisposable
     private LampMovementController _lampMovementController;
     private ScoresCollectionHandler _scoresCollectionHandler;
     private UpgradeHandler _upgradeHandler = new UpgradeHandler();
-   
+
+
     public GameModel(
         IGameStateProviderService gameStateProviderService, 
         EnemyController enemyController, 
@@ -269,7 +320,7 @@ public class GameModel : IDisposable
         Debug.Log("Starting Wave: " +_currentGameState.Wave);
         _enemyController.StartWave(_currentGameState.Wave);
     }
-    
+
     private void StartGameOver()
     {
         CurrentGameStageState = GameStageState.GameOverIn;
@@ -277,8 +328,9 @@ public class GameModel : IDisposable
         _enemyController.HandleGameOver();
         Debug.Log("Starting Game Over");
     }
-    
+
     // --- Event Handlers ---
+
 
     public void HandleIntroEnd()
     {
@@ -311,7 +363,7 @@ public class GameModel : IDisposable
         Debug.Log("Game Over Out Ended ... Starting game Again");
         RestartGame();
     }
-    
+
     public void HandleAdvertisementEnd()
     {
         Debug.Log("Game Over Out Ended after watching ad ... Starting game again");
@@ -386,7 +438,9 @@ public class GameModel : IDisposable
             {
                 LastEnemyPosition = enemy.ProvideImpactPoint();
                 _lampMovementController.AddForce(-LastEnemyPosition.normalized.x * 2);
+                _enemyController.HandleLampDestroyed();
                 OnLampDeathEvent?.Invoke(enemy.ProvideImpactPoint());
+                OnLampDeadEvent?.Invoke(enemy);
                 StartGameOver();
                 Debug.Log("++++++++++ Game Over ++++++++++");
                 return;
@@ -415,6 +469,7 @@ public class GameModel : IDisposable
 
 
     // --- Upgrades ---
+
 
     public void HandleHealthUpgrade()
     {
@@ -487,6 +542,7 @@ public class GameModel : IDisposable
 
     // --- Game Over ---
 
+
     public void HandleRestartGameWitAdFromGameOver()
     {
         _isAdPlaying = true;
@@ -506,7 +562,7 @@ public class GameModel : IDisposable
         _isAdPlaying = false;
         RestartGame();
     }
-    
+
     public void ExitGame()
     {
 #if UNITY_STANDALONE

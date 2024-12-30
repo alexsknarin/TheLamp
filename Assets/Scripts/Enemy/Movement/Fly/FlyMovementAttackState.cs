@@ -3,6 +3,9 @@ using UnityEngine;
 public class FlyMovementAttackState: EnemyMovementBaseState
 {
     public override EnemyState State => EnemyState.Attack;
+    
+    private ILampPositionProviderService _lampPositionProvider;
+    
     private float _acceleration = 13.5f;
     private float _depthDecrement = 0.4f;
     private float _acceleratedSpeed = 1f;
@@ -10,12 +13,19 @@ public class FlyMovementAttackState: EnemyMovementBaseState
     
     private readonly float _flyRadius = 0.1f;
     
-    public FlyMovementAttackState(IStateMachineOwner owner, float speed, float radius, float verticalAmplitude) : base()
+    public FlyMovementAttackState(
+        IStateMachineOwner owner, 
+        ILampPositionProviderService lampPositionProvider,
+        float speed, 
+        float radius, 
+        float verticalAmplitude
+        ) : base()
     {
+        _owner = owner;
+        _lampPositionProvider = lampPositionProvider;
         _speed = speed;
         _radius = radius;
         _verticalAmplitude = verticalAmplitude;
-        _owner = owner;
     }
     
     public override void EnterState(Vector3 currentPosition, int sideDirection, int depthDirection)
@@ -33,9 +43,9 @@ public class FlyMovementAttackState: EnemyMovementBaseState
         _acceleratedSpeed += _acceleration * Time.deltaTime;
         
         // Check if lamp was penetrated
-        if ((newPosition - Lamp.LampTransform.position).magnitude < _flyRadius + 0.5f)
+        if ((newPosition - _lampPositionProvider.GetLampPosition()).magnitude < _flyRadius + 0.5f)
         {
-            newPosition = Lamp.LampTransform.position + newPosition.normalized * (0.5f + _flyRadius);
+            newPosition = _lampPositionProvider.GetLampPosition() + newPosition.normalized * (0.5f + _flyRadius);
         }
         
         Position = newPosition;

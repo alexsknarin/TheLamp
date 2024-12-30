@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 public class FireflyMovement : EnemyMovement
@@ -23,13 +22,22 @@ public class FireflyMovement : EnemyMovement
     private Vector3 _velocity = Vector3.zero;
     private int _depthDirection;
     private int _sideDirection;
+
+    private ILampPositionProviderService _lampPositionProviderService;
+
+    public override void Construct(ILampPositionProviderService lampPositionProviderService)
+    {
+        _lampPositionProviderService = lampPositionProviderService;
+    }
+
     // Movement Stats
+
     private EnemyMovementStateMachine _movementStateMachine;
     private EnemyMovementBaseState _currentState;
     private FlyMovementEnterState _enterState;
     private FlyMovementPatrolState _patrolState;
     private FireflyMovementAttackState _attackState;
-    private FlyMovementPreAttackState _preAttackState;    
+    private FlyMovementPreAttackState _preAttackState;
     private FlyMovementFallState _fallState;
     private FireflyMovementDeathState _deathState;
     private FlyMovementSpreadState _spreadState;
@@ -37,14 +45,17 @@ public class FireflyMovement : EnemyMovement
     private Vector3 _prevPosSmooth; //Debug
     private Vector3 _position2d;
     private Vector3 _position;
-    
+
     // State parameters
+
     private bool _isDead = false;
+
     private bool _isCollided = false;
-    
+
     // Debug
+
     [SerializeField] private EnemyState _stateDebug;
-    
+
     public override void Initialize()
     {
         _isDead = false;
@@ -53,7 +64,13 @@ public class FireflyMovement : EnemyMovement
         _enterState = new FlyMovementEnterState(this, _speed, _radius, _verticalAmplitude);
         _patrolState  = new FlyMovementPatrolState(this, _speed, _radius, _verticalAmplitude);
         _preAttackState = new FlyMovementPreAttackState(this, _speed, _radius, _verticalAmplitude);
-        _attackState = new FireflyMovementAttackState(this, _speed, _radius, _verticalAmplitude);
+        _attackState = new FireflyMovementAttackState(
+            this, 
+            _lampPositionProviderService,
+            _speed,
+            _radius,
+            _verticalAmplitude
+            );
         _fallState = new FlyMovementFallState(this, _speed, _radius, _verticalAmplitude);
         _deathState = new FireflyMovementDeathState(this, _speed, _radius, _verticalAmplitude);
         _spreadState = new FlyMovementSpreadState(this, _speed, _radius, _verticalAmplitude);

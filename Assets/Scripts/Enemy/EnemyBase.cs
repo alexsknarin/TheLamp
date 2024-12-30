@@ -11,11 +11,8 @@ public abstract class EnemyBase : MonoBehaviour, IInitializable
     public bool ReadyToCollide { get; protected set; }
     public bool ReadyToLampDamage { get; protected set; }
     public bool ReceivedLampAttack { get; protected set; }
-
-    
-    public virtual void Initialize()
-    {
-    }
+    public virtual void Initialize() {}
+    public virtual void HandleLampDestroyed() {}
     public abstract void SpreadStart();
     public abstract void StartAttack();
     public abstract void HandleEnteringAttackZone();
