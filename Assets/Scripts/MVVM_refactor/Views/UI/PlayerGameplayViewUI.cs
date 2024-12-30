@@ -8,7 +8,7 @@ public class PlayerGameplayViewUI : MonoBehaviour, IInitializable
     
     private PlayerGameplayViewModel _playerGameplayViewModel;
     
-    public void Construct(PlayerGameplayViewModel viewModel)
+    public void Bind(PlayerGameplayViewModel viewModel)
     {
         _playerGameplayViewModel = viewModel;
     }

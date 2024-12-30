@@ -7,7 +7,7 @@ public class PlayerAttackUIView : MonoBehaviour, IPointerDownHandler
     [SerializeField] private Button _button;
     private PlayerAttackViewModel _playerAttackViewModel;
     
-    public void Construct(PlayerAttackViewModel playerAttackViewModel)
+    public void Bind(PlayerAttackViewModel playerAttackViewModel)
     {
         _playerAttackViewModel = playerAttackViewModel;
     }

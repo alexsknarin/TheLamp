@@ -11,7 +11,7 @@ public class LampCooldownView : MonoBehaviour, IInitializable
     
     private PlayerGameplayViewModel _playerGameplayViewModel;
 
-    public void Construct(PlayerGameplayViewModel playerGameplayViewModel)
+    public void Bind(PlayerGameplayViewModel playerGameplayViewModel)
     {
         _playerGameplayViewModel = playerGameplayViewModel;
         _playerGameplayViewModel.Power.OnChangedEvent += SetPower;

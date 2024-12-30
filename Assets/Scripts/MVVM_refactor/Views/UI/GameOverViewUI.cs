@@ -8,7 +8,7 @@ public class GameOverViewUI : MonoBehaviour, IInitializable
     [SerializeField] private Button _exitButton;
     private GameOverViewModel _gameOverViewModel;
     
-    public void Construct(GameOverViewModel gameOverViewModel)
+    public void Bind(GameOverViewModel gameOverViewModel)
     {
         _gameOverViewModel = gameOverViewModel;
     }

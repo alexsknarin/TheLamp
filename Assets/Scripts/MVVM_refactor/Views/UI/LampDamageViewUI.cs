@@ -5,7 +5,7 @@ public class LampDamageViewUI : MonoBehaviour
     [SerializeField] private BrokenGlassEffect _brokenGlassEffect;
     private PlayerGameplayViewModel _playerGameplayViewModel;
     
-    public void Construct(PlayerGameplayViewModel playerGameplayViewModel)
+    public void Bind(PlayerGameplayViewModel playerGameplayViewModel)
     {
         _playerGameplayViewModel = playerGameplayViewModel;
         

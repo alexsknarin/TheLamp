@@ -12,7 +12,7 @@ public class ConsentSettingsUIView : MonoBehaviour, IInitializable
     
     private GameSettingsViewModel _gameSettingsViewModel;
 
-    public void Construct(GameSettingsViewModel gameSettingsViewModel)
+    public void Bind(GameSettingsViewModel gameSettingsViewModel)
     {
         _gameSettingsViewModel = gameSettingsViewModel;
     }

@@ -13,7 +13,7 @@ public class PlayerUpgradeViewUI : MonoBehaviour, IInitializable
     
     private PlayerUpgradeViewModel _playerUpgradeViewModel;
     
-    public void Construct(PlayerUpgradeViewModel viewModel)
+    public void Bind(PlayerUpgradeViewModel viewModel)
     {
         _playerUpgradeViewModel = viewModel;
     }

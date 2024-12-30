@@ -7,7 +7,7 @@ public class LampDamageView : MonoBehaviour
     
     private PlayerGameplayViewModel _playerGameplayViewModel;
 
-    public void Construct(PlayerGameplayViewModel playerGameplayViewModel)
+    public void Bind(PlayerGameplayViewModel playerGameplayViewModel)
     {
         _playerGameplayViewModel = playerGameplayViewModel;
         

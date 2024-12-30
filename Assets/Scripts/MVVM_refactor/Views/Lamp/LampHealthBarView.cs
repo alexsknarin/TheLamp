@@ -4,7 +4,7 @@ public class LampHealthBarView : MonoBehaviour
 {
     [SerializeField] private LampHealthBarController _lampHealthBarController;
     PlayerGameplayViewModel _playerGameplayViewModel;
-    public void Construct(PlayerGameplayViewModel playerGameplayViewModel)
+    public void Bind(PlayerGameplayViewModel playerGameplayViewModel)
     {
         _playerGameplayViewModel = playerGameplayViewModel;
         _playerGameplayViewModel.LampNormalizedHealth.OnChangedEvent += UpdateHealth;

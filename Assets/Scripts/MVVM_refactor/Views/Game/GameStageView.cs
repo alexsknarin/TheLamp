@@ -17,7 +17,7 @@ public class GameStageView : MonoBehaviour, IInitializable
         _advertisementAnimationController.Initialize();
     }
 
-    public void Construct(GameStageViewModel viewModel)
+    public void Bind(GameStageViewModel viewModel)
     {
         _gameStageViewModel = viewModel;
         _gameStageViewModel.OnIntroStartedEvent += StartIntro;

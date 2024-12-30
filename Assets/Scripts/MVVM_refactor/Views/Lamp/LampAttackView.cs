@@ -19,7 +19,7 @@ public class LampAttackView : MonoBehaviour, IInitializable
     private PlayerGameplayViewModel _playerGameplayViewModel;
     private IGameConfigService _gameConfigService;
     
-    public void Construct(PlayerGameplayViewModel playerGameplayViewModel, IGameConfigService gameConfigService)
+    public void Bind(PlayerGameplayViewModel playerGameplayViewModel, IGameConfigService gameConfigService)
     {
         _playerGameplayViewModel = playerGameplayViewModel;
         _gameConfigService = gameConfigService;

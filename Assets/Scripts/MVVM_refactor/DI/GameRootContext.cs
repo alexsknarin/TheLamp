@@ -77,7 +77,7 @@ public class GameRootContext : MonoBehaviour
         _gameSettingsViewModel.Initialize();
         
         Debug.Log("------ UI Initialization ------");
-        _consentSettingsUIView.Construct(_gameSettingsViewModel);
+        _consentSettingsUIView.Bind(_gameSettingsViewModel);
         _consentSettingsUIView.Initialize();
         
         Debug.Log("------ Analytics Initialization ------");
@@ -109,33 +109,33 @@ public class GameRootContext : MonoBehaviour
         _lampHealthBarController.Initialize();
         _gameStageViewModel = new GameStageViewModel(_gameModel);
         _disposables.Add(_gameStageViewModel);
-        _gameStageView.Construct(_gameStageViewModel);
+        _gameStageView.Bind(_gameStageViewModel);
         _gameStageView.Initialize();
         _playerAttackViewModel = new PlayerAttackViewModel(_gameModel);
-        _playerAttackUIView.Construct(_playerAttackViewModel);
+        _playerAttackUIView.Bind(_playerAttackViewModel);
         _gameStateViewModel = new GameStateViewModel(_gameModel);
-        _gameStateView.Construct(_gameStateViewModel);
+        _gameStateView.Bind(_gameStateViewModel);
         _playerGameplayViewModel = new PlayerGameplayViewModel(_gameModel);
-        _lampAttackView.Construct(_playerGameplayViewModel, _gameConfigService);
+        _lampAttackView.Bind(_playerGameplayViewModel, _gameConfigService);
         _lampAttackView.Initialize();
-        _lampCooldownView.Construct(_playerGameplayViewModel);
+        _lampCooldownView.Bind(_playerGameplayViewModel);
         _lampCooldownView.Initialize();
-        _lampBlockedModeView.Construct(_playerGameplayViewModel);
+        _lampBlockedModeView.Bind(_playerGameplayViewModel);
         _disposables.Add(_playerGameplayViewModel);
-        _lampHealthBarView.Construct(_playerGameplayViewModel);
+        _lampHealthBarView.Bind(_playerGameplayViewModel);
         _playerEnemyInteractionHandler.Initialize();
-        _lampDamageViewUI.Construct(_playerGameplayViewModel);
-        _lampDamageView.Construct(_playerGameplayViewModel);
+        _lampDamageViewUI.Bind(_playerGameplayViewModel);
+        _lampDamageView.Bind(_playerGameplayViewModel);
         _lampEmissionController.Initialize();
         _scoresCollectionHandler.Initialize();
         _disposables.Add(_scoresCollectionHandler);
-        _playerGameplayViewUI.Construct(_playerGameplayViewModel);
+        _playerGameplayViewUI.Bind(_playerGameplayViewModel);
         _playerGameplayViewUI.Initialize();
         _playerUpgradeViewModel = new PlayerUpgradeViewModel(_gameModel, _gameConfigService);
-        _playerUpgradeViewUI.Construct(_playerUpgradeViewModel);
+        _playerUpgradeViewUI.Bind(_playerUpgradeViewModel);
         _playerUpgradeViewUI.Initialize();
         _gameOverViewModel = new GameOverViewModel(_gameModel);
-        _gameOverViewUI.Construct(_gameOverViewModel);
+        _gameOverViewUI.Bind(_gameOverViewModel);
         _gameOverViewUI.Initialize();
         
         
