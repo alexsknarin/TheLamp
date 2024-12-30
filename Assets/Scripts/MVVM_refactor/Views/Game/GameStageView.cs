@@ -6,6 +6,7 @@ public class GameStageView : MonoBehaviour, IInitializable
     [SerializeField] private PrepareInGameStageAnimationController _prepareInGameStageAnimationController;
     [SerializeField] private PrepareOutGameStageAnimationController _prepareOutGameStageAnimationController;
     [SerializeField] private GameOverInGameStageAnimationController _gameOverInGameStageAnimationController;
+    [SerializeField] private GameOverOutGameStageAnimationController _gameOverOutGameStageAnimationController;
     GameStageViewModel _gameStageViewModel;
     
     public void Construct(GameStageViewModel viewModel)
@@ -15,11 +16,13 @@ public class GameStageView : MonoBehaviour, IInitializable
         _gameStageViewModel.OnPrepareInStartedEvent += StartPrepareIn;
         _gameStageViewModel.OnPrepareOutStartedEvent += StartPrepareOut;
         _gameStageViewModel.OnGameOverInStartedEvent += StartGameOverIn;
+        _gameStageViewModel.OnGameOverOutStartedEvent += StartGameOverOut;
         
         _introGameStageAnimationController.OnFinishedEvent += HandleIntroEnd;
         _prepareInGameStageAnimationController.OnFinishedEvent += HandlePrepareInEnd;
         _prepareOutGameStageAnimationController.OnFinishedEvent += HandlePrepareOutEnd;
         _gameOverInGameStageAnimationController.OnFinishedEvent += HandleGameOverInEnd;
+        _gameOverOutGameStageAnimationController.OnFinishedEvent += HandleGameOverOutEnd;
     }
 
     public void Initialize()
@@ -60,6 +63,11 @@ public class GameStageView : MonoBehaviour, IInitializable
         _gameOverInGameStageAnimationController.Play(enemyPosition);
     }
 
+    private void StartGameOverOut()
+    {
+        _gameOverOutGameStageAnimationController.Play();
+    }
+
     public void HandleIntroEnd()
     {
         _gameStageViewModel.HandleIntroEnd();    
@@ -78,5 +86,10 @@ public class GameStageView : MonoBehaviour, IInitializable
     private void HandleGameOverInEnd()
     {
         _gameStageViewModel.HandleGameOverInEnd();
+    }
+
+    private void HandleGameOverOutEnd()
+    {
+        _gameStageViewModel.HandleGameOverOutEnd();
     }
 }

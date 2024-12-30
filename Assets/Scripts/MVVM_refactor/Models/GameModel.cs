@@ -3,11 +3,23 @@ using UnityEngine;
 
 public class GameModel : IDisposable
 {
-    IGameStateProviderService _gameStateProviderService;
-    private GameState _currentGameState;
-    public GameState CurrentGameState => _currentGameState; // Debug Only
     public int Wave => _currentGameState.Wave;
     public Vector3 LastEnemyPosition { get; private set; }
+    
+    
+    #region CurrentGameState Reactive Property
+    private GameState _currentGameState;
+    public GameState CurrentGameState 
+    {
+        get => _currentGameState;
+        private set
+        {
+            _currentGameState = value;
+            OnGameStateChangedEvent?.Invoke(value);
+        }
+    }
+    public event Action<GameState> OnGameStateChangedEvent; 
+    #endregion
     
     #region CurrentGameStageState Reactive Property
     private GameStageState _currentGameStageState = GameStageState.Loading;
@@ -140,9 +152,10 @@ public class GameModel : IDisposable
     public event Action<Vector3> OnLampDeathEvent;
     
     private bool _isAttacking = false;
-    
+    private bool _isAdPlaying = false;
     
     // Dependencies
+    private IGameStateProviderService _gameStateProviderService;
     private IGameConfigService _gameConfigService;
     private EnemyController _enemyController;
     private PlayerAttackHandler _playerAttackHandler;
@@ -209,6 +222,15 @@ public class GameModel : IDisposable
         _lampDamageDataHandler.MaxHealth = _currentGameState.LampMaxHealth;
     }
 
+    private void RestartGame()
+    {
+        CurrentGameState = _gameStateProviderService.Get();
+        Debug.Log("New GameState Generated");
+        Debug.Log($"Wave: {CurrentGameState.Wave}");
+        _enemyController.Restart();
+        StartGame();
+    }
+
     private void StartPrepareIn()
     {
         CurrentGameStageState = GameStageState.PrepareIn;
@@ -263,11 +285,17 @@ public class GameModel : IDisposable
     {
         StartWave();
     }
-    
+
     public void HandleGameOverInEnd()
     {
         CurrentGameStageState = GameStageState.GameOver;
         Debug.Log("Finally Game is Over");
+    }
+
+    public void HandleGameOverOutEnd()
+    {
+        Debug.Log("Game Over Out Ended ... Starting game Again");
+        RestartGame();
     }
 
     private void HandleWaveEnd()
@@ -363,9 +391,10 @@ public class GameModel : IDisposable
             // TODO: maybe add event to indicate it somehow
         }
     }
-    
-    
+
+
     // --- Upgrades ---
+
     public void HandleHealthUpgrade()
     {
         if (UpgradePoints <= 0)
@@ -431,9 +460,10 @@ public class GameModel : IDisposable
         
         _playerCollidersPropertyController.SetAttackZoneRadius(LampAttackDistance);
     }
-    
+
     // --- Game Over ---
-    public void RestartGameWitAd()
+
+    public void HandleRestartGameWitAdFromGameOver()
     {
         Debug.Log("Making temp save of upgrades....");
         Debug.Log("Making temp save showing ad ....");
@@ -441,12 +471,14 @@ public class GameModel : IDisposable
         Debug.Log("Restarting Game");
     }
 
-    public void RestartGameNoAd()
+    public void HandleRestartGameNoAdFromGameOver()
     {
-        Debug.Log("Cleaning Game State....");
+        _gameStateProviderService.SaveDefaultState();
         Debug.Log("Restarting Game");
+        _isAdPlaying = false;
+        CurrentGameStageState = GameStageState.GameOverOut;
     }
-
+    
     public void ExitGame()
     {
 #if UNITY_STANDALONE

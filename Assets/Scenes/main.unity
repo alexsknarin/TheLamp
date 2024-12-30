@@ -451,6 +451,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Lamp_geo
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 3fc8442acd052ac4f9c1e690f3aa5d74,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1106878187450903751, guid: 3fc8442acd052ac4f9c1e690f3aa5d74,
         type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
@@ -6203,7 +6208,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _googleSheetsDataReader: {fileID: 1037269786}
-  _gameConfigProvider: {fileID: 11400000, guid: 3f3efefe08686ca42805053945790993,
+  _gameConfigProviderService: {fileID: 11400000, guid: 3f3efefe08686ca42805053945790993,
     type: 2}
   _defaultGameStateData: {fileID: 11400000, guid: 3ff52fe343e4e854fa10511aaf897c66,
     type: 2}
@@ -9927,6 +9932,12 @@ Transform:
   m_Children: []
   m_Father: {fileID: 458789824}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -180.98}
+--- !u!1 &1686427690 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5386745095672066518, guid: 3fc8442acd052ac4f9c1e690f3aa5d74,
+    type: 3}
+  m_PrefabInstance: {fileID: 23663150}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1717052713 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -4167416525326943395, guid: 556ccd576c35d634e88ba039c8700cfa,
@@ -10089,6 +10100,7 @@ GameObject:
   - component: {fileID: 1736170227}
   - component: {fileID: 1736170228}
   - component: {fileID: 1736170229}
+  - component: {fileID: 1736170230}
   m_Layer: 0
   m_Name: GameStageVew
   m_TagString: Untagged
@@ -10112,6 +10124,7 @@ MonoBehaviour:
   _prepareInGameStageAnimationController: {fileID: 1736170227}
   _prepareOutGameStageAnimationController: {fileID: 1736170228}
   _gameOverInGameStageAnimationController: {fileID: 1736170229}
+  _gameOverOutGameStageAnimationController: {fileID: 1736170230}
 --- !u!4 &1736170225
 Transform:
   m_ObjectHideFlags: 0
@@ -10171,6 +10184,8 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   _postProcessingVolume: {fileID: 832575518}
+  _lampGlassObject: {fileID: 1686427690}
+  _lampFracturedGlassObject: {fileID: 1565536643}
   _animCurve:
     serializedVersion: 2
     m_Curve:
@@ -10617,6 +10632,49 @@ MonoBehaviour:
   _exitButton: {fileID: 155560126}
   _ingameUi: {fileID: 234870344}
   _lampDeathAnimation: {fileID: 1934066251}
+--- !u!114 &1736170230
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1736170223}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7405230c44d45ea4f9c067c8f6f1b208, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _skip: 0
+  _duration: 1
+  _gameOverUi: {fileID: 1889387872}
+  _gameOverText: {fileID: 1969879655}
+  _gameOverButtonsAnimationCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: -3.1228688
+      outSlope: -3.1228688
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.01733372
+    - serializedVersion: 3
+      time: 1.0012207
+      value: 0
+      inSlope: -0.10108235
+      outSlope: -0.10108235
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.08489914
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _restartWithAdButton: {fileID: 1197657948}
+  _restartNoAdButton: {fileID: 949782840}
+  _exitButton: {fileID: 155560126}
 --- !u!4 &1755611450 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 92097553111088338, guid: 556ccd576c35d634e88ba039c8700cfa,

@@ -16,6 +16,8 @@ public class IntroGameStageAnimationController : MonoBehaviour, IInitializable
     [SerializeField] private AnimationCurve _cameraAnimationCurve;
     [SerializeField] private Volume _postProcessingVolume;
     [Header("Lamp Dependencies")]
+    [SerializeField] private GameObject _lampGlassObject;
+    [SerializeField] private GameObject _lampFracturedGlassObject;
     [SerializeField] private AnimationCurve _animCurve;
     [SerializeField] private LampHealthBarController _lampHealthBarController;
     [SerializeField] private LampEmissionController _lampEmissionController;
@@ -57,6 +59,9 @@ public class IntroGameStageAnimationController : MonoBehaviour, IInitializable
     
     public void Play(float normalizedHealth)
     {
+        _lampGlassObject.SetActive(true);
+        _lampFracturedGlassObject.SetActive(false);
+        
         _currentHealth = normalizedHealth;
         _lampAttackZoneRenderer.gameObject.SetActive(true);
         _ingameUi.SetActive(true);

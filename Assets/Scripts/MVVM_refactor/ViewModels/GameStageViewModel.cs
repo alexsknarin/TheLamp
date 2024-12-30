@@ -8,6 +8,7 @@ public class GameStageViewModel : IDisposable
     public event Action<bool, int> OnPrepareInStartedEvent;
     public event Action OnPrepareOutStartedEvent;
     public event Action<Vector3> OnGameOverInStartedEvent;
+    public event Action OnGameOverOutStartedEvent;
 
     public GameStageViewModel(GameModel gameModel)
     {
@@ -36,6 +37,9 @@ public class GameStageViewModel : IDisposable
             case GameStageState.GameOverIn:
                 OnGameOverInStartedEvent?.Invoke(_gameModel.LastEnemyPosition);
                 break;
+            case GameStageState.GameOverOut:
+                OnGameOverOutStartedEvent?.Invoke();
+                break;
         }
     }
     
@@ -59,5 +63,10 @@ public class GameStageViewModel : IDisposable
     public void HandleGameOverInEnd()
     {
         _gameModel.HandleGameOverInEnd();    
+    }
+
+    public void HandleGameOverOutEnd()
+    {
+        _gameModel.HandleGameOverOutEnd();
     }
 }

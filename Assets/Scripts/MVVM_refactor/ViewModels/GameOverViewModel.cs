@@ -9,12 +9,12 @@ public class GameOverViewModel
     
     public void RestartGameWitAd()
     {
-        _gameModel.RestartGameWitAd();
+        _gameModel.HandleRestartGameWitAdFromGameOver();
     }
     
     public void RestartGame()
     {
-        _gameModel.RestartGameNoAd();
+        _gameModel.HandleRestartGameNoAdFromGameOver();
     }
     
     public void ExitGame()

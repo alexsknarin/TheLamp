@@ -116,6 +116,6 @@ public class PlayerGameplayViewModel : IDisposable
         // TODO: show popup that progress will be lost
         // TODO: turn into restart a wave
         // TODO: maybe remove this button at all
-        _gameModel.RestartGameNoAd();
+        _gameModel.HandleRestartGameNoAdFromGameOver();
     }
 }

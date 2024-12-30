@@ -11,16 +11,12 @@ public class PlayerPrefsGameStateProviderService : IGameStateProviderService
     
     public GameState Get()
     {
-        if (_gameState != null)
-        {
-            return _gameState;
-        }
-        
         if (PlayerPrefs.HasKey("GameState"))
         {
             Debug.Log("GameState found in PlayerPrefs");
             string gameStateJson = PlayerPrefs.GetString("GameState");
-            _gameState = JsonUtility.FromJson<GameState>(gameStateJson);
+            GameState gameState = JsonUtility.FromJson<GameState>(gameStateJson);
+            _gameState = gameState;
             return _gameState;
         }
         else
