@@ -20,98 +20,98 @@ public class GameStageView : MonoBehaviour, IInitializable
     public void Bind(GameStageViewModel viewModel)
     {
         _gameStageViewModel = viewModel;
-        _gameStageViewModel.OnIntroStartedEvent += StartIntro;
-        _gameStageViewModel.OnPrepareInStartedEvent += StartPrepareIn;
-        _gameStageViewModel.OnPrepareOutStartedEvent += StartPrepareOut;
-        _gameStageViewModel.OnGameOverInStartedEvent += StartGameOverIn;
-        _gameStageViewModel.OnGameOverOutStartedEvent += StartGameOverOut;
-        _gameStageViewModel.OnAdvertisementStartedEvent += StartAdvertisement;
+        _gameStageViewModel.IntroStarted += OnIntroStarted;
+        _gameStageViewModel.PrepareInStarted += OnPrepareInStarted;
+        _gameStageViewModel.PrepareOutStarted += OnPrepareOutStarted;
+        _gameStageViewModel.GameOverInStarted += OnGameOverInStarted;
+        _gameStageViewModel.GameOverOutStarted += OnGameOverOutStarted;
+        _gameStageViewModel.AdvertisementStarted += OnAdvertisementStarted;
         
-        _introGameStageAnimationController.OnFinishedEvent += HandleIntroEnd;
-        _prepareInGameStageAnimationController.OnFinishedEvent += HandlePrepareInEnd;
-        _prepareOutGameStageAnimationController.OnFinishedEvent += HandlePrepareOutEnd;
-        _gameOverInGameStageAnimationController.OnFinishedEvent += HandleGameOverInEnd;
-        _gameOverOutGameStageAnimationController.OnFinishedEvent += HandleGameOverOutEnd;
-        _advertisementAnimationController.OnFinishedEvent += HandleAdvertisementEnd;
+        _introGameStageAnimationController.IntroFinished += OnIntroFinished;
+        _prepareInGameStageAnimationController.PrepareInFinished += OnPrepareInFinished;
+        _prepareOutGameStageAnimationController.PrepareOutFinished += OnPrepareOutFinished;
+        _gameOverInGameStageAnimationController.GameoverInFinished += OnGameoverInFinished;
+        _gameOverOutGameStageAnimationController.GameoverOutFinished += OnGameoverOutFinished;
+        _advertisementAnimationController.AdvertisementFinished += OnAdvertisementFinished;
     }
 
     private void OnDestroy()
     {
-        _gameStageViewModel.OnIntroStartedEvent -= StartIntro;
-        _gameStageViewModel.OnPrepareInStartedEvent -= StartPrepareIn;
-        _gameStageViewModel.OnPrepareOutStartedEvent -= StartPrepareOut;
-        _gameStageViewModel.OnGameOverInStartedEvent -= StartGameOverIn;
-        _gameStageViewModel.OnGameOverOutStartedEvent -= StartGameOverOut;
-        _gameStageViewModel.OnAdvertisementStartedEvent -= StartAdvertisement;
+        _gameStageViewModel.IntroStarted -= OnIntroStarted;
+        _gameStageViewModel.PrepareInStarted -= OnPrepareInStarted;
+        _gameStageViewModel.PrepareOutStarted -= OnPrepareOutStarted;
+        _gameStageViewModel.GameOverInStarted -= OnGameOverInStarted;
+        _gameStageViewModel.GameOverOutStarted -= OnGameOverOutStarted;
+        _gameStageViewModel.AdvertisementStarted -= OnAdvertisementStarted;
         
-        _introGameStageAnimationController.OnFinishedEvent -= HandleIntroEnd;
-        _prepareInGameStageAnimationController.OnFinishedEvent -= HandlePrepareInEnd;
-        _prepareOutGameStageAnimationController.OnFinishedEvent -= HandlePrepareOutEnd;
-        _gameOverInGameStageAnimationController.OnFinishedEvent -= HandleGameOverInEnd;
-        _gameOverOutGameStageAnimationController.OnFinishedEvent -= HandleGameOverOutEnd;
-        _advertisementAnimationController.OnFinishedEvent += HandleAdvertisementEnd;
+        _introGameStageAnimationController.IntroFinished -= OnIntroFinished;
+        _prepareInGameStageAnimationController.PrepareInFinished -= OnPrepareInFinished;
+        _prepareOutGameStageAnimationController.PrepareOutFinished -= OnPrepareOutFinished;
+        _gameOverInGameStageAnimationController.GameoverInFinished -= OnGameoverInFinished;
+        _gameOverOutGameStageAnimationController.GameoverOutFinished -= OnGameoverOutFinished;
+        _advertisementAnimationController.AdvertisementFinished += OnAdvertisementFinished;
     }
 
-
-    public void StartIntro(float normalizedHealth)
+    // View Model Event Handlers
+    private void OnIntroStarted(float normalizedHealth)
     {
         _introGameStageAnimationController.Play(normalizedHealth);
     }
 
-    private void StartPrepareIn(bool isUpgradeUiRequired, int waveNum)
+    private void OnPrepareInStarted(bool isUpgradeUiRequired, int waveNum)
     {
         _prepareInGameStageAnimationController.Play(isUpgradeUiRequired, waveNum);
     }
 
-    private void StartPrepareOut()
+    private void OnPrepareOutStarted()
     {
         _prepareOutGameStageAnimationController.Play();   
     }
 
-    private void StartGameOverIn(Vector3 enemyPosition)
+    private void OnGameOverInStarted(Vector3 enemyPosition)
     {
         _gameOverInGameStageAnimationController.Play(enemyPosition);
     }
 
-    private void StartGameOverOut()
+    private void OnGameOverOutStarted()
     {
         _gameOverOutGameStageAnimationController.Play();
     }
 
-    private void StartAdvertisement()
+    private void OnAdvertisementStarted()
     {
         _advertisementAnimationController.Play();
     }
 
 
-    // Event Handlers
+    // Animation controllers Event Handlers
 
-    public void HandleIntroEnd()
+    private void OnIntroFinished()
     {
         _gameStageViewModel.HandleIntroEnd();    
     }
 
-    public void HandlePrepareInEnd()
+    private void OnPrepareInFinished()
     {
         _gameStageViewModel.HandlePrepareInEnd();    
     }
 
-    public void HandlePrepareOutEnd()
+    private void OnPrepareOutFinished()
     {
         _gameStageViewModel.HandlePrepareOutEnd();    
     }
 
-    private void HandleGameOverInEnd()
+    private void OnGameoverInFinished()
     {
         _gameStageViewModel.HandleGameOverInEnd();
     }
 
-    private void HandleGameOverOutEnd()
+    private void OnGameoverOutFinished()
     {
         _gameStageViewModel.HandleGameOverOutEnd();
     }
 
-    private void HandleAdvertisementEnd()
+    private void OnAdvertisementFinished()
     {
         _gameStageViewModel.HandleAdvertisementEnd();
     }

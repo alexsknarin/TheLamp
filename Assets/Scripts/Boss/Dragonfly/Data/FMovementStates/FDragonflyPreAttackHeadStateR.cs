@@ -9,7 +9,7 @@ public class FDragonflyPreAttackHeadStateR : ScriptableObject, IState
     [SerializeField] private float _deccelerationPower = 2f;
     [SerializeField] private float _sideSpeed = 0.5f;
     
-    public event Action OnStartedEvent;
+    public event Action Started;
     
     private Vector3 _attackDirection;
     private readonly int _sideDirection = -1;
@@ -41,7 +41,7 @@ public class FDragonflyPreAttackHeadStateR : ScriptableObject, IState
         _startRotation = _visibleBodyTransform.rotation;
         _endRotation = Quaternion.LookRotation(_attackDirection, Vector3.up);
         _readyToSwitch = false;
-        OnStartedEvent?.Invoke();
+        Started?.Invoke();
     }
 
     public void Tick()

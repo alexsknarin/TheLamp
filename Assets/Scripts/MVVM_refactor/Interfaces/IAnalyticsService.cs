@@ -2,7 +2,7 @@ using System;
 
 public interface IAnalyticsService
 {
-    public event Action OnConsentAddressedEvent;
+    public event Action ConsentAddressed;
     public void SubmitWaveStartEvent(int wave);
     public void SubmitWaveEndEvent(int wave);
     public void SubmitLampDamageEvent(EnemyBase enemy);

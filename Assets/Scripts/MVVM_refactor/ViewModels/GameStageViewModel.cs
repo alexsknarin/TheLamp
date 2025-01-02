@@ -4,22 +4,22 @@ using UnityEngine;
 public class GameStageViewModel : IDisposable
 {
     private GameModel _gameModel;
-    public event Action<float> OnIntroStartedEvent;
-    public event Action<bool, int> OnPrepareInStartedEvent;
-    public event Action OnPrepareOutStartedEvent;
-    public event Action<Vector3> OnGameOverInStartedEvent;
-    public event Action OnGameOverOutStartedEvent;
-    public event Action OnAdvertisementStartedEvent;
+    public event Action<float> IntroStarted;
+    public event Action<bool, int> PrepareInStarted;
+    public event Action PrepareOutStarted;
+    public event Action<Vector3> GameOverInStarted;
+    public event Action GameOverOutStarted;
+    public event Action AdvertisementStarted;
 
     public GameStageViewModel(GameModel gameModel)
     {
         _gameModel = gameModel;
-        _gameModel.OnGameStageStateChangedEvent += OnGameStageStateChanged;
+        _gameModel.GameStageStateChanged += OnGameStageStateChanged;
     }
 
     public void Dispose()
     {
-        _gameModel.OnGameStageStateChangedEvent -= OnGameStageStateChanged;
+        _gameModel.GameStageStateChanged -= OnGameStageStateChanged;
     }
 
     private void OnGameStageStateChanged(GameStageState newState)
@@ -27,22 +27,22 @@ public class GameStageViewModel : IDisposable
         switch (newState)
         {
             case GameStageState.Intro:
-                OnIntroStartedEvent?.Invoke((float)_gameModel.LampHealth / (float)_gameModel.LampMaxHealth);
+                IntroStarted?.Invoke((float)_gameModel.LampHealth / (float)_gameModel.LampMaxHealth);
                 break;
             case GameStageState.PrepareIn:
-                OnPrepareInStartedEvent?.Invoke(_gameModel.UpgradePoints>0, _gameModel.Wave);
+                PrepareInStarted?.Invoke(_gameModel.UpgradePoints>0, _gameModel.Wave);
                 break;
             case GameStageState.PrepareOut:
-                OnPrepareOutStartedEvent?.Invoke();
+                PrepareOutStarted?.Invoke();
                 break;
             case GameStageState.GameOverIn:
-                OnGameOverInStartedEvent?.Invoke(_gameModel.LastEnemyPosition);
+                GameOverInStarted?.Invoke(_gameModel.LastEnemyPosition);
                 break;
             case GameStageState.GameOverOut:
-                OnGameOverOutStartedEvent?.Invoke();
+                GameOverOutStarted?.Invoke();
                 break;
             case GameStageState.Advertisement:
-                OnAdvertisementStartedEvent?.Invoke();
+                AdvertisementStarted?.Invoke();
                 break;
         }
     }

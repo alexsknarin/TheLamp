@@ -11,7 +11,7 @@ public class FDragonflyAttackTailStateL : ScriptableObject, IState
     [SerializeField] private AnimationCurve _ryCurve;
     [SerializeField] private AnimationCurve _rzCurve;
     
-    public event Action OnStartedEvent;
+    public event Action Started;
     
     private float _localTime = 0f;
     private float _phase = 0f;
@@ -44,7 +44,7 @@ public class FDragonflyAttackTailStateL : ScriptableObject, IState
         
         _localTime = 0f;
         _phase = 0f;
-        OnStartedEvent?.Invoke();
+        Started?.Invoke();
     }
     
     public void Tick()

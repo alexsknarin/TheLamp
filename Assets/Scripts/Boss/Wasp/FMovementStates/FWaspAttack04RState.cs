@@ -3,16 +3,15 @@ using UnityEngine;
 
 public class FWaspAttack04RState : FWaspAnimBaseState
 {
-    public FWaspAttack04RState(Animator animator, int clipHash, Transform baseTransform) : base(animator, clipHash, baseTransform)
-    {
-    }
+    public FWaspAttack04RState(Animator animator, int clipHash, Transform baseTransform) : 
+        base(animator, clipHash, baseTransform) { }
     
-    public event Action OnStartedEvent;
+    public event Action Started;
     
     public override void OnEnter()
     {
         _baseTransform.localScale = _baseScaleR;
         _animator.Play(_clipHash, -1, 0);
-        OnStartedEvent?.Invoke();
+        Started?.Invoke();
     }
 }

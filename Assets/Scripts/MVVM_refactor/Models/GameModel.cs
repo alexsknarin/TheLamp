@@ -8,28 +8,21 @@ public class GameModel : IDisposable, ILampDeadEventProviderService
 
 
     #region CurrentGameState Reactive Property
-
     private GameState _currentGameState;
-
     public GameState CurrentGameState 
     {
         get => _currentGameState;
         private set
         {
             _currentGameState = value;
-            OnGameStateChangedEvent?.Invoke(value);
+            GameStateChanged?.Invoke(value);
         }
     }
-
-
-    public event Action<GameState> OnGameStateChangedEvent;
-
+    public event Action<GameState> GameStateChanged;
     #endregion
 
     #region CurrentGameStageState Reactive Property
-
     private GameStageState _currentGameStageState = GameStageState.Loading;
-
     public GameStageState CurrentGameStageState
     {
         get => _currentGameStageState;
@@ -39,88 +32,69 @@ public class GameModel : IDisposable, ILampDeadEventProviderService
             _currentGameStageState = value;
             if (!oldValue.Equals(value))
             {
-                OnGameStageStateChangedEvent?.Invoke(value);
+                GameStageStateChanged?.Invoke(value);
             }
         }
     }
-
-
-    public event Action<GameStageState> OnGameStageStateChangedEvent;
-
+    public event Action<GameStageState> GameStageStateChanged;
     #endregion
 
     #region LampLevel Reactive Property
-
     public int LampLevel
     {
         get => _currentGameState.LampLevel;
         private set
         {
             _currentGameState.LampLevel = value;
-            OnLampLevelChangedEvent?.Invoke(value);
+            LampLevelChanged?.Invoke(value);
         }
     }
 
 
-    public event Action<int> OnLampLevelChangedEvent;
-
+    public event Action<int> LampLevelChanged;
     #endregion
 
     #region CurrentPower Reactive Property
-
     private float _currentPower;
-
     public float CurrentPower
     {
         get => _currentPower;
         private set
         {
             _currentPower = value;
-            OnPowerChangedEvent?.Invoke(value);
+            PowerChanged?.Invoke(value);
         }
     }
-
-
-    public event Action<float> OnPowerChangedEvent;
-
+    public event Action<float> PowerChanged;
     #endregion
 
     #region LampHealth Reactive Property
-
     public int LampHealth
     {
         get => _currentGameState.LampHealth;
         private set
         {
             _currentGameState.LampHealth = value;
-            OnLampHealthChangedEvent?.Invoke(value);
+            LampHealthChanged?.Invoke(value);
         }
     }
-
-
-    public event Action<int> OnLampHealthChangedEvent;
-
+    public event Action<int> LampHealthChanged;
     #endregion
 
     #region LampMaxHealth Reactive Property
-
     public int LampMaxHealth
     {
         get => _currentGameState.LampMaxHealth;
         private set
         {
             _currentGameState.LampMaxHealth = value;
-            OnLampMaxHealthChangedEvent?.Invoke(value);
+            LampMaxHealthChanged?.Invoke(value);
         }
     }
-
-
-    public event Action<int> OnLampMaxHealthChangedEvent;
-
+    public event Action<int> LampMaxHealthChanged;
     #endregion
 
     #region LampGlassDamage Reactive Property
-
     public GlassDamageData LampGlassDamage
     
     {
@@ -128,90 +102,70 @@ public class GameModel : IDisposable, ILampDeadEventProviderService
         private set
         {
             _currentGameState.GlassDamageData = value;
-            OnLampGlassDamageChangedEvent?.Invoke(value);
+            LampGlassDamageChanged?.Invoke(value);
         }
     }
-
-
-    public event Action<GlassDamageData> OnLampGlassDamageChangedEvent;
-
+    public event Action<GlassDamageData> LampGlassDamageChanged;
     #endregion
 
     #region LampBlocked Reactive Property
-
     private bool _isLampBlocked;
-
     public bool IsLampBlocked
     {
         get => _isLampBlocked;
         private set
         {
             _isLampBlocked = value;
-            OnLampBlockedModeSetEvent?.Invoke(value);
+            LampBlockedModeSet?.Invoke(value);
         }
     }
-
-
-    public event Action<bool> OnLampBlockedModeSetEvent;
-
+    public event Action<bool> LampBlockedModeSet;
     #endregion
 
     #region UpgradePoints Reactive Property
-
     public int UpgradePoints
     {
         get => _currentGameState.LampUpgradePoints;
         private set
         {
             _currentGameState.LampUpgradePoints = value;
-            OnUpgradePointsChangedEvent?.Invoke(value);
+            UpgradePointsChanged?.Invoke(value);
         }
     }
-
-
-    public event Action<int> OnUpgradePointsChangedEvent;
-
+    public event Action<int> UpgradePointsChanged;
     #endregion
 
     #region LampAttackDistance Reactive Property
-
     public float LampAttackDistance
     {
         get => _currentGameState.LampAttackDistance;
         private set
         {
             _currentGameState.LampAttackDistance = value;
-            OnLampAttackDistanceChangedEvent?.Invoke(value);
+            LampAttackDistanceChanged?.Invoke(value);
         }
     }
-
-
-    public event Action<float> OnLampAttackDistanceChangedEvent;
-
+    public event Action<float> LampAttackDistanceChanged;
     #endregion
 
     #region LampCooldownTime Reactive Property
-
     public float LampCooldownTime
     {
         get => _currentGameState.LampCooldownTime;
         private set
         {
             _currentGameState.LampCooldownTime = value;
-            OnLampCooldownTimeChangedEvent?.Invoke(value);
+            LampCooldownTimeChanged?.Invoke(value);
         }
     }
-
-
-    public event Action<float> OnLampCooldownTimeChangedEvent;
-
+    public event Action<float> LampCooldownTimeChanged;
     #endregion
 
 
-    public event Action<float> OnLampAttackStartedEvent;
-    public event Action<float> OnLampDamageStartedEvent;
-    public event Action<Vector3> OnLampDeathEvent; // TODO: make single event for all lamp death events
-    public event Action<EnemyBase> OnLampDeadEvent;
+    public event Action<float> LampAttackStarted;
+    public event Action<float> LampDamageStarted;
+    public event Action<Vector3> LampDeathHappened; // TODO: make single event for all lamp death events
+    public event Action<EnemyBase> LampDied;
 
     private bool _isAttacking = false;
     private bool _isAdPlaying = false;
@@ -251,22 +205,22 @@ public class GameModel : IDisposable, ILampDeadEventProviderService
         _scoresCollectionHandler = scoresCollectionHandler;
         
         // Subscriptions
-        _enemyController.OnWaveEndEvent += HandleWaveEnd;
-        _playerAttackHandler.OnAttackEndedEvent += HandleLampAttackEnded;
-        _playerAttackHandler.OnPowerChangedEvent += HandlePowerChanged;
-        _playerEnemyInteractionHandler.OnLampBlockedSetEvent += SetLampBlockedState;
-        _playerEnemyInteractionHandler.OnEnemyAttackDeflectedEvent += HandleEnemyAttackDeflected;
-        _scoresCollectionHandler.OnScoreChangeEvent += HandleScoreChange;
+        _enemyController.WaveEnded += OnWaveEnded;
+        _playerAttackHandler.PlayerAttackEnded += OnPlayerAttackEnded;
+        _playerAttackHandler.PowerChanged += OnPowerChanged;
+        _playerEnemyInteractionHandler.LampBlockedStarted += OnLampBlockedStarted;
+        _playerEnemyInteractionHandler.EnemyAttackBounced += OnEnemyAttackBounced;
+        _scoresCollectionHandler.ScoreChanged += OnScoreChanged;
     }
 
     public void Dispose()
     {
-        _enemyController.OnWaveEndEvent -= HandleWaveEnd;
-        _playerAttackHandler.OnAttackEndedEvent -= HandleLampAttackEnded;
-        _playerAttackHandler.OnPowerChangedEvent -= HandlePowerChanged;
-        _playerEnemyInteractionHandler.OnLampBlockedSetEvent -= SetLampBlockedState;
-        _playerEnemyInteractionHandler.OnEnemyAttackDeflectedEvent -= HandleEnemyAttackDeflected;
-        _scoresCollectionHandler.OnScoreChangeEvent -= HandleScoreChange;
+        _enemyController.WaveEnded -= OnWaveEnded;
+        _playerAttackHandler.PlayerAttackEnded -= OnPlayerAttackEnded;
+        _playerAttackHandler.PowerChanged -= OnPowerChanged;
+        _playerEnemyInteractionHandler.LampBlockedStarted -= OnLampBlockedStarted;
+        _playerEnemyInteractionHandler.EnemyAttackBounced -= OnEnemyAttackBounced;
+        _scoresCollectionHandler.ScoreChanged -= OnScoreChanged;
     }
 
     public void StartGame()
@@ -371,7 +325,7 @@ public class GameModel : IDisposable, ILampDeadEventProviderService
         RestartGame();
     }
 
-    private void HandleWaveEnd()
+    private void OnWaveEnded()
     {
         Debug.Log($"Wave {_currentGameState.Wave} Ended");
         _currentGameState.Wave++;
@@ -388,7 +342,7 @@ public class GameModel : IDisposable, ILampDeadEventProviderService
             {
                 _isAttacking = true;
                 _playerAttackHandler.PlayAttack();
-                OnLampAttackStartedEvent?.Invoke(CurrentPower); // Attack Power
+                LampAttackStarted?.Invoke(CurrentPower); // Attack Power
             }
         }
         if (_currentGameStageState == GameStageState.Wave)
@@ -397,7 +351,7 @@ public class GameModel : IDisposable, ILampDeadEventProviderService
             {
                 _isAttacking = true;
                 _playerAttackHandler.PlayAttack();
-                OnLampAttackStartedEvent?.Invoke(CurrentPower); // Attack Power
+                LampAttackStarted?.Invoke(CurrentPower); // Attack Power
                 _playerEnemyInteractionHandler.LampAttack();
                 _enemyController.HandleAttackButtonClicked(CurrentPower);
             }
@@ -409,17 +363,17 @@ public class GameModel : IDisposable, ILampDeadEventProviderService
         _playerAttackHandler.PlayCooldown();
     }
 
-    private void HandleLampAttackEnded()
+    private void OnPlayerAttackEnded()
     {
         _isAttacking = false;
     }
 
-    private void HandlePowerChanged(float power)
+    private void OnPowerChanged(float power)
     {
         CurrentPower = power;
     }
 
-    private void SetLampBlockedState(bool isBlocked, EnemyBase enemy)
+    private void OnLampBlockedStarted(bool isBlocked, EnemyBase enemy)
     {
         IsLampBlocked = isBlocked;
         _enemyController.SetBlockedMode(isBlocked);
@@ -427,7 +381,7 @@ public class GameModel : IDisposable, ILampDeadEventProviderService
         _lampMovementController.AddForce(-enemy.ProvideImpactPoint().normalized.x * 2);
     }
 
-    private void HandleEnemyAttackDeflected(bool isDeflected, EnemyBase enemy)
+    private void OnEnemyAttackBounced(bool isDeflected, EnemyBase enemy)
     {
         if (!isDeflected || IsLampBlocked)
         {
@@ -439,8 +393,8 @@ public class GameModel : IDisposable, ILampDeadEventProviderService
                 LastEnemyPosition = enemy.ProvideImpactPoint();
                 _lampMovementController.AddForce(-LastEnemyPosition.normalized.x * 2);
                 _enemyController.HandleLampDestroyed();
-                OnLampDeathEvent?.Invoke(enemy.ProvideImpactPoint());
-                OnLampDeadEvent?.Invoke(enemy);
+                LampDeathHappened?.Invoke(enemy.ProvideImpactPoint());
+                LampDied?.Invoke(enemy);
                 StartGameOver();
                 Debug.Log("++++++++++ Game Over ++++++++++");
                 return;
@@ -452,11 +406,11 @@ public class GameModel : IDisposable, ILampDeadEventProviderService
             // Or calculate it in the LampMovementController because it knows about lamp position
             
             _lampMovementController.AddForce(-enemy.ProvideImpactPoint().normalized.x * 2); 
-            OnLampDamageStartedEvent?.Invoke(_gameConfigService.PlayerConfig.DamageDuration);
+            LampDamageStarted?.Invoke(_gameConfigService.PlayerConfig.DamageDuration);
         }
     }
 
-    private void HandleScoreChange(int newScore)
+    private void OnScoreChanged(int newScore)
     {
         _currentGameState.UpgradeData.Score += newScore;
         int newUpgradePoints = _upgradeHandler.GetUpgradePointsAndUpdateScoreData(ref _currentGameState.UpgradeData);

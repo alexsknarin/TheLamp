@@ -11,7 +11,7 @@ public class EnemySpawner : ITickable
 
     public BossBase Boss { get; private set; }
     
-    public event Action<BossBase> OnBossSpawnedEvent;
+    public event Action<BossBase> BossSpawned;
     
     // Dependencies
     private readonly SpawnQueue _spawnQueue;
@@ -119,7 +119,7 @@ public class EnemySpawner : ITickable
                 {
                     EnemyBase enemy = SpawnBoss(_enemyQueue.Get(_currentEnemyIndex));
                     _enemies.Add(enemy);
-                    OnBossSpawnedEvent?.Invoke(Boss);
+                    BossSpawned?.Invoke(Boss);
                 }
                 else
                 {

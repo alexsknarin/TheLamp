@@ -24,8 +24,8 @@ public class ConsentSettingsViewUI : MonoBehaviour, IInitializable
         _enableDataCollectionButton.onClick.AddListener(_gameSettingsViewModel.HandleEnableDataCollectionButtonClicked);
         _disableDataCollectionButton.onClick.AddListener(_gameSettingsViewModel.HandleDisableDataCollectionButtonClicked);
         
-        _gameSettingsViewModel.IsConsentSetView.OnChangedEvent += HandleConsentSetOnChangedEvent;
-        _gameSettingsViewModel.IsDataCollectionEnabledView.OnChangedEvent += HandleDataCollectionEnabledChanged;
+        _gameSettingsViewModel.IsConsentSetView.Changed += OnIsConsentSetViewChanged;
+        _gameSettingsViewModel.IsDataCollectionEnabledView.Changed += OnIsDataCollectionEnabledViewChanged;
         // Initial UI setup
         _consentPanel.SetActive(!_gameSettingsViewModel.IsConsentSetView.Value);
         _enableDataCollectionButton.gameObject.SetActive(!_gameSettingsViewModel.IsDataCollectionEnabledView.Value);
@@ -34,16 +34,16 @@ public class ConsentSettingsViewUI : MonoBehaviour, IInitializable
 
     private void OnDestroy()
     {
-        _gameSettingsViewModel.IsConsentSetView.OnChangedEvent -= HandleConsentSetOnChangedEvent;
-        _gameSettingsViewModel.IsDataCollectionEnabledView.OnChangedEvent -= HandleDataCollectionEnabledChanged;
+        _gameSettingsViewModel.IsConsentSetView.Changed -= OnIsConsentSetViewChanged;
+        _gameSettingsViewModel.IsDataCollectionEnabledView.Changed -= OnIsDataCollectionEnabledViewChanged;
     }
 
-    private void HandleConsentSetOnChangedEvent(object sender, Observable<bool>.ChangedEventArgs e)
+    private void OnIsConsentSetViewChanged(object sender, Observable<bool>.ChangedEventArgs e)
     {
         _consentPanel.SetActive(!e.NewValue);
     }
 
-    private void HandleDataCollectionEnabledChanged(object sender, Observable<bool>.ChangedEventArgs e)
+    private void OnIsDataCollectionEnabledViewChanged(object sender, Observable<bool>.ChangedEventArgs e)
     {
         _enableDataCollectionButton.gameObject.SetActive(!e.NewValue);
         _disableDataCollectionButton.gameObject.SetActive(e.NewValue);

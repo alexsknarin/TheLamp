@@ -10,21 +10,21 @@ public class DragonflyProjectileSpider : EnemyBase
     [SerializeField] private Collider2D _collider;
     [SerializeField] private TrailRenderer _trailRenderer;
     public override EnemyType EnemyType => _enemyType;
-    public event Action OnEnterAnimationEndEvent;
+    public event Action EnterAnimationEnded;
     
     private void OnEnable()
     {
         // LampAttackModel.OnLampAttackEvent += TMPHandleLampAttack; // TODO: fix this
-        _movement.OnEnterAnimationEndEvent += OnEnterAnimationEndHandle;
-        _movement.OnFallEndedEvent += OnFallEndedHandle;
+        _movement.EnterAnimationEnded += OnEnterAnimationEndHandle;
+        _movement.FallEnded += OnFallEndedHandle;
         
     }
     
     private void OnDisable()
     {
         // LampAttackModel.OnLampAttackEvent -= TMPHandleLampAttack;
-        _movement.OnEnterAnimationEndEvent -= OnEnterAnimationEndHandle;
-        _movement.OnFallEndedEvent -= OnFallEndedHandle;
+        _movement.EnterAnimationEnded -= OnEnterAnimationEndHandle;
+        _movement.FallEnded -= OnFallEndedHandle;
     }
 
     public override void Initialize()
@@ -40,7 +40,7 @@ public class DragonflyProjectileSpider : EnemyBase
     private void OnEnterAnimationEndHandle()
     {
         _presentation.SwitchToCaughtState();
-        OnEnterAnimationEndEvent?.Invoke();
+        EnterAnimationEnded?.Invoke();
     }
 
     public void Play(int direction)

@@ -18,31 +18,31 @@ public class Megabeetle : BossBase
     
     private void OnEnable()
     {
-        _enemyMovement.OnPreAttackStartEvent += OnPreAttackStartHandle;
-        _enemyMovement.OnPreAttackEndEvent += OnPreAttackEndHandle;
-        _enemyMovement.OnAttackEndEvent += AttackStatusEnable;
-        _enemyMovement.OnEnemyDeactivatedEvent += OnDeactivatedHandle;
-        _enemyMovement.OnMovementResetEvent += OnMovementResetHandle;
-        _enemyMovement.OnStickStartEvent += StickStatusEnable;
-        _enemyMovement.OnDeathStateEndedEvent += HandleDeathMoveStateEnd;
-        _enemyMovement.OnStickAttackStateEndedEvent += HandleStickAttack;
-        _enemyMovement.OnTriggerSpreadEvent += MegabeetleTriggerSpread;
+        _enemyMovement.PreAttackStarted += OnPreAttackStarted;
+        _enemyMovement.PreAttackEnded += OnPreAttackEnded;
+        _enemyMovement.AttackEnded += OnAttackEnded;
+        _enemyMovement.EnemyDeactivated += OnEnemyDeactivated;
+        _enemyMovement.MovementReseted += OnMovementReseted;
+        _enemyMovement.StickStarted += OnStickStarted;
+        _enemyMovement.DeathStateEnded += OnDeathStateEnded;
+        _enemyMovement.StickAttackStateEnded += OnStickAttackStateEnded;
+        _enemyMovement.SpreadTriggered += OnSpreadTriggered;
     }
     
     private void OnDisable()
     {
-        _enemyMovement.OnPreAttackStartEvent -= OnPreAttackStartHandle;
-        _enemyMovement.OnPreAttackEndEvent -= OnPreAttackEndHandle;
-        _enemyMovement.OnAttackEndEvent -= AttackStatusEnable;
-        _enemyMovement.OnEnemyDeactivatedEvent -= OnDeactivatedHandle;
-        _enemyMovement.OnMovementResetEvent -= OnMovementResetHandle;
-        _enemyMovement.OnStickStartEvent -= StickStatusEnable;
-        _enemyMovement.OnDeathStateEndedEvent -= HandleDeathMoveStateEnd;
-        _enemyMovement.OnStickAttackStateEndedEvent -= HandleStickAttack;
-        _enemyMovement.OnTriggerSpreadEvent -= MegabeetleTriggerSpread;
+        _enemyMovement.PreAttackStarted -= OnPreAttackStarted;
+        _enemyMovement.PreAttackEnded -= OnPreAttackEnded;
+        _enemyMovement.AttackEnded -= OnAttackEnded;
+        _enemyMovement.EnemyDeactivated -= OnEnemyDeactivated;
+        _enemyMovement.MovementReseted -= OnMovementReseted;
+        _enemyMovement.StickStarted -= OnStickStarted;
+        _enemyMovement.DeathStateEnded -= OnDeathStateEnded;
+        _enemyMovement.StickAttackStateEnded -= OnStickAttackStateEnded;
+        _enemyMovement.SpreadTriggered -= OnSpreadTriggered;
     }
 
-    private void MegabeetleTriggerSpread()
+    private void OnSpreadTriggered()
     {
         OnTriggerSpreadInvoke();
     }
@@ -80,7 +80,7 @@ public class Megabeetle : BossBase
         gameObject.SetActive(false);
     }
     
-    private void OnMovementResetHandle()
+    private void OnMovementReseted()
     {
         _enemyPresentation.Initialize();
     }
@@ -100,7 +100,7 @@ public class Megabeetle : BossBase
         _enemyMovement.TriggerAttack();
     }
     
-    private void OnPreAttackStartHandle()
+    private void OnPreAttackStarted()
     {
         ReceivedLampAttack = false;
         _enemyPresentation.PreAttackStart();
@@ -108,18 +108,18 @@ public class Megabeetle : BossBase
         IsAttacking = true;
     }
     
-    private void OnPreAttackEndHandle()
+    private void OnPreAttackEnded()
     {
         _enemyPresentation.PreAttackEnd();
         ReadyToCollide = true;
     }
     
-    private void AttackStatusEnable()
+    private void OnAttackEnded()
     {
         IsAttacking = false;
     }
     
-    private void StickStatusEnable()
+    private void OnStickStarted()
     {
         IsStick = true;
     }
@@ -189,11 +189,11 @@ public class Megabeetle : BossBase
         return transform.position;
     }
     
-    private void OnDeactivatedHandle()
+    private void OnEnemyDeactivated()
     {
     }
     
-    private void HandleDeathMoveStateEnd()
+    private void OnDeathStateEnded()
     {
         OnDeathInvoke();
         _enemyMovement.MovementReset();
@@ -201,7 +201,7 @@ public class Megabeetle : BossBase
         gameObject.SetActive(false);
     }
     
-    private void HandleStickAttack()
+    private void OnStickAttackStateEnded()
     {
         OnStickAttackedEvent?.Invoke(this);
     }

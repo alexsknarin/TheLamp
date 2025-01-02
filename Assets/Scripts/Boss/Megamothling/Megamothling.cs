@@ -12,22 +12,22 @@ public class Megamothling : BossBase
 
     private void OnEnable()
     {
-        _enemyMovement.OnPreAttackStartEvent += OnPreAttackStart;
-        _enemyMovement.OnPreAttackEndEvent += OnPreAttackEnd;
-        _enemyMovement.OnAttackEndEvent += AttackStatusEnable;
-        _enemyMovement.OnMovementResetEvent += OnMovementReset;
-        _enemyMovement.OnStickStartEvent += StickStatusEnable;
-        _enemyMovement.OnDeathStateEndedEvent += HandleDeathMoveStateEnd;
+        _enemyMovement.PreAttackStarted += OnPreAttackStarted;
+        _enemyMovement.PreAttackEnded += OnPreAttackEnded;
+        _enemyMovement.AttackEnded += OnAttackEnded;
+        _enemyMovement.MovementReseted += OnMovementReseted;
+        _enemyMovement.StickStarted += OnStickStarted;
+        _enemyMovement.DeathStateEnded += OnDeathStateEnded;
     }
     
     private void OnDisable()
     {
-        _enemyMovement.OnPreAttackStartEvent -= OnPreAttackStart;
-        _enemyMovement.OnPreAttackEndEvent -= OnPreAttackEnd;
-        _enemyMovement.OnAttackEndEvent -= AttackStatusEnable;
-        _enemyMovement.OnMovementResetEvent -= OnMovementReset;
-        _enemyMovement.OnStickStartEvent -= StickStatusEnable;
-        _enemyMovement.OnDeathStateEndedEvent -= HandleDeathMoveStateEnd;
+        _enemyMovement.PreAttackStarted -= OnPreAttackStarted;
+        _enemyMovement.PreAttackEnded -= OnPreAttackEnded;
+        _enemyMovement.AttackEnded -= OnAttackEnded;
+        _enemyMovement.MovementReseted -= OnMovementReseted;
+        _enemyMovement.StickStarted -= OnStickStarted;
+        _enemyMovement.DeathStateEnded -= OnDeathStateEnded;
     }
     
     public override void Initialize()
@@ -62,7 +62,7 @@ public class Megamothling : BossBase
         gameObject.SetActive(false);
     }
 
-    private void OnMovementReset()
+    private void OnMovementReseted()
     {
         _enemyPresentation.Initialize();
     }
@@ -93,7 +93,7 @@ public class Megamothling : BossBase
         _enemyMovement.TriggerAttack();
     }
 
-    private void OnPreAttackStart()
+    private void OnPreAttackStarted()
     {
         ReceivedLampAttack = false;
         _enemyPresentation.PreAttackStart();
@@ -101,18 +101,18 @@ public class Megamothling : BossBase
         IsAttacking = true;
     }
 
-    private void OnPreAttackEnd()
+    private void OnPreAttackEnded()
     {
         _enemyPresentation.PreAttackEnd();
         ReadyToCollide = true;
     }
 
-    private void AttackStatusEnable()
+    private void OnAttackEnded()
     {
         IsAttacking = false;
     }
 
-    private void StickStatusEnable()
+    private void OnStickStarted()
     {
         IsStick = true;
     }
@@ -176,7 +176,7 @@ public class Megamothling : BossBase
     }
 
 
-    private void HandleDeathMoveStateEnd()
+    private void OnDeathStateEnded()
     {
         OnDeathInvoke();
         _enemyMovement.MovementReset();

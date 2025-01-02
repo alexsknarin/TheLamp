@@ -3,11 +3,10 @@ using UnityEngine;
 
 public class FWaspAttack02DeathLState : FWaspAnimBaseState
 {
-    public FWaspAttack02DeathLState(Animator animator, int clipHash, Transform baseTransform) : base(animator, clipHash, baseTransform)
-    {
-    }
+    public FWaspAttack02DeathLState(Animator animator, int clipHash, Transform baseTransform) : 
+        base(animator, clipHash, baseTransform) { }
     
-    public event Action OnEndedEvent;
+    public event Action Ended;
     
     public override void OnEnter()
     {
@@ -17,7 +16,7 @@ public class FWaspAttack02DeathLState : FWaspAnimBaseState
     
     public override void OnExit()
     {
-        OnEndedEvent?.Invoke();
+        Ended?.Invoke();
     }
 }
 

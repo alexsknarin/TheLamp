@@ -9,22 +9,22 @@ public class LampDamageViewUI : MonoBehaviour
     {
         _playerGameplayViewModel = playerGameplayViewModel;
         
-        _playerGameplayViewModel.OnLampDamagedEvent += ShowDamageEffect;
-        _playerGameplayViewModel.OnLampDeadEvent += ShowDeathEffect;
+        _playerGameplayViewModel.LampDamaged += OnLampDamaged;
+        _playerGameplayViewModel.LampDied += OnLampDied;
     }
 
     private void OnDestroy()
     {
-        _playerGameplayViewModel.OnLampDamagedEvent -= ShowDamageEffect;
-        _playerGameplayViewModel.OnLampDeadEvent -= ShowDeathEffect;
+        _playerGameplayViewModel.LampDamaged -= OnLampDamaged;
+        _playerGameplayViewModel.LampDied -= OnLampDied;
     }
 
-    private void ShowDamageEffect(float duration)
+    private void OnLampDamaged(float duration)
     {
         _brokenGlassEffect.Play(BrokenGlassEventType.Damage); // TODO: replace with duration
     }
 
-    private void ShowDeathEffect()
+    private void OnLampDied()
     {
         _brokenGlassEffect.Play(BrokenGlassEventType.Death);
     }

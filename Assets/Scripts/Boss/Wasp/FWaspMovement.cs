@@ -8,8 +8,8 @@ public class FWaspMovement : MonoBehaviour, IInitializable
     [SerializeField] private string _currentStateType;
     [SerializeField] private Animator _animator;
     [SerializeField] private Transform _baseTransform;
-    public event Action OnBossAttackStartedEvent;
-    public event Action OnDeathStateEndedEvent;
+    public event Action BossAttackStarted;
+    public event Action DeathStateEnded;
     
     private ILampPositionProviderService _lampPositionProvider;
     public void Construct(ILampPositionProviderService lampPositionProvider)
@@ -158,44 +158,44 @@ public class FWaspMovement : MonoBehaviour, IInitializable
 
     private void OnEnable()
     {
-        _attack01LState.OnStartedEvent += OnBossAttackStartedHandle;
-        _attack01RState.OnStartedEvent += OnBossAttackStartedHandle;
-        _attack02LState.OnStartedEvent += OnBossAttackStartedHandle;
-        _attack02RState.OnStartedEvent += OnBossAttackStartedHandle;
-        _attack03LState.OnStartedEvent += OnBossAttackStartedHandle;
-        _attack03RState.OnStartedEvent += OnBossAttackStartedHandle;
-        _attack04LState.OnStartedEvent += OnBossAttackStartedHandle;
-        _attack04RState.OnStartedEvent += OnBossAttackStartedHandle;
+        _attack01LState.Started += OnBossAttackStarted;
+        _attack01RState.Started += OnBossAttackStarted;
+        _attack02LState.Started += OnBossAttackStarted;
+        _attack02RState.Started += OnBossAttackStarted;
+        _attack03LState.Started += OnBossAttackStarted;
+        _attack03RState.Started += OnBossAttackStarted;
+        _attack04LState.Started += OnBossAttackStarted;
+        _attack04RState.Started += OnBossAttackStarted;
         
-        _attack01DeathLState.OnEndedEvent += OnDeathStateEndedHandle;
-        _attack01DeathRState.OnEndedEvent += OnDeathStateEndedHandle;
-        _attack02DeathLState.OnEndedEvent += OnDeathStateEndedHandle;
-        _attack02DeathRState.OnEndedEvent += OnDeathStateEndedHandle;
-        _attack03DeathLState.OnEndedEvent += OnDeathStateEndedHandle;
-        _attack03DeathRState.OnEndedEvent += OnDeathStateEndedHandle;
-        _attack04DeathLState.OnEndedEvent += OnDeathStateEndedHandle;
-        _attack04DeathRState.OnEndedEvent += OnDeathStateEndedHandle;
+        _attack01DeathLState.Ended += OnDeathStateEnded;
+        _attack01DeathRState.Ended += OnDeathStateEnded;
+        _attack02DeathLState.Ended += OnDeathStateEnded;
+        _attack02DeathRState.Ended += OnDeathStateEnded;
+        _attack03DeathLState.Ended += OnDeathStateEnded;
+        _attack03DeathRState.Ended += OnDeathStateEnded;
+        _attack04DeathLState.Ended += OnDeathStateEnded;
+        _attack04DeathRState.Ended += OnDeathStateEnded;
     }
 
     private void OnDisable()
     {
-        _attack01LState.OnStartedEvent -= OnBossAttackStartedHandle;
-        _attack01RState.OnStartedEvent -= OnBossAttackStartedHandle;
-        _attack02LState.OnStartedEvent -= OnBossAttackStartedHandle;
-        _attack02RState.OnStartedEvent -= OnBossAttackStartedHandle;
-        _attack03LState.OnStartedEvent -= OnBossAttackStartedHandle;
-        _attack03RState.OnStartedEvent -= OnBossAttackStartedHandle;
-        _attack04LState.OnStartedEvent -= OnBossAttackStartedHandle;
-        _attack04RState.OnStartedEvent -= OnBossAttackStartedHandle;
+        _attack01LState.Started -= OnBossAttackStarted;
+        _attack01RState.Started -= OnBossAttackStarted;
+        _attack02LState.Started -= OnBossAttackStarted;
+        _attack02RState.Started -= OnBossAttackStarted;
+        _attack03LState.Started -= OnBossAttackStarted;
+        _attack03RState.Started -= OnBossAttackStarted;
+        _attack04LState.Started -= OnBossAttackStarted;
+        _attack04RState.Started -= OnBossAttackStarted;
         
-        _attack01DeathLState.OnEndedEvent -= OnDeathStateEndedHandle;
-        _attack01DeathRState.OnEndedEvent -= OnDeathStateEndedHandle;
-        _attack02DeathLState.OnEndedEvent -= OnDeathStateEndedHandle;
-        _attack02DeathRState.OnEndedEvent -= OnDeathStateEndedHandle;
-        _attack03DeathLState.OnEndedEvent -= OnDeathStateEndedHandle;
-        _attack03DeathRState.OnEndedEvent -= OnDeathStateEndedHandle;
-        _attack04DeathLState.OnEndedEvent -= OnDeathStateEndedHandle;
-        _attack04DeathRState.OnEndedEvent -= OnDeathStateEndedHandle;
+        _attack01DeathLState.Ended -= OnDeathStateEnded;
+        _attack01DeathRState.Ended -= OnDeathStateEnded;
+        _attack02DeathLState.Ended -= OnDeathStateEnded;
+        _attack02DeathRState.Ended -= OnDeathStateEnded;
+        _attack03DeathLState.Ended -= OnDeathStateEnded;
+        _attack03DeathRState.Ended -= OnDeathStateEnded;
+        _attack04DeathLState.Ended -= OnDeathStateEnded;
+        _attack04DeathRState.Ended -= OnDeathStateEnded;
     }
 
     private void Awake()
@@ -652,15 +652,15 @@ public class FWaspMovement : MonoBehaviour, IInitializable
         _isCollided = true;
     }
 
-    private void OnDeathStateEndedHandle()
+    private void OnDeathStateEnded()
     {
         _isPlaying = false;
-        OnDeathStateEndedEvent?.Invoke();
+        DeathStateEnded?.Invoke();
     }
 
-    private void OnBossAttackStartedHandle()
+    private void OnBossAttackStarted()
     {
-        OnBossAttackStartedEvent?.Invoke();
+        BossAttackStarted?.Invoke();
     }
 
     private void Update()

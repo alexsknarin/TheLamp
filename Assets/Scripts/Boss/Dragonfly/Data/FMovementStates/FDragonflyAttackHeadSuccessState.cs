@@ -10,8 +10,8 @@ public class FDragonflyAttackHeadSuccessState : ScriptableObject, IState
     [SerializeField] private AnimationCurve _tzCurve;
     [SerializeField] private AnimationCurve _rxCurve;
     
-    public event Action OnStartedEvent; 
-    public event Action OnEndedEvent; 
+    public event Action Started; 
+    public event Action Ended; 
     
     private float _localTime = 0f;
     private float _phase = 0f;
@@ -39,7 +39,7 @@ public class FDragonflyAttackHeadSuccessState : ScriptableObject, IState
         _localTime = 0f;
         _phase = 0f;    
         _isAfterDelay = false;
-        OnStartedEvent?.Invoke();
+        Started?.Invoke();
     }
 
     public void Tick()
@@ -71,7 +71,7 @@ public class FDragonflyAttackHeadSuccessState : ScriptableObject, IState
         else if (_isAfterDelay && _localTime > _afterDelay)
         {
             _isAfterDelay = false;
-            OnEndedEvent?.Invoke();
+            Ended?.Invoke();
         }
     }
     

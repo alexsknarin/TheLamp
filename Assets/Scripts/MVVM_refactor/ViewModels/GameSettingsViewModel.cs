@@ -14,24 +14,24 @@ public class GameSettingsViewModel : IInitializable, IDisposable
     
     public void Initialize()
     {
-        _gameSettingsModel.OnIsConsentSetChangedEvent += HandleConsentSetOnChangedEvent;
-        _gameSettingsModel.OnIsDataCollectionEnabledChangedEvent += HandleDataCollectionEnabledChanged;
+        _gameSettingsModel.IsConsentSetChanged += OnIsConsentSetChanged;
+        _gameSettingsModel.IsDataCollectionEnabledChanged += OnIsDataCollectionEnabledChanged;
     }
 
     public void Dispose()
     {
-        _gameSettingsModel.OnIsConsentSetChangedEvent -= HandleConsentSetOnChangedEvent;
-        _gameSettingsModel.OnIsDataCollectionEnabledChangedEvent -= HandleDataCollectionEnabledChanged;
+        _gameSettingsModel.IsConsentSetChanged -= OnIsConsentSetChanged;
+        _gameSettingsModel.IsDataCollectionEnabledChanged -= OnIsDataCollectionEnabledChanged;
     }
     
     // Handle Model Events
     
-    private void HandleConsentSetOnChangedEvent(bool value)
+    private void OnIsConsentSetChanged(bool value)
     {
         IsConsentSetView.Value = value;
     }
 
-    private void HandleDataCollectionEnabledChanged(bool value)
+    private void OnIsDataCollectionEnabledChanged(bool value)
     {
         IsDataCollectionEnabledView.Value = value;
     }

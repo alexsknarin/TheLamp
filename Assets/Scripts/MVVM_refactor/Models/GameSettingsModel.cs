@@ -16,7 +16,7 @@ public class GameSettingsModel
             _gameSettings.IsConsentSet = value;
             if (!oldValue.Equals(value))
             {
-                OnIsConsentSetChangedEvent?.Invoke(value);
+                IsConsentSetChanged?.Invoke(value);
             }
         }
     }
@@ -30,13 +30,13 @@ public class GameSettingsModel
             _gameSettings.IsDataCollectionEnabled = value;
             if (!oldValue.Equals(value))
             {
-                OnIsDataCollectionEnabledChangedEvent?.Invoke(value);
+                IsDataCollectionEnabledChanged?.Invoke(value);
             }
         }
     }
 
-    public event Action<bool> OnIsConsentSetChangedEvent;
-    public event Action<bool> OnIsDataCollectionEnabledChangedEvent;
+    public event Action<bool> IsConsentSetChanged;
+    public event Action<bool> IsDataCollectionEnabledChanged;
 
     public GameSettingsModel(GameSettings gameSettings)
     {

@@ -14,12 +14,12 @@ public class LampCooldownView : MonoBehaviour, IInitializable
     public void Bind(PlayerGameplayViewModel playerGameplayViewModel)
     {
         _playerGameplayViewModel = playerGameplayViewModel;
-        _playerGameplayViewModel.Power.OnChangedEvent += SetPower;
+        _playerGameplayViewModel.Power.Changed += OnPowerChanged;
     }
 
     private void OnDestroy()
     {
-        _playerGameplayViewModel.Power.OnChangedEvent += SetPower;
+        _playerGameplayViewModel.Power.Changed += OnPowerChanged;
     }
 
     public void Initialize()
@@ -27,7 +27,7 @@ public class LampCooldownView : MonoBehaviour, IInitializable
         _lampAttackZoneMaterial = _lampAttackZoneRenderer.material;
     }
 
-    public void SetPower(object sender, Observable<float>.ChangedEventArgs e)
+    public void OnPowerChanged(object sender, Observable<float>.ChangedEventArgs e)
     {
         float phase = e.NewValue;
         _lampEmissionController.Intensity = _lampCooldownAnimCurve.Evaluate(phase);

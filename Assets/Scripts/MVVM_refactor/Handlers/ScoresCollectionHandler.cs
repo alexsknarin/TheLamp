@@ -9,20 +9,20 @@ public class ScoresCollectionHandler: IInitializable, IDisposable
         _gameConfigService = gameConfigService;
     }
     
-    public event Action<int> OnScoreChangeEvent;
+    public event Action<int> ScoreChanged;
     
 
     public void Initialize()
     {
-        EnemyBase.OnEnemyDeathEvent += CollectScore; // TODO: remove static - Use Interface???
+        EnemyBase.EnemyDied += OnEnemyDied; // TODO: remove static - Use Interface???
     }
 
     public void Dispose()
     {
-        EnemyBase.OnEnemyDeathEvent += CollectScore;
+        EnemyBase.EnemyDied += OnEnemyDied;
     }
     
-    private void CollectScore(EnemyBase enemy)
+    private void OnEnemyDied(EnemyBase enemy)
     {
         int score = 0;
 
@@ -63,6 +63,6 @@ public class ScoresCollectionHandler: IInitializable, IDisposable
                 break;
         }
         
-        OnScoreChangeEvent?.Invoke(score);
+        ScoreChanged?.Invoke(score);
     }
 }

@@ -13,7 +13,7 @@ public class DragonflyProjectileMovementMoth : MonoBehaviour
     [SerializeField] private float _fleeTurnDuration = 0.5f;
     [SerializeField] private Vector3 _fleeGoalBase;
     
-    public event Action OnFallEndedEvent;
+    public event Action FallEnded;
     
     
     private bool _isAttacking = false;
@@ -114,7 +114,7 @@ public class DragonflyProjectileMovementMoth : MonoBehaviour
             _isFalling = false;
             _isAttacking = false;
             transform.position = new Vector3(0, -2.294306f, -3.276608f);
-            OnFallEndedEvent?.Invoke();
+            FallEnded?.Invoke();
         }
     }
 

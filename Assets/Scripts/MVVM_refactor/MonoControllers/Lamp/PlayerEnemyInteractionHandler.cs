@@ -8,8 +8,8 @@ public class PlayerEnemyInteractionHandler : MonoBehaviour, IInitializable
     [SerializeField] private LampAttackExitZoneCollisionHandler _lampAttackExitZoneCollisionHandler;
     [SerializeField] private LampStickZoneCollisionHandler _lampStickZoneCollisionHandler;
     
-    public event Action<bool, EnemyBase> OnEnemyAttackDeflectedEvent;  // TODO: Use Interface
-    public event Action<bool, EnemyBase> OnLampBlockedSetEvent; // TODO: Use Interface
+    public event Action<bool, EnemyBase> EnemyAttackBounced;  // TODO: Use Interface
+    public event Action<bool, EnemyBase> LampBlockedStarted; // TODO: Use Interface
     
     private bool _isAssessingDamage = false;
     
@@ -17,10 +17,10 @@ public class PlayerEnemyInteractionHandler : MonoBehaviour, IInitializable
     
     public void Initialize()
     {
-        _lampCollisionHandler.OnLampCollidedEnemyEvent += RegisterPotentialDamage;
-        _lampCollisionHandler.OnExitLampCollisionEnemyEvent += EnemyExitCollisionHandle;
-        _lampAttackExitZoneCollisionHandler.OnExitAttackExitZoneEvent += AssessDamage;
-        _lampStickZoneCollisionHandler.OnCollidedWithStickyEnemyEvent += StickyEnemyEnterCollisionHandle;
+        _lampCollisionHandler.LampCollidedWithEnemy += OnLampCollidedWithEnemy;
+        _lampCollisionHandler.EnemyExitedLampCollision += OnEnemyExitedLampCollision;
+        _lampAttackExitZoneCollisionHandler.EnemyExitedAttackExitZone += OnEnemyExitedAttackExitZone;
+        _lampStickZoneCollisionHandler.CollidedWithStickyEnemy += OnCollidedWithStickyEnemy;
         
         if (_stickyEnemies == null)
             _stickyEnemies = new List<EnemyBase>();
@@ -30,10 +30,10 @@ public class PlayerEnemyInteractionHandler : MonoBehaviour, IInitializable
 
     private void OnDestroy()
     {
-        _lampCollisionHandler.OnLampCollidedEnemyEvent -= RegisterPotentialDamage;
-        _lampCollisionHandler.OnExitLampCollisionEnemyEvent -= EnemyExitCollisionHandle;
-        _lampAttackExitZoneCollisionHandler.OnExitAttackExitZoneEvent -= AssessDamage;
-        _lampStickZoneCollisionHandler.OnCollidedWithStickyEnemyEvent -= StickyEnemyEnterCollisionHandle;
+        _lampCollisionHandler.LampCollidedWithEnemy -= OnLampCollidedWithEnemy;
+        _lampCollisionHandler.EnemyExitedLampCollision -= OnEnemyExitedLampCollision;
+        _lampAttackExitZoneCollisionHandler.EnemyExitedAttackExitZone -= OnEnemyExitedAttackExitZone;
+        _lampStickZoneCollisionHandler.CollidedWithStickyEnemy -= OnCollidedWithStickyEnemy;
     }
 
     public void LampAttack()
@@ -43,8 +43,12 @@ public class PlayerEnemyInteractionHandler : MonoBehaviour, IInitializable
             _isAssessingDamage = false;
         }
     }
-
-    private void RegisterPotentialDamage(EnemyBase enemy)
+    
+    /// <summary>
+    /// Register potential Damage
+    /// </summary>
+    /// <param name="enemy"></param>
+    private void OnLampCollidedWithEnemy(EnemyBase enemy)
     {
         if (!_isAssessingDamage)
         {
@@ -52,24 +56,28 @@ public class PlayerEnemyInteractionHandler : MonoBehaviour, IInitializable
         }
     }
 
-    private void AssessDamage(EnemyBase enemy)
+    /// <summary>
+    /// Assess if Damage was made
+    /// </summary>
+    /// <param name="enemy"></param>
+    private void OnEnemyExitedAttackExitZone(EnemyBase enemy)
     {
         if (_isAssessingDamage)
         {
             if (enemy.ReceivedLampAttack && (enemy.EnemyType != EnemyType.Ladybug || enemy.EnemyType != EnemyType.Megabeetle)) // TODO: replace with ISticky interface
             {
                 _isAssessingDamage = false;
-                OnEnemyAttackDeflectedEvent?.Invoke(true, enemy);
+                EnemyAttackBounced?.Invoke(true, enemy);
             }
             else
             {
                 _isAssessingDamage = false;
-                OnEnemyAttackDeflectedEvent?.Invoke(false, enemy);
+                EnemyAttackBounced?.Invoke(false, enemy);
             }
         }
     }
 
-    private void StickyEnemyEnterCollisionHandle(EnemyBase enemy)
+    private void OnCollidedWithStickyEnemy(EnemyBase enemy)
     {
         enemy.transform.parent = transform;
         enemy.HandleCollisionWithStickZone();
@@ -77,11 +85,11 @@ public class PlayerEnemyInteractionHandler : MonoBehaviour, IInitializable
         {
             _stickyEnemies.Add(enemy);
         }
-        OnLampBlockedSetEvent?.Invoke(true, enemy);
+        LampBlockedStarted?.Invoke(true, enemy);
     }
     
     // TODO: refactor this
-    private void EnemyExitCollisionHandle(EnemyBase enemy)
+    private void OnEnemyExitedLampCollision(EnemyBase enemy)
     {
         if (enemy.EnemyType == EnemyType.Ladybug || enemy.EnemyType == EnemyType.Megabeetle) // Use ISticky interface
         {
@@ -90,7 +98,7 @@ public class PlayerEnemyInteractionHandler : MonoBehaviour, IInitializable
                 _stickyEnemies.Remove(enemy);
                 if( _stickyEnemies.Count <= 0)
                 {
-                    OnLampBlockedSetEvent?.Invoke(false, enemy);
+                    LampBlockedStarted?.Invoke(false, enemy);
                 }    
             }
             enemy.transform.parent = null;

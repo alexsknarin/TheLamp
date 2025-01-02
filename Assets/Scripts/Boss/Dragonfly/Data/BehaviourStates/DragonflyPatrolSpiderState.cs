@@ -3,7 +3,7 @@ using UnityEngine;
 using Random = UnityEngine.Random;
 public class DragonflyPatrolSpiderState : IState
 {
-    public event Action OnEndedEvent;
+    public event Action Ended;
     private readonly float _minWaitTime = 0f;
     private readonly float _maxWaitTime = 1f;
     private float _localTime = 0f;
@@ -26,7 +26,7 @@ public class DragonflyPatrolSpiderState : IState
         _localTime += Time.deltaTime;
         if (_localTime >= _duration)
         {
-            OnEndedEvent?.Invoke();
+            Ended?.Invoke();
         }
     }
 

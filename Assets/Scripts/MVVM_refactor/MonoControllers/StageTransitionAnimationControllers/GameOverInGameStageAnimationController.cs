@@ -28,8 +28,7 @@ public class GameOverInGameStageAnimationController : MonoBehaviour
     [SerializeField] private GameObject _ingameUi;
     [Header("Lamp")]
     [SerializeField] private LampDeathAnimation _lampDeathAnimation;
-    
-    public event Action OnFinishedEvent;
+    public event Action GameoverInFinished;
     
     private UnityEngine.Rendering.Universal.ColorAdjustments _colorAdjustments;
     private float _localTime;
@@ -114,6 +113,6 @@ public class GameOverInGameStageAnimationController : MonoBehaviour
         _restartNoAdButton.SetVisibilityLevel(1);
         _exitButton.SetVisibilityLevel(1);
         
-        OnFinishedEvent?.Invoke();
+        GameoverInFinished?.Invoke();
     }
 }

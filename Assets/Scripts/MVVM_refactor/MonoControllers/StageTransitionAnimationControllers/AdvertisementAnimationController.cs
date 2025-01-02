@@ -7,17 +7,16 @@ public class AdvertisementAnimationController : MonoBehaviour, IInitializable
     [SerializeField] private GameObject _ingameUi;
     [SerializeField] private GameObject _gameOverUi;
     [SerializeField] private GameObject _waveText;
-    
-    public event Action OnFinishedEvent;
+    public event Action AdvertisementFinished;
 
     public void Initialize()
     {
-        _fakeAd.OnAdFinishedEvent += HandleAdFinished;
+        _fakeAd.AdFinished += OnAdFinished;
     }
 
     private void OnDestroy()
     {
-        _fakeAd.OnAdFinishedEvent -= HandleAdFinished;
+        _fakeAd.AdFinished -= OnAdFinished;
     }
 
     public void Play()
@@ -28,9 +27,9 @@ public class AdvertisementAnimationController : MonoBehaviour, IInitializable
         _fakeAd.Play();
     }
 
-    private void HandleAdFinished()
+    private void OnAdFinished()
     {
-        OnFinishedEvent?.Invoke();
+        AdvertisementFinished?.Invoke();
     }
 }
     

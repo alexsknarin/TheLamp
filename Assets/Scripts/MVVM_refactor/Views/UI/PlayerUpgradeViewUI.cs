@@ -28,10 +28,10 @@ public class PlayerUpgradeViewUI : MonoBehaviour, IInitializable
         _cooldownButton.onClick.AddListener(OnCooldownButtonClicked);
         _attackDistanceButton.onClick.AddListener(OnAttackDistanceButtonClicked);
         
-        _playerUpgradeViewModel.OnHealthUpgradeEnabledChangedEvent += HandleHealthButtonEnabled;
-        _playerUpgradeViewModel.OnCooldownUpgradeEnabledChangedEvent += HandleCooldownButtonEnabled;
-        _playerUpgradeViewModel.OnAttackDistanceUpgradeEnabledChangedEvent += HandleAttackDistanceButtonEnabled;
-        _playerUpgradeViewModel.OnUpgradePointsChangedEvent += HandleUpgradePointsChanged;
+        _playerUpgradeViewModel.HealthUpgradeEnabledChanged += OnHealthUpgradeEnabledChanged;
+        _playerUpgradeViewModel.CooldownUpgradeEnabledChanged += OnCooldownUpgradeEnabledChanged;
+        _playerUpgradeViewModel.AttackDistanceUpgradeEnabledChanged += OnAttackDistanceUpgradeEnabledChanged;
+        _playerUpgradeViewModel.UpgradePointsChanged += OnUpgradePointsChanged;
     }
 
     private void OnDestroy()
@@ -40,10 +40,10 @@ public class PlayerUpgradeViewUI : MonoBehaviour, IInitializable
         _cooldownButton.onClick.RemoveListener(OnCooldownButtonClicked);
         _attackDistanceButton.onClick.RemoveListener(OnAttackDistanceButtonClicked);
         
-        _playerUpgradeViewModel.OnHealthUpgradeEnabledChangedEvent -= HandleHealthButtonEnabled;
-        _playerUpgradeViewModel.OnCooldownUpgradeEnabledChangedEvent -= HandleCooldownButtonEnabled;
-        _playerUpgradeViewModel.OnAttackDistanceUpgradeEnabledChangedEvent -= HandleAttackDistanceButtonEnabled;
-        _playerUpgradeViewModel.OnUpgradePointsChangedEvent += HandleUpgradePointsChanged;
+        _playerUpgradeViewModel.HealthUpgradeEnabledChanged -= OnHealthUpgradeEnabledChanged;
+        _playerUpgradeViewModel.CooldownUpgradeEnabledChanged -= OnCooldownUpgradeEnabledChanged;
+        _playerUpgradeViewModel.AttackDistanceUpgradeEnabledChanged -= OnAttackDistanceUpgradeEnabledChanged;
+        _playerUpgradeViewModel.UpgradePointsChanged += OnUpgradePointsChanged;
     }
 
     private void OnHealthButtonClicked()
@@ -64,7 +64,7 @@ public class PlayerUpgradeViewUI : MonoBehaviour, IInitializable
 
     // Event Handlers
 
-    private void HandleHealthButtonEnabled(bool isEnabled)
+    private void OnHealthUpgradeEnabledChanged(bool isEnabled)
     {
         // TODO: change to setEnabled to be able to set in 1 line
         if (isEnabled)
@@ -77,7 +77,7 @@ public class PlayerUpgradeViewUI : MonoBehaviour, IInitializable
         }
     }
 
-    private void HandleCooldownButtonEnabled(bool isEnabled)
+    private void OnCooldownUpgradeEnabledChanged(bool isEnabled)
     {
         // TODO: change to setEnabled to be able to set in 1 line
         if (isEnabled)
@@ -91,7 +91,7 @@ public class PlayerUpgradeViewUI : MonoBehaviour, IInitializable
         
     }
 
-    private void HandleAttackDistanceButtonEnabled(bool isEnabled)
+    private void OnAttackDistanceUpgradeEnabledChanged(bool isEnabled)
     {
         // TODO: change to setEnabled to be able to set in 1 line
         if (isEnabled)
@@ -104,7 +104,7 @@ public class PlayerUpgradeViewUI : MonoBehaviour, IInitializable
         }
     }
 
-    private void HandleUpgradePointsChanged(int upgradePoints)
+    private void OnUpgradePointsChanged(int upgradePoints)
     {
         _uiUpgradePoints.ShowUpgradePoints(upgradePoints);
     }

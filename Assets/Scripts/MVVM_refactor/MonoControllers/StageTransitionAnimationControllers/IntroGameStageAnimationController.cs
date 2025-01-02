@@ -42,7 +42,7 @@ public class IntroGameStageAnimationController : MonoBehaviour, IInitializable
     private bool _isPlaying;
     private float _currentHealth;
     
-    public event Action OnFinishedEvent;
+    public event Action IntroFinished;
 
     public void Initialize()
     {
@@ -134,7 +134,7 @@ public class IntroGameStageAnimationController : MonoBehaviour, IInitializable
         _enableDataButton.SetVisibilityLevel(1);
         _disableDataButton.SetVisibilityLevel(1);
         
-        OnFinishedEvent?.Invoke();
+        IntroFinished?.Invoke();
     }
     
 }

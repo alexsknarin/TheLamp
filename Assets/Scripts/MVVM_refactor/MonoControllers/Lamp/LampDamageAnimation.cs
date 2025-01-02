@@ -4,7 +4,7 @@ using UnityEngine;
 public class LampDamageAnimation : MonoBehaviour
 {
     [SerializeField] private LampEmissionController _lampEmissionController;
-    public event Action OnFinishedEvent;
+    public event Action Finished;
 
     private bool _isPlaying = false;
     private float _duration;
@@ -31,7 +31,7 @@ public class LampDamageAnimation : MonoBehaviour
                 _lampEmissionController.IsDamageEnabled = false;
                 _lampEmissionController.Intensity = 0f;
                 _isPlaying = false;
-                OnFinishedEvent?.Invoke();
+                Finished?.Invoke();
                 return;
             }
             _lampEmissionController.DamageMix = 1f - Mathf.Clamp(phase * 1.5f, 0, 1);

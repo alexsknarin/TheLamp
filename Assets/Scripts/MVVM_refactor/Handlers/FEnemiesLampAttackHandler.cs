@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 public class FEnemiesLampAttackHandler
 {
-    public event Action OnEnemyDamagedEvent; // TODO: find out if we need this event
+    public event Action EnemyDamaged; // TODO: find out if we need this event
    
     public void HandleLampAttack(List<EnemyBase> enemies, int attackPower)
     {
@@ -14,7 +14,7 @@ public class FEnemiesLampAttackHandler
                 if (attackPower > 0)
                 {
                     enemy.ReceiveDamage(attackPower);
-                    OnEnemyDamagedEvent?.Invoke();
+                    EnemyDamaged?.Invoke();
                 }
             }
         }
@@ -31,7 +31,7 @@ public class FEnemiesLampAttackHandler
                 if (attackPower > 0)
                 {
                     enemy.ReceiveDamage(attackPower);
-                    OnEnemyDamagedEvent?.Invoke();   
+                    EnemyDamaged?.Invoke();   
                 }
             }
         }

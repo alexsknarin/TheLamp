@@ -2,5 +2,5 @@ using System;
 
 public interface ILampDeadEventProviderService
 {
-    public event Action<EnemyBase> OnLampDeadEvent;
+    public event Action<EnemyBase> LampDied;
 }

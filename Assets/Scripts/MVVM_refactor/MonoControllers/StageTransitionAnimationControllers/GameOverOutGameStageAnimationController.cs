@@ -14,7 +14,7 @@ public class GameOverOutGameStageAnimationController : MonoBehaviour
     [SerializeField] private FadableButtonPresentation _restartNoAdButton;
     [SerializeField] private FadableButtonPresentation _exitButton;
     
-    public event Action OnFinishedEvent;
+    public event Action GameoverOutFinished;
     
     private float _localTime;
     private bool _isPlaying;
@@ -34,7 +34,7 @@ public class GameOverOutGameStageAnimationController : MonoBehaviour
             {
                 _gameOverUi.SetActive(false);
                 _isPlaying = false;
-                OnFinishedEvent?.Invoke();
+                GameoverOutFinished?.Invoke();
             }
             
             _gameOverText.SetVisibilityLevel(1-phase);

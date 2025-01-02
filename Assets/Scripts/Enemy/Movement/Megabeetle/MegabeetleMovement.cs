@@ -12,9 +12,9 @@ public class MegabeetleMovement : EnemyMovement
     [SerializeField] private float _verticalAmplitude;
     [SerializeField] private bool _isSmoothDampEnabled;
     [SerializeField] private bool _isDepthEnabled;
-    public event Action OnDeathStateEndedEvent;
-    public event Action OnStickAttackStateEndedEvent;
-    public event Action OnTriggerSpreadEvent;
+    public event Action DeathStateEnded;
+    public event Action StickAttackStateEnded;
+    public event Action SpreadTriggered;
     private ILampDeadEventProviderService _lampDeadEventProvider;
     public void Construct(ILampDeadEventProviderService lampDeadEventProviderService)
     {
@@ -52,12 +52,12 @@ public class MegabeetleMovement : EnemyMovement
 
     private void OnEnable()
     {
-        _lampDeadEventProvider.OnLampDeadEvent += FallOnLampDestroyed;
+        _lampDeadEventProvider.LampDied += FallOnLampDestroyed;
     }
     
     private void OnDisable()
     {
-        _lampDeadEventProvider.OnLampDeadEvent -= FallOnLampDestroyed;
+        _lampDeadEventProvider.LampDied -= FallOnLampDestroyed;
     }
 
     public override void Initialize()
@@ -217,7 +217,7 @@ public class MegabeetleMovement : EnemyMovement
                 {
                     OnPreAttackStartInvoke();
                     newState = _preAttackState;
-                    OnTriggerSpreadEvent?.Invoke();
+                    SpreadTriggered?.Invoke();
                 }
                 break;
             case EnemyState.PreAttack:
@@ -256,7 +256,7 @@ public class MegabeetleMovement : EnemyMovement
                     newState = _stickLandingState;
                     _position2d = transform.localPosition;
                     OnStickStartInvoke();
-                    OnTriggerSpreadEvent?.Invoke();
+                    SpreadTriggered?.Invoke();
                 }
                 break;
             case EnemyState.StickLanding:
@@ -318,7 +318,7 @@ public class MegabeetleMovement : EnemyMovement
                 else
                 {
                     OnPreAttackStartInvoke();
-                    OnTriggerSpreadEvent?.Invoke();
+                    SpreadTriggered?.Invoke();
                     newState = _stickPreAttackPauseState;
                     _position2d = transform.localPosition;
                 }
@@ -362,8 +362,8 @@ public class MegabeetleMovement : EnemyMovement
                 }
                 else
                 {
-                    OnStickAttackStateEndedEvent?.Invoke();
-                    OnTriggerSpreadEvent?.Invoke();
+                    StickAttackStateEnded?.Invoke();
+                    SpreadTriggered?.Invoke();
                     newState = _stickState;
                     _position2d = transform.localPosition;
                 }
@@ -375,7 +375,7 @@ public class MegabeetleMovement : EnemyMovement
                 MovementReset();
                 return;
             case EnemyState.Death:
-                OnDeathStateEndedEvent?.Invoke();
+                DeathStateEnded?.Invoke();
                 return;
         }
         

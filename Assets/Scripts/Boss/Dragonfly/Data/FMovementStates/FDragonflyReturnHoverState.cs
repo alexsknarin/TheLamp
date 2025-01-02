@@ -15,8 +15,8 @@ public class FDragonflyReturnHoverState : ScriptableObject, IState
     [Header("Dive")]
     [SerializeField] private AnimationCurve _diveMoveCurve;
     [SerializeField] private AnimationCurve _diveRotateCurve;
-    public event Action OnStartedEvent;
-    public event Action OnEndedEvent;
+    public event Action Started;
+    public event Action Ended;
 
     private float _localTime = 0f;
     private float _phase = 0f;
@@ -57,7 +57,7 @@ public class FDragonflyReturnHoverState : ScriptableObject, IState
         _endEulerX = _startEulerX + _maxBounceEulerX;
         
 
-        OnStartedEvent?.Invoke();
+        Started?.Invoke();
     }
     
     public void Tick()
@@ -112,7 +112,7 @@ public class FDragonflyReturnHoverState : ScriptableObject, IState
         
         if (_phase > _divePhaseDuration && _isDivePhase)
         {
-            OnEndedEvent?.Invoke();
+            Ended?.Invoke();
         }
     }
 }

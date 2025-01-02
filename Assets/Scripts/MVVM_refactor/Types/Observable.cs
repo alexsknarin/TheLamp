@@ -10,7 +10,7 @@ public class Observable<T>
         public T NewValue { get; set; }  
     }
     
-    public event EventHandler<ChangedEventArgs> OnChangedEvent;
+    public event EventHandler<ChangedEventArgs> Changed;
     private ChangedEventArgs _args = new ChangedEventArgs();
     
     public T Value
@@ -24,7 +24,7 @@ public class Observable<T>
                 T oldValue = _value;
                 _value = value;
                 
-                EventHandler<ChangedEventArgs> handler = OnChangedEvent;
+                EventHandler<ChangedEventArgs> handler = Changed;
                 if(handler != null)
                 {
                     _args.OldValue = oldValue;

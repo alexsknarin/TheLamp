@@ -1,7 +1,6 @@
 using System;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 public class PrepareOutGameStageAnimationController : MonoBehaviour
 {
@@ -13,16 +12,16 @@ public class PrepareOutGameStageAnimationController : MonoBehaviour
     [SerializeField] private float _duration;
     [SerializeField] private TextFader _waveText;
     [SerializeField] private GameObject _upgradeButtonsPanel;
-    [FormerlySerializedAs("_upgradeHealthButton")] [SerializeField] private FadableButtonPresentation _upgradeHealthButtonPresentation;
-    [FormerlySerializedAs("_upgradeAttackButton")] [SerializeField] private FadableButtonPresentation _upgradeAttackButtonPresentation;
-    [FormerlySerializedAs("_upgradeCooldownButton")] [SerializeField] private FadableButtonPresentation _upgradeCooldownButtonPresentation;
+    [SerializeField] private FadableButtonPresentation _upgradeHealthButtonPresentation;
+    [SerializeField] private FadableButtonPresentation _upgradeAttackButtonPresentation;
+    [SerializeField] private FadableButtonPresentation _upgradeCooldownButtonPresentation;
     [SerializeField] private TMP_Text _hintText1;
     [SerializeField] private TMP_Text _hintText2;
     [SerializeField] private TMP_Text _hintText3;
     
     private float _localTime;
     private bool _isPlaying;
-    public event Action OnFinishedEvent;
+    public event Action PrepareOutFinished;
     
     public void Play()
     {
@@ -55,7 +54,7 @@ public class PrepareOutGameStageAnimationController : MonoBehaviour
         _hintText2.color = HINT_TEXT_OFF_COLOR;
         _hintText3.color = HINT_TEXT_OFF_COLOR;
         _upgradeButtonsPanel.SetActive(false);
-        OnFinishedEvent?.Invoke();
+        PrepareOutFinished?.Invoke();
     }
 
     private void Update()

@@ -9,12 +9,12 @@ public class TestSpawner : MonoBehaviour
 
     private void OnEnable()
     {
-        BossBase.OnDeathEvent += HandleBossEnd;
+        BossBase.BossDied += HandleBossEnd;
     }
     
     private void OnDisable()
     {
-        BossBase.OnDeathEvent -= HandleBossEnd;
+        BossBase.BossDied -= HandleBossEnd;
     }
 
     private void Start()

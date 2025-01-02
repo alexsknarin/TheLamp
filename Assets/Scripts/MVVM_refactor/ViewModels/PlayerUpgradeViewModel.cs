@@ -13,10 +13,10 @@ public class PlayerUpgradeViewModel : IDisposable
         private set
         {
             _healthUpgradeEnabled = value;
-            OnHealthUpgradeEnabledChangedEvent?.Invoke(value);
+            HealthUpgradeEnabledChanged?.Invoke(value);
         }
     }
-    public event Action<bool> OnHealthUpgradeEnabledChangedEvent; 
+    public event Action<bool> HealthUpgradeEnabledChanged; 
     #endregion
     
     #region HealthUpgradeEnabled
@@ -27,10 +27,10 @@ public class PlayerUpgradeViewModel : IDisposable
         private set
         {
             _cooldownUpgradeEnabled = value;
-            OnCooldownUpgradeEnabledChangedEvent?.Invoke(value);
+            CooldownUpgradeEnabledChanged?.Invoke(value);
         }
     }
-    public event Action<bool> OnCooldownUpgradeEnabledChangedEvent; 
+    public event Action<bool> CooldownUpgradeEnabledChanged; 
     #endregion
     
     #region HealthUpgradeEnabled
@@ -41,10 +41,10 @@ public class PlayerUpgradeViewModel : IDisposable
         private set
         {
             _attackDistanceUpgradeEnabled = value;
-            OnAttackDistanceUpgradeEnabledChangedEvent?.Invoke(value);
+            AttackDistanceUpgradeEnabledChanged?.Invoke(value);
         }
     }
-    public event Action<bool> OnAttackDistanceUpgradeEnabledChangedEvent; 
+    public event Action<bool> AttackDistanceUpgradeEnabledChanged; 
     #endregion
     
     #region HealthUpgradeEnabled
@@ -55,10 +55,10 @@ public class PlayerUpgradeViewModel : IDisposable
         private set
         {
             _upgradePoints = value;
-            OnUpgradePointsChangedEvent?.Invoke(value);
+            UpgradePointsChanged?.Invoke(value);
         }
     }
-    public event Action<int> OnUpgradePointsChangedEvent; 
+    public event Action<int> UpgradePointsChanged; 
     #endregion
     
     
@@ -70,23 +70,27 @@ public class PlayerUpgradeViewModel : IDisposable
         _gameModel = gameModel;
         _gameConfigService = gameConfigService;
         
-        _gameModel.OnGameStageStateChangedEvent += HandleStartUpgrade;
-        _gameModel.OnLampHealthChangedEvent += HandleHealthChanged;
-        _gameModel.OnLampCooldownTimeChangedEvent += HandleCooldownChanged;
-        _gameModel.OnLampAttackDistanceChangedEvent += HandleAttackDistanceChanged;
-        _gameModel.OnUpgradePointsChangedEvent += HandleUpgradePointsChanged;
+        _gameModel.GameStageStateChanged += OnGameStageStateChanged;
+        _gameModel.LampHealthChanged += OnLampHealthChanged;
+        _gameModel.LampCooldownTimeChanged += OnLampCooldownTimeChanged;
+        _gameModel.LampAttackDistanceChanged += OnLampAttackDistanceChanged;
+        _gameModel.UpgradePointsChanged += OnUpgradePointsChanged;
     }
 
     public void Dispose()
     {
-        _gameModel.OnGameStageStateChangedEvent -= HandleStartUpgrade;
-        _gameModel.OnLampHealthChangedEvent -= HandleHealthChanged;
-        _gameModel.OnLampCooldownTimeChangedEvent -= HandleCooldownChanged;
-        _gameModel.OnLampAttackDistanceChangedEvent -= HandleAttackDistanceChanged;
-        _gameModel.OnUpgradePointsChangedEvent -= HandleUpgradePointsChanged;
+        _gameModel.GameStageStateChanged -= OnGameStageStateChanged;
+        _gameModel.LampHealthChanged -= OnLampHealthChanged;
+        _gameModel.LampCooldownTimeChanged -= OnLampCooldownTimeChanged;
+        _gameModel.LampAttackDistanceChanged -= OnLampAttackDistanceChanged;
+        _gameModel.UpgradePointsChanged -= OnUpgradePointsChanged;
     }
-
-    private void HandleStartUpgrade(GameStageState stageState)
+    
+    /// <summary>
+    /// Handle Start onf the stage
+    /// </summary>
+    /// <param name="stageState"></param>
+    private void OnGameStageStateChanged(GameStageState stageState)
     {
         if(stageState != GameStageState.Prepare)
             return;
@@ -118,7 +122,7 @@ public class PlayerUpgradeViewModel : IDisposable
         UpgradePoints = _gameModel.UpgradePoints;
     }
 
-    private void HandleHealthChanged(int health)
+    private void OnLampHealthChanged(int health)
     {
         // Disable button if healthcap is reached or no upgrade points
         if(_gameModel.LampHealth >= _gameConfigService.PlayerConfig.HealthCap || _gameModel.UpgradePoints <= 0)
@@ -129,7 +133,7 @@ public class PlayerUpgradeViewModel : IDisposable
         HealthUpgradeEnabled = true;
     }
 
-    private void HandleCooldownChanged(float cooldownTime)
+    private void OnLampCooldownTimeChanged(float cooldownTime)
     {
         // Disable button if cooldowncap is reached or no upgrade points
         if(_gameModel.LampCooldownTime < _gameConfigService.PlayerConfig.CooldownTimeCap ||
@@ -142,7 +146,7 @@ public class PlayerUpgradeViewModel : IDisposable
         CooldownUpgradeEnabled = true;
     }
 
-    private void HandleAttackDistanceChanged(float attackDistance)
+    private void OnLampAttackDistanceChanged(float attackDistance)
     {
         // Disable button if attackDistanceCap is reached or no upgrade points
         if (_gameModel.LampAttackDistance > _gameConfigService.PlayerConfig.AttackDistanceCap ||
@@ -156,7 +160,7 @@ public class PlayerUpgradeViewModel : IDisposable
         AttackDistanceUpgradeEnabled = true;
     }
 
-    private void HandleUpgradePointsChanged(int upgradePoints)
+    private void OnUpgradePointsChanged(int upgradePoints)
     {
         // Disable all buttons if no upgrade points
         if(upgradePoints <= 0)

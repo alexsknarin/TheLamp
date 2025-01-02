@@ -7,7 +7,7 @@ public class UnityAnalyticsService : MonoBehaviour, IAnalyticsService, IInitiali
 {
     IGameSettingsService _gameSettingsService;
     private IUGSAuthenticationService _ugsAuthenticationService;
-    public event Action OnConsentAddressedEvent;
+    public event Action ConsentAddressed;
     
     // Analytics Data
     private float _waveTime;
@@ -31,7 +31,7 @@ public class UnityAnalyticsService : MonoBehaviour, IAnalyticsService, IInitiali
         _lampDamageEvent = new CustomEvent("LampDamaged");
         _healthUpgradeEvent = new CustomEvent("healthUpgrade");
         _coolUpgradeEvent = new CustomEvent("coolUpgrade");
-        _gameSettingsService.OnIsDataCollectionEnabledChangedEvent += UpdateCollectionBehavior;
+        _gameSettingsService.IsDataCollectionEnabledChanged += UpdateCollectionBehavior;
         
         Debug.Log("Analytics: Initializing Unity Analytics Service.");
         StartCoroutine(WaitUntilUGSConnected());
@@ -45,7 +45,7 @@ public class UnityAnalyticsService : MonoBehaviour, IAnalyticsService, IInitiali
 
     private void OnDestroy()
     {
-        _gameSettingsService.OnIsDataCollectionEnabledChangedEvent -= UpdateCollectionBehavior;
+        _gameSettingsService.IsDataCollectionEnabledChanged -= UpdateCollectionBehavior;
     }
 
     private void CheckIfConsentIsProvided()
@@ -81,7 +81,7 @@ public class UnityAnalyticsService : MonoBehaviour, IAnalyticsService, IInitiali
     private void StartAnalyticsCollection()
     {
         _isEnabled = true;
-        OnConsentAddressedEvent?.Invoke();  // TODO: needed for Game  class to know when to start the game - need to remove it from here
+        ConsentAddressed?.Invoke();  // TODO: needed for Game  class to know when to start the game - need to remove it from here
         AnalyticsService.Instance.StartDataCollection(); 
         Debug.Log("Analytics: Consent has been provided. The SDK is now collecting data");
     }
@@ -89,7 +89,7 @@ public class UnityAnalyticsService : MonoBehaviour, IAnalyticsService, IInitiali
     private void StopAnalyticsCollection()
     {
         _isEnabled = false;
-        OnConsentAddressedEvent?.Invoke(); // What is this used for?
+        ConsentAddressed?.Invoke(); // What is this used for?
         AnalyticsService.Instance.StopDataCollection();
         Debug.Log("Analytics: Consent has been refused. The SDK is not collecting data");
     }

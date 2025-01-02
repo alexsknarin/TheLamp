@@ -1,5 +1,4 @@
 using System;
-using UnityEngine;
 
 public class PlayerGameplayViewModel : IDisposable
 {
@@ -8,14 +7,14 @@ public class PlayerGameplayViewModel : IDisposable
     public Observable<bool> IsBlocked = new();
     public Observable<float> AttackDistance = new();
 
-    public Action<GlassDamageData> OnLampGlassDamageChangedEvent;
+    public Action<GlassDamageData> LampGlassDamageChanged;
     
-    public event Action OnLastHealthPointStartedEvent;
-    public event Action OnLastHealthPointEndedEvent;
-    public event Action<float, bool> OnAttackStartEvent;
-    public event Action<float> OnLampDamagedEvent;
-    public event Action OnLampDeadEvent;
-    public event Action OnHealthUpgradedEvent;
+    public event Action LastHealthPointStarted;
+    public event Action LastHealthPointEnded;
+    public event Action<float, bool> AttackStart;
+    public event Action<float> LampDamaged;
+    public event Action LampDied;
+    public event Action HealthUpgraded;
     
     private GameModel _gameModel;
     
@@ -24,49 +23,53 @@ public class PlayerGameplayViewModel : IDisposable
     public PlayerGameplayViewModel(GameModel gameModel)
     {
         _gameModel = gameModel;
-        _gameModel.OnLampAttackStartedEvent += StartLampAttack;
-        _gameModel.OnPowerChangedEvent += HandlePowerChange;
-        _gameModel.OnLampHealthChangedEvent += UpdateLampHealth;
-        _gameModel.OnLampMaxHealthChangedEvent += UpdateLampMaxHealth;
-        _gameModel.OnLampBlockedModeSetEvent += SetBlockedMode;
-        _gameModel.OnLampDamageStartedEvent += StartLampDamage;
-        _gameModel.OnLampGlassDamageChangedEvent += UpdateLampGlassDamage;
-        _gameModel.OnLampAttackDistanceChangedEvent += UpdateAttackDistance;
+        _gameModel.LampAttackStarted += OnLampAttackStarted;
+        _gameModel.PowerChanged += OnPowerChanged;
+        _gameModel.LampHealthChanged += OnLampHealthChanged;
+        _gameModel.LampMaxHealthChanged += OnLampMaxHealthChanged;
+        _gameModel.LampBlockedModeSet += OnLampBlockedModeSet;
+        _gameModel.LampDamageStarted += OnLampDamageStarted;
+        _gameModel.LampGlassDamageChanged += OnLampGlassDamageChanged;
+        _gameModel.LampAttackDistanceChanged += OnLampAttackDistanceChanged;
     }
 
     public void Dispose()
     {
-        _gameModel.OnLampAttackStartedEvent -= StartLampAttack;
-        _gameModel.OnPowerChangedEvent -= HandlePowerChange;
-        _gameModel.OnLampHealthChangedEvent -= UpdateLampHealth;
-        _gameModel.OnLampMaxHealthChangedEvent -= UpdateLampMaxHealth;
-        _gameModel.OnLampBlockedModeSetEvent -= SetBlockedMode;
-        _gameModel.OnLampDamageStartedEvent -= StartLampDamage;
-        _gameModel.OnLampGlassDamageChangedEvent -= UpdateLampGlassDamage;
-        _gameModel.OnLampAttackDistanceChangedEvent -= UpdateAttackDistance;
+        _gameModel.LampAttackStarted -= OnLampAttackStarted;
+        _gameModel.PowerChanged -= OnPowerChanged;
+        _gameModel.LampHealthChanged -= OnLampHealthChanged;
+        _gameModel.LampMaxHealthChanged -= OnLampMaxHealthChanged;
+        _gameModel.LampBlockedModeSet -= OnLampBlockedModeSet;
+        _gameModel.LampDamageStarted -= OnLampDamageStarted;
+        _gameModel.LampGlassDamageChanged -= OnLampGlassDamageChanged;
+        _gameModel.LampAttackDistanceChanged -= OnLampAttackDistanceChanged;
     }
 
-    public void HandleDamageStateEnded()
+    public void OnDamageStateEnded() // TODO: com up with name
     {
         _gameModel.HandleDamageStateEnded();
     }
 
-    private void SetBlockedMode(bool isBlocked)
+    private void OnLampBlockedModeSet(bool isBlocked)
     {
         IsBlocked.Value = isBlocked;
     }
 
-    private void HandlePowerChange(float power)
+    private void OnPowerChanged(float power)
     {
         Power.Value = power;
     }
-
-    private void StartLampAttack(float currentPower)
+    
+    /// <summary>
+    /// Start Lamp Attack.
+    /// </summary>
+    /// <param name="currentPower"></param>
+    private void OnLampAttackStarted(float currentPower)
     {
-        OnAttackStartEvent?.Invoke(currentPower, _gameModel.IsLampBlocked);
+        AttackStart?.Invoke(currentPower, _gameModel.IsLampBlocked);
     }
 
-    private void UpdateLampHealth(int newHealth)
+    private void OnLampHealthChanged(int newHealth)
     {
         
         _currentHealth = newHealth;
@@ -75,30 +78,30 @@ public class PlayerGameplayViewModel : IDisposable
         // check for the last health point
         if (newHealth == 1)
         {
-            OnLastHealthPointStartedEvent?.Invoke();
+            LastHealthPointStarted?.Invoke();
         }
         else
         {
-            OnLastHealthPointEndedEvent?.Invoke();
+            LastHealthPointEnded?.Invoke();
         }
     }
 
-    private void UpdateLampMaxHealth(int newMaxPoints)
+    private void OnLampMaxHealthChanged(int newMaxPoints)
     {   
-        OnHealthUpgradedEvent?.Invoke();
+        HealthUpgraded?.Invoke();
     }
 
-    private void StartLampDamage(float duration)
+    private void OnLampDamageStarted(float duration)
     {
-        OnLampDamagedEvent?.Invoke(duration);
+        LampDamaged?.Invoke(duration);
     }
 
-    private void UpdateLampGlassDamage(GlassDamageData damageData)
+    private void OnLampGlassDamageChanged(GlassDamageData damageData)
     {
-        OnLampGlassDamageChangedEvent?.Invoke(damageData);
+        LampGlassDamageChanged?.Invoke(damageData);
     }
 
-    private void UpdateAttackDistance(float distance)
+    private void OnLampAttackDistanceChanged(float distance)
     {
         AttackDistance.Value = distance;
     }

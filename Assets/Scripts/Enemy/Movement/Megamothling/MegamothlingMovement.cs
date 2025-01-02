@@ -24,7 +24,7 @@ public class MegamothlingMovement : EnemyMovement
     [Header("---- Depth Settings ----")]
     [SerializeField] bool _isDepthEnabled;
     public event Action OnBossAttackStartedEvent;
-    public event Action OnDeathStateEndedEvent;
+    public event Action DeathStateEnded;
     private Vector3 _velocity = Vector3.zero;
     private int _sideDirection;
     private int _depthDirection;
@@ -220,7 +220,7 @@ public class MegamothlingMovement : EnemyMovement
                 return;
             case EnemyState.Death:
                 newState = _patrolState;
-                OnDeathStateEndedEvent?.Invoke();
+                DeathStateEnded?.Invoke();
                 break;
         }
 

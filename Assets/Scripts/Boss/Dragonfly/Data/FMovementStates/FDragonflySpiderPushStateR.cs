@@ -4,7 +4,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "FDragonflySpiderPushStateR", menuName = "FDragonflyMovementStates/FDragonflySpiderPushStateR")]
 public class FDragonflySpiderPushStateR : ScriptableObject, IState
 {
-    public event Action OnEndedEvent;
+    public event Action Ended;
     
     [SerializeField] private float _distance = 0.5f;
     [SerializeField] private float _duration = 0.5f;
@@ -58,7 +58,7 @@ public class FDragonflySpiderPushStateR : ScriptableObject, IState
     public void OnExit()
     {
         _spiderPatrolRotator.Stop();
-        OnEndedEvent?.Invoke();
+        Ended?.Invoke();
     }
 
     private void CheckForStateChange()

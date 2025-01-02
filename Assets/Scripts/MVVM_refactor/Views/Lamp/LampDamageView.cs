@@ -11,32 +11,38 @@ public class LampDamageView : MonoBehaviour
     {
         _playerGameplayViewModel = playerGameplayViewModel;
         
-        _playerGameplayViewModel.OnLampDamagedEvent += ShowDamageEffect;
-        _playerGameplayViewModel.OnLampDeadEvent += ShowDeathEffect;
-        _playerGameplayViewModel.OnLampGlassDamageChangedEvent += SetLampGlassDamage;
-        _lampDamageAnimation.OnFinishedEvent += _playerGameplayViewModel.HandleDamageStateEnded;
-        
+        _playerGameplayViewModel.LampDamaged += OnLampDamaged;
+        _playerGameplayViewModel.LampDied += OnLampDied;
+        _playerGameplayViewModel.LampGlassDamageChanged += OnLampGlassDamageChanged;
+        _lampDamageAnimation.Finished += _playerGameplayViewModel.OnDamageStateEnded;
     }
 
     private void OnDestroy()
     {
-        _playerGameplayViewModel.OnLampDamagedEvent -= ShowDamageEffect;
-        _playerGameplayViewModel.OnLampDeadEvent -= ShowDeathEffect;
-        _playerGameplayViewModel.OnLampGlassDamageChangedEvent -= SetLampGlassDamage;
-        _lampDamageAnimation.OnFinishedEvent -= _playerGameplayViewModel.HandleDamageStateEnded;
+        _playerGameplayViewModel.LampDamaged -= OnLampDamaged;
+        _playerGameplayViewModel.LampDied -= OnLampDied;
+        _playerGameplayViewModel.LampGlassDamageChanged -= OnLampGlassDamageChanged;
+        _lampDamageAnimation.Finished -= _playerGameplayViewModel.OnDamageStateEnded;
     }
 
-    private void ShowDamageEffect(float duration)
+    /// <summary>
+    /// Show Lamp Damage Effect
+    /// </summary>
+    /// <param name="duration"></param>
+    private void OnLampDamaged(float duration)
     {
         _lampDamageAnimation.Play(duration);
     }
 
-    private void ShowDeathEffect()
+    /// <summary>
+    /// Show Lamp Death Effect
+    /// </summary>
+    private void OnLampDied()
     {
         _lampDamageAnimation.Play(0.2f); // TODO: magic number
     }
 
-    private void SetLampGlassDamage(GlassDamageData data)
+    private void OnLampGlassDamageChanged(GlassDamageData data)
     {
         _lampEmissionController.LampGlassDamageUpdate(data);
     }

@@ -10,16 +10,16 @@ public class LampBlockedModeView : MonoBehaviour
     public void Bind(PlayerGameplayViewModel playerGameplayViewModel)
     {
         _playerGameplayViewModel = playerGameplayViewModel;
-        _playerGameplayViewModel.IsBlocked.OnChangedEvent += SetBlockedMode;
+        _playerGameplayViewModel.IsBlocked.Changed += OnIsBlockedChanged;
     }
 
     private void OnDestroy()
     {
         _lampEmissionController.IsBlockedMode = false;
-        _playerGameplayViewModel.IsBlocked.OnChangedEvent += SetBlockedMode;
+        _playerGameplayViewModel.IsBlocked.Changed += OnIsBlockedChanged;
     }
 
-    private void SetBlockedMode(object sender, Observable<bool>.ChangedEventArgs e)
+    private void OnIsBlockedChanged(object sender, Observable<bool>.ChangedEventArgs e)
     {
         Debug.Log("Set Blocked Mode: " + e.NewValue);
         _lampEmissionController.IsBlockedMode = e.NewValue;

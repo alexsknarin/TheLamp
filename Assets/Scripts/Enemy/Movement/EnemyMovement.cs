@@ -5,12 +5,12 @@ public abstract class EnemyMovement : MonoBehaviour, IStateMachineOwner, IInitia
 {
     public EnemyState State { get; protected set; }
     public int SideDirection { get; protected set; }
-    public event Action OnPreAttackStartEvent;
-    public event Action OnPreAttackEndEvent;
-    public event Action OnAttackEndEvent;
-    public event Action OnStickStartEvent;
-    public event Action OnEnemyDeactivatedEvent; 
-    public event Action OnMovementResetEvent;
+    public event Action PreAttackStarted;
+    public event Action PreAttackEnded;
+    public event Action AttackEnded;
+    public event Action StickStarted;
+    public event Action EnemyDeactivated; 
+    public event Action MovementReseted;
 
     public virtual void Construct(ILampPositionProviderService lampPositionProviderService) { }
     public abstract void Initialize();
@@ -24,31 +24,31 @@ public abstract class EnemyMovement : MonoBehaviour, IStateMachineOwner, IInitia
 
     protected virtual void OnPreAttackStartInvoke()
     {
-        OnPreAttackStartEvent?.Invoke();
+        PreAttackStarted?.Invoke();
     }
 
     protected virtual void OnPreAttackEndInvoke()
     {
-        OnPreAttackEndEvent?.Invoke();
+        PreAttackEnded?.Invoke();
     }
     
     protected virtual void OnAttackEndInvoke()
     {
-        OnAttackEndEvent?.Invoke();
+        AttackEnded?.Invoke();
     }
     
     protected virtual void OnStickStartInvoke()
     {
-        OnStickStartEvent?.Invoke();
+        StickStarted?.Invoke();
     }
    
     protected virtual void OnEnemyDeactivatedInvoke()
     {
-        OnEnemyDeactivatedEvent?.Invoke();
+        EnemyDeactivated?.Invoke();
     }
     
     protected virtual void OnMovementResetInvoke()
     {
-        OnMovementResetEvent?.Invoke();
+        MovementReseted?.Invoke();
     }
 }

@@ -7,35 +7,35 @@ public class LampHealthBarView : MonoBehaviour
     public void Bind(PlayerGameplayViewModel playerGameplayViewModel)
     {
         _playerGameplayViewModel = playerGameplayViewModel;
-        _playerGameplayViewModel.LampNormalizedHealth.OnChangedEvent += UpdateHealth;
-        _playerGameplayViewModel.OnLastHealthPointStartedEvent += EnableLastHealth;
-        _playerGameplayViewModel.OnLastHealthPointEndedEvent += DisableLastHealth;
-        _playerGameplayViewModel.OnHealthUpgradedEvent += PlayUpgrade;
+        _playerGameplayViewModel.LampNormalizedHealth.Changed += OnLampNormalizedHealthChanged;
+        _playerGameplayViewModel.LastHealthPointStarted += OnLastHealthPointStarted;
+        _playerGameplayViewModel.LastHealthPointEnded += OnLastHealthPointEnded;
+        _playerGameplayViewModel.HealthUpgraded += OnHealthUpgraded;
     }
     private void OnDestroy()
     {
-        _playerGameplayViewModel.LampNormalizedHealth.OnChangedEvent -= UpdateHealth;
-        _playerGameplayViewModel.OnLastHealthPointStartedEvent -= EnableLastHealth;
-        _playerGameplayViewModel.OnLastHealthPointEndedEvent -= DisableLastHealth;
-        _playerGameplayViewModel.OnHealthUpgradedEvent -= PlayUpgrade;
+        _playerGameplayViewModel.LampNormalizedHealth.Changed -= OnLampNormalizedHealthChanged;
+        _playerGameplayViewModel.LastHealthPointStarted -= OnLastHealthPointStarted;
+        _playerGameplayViewModel.LastHealthPointEnded -= OnLastHealthPointEnded;
+        _playerGameplayViewModel.HealthUpgraded -= OnHealthUpgraded;
     }
 
-    private void UpdateHealth(object sender, Observable<float>.ChangedEventArgs e)
+    private void OnLampNormalizedHealthChanged(object sender, Observable<float>.ChangedEventArgs e)
     {
         _lampHealthBarController.SetHealth(e.NewValue);
     }
 
-    private void EnableLastHealth()
+    private void OnLastHealthPointStarted()
     {
         _lampHealthBarController.EnableLastHealth();
     }
     
-    private void DisableLastHealth()
+    private void OnLastHealthPointEnded()
     {
         _lampHealthBarController.DisableLastHealth();    
     }
     
-    private void PlayUpgrade()
+    private void OnHealthUpgraded()
     {
         _lampHealthBarController.PlayUpgrade();
     }

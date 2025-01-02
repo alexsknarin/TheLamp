@@ -4,8 +4,8 @@ using UnityEngine;
 public abstract class BossBase : EnemyBase
 {
     protected bool _isGameover = false;
-    public static event Action OnTriggerSpreadEvent;
-    public static event Action OnDeathEvent;
+    public static event Action SpreadTriggering;
+    public static event Action BossDied;
     
     public virtual void SetGameover()
     {
@@ -17,12 +17,12 @@ public abstract class BossBase : EnemyBase
     
     protected virtual void OnTriggerSpreadInvoke()
     {
-        OnTriggerSpreadEvent?.Invoke();
+        SpreadTriggering?.Invoke();
     }
     
     protected virtual void OnDeathInvoke()
     {
-        OnDeathEvent?.Invoke();
+        BossDied?.Invoke();
     }
     
     public override void HandleEnteringAttackZone()

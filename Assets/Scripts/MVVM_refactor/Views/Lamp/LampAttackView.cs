@@ -23,8 +23,8 @@ public class LampAttackView : MonoBehaviour, IInitializable
     {
         _playerGameplayViewModel = playerGameplayViewModel;
         _gameConfigService = gameConfigService;
-        _playerGameplayViewModel.OnAttackStartEvent += AttackStart;
-        _playerGameplayViewModel.AttackDistance.OnChangedEvent += UpdateAttackZoneRadius;
+        _playerGameplayViewModel.AttackStart += OnAttackStart;
+        _playerGameplayViewModel.AttackDistance.Changed += OnAttackDistanceChanged;
     }
 
     public void Initialize()
@@ -35,11 +35,11 @@ public class LampAttackView : MonoBehaviour, IInitializable
 
     private void OnDestroy()
     {
-        _playerGameplayViewModel.OnAttackStartEvent -= AttackStart;
-        _playerGameplayViewModel.AttackDistance.OnChangedEvent -= UpdateAttackZoneRadius;
+        _playerGameplayViewModel.AttackStart -= OnAttackStart;
+        _playerGameplayViewModel.AttackDistance.Changed -= OnAttackDistanceChanged;
     }
 
-    private void AttackStart(float power, bool isBlockedAttack)
+    private void OnAttackStart(float power, bool isBlockedAttack)
     {
         _isBlockedAttack = isBlockedAttack;
         _lightPower = _emissionPowerCurve.Evaluate(power);
@@ -66,7 +66,7 @@ public class LampAttackView : MonoBehaviour, IInitializable
         _localTime += Time.deltaTime;
     }
 
-    private void UpdateAttackZoneRadius(object sender, Observable<float>.ChangedEventArgs e)
+    private void OnAttackDistanceChanged(object sender, Observable<float>.ChangedEventArgs e)
     {
         _attackDistanceUpgradeAnimationController.enabled = true;
         _attackDistanceUpgradeAnimationController.Play(_gameConfigService.PlayerConfig.AttackDistanceUpgradeAnimationTime);

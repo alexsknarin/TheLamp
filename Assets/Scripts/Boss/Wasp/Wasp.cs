@@ -30,16 +30,16 @@ public class Wasp : BossBase
 
     private void OnEnable()
     {
-        _fWaspMovement.OnBossAttackStartedEvent += UpdateRecievedLampAttackStatus;
-        _fWaspMovement.OnDeathStateEndedEvent += HandleDeathMoveStateEnd;
-        _lampDeadEventProvider.OnLampDeadEvent += HandleLampDead;
+        _fWaspMovement.BossAttackStarted += OnBossAttackStarted;
+        _fWaspMovement.DeathStateEnded += OnDeathStateEnded;
+        _lampDeadEventProvider.LampDied += OnLampDied;
     }
     
     private void OnDisable()
     {
-        _fWaspMovement.OnBossAttackStartedEvent -= UpdateRecievedLampAttackStatus;
-        _fWaspMovement.OnDeathStateEndedEvent -= HandleDeathMoveStateEnd;
-        _lampDeadEventProvider.OnLampDeadEvent -= HandleLampDead;
+        _fWaspMovement.BossAttackStarted -= OnBossAttackStarted;
+        _fWaspMovement.DeathStateEnded -= OnDeathStateEnded;
+        _lampDeadEventProvider.LampDied -= OnLampDied;
     }
     public override void Initialize() // TODO: reuse Initialze for global initialization. Ths is Setup
     {
@@ -73,7 +73,10 @@ public class Wasp : BossBase
         OnTriggerSpreadInvoke();
     }
     
-    private void UpdateRecievedLampAttackStatus()
+    /// <summary>
+    /// Update Received Lamp Attack Status
+    /// </summary>
+    private void OnBossAttackStarted()
     {
         if (ReceivedLampAttack)
         {
@@ -147,12 +150,12 @@ public class Wasp : BossBase
         return transform.position;
     }
 
-    private void HandleLampDead(EnemyBase enemy)
+    private void OnLampDied(EnemyBase enemy)
     {
         _fWaspMovement.SetLampDestroyed();
     }
     
-    private void HandleDeathMoveStateEnd()
+    private void OnDeathStateEnded()
     {
         OnDeathInvoke();
         _waspPresentation.Reset();

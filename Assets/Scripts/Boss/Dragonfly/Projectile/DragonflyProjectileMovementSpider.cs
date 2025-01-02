@@ -13,8 +13,8 @@ public class DragonflyProjectileMovementSpider : MonoBehaviour
     [SerializeField] private float _fallDuration = 2f;
     [SerializeField] private AnimationCurve _fallAnimCurve;
     
-    public event Action OnEnterAnimationEndEvent;
-    public event Action OnFallEndedEvent;
+    public event Action EnterAnimationEnded;
+    public event Action FallEnded;
 
     private Vector3 _currentEndPosition;
     private Vector3 _startPosition;
@@ -81,7 +81,7 @@ public class DragonflyProjectileMovementSpider : MonoBehaviour
             if (phase > 1)
             {
                 _isStartPlaying = false;
-                OnEnterAnimationEndEvent?.Invoke();
+                EnterAnimationEnded?.Invoke();
                 return;
             }
             transform.position = Vector3.Lerp(_startPosition, _currentEndPosition, _startAnimCurve.Evaluate(phase));
@@ -108,7 +108,7 @@ public class DragonflyProjectileMovementSpider : MonoBehaviour
             if (phase > 1)
             {
                 _isFallPlaying = false;
-                OnFallEndedEvent?.Invoke();
+                FallEnded?.Invoke();
                 return;
             }
             Vector3 pos = transform.localPosition;

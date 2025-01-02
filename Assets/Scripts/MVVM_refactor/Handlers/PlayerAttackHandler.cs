@@ -11,16 +11,16 @@ public class PlayerAttackHandler : ITickable
         private set
         {
             _power = value;
-            OnPowerChangedEvent?.Invoke(_power);
+            PowerChanged?.Invoke(_power);
         }
     } 
-    public event Action<float> OnPowerChangedEvent;
-    public event Action OnCooldownEndedEvent;  // TODO: assess if this event is needed
+    public event Action<float> PowerChanged;
+    public event Action CooldownEnded;  // TODO: assess if this event is needed
     private WaitForSeconds _attackEndWaitDuraiton;
     private float _localTime;
     private float _cooldownDuration;
     private bool _isCooldownPlaying = false;
-    public event Action OnAttackEndedEvent; 
+    public event Action PlayerAttackEnded; 
     
     // Dependencies
     private MonoBehaviour _coroutineHost; 
@@ -60,7 +60,7 @@ public class PlayerAttackHandler : ITickable
     {
         yield return _attackEndWaitDuraiton;
         StartCooldown();
-        OnAttackEndedEvent?.Invoke();
+        PlayerAttackEnded?.Invoke();
     }
     
     private void StartCooldown()
@@ -82,7 +82,7 @@ public class PlayerAttackHandler : ITickable
         {
             _isCooldownPlaying = false;
             Power = 1;
-            OnCooldownEndedEvent?.Invoke();
+            CooldownEnded?.Invoke();
             return;
         }
         Power = phase;

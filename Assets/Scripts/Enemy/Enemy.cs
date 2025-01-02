@@ -26,29 +26,29 @@ public class Enemy : EnemyBase
         set => _objectPool = value;
     }
 
-    public static event Action<Enemy> OnEnemyDeactivatedEvent;
-    public static event Action<Enemy> OnEnemyDamagedEvent;
+    public static event Action<Enemy> EnemyDeactivated;
+    public static event Action<Enemy> EnemyDamaged;
     
     
 
     private void OnEnable()
     {
-        _enemyMovement.OnPreAttackStartEvent += OnPreAttackStart;
-        _enemyMovement.OnPreAttackEndEvent += OnPreAttackEnd;
-        _enemyMovement.OnAttackEndEvent += AttackStatusEnable;
-        _enemyMovement.OnEnemyDeactivatedEvent += OnDeactivated;
-        _enemyMovement.OnMovementResetEvent += OnMovementReset;
-        _enemyMovement.OnStickStartEvent += StickStatusEnable;
+        _enemyMovement.PreAttackStarted += OnPreAttackStarted;
+        _enemyMovement.PreAttackEnded += OnPreAttackEnded;
+        _enemyMovement.AttackEnded += OnAttackEnded;
+        _enemyMovement.EnemyDeactivated += OnEnemyDeactivated;
+        _enemyMovement.MovementReseted += OnMovementReseted;
+        _enemyMovement.StickStarted += OnStickStarted;
     }
     
     private void OnDisable()
     {
-        _enemyMovement.OnPreAttackStartEvent -= OnPreAttackStart;
-        _enemyMovement.OnPreAttackEndEvent -= OnPreAttackEnd;
-        _enemyMovement.OnAttackEndEvent -= AttackStatusEnable;
-        _enemyMovement.OnEnemyDeactivatedEvent -= OnDeactivated;
-        _enemyMovement.OnMovementResetEvent -= OnMovementReset;
-        _enemyMovement.OnStickStartEvent -= StickStatusEnable;
+        _enemyMovement.PreAttackStarted -= OnPreAttackStarted;
+        _enemyMovement.PreAttackEnded -= OnPreAttackEnded;
+        _enemyMovement.AttackEnded -= OnAttackEnded;
+        _enemyMovement.EnemyDeactivated -= OnEnemyDeactivated;
+        _enemyMovement.MovementReseted -= OnMovementReseted;
+        _enemyMovement.StickStarted -= OnStickStarted;
     }
     
     public override void Initialize()
@@ -67,7 +67,7 @@ public class Enemy : EnemyBase
         _isDead = false;
     }
     
-    private void OnMovementReset()
+    private void OnMovementReseted()
     {
         _enemyPresentation.Initialize();
     }
@@ -140,7 +140,7 @@ public class Enemy : EnemyBase
         _enemyMovement.TriggerAttack();
     }
     
-    private void OnPreAttackStart()
+    private void OnPreAttackStarted()
     {
         ReceivedLampAttack = false;
         _enemyPresentation.PreAttackStart();
@@ -148,18 +148,18 @@ public class Enemy : EnemyBase
         IsAttacking = true;
     }
     
-    private void OnPreAttackEnd()
+    private void OnPreAttackEnded()
     {
         _enemyPresentation.PreAttackEnd();
         ReadyToCollide = true;
     }
     
-    private void AttackStatusEnable()
+    private void OnAttackEnded()
     {
         IsAttacking = false;
     }
     
-    private void StickStatusEnable()
+    private void OnStickStarted()
     {
         Debug.Log("Stick status enabled");
         IsStick = true;
@@ -199,7 +199,7 @@ public class Enemy : EnemyBase
             ReceivedLampAttack = true;
             _enemyPresentation.DamageFlash();
             _enemyPresentation.HealthUpdate(_currentHealth, _maxHealth);
-            OnEnemyDamagedEvent?.Invoke(this);
+            EnemyDamaged?.Invoke(this);
             _enemyMovement.TriggerFall();
         }
         else
@@ -234,9 +234,9 @@ public class Enemy : EnemyBase
         return transform.position;
     }
 
-    private void OnDeactivated()
+    private void OnEnemyDeactivated()
     {
-        OnEnemyDeactivatedEvent?.Invoke(this);
+        EnemyDeactivated?.Invoke(this);
         _objectPool.Release(this);
     }
 }

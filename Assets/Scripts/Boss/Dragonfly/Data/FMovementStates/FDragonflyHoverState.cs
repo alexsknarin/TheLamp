@@ -9,7 +9,7 @@ public class FDragonflyHoverState : ScriptableObject, IState
     private float _localTime = 0f;
     private Vector3 _hoverPos = Vector3.zero;
     
-    public event Action OnStartedEvent;
+    public event Action Started;
 
     // Dependencies
     private Transform _visibleBodyTransform;
@@ -26,7 +26,7 @@ public class FDragonflyHoverState : ScriptableObject, IState
         _visibleBodyTransform.SetParent(_baseTransform);
         _hoverPos = _visibleBodyTransform.localPosition;
         _localTime = 0f;
-        OnStartedEvent?.Invoke();
+        Started?.Invoke();
     }
 
     public void Tick()

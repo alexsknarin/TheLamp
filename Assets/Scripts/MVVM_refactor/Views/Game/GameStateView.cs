@@ -11,12 +11,12 @@ public class GameStateView : MonoBehaviour
         _gameStateViewModel = viewModel;
         _gameState = _gameStateViewModel.CurrentGameState;        
         
-        _gameStateViewModel.OnGameStateChangedEvent += OnGameStateChanged;
+        _gameStateViewModel.GameStateChanged += OnGameStateChanged;
     }
 
     private void OnDestroy()
     {
-        _gameStateViewModel.OnGameStateChangedEvent -= OnGameStateChanged;
+        _gameStateViewModel.GameStateChanged -= OnGameStateChanged;
     }
 
     private void OnGameStateChanged(GameState gameState)

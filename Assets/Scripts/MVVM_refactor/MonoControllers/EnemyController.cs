@@ -55,31 +55,31 @@ public class EnemyController : MonoBehaviour, IInitializable
     }
     
     // Events
-    public event Action OnWaveStartEvent;
-    public event Action<EnemyBase> OnEnemySpawnedEvent;
-    public event Action<EnemyBase> OnEnemyDeadEvent;
-    public event Action<EnemyBase> OnBossSpawnedEvent;
-    public event Action<EnemyBase> OnBossDeadEvent;
-    public event Action OnFireflyExplosionEvent;
-    public event Action OnWaveEndEvent;
+    public event Action WaveStarted;
+    public event Action<EnemyBase> EnemySpawned;
+    public event Action<EnemyBase> EnemyDied;
+    public event Action<EnemyBase> BossSpawned;
+    public event Action<EnemyBase> BossDied;
+    public event Action FireflyExplosionStarted;
+    public event Action WaveEnded;
     
     private void OnEnable()
     {
-        Enemy.OnEnemyDeactivatedEvent += UpdateEnemiesOnScreen;     // TODO: replace with an Interface
-        Enemy.OnEnemyDeactivatedEvent += CheckForFireflyExplosion;  // TODO: replace with an Interface
-        LampStickZoneCollisionHandler.OnCollidedWithStickyEnemyStaticEvent += UpdateLadybugsOnScreen;
-        BossBase.OnTriggerSpreadEvent += SpreadEnemies;
-        BossBase.OnDeathEvent += OnBossDeathHandle;
+        Enemy.EnemyDeactivated += OnEnemyDeactivated;     // TODO: replace with an Interface
+        Enemy.EnemyDeactivated += CheckForFireflyExplosion;  // TODO: replace with an Interface // TODO: call from a single method
+        LampStickZoneCollisionHandler.CollidedWithStickyEnemyStatic += UpdateLadybugsOnScreen; // TODO: tmp solution - need fix
+        BossBase.SpreadTriggering += OnSpreadTriggering;
+        BossBase.BossDied += OnBossDied;
     }
     
     private void OnDisable()
     {
-        Enemy.OnEnemyDeactivatedEvent -= UpdateEnemiesOnScreen;
-        Enemy.OnEnemyDeactivatedEvent -= CheckForFireflyExplosion;
-        LampStickZoneCollisionHandler.OnCollidedWithStickyEnemyStaticEvent -= UpdateLadybugsOnScreen;
-        _enemySpawner.OnBossSpawnedEvent -= OnBossSpawnedHandle;
-        BossBase.OnTriggerSpreadEvent -= SpreadEnemies;
-        BossBase.OnDeathEvent -= OnBossDeathHandle;
+        Enemy.EnemyDeactivated -= OnEnemyDeactivated;
+        Enemy.EnemyDeactivated -= CheckForFireflyExplosion;
+        LampStickZoneCollisionHandler.CollidedWithStickyEnemyStatic -= UpdateLadybugsOnScreen;
+        _enemySpawner.BossSpawned -= OnBossSpawned;
+        BossBase.SpreadTriggering -= OnSpreadTriggering;
+        BossBase.BossDied -= OnBossDied;
     }
     
     public void Initialize()
@@ -115,7 +115,7 @@ public class EnemyController : MonoBehaviour, IInitializable
         _tickables.Add(_enemySpawner);
         
         // And subcribe to its events
-        _enemySpawner.OnBossSpawnedEvent += OnBossSpawnedHandle;
+        _enemySpawner.BossSpawned += OnBossSpawned;
         
         _enemyAttacker = new EnemyAttacker(
             _spawnQueue, 
@@ -156,7 +156,7 @@ public class EnemyController : MonoBehaviour, IInitializable
         if(!_isWaveInitialized)
         {
             SetupWave(wave);
-            OnWaveStartEvent?.Invoke(); // TODO: What we use this event for?
+            WaveStarted?.Invoke(); // TODO: What we use this event for?
         }
     }
 
@@ -183,7 +183,7 @@ public class EnemyController : MonoBehaviour, IInitializable
     private IEnumerator SpreadEnemiesAfterGameOver()
     {
         yield return _waitAfterGameOver;
-        SpreadEnemies();
+        OnSpreadTriggering();
     }
     
     public void Restart()
@@ -235,7 +235,11 @@ public class EnemyController : MonoBehaviour, IInitializable
 
     // Event Handlers
 
-    private void UpdateEnemiesOnScreen(EnemyBase enemy)
+    /// <summary>
+    /// Update enemies list
+    /// </summary>
+    /// <param name="enemy"></param>
+    private void OnEnemyDeactivated(EnemyBase enemy)
     {
         _enemies.Remove(enemy);
         _enemiesKilled++;
@@ -261,17 +265,17 @@ public class EnemyController : MonoBehaviour, IInitializable
             return;
         }
         _enemiesFireflyExploder.StartExplosion(enemy);
-        OnFireflyExplosionEvent?.Invoke();
+        FireflyExplosionStarted?.Invoke();
     }
 
-    private void OnBossSpawnedHandle(BossBase boss)
+    private void OnBossSpawned(BossBase boss)
     {
         boss.Play();
         _enemyAttacker.ActivateBoss(boss); // Boss appearance should stop any ongoing attack
-        OnBossSpawnedEvent?.Invoke(boss);
+        BossSpawned?.Invoke(boss);
     }
 
-    private void SpreadEnemies()
+    private void OnSpreadTriggering()
     {
         foreach (var enemy in _enemies)
         {
@@ -279,9 +283,9 @@ public class EnemyController : MonoBehaviour, IInitializable
         }
     }
 
-    private void OnBossDeathHandle()
+    private void OnBossDied()
     {
-        OnBossDeadEvent?.Invoke(_enemySpawner.Boss);
+        BossDied?.Invoke(_enemySpawner.Boss);
         _enemyAttacker.DeactivateBoss();
         _enemies.Remove(_enemySpawner.Boss);
         _enemiesKilled++;
@@ -314,7 +318,7 @@ public class EnemyController : MonoBehaviour, IInitializable
             if (_enemiesKilled == _enemySpawner.EnemiesWaveCount)
             {
                 _isWaveInitialized = false;
-                OnWaveEndEvent?.Invoke();
+                WaveEnded?.Invoke();
             }
         }
     }

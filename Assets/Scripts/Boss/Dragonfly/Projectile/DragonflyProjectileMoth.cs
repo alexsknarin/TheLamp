@@ -11,16 +11,16 @@ public class DragonflyProjectileMoth : EnemyBase
     {
         // LampAttackModel.OnLampAttackEvent += TMPHandleLampAttack;
         // TODO: fix this - Projectiles should work via EnemyController
-        _movement.OnFallEndedEvent += OnFallEndedHandle;
+        _movement.FallEnded += OnFallEnded;
     }
 
     private void OnDisable()
     {
         // LampAttackModel.OnLampAttackEvent -= TMPHandleLampAttack;
-        _movement.OnFallEndedEvent -= OnFallEndedHandle;
+        _movement.FallEnded -= OnFallEnded;
     }
 
-    private void OnFallEndedHandle()
+    private void OnFallEnded()
     {
         gameObject.SetActive(false);
     }

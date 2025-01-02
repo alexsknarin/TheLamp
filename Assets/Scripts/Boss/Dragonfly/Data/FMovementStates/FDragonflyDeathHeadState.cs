@@ -9,8 +9,8 @@ public class FDragonflyDeathHeadState : ScriptableObject, IState
     [SerializeField] private AnimationCurve _headFallRotateCurve;
     [SerializeField] private AnimationCurve _headFallFallDownCurve;
    
-    public event Action OnStartedEvent;
-    public event Action OnEndedEvent;
+    public event Action Started;
+    public event Action Ended;
     
     private float _headFallStartPosY = 0f;
     private float _localTime = 0f;
@@ -37,7 +37,7 @@ public class FDragonflyDeathHeadState : ScriptableObject, IState
         _localTime = 0f;
         _phase = 0f;
         _isAfterDelay = false;
-        OnStartedEvent?.Invoke();
+        Started?.Invoke();
     }
 
     public void Tick()
@@ -72,7 +72,7 @@ public class FDragonflyDeathHeadState : ScriptableObject, IState
         else if (_isAfterDelay && _localTime > _afterDelay)
         {
             _isAfterDelay = false;
-            OnEndedEvent?.Invoke();
+            Ended?.Invoke();
         }
     }
 }

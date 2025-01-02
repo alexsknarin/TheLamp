@@ -13,7 +13,7 @@ public class FakeAd : MonoBehaviour
     [SerializeField] private Transform _progressBaTransform;
     [SerializeField] private float _duration;
     
-    public event Action OnAdFinishedEvent;
+    public event Action AdFinished;
     
     private bool _isPlaying = false;
     private float _localTime;
@@ -52,7 +52,7 @@ public class FakeAd : MonoBehaviour
             {
                 _isPlaying = false;
                 gameObject.SetActive(false);
-                OnAdFinishedEvent?.Invoke();
+                AdFinished?.Invoke();
                 return;
             }   
             _bgImage.color = Color.Lerp(_startBgColor, _endBgColor, Mathf.Clamp01(phase * 5));

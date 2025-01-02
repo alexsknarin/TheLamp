@@ -7,8 +7,8 @@ public class GameSettingsService: IGameSettingsService, IInitializable, IDisposa
     
     public bool IsConsentSet => _gameSettingsModel.IsConsentSet;
     public bool IsDataCollectionEnabled => _gameSettingsModel.IsDataCollectionEnabled;
-    public event Action<bool> OnIsConsentSetChangedEvent;
-    public event Action<bool> OnIsDataCollectionEnabledChangedEvent;
+    public event Action<bool> IsConsentSetChanged;
+    public event Action<bool> IsDataCollectionEnabledChanged;
     
     public GameSettingsService(IGameSettingsProviderService gameSettingsProviderService, GameSettingsModel gameSettingsModel)
     {
@@ -18,14 +18,14 @@ public class GameSettingsService: IGameSettingsService, IInitializable, IDisposa
 
     public void Initialize()
     {
-        _gameSettingsModel.OnIsConsentSetChangedEvent += HandleConsentSetOnChangedEvent;
-        _gameSettingsModel.OnIsDataCollectionEnabledChangedEvent += HandleDataCollectionEnabledChanged;
+        _gameSettingsModel.IsConsentSetChanged += HandleConsentSetOnChangedEvent;
+        _gameSettingsModel.IsDataCollectionEnabledChanged += HandleDataCollectionEnabledChanged;
     }
 
     public void Dispose()
     {
-        _gameSettingsModel.OnIsConsentSetChangedEvent += HandleConsentSetOnChangedEvent;
-        _gameSettingsModel.OnIsDataCollectionEnabledChangedEvent += HandleDataCollectionEnabledChanged;
+        _gameSettingsModel.IsConsentSetChanged += HandleConsentSetOnChangedEvent;
+        _gameSettingsModel.IsDataCollectionEnabledChanged += HandleDataCollectionEnabledChanged;
     }
 
     private void Save()
@@ -36,12 +36,12 @@ public class GameSettingsService: IGameSettingsService, IInitializable, IDisposa
     private void HandleConsentSetOnChangedEvent(bool value)
     {
         Save();
-        OnIsConsentSetChangedEvent?.Invoke(value);
+        IsConsentSetChanged?.Invoke(value);
     }
 
     private void HandleDataCollectionEnabledChanged(bool value)
     {
         Save();
-        OnIsDataCollectionEnabledChangedEvent?.Invoke(value);
+        IsDataCollectionEnabledChanged?.Invoke(value);
     }
 }
