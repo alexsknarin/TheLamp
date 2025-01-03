@@ -2,7 +2,6 @@ using UnityEngine;
 
 public class MothMovementDeathState: EnemyMovementBaseState
 {
-    public override EnemyState State => EnemyState.Death;
     private Vector3 _bounceForce;
     private Vector3 _gravityForce;
     private float _bounceForceMagnitude = 4f;
@@ -18,7 +17,9 @@ public class MothMovementDeathState: EnemyMovementBaseState
         _verticalAmplitude = verticalAmplitude;
         _owner = owner;
     }
-  
+
+    public override EnemyState State => EnemyState.Death;
+
     public override void EnterState(Vector3 currentPosition, int sideDirection, int depthDirection)
     {
         _sideDirection = sideDirection;

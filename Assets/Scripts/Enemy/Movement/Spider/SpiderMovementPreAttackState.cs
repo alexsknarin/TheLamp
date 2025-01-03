@@ -2,7 +2,6 @@ using UnityEngine;
 
 public class SpiderMovementPreAttackState: EnemyMovementBaseState
 {
-    public override EnemyState State => EnemyState.PreAttack;
     private Vector3 _hangingPoint;
     private float _localTime;
     private readonly float _acceleration = 9.7f;
@@ -21,7 +20,9 @@ public class SpiderMovementPreAttackState: EnemyMovementBaseState
         _hangingPoint = Vector3.up * 5f;
         _hangingPoint.x = radius;
     }
-    
+
+    public override EnemyState State => EnemyState.PreAttack;
+
     public override void EnterState(Vector3 currentPosition, int sideDirection, int depthDirection)
     {
         _sideDirection = sideDirection;

@@ -4,11 +4,11 @@ using UnityEngine;
 public class LampDamageAnimation : MonoBehaviour
 {
     [SerializeField] private LampEmissionController _lampEmissionController;
-    public event Action Finished;
-
     private bool _isPlaying = false;
     private float _duration;
     private float _localTime = 0;
+
+    public event Action Finished;
 
     public void Play(float duration)
     {
@@ -19,7 +19,7 @@ public class LampDamageAnimation : MonoBehaviour
         _duration = duration;
         _localTime = 0;
     }
-    
+
     void Update()
     {
         if (_isPlaying)

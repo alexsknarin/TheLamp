@@ -4,64 +4,10 @@ using UnityEngine;
 public class PlayerUpgradeViewModel : IDisposable
 {
     // TODO: get settings service to get upgrade cap values
-
-    #region HealthUpgradeEnabled
     private bool _healthUpgradeEnabled;
-    public bool HealthUpgradeEnabled
-    {
-        get => _healthUpgradeEnabled;
-        private set
-        {
-            _healthUpgradeEnabled = value;
-            HealthUpgradeEnabledChanged?.Invoke(value);
-        }
-    }
-    public event Action<bool> HealthUpgradeEnabledChanged; 
-    #endregion
-    
-    #region HealthUpgradeEnabled
     private bool _cooldownUpgradeEnabled;
-    public bool CooldownUpgradeEnabled
-    {
-        get => _cooldownUpgradeEnabled;
-        private set
-        {
-            _cooldownUpgradeEnabled = value;
-            CooldownUpgradeEnabledChanged?.Invoke(value);
-        }
-    }
-    public event Action<bool> CooldownUpgradeEnabledChanged; 
-    #endregion
-    
-    #region HealthUpgradeEnabled
     private bool _attackDistanceUpgradeEnabled;
-    public bool AttackDistanceUpgradeEnabled
-    {
-        get => _attackDistanceUpgradeEnabled;
-        private set
-        {
-            _attackDistanceUpgradeEnabled = value;
-            AttackDistanceUpgradeEnabledChanged?.Invoke(value);
-        }
-    }
-    public event Action<bool> AttackDistanceUpgradeEnabledChanged; 
-    #endregion
-    
-    #region HealthUpgradeEnabled
     private int _upgradePoints;
-    public int UpgradePoints
-    {
-        get => _upgradePoints;
-        private set
-        {
-            _upgradePoints = value;
-            UpgradePointsChanged?.Invoke(value);
-        }
-    }
-    public event Action<int> UpgradePointsChanged; 
-    #endregion
-    
-    
     private GameModel _gameModel;
     private IGameConfigService _gameConfigService;
 
@@ -85,6 +31,67 @@ public class PlayerUpgradeViewModel : IDisposable
         _gameModel.LampAttackDistanceChanged -= OnLampAttackDistanceChanged;
         _gameModel.UpgradePointsChanged -= OnUpgradePointsChanged;
     }
+
+    public event Action<bool> HealthUpgradeEnabledChanged;
+    public event Action<bool> CooldownUpgradeEnabledChanged;
+    public event Action<bool> AttackDistanceUpgradeEnabledChanged;
+    public event Action<int> UpgradePointsChanged;
+    
+    public bool HealthUpgradeEnabled
+    {
+        get => _healthUpgradeEnabled;
+        private set
+        {
+            _healthUpgradeEnabled = value;
+            HealthUpgradeEnabledChanged?.Invoke(value);
+        }
+    }
+    public bool CooldownUpgradeEnabled
+    {
+        get => _cooldownUpgradeEnabled;
+        private set
+        {
+            _cooldownUpgradeEnabled = value;
+            CooldownUpgradeEnabledChanged?.Invoke(value);
+        }
+    }
+    public bool AttackDistanceUpgradeEnabled
+    {
+        get => _attackDistanceUpgradeEnabled;
+        private set
+        {
+            _attackDistanceUpgradeEnabled = value;
+            AttackDistanceUpgradeEnabledChanged?.Invoke(value);
+        }
+    }
+    public int UpgradePoints
+    {
+        get => _upgradePoints;
+        private set
+        {
+            _upgradePoints = value;
+            UpgradePointsChanged?.Invoke(value);
+        }
+    }
+    
+    
+    // Calls from view TODO: change Handle in a name to something else
+
+    public void HandleHealthButtonClicked()
+    {
+        _gameModel.HandleHealthUpgrade();
+    }
+
+    public void HandleCooldownButtonClicked()
+    {
+        _gameModel.HandleCooldownUpgrade();
+    }
+
+    public void HandleAttackDistanceButtonClicked()
+    {
+        _gameModel.HandleAttackDistanceUpgrade();
+    }
+    
     
     /// <summary>
     /// Handle Start onf the stage
@@ -174,22 +181,5 @@ public class PlayerUpgradeViewModel : IDisposable
         {
             UpgradePoints = upgradePoints;    
         }
-    }
-
-    // Calls from view TODO: change Handle in a name to something else
-
-    public void HandleHealthButtonClicked()
-    {
-        _gameModel.HandleHealthUpgrade();
-    }
-
-    public void HandleCooldownButtonClicked()
-    {
-        _gameModel.HandleCooldownUpgrade();
-    }
-
-    public void HandleAttackDistanceButtonClicked()
-    {
-        _gameModel.HandleAttackDistanceUpgrade();
     }
 }

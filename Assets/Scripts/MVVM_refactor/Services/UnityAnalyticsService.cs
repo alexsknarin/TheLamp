@@ -7,8 +7,6 @@ public class UnityAnalyticsService : MonoBehaviour, IAnalyticsService, IInitiali
 {
     IGameSettingsService _gameSettingsService;
     private IUGSAuthenticationService _ugsAuthenticationService;
-    public event Action ConsentAddressed;
-    
     // Analytics Data
     private float _waveTime;
     private CustomEvent _waveEndEvent;
@@ -25,6 +23,8 @@ public class UnityAnalyticsService : MonoBehaviour, IAnalyticsService, IInitiali
         _ugsAuthenticationService = ugsAuthenticationService;
     }
     
+    public event Action ConsentAddressed;
+    
     public void Initialize()
     {
         _waveEndEvent = new CustomEvent("waveFinished");
@@ -36,7 +36,54 @@ public class UnityAnalyticsService : MonoBehaviour, IAnalyticsService, IInitiali
         Debug.Log("Analytics: Initializing Unity Analytics Service.");
         StartCoroutine(WaitUntilUGSConnected());
     }
-    
+
+    // Analytics Event Calls
+
+    public void SubmitWaveStartEvent(int wave)
+    {
+        _waveTime = Time.time;
+    }
+
+    public void SubmitWaveEndEvent(int wave)
+    {
+        _waveTime = Time.time - _waveTime;
+        if (_isEnabled)
+        {
+            _waveEndEvent.Reset();
+            _waveEndEvent.Add("waveNum", wave);
+            _waveEndEvent.Add("waveTime", _waveTime);
+            AnalyticsService.Instance.RecordEvent(_waveEndEvent);
+        }
+    }
+
+    public void SubmitLampDamageEvent(EnemyBase enemy)
+    {
+        if (_isEnabled)
+        {
+            _lampDamageEvent.Reset();
+            _lampDamageEvent.Add("enemyType", enemy.EnemyType.ToString());
+            AnalyticsService.Instance.RecordEvent(_lampDamageEvent);
+        }
+    }
+
+    public void SubmitHealthUpgradeEvent()
+    {
+        if (_isEnabled)
+        {
+            _healthUpgradeEvent.Reset();
+            AnalyticsService.Instance.RecordEvent(_healthUpgradeEvent);
+        }
+    }
+
+    public void SubmitCoolUpgradeEvent()
+    {
+        if (_isEnabled)
+        {
+            _coolUpgradeEvent.Reset();
+            AnalyticsService.Instance.RecordEvent(_coolUpgradeEvent);
+        }
+    }
+
     private IEnumerator WaitUntilUGSConnected() // TODO: check this later - need timeout and error handling
     {
         yield return new WaitUntil(() => _ugsAuthenticationService.IsConnected);
@@ -105,52 +152,6 @@ public class UnityAnalyticsService : MonoBehaviour, IAnalyticsService, IInitiali
         {
             StopAnalyticsCollection();
             Debug.Log("Analytics Disabled");
-        }
-    }
-    
-    // Analytics Event Calls
-    public void SubmitWaveStartEvent(int wave)
-    {
-        _waveTime = Time.time;
-    }
-
-    public void SubmitWaveEndEvent(int wave)
-    {
-        _waveTime = Time.time - _waveTime;
-        if (_isEnabled)
-        {
-            _waveEndEvent.Reset();
-            _waveEndEvent.Add("waveNum", wave);
-            _waveEndEvent.Add("waveTime", _waveTime);
-            AnalyticsService.Instance.RecordEvent(_waveEndEvent);
-        }
-    }
-
-    public void SubmitLampDamageEvent(EnemyBase enemy)
-    {
-        if (_isEnabled)
-        {
-            _lampDamageEvent.Reset();
-            _lampDamageEvent.Add("enemyType", enemy.EnemyType.ToString());
-            AnalyticsService.Instance.RecordEvent(_lampDamageEvent);
-        }
-    }
-
-    public void SubmitHealthUpgradeEvent()
-    {
-        if (_isEnabled)
-        {
-            _healthUpgradeEvent.Reset();
-            AnalyticsService.Instance.RecordEvent(_healthUpgradeEvent);
-        }
-    }
-
-    public void SubmitCoolUpgradeEvent()
-    {
-        if (_isEnabled)
-        {
-            _coolUpgradeEvent.Reset();
-            AnalyticsService.Instance.RecordEvent(_coolUpgradeEvent);
         }
     }
 }

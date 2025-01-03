@@ -2,14 +2,13 @@ using UnityEngine;
 
 public class FlyMovementPatrolState: EnemyMovementBaseState
 {
-    public override EnemyState State => EnemyState.Patrol;
     private float _verticalAdaptDuration = 2f;
     private float _patrolStartOffsetAngle;
     private float _enterTimeOffset; // TMP
     private float _depthMultiplier = 1f;
     private float _phase;
     private float _localTime;
-    
+
     public FlyMovementPatrolState(IStateMachineOwner owner, float speed, float radius, float verticalAmplitude) : base()
     {
         _speed = speed;
@@ -17,6 +16,8 @@ public class FlyMovementPatrolState: EnemyMovementBaseState
         _verticalAmplitude = verticalAmplitude;
         _owner = owner;
     }
+
+    public override EnemyState State => EnemyState.Patrol;
 
     public override void EnterState(Vector3 currentPosition, int sideDirection, int depthDirection)
     {

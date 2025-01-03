@@ -10,22 +10,18 @@ public class FDragonflyMoveToHoverState : ScriptableObject, IState
     [SerializeField] private float _closeDuration = 1.7f;
     [SerializeField] private float _distance = 9.5f;
     [SerializeField] private AnimationCurve _moveCurve;
-    
     private float _localTime = 0f;
     private int _currentPointIndex = 0;
     private float _phase = 0f;
     private float _normalizedDuration = 0f;
-    
     private Vector3 _startPos = Vector3.zero;
     private Vector3 _endPos = Vector3.zero;
     private Vector3 _startDirection = Vector3.zero;
     private Vector3 _endDirection = Vector3.zero;
     private Quaternion _startRotation = Quaternion.identity;
     private Quaternion _endRotation = Quaternion.identity;
-
     private bool _readyToSwitch = false;
     public bool ReadyToSwitch => _readyToSwitch;
-    
     // Dependencies
     private Transform _visibleBodyTransform;
     private Transform _baseTransform;

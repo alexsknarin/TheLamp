@@ -16,21 +16,18 @@ public class CameraShake : MonoBehaviour
     [SerializeField] private Transform _megamothlingTransform;
     [SerializeField] private float _megamothlingProximityMaxDistance;
     [SerializeField] private float _megamothlingProximityMinDistance;
-    
     [Header("Wasp")]
     [SerializeField] private float _waspProximityShakeAmplitude;
     [SerializeField] private AnimationCurve _waspProximityCurve;
     [SerializeField] private Transform _waspTransform;
     [SerializeField] private float _waspProximityMaxDistance;
     [SerializeField] private float _waspProximityMinDistance;
-    
     [Header("Megabeetle")]
     [SerializeField] private float _megabeetleProximityShakeAmplitude;
     [SerializeField] private AnimationCurve _megabeetleProximityCurve;
     [SerializeField] private Transform _megabeetleTransform;
     [SerializeField] private float _megabeetleProximityMaxDistance;
     [SerializeField] private float _megabeetleProximityMinDistance;
-    
     [Header("Dragonfly")]
     [SerializeField] private float _dragonflyProximityShakeAmplitude;
     [SerializeField] private AnimationCurve _dragonflyProximityCurve;

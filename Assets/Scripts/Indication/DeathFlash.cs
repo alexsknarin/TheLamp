@@ -10,7 +10,17 @@ public class DeathFlash : DamageIndication
     private Material _material;
     private bool _isActive = false;
     private float _localTime;
-    
+
+    public override void Initialize()
+    {
+        _isActive = false;
+        _material = _meshRenderer.material;
+        _material.SetFloat("_DeathFade", 0f);
+        _material.SetFloat("_AttackSemaphore", 0f);
+        _material.SetFloat("_Damage", 1f);
+        _deathParticles.gameObject.SetActive(false);
+    }
+
     public override void Play()
     {
         _isActive = true;
@@ -25,7 +35,7 @@ public class DeathFlash : DamageIndication
         _damageParticles.SendEvent("OnDamage");
     }
 
-    void Update()
+    private void Update()
     {
         if (_isActive)
         {
@@ -43,15 +53,5 @@ public class DeathFlash : DamageIndication
             _material.SetFloat("_DeathFade", phase);
             _localTime += Time.deltaTime;
         }
-    }
-
-    public override void Initialize()
-    {
-        _isActive = false;
-        _material = _meshRenderer.material;
-        _material.SetFloat("_DeathFade", 0f);
-        _material.SetFloat("_AttackSemaphore", 0f);
-        _material.SetFloat("_Damage", 1f);
-        _deathParticles.gameObject.SetActive(false);
     }
 }

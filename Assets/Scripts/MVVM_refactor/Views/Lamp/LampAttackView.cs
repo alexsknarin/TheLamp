@@ -72,7 +72,7 @@ public class LampAttackView : MonoBehaviour, IInitializable
         _attackDistanceUpgradeAnimationController.Play(_gameConfigService.PlayerConfig.AttackDistanceUpgradeAnimationTime);
     }
 
-    void Update()
+    private void Update()
     {
         if (_isPlaying)
         {

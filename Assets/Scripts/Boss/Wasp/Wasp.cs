@@ -11,22 +11,17 @@ public class Wasp : BossBase
     [SerializeField] private Collider2D _collider;
     [SerializeField] private bool _isAttackPauseEnabled = false;
     [SerializeField] private float _attackPauseTime = 0.5f;
-    public override EnemyType EnemyType => EnemyType.Wasp;
     private WaitForSeconds _attackPause;
-    
     private bool _isDead = false;
-    
+    // Dependencies
     private ILampDeadEventProviderService _lampDeadEventProvider;
-    
+
     public void Construct(ILampDeadEventProviderService lampDeadEventProviderService)
     {
         _lampDeadEventProvider = lampDeadEventProviderService;
     }
-    
-    private void Awake()
-    {
-        _attackPause = new WaitForSeconds(_attackPauseTime);
-    }
+
+    public override EnemyType EnemyType => EnemyType.Wasp;
 
     private void OnEnable()
     {
@@ -34,13 +29,14 @@ public class Wasp : BossBase
         _fWaspMovement.DeathStateEnded += OnDeathStateEnded;
         _lampDeadEventProvider.LampDied += OnLampDied;
     }
-    
+
     private void OnDisable()
     {
         _fWaspMovement.BossAttackStarted -= OnBossAttackStarted;
         _fWaspMovement.DeathStateEnded -= OnDeathStateEnded;
         _lampDeadEventProvider.LampDied -= OnLampDied;
     }
+
     public override void Initialize() // TODO: reuse Initialze for global initialization. Ths is Setup
     {
         ReceivedLampAttack = false;
@@ -72,21 +68,8 @@ public class Wasp : BossBase
     {
         OnTriggerSpreadInvoke();
     }
-    
-    /// <summary>
-    /// Update Received Lamp Attack Status
-    /// </summary>
-    private void OnBossAttackStarted()
-    {
-        if (ReceivedLampAttack)
-        {
-            ReceivedLampAttack = false;
-        }
-    }
 
-    public override void HandleCollisionWithStickZone()
-    {
-    }   
+    public override void HandleCollisionWithStickZone() { }
 
     public override void ReceiveDamage(int damage)
     {
@@ -111,22 +94,14 @@ public class Wasp : BossBase
         }    
     }
 
-    public override void UpdateAttackAvailability()
-    {
-    }
+    public override void UpdateAttackAvailability() { }
 
-    public override void ReturnToPool()
-    {
-    }
+    public override void ReturnToPool() { }
 
-    public override void SpreadStart()
-    {
-    }
+    public override void SpreadStart() { }
 
-    public override void StartAttack()
-    {
-    }
-    
+    public override void StartAttack() { }
+
     public override void HandleCollisionWithLamp()
     {
         if (_isAttackPauseEnabled)
@@ -138,55 +113,72 @@ public class Wasp : BossBase
             _fWaspMovement.SetCollidedWithLamp();
         }
     }
-    
+
+    public override Vector3 ProvideImpactPoint()
+    {
+        return transform.position;
+    }
+
+    public void ClipEnded()
+    {
+        _fWaspMovement.ClipEnded();
+    }
+
+    public void EnableCollider()
+    {
+        _collider.enabled = true;
+    }
+
+    public void DisableCollider()
+    {
+        _collider.enabled = false;
+    }
+
+    /// <summary>
+    /// Update Received Lamp Attack Status
+    /// </summary>
+    private void OnBossAttackStarted()
+    {
+        if (ReceivedLampAttack)
+        {
+            ReceivedLampAttack = false;
+        }
+    }
+
     private IEnumerator AttackPause()
     {
         yield return _attackPause;
         _fWaspMovement.SetCollidedWithLamp();
     }
-    
-    public override Vector3 ProvideImpactPoint()
+
+    private void Awake()
     {
-        return transform.position;
+        _attackPause = new WaitForSeconds(_attackPauseTime);
     }
 
     private void OnLampDied(EnemyBase enemy)
     {
         _fWaspMovement.SetLampDestroyed();
     }
-    
+
     private void OnDeathStateEnded()
     {
         OnDeathInvoke();
         _waspPresentation.Reset();
         StartCoroutine(DeactivateOnDeath());
     }
-    
+
     // Let movement FSM to switch to idle state properly and then deactivate
     private IEnumerator DeactivateOnDeath()
     {
         yield return null;
         gameObject.SetActive(false);
     }
-    
+
     // Animation events
+
     private void ResetTrail()
     {
         _waspPresentation.ResetTrail();
-    }
-    
-    public void ClipEnded()
-    {
-        _fWaspMovement.ClipEnded();
-    }
-    
-    public void EnableCollider()
-    {
-        _collider.enabled = true;
-    }
-    
-    public void DisableCollider()
-    {
-        _collider.enabled = false;
     }
 }

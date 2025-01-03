@@ -6,7 +6,15 @@ using System;
 public class GameSettingsModel
 {
     private GameSettings _gameSettings;
-
+    
+    public GameSettingsModel(GameSettings gameSettings)
+    {
+        _gameSettings = gameSettings;
+    }
+    
+    public event Action<bool> IsConsentSetChanged;
+    public event Action<bool> IsDataCollectionEnabledChanged;
+    
     public bool IsConsentSet
     {
         get => _gameSettings.IsConsentSet;
@@ -33,14 +41,6 @@ public class GameSettingsModel
                 IsDataCollectionEnabledChanged?.Invoke(value);
             }
         }
-    }
-
-    public event Action<bool> IsConsentSetChanged;
-    public event Action<bool> IsDataCollectionEnabledChanged;
-
-    public GameSettingsModel(GameSettings gameSettings)
-    {
-        _gameSettings = gameSettings;
     }
 
     public void AnalyticsConsentSet(bool value)

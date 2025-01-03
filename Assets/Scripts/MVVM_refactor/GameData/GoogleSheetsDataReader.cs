@@ -11,9 +11,8 @@ public class GoogleSheetsDataReader : MonoBehaviour, IInitializable
     [SerializeField] private bool _useCachedSpawnData;
     [SerializeField] private SpawnQueueData _spawnQueueDataCache;
     private string _sheetData;
+    public event Action OnDataLoadedEvent;
     public string SheetData => _sheetData;
-    
-    public event Action OnDataLoadedEvent; 
 
     public void Initialize()
     {

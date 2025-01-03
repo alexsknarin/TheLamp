@@ -2,13 +2,12 @@ using UnityEngine;
 
 public class MothMovementPreAttackState: EnemyMovementBaseState
 {
-    public override EnemyState State => EnemyState.PreAttack;
     private float _duration = .35f;
     private float _acceleratedSpeed;
     private float _acceleration = 0.93f;
     private Vector3 _direction;
     private float _localTime;
-    
+
     public MothMovementPreAttackState(IStateMachineOwner owner, float speed, float radius, float verticalAmplitude) : base()
     {
         _speed = speed;
@@ -16,7 +15,9 @@ public class MothMovementPreAttackState: EnemyMovementBaseState
         _verticalAmplitude = verticalAmplitude;
         _owner = owner;
     }
-    
+
+    public override EnemyState State => EnemyState.PreAttack;
+
     public override void EnterState(Vector3 currentPosition, int sideDirection, int depthDirection)
     {
         _acceleratedSpeed = 1f;

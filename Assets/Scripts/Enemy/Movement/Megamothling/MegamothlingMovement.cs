@@ -23,8 +23,8 @@ public class MegamothlingMovement : EnemyMovement
     [SerializeField] private float _smoothTime = .3f;
     [Header("---- Depth Settings ----")]
     [SerializeField] bool _isDepthEnabled;
-    public event Action OnBossAttackStartedEvent;
-    public event Action DeathStateEnded;
+    // Debug
+    [SerializeField] private EnemyState _stateDebug;
     private Vector3 _velocity = Vector3.zero;
     private int _sideDirection;
     private int _depthDirection;
@@ -38,22 +38,20 @@ public class MegamothlingMovement : EnemyMovement
     private MegamothlingMovementFallState _fallState;
     private MegamothlingMovementDeathState _deathState;
     private MothlingMovementSpreadState _spreadState;
-    
-    private Vector3 _prevPosition2d; //Debug
-    private Vector3 _prevPosSmooth; //Debug
+    //Debug
+    private Vector3 _prevPosition2d; 
+    private Vector3 _prevPosSmooth; 
     private Vector3 _position2d;
     private Vector3 _position;
     private Vector3 _prevPosition;
     private readonly Vector3 IDLE_POSITION = new Vector3(-5f, 2f, 0); 
-    
     // State parameters
     private bool _isDead = false;
     private bool _isCollided = false;
-    
     private bool _isPlaying = false;
     
-    // Debug
-    [SerializeField] private EnemyState _stateDebug;
+    public event Action OnBossAttackStartedEvent;
+    public event Action DeathStateEnded;
 
     public override void Initialize()
     {
@@ -73,7 +71,22 @@ public class MegamothlingMovement : EnemyMovement
     {
         MovementSetup();
     }
-    
+
+    public void MovementReset()
+    {
+        _isPlaying = false;
+        transform.position = IDLE_POSITION;
+    }
+
+    public override void TriggerFall()
+    {
+        if(_currentState.State == EnemyState.Attack)
+        {
+            _isCollided = true;
+            SwitchState();
+        }
+    }
+
     private void MovementSetup()
     {
         _sideDirection = RandomDirection.Generate();
@@ -88,28 +101,6 @@ public class MegamothlingMovement : EnemyMovement
         _isPlaying = true;
     }
 
-    public void MovementReset()
-    {
-        _isPlaying = false;
-        transform.position = IDLE_POSITION;
-    }
-    
-    private Vector3 GenerateSpawnPosition(int direction)
-    {
-        Vector3 spawnPosition = (Vector3)(Random.insideUnitCircle * _spawnAreaSize) + _spawnAreaCenter;
-        spawnPosition.x *= direction;
-        return spawnPosition;
-    }
-    
-    public override void TriggerFall()
-    {
-        if(_currentState.State == EnemyState.Attack)
-        {
-            _isCollided = true;
-            SwitchState();
-        }
-    }
-    
     public override void TriggerDeath()
     {
         if(_currentState.State != EnemyState.Death)
@@ -123,7 +114,7 @@ public class MegamothlingMovement : EnemyMovement
     {
         SwitchState();
     }
-    
+
     public override void TriggerSpread()
     {
         if(_currentState.State != EnemyState.Attack && 
@@ -135,10 +126,8 @@ public class MegamothlingMovement : EnemyMovement
         }
     }
 
-    public override void TriggerStick()
-    {
-    }
-    
+    public override void TriggerStick()  { }
+
     public override void SwitchState()
     {
         EnemyMovementBaseState newState = _currentState;
@@ -228,6 +217,13 @@ public class MegamothlingMovement : EnemyMovement
         State = _currentState.State;
         _movementStateMachine.SetState(_currentState, _position2d, _sideDirection, _depthDirection);
         SideDirection = _sideDirection;
+    }
+
+    private Vector3 GenerateSpawnPosition(int direction)
+    {
+        Vector3 spawnPosition = (Vector3)(Random.insideUnitCircle * _spawnAreaSize) + _spawnAreaCenter;
+        spawnPosition.x *= direction;
+        return spawnPosition;
     }
 
     private void Update()

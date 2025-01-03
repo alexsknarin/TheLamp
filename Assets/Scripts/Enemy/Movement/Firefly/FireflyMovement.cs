@@ -19,19 +19,12 @@ public class FireflyMovement : EnemyMovement
     [SerializeField] private float _smoothTime = .3f;
     [Header("---- Depth Settings ----")]
     [SerializeField] bool _isDepthEnabled;
+    // Debug
+    [SerializeField] private EnemyState _stateDebug;
     private Vector3 _velocity = Vector3.zero;
     private int _depthDirection;
     private int _sideDirection;
-
-    private ILampPositionProviderService _lampPositionProviderService;
-
-    public override void Construct(ILampPositionProviderService lampPositionProviderService)
-    {
-        _lampPositionProviderService = lampPositionProviderService;
-    }
-
     // Movement Stats
-
     private EnemyMovementStateMachine _movementStateMachine;
     private EnemyMovementBaseState _currentState;
     private FlyMovementEnterState _enterState;
@@ -45,16 +38,17 @@ public class FireflyMovement : EnemyMovement
     private Vector3 _prevPosSmooth; //Debug
     private Vector3 _position2d;
     private Vector3 _position;
-
     // State parameters
-
     private bool _isDead = false;
-
     private bool _isCollided = false;
 
-    // Debug
+    // Dependencies
+    private ILampPositionProviderService _lampPositionProviderService;
 
-    [SerializeField] private EnemyState _stateDebug;
+    public override void Construct(ILampPositionProviderService lampPositionProviderService)
+    {
+        _lampPositionProviderService = lampPositionProviderService;
+    }
 
     public override void Initialize()
     {
@@ -76,33 +70,7 @@ public class FireflyMovement : EnemyMovement
         _spreadState = new FlyMovementSpreadState(this, _speed, _radius, _verticalAmplitude);
         MovementSetup();
     }
-    
-    private void MovementSetup()
-    {
-        _sideDirection = RandomDirection.Generate();
-        SideDirection = _sideDirection;
-        _depthDirection = RandomDirection.Generate();
-        _position2d = GenerateSpawnPosition(-_sideDirection);
-        
-        _currentState = _enterState;
-        _movementStateMachine.SetState(_currentState, _position2d, _sideDirection, _depthDirection);
-        _position2d = _currentState.Position;
-        transform.position = _position2d;
-    }
-    
-    private void MovementReset()
-    {
-        OnMovementResetInvoke();
-        MovementSetup();    
-    }
-    
-    private Vector3 GenerateSpawnPosition(int direction)
-    {
-        Vector3 spawnPosition = (Vector3)(Random.insideUnitCircle * _spawnAreaSize) + _spawnAreaCenter;
-        spawnPosition.x *= direction;
-        return spawnPosition;
-    }
-    
+
     public override void TriggerFall()
     {
         if(_currentState.State == EnemyState.Attack)
@@ -137,9 +105,7 @@ public class FireflyMovement : EnemyMovement
         }
     }
 
-    public override void TriggerStick()
-    {
-    }
+    public override void TriggerStick() { }
 
     public override void SwitchState()
     {
@@ -228,6 +194,32 @@ public class FireflyMovement : EnemyMovement
         State = _currentState.State;
         _movementStateMachine.SetState(_currentState, _position2d, _sideDirection, _depthDirection);
     }
+    
+    private void MovementSetup()
+    {
+        _sideDirection = RandomDirection.Generate();
+        SideDirection = _sideDirection;
+        _depthDirection = RandomDirection.Generate();
+        _position2d = GenerateSpawnPosition(-_sideDirection);
+        
+        _currentState = _enterState;
+        _movementStateMachine.SetState(_currentState, _position2d, _sideDirection, _depthDirection);
+        _position2d = _currentState.Position;
+        transform.position = _position2d;
+    }
+
+    private void MovementReset()
+    {
+        OnMovementResetInvoke();
+        MovementSetup();    
+    }
+
+    private Vector3 GenerateSpawnPosition(int direction)
+    {
+        Vector3 spawnPosition = (Vector3)(Random.insideUnitCircle * _spawnAreaSize) + _spawnAreaCenter;
+        spawnPosition.x *= direction;
+        return spawnPosition;
+    }
 
     private void Update()
     {   
@@ -277,6 +269,5 @@ public class FireflyMovement : EnemyMovement
         Debug.DrawLine(_prevPosSmooth, _prevPosSmooth + (transform.position-_prevPosSmooth).normalized*0.02f, Color.yellow, 5f);
         
         _stateDebug = _currentState.State;
-
     }
 }

@@ -27,7 +27,7 @@ public class LampCooldownView : MonoBehaviour, IInitializable
         _lampAttackZoneMaterial = _lampAttackZoneRenderer.material;
     }
 
-    public void OnPowerChanged(object sender, Observable<float>.ChangedEventArgs e)
+    private void OnPowerChanged(object sender, Observable<float>.ChangedEventArgs e)
     {
         float phase = e.NewValue;
         _lampEmissionController.Intensity = _lampCooldownAnimCurve.Evaluate(phase);

@@ -8,13 +8,12 @@ public class FDragonflyHoverState : ScriptableObject, IState
     [SerializeField] private float _frequency = 0.33f;
     private float _localTime = 0f;
     private Vector3 _hoverPos = Vector3.zero;
-    
-    public event Action Started;
-
     // Dependencies
     private Transform _visibleBodyTransform;
     private Transform _baseTransform;
     
+    public event Action Started;
+
     public void SetDependencies(Transform visibleBodyTransform, Transform baseTransform)
     {
         _visibleBodyTransform = visibleBodyTransform;

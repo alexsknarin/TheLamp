@@ -7,14 +7,12 @@ public class PlayerEnemyInteractionHandler : MonoBehaviour, IInitializable
     [SerializeField] private LampCollisionHandler _lampCollisionHandler;
     [SerializeField] private LampAttackExitZoneCollisionHandler _lampAttackExitZoneCollisionHandler;
     [SerializeField] private LampStickZoneCollisionHandler _lampStickZoneCollisionHandler;
+    private bool _isAssessingDamage = false;
+    private List<EnemyBase> _stickyEnemies; // TODO: replace Enemy with ISticky Interface
     
     public event Action<bool, EnemyBase> EnemyAttackBounced;  // TODO: Use Interface
     public event Action<bool, EnemyBase> LampBlockedStarted; // TODO: Use Interface
-    
-    private bool _isAssessingDamage = false;
-    
-    private List<EnemyBase> _stickyEnemies; // TODO: replace Enemy with ISticky Interface
-    
+
     public void Initialize()
     {
         _lampCollisionHandler.LampCollidedWithEnemy += OnLampCollidedWithEnemy;

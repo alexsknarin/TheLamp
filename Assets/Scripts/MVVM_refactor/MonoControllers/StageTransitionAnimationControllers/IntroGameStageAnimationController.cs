@@ -32,12 +32,8 @@ public class IntroGameStageAnimationController : MonoBehaviour, IInitializable
     [SerializeField] private FadableButtonPresentation _restartButton;
     [SerializeField] private FadableButtonPresentation _enableDataButton;
     [SerializeField] private FadableButtonPresentation _disableDataButton;
-
-    
     private Material _lampAttackZoneMaterial;
-    
     private UnityEngine.Rendering.Universal.ColorAdjustments _colorAdjustments;
-
     private float _localTime;
     private bool _isPlaying;
     private float _currentHealth;
@@ -83,7 +79,7 @@ public class IntroGameStageAnimationController : MonoBehaviour, IInitializable
         _isPlaying = true;
     }
     
-    void Update()
+    private void Update()
     {
         if (_isPlaying)
         {
@@ -102,6 +98,7 @@ public class IntroGameStageAnimationController : MonoBehaviour, IInitializable
             float health = Mathf.Lerp(0, _currentHealth, phaseAnimated);
             _lampHealthBarController.SetHealth(health);
             _lampEmissionController.Intensity = _lampIntensityAnimCurve.Evaluate(phase);
+            Debug.Log(_lampIntensityAnimCurve.Evaluate(phase));
             _lampEmissionController.BlockedModeMix = _lampNoiseAmountAnimCurve.Evaluate(phase);
             _lampAttackZoneMaterial.SetFloat("_Alpha", Mathf.Lerp(0, 0.005f, _lampIntensityAnimCurve.Evaluate(phase)));
             // UI

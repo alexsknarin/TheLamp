@@ -2,8 +2,7 @@ using UnityEngine;
 
 public class SpiderMovementPatrolState: EnemyMovementBaseState
 {
-    public override EnemyState State => EnemyState.Patrol;
-    private Vector3 _hangingPoint; 
+    private Vector3 _hangingPoint;
     private float _localTime;
 
     public SpiderMovementPatrolState(IStateMachineOwner owner, float speed, float radius, float verticalAmplitude) : base()
@@ -16,7 +15,9 @@ public class SpiderMovementPatrolState: EnemyMovementBaseState
         _hangingPoint = Vector3.up * 5f;
         _hangingPoint.x = radius;
     }
-    
+
+    public override EnemyState State => EnemyState.Patrol;
+
     public override void EnterState(Vector3 currentPosition, int sideDirection, int depthDirection)
     {
         _sideDirection = sideDirection;

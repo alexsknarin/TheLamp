@@ -1,10 +1,9 @@
 public class GameSettingsViewModel : IInitializable, IDisposable
-{   
-    private GameSettingsModel _gameSettingsModel;
-    
+{
     public Observable<bool> IsConsentSetView = new Observable<bool>();
     public Observable<bool> IsDataCollectionEnabledView = new Observable<bool>();
     
+    private GameSettingsModel _gameSettingsModel;
     public GameSettingsViewModel(GameSettingsModel gameSettingsModel)
     {
         _gameSettingsModel = gameSettingsModel;
@@ -22,18 +21,6 @@ public class GameSettingsViewModel : IInitializable, IDisposable
     {
         _gameSettingsModel.IsConsentSetChanged -= OnIsConsentSetChanged;
         _gameSettingsModel.IsDataCollectionEnabledChanged -= OnIsDataCollectionEnabledChanged;
-    }
-    
-    // Handle Model Events
-    
-    private void OnIsConsentSetChanged(bool value)
-    {
-        IsConsentSetView.Value = value;
-    }
-
-    private void OnIsDataCollectionEnabledChanged(bool value)
-    {
-        IsDataCollectionEnabledView.Value = value;
     }
     
     // Handle View Events
@@ -57,4 +44,15 @@ public class GameSettingsViewModel : IInitializable, IDisposable
         _gameSettingsModel.AnalyticsConsentSet(false);
     }
     
+    // Handle Model Events
+    
+    private void OnIsConsentSetChanged(bool value)
+    {
+        IsConsentSetView.Value = value;
+    }
+
+    private void OnIsDataCollectionEnabledChanged(bool value)
+    {
+        IsDataCollectionEnabledView.Value = value;
+    }
 }

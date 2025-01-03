@@ -9,6 +9,8 @@ public class LadybugMovement : EnemyMovement
     [SerializeField] private float _verticalAmplitude;
     [SerializeField] private bool _isSmoothDampEnabled;
     [SerializeField] private bool _isDepthEnabled;
+    // Debug
+    [SerializeField] private EnemyState _stateDebug;
     // Movement States
     private EnemyMovementStateMachine _movementStateMachine;
     private EnemyMovementBaseState _currentState;
@@ -24,9 +26,6 @@ public class LadybugMovement : EnemyMovement
     private Vector3 _prevPosition2d;
     // State parameters
     private bool _isDead = false;
-    
-    // Debug
-    [SerializeField] private EnemyState _stateDebug;
 
     public override void Initialize()
     {
@@ -68,9 +67,7 @@ public class LadybugMovement : EnemyMovement
         return spawnPosition;
     }
     
-    public override void TriggerFall()
-    {
-    }
+    public override void TriggerFall() { }
     
     public override void HandleLampDestroyed()
     {
@@ -100,9 +97,7 @@ public class LadybugMovement : EnemyMovement
             SwitchState();
         }
     }
-    public override void TriggerAttack()
-    {
-    }
+    public override void TriggerAttack() { }
     
     public override void TriggerSpread()
     {

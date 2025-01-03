@@ -2,7 +2,6 @@ using UnityEngine;
 
 public class MegabeetleMovementFallState: EnemyMovementBaseState
 {
-    public override EnemyState State => EnemyState.Fall;
     private Vector3 _bounceForce;
     private Vector3 _gravityForce;
     private float _bounceForceMagnitude = 3f;
@@ -16,6 +15,8 @@ public class MegabeetleMovementFallState: EnemyMovementBaseState
         _verticalAmplitude = verticalAmplitude;
         _owner = owner;
     }
+
+    public override EnemyState State => EnemyState.Fall;
 
     public override void EnterState(Vector3 currentPosition, int sideDirection, int depthDirection)
     {

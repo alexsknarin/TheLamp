@@ -35,9 +35,7 @@ public class FireflyMovementDeathState: EnemyMovementBaseState
         _localTime += Time.deltaTime;
     }
 
-    public override void ExitState()
-    {
-    }
+    public override void ExitState() { }
     
     public override void CheckForStateChange()
     {

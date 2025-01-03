@@ -3,173 +3,13 @@ using UnityEngine;
 
 public class GameModel : IDisposable, ILampDeadEventProviderService
 {
-    public int Wave => _currentGameState.Wave;
-    public Vector3 LastEnemyPosition { get; private set; }
-
-
-    #region CurrentGameState Reactive Property
     private GameState _currentGameState;
-    public GameState CurrentGameState 
-    {
-        get => _currentGameState;
-        private set
-        {
-            _currentGameState = value;
-            GameStateChanged?.Invoke(value);
-        }
-    }
-    public event Action<GameState> GameStateChanged;
-    #endregion
-
-    #region CurrentGameStageState Reactive Property
     private GameStageState _currentGameStageState = GameStageState.Loading;
-    public GameStageState CurrentGameStageState
-    {
-        get => _currentGameStageState;
-        private set
-        {
-            var oldValue = _currentGameStageState;
-            _currentGameStageState = value;
-            if (!oldValue.Equals(value))
-            {
-                GameStageStateChanged?.Invoke(value);
-            }
-        }
-    }
-    public event Action<GameStageState> GameStageStateChanged;
-    #endregion
-
-    #region LampLevel Reactive Property
-    public int LampLevel
-    {
-        get => _currentGameState.LampLevel;
-        private set
-        {
-            _currentGameState.LampLevel = value;
-            LampLevelChanged?.Invoke(value);
-        }
-    }
-
-
-    public event Action<int> LampLevelChanged;
-    #endregion
-
-    #region CurrentPower Reactive Property
     private float _currentPower;
-    public float CurrentPower
-    {
-        get => _currentPower;
-        private set
-        {
-            _currentPower = value;
-            PowerChanged?.Invoke(value);
-        }
-    }
-    public event Action<float> PowerChanged;
-    #endregion
-
-    #region LampHealth Reactive Property
-    public int LampHealth
-    {
-        get => _currentGameState.LampHealth;
-        private set
-        {
-            _currentGameState.LampHealth = value;
-            LampHealthChanged?.Invoke(value);
-        }
-    }
-    public event Action<int> LampHealthChanged;
-    #endregion
-
-    #region LampMaxHealth Reactive Property
-    public int LampMaxHealth
-    {
-        get => _currentGameState.LampMaxHealth;
-        private set
-        {
-            _currentGameState.LampMaxHealth = value;
-            LampMaxHealthChanged?.Invoke(value);
-        }
-    }
-    public event Action<int> LampMaxHealthChanged;
-    #endregion
-
-    #region LampGlassDamage Reactive Property
-    public GlassDamageData LampGlassDamage
-    
-    {
-        get => _currentGameState.GlassDamageData;
-        private set
-        {
-            _currentGameState.GlassDamageData = value;
-            LampGlassDamageChanged?.Invoke(value);
-        }
-    }
-    public event Action<GlassDamageData> LampGlassDamageChanged;
-    #endregion
-
-    #region LampBlocked Reactive Property
     private bool _isLampBlocked;
-    public bool IsLampBlocked
-    {
-        get => _isLampBlocked;
-        private set
-        {
-            _isLampBlocked = value;
-            LampBlockedModeSet?.Invoke(value);
-        }
-    }
-    public event Action<bool> LampBlockedModeSet;
-    #endregion
-
-    #region UpgradePoints Reactive Property
-    public int UpgradePoints
-    {
-        get => _currentGameState.LampUpgradePoints;
-        private set
-        {
-            _currentGameState.LampUpgradePoints = value;
-            UpgradePointsChanged?.Invoke(value);
-        }
-    }
-    public event Action<int> UpgradePointsChanged;
-    #endregion
-
-    #region LampAttackDistance Reactive Property
-    public float LampAttackDistance
-    {
-        get => _currentGameState.LampAttackDistance;
-        private set
-        {
-            _currentGameState.LampAttackDistance = value;
-            LampAttackDistanceChanged?.Invoke(value);
-        }
-    }
-    public event Action<float> LampAttackDistanceChanged;
-    #endregion
-
-    #region LampCooldownTime Reactive Property
-    public float LampCooldownTime
-    {
-        get => _currentGameState.LampCooldownTime;
-        private set
-        {
-            _currentGameState.LampCooldownTime = value;
-            LampCooldownTimeChanged?.Invoke(value);
-        }
-    }
-    public event Action<float> LampCooldownTimeChanged;
-    #endregion
-
-
-    public event Action<float> LampAttackStarted;
-    public event Action<float> LampDamageStarted;
-    public event Action<Vector3> LampDeathHappened; // TODO: make single event for all lamp death events
-    public event Action<EnemyBase> LampDied;
 
     private bool _isAttacking = false;
     private bool _isAdPlaying = false;
-
 
     // Dependencies
     private IGameStateProviderService _gameStateProviderService;
@@ -212,7 +52,7 @@ public class GameModel : IDisposable, ILampDeadEventProviderService
         _playerEnemyInteractionHandler.EnemyAttackBounced += OnEnemyAttackBounced;
         _scoresCollectionHandler.ScoreChanged += OnScoreChanged;
     }
-
+    
     public void Dispose()
     {
         _enemyController.WaveEnded -= OnWaveEnded;
@@ -222,7 +62,130 @@ public class GameModel : IDisposable, ILampDeadEventProviderService
         _playerEnemyInteractionHandler.EnemyAttackBounced -= OnEnemyAttackBounced;
         _scoresCollectionHandler.ScoreChanged -= OnScoreChanged;
     }
+    
 
+    public event Action<GameState> GameStateChanged;
+    public event Action<GameStageState> GameStageStateChanged;
+    public event Action<int> LampLevelChanged;
+    public event Action<float> PowerChanged;
+    public event Action<int> LampHealthChanged;
+    public event Action<int> LampMaxHealthChanged;
+    public event Action<GlassDamageData> LampGlassDamageChanged;
+    public event Action<bool> LampBlockedModeSet;
+    public event Action<int> UpgradePointsChanged;
+    public event Action<float> LampAttackDistanceChanged;
+    public event Action<float> LampCooldownTimeChanged;
+    public event Action<float> LampAttackStarted;
+    public event Action<float> LampDamageStarted;
+    public event Action<Vector3> LampDeathHappened; // TODO: make single event for all lamp death events
+    public event Action<EnemyBase> LampDied;
+
+    public int Wave => _currentGameState.Wave;
+    public Vector3 LastEnemyPosition { get; private set; }
+    public GameState CurrentGameState 
+    {
+        get => _currentGameState;
+        private set
+        {
+            _currentGameState = value;
+            GameStateChanged?.Invoke(value);
+        }
+    }
+    public GameStageState CurrentGameStageState
+    {
+        get => _currentGameStageState;
+        private set
+        {
+            var oldValue = _currentGameStageState;
+            _currentGameStageState = value;
+            if (!oldValue.Equals(value))
+            {
+                GameStageStateChanged?.Invoke(value);
+            }
+        }
+    }
+    public int LampLevel
+    {
+        get => _currentGameState.LampLevel;
+        private set
+        {
+            _currentGameState.LampLevel = value;
+            LampLevelChanged?.Invoke(value);
+        }
+    }
+    public float CurrentPower
+    {
+        get => _currentPower;
+        private set
+        {
+            _currentPower = value;
+            PowerChanged?.Invoke(value);
+        }
+    }
+    public int LampHealth
+    {
+        get => _currentGameState.LampHealth;
+        private set
+        {
+            _currentGameState.LampHealth = value;
+            LampHealthChanged?.Invoke(value);
+        }
+    }
+    public int LampMaxHealth
+    {
+        get => _currentGameState.LampMaxHealth;
+        private set
+        {
+            _currentGameState.LampMaxHealth = value;
+            LampMaxHealthChanged?.Invoke(value);
+        }
+    }
+    public GlassDamageData LampGlassDamage
+    {
+        get => _currentGameState.GlassDamageData;
+        private set
+        {
+            _currentGameState.GlassDamageData = value;
+            LampGlassDamageChanged?.Invoke(value);
+        }
+    }
+    public bool IsLampBlocked
+    {
+        get => _isLampBlocked;
+        private set
+        {
+            _isLampBlocked = value;
+            LampBlockedModeSet?.Invoke(value);
+        }
+    }
+    public int UpgradePoints
+    {
+        get => _currentGameState.LampUpgradePoints;
+        private set
+        {
+            _currentGameState.LampUpgradePoints = value;
+            UpgradePointsChanged?.Invoke(value);
+        }
+    }
+    public float LampAttackDistance
+    {
+        get => _currentGameState.LampAttackDistance;
+        private set
+        {
+            _currentGameState.LampAttackDistance = value;
+            LampAttackDistanceChanged?.Invoke(value);
+        }
+    }
+    public float LampCooldownTime
+    {
+        get => _currentGameState.LampCooldownTime;
+        private set
+        {
+            _currentGameState.LampCooldownTime = value;
+            LampCooldownTimeChanged?.Invoke(value);
+        }
+    }
+    
     public void StartGame()
     {
         Debug.Log("!!!!! The Game Has Been Started !!!!!");
@@ -240,52 +203,6 @@ public class GameModel : IDisposable, ILampDeadEventProviderService
         _lampDamageDataHandler.MaxHealth = _currentGameState.LampMaxHealth;
     }
 
-    private void RestartGame()
-    {
-        CurrentGameState = _gameStateProviderService.Get();
-        Debug.Log("New GameState Generated");
-        Debug.Log($"Wave: {CurrentGameState.Wave}");
-        _enemyController.Restart();
-        _lampMovementController.Restart();
-        StartGame();
-    }
-
-    private void StartPrepareIn()
-    {
-        CurrentGameStageState = GameStageState.PrepareIn;
-        Debug.Log("Starting PrepareIn");
-    }
-
-    private void StartPrepare()
-    {
-        CurrentGameStageState = GameStageState.Prepare;
-        Debug.Log("Starting Prepare");
-    }
-
-    private void StartPrepareOut()
-    {
-        CurrentGameStageState = GameStageState.PrepareOut;
-        Debug.Log("Starting PrepareOut");
-    }
-
-    private void StartWave()
-    {
-        CurrentGameStageState = GameStageState.Wave;
-        Debug.Log("Starting Wave: " +_currentGameState.Wave);
-        _enemyController.StartWave(_currentGameState.Wave);
-    }
-
-    private void StartGameOver()
-    {
-        CurrentGameStageState = GameStageState.GameOverIn;
-        _playerAttackHandler.StopCooldown();
-        _enemyController.HandleGameOver();
-        Debug.Log("Starting Game Over");
-    }
-
-    // --- Event Handlers ---
-
-
     public void HandleIntroEnd()
     {
         StartPrepareIn();    
@@ -294,11 +211,6 @@ public class GameModel : IDisposable, ILampDeadEventProviderService
     public void HandlePrepareInEnd()
     {
         StartPrepare();
-    }
-
-    private void HandlePrepareEnd()
-    {
-        StartPrepareOut();
     }
 
     public void HandlePrepareOutEnd()
@@ -323,14 +235,6 @@ public class GameModel : IDisposable, ILampDeadEventProviderService
         Debug.Log("Game Over Out Ended after watching ad ... Starting game again");
         _gameStateProviderService.SaveUpgradesOnly();
         RestartGame();
-    }
-
-    private void OnWaveEnded()
-    {
-        Debug.Log($"Wave {_currentGameState.Wave} Ended");
-        _currentGameState.Wave++;
-        _gameStateProviderService.SaveCurrentState();
-        StartPrepareIn();
     }
 
     public void HandleAttackButtonClicked()
@@ -362,68 +266,6 @@ public class GameModel : IDisposable, ILampDeadEventProviderService
     {
         _playerAttackHandler.PlayCooldown();
     }
-
-    private void OnPlayerAttackEnded()
-    {
-        _isAttacking = false;
-    }
-
-    private void OnPowerChanged(float power)
-    {
-        CurrentPower = power;
-    }
-
-    private void OnLampBlockedStarted(bool isBlocked, EnemyBase enemy)
-    {
-        IsLampBlocked = isBlocked;
-        _enemyController.SetBlockedMode(isBlocked);
-        // TODO: take lamp position into consideration
-        _lampMovementController.AddForce(-enemy.ProvideImpactPoint().normalized.x * 2);
-    }
-
-    private void OnEnemyAttackBounced(bool isDeflected, EnemyBase enemy)
-    {
-        if (!isDeflected || IsLampBlocked)
-        {
-            if(_gameConfigService.PlayerConfig.IsDamageable)
-                LampHealth -= 1;
-
-            if (LampHealth <= 0)
-            {
-                LastEnemyPosition = enemy.ProvideImpactPoint();
-                _lampMovementController.AddForce(-LastEnemyPosition.normalized.x * 2);
-                _enemyController.HandleLampDestroyed();
-                LampDeathHappened?.Invoke(enemy.ProvideImpactPoint());
-                LampDied?.Invoke(enemy);
-                StartGameOver();
-                Debug.Log("++++++++++ Game Over ++++++++++");
-                return;
-            }
-            
-            LampGlassDamage = _lampDamageDataHandler.UpdateGlassDamageDataDamage(LampGlassDamage, enemy.ProvideImpactPoint().normalized);
-            
-            // TODO: take lamp position into consideration
-            // Or calculate it in the LampMovementController because it knows about lamp position
-            
-            _lampMovementController.AddForce(-enemy.ProvideImpactPoint().normalized.x * 2); 
-            LampDamageStarted?.Invoke(_gameConfigService.PlayerConfig.DamageDuration);
-        }
-    }
-
-    private void OnScoreChanged(int newScore)
-    {
-        _currentGameState.UpgradeData.Score += newScore;
-        int newUpgradePoints = _upgradeHandler.GetUpgradePointsAndUpdateScoreData(ref _currentGameState.UpgradeData);
-        if (newUpgradePoints > 0)
-        {
-            _currentGameState.LampUpgradePoints += newUpgradePoints;
-            // TODO: maybe add event to indicate it somehow
-        }
-    }
-
-
-    // --- Upgrades ---
-
 
     public void HandleHealthUpgrade()
     {
@@ -494,9 +336,8 @@ public class GameModel : IDisposable, ILampDeadEventProviderService
         _playerCollidersPropertyController.SetAttackZoneRadius(LampAttackDistance);
     }
 
+    
     // --- Game Over ---
-
-
     public void HandleRestartGameWitAdFromGameOver()
     {
         _isAdPlaying = true;
@@ -530,5 +371,127 @@ public class GameModel : IDisposable, ILampDeadEventProviderService
 #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;
 #endif
+    }
+
+    private void RestartGame()
+    {
+        CurrentGameState = _gameStateProviderService.Get();
+        Debug.Log("New GameState Generated");
+        Debug.Log($"Wave: {CurrentGameState.Wave}");
+        _enemyController.Restart();
+        _lampMovementController.Restart();
+        StartGame();
+    }
+
+    private void StartPrepareIn()
+    {
+        CurrentGameStageState = GameStageState.PrepareIn;
+        Debug.Log("Starting PrepareIn");
+    }
+
+    private void StartPrepare()
+    {
+        CurrentGameStageState = GameStageState.Prepare;
+        Debug.Log("Starting Prepare");
+    }
+
+    private void StartPrepareOut()
+    {
+        CurrentGameStageState = GameStageState.PrepareOut;
+        Debug.Log("Starting PrepareOut");
+    }
+
+    private void StartWave()
+    {
+        CurrentGameStageState = GameStageState.Wave;
+        Debug.Log("Starting Wave: " +_currentGameState.Wave);
+        _enemyController.StartWave(_currentGameState.Wave);
+    }
+
+    private void StartGameOver()
+    {
+        CurrentGameStageState = GameStageState.GameOverIn;
+        _playerAttackHandler.StopCooldown();
+        _enemyController.HandleGameOver();
+        Debug.Log("Starting Game Over");
+    }
+
+
+    private void HandlePrepareEnd()
+    {
+        StartPrepareOut();
+    }
+
+    // --- Upgrades ---
+
+    private void OnWaveEnded()
+    {
+        Debug.Log($"Wave {_currentGameState.Wave} Ended");
+        _currentGameState.Wave++;
+        _gameStateProviderService.SaveCurrentState();
+        StartPrepareIn();
+    }
+
+
+    private void OnPlayerAttackEnded()
+    {
+        _isAttacking = false;
+    }
+
+
+    private void OnPowerChanged(float power)
+    {
+        CurrentPower = power;
+    }
+
+
+    private void OnLampBlockedStarted(bool isBlocked, EnemyBase enemy)
+    {
+        IsLampBlocked = isBlocked;
+        _enemyController.SetBlockedMode(isBlocked);
+        // TODO: take lamp position into consideration
+        _lampMovementController.AddForce(-enemy.ProvideImpactPoint().normalized.x * 2);
+    }
+
+
+    private void OnEnemyAttackBounced(bool isDeflected, EnemyBase enemy)
+    {
+        if (!isDeflected || IsLampBlocked)
+        {
+            if(_gameConfigService.PlayerConfig.IsDamageable)
+                LampHealth -= 1;
+
+            if (LampHealth <= 0)
+            {
+                LastEnemyPosition = enemy.ProvideImpactPoint();
+                _lampMovementController.AddForce(-LastEnemyPosition.normalized.x * 2);
+                _enemyController.HandleLampDestroyed();
+                LampDeathHappened?.Invoke(enemy.ProvideImpactPoint());
+                LampDied?.Invoke(enemy);
+                StartGameOver();
+                Debug.Log("++++++++++ Game Over ++++++++++");
+                return;
+            }
+            
+            LampGlassDamage = _lampDamageDataHandler.UpdateGlassDamageDataDamage(LampGlassDamage, enemy.ProvideImpactPoint().normalized);
+            
+            // TODO: take lamp position into consideration
+            // Or calculate it in the LampMovementController because it knows about lamp position
+            
+            _lampMovementController.AddForce(-enemy.ProvideImpactPoint().normalized.x * 2); 
+            LampDamageStarted?.Invoke(_gameConfigService.PlayerConfig.DamageDuration);
+        }
+    }
+
+
+    private void OnScoreChanged(int newScore)
+    {
+        _currentGameState.UpgradeData.Score += newScore;
+        int newUpgradePoints = _upgradeHandler.GetUpgradePointsAndUpdateScoreData(ref _currentGameState.UpgradeData);
+        if (newUpgradePoints > 0)
+        {
+            _currentGameState.LampUpgradePoints += newUpgradePoints;
+            // TODO: maybe add event to indicate it somehow
+        }
     }
 }

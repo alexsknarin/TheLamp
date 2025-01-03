@@ -13,7 +13,23 @@ public class DragonflyDeathFlash : DamageIndication
     private bool _isActive = false;
     private float _localTime;
     private Transform _contactCollisionTransform;
-    
+
+    public override void Initialize()
+    {
+        _isActive = false;
+        
+        _bodyMaterial = _bodyMeshRenderer.material;
+        _wingsMaterial = _wingsMeshRenderer.material;
+        
+        _bodyMaterial.SetFloat("_DeathPhase", 0f);
+        _wingsMaterial.SetFloat("_DeathPhase", 0f);
+        
+        _bodyMaterial.SetFloat("_AttackSemaphore", 0f);
+        _wingsMaterial.SetFloat("_AttackSemaphore", 0f);
+        
+        _deathParticles.gameObject.SetActive(false);
+    }
+
     public override void Play()
     {
         _isActive = true;
@@ -39,8 +55,8 @@ public class DragonflyDeathFlash : DamageIndication
     {
         _contactCollisionTransform = contactCollisionTransform;
     }
-    
-    void Update()
+
+    private void Update()
     {
         if (_isActive)
         {
@@ -60,21 +76,5 @@ public class DragonflyDeathFlash : DamageIndication
             
             _localTime += Time.deltaTime;
         }
-    }
-
-    public override void Initialize()
-    {
-        _isActive = false;
-        
-        _bodyMaterial = _bodyMeshRenderer.material;
-        _wingsMaterial = _wingsMeshRenderer.material;
-        
-        _bodyMaterial.SetFloat("_DeathPhase", 0f);
-        _wingsMaterial.SetFloat("_DeathPhase", 0f);
-        
-        _bodyMaterial.SetFloat("_AttackSemaphore", 0f);
-        _wingsMaterial.SetFloat("_AttackSemaphore", 0f);
-        
-        _deathParticles.gameObject.SetActive(false);
     }
 }

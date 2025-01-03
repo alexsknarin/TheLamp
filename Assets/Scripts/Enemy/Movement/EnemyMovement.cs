@@ -3,16 +3,16 @@ using UnityEngine;
 
 public abstract class EnemyMovement : MonoBehaviour, IStateMachineOwner, IInitializable
 {
-    public EnemyState State { get; protected set; }
-    public int SideDirection { get; protected set; }
+    public virtual void Construct(ILampPositionProviderService lampPositionProviderService) { }
     public event Action PreAttackStarted;
     public event Action PreAttackEnded;
     public event Action AttackEnded;
     public event Action StickStarted;
-    public event Action EnemyDeactivated; 
+    public event Action EnemyDeactivated;
     public event Action MovementReseted;
+    public EnemyState State { get; protected set; }
+    public int SideDirection { get; protected set; }
 
-    public virtual void Construct(ILampPositionProviderService lampPositionProviderService) { }
     public abstract void Initialize();
     public virtual void HandleLampDestroyed() { }
     public abstract void TriggerFall();

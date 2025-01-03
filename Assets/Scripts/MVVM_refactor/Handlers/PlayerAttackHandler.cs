@@ -5,6 +5,22 @@ using UnityEngine;
 public class PlayerAttackHandler : ITickable
 {
     private float _power;
+    private WaitForSeconds _attackEndWaitDuraiton;
+    private float _localTime;
+    private float _cooldownDuration;
+    private bool _isCooldownPlaying = false;
+    // Dependencies
+    private MonoBehaviour _coroutineHost; 
+    
+    public PlayerAttackHandler(MonoBehaviour monoBehaviour)
+    {
+        _coroutineHost = monoBehaviour;
+    }
+    
+    public event Action<float> PowerChanged;
+    public event Action CooldownEnded;  // TODO: assess if this event is needed
+    public event Action PlayerAttackEnded;
+    
     public float Power 
     {
         get => _power;
@@ -13,20 +29,6 @@ public class PlayerAttackHandler : ITickable
             _power = value;
             PowerChanged?.Invoke(_power);
         }
-    } 
-    public event Action<float> PowerChanged;
-    public event Action CooldownEnded;  // TODO: assess if this event is needed
-    private WaitForSeconds _attackEndWaitDuraiton;
-    private float _localTime;
-    private float _cooldownDuration;
-    private bool _isCooldownPlaying = false;
-    public event Action PlayerAttackEnded; 
-    
-    // Dependencies
-    private MonoBehaviour _coroutineHost; 
-    public PlayerAttackHandler(MonoBehaviour monoBehaviour)
-    {
-        _coroutineHost = monoBehaviour;
     }
     
     public void SetAttackDuration(float attackDuration)
@@ -55,26 +57,34 @@ public class PlayerAttackHandler : ITickable
         }
         StartCooldown();
     }
-    
+
+    public void StopCooldown()
+    {
+        _isCooldownPlaying = false;
+    }
+
+    public void Tick(float deltaTime)
+    {
+        if (_isCooldownPlaying)
+        {
+            PerformCooldown(deltaTime);
+        }
+    }
+
     private IEnumerator WaitForAttackEnd()
     {
         yield return _attackEndWaitDuraiton;
         StartCooldown();
         PlayerAttackEnded?.Invoke();
     }
-    
+
     private void StartCooldown()
     {
         Power = 0;
         _localTime = 0;
         _isCooldownPlaying = true;
     }
-    
-    public void StopCooldown()
-    {
-        _isCooldownPlaying = false;
-    }
-    
+
     private void PerformCooldown(float deltaTime)
     {
         float phase = _localTime / _cooldownDuration;
@@ -87,13 +97,5 @@ public class PlayerAttackHandler : ITickable
         }
         Power = phase;
         _localTime += deltaTime;
-    }
-    
-    public void Tick(float deltaTime)
-    {
-        if (_isCooldownPlaying)
-        {
-            PerformCooldown(deltaTime);
-        }
     }
 }

@@ -22,33 +22,27 @@ public class EnemyController : MonoBehaviour, IInitializable
     [SerializeField] private float _maxAggressionLevel;
     [Header("")]
     [SerializeField] private float _firstEnemySpawnDelay;
-    
+    [SerializeField] private bool _isWaveInitialized = false;
     private SpawnQueueGenerator _spawnQueueGenerator;
     private SpawnQueue _spawnQueue;
-    
     private List<EnemyBase> _enemies;
     private List<EnemyBase> _enemiesReadyToAttack;
     // TODO: use interfaces to build these lists
     // Ldybugs in this list are used to check if some of them close enough to the player,
     // in this case all other enemies should stop attacking - TODO: refactor this
-    private List<EnemyBase> _ladybugsPatrolling;  
-
+    private List<EnemyBase> _ladybugsPatrolling;
     private FEnemiesLampAttackHandler _enemiesLampAttackHandler;
     private EnemySpawner _enemySpawner;
     private EnemyAttacker _enemyAttacker;
     private EnemiesFireflyExploder _enemiesFireflyExploder;
     private List<ITickable> _tickables;
-    
-    [SerializeField] private bool _isWaveInitialized = false;
     private bool _isGameActive = false;
     private int _enemiesKilled;
     private bool _isPlayerBlocked = false;
-    
     private WaitForSeconds _waitAfterGameOver = new WaitForSeconds(3.9f); // TODO: Magic Number
-    
     // Dependencies    
     private IGameConfigService _gameConfigService;
-
+    
     public void Construct(IGameConfigService gameConfigService)
     {
         _gameConfigService = gameConfigService;
@@ -176,16 +170,10 @@ public class EnemyController : MonoBehaviour, IInitializable
         // Disable boss
         if (_enemyAttacker.IsBossActive)
         {
-            _enemySpawner.Boss.SetGameover();
+            _enemySpawner.Boss.SetGameOver();
         }
     }
-    
-    private IEnumerator SpreadEnemiesAfterGameOver()
-    {
-        yield return _waitAfterGameOver;
-        OnSpreadTriggering();
-    }
-    
+
     public void Restart()
     {
         ReturnAllActiveEnemiesToPool();
@@ -203,14 +191,6 @@ public class EnemyController : MonoBehaviour, IInitializable
         _dragonflyBoss.Initialize();
         
         _isWaveInitialized = false;
-    }
-    
-    private void SetupWave(int waveNum)
-    {
-        _enemySpawner.StartWave(waveNum);
-        _enemyAttacker.StartWave(waveNum);
-        _enemiesKilled = 0;
-        _isWaveInitialized = true;
     }
 
     public void HandleAttackButtonClicked(float power)
@@ -231,6 +211,20 @@ public class EnemyController : MonoBehaviour, IInitializable
     public void SetBlockedMode(bool isBlocked)
     {
         _isPlayerBlocked = isBlocked;
+    }
+
+    private IEnumerator SpreadEnemiesAfterGameOver()
+    {
+        yield return _waitAfterGameOver;
+        OnSpreadTriggering();
+    }
+
+    private void SetupWave(int waveNum)
+    {
+        _enemySpawner.StartWave(waveNum);
+        _enemyAttacker.StartWave(waveNum);
+        _enemiesKilled = 0;
+        _isWaveInitialized = true;
     }
 
     // Event Handlers

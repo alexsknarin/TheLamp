@@ -5,15 +5,15 @@ public class GameStateViewModel: IDisposable
 {
     private GameModel _gameModel;
     private GameState _currentGameState;
-    public GameState CurrentGameState => _currentGameState;
-    public event Action<GameState> GameStateChanged; 
-    
+
     public GameStateViewModel(GameModel gameModel)
     {
         _gameModel = gameModel;
         _currentGameState = _gameModel.CurrentGameState;
         _gameModel.GameStateChanged += OnGameStateChanged;
     }
+    public event Action<GameState> GameStateChanged;
+    public GameState CurrentGameState => _currentGameState;
 
     public void Dispose()
     {

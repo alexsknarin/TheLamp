@@ -2,7 +2,6 @@ using UnityEngine;
 
 public class FlyMovementEnterState: EnemyMovementBaseState
 {
-    public override EnemyState State => EnemyState.Enter;
     private Vector3 _endPos = Vector3.zero;
     private Vector3 _enterDirection;
     private float _depthMultiplier = 2f;
@@ -14,8 +13,10 @@ public class FlyMovementEnterState: EnemyMovementBaseState
         _radius = radius;
         _verticalAmplitude = verticalAmplitude;
         _owner = owner;
-    } 
-   
+    }
+
+    public override EnemyState State => EnemyState.Enter;
+
     public override void EnterState(Vector3 currentPosition, int sideDirection, int depthDirection)
     {
         _sideDirection = sideDirection;
@@ -37,7 +38,7 @@ public class FlyMovementEnterState: EnemyMovementBaseState
 
         Position = currentPosition;
     }
-    
+
     public override void ExecuteState(Vector3 currentPosition)
     {
         Position = currentPosition + _enterDirection * (_speed * Time.deltaTime * (Mathf.PI/2));

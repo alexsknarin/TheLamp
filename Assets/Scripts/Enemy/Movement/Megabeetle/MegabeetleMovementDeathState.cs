@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class MegabeetleMovementDeathState: EnemyMovementBaseState
 {
+    private readonly Vector3 IDLE_POSITION = new Vector3(0f, -4.5f, 0f);
     private Vector3 _bounceForce;
     private Vector3 _gravityForce;
     private float _duration = 1.7f;
@@ -10,8 +11,7 @@ public class MegabeetleMovementDeathState: EnemyMovementBaseState
     private float _bounceForceMagnitude = 3f;
     private float _gravityForceMagnitude = .17f;
     private float _dragAmount = 0.9f;
-    private readonly Vector3 IDLE_POSITION = new Vector3(0f, -4.5f, 0f); 
-    
+
     public MegabeetleMovementDeathState(IStateMachineOwner owner, float speed, float radius, float verticalAmplitude) : base()
     {
         _speed = speed;

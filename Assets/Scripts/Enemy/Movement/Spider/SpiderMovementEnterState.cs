@@ -2,10 +2,9 @@ using UnityEngine;
 
 public class SpiderMovementEnterState: EnemyMovementBaseState
 {
-    public override EnemyState State => EnemyState.Enter;
     private Vector3 _hangingPoint;
     private float _localTime;
-    
+
     public SpiderMovementEnterState(IStateMachineOwner owner, float speed, float radius, float verticalAmplitude) : base()
     {
         _speed = speed;
@@ -15,8 +14,10 @@ public class SpiderMovementEnterState: EnemyMovementBaseState
         
         _hangingPoint = Vector3.up * 5f;
         _hangingPoint.x = radius;
-    } 
-    
+    }
+
+    public override EnemyState State => EnemyState.Enter;
+
     public override void EnterState(Vector3 currentPosition, int sideDirection, int depthDirection)
     {
         _hangingPoint.x = Mathf.Abs(_hangingPoint.x) * sideDirection;

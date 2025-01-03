@@ -9,7 +9,6 @@ public class DragonflySwarm : MonoBehaviour
     [SerializeField] private DragonflyProjectileMoth[] _moths;
     [SerializeField] private float _timeInterval = 1f;
     private Vector3[] _startPositions = new Vector3[3];
-    
     private float _localTime = 0f;
     private bool _isWaitingForAttack = false;
     private int _attackCount = 0;

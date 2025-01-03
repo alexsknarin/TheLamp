@@ -15,9 +15,9 @@ public class LampDeathAnimation : MonoBehaviour
     [SerializeField] private float _destructionSpeed;
     [SerializeField] private float _gravityStartAcceleration = 0.01f;
     [SerializeField] private float _rotationSpeed = 1f;
-    private float _gravityAcceleration;
     [SerializeField] private Transform[] _bones;
-    
+    private float _gravityAcceleration;
+
     private Vector3[] _boneOriginalPositions;
     private Quaternion[] _boneOriginalRotations;
     
@@ -102,7 +102,7 @@ public class LampDeathAnimation : MonoBehaviour
         _lampAttackZoneObject.SetActive(false);
     }
     
-    void Update()
+    private void Update()
     {
         if (_isPlaying)
         {

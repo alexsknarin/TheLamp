@@ -4,6 +4,17 @@ using Random = UnityEngine.Random;
 
 public class Dragonfly : BossBase
 {
+    private readonly DragonflyReturnMode[] RETURN_MODES = new DragonflyReturnMode[]
+    {
+        DragonflyReturnMode.PatrolL,
+        DragonflyReturnMode.PatrolR,
+        DragonflyReturnMode.SpiderL,
+        DragonflyReturnMode.SpiderR,
+        DragonflyReturnMode.Hover,
+        DragonflyReturnMode.Hover
+    };
+    // TODO: find ot how properly declare constants
+    
     [SerializeField] private string _stateDebug;
     [SerializeField] private EnemyType _enemyType;
     [SerializeField] private int _maxHealth;
@@ -16,7 +27,6 @@ public class Dragonfly : BossBase
     [Header("Hover")]
     [SerializeField] private float _hoverWaitMin;
     [SerializeField] private float _hoverWaitMax;
-
     [Header("Patrol")]
     [Header("Head")]
     [SerializeField] private float _swarmAttackDuration; // TODO: control swarm duration itself from here as well
@@ -28,28 +38,18 @@ public class Dragonfly : BossBase
     [SerializeField] private Vector3 _tailAttackPositionBase;
     [SerializeField] private float _patrolTailWaitMin;
     [SerializeField] private float _patrolTailWaitMax;
-
     [Header("Spider")]
     [SerializeField] private Vector3 _spiderAttackPositionBase;
     [SerializeField] private float _spiderPatrolWaitMin;
     [SerializeField] private float _spiderPatrolWaitMax;
     [SerializeField] private DragonflyProjectileSpider _spider;
-    public override EnemyType EnemyType => _enemyType;
+    // Serialized for debug
+    [SerializeField] private bool _isInAttackExitZone = false;
+    [SerializeField] private bool _isCollidedWithLamp = false;
+    
     private DragonflyPatrolAttackPositionProvider _patrolAttackPositionProvider;
-        
     private Vector3 _patrolAttackPosition;
     private Vector3 _patrolSpiderAttackPosition;
-    
-    private DragonflyReturnMode[] RETURN_MODES = new DragonflyReturnMode[]
-    {
-        DragonflyReturnMode.PatrolL,
-        DragonflyReturnMode.PatrolR,
-        DragonflyReturnMode.SpiderL,
-        DragonflyReturnMode.SpiderR,
-        DragonflyReturnMode.Hover,
-        DragonflyReturnMode.Hover
-    };
-
     // STATE MACHINE 
     private readonly FStateMachine _stateMachine = new FStateMachine();
     private DragonflyInactiveState _inactiveState;
@@ -66,7 +66,7 @@ public class Dragonfly : BossBase
     private DragonflyWaitSpiderAttackState _waitSpiderAttackState;
     private DragonflySwarmAttackState _swarmAttackState;
     private DragonflyWaitForBounceState _waitForBounceState;
-
+    // Parameters
     private bool _isActivated = false;
     private DragonflyEnterType _enterType = 0;
     private DragonflyPatrolAttackMode _patrolAttackMode = DragonflyPatrolAttackMode.Head;
@@ -76,10 +76,8 @@ public class Dragonfly : BossBase
     private bool _isDead = false;
     private DragonflyReturnMode _returnMode;
     
-    // Serialized for debug
-    [SerializeField] private bool _isInAttackExitZone = false;
-    [SerializeField] private bool _isCollidedWithLamp = false;
-    
+    public override EnemyType EnemyType => _enemyType;
+
     private void OnEnable()
     {
         _movement.ReadyToAttackStateEntered += OnReadyToAttackStateEntered;
@@ -133,6 +131,116 @@ public class Dragonfly : BossBase
         _movement.CatchSpiderStarted -= OnCatchSpiderStarted;
         _spider.EnterAnimationEnded -= OnSpiderEnterAnimationEnded;
         _movement.DeathAnimationEnded -= OnDeathAnimationEnded;
+    }
+
+    public override void Initialize()
+    {
+        _isDead = false;
+        _isActivated = false;
+        _isReadyToPreAttackWait = false;
+        _isReadyToAttackWait = false;
+        _isAttacked = false;
+        _presentation.Initialize();
+        _spider.Initialize();
+        _movement.Initialize();
+        gameObject.SetActive(false);
+    }
+
+    public override void Play()
+    {
+        gameObject.SetActive(true);
+        _stateMachine.SetState(_inactiveState);        
+        StartBossActivePhase();
+    }
+
+    public override void Reset()
+    {
+        _swarm.Initialize();
+        _movement.Initialize();
+        gameObject.SetActive(false);
+    }
+
+    public void CatchFirstCollider()
+    {
+        _collisionController.SoloCollider();
+    }
+    
+    public override Vector3 ProvideImpactPoint()
+    {
+        return _collisionController.GetFirstActiveColliderPosition();
+    }
+
+    public override void ReceiveDamage(int damage)
+    {
+        ReadyToLampDamage = false;
+        _currentHealth -= damage;
+
+        if (_currentHealth > 0)
+        {
+            ReceivedLampAttack = true;
+            
+            _presentation.HealthUpdate(_currentHealth, _maxHealth);
+            _presentation.SetActiveColliderTransform(_collisionController.GetFirstActiveColliderTransform());
+            _presentation.DamageFlash();
+            _movement.TriggerFall(true);
+        }
+        else
+        {
+            if (!_isDead)
+            {
+                ReceivedLampAttack = true;
+                _currentHealth = 0; 
+                _movement.TriggerDeath(); 
+                _presentation.DeathFlash();
+                OnEnemyDeathInvoke(this);
+                _isDead = true;
+            }
+        }
+        
+        ReadyToLampDamage = false;
+    }
+    
+    public override void SetGameOver()
+    {
+        _movement.TriggerGameOver();
+        _swarm.TriggerGameover();
+    }
+    
+    public override void HandleEnteringAttackZone()
+    {
+        ReadyToLampDamage = true;
+    }
+
+    public void HandleEnteringAttackExitZone()
+    {
+        _isInAttackExitZone = true;
+    }
+
+    public override void HandleCollisionWithLamp()
+    {
+        ReadyToCollide = false;
+        ReadyToLampDamage = true;
+        _isCollidedWithLamp = true;
+    }
+
+    public void HandleExitingLampCollisionZone()
+    {
+        _isCollidedWithLamp = false;
+    }
+
+    public override void HandleExitingAttackExitZone()
+    {
+        _isInAttackExitZone = false;
+        ReadyToLampDamage = false;
+        if (!ReceivedLampAttack)
+        {
+            _movement.TriggerFall(false);
+        }
+    }
+
+    public override void HandleCollisionWithStickZone()
+    {
+        Debug.LogWarning("Dragonfly penetrated collision zone");
     }
 
     private void Awake()
@@ -279,41 +387,14 @@ public class Dragonfly : BossBase
         #endregion
     }
 
-    public override void Initialize()
-    {
-        _isDead = false;
-        _isActivated = false;
-        _isReadyToPreAttackWait = false;
-        _isReadyToAttackWait = false;
-        _isAttacked = false;
-        _presentation.Initialize();
-        _spider.Initialize();
-        _movement.Initialize();
-        gameObject.SetActive(false);
-    }
-
-    public override void Play()
-    {
-        gameObject.SetActive(true);
-        _stateMachine.SetState(_inactiveState);        
-        StartBossActivePhase();
-    }
-
-    public override void Reset()
-    {
-        _swarm.Initialize();
-        _movement.Initialize();
-        gameObject.SetActive(false);
-    }
-    
     private void Update()
     {
         _stateMachine.Tick();
         _stateDebug = _stateMachine.CurrentState.ToString();
     }
 
-    // State change methods
 
+    // State change methods
     private void StartBossActivePhase()
     {
         _collisionController.DisableColliders();
@@ -329,7 +410,7 @@ public class Dragonfly : BossBase
         _isAttacked = true;
         _isCollidedWithLamp = false;
     }
-    
+
     private void GenerateAttackPosition()
     {
         _isReadyToAttackWait = true;
@@ -339,7 +420,7 @@ public class Dragonfly : BossBase
     {
         _spider.StartPreAttack();
     }
-    
+
     private void StartSpiderAttack()
     {
         _spider.gameObject.transform.SetParent(this.transform);
@@ -348,13 +429,14 @@ public class Dragonfly : BossBase
         _isAttacked = true;
     }
 
+    
     // Event Handle Methods
     private void OnReadyToAttackStateEntered(IState movementState)
     {
         _patrolAttackMode = (DragonflyPatrolAttackMode)Random.Range(0, 2);
         _isReadyToPreAttackWait = true;
     }
-    
+
     private void OnSwarmCalled()
     {
         _presentation.SwarmCall();
@@ -371,7 +453,7 @@ public class Dragonfly : BossBase
             _swarm.PlayAttack(-1);
         }
     }
-    
+
     private void OnAttackStarted()
     {
         _collisionController.EnableColliders();
@@ -395,7 +477,7 @@ public class Dragonfly : BossBase
         ReceivedLampAttack = false;
         _presentation.PreAttackStart();
     }
-    
+
     private void OnSpiderEnterAnimationEnded()
     {
         _spider.gameObject.transform.SetParent(_visibleBodyTransform);
@@ -422,94 +504,10 @@ public class Dragonfly : BossBase
         gameObject.SetActive(false); // TODO: fix naming to be consistent
     }
 
-    public void CatchFirstCollider()
-    {
-        _collisionController.SoloCollider();
-    }
-
-    public override void HandleEnteringAttackZone()
-    {
-        ReadyToLampDamage = true;
-    }
-
-    public void HandleEnteringAttackExitZone()
-    {
-        _isInAttackExitZone = true;
-    }
-
-    public override void HandleCollisionWithLamp()
-    {
-        ReadyToCollide = false;
-        ReadyToLampDamage = true;
-        _isCollidedWithLamp = true;
-    }
-
-    public void HandleExitingLampCollisionZone()
-    {
-        _isCollidedWithLamp = false;
-    }
-
-    public override void HandleExitingAttackExitZone()
-    {
-        _isInAttackExitZone = false;
-        ReadyToLampDamage = false;
-        if (!ReceivedLampAttack)
-        {
-            _movement.TriggerFall(false);
-        }
-    }
-
-    public override void HandleCollisionWithStickZone()
-    {
-        Debug.LogWarning("Dragonfly penetrated collision zone");
-    }
-
     private void OnWaitForBounceStateEnded()
     {
         _movement.TriggerBounce();
     }
-
-    public override Vector3 ProvideImpactPoint()
-    {
-        return _collisionController.GetFirstActiveColliderPosition();
-    }
-
-    public override void ReceiveDamage(int damage)
-    {
-        ReadyToLampDamage = false;
-        _currentHealth -= damage;
-
-        if (_currentHealth > 0)
-        {
-            ReceivedLampAttack = true;
-            
-            _presentation.HealthUpdate(_currentHealth, _maxHealth);
-            _presentation.SetActiveColliderTransform(_collisionController.GetFirstActiveColliderTransform());
-            _presentation.DamageFlash();
-            _movement.TriggerFall(true);
-        }
-        else
-        {
-            if (!_isDead)
-            {
-                ReceivedLampAttack = true;
-                _currentHealth = 0; 
-                _movement.TriggerDeath(); 
-                _presentation.DeathFlash();
-                OnEnemyDeathInvoke(this);
-                _isDead = true;
-            }
-        }
-        
-        ReadyToLampDamage = false;
-    }
-    
-    public override void SetGameover()
-    {
-        _movement.TriggerGameOver();
-        _swarm.TriggerGameover();
-    }
-
 
     #region Unused Enemy Base Methods
     public override void ReturnToPool()

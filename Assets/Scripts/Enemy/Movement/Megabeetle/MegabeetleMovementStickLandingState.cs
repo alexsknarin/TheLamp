@@ -2,16 +2,14 @@ using UnityEngine;
 
 public class MegabeetleMovementStickLandingState: EnemyMovementBaseState
 {
-    public override EnemyState State => EnemyState.StickLanding;
+    private readonly float NEUTRAL_DISTANCE = 0.44f;
     private float _duration = .491f;
     private float _phase;
     private float _localTime;
     private Vector3 _startPosition;
     private Vector3 _endPosition;
     private float _startDistance;
-
-    private readonly float NEUTRAL_DISTANCE = 0.44f; 
-
+    
     public MegabeetleMovementStickLandingState(IStateMachineOwner owner, float speed, float radius, float verticalAmplitude) : base()
     {
         _speed = speed;
@@ -19,7 +17,9 @@ public class MegabeetleMovementStickLandingState: EnemyMovementBaseState
         _verticalAmplitude = verticalAmplitude;
         _owner = owner;
     }
-    
+
+    public override EnemyState State => EnemyState.StickLanding;
+
     public override void EnterState(Vector3 currentPosition, int sideDirection, int depthDirection)
     {
         _startDistance = currentPosition.magnitude; 

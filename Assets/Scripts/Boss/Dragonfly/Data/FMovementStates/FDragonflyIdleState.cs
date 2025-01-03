@@ -6,7 +6,6 @@ public class FDragonflyIdleState : ScriptableObject, IState
     // Dependencies
     private Transform _visibleBodyTransform;
     private Transform _baseTransform;
-    
     private Vector3 _startPosition;
     
     public void SetDependencies(Transform visibleBodyTransform, Transform baseTransform)

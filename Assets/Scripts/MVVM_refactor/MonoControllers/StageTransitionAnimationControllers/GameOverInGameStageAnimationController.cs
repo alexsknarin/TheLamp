@@ -28,12 +28,12 @@ public class GameOverInGameStageAnimationController : MonoBehaviour
     [SerializeField] private GameObject _ingameUi;
     [Header("Lamp")]
     [SerializeField] private LampDeathAnimation _lampDeathAnimation;
-    public event Action GameoverInFinished;
-    
     private UnityEngine.Rendering.Universal.ColorAdjustments _colorAdjustments;
     private float _localTime;
     private bool _isPlaying;
-    
+
+    public event Action GameoverInFinished;
+
     public void Initialize()
     {
         // Get Control over Exposure
@@ -48,7 +48,7 @@ public class GameOverInGameStageAnimationController : MonoBehaviour
         
         _isPlaying = false;
     }
-    
+
     public void Play(Vector3 enemyPosition)
     {
         if (_skip)

@@ -7,8 +7,8 @@ public class Megamothling : BossBase
     [SerializeField] private int _currentHealth;
     [SerializeField] private MegamothlingMovement _enemyMovement;
     [SerializeField] private MegamothlingPresentation _enemyPresentation;
-    public override EnemyType EnemyType => _enemyType;
     private bool _isDead = false;
+    public override EnemyType EnemyType => _enemyType;
 
     private void OnEnable()
     {
@@ -62,11 +62,6 @@ public class Megamothling : BossBase
         gameObject.SetActive(false);
     }
 
-    private void OnMovementReseted()
-    {
-        _enemyPresentation.Initialize();
-    }
-
     public override void UpdateAttackAvailability()
     {
         float x = transform.position.x;
@@ -93,30 +88,6 @@ public class Megamothling : BossBase
         _enemyMovement.TriggerAttack();
     }
 
-    private void OnPreAttackStarted()
-    {
-        ReceivedLampAttack = false;
-        _enemyPresentation.PreAttackStart();
-        ReadyToAttack = false;
-        IsAttacking = true;
-    }
-
-    private void OnPreAttackEnded()
-    {
-        _enemyPresentation.PreAttackEnd();
-        ReadyToCollide = true;
-    }
-
-    private void OnAttackEnded()
-    {
-        IsAttacking = false;
-    }
-
-    private void OnStickStarted()
-    {
-        IsStick = true;
-    }
-
     public override void HandleEnteringAttackZone()
     {
         if (_enemyMovement.State == EnemyState.Attack || _enemyType == EnemyType.Ladybug)
@@ -131,14 +102,14 @@ public class Megamothling : BossBase
         _enemyMovement.TriggerFall();
     }
 
-    public override void HandleExitingAttackExitZone()
-    {
-        ReadyToLampDamage = false;
-    }
-
     public override void HandleCollisionWithStickZone()
     {
         _enemyMovement.TriggerStick();
+    }
+
+    public override void HandleExitingAttackExitZone()
+    {
+        ReadyToLampDamage = false;
     }
 
     public override void ReceiveDamage(int damage)
@@ -166,15 +137,41 @@ public class Megamothling : BossBase
         }    
     }
 
-    public override void ReturnToPool()
-    {
-    }
+    public override void ReturnToPool() { }
 
     public override Vector3 ProvideImpactPoint()
     {
         return transform.position;
     }
 
+    private void OnMovementReseted()
+    {
+        _enemyPresentation.Initialize();
+    }
+
+    private void OnPreAttackStarted()
+    {
+        ReceivedLampAttack = false;
+        _enemyPresentation.PreAttackStart();
+        ReadyToAttack = false;
+        IsAttacking = true;
+    }
+
+    private void OnPreAttackEnded()
+    {
+        _enemyPresentation.PreAttackEnd();
+        ReadyToCollide = true;
+    }
+
+    private void OnAttackEnded()
+    {
+        IsAttacking = false;
+    }
+
+    private void OnStickStarted()
+    {
+        IsStick = true;
+    }
 
     private void OnDeathStateEnded()
     {

@@ -4,17 +4,17 @@ public class GameSettingsService: IGameSettingsService, IInitializable, IDisposa
 {
     private IGameSettingsProviderService _gameSettingsProviderService;
     private GameSettingsModel _gameSettingsModel;
-    
-    public bool IsConsentSet => _gameSettingsModel.IsConsentSet;
-    public bool IsDataCollectionEnabled => _gameSettingsModel.IsDataCollectionEnabled;
-    public event Action<bool> IsConsentSetChanged;
-    public event Action<bool> IsDataCollectionEnabledChanged;
-    
+
     public GameSettingsService(IGameSettingsProviderService gameSettingsProviderService, GameSettingsModel gameSettingsModel)
     {
         _gameSettingsModel = gameSettingsModel;
         _gameSettingsProviderService = gameSettingsProviderService;
     }
+    public event Action<bool> IsConsentSetChanged;
+    public event Action<bool> IsDataCollectionEnabledChanged;
+    
+    public bool IsConsentSet => _gameSettingsModel.IsConsentSet;
+    public bool IsDataCollectionEnabled => _gameSettingsModel.IsDataCollectionEnabled;
 
     public void Initialize()
     {

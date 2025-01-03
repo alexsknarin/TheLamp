@@ -17,10 +17,9 @@ public class LampMovementController : MonoBehaviour, IInitializable
     [SerializeField] private float _swingFrequency;
     [SerializeField] private float _swingAttenuationDuration;
     [SerializeField] private Vector3 _swingAimPoint;
-    private float _swingDurationNormalized;
     [SerializeField] private AnimationCurve _swingAttenuationCurve;
     [SerializeField] private LampMotionState _lampMotionState = LampMotionState.Idle;
-   
+    private float _swingDurationNormalized;
     // Force
     private float _forcePhase;
     // Swing
@@ -145,7 +144,7 @@ public class LampMovementController : MonoBehaviour, IInitializable
         _deviationAngle = 0;
     }
     
-    void Update()
+    private void Update()
     {
         _prevPos = _newPos;
 

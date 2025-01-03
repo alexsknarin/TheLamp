@@ -4,7 +4,6 @@ public class AttackDistanceUpgradeAnimationController : MonoBehaviour, IInitiali
 {
     [SerializeField] private MeshRenderer _meshRenderer;
     private Material _material;
-    
     private float _duration;
     private float _localTime;
     private bool _isPlaying = false;

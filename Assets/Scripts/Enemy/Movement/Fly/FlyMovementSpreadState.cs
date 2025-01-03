@@ -2,13 +2,12 @@ using UnityEngine;
 
 public class FlyMovementSpreadState: EnemyMovementBaseState
 {
-    public override EnemyState State => EnemyState.Spread;
     private float _maxDistance = 6.4f;
     private float _acceleratedSpeed;
     private float _acceleration = 5.5f;
     private Vector3 _direction;
     private float _extraDistance;
-    
+
     public FlyMovementSpreadState(IStateMachineOwner owner, float speed, float radius, float verticalAmplitude) : base()
     {
         _speed = speed;
@@ -16,7 +15,9 @@ public class FlyMovementSpreadState: EnemyMovementBaseState
         _verticalAmplitude = verticalAmplitude;
         _owner = owner;
     }
-    
+
+    public override EnemyState State => EnemyState.Spread;
+
     public override void EnterState(Vector3 currentPosition, int sideDirection, int depthDirection)
     {
         Position = currentPosition;
@@ -24,7 +25,7 @@ public class FlyMovementSpreadState: EnemyMovementBaseState
         _acceleratedSpeed = 1;
         _extraDistance = Random.Range(50f, 70f);
     }
-    
+
     public override void ExecuteState(Vector3 currentPosition)
     {
         Position = currentPosition + _direction * (_speed * _acceleratedSpeed * Time.deltaTime);

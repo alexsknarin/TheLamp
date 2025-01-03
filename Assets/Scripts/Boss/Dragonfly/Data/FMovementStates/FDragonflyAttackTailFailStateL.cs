@@ -11,19 +11,17 @@ public class FDragonflyAttackTailFailStateL : ScriptableObject, IState
     [SerializeField] private float _moveAcceleration = 1.9f;
     [SerializeField] private AnimationCurve _rzMixCurve;
     [SerializeField] private float _rzMaxValue;
-    
-    public event Action Started;
-    public event Action Ended;
-    
     private float _localTime = 0f;
     private float _phase = 0f;
     private readonly int _sideDirection = 1;
     private bool _isAfterDelay = false;
     private float _startRz;
-    
     // Dependencies
     private Transform _visibleBodyTransform;
     private Transform _baseTransform;
+    
+    public event Action Started;
+    public event Action Ended;
 
     public void SetDependencies(Transform visibleBodyTransform, Transform baseTransform)
     {

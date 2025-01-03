@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class MothMovementAttackState: EnemyMovementBaseState
 {
-    public override EnemyState State => EnemyState.Attack;
     private float _acceleration = 0.02f;
     private float _depthDecrement = 0.2f;
     private float _acceleratedSpeed = 1f;
@@ -11,9 +10,9 @@ public class MothMovementAttackState: EnemyMovementBaseState
     private float _noiseAmplitude = 0.08f;
     private float _maxDistance = 0.5f;
     private readonly float _mothRadius = 0.1f;
-    
+
     private ILampPositionProviderService _lampPositionProvider;
-    
+
     public MothMovementAttackState(
         IStateMachineOwner owner, 
         ILampPositionProviderService lampPositionProvider,
@@ -28,7 +27,9 @@ public class MothMovementAttackState: EnemyMovementBaseState
         _radius = radius;
         _verticalAmplitude = verticalAmplitude;
     }
-    
+
+    public override EnemyState State => EnemyState.Attack;
+
     public override void EnterState(Vector3 currentPosition, int sideDirection, int depthDirection)
     {
         _sideDirection = sideDirection;

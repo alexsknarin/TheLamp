@@ -3,26 +3,23 @@ using UnityEngine;
 
 public class DragonflyWaitSpiderAttackState : IState
 {
-    public event Action Ended;
-    public event Action GotReadyToPreAttack;
-    
     private Vector3 _targetPosition;
-
     private readonly Transform _transform;
     private readonly Vector3 _attackPositionBase;
-    
     private bool _isLastPatrolDirectionSet = false;
     private int _lastPatrolDirection = 0;
-    
     private float _preattackDistance = 0.4f;
     private bool _isReadyToPreAttack = false;
-   
+
     public DragonflyWaitSpiderAttackState(Transform visibleBodyTransform, Vector3 attackPositionBase)
     {
         _transform = visibleBodyTransform;
         _attackPositionBase = attackPositionBase;
     }
-    
+
+    public event Action Ended;
+    public event Action GotReadyToPreAttack;
+
     public void OnEnter()
     {
         _targetPosition = _attackPositionBase;

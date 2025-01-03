@@ -4,9 +4,7 @@ using UnityEngine;
 public class FDragonflyBounceTailStateR : ScriptableObject, IState
 {
     [SerializeField] private float _rotationSpeed = 125f;
-    
     private readonly int _sideDirection = -1;
-    
     // Dependencies
     private Transform _visibleBodyTransform;
     private Transform _patrolTransform;

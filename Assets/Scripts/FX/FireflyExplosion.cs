@@ -13,11 +13,6 @@ public class FireflyExplosion : MonoBehaviour
     private float _localTime;
     private float _duration;
 
-    void Awake()
-    {
-        _material = _meshRenderer.material;
-    }
-    
     public void Play(Vector3 position, float radius, float duration)
     {
         transform.position = position;
@@ -28,8 +23,13 @@ public class FireflyExplosion : MonoBehaviour
         _duration = duration;
         _localTime = 0;
     }
-    
-    void Update()
+
+    private void Awake()
+    {
+        _material = _meshRenderer.material;
+    }
+
+    private void Update()
     {
         if (_isActive)
         {

@@ -3,7 +3,13 @@ using UnityEngine;
 
 public class EnemyAttacker : ITickable
 {
-    public bool IsBossActive => _isBossActive;
+    private EnemyQueue _enemyQueue;
+    private float _attackCooldown;
+    private float _agressionLevelNormalized;
+    private float _localTime;
+    private bool _isWaveActive = false;
+    private bool _isBossActive = false;
+    private BossBase _boss;
     
     // Dependencies
     private readonly SpawnQueue _spawnQueue;
@@ -12,15 +18,6 @@ public class EnemyAttacker : ITickable
     List<EnemyBase> _ladybugsPatrolling;
     private float _maxAggressionLevel;
     
-    private EnemyQueue _enemyQueue;
-    
-    private float _attackCooldown;
-    private float _agressionLevelNormalized;
-    private float _localTime;
-    private bool _isWaveActive = false;
-    private bool _isBossActive = false;
-    private BossBase _boss;
-
     public EnemyAttacker(
         SpawnQueue spawnQueue, 
         List<EnemyBase> enemies, 
@@ -36,6 +33,8 @@ public class EnemyAttacker : ITickable
         _maxAggressionLevel = maxAggressionLevel;
     }
     
+    public bool IsBossActive => _isBossActive;
+    
     public void StartWave(int waveIndex)
     {
         _enemyQueue = _spawnQueue.Get(waveIndex);
@@ -47,7 +46,25 @@ public class EnemyAttacker : ITickable
         _localTime = 0;
         _isWaveActive = true;
     }
-    
+
+    public void ActivateBoss(BossBase boss)
+    {
+        _boss = boss;
+        _localTime = 0;
+        _isBossActive = true;
+    }
+
+    public void DeactivateBoss()
+    {
+        _isBossActive = false;
+    }
+
+    public void Tick(float deltaTime)
+    {
+        UpdateEnemiesReadyToAttack();
+        WaitForCooldown();
+    }
+
     private void WaitForCooldown()
     {
         if (_localTime >= _attackCooldown)
@@ -103,18 +120,6 @@ public class EnemyAttacker : ITickable
         _attackCooldown = GetRandomAttackDelay(2.5f, 0.8f, 6.1f, 1.8f, _agressionLevelNormalized); // TODO: fix magic numbers
     }
 
-    public void ActivateBoss(BossBase boss)
-    {
-        _boss = boss;
-        _localTime = 0;
-        _isBossActive = true;
-    }
-    
-    public void DeactivateBoss()
-    {
-        _isBossActive = false;
-    }
-    
     private void UpdateEnemiesReadyToAttack()
     {
         _enemiesReadyToAttack.Clear();
@@ -127,7 +132,7 @@ public class EnemyAttacker : ITickable
             }
         }
     }
-    
+
     private bool CheckIfAttackTimeUpdateIsAllowed()
     {
         if (_ladybugsPatrolling.Count > 0)
@@ -154,11 +159,5 @@ public class EnemyAttacker : ITickable
             Mathf.Lerp(minMin, minMax, aggressionLevel),
             Mathf.Lerp(maxMin, maxMax, aggressionLevel)
         );
-    }
-
-    public void Tick(float deltaTime)
-    {
-        UpdateEnemiesReadyToAttack();
-        WaitForCooldown();
     }
 }

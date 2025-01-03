@@ -2,7 +2,6 @@ using UnityEngine;
 
 public class MegamothlingMovementEnterState: EnemyMovementBaseState
 {
-    public override EnemyState State => EnemyState.Enter;
     private Vector3 _endPos = Vector3.zero;
     private Vector3 _enterDirection;
     private float _depthMultiplier = 2f;
@@ -17,8 +16,10 @@ public class MegamothlingMovementEnterState: EnemyMovementBaseState
         _radius = radius;
         _verticalAmplitude = verticalAmplitude;
         _owner = owner;
-    } 
-   
+    }
+
+    public override EnemyState State => EnemyState.Enter;
+
     public override void EnterState(Vector3 currentPosition, int sideDirection, int depthDirection)
     {
         _sideDirection = sideDirection;

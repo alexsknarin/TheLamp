@@ -3,9 +3,14 @@ using System.Collections.Generic;
 public class EnemyQueue
 {
     private List<EnemyType> _enemies;
+
+    public EnemyQueue()
+    {
+        _enemies = new List<EnemyType>();
+    }
+
     public int MaxEnemiesOnScreen { get; set; }
     public int AggressionLevel { get; set; }
-    
     /// <summary>
     /// Spawn delay is the time between each enemy is being spawned
     /// </summary>
@@ -15,11 +20,6 @@ public class EnemyQueue
     /// For example value of 2 means that the spawn delay will two times shorter by the end of the wave.
     /// </summary>
     public float SpawnDelayAcceleration { get; set; }
-    
-    public EnemyQueue()
-    {
-        _enemies = new List<EnemyType>();
-    }
 
     public void Clear()
     {

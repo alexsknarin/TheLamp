@@ -8,29 +8,26 @@ public class FDragonflyPreAttackHeadStateL : ScriptableObject, IState
     [SerializeField] private float _duration = 0.4f;
     [SerializeField] private float _deccelerationPower = 2f;
     [SerializeField] private float _sideSpeed = 0.5f;
-    
-    public event Action Started;
-    
     private Vector3 _attackDirection;
     private readonly int _sideDirection = 1;
     private float _localTime = 0f;
     private float _phase = 0f;
     private Quaternion _startRotation;
     private Quaternion _endRotation;
-    
     private bool _readyToSwitch = false;
-    public bool ReadyToSwitch => _readyToSwitch;
-    
     // Dependencies
     private Transform _visibleBodyTransform;
     private Transform _baseTransform;
-    
+    public event Action Started;
+
+    public bool ReadyToSwitch => _readyToSwitch;
+
     public void SetDependencies(Transform visibleBodyTransform, Transform baseTransform)
     {
         _visibleBodyTransform = visibleBodyTransform;
         _baseTransform = baseTransform;
     }
-    
+
     public void OnEnter()
     {
         _visibleBodyTransform.SetParent(_baseTransform);

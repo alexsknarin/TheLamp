@@ -1,9 +1,7 @@
 [System.Serializable]
 public class GameState
 {
-    public GameState()
-    {
-    }
+    public GameState() { }
     public GameState(GameState gameState)
     {
         Wave = gameState.Wave;

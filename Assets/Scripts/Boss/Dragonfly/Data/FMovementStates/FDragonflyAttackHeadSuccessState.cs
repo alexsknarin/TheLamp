@@ -9,24 +9,23 @@ public class FDragonflyAttackHeadSuccessState : ScriptableObject, IState
     [SerializeField] private AnimationCurve _tyCurve;
     [SerializeField] private AnimationCurve _tzCurve;
     [SerializeField] private AnimationCurve _rxCurve;
-    
-    public event Action Started; 
-    public event Action Ended; 
-    
     private float _localTime = 0f;
     private float _phase = 0f;
     private bool _isAfterDelay = false;
-    
+
     // Dependencies
     private Transform _visibleBodyTransform;
     private Transform _fallPointTransform;
-    
+
+    public event Action Started;
+    public event Action Ended;
+
     public void SetDependencies(Transform visibleBodyTransform, Transform fallPointTransform)
     {
         _visibleBodyTransform = visibleBodyTransform;
         _fallPointTransform = fallPointTransform;
     }
-    
+
     public void OnEnter()
     {
         _fallPointTransform.position = _visibleBodyTransform.position;

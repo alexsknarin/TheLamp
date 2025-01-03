@@ -20,11 +20,6 @@ public class DragonflyProjectileMoth : EnemyBase
         _movement.FallEnded -= OnFallEnded;
     }
 
-    private void OnFallEnded()
-    {
-        gameObject.SetActive(false);
-    }
-
     public void Initialize(Vector3 startPosition)
     {
         _movement.Initialize(startPosition);
@@ -37,7 +32,7 @@ public class DragonflyProjectileMoth : EnemyBase
     {
         _movement.TriggerGameover();
     }
-    
+
     public override void StartAttack()
     {
         ReadyToCollide = true;
@@ -87,22 +82,27 @@ public class DragonflyProjectileMoth : EnemyBase
     {
         throw new System.NotImplementedException();
     }
-    
+
     public override Vector3 ProvideImpactPoint()
     {
         return transform.position;
     }
-    
+
     public override void SpreadStart()
     {
         throw new System.NotImplementedException();
     }
-    
+
     private void TMPHandleLampAttack(int arg1, float arg2, float arg3, float arg4)
     {
         if (ReadyToLampDamage)
         {
             ReceiveDamage(arg1);
         }
+    }
+
+    private void OnFallEnded()
+    {
+        gameObject.SetActive(false);
     }
 }

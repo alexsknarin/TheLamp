@@ -2,10 +2,9 @@ using UnityEngine;
 
 public class MothlingMovementAttackState: EnemyMovementBaseState
 {
-    public override EnemyState State => EnemyState.Attack;
     private readonly float DEPTH_DECREMENT = 0.42f;
     private float _startDistance;
-    
+
     public MothlingMovementAttackState(IStateMachineOwner owner, float speed, float radius, float verticalAmplitude) : base()
     {
         _speed = speed * 1.1f;
@@ -13,7 +12,9 @@ public class MothlingMovementAttackState: EnemyMovementBaseState
         _verticalAmplitude = verticalAmplitude;
         _owner = owner;
     }
-    
+
+    public override EnemyState State => EnemyState.Attack;
+
     public override void EnterState(Vector3 currentPosition, int sideDirection, int depthDirection)
     {
         _sideDirection = sideDirection;

@@ -8,19 +8,17 @@ public class FDragonflyDeathHeadState : ScriptableObject, IState
     [SerializeField] private float _afterDelay = .6f;
     [SerializeField] private AnimationCurve _headFallRotateCurve;
     [SerializeField] private AnimationCurve _headFallFallDownCurve;
-   
-    public event Action Started;
-    public event Action Ended;
-    
     private float _headFallStartPosY = 0f;
     private float _localTime = 0f;
     private float _phase = 0f;
     private bool _isAfterDelay = false;
-    
     // Dependencies
     private Transform _visibleBodyTransform;
     private Transform _fallPointTransform;
     
+    public event Action Started;
+    public event Action Ended;
+
     public void SetDependencies(Transform visibleBodyTransform, Transform fallPointTransform)
     {
         _visibleBodyTransform = visibleBodyTransform;

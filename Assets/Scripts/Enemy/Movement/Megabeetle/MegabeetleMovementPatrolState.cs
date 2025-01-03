@@ -2,7 +2,6 @@ using UnityEngine;
 
 public class MegabeetleMovementPatrolState: EnemyMovementBaseState
 {
-    public override EnemyState State => EnemyState.Patrol;
     private float _patrolStartOffsetAngle;
     private float _enterTimeOffset;
     private float _phase;
@@ -21,7 +20,9 @@ public class MegabeetleMovementPatrolState: EnemyMovementBaseState
         _verticalAmplitude = verticalAmplitude;
         _owner = owner;
     }
-    
+
+    public override EnemyState State => EnemyState.Patrol;
+
     public override void EnterState(Vector3 currentPosition, int sideDirection, int depthDirection)
     {
         _sideDirection = sideDirection;

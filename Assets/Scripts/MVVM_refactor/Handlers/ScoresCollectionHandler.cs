@@ -11,7 +11,6 @@ public class ScoresCollectionHandler: IInitializable, IDisposable
     
     public event Action<int> ScoreChanged;
     
-
     public void Initialize()
     {
         EnemyBase.EnemyDied += OnEnemyDied; // TODO: remove static - Use Interface???

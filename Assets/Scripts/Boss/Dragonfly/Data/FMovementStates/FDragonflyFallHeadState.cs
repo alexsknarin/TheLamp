@@ -10,20 +10,18 @@ public class FDragonflyFallHeadState : ScriptableObject, IState
     [SerializeField] private AnimationCurve _headFallFallDownCurve;
     [SerializeField] private float _bounceDistance = .25f;
     [SerializeField] private AnimationCurve _bounceCurve;
-
-    public event Action Started;
-    public event Action Ended;
-    
     private float _headFallStartPosY = 0f;
     private float _localTime = 0f;
     private float _phase = 0f;
     private bool _isAfterDelay = false;
-    
     // Dependencies
     private Transform _visibleBodyTransform;
     private Transform _fallPointTransform;
     private float _bouncePosition = 0f;
     
+    public event Action Started;
+    public event Action Ended;
+
     public void SetDependencies(Transform visibleBodyTransform, Transform fallPointTransform)
     {
         _visibleBodyTransform = visibleBodyTransform;

@@ -12,16 +12,15 @@ public class FakeAd : MonoBehaviour
     [SerializeField] private TMP_Text _adText4;
     [SerializeField] private Transform _progressBaTransform;
     [SerializeField] private float _duration;
-    
-    public event Action AdFinished;
-    
     private bool _isPlaying = false;
     private float _localTime;
 
-    private Color _invisibleTextColor = new Color(1f, 1f, 1f, 0f);    
+    private Color _invisibleTextColor = new Color(1f, 1f, 1f, 0f);
     private Color _visibleTextColor = new Color(1f, 1f, 1f, 1f);
     private Color _startBgColor = new Color(.213f, .196f, .106f, 1f);
     private Color _endBgColor = new Color(1f, 0.996f, 0.991f, 1f);
+
+    public event Action AdFinished;
 
     public void Play()
     {
@@ -35,7 +34,7 @@ public class FakeAd : MonoBehaviour
         _localTime = 0;
         _isPlaying = true;
     }
-    
+
     private void UpdateProgressBar(float progress)
     {
         Vector3 localScale = Vector3.one;

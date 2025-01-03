@@ -15,24 +15,21 @@ public class FDragonflyReturnHoverState : ScriptableObject, IState
     [Header("Dive")]
     [SerializeField] private AnimationCurve _diveMoveCurve;
     [SerializeField] private AnimationCurve _diveRotateCurve;
-    public event Action Started;
-    public event Action Ended;
-
     private float _localTime = 0f;
     private float _phase = 0f;
-    
     private Vector3 _startPos = Vector3.zero;
     private Vector3 _endPos = Vector3.zero;
     private float _startEulerX = 0f;
     private float _endEulerX = 0f;
-
     private bool _isBouncePhase = false;
     private bool _isDivePhase = false;
-    
     // Dependencies
     private Transform _visibleBodyTransform;
     private Transform _baseTransform;
     
+    public event Action Started;
+    public event Action Ended;
+
     public void SetDependencies(Transform visibleBodyTransform, Transform baseTransform)
     {
         _visibleBodyTransform = visibleBodyTransform;

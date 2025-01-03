@@ -4,6 +4,7 @@ using Random = UnityEngine.Random;
 
 public class MothMovement : EnemyMovement
 {
+    public bool fallTriggered = false;
     [Header("-- Movement Settings --")]
     [SerializeField] private float _speed;
     [SerializeField] private float _radius;
@@ -14,16 +15,11 @@ public class MothMovement : EnemyMovement
     [SerializeField] private float _spawnYPosMax;
     [Header("---- Depth Settings ----")]
     [SerializeField] bool _isDepthEnabled;
+    // Debug
+    [SerializeField] private EnemyState _stateDebug;
     private int _sideDirection;
     private int _depthDirection;
-   
     private ILampPositionProviderService _lampPositionProviderService;
-    
-    public override void Construct(ILampPositionProviderService lampPositionProviderService)
-    {
-        _lampPositionProviderService = lampPositionProviderService;
-    }
-    
     // Movement States
     private EnemyMovementStateMachine _movementStateMachine;
     private EnemyMovementBaseState _currentState;
@@ -35,19 +31,20 @@ public class MothMovement : EnemyMovement
     private MothMovementFallState _fallState;
     private MothMovementDeathState _deathState;
     private FlyMovementSpreadState _spreadState;
-    
-    private Vector3 _prevPosition2d; //Debug
+    //Debug
+    private Vector3 _prevPosition2d;
     private Vector3 _position2d;
     private Vector3 _position;
-
     // State parameters
     private bool _isDead = false;
     private bool _isCollided = false;
     private bool _isAttacking = false; // Debug
 
-    // Debug
-    [SerializeField] private EnemyState _stateDebug;
-    
+    public override void Construct(ILampPositionProviderService lampPositionProviderService)
+    {
+        _lampPositionProviderService = lampPositionProviderService;
+    }
+
     public override void Initialize()
     {
         _isDead = false;
@@ -71,46 +68,6 @@ public class MothMovement : EnemyMovement
         MovementSetup();
     }
 
-    private void MovementSetup()
-    {
-        _sideDirection = RandomDirection.Generate();
-        SideDirection = _sideDirection;
-        _depthDirection = RandomDirection.Generate();
-        _position2d = GenerateSpawnPosition(_sideDirection, _spawnXPos, _spawnYPosMin, _spawnYPosMax);
-        _currentState = _enterState;
-        _movementStateMachine.SetState(_currentState, _position2d, _sideDirection, 1);
-        _position2d = _currentState.Position;
-        transform.position = _position2d;
-    }
-    
-    private void MovementReset()
-    {
-        OnMovementResetInvoke();
-        MovementSetup();    
-    }
-    
-    private Vector3 GenerateSpawnPosition(int direction, float xPos, float yPosMin, float yPosMax)
-    {
-        Vector3 spawnPositionSide = Vector3.zero;
-        spawnPositionSide.x = xPos * direction;
-        spawnPositionSide.y = Random.Range(yPosMin, yPosMax) * RandomDirection.Generate();
-        
-        Vector3 spawnPositionTopBottom = Vector3.zero;
-        spawnPositionTopBottom.x = Random.Range(-xPos, xPos);
-        spawnPositionTopBottom.y = yPosMax * RandomDirection.Generate();
-        
-        if (Random.Range(0, 2) == 0)
-        {
-            return spawnPositionSide;
-        }
-        else
-        {
-            return spawnPositionTopBottom;
-        }
-    }
-
-    public bool fallTriggered = false;
-   
     public override void TriggerFall()
     {
         if (_currentState.State == EnemyState.Attack)
@@ -120,7 +77,7 @@ public class MothMovement : EnemyMovement
             SwitchState();    
         }
     }
-    
+
     public override void TriggerDeath()
     {
         if(_currentState.State != EnemyState.Death)
@@ -136,7 +93,7 @@ public class MothMovement : EnemyMovement
         _isAttacking = true;
         SwitchState();
     }
-    
+
     public override void TriggerSpread()
     {
         if(_currentState.State != EnemyState.Attack && 
@@ -148,9 +105,7 @@ public class MothMovement : EnemyMovement
         }
     }
 
-    public override void TriggerStick()
-    {
-    }
+    public override void TriggerStick() { }
 
     public override void SwitchState()
     {
@@ -257,7 +212,45 @@ public class MothMovement : EnemyMovement
         State = _currentState.State;
         _movementStateMachine.SetState(_currentState, _position2d, _sideDirection, _depthDirection);
     }
-    
+
+    private void MovementSetup()
+    {
+        _sideDirection = RandomDirection.Generate();
+        SideDirection = _sideDirection;
+        _depthDirection = RandomDirection.Generate();
+        _position2d = GenerateSpawnPosition(_sideDirection, _spawnXPos, _spawnYPosMin, _spawnYPosMax);
+        _currentState = _enterState;
+        _movementStateMachine.SetState(_currentState, _position2d, _sideDirection, 1);
+        _position2d = _currentState.Position;
+        transform.position = _position2d;
+    }
+
+    private void MovementReset()
+    {
+        OnMovementResetInvoke();
+        MovementSetup();    
+    }
+
+    private Vector3 GenerateSpawnPosition(int direction, float xPos, float yPosMin, float yPosMax)
+    {
+        Vector3 spawnPositionSide = Vector3.zero;
+        spawnPositionSide.x = xPos * direction;
+        spawnPositionSide.y = Random.Range(yPosMin, yPosMax) * RandomDirection.Generate();
+        
+        Vector3 spawnPositionTopBottom = Vector3.zero;
+        spawnPositionTopBottom.x = Random.Range(-xPos, xPos);
+        spawnPositionTopBottom.y = yPosMax * RandomDirection.Generate();
+        
+        if (Random.Range(0, 2) == 0)
+        {
+            return spawnPositionSide;
+        }
+        else
+        {
+            return spawnPositionTopBottom;
+        }
+    }
+
     private void Update()
     {
         _prevPosition2d = _position2d;

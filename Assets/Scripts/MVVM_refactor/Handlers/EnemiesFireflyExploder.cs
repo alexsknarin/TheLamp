@@ -3,18 +3,16 @@ using UnityEngine;
 
 public class EnemiesFireflyExploder : ITickable
 {
+    private EnemyBase _explosionSource;
+    private Vector3 _explosionPosition;
+    private bool _isExploding = false;
+    private float _localTime;
     // Dependencies
     private List<EnemyBase> _enemies;
     private FireflyExplosion _fireflyExplosion;
     private float _fireflyExplosionRadius;
     private float _duration;
 
-
-    private EnemyBase _explosionSource;
-    private Vector3 _explosionPosition;
-    private bool _isExploding = false;
-    private float _localTime;
-    
     public EnemiesFireflyExploder(List<EnemyBase> enemies, FireflyExplosion fireflyExplosion, float fireflyExplosionRadius, float duration)
     {
         _enemies = enemies;
@@ -31,7 +29,23 @@ public class EnemiesFireflyExploder : ITickable
         _isExploding = true;
         _localTime = 0;
     }
-    
+
+    public void Tick(float deltaTime)
+    {
+        if (_isExploding)
+        {
+            if (_localTime < _duration)
+            {
+                PerformExplosion();
+                _localTime += deltaTime;
+            }
+            else
+            {
+                _isExploding = false;
+            }
+        }
+    }
+
     private void PerformExplosion()
     {
         foreach (var enemy in _enemies)
@@ -50,21 +64,4 @@ public class EnemiesFireflyExploder : ITickable
             }
         }
     }
-
-    public void Tick(float deltaTime)
-    {
-        if (_isExploding)
-        {
-            if (_localTime < _duration)
-            {
-                PerformExplosion();
-                _localTime += deltaTime;
-            }
-            else
-            {
-                _isExploding = false;
-            }
-        }
-    }
-    
 }

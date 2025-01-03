@@ -9,9 +9,9 @@ public class DragonflyProjectileSpider : EnemyBase
     [SerializeField] private DragonflySpiderPresentation _presentation;
     [SerializeField] private Collider2D _collider;
     [SerializeField] private TrailRenderer _trailRenderer;
-    public override EnemyType EnemyType => _enemyType;
     public event Action EnterAnimationEnded;
-    
+    public override EnemyType EnemyType => _enemyType;
+
     private void OnEnable()
     {
         // LampAttackModel.OnLampAttackEvent += TMPHandleLampAttack; // TODO: fix this
@@ -19,7 +19,6 @@ public class DragonflyProjectileSpider : EnemyBase
         _movement.FallEnded += OnFallEndedHandle;
         
     }
-    
     private void OnDisable()
     {
         // LampAttackModel.OnLampAttackEvent -= TMPHandleLampAttack;
@@ -30,17 +29,6 @@ public class DragonflyProjectileSpider : EnemyBase
     public override void Initialize()
     {
         _presentation.Initialize();
-    }
-
-    private void OnFallEndedHandle()
-    {
-        gameObject.SetActive(false);
-    }
-
-    private void OnEnterAnimationEndHandle()
-    {
-        _presentation.SwitchToCaughtState();
-        EnterAnimationEnded?.Invoke();
     }
 
     public void Play(int direction)
@@ -54,7 +42,7 @@ public class DragonflyProjectileSpider : EnemyBase
         
         // Presentation setup
     }
-    
+
     public void StartPreAttack()
     {
         _presentation.PreAttackStart();
@@ -113,22 +101,33 @@ public class DragonflyProjectileSpider : EnemyBase
     {
         throw new System.NotImplementedException();
     }
-    
+
     public override Vector3 ProvideImpactPoint()
     {
         return transform.position;
     }
-    
+
     public override void SpreadStart()
     {
         throw new System.NotImplementedException();
     }
-    
+
     private void TMPHandleLampAttack(int arg1, float arg2, float arg3, float arg4)
     {
         if (ReadyToLampDamage)
         {
             ReceiveDamage(arg1);
         }
+    }
+
+    private void OnEnterAnimationEndHandle()
+    {
+        _presentation.SwitchToCaughtState();
+        EnterAnimationEnded?.Invoke();
+    }
+
+    private void OnFallEndedHandle()
+    {
+        gameObject.SetActive(false);
     }
 }

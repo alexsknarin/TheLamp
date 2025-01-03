@@ -22,10 +22,11 @@ public class MothlingMovement : EnemyMovement
     [SerializeField] private float _smoothTime = .3f;
     [Header("---- Depth Settings ----")]
     [SerializeField] bool _isDepthEnabled;
+    // Debug
+    [SerializeField] private EnemyState _stateDebug;
     private Vector3 _velocity = Vector3.zero;
     private int _sideDirection;
     private int _depthDirection;
-
     // Movement States
     private EnemyMovementStateMachine _movementStateMachine;
     private EnemyMovementBaseState _currentState;
@@ -36,19 +37,15 @@ public class MothlingMovement : EnemyMovement
     private FlyMovementFallState _fallState;
     private FlyMovementDeathState _deathState;
     private MothlingMovementSpreadState _spreadState;
-    
-    private Vector3 _prevPosition2d; //Debug
-    private Vector3 _prevPosSmooth; //Debug
+    //Debug
+    private Vector3 _prevPosition2d; 
+    private Vector3 _prevPosSmooth;
     private Vector3 _position2d;
     private Vector3 _position;
     private Vector3 _prevPosition;
-    
     // State parameters
     private bool _isDead = false;
     private bool _isCollided = false;
-    
-    // Debug
-    [SerializeField] private EnemyState _stateDebug;
     
     public override void Initialize()
     {
@@ -65,32 +62,6 @@ public class MothlingMovement : EnemyMovement
         MovementSetup();
     }
 
-    private void MovementSetup()
-    {
-        _sideDirection = RandomDirection.Generate();
-        SideDirection = _sideDirection;
-        _depthDirection = RandomDirection.Generate();
-        _position2d = GenerateSpawnPosition(-_sideDirection);
-        
-        _currentState = _enterState;
-        _movementStateMachine.SetState(_currentState, _position2d, _sideDirection, _depthDirection);
-        _position2d = _currentState.Position;
-        transform.position = _position2d;
-    }
-
-    private void MovementReset()
-    {
-        OnMovementResetInvoke();
-        MovementSetup();    
-    }
-    
-    private Vector3 GenerateSpawnPosition(int direction)
-    {
-        Vector3 spawnPosition = (Vector3)(Random.insideUnitCircle * _spawnAreaSize) + _spawnAreaCenter;
-        spawnPosition.x *= direction;
-        return spawnPosition;
-    }
-    
     public override void TriggerFall()
     {
         if(_currentState.State == EnemyState.Attack)
@@ -99,7 +70,7 @@ public class MothlingMovement : EnemyMovement
             SwitchState();
         }
     }
-    
+
     public override void TriggerDeath()
     {
         if(_currentState.State != EnemyState.Death)
@@ -113,7 +84,7 @@ public class MothlingMovement : EnemyMovement
     {
         SwitchState();
     }
-    
+
     public override void TriggerSpread()
     {
         if(_currentState.State != EnemyState.Attack && 
@@ -125,10 +96,8 @@ public class MothlingMovement : EnemyMovement
         }
     }
 
-    public override void TriggerStick()
-    {
-    }
-    
+    public override void TriggerStick() { }
+
     public override void SwitchState()
     {
         EnemyMovementBaseState newState = _currentState;
@@ -216,6 +185,32 @@ public class MothlingMovement : EnemyMovement
         State = _currentState.State;
         _movementStateMachine.SetState(_currentState, _position2d, _sideDirection, _depthDirection);
         SideDirection = _sideDirection;
+    }
+
+    private void MovementSetup()
+    {
+        _sideDirection = RandomDirection.Generate();
+        SideDirection = _sideDirection;
+        _depthDirection = RandomDirection.Generate();
+        _position2d = GenerateSpawnPosition(-_sideDirection);
+        
+        _currentState = _enterState;
+        _movementStateMachine.SetState(_currentState, _position2d, _sideDirection, _depthDirection);
+        _position2d = _currentState.Position;
+        transform.position = _position2d;
+    }
+
+    private void MovementReset()
+    {
+        OnMovementResetInvoke();
+        MovementSetup();    
+    }
+
+    private Vector3 GenerateSpawnPosition(int direction)
+    {
+        Vector3 spawnPosition = (Vector3)(Random.insideUnitCircle * _spawnAreaSize) + _spawnAreaCenter;
+        spawnPosition.x *= direction;
+        return spawnPosition;
     }
 
     private void Update()

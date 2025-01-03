@@ -2,13 +2,12 @@ using UnityEngine;
 
 public abstract class FDragonflyAnimBaseState : ScriptableObject, IState
 {
+    protected Animator _animator;
+    protected int _clipHash;
     // Dependencies
     private Transform _visibleBodyTransform;
     private Transform _animatedTransform;
-    protected Animator _animator;
-    protected int _clipHash;
-    
-    
+
     public void SetDependencies(Transform visibleBodyTransform, Transform animatedTransform, Animator animator, int clipHash)
     {
         _visibleBodyTransform = visibleBodyTransform;

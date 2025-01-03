@@ -11,18 +11,16 @@ public class FDragonflyAttackTailSuccessStateL : ScriptableObject, IState
     [SerializeField] private AnimationCurve _rxCurve;
     [SerializeField] private AnimationCurve _ryCurve;
     [SerializeField] private AnimationCurve _rzCurve;
-    public event Action Started;
-    public event Action Ended;
-
     private Vector3 _startPosition;
     private Vector3 _startEuelerRotation;
     private float _localTime = 0f;
     private float _phase = 0f;
-
     // Dependencies
     private Transform _visibleBodyTransform;
     private Transform _baseTransform;
-    
+    public event Action Started;
+    public event Action Ended;
+
     public void SetDependencies(Transform visibleBodyTransform, Transform baseTransform)
     {
         _visibleBodyTransform = visibleBodyTransform;

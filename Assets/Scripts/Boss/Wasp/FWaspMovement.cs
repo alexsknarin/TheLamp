@@ -5,36 +5,65 @@ using Random = UnityEngine.Random;
 
 public class FWaspMovement : MonoBehaviour, IInitializable
 {
+    private readonly List<Type> TWO_OPTION_OUTCOME = new()
+    {
+        typeof(FWaspEnterLState),
+        typeof(FWaspEnterRState),
+        typeof(FWaspAttack01Success01LState),
+        typeof(FWaspAttack01Success01RState),
+        typeof(FWaspAttack02Success01LState),
+        typeof(FWaspAttack02Success01RState),
+        typeof(FWaspAttack03Success01LState),
+        typeof(FWaspAttack03Success01RState),
+        typeof(FWaspAttack02BounceLState),
+        typeof(FWaspAttack02BounceRState),
+        typeof(FWaspAttack02Fail01LState),
+        typeof(FWaspAttack02Fail01RState),
+        typeof(FWaspAttack03Fail01LState),
+        typeof(FWaspAttack03Fail01RState),
+        typeof(FWaspAttack04Fail01LState),
+        typeof(FWaspAttack04Fail01RState)
+    };
+
+    private readonly List<Type> THREE_OPTION_OUTCOME = new()
+    {
+        typeof(FWaspAttack01BounceLState),
+        typeof(FWaspAttack01BounceRState),
+        typeof(FWaspAttack04Success01LState),
+        typeof(FWaspAttack04Success01RState),
+        typeof(FWaspAttack01Fail01LState)
+    };
+
+    private readonly List<Type> ATTACK_STATES = new()
+    {
+        typeof(FWaspAttack01LState),
+        typeof(FWaspAttack01RState),
+        typeof(FWaspAttack02LState),
+        typeof(FWaspAttack02RState),
+        typeof(FWaspAttack03LState),
+        typeof(FWaspAttack03RState),
+        typeof(FWaspAttack04LState),
+        typeof(FWaspAttack04RState)        
+    };
+    
     [SerializeField] private string _currentStateType;
     [SerializeField] private Animator _animator;
     [SerializeField] private Transform _baseTransform;
-    public event Action BossAttackStarted;
-    public event Action DeathStateEnded;
-    
     private ILampPositionProviderService _lampPositionProvider;
-    public void Construct(ILampPositionProviderService lampPositionProvider)
-    {
-        _lampPositionProvider = lampPositionProvider;
-    }
-    
+
+
     private FStateMachine _stateMachine = new();
-    
     private float _colliderRadius = 0.24f;
     private bool _isPlaying = false;
-    
     // State parameters
     private Side _side = Side.Left;
-    
     private bool _isAnimClipEnded = false;
-    
     private int _twoOptiosSplit = 0;
     private int _threeOptiosSplit = 0;
-    
     private bool _isDamaged = false;
     private bool _isDead = false;
     private bool _isLampDestroyed = false; // TODO: replace all this with enum? sucess, damaged, dead, lampDestroyed
     private bool _isCollided = false;
-
     // Animation 
     private readonly int _idleHash = Animator.StringToHash("Idle");
     private readonly int _enterHash = Animator.StringToHash("Enter");
@@ -61,7 +90,6 @@ public class FWaspMovement : MonoBehaviour, IInitializable
     private readonly int _attack04Fail01Hash = Animator.StringToHash("Attack04_Fail01");
     private readonly int _attack04Success01Hash = Animator.StringToHash("Attack04_Success01");
     private readonly int _attack04Death01Hash = Animator.StringToHash("Attack04_Death01");
-    
     // States
     private FWaspIdleState _idleState;
     private FWaspEnterLState _enterLState;
@@ -79,7 +107,7 @@ public class FWaspMovement : MonoBehaviour, IInitializable
     private FWaspAttack01Success03LState _attack01Success03LState;
     private FWaspAttack01Success03RState _attack01Success03RState;
     private FWaspAttack01DeathLState _attack01DeathLState;
-    private FWaspAttack01DeathRState _attack01DeathRState;  
+    private FWaspAttack01DeathRState _attack01DeathRState;
     private FWaspAttack02LState _attack02LState;
     private FWaspAttack02RState _attack02RState;
     private FWaspAttack02BounceLState _attack02BounceLState;
@@ -113,48 +141,14 @@ public class FWaspMovement : MonoBehaviour, IInitializable
     private FWaspAttack04DeathLState _attack04DeathLState;
     private FWaspAttack04DeathRState _attack04DeathRState;
 
-    private readonly List<Type> TWO_OPTION_OUTCOME = new()
+    public void Construct(ILampPositionProviderService lampPositionProvider)
     {
-        typeof(FWaspEnterLState),
-        typeof(FWaspEnterRState),
-        typeof(FWaspAttack01Success01LState),
-        typeof(FWaspAttack01Success01RState),
-        typeof(FWaspAttack02Success01LState),
-        typeof(FWaspAttack02Success01RState),
-        typeof(FWaspAttack03Success01LState),
-        typeof(FWaspAttack03Success01RState),
-        typeof(FWaspAttack02BounceLState),
-        typeof(FWaspAttack02BounceRState),
-        typeof(FWaspAttack02Fail01LState),
-        typeof(FWaspAttack02Fail01RState),
-        typeof(FWaspAttack03Fail01LState),
-        typeof(FWaspAttack03Fail01RState),
-        typeof(FWaspAttack04Fail01LState),
-        typeof(FWaspAttack04Fail01RState)
-    }; 
-    
-    private readonly List<Type> THREE_OPTION_OUTCOME = new()
-    {
-        typeof(FWaspAttack01BounceLState),
-        typeof(FWaspAttack01BounceRState),
-        typeof(FWaspAttack04Success01LState),
-        typeof(FWaspAttack04Success01RState),
-        typeof(FWaspAttack01Fail01LState)
-    };
-    
-    private readonly List<Type> ATTACK_STATES = new()
-    {
-        typeof(FWaspAttack01LState),
-        typeof(FWaspAttack01RState),
-        typeof(FWaspAttack02LState),
-        typeof(FWaspAttack02RState),
-        typeof(FWaspAttack03LState),
-        typeof(FWaspAttack03RState),
-        typeof(FWaspAttack04LState),
-        typeof(FWaspAttack04RState)        
-    };
+        _lampPositionProvider = lampPositionProvider;
+    }
 
-    
+    public event Action BossAttackStarted;
+    public event Action DeathStateEnded;
+
 
     private void OnEnable()
     {
@@ -196,6 +190,64 @@ public class FWaspMovement : MonoBehaviour, IInitializable
         _attack03DeathRState.Ended -= OnDeathStateEnded;
         _attack04DeathLState.Ended -= OnDeathStateEnded;
         _attack04DeathRState.Ended -= OnDeathStateEnded;
+    }
+
+
+    public void Initialize()
+    {
+        _isPlaying = false;
+        _isAnimClipEnded = false;
+        _isLampDestroyed = false;
+        _isDamaged = false;
+        _isCollided = false;
+    }
+
+    public void Play()
+    {
+        _isPlaying = true;
+        _isAnimClipEnded = false;
+        _side = (Side)Random.Range(0, 2);
+    }
+
+    public void SetDamaged()
+    {
+        _isDamaged = true;
+    }
+
+    public void SetDead()
+    {
+        _isDead = true;
+    }
+
+    public void SetLampDestroyed()
+    {
+        _isLampDestroyed = true;
+    }
+
+
+    public void ClipEnded()
+    {
+        _isAnimClipEnded = true;
+
+        if (_isDead || _isLampDestroyed)
+        {
+            return;
+        }
+        
+        if (TWO_OPTION_OUTCOME.Contains(_stateMachine.CurrentStateType))
+        {
+            _twoOptiosSplit = Random.Range(0, 2);
+        }
+        
+        if (THREE_OPTION_OUTCOME.Contains(_stateMachine.CurrentStateType))
+        {
+            _threeOptiosSplit = Random.Range(0, 3);
+        }
+    }
+
+    public void SetCollidedWithLamp()
+    {
+        _isCollided = true;
     }
 
     private void Awake()
@@ -592,64 +644,6 @@ public class FWaspMovement : MonoBehaviour, IInitializable
             }
             return false;
         };
-    }
-
-
-    public void Initialize()
-    {
-        _isPlaying = false;
-        _isAnimClipEnded = false;
-        _isLampDestroyed = false;
-        _isDamaged = false;
-        _isCollided = false;
-    }
-
-    public void Play()
-    {
-        _isPlaying = true;
-        _isAnimClipEnded = false;
-        _side = (Side)Random.Range(0, 2);
-    }
-    
-    public void SetDamaged()
-    {
-        _isDamaged = true;
-    }
-    
-    public void SetDead()
-    {
-        _isDead = true;
-    }
-    
-    public void SetLampDestroyed()
-    {
-        _isLampDestroyed = true;
-    }
-
-
-    public void ClipEnded()
-    {
-        _isAnimClipEnded = true;
-
-        if (_isDead || _isLampDestroyed)
-        {
-            return;
-        }
-        
-        if (TWO_OPTION_OUTCOME.Contains(_stateMachine.CurrentStateType))
-        {
-            _twoOptiosSplit = Random.Range(0, 2);
-        }
-        
-        if (THREE_OPTION_OUTCOME.Contains(_stateMachine.CurrentStateType))
-        {
-            _threeOptiosSplit = Random.Range(0, 3);
-        }
-    }
-    
-    public void SetCollidedWithLamp()
-    {
-        _isCollided = true;
     }
 
     private void OnDeathStateEnded()

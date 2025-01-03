@@ -3,16 +3,13 @@ using UnityEngine;
 
 public class DragonflyWaitHeadAttackState : IState
 {
-    public event Action<DragonflyPatrolAttackMode> Ended;
-    
     private Vector3 _targetPosition;
     private readonly Transform _transform;
     private readonly DragonflyPatrolAttackPositionProvider _patrolAttackPositionProvider;
     private readonly FDragonflyMovement _movement;
-    
     private bool _isLastPatrolDirectionSet = false;
     private int _lastPatrolDirection = 0;
-    
+
     public DragonflyWaitHeadAttackState(Transform visibleBodyTransform, 
         DragonflyPatrolAttackPositionProvider patrolAttackPositionProvider, 
         FDragonflyMovement movement)
@@ -21,7 +18,9 @@ public class DragonflyWaitHeadAttackState : IState
         _patrolAttackPositionProvider = patrolAttackPositionProvider;
         _movement = movement;
     }
-    
+
+    public event Action<DragonflyPatrolAttackMode> Ended;
+
     public void OnEnter()
     {
         _targetPosition = _patrolAttackPositionProvider.GenerateRandomPreAttackHeadPosition(_movement.MovementState);

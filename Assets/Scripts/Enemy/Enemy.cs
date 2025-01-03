@@ -10,26 +10,24 @@ public class Enemy : EnemyBase
     [SerializeField] private int _currentHealth;
     [SerializeField] private EnemyMovement _enemyMovement;
     [SerializeField] private EnemyPresentation _enemyPresentation;
-    public override EnemyType EnemyType => _enemyType;
     private bool _isDead = false;
-    
     private ILampPositionProviderService _lampPositionProviderService;
-    
+    private IObjectPool<Enemy> _objectPool;
+
     public void Construct(ILampPositionProviderService lampPositionProviderService)
     {
         _lampPositionProviderService = lampPositionProviderService;
     }
-    
-    private IObjectPool<Enemy> _objectPool;
+
+    public static event Action<Enemy> EnemyDeactivated;
+    public static event Action<Enemy> EnemyDamaged;
+
     public IObjectPool<Enemy> ObjectPool
     {
         set => _objectPool = value;
     }
+    public override EnemyType EnemyType => _enemyType;
 
-    public static event Action<Enemy> EnemyDeactivated;
-    public static event Action<Enemy> EnemyDamaged;
-    
-    
 
     private void OnEnable()
     {
@@ -66,12 +64,7 @@ public class Enemy : EnemyBase
         IsStick = false;
         _isDead = false;
     }
-    
-    private void OnMovementReseted()
-    {
-        _enemyPresentation.Initialize();
-    }
-    
+
     public override void UpdateAttackAvailability()
     {
         float x = transform.position.x;
@@ -129,59 +122,34 @@ public class Enemy : EnemyBase
             ReadyToAttack = true;
         }
     }
-    
+
     public override void SpreadStart()
     {
         _enemyMovement.TriggerSpread();
     }
-   
+
     public override void StartAttack()
     {
         _enemyMovement.TriggerAttack();
     }
-    
-    private void OnPreAttackStarted()
-    {
-        ReceivedLampAttack = false;
-        _enemyPresentation.PreAttackStart();
-        ReadyToAttack = false;
-        IsAttacking = true;
-    }
-    
-    private void OnPreAttackEnded()
-    {
-        _enemyPresentation.PreAttackEnd();
-        ReadyToCollide = true;
-    }
-    
-    private void OnAttackEnded()
-    {
-        IsAttacking = false;
-    }
-    
-    private void OnStickStarted()
-    {
-        Debug.Log("Stick status enabled");
-        IsStick = true;
-    }
-    
+
     public override void HandleEnteringAttackZone()
     {
         ReadyToLampDamage = true;    
     }
-    
+
     public override void HandleCollisionWithLamp()
     {
         ReadyToCollide = false;
         ReadyToLampDamage = true;
         _enemyMovement.TriggerFall();
     }
-    
+
     public override void HandleExitingAttackExitZone()
     {
         ReadyToLampDamage = false;
     }
-    
+
     public override void HandleCollisionWithStickZone()
     {
         _enemyMovement.TriggerStick();
@@ -223,7 +191,7 @@ public class Enemy : EnemyBase
             _objectPool.Release(this);    
         }
     }
-    
+
     public override void HandleLampDestroyed()
     {
         _enemyMovement.HandleLampDestroyed();
@@ -232,6 +200,36 @@ public class Enemy : EnemyBase
     public override Vector3 ProvideImpactPoint()
     {
         return transform.position;
+    }
+
+    private void OnMovementReseted()
+    {
+        _enemyPresentation.Initialize();
+    }
+
+    private void OnPreAttackStarted()
+    {
+        ReceivedLampAttack = false;
+        _enemyPresentation.PreAttackStart();
+        ReadyToAttack = false;
+        IsAttacking = true;
+    }
+
+    private void OnPreAttackEnded()
+    {
+        _enemyPresentation.PreAttackEnd();
+        ReadyToCollide = true;
+    }
+
+    private void OnAttackEnded()
+    {
+        IsAttacking = false;
+    }
+
+    private void OnStickStarted()
+    {
+        Debug.Log("Stick status enabled");
+        IsStick = true;
     }
 
     private void OnEnemyDeactivated()

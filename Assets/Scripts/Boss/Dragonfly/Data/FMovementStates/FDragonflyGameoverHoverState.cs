@@ -10,7 +10,6 @@ public class FDragonflyGameoverHoverState : ScriptableObject, IState
     private float _localTime = 0f;
     private Vector3 _hoverPos = Vector3.zero;
     private Vector3 _direction;
-    
     // Dependencies
     private Transform _visibleBodyTransform;
     private Transform _baseTransform;

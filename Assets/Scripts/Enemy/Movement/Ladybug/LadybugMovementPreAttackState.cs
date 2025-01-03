@@ -2,7 +2,6 @@ using UnityEngine;
 
 public class LadybugMovementPreAttackState: EnemyMovementBaseState
 {
-    public override EnemyState State => EnemyState.PreAttack;
     private float _duration = .30f;
     private float _acceleratedSpeed;
     private float _acceleration = 0.93f;
@@ -10,7 +9,7 @@ public class LadybugMovementPreAttackState: EnemyMovementBaseState
     private Vector3 _tangentDirection;
     private Vector3 _endPos;
     private float _prevTime;
-    
+
     public LadybugMovementPreAttackState(IStateMachineOwner owner, float speed, float radius, float verticalAmplitude) : base()
     {
         _speed = speed;
@@ -18,7 +17,9 @@ public class LadybugMovementPreAttackState: EnemyMovementBaseState
         _verticalAmplitude = verticalAmplitude;
         _owner = owner;
     }
-    
+
+    public override EnemyState State => EnemyState.PreAttack;
+
     public override void EnterState(Vector3 currentPosition, int sideDirection, int depthDirection)
     {
         _prevTime = Time.time;
@@ -59,7 +60,5 @@ public class LadybugMovementPreAttackState: EnemyMovementBaseState
         }
     }
 
-    public override void ExitState()
-    {
-    }
+    public override void ExitState() { }
 }

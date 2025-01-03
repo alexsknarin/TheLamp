@@ -5,13 +5,13 @@ using UnityEngine;
 
 public class EnemySpawner : ITickable
 {
-    public int EnemiesWaveCount { get; private set; }
-    public int EnemiesAvailable { get; private set; }
-    public int MaxEnemiesOnScreen { get; private set; }
-
-    public BossBase Boss { get; private set; }
-    
-    public event Action<BossBase> BossSpawned;
+    private readonly EnemyType[] BOSS_TYPES = new EnemyType[]
+    {
+        EnemyType.Wasp,
+        EnemyType.Megamothling,
+        EnemyType.Megabeetle,
+        EnemyType.Dragonfly
+    };
     
     // Dependencies
     private readonly SpawnQueue _spawnQueue;
@@ -27,19 +27,9 @@ public class EnemySpawner : ITickable
     private EnemyQueue _enemyQueue;
     private int _currentWave;
     private int _currentEnemyIndex;
-    
     private float _spawnCooldown;
-    
     private float _localTime;
     private bool _isWaveActive = false;
-    
-    private readonly EnemyType[] BOSS_TYPES = new EnemyType[]
-    {
-        EnemyType.Wasp,
-        EnemyType.Megamothling,
-        EnemyType.Megabeetle,
-        EnemyType.Dragonfly
-    };
     
     public EnemySpawner(
         SpawnQueue spawnQueue, 
@@ -61,6 +51,14 @@ public class EnemySpawner : ITickable
         _dragonflyBoss = dragonflyBoss;
         _firstEnemySpawnDelay = firstEnemySpawnDelay;
     }
+    
+    public event Action<BossBase> BossSpawned;
+    
+    public int EnemiesWaveCount { get; private set; }
+    public int EnemiesAvailable { get; private set; }
+    public int MaxEnemiesOnScreen { get; private set; }
+
+    public BossBase Boss { get; private set; }
     
     public void StartWave(int waveIndex)
     {
@@ -93,6 +91,14 @@ public class EnemySpawner : ITickable
         _currentEnemyIndex = 0;
         _isWaveActive = true;
         
+    }
+
+    public void Tick(float deltaTime)
+    {
+        if (_isWaveActive)
+        {
+            WaitForCooldown(deltaTime);
+        }
     }
 
     private void WaitForCooldown(float deltaTime)
@@ -148,7 +154,7 @@ public class EnemySpawner : ITickable
         enemy.Initialize();
         return enemy;
     }
-    
+
     private EnemyBase SpawnBoss(EnemyType enemyType)
     {
         if (enemyType == EnemyType.Wasp)
@@ -175,14 +181,5 @@ public class EnemySpawner : ITickable
         float spawnDelayPhase = (float)(_currentEnemyIndex-1) / (_enemyQueue.Count()-1);
         float spawnDelayAcceleration = 1f/Mathf.Lerp(1, _enemyQueue.SpawnDelayAcceleration, spawnDelayPhase);
         return _enemyQueue.SpawnDelay * spawnDelayAcceleration;
-    }
-
-
-    public void Tick(float deltaTime)
-    {
-        if (_isWaveActive)
-        {
-            WaitForCooldown(deltaTime);
-        }
     }
 }

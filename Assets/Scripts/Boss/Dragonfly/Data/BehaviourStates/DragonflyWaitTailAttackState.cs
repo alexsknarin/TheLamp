@@ -3,16 +3,13 @@ using UnityEngine;
 
 public class DragonflyWaitTailAttackState : IState
 {
-    public event Action<DragonflyPatrolAttackMode> Ended;
-    
     private Vector3 _targetPosition;
     private Transform _transform;
     private DragonflyPatrolAttackPositionProvider _patrolAttackPositionProvider;
     private FDragonflyMovement _movement;
-    
     private bool _isLastPatrolDirectionSet = false;
     private int _lastPatrolDirection = 0;
-    
+
     public DragonflyWaitTailAttackState(Transform visibleBodyTransform, 
         DragonflyPatrolAttackPositionProvider patrolAttackPositionProvider, 
         FDragonflyMovement movement)
@@ -22,6 +19,8 @@ public class DragonflyWaitTailAttackState : IState
         _movement = movement;
     }
     
+    public event Action<DragonflyPatrolAttackMode> Ended;
+
     public void OnEnter()
     {
         _targetPosition = _patrolAttackPositionProvider.GenerateRandomPreAttackTailPosition(_movement.MovementState);

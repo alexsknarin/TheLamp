@@ -6,11 +6,9 @@ public class DragonflyPatrolAttackPositionProvider
 {
     private DragonflyPatrolAttackZoneRanges _patrolAttackZonesL;
     private DragonflyPatrolAttackZoneRanges _patrolAttackZonesR;
-    
     private DragonflyPatrolAttackZoneRangesData _patrolAttackZonesDataL = new DragonflyPatrolAttackZoneRangesData();
     private DragonflyPatrolAttackZoneRangesData _patrolAttackZonesDataR = new DragonflyPatrolAttackZoneRangesData();
     private DragonflyPatrolAttackZoneRangesData _patrolAttackZonesData;
-    
     private Vector3 _tailAttackBasePositionL;
     private Vector3 _tailAttackBasePositionR;
     

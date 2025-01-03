@@ -6,20 +6,10 @@ public class PlayerGameplayViewModel : IDisposable
     public Observable<float> LampNormalizedHealth = new();
     public Observable<bool> IsBlocked = new();
     public Observable<float> AttackDistance = new();
-
-    public Action<GlassDamageData> LampGlassDamageChanged;
-    
-    public event Action LastHealthPointStarted;
-    public event Action LastHealthPointEnded;
-    public event Action<float, bool> AttackStart;
-    public event Action<float> LampDamaged;
-    public event Action LampDied;
-    public event Action HealthUpgraded;
-    
-    private GameModel _gameModel;
-    
     private int _currentHealth = 8;
     
+    private GameModel _gameModel;
+
     public PlayerGameplayViewModel(GameModel gameModel)
     {
         _gameModel = gameModel;
@@ -45,9 +35,29 @@ public class PlayerGameplayViewModel : IDisposable
         _gameModel.LampAttackDistanceChanged -= OnLampAttackDistanceChanged;
     }
 
+    public Action<GlassDamageData> LampGlassDamageChanged;
+    public event Action LastHealthPointStarted;
+    public event Action LastHealthPointEnded;
+    public event Action<float, bool> AttackStart;
+    public event Action<float> LampDamaged;
+    public event Action LampDied;
+    public event Action HealthUpgraded;
+
+
     public void OnDamageStateEnded() // TODO: com up with name
     {
         _gameModel.HandleDamageStateEnded();
+    }
+    
+    // Called from the view
+    public void HandleExitButtonClicked()
+    {
+        _gameModel.ExitGame();
+    }
+    
+    public void HandleRestartButtonClicked()
+    {
+        _gameModel.HandleImmediateRestartGame();
     }
 
     private void OnLampBlockedModeSet(bool isBlocked)
@@ -104,16 +114,5 @@ public class PlayerGameplayViewModel : IDisposable
     private void OnLampAttackDistanceChanged(float distance)
     {
         AttackDistance.Value = distance;
-    }
-    
-    // Called from the view
-    public void HandleExitButtonClicked()
-    {
-        _gameModel.ExitGame();
-    }
-    
-    public void HandleRestartButtonClicked()
-    {
-        _gameModel.HandleImmediateRestartGame();
     }
 }

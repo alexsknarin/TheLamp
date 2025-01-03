@@ -10,20 +10,17 @@ public class FDragonflyAttackTailStateR : ScriptableObject, IState
     [SerializeField] private AnimationCurve _rxCurve;
     [SerializeField] private AnimationCurve _ryCurve;
     [SerializeField] private AnimationCurve _rzCurve;
-
-    public event Action Started;
-    
     private float _localTime = 0f;
     private float _phase = 0f;
     private float _startZPos = 0f;
     private readonly int _sideDirection = -1;
-    
     // Dependencies
     private Transform _visibleBodyTransform;
     private Transform _patrolTransform;
     private DragonflyPatrolRotator _patrolRotator;
 
-    
+    public event Action Started;
+
     public void SetDependencies(Transform visibleBodyTransform, Transform patrolTransform, 
         DragonflyPatrolRotator patrolRotator)
     {

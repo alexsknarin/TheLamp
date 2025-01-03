@@ -13,11 +13,11 @@ public class GameOverOutGameStageAnimationController : MonoBehaviour
     [SerializeField] private FadableButtonPresentation _restartWithAdButton;
     [SerializeField] private FadableButtonPresentation _restartNoAdButton;
     [SerializeField] private FadableButtonPresentation _exitButton;
-    
-    public event Action GameoverOutFinished;
-    
+
     private float _localTime;
     private bool _isPlaying;
+    
+    public event Action GameoverOutFinished;
 
     public void Play()
     {

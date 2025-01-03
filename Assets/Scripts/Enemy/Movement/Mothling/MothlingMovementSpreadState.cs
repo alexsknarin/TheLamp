@@ -2,13 +2,12 @@ using UnityEngine;
 
 public class MothlingMovementSpreadState: EnemyMovementBaseState
 {
-    public override EnemyState State => EnemyState.Spread;
     private float _maxDistance = 6.4f;
     private float _acceleratedSpeed;
     private float _acceleration = 5.5f;
     private Vector3 _direction;
     private float _extraDistance;
-    
+
     public MothlingMovementSpreadState(IStateMachineOwner owner, float speed, float radius, float verticalAmplitude) : base()
     {
         _speed = speed;
@@ -16,7 +15,9 @@ public class MothlingMovementSpreadState: EnemyMovementBaseState
         _verticalAmplitude = verticalAmplitude;
         _owner = owner;
     }
-    
+
+    public override EnemyState State => EnemyState.Spread;
+
     public override void EnterState(Vector3 currentPosition, int sideDirection, int depthDirection)
     {
         Position = currentPosition;

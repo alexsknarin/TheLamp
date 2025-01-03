@@ -8,14 +8,8 @@ public class DragonflySwarmCallPresentation : MonoBehaviour
     [SerializeField] private float _maxSize = 3f;
     [SerializeField] private AnimationCurve _sizeCurve;
     private Material _material1;
-    
     private bool _isActive = false;
     private float _localTime;
-
-    private void Start()
-    {
-        Initialize();
-    }
 
     public void Initialize()
     {
@@ -24,14 +18,19 @@ public class DragonflySwarmCallPresentation : MonoBehaviour
         _swarmWave1Object.SetActive(false);
         _isActive = false;
     }
-    
+
     public void Play()
     {
         _swarmWave1Object.SetActive(true);
         _localTime = 0f;
         _isActive = true;
     }
-    
+
+    private void Start()
+    {
+        Initialize();
+    }
+
     private void Update()
     {
         if (Input.GetKey(KeyCode.B))
