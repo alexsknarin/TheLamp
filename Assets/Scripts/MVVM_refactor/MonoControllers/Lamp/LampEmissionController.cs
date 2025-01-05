@@ -2,16 +2,13 @@ using UnityEngine;
 
 public class LampEmissionController : MonoBehaviour, IInitializable
 {
-    [Range(0f, 10f)]
-    [SerializeField] public float _intensity = 0;
-    [SerializeField] private bool _isBlockedMode;
-    [Range(0f, 1f)]
-    [SerializeField] private float _blockedModeMix;
+    [field: SerializeField, Range(0f, 10f)] public float Intensity { set; get; }
+    [field: SerializeField] public bool IsBlockedMode { set; get; }
+    [field: SerializeField, Range(0f, 1f)] public float BlockedModeMix { set; get; }
     [SerializeField] private float _blockedModeNoseFrequency;
-    [Header("--------")]
-    [SerializeField] private bool _isDamageEnabled;
-    [Range(0f, 1f)]
-    [SerializeField] private float _damageMix;
+    [field: Header("--------")]
+    [field: SerializeField] public bool IsDamageEnabled { set; get; }
+    [field: SerializeField, Range(0f, 1f)] public float DamageMix { set; get; }
     [Header("--------")]
     [SerializeField] private MeshRenderer _lampInternalMeshRenderer;
     [SerializeField] private MeshRenderer _lampGlassMeshRenderer;
@@ -28,36 +25,6 @@ public class LampEmissionController : MonoBehaviour, IInitializable
     private Color _ligtMaximumColor = new Color(0.9058824f, 0.6f, 0.3764f);
     private Color _ligtDamageColor = new Color(0.931f, 0.1254f, 0.0671f);
 
-    public float Intensity 
-    {
-        get => _intensity; 
-        set => _intensity = value; 
-    }
-
-    public bool IsBlockedMode
-    {
-        get => _isBlockedMode; 
-        set => _isBlockedMode = value;
-    }
-
-    public float BlockedModeMix
-    {
-        get => _blockedModeMix; 
-        set => _blockedModeMix = value;
-    }
-
-    public bool IsDamageEnabled
-    {
-        get => _isDamageEnabled; 
-        set => _isDamageEnabled = value;
-    }
-
-    public float DamageMix
-    {
-        get => _damageMix; 
-        set => _damageMix = value;
-    }
-    
     public void Initialize()
     {
         Material[] materials = _lampInternalMeshRenderer.materials;
@@ -129,15 +96,15 @@ public class LampEmissionController : MonoBehaviour, IInitializable
 
     private void Update()
     {
-        float intensity = _intensity;
+        float intensity = Intensity;
 
-        if (_isBlockedMode)
+        if (IsBlockedMode)
         {
-            intensity = BlockedModeNoise(_intensity, 1f);
+            intensity = BlockedModeNoise(Intensity, 1f);
         }
-        else if (_blockedModeMix > 0)
+        else if (BlockedModeMix > 0)
         {
-            intensity = BlockedModeNoise(intensity, _blockedModeMix);
+            intensity = BlockedModeNoise(intensity, BlockedModeMix);
         }
         
         _filamentMaterial.SetFloat("_EmissionStrength", intensity * 0.4f);
@@ -149,14 +116,14 @@ public class LampEmissionController : MonoBehaviour, IInitializable
         _lampLight.intensity = LerpExtrapolated(_lightMinimumIntensity, _lightNeutralIntensity, intensity);
         _lampLight.color = Color.Lerp(_ligtMinimumColor, _ligtMaximumColor, intensity);
 
-        if (_isDamageEnabled)
+        if (IsDamageEnabled)
         {
-            _filamentMaterial.SetFloat("_DamageMix", _damageMix);
-            _electrodeMaterial.SetFloat("_DamageMix", _damageMix);
-            _glassTubeMaterial.SetFloat("_DamageMix", _damageMix);
-            _lampGlassMaterial.SetFloat("_DamageMix", _damageMix);
-            _lampSocketAluminiumMaterial.SetFloat("_DamageMix", _damageMix);
-            _lampLight.color = Color.Lerp(_lampLight.color, _ligtDamageColor, _damageMix);
+            _filamentMaterial.SetFloat("_DamageMix", DamageMix);
+            _electrodeMaterial.SetFloat("_DamageMix", DamageMix);
+            _glassTubeMaterial.SetFloat("_DamageMix", DamageMix);
+            _lampGlassMaterial.SetFloat("_DamageMix", DamageMix);
+            _lampSocketAluminiumMaterial.SetFloat("_DamageMix", DamageMix);
+            _lampLight.color = Color.Lerp(_lampLight.color, _ligtDamageColor, DamageMix);
         }
     }
 
