@@ -51,7 +51,7 @@ public class DragonflySwarm : MonoBehaviour
         _isWaitingForAttack = false;
         for (int i = 0; i < _moths.Length; i++)
         {
-            _moths[i].TriggerGameover();
+            _moths[i].TriggerGameOver();
         }
     }
     

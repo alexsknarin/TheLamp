@@ -32,9 +32,7 @@ public class FDragonflySpiderPatrolStateL : ScriptableObject, IState
         Started?.Invoke();
     }
 
-    public void Tick()
-    {
-    }
+    public void Tick() { }
 
     public void OnExit()
     {

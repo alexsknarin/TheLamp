@@ -29,11 +29,7 @@ public abstract class FDragonflyAnimBaseState : ScriptableObject, IState
         _animator.Play(_clipHash, -1, 0);
     }
 
-    public void Tick()
-    {
-    }
+    public void Tick() { }
 
-    public void OnExit()
-    {
-    }
+    public void OnExit() { }
 }

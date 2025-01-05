@@ -58,7 +58,7 @@ public class DragonflyProjectileMovementMoth : MonoBehaviour
         }
     }
 
-    public void TriggerGameover()
+    public void TriggerGameOver()
     {
         if (_isAttacking)
         {

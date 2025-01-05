@@ -56,9 +56,7 @@ public class FDragonflyAttackTailSuccessStateL : ScriptableObject, IState
         CheckForStateChange();
     }
 
-    public void OnExit()
-    {
-    }
+    public void OnExit() { }
 
     private void CheckForStateChange()
     {

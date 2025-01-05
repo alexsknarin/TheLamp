@@ -31,7 +31,5 @@ public class DragonflyWaitHoverAttackState : IState
         }
     }
 
-    public void OnExit()
-    {
-    }
+    public void OnExit() { }
 }

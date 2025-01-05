@@ -59,17 +59,8 @@ public class PlayerGameplayViewModel : IDisposable
     {
         _gameModel.HandleImmediateRestartGame();
     }
-
-    private void OnLampBlockedModeSet(bool isBlocked)
-    {
-        IsBlocked.Value = isBlocked;
-    }
-
-    private void OnPowerChanged(float power)
-    {
-        Power.Value = power;
-    }
     
+    // Event Handle Methods
     /// <summary>
     /// Start Lamp Attack.
     /// </summary>
@@ -77,6 +68,11 @@ public class PlayerGameplayViewModel : IDisposable
     private void OnLampAttackStarted(float currentPower)
     {
         AttackStart?.Invoke(currentPower, _gameModel.IsLampBlocked);
+    }
+
+    private void OnPowerChanged(float power)
+    {
+        Power.Value = power;
     }
 
     private void OnLampHealthChanged(int newHealth)
@@ -99,6 +95,11 @@ public class PlayerGameplayViewModel : IDisposable
     private void OnLampMaxHealthChanged(int newMaxPoints)
     {   
         HealthUpgraded?.Invoke();
+    }
+
+    private void OnLampBlockedModeSet(bool isBlocked)
+    {
+        IsBlocked.Value = isBlocked;
     }
 
     private void OnLampDamageStarted(float duration)

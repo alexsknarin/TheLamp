@@ -134,17 +134,6 @@ public class Wasp : BossBase
         _collider.enabled = false;
     }
 
-    /// <summary>
-    /// Update Received Lamp Attack Status
-    /// </summary>
-    private void OnBossAttackStarted()
-    {
-        if (ReceivedLampAttack)
-        {
-            ReceivedLampAttack = false;
-        }
-    }
-
     private IEnumerator AttackPause()
     {
         yield return _attackPause;
@@ -156,9 +145,30 @@ public class Wasp : BossBase
         _attackPause = new WaitForSeconds(_attackPauseTime);
     }
 
-    private void OnLampDied(EnemyBase enemy)
+
+    // Let movement FSM to switch to idle state properly and then deactivate
+
+    private IEnumerator DeactivateOnDeath()
     {
-        _fWaspMovement.SetLampDestroyed();
+        yield return null;
+        gameObject.SetActive(false);
+    }
+
+    private void ResetTrail()
+    {
+        _waspPresentation.ResetTrail(); // TODO: method is not used
+    }
+    
+    // Event Handle Methods
+    /// <summary>
+    /// Update Received Lamp Attack Status
+    /// </summary>
+    private void OnBossAttackStarted()
+    {
+        if (ReceivedLampAttack)
+        {
+            ReceivedLampAttack = false;
+        }
     }
 
     private void OnDeathStateEnded()
@@ -168,17 +178,8 @@ public class Wasp : BossBase
         StartCoroutine(DeactivateOnDeath());
     }
 
-    // Let movement FSM to switch to idle state properly and then deactivate
-    private IEnumerator DeactivateOnDeath()
+    private void OnLampDied(EnemyBase enemy)
     {
-        yield return null;
-        gameObject.SetActive(false);
-    }
-
-    // Animation events
-
-    private void ResetTrail()
-    {
-        _waspPresentation.ResetTrail();
+        _fWaspMovement.SetLampDestroyed();
     }
 }

@@ -150,14 +150,6 @@ public class GameRootContext : MonoBehaviour
         _googleSheetsDataReader.Initialize();
     }
 
-    private void OnGameConfigLoaded()
-    {
-        // Start Game
-        Debug.Log("------ Game Config Loaded ------");
-        _enemyController.Initialize();
-        _gameModel.StartGame();
-    }
-    
     private void Update()
     {
         foreach (var tickable in _tickables)
@@ -174,5 +166,14 @@ public class GameRootContext : MonoBehaviour
         {
             disposable.Dispose();
         }
+    }
+    
+    // Event Handle Methods 
+    private void OnGameConfigLoaded()
+    {
+        // Start Game
+        Debug.Log("------ Game Config Loaded ------");
+        _enemyController.Initialize();
+        _gameModel.StartGame();
     }
 }

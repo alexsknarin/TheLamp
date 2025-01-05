@@ -63,7 +63,5 @@ public class DragonflyWaitSpiderAttackState : IState
         }
     }
 
-    public void OnExit()
-    {
-    }
+    public void OnExit() { }
 }

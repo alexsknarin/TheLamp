@@ -63,7 +63,5 @@ public class FDragonflyAttackTailStateL : ScriptableObject, IState
         }
     }
 
-    public void OnExit()
-    {
-    }
+    public void OnExit() { }
 }

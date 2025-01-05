@@ -21,11 +21,6 @@ public class DragonflyDamageFlash : DamageIndication
         _wingsMaterial.SetFloat("_AttackSemaphore", 0f);
     }
 
-    public void SetContactCollisionTransform(Transform contactCollisionTransform)
-    {
-        _contactCollisionTransform = contactCollisionTransform;
-    }
-
     public override void Play()
     {
         
@@ -40,6 +35,11 @@ public class DragonflyDamageFlash : DamageIndication
             _damageParticles.SetVector3("Direction", direction);
             _damageParticles.SendEvent("OnDamage");
         }
+    }
+
+    public void SetContactCollisionTransform(Transform contactCollisionTransform)
+    {
+        _contactCollisionTransform = contactCollisionTransform;
     }
 
     private IEnumerator WaitForDamageFlashEnd()

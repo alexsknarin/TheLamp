@@ -18,15 +18,9 @@ public class FWaspAnimBaseState : IState
         _baseScaleR.x = -1;
     }
 
-    public virtual void OnEnter()
-    {
-    }
+    public virtual void OnEnter() { }
 
-    public void Tick()
-    {
-    }
+    public void Tick() { }
 
-    public virtual void OnExit()
-    {
-    }
+    public virtual void OnExit() { }
 }

@@ -80,13 +80,6 @@ public class Dragonfly : BossBase
 
     private void OnEnable()
     {
-        _movement.ReadyToAttackStateEntered += OnReadyToAttackStateEntered;
-        _movement.ReadyToSwarmAttackStateEntered += OnReadyToSwarmAttackStateEntered;
-        _movement.PreAttackStarted += OnPreAttackStarted;
-        _movement.AttackStarted += OnAttackStarted;
-        _movement.AttackEnded += OnAttackEnded;
-        _movement.SwarmCalled += OnSwarmCalled;
-        
         _patrolHeadState.Ended += GenerateAttackPosition;
         _patrolTailState.Ended += GenerateAttackPosition;
         _patrolSpiderState.Ended += GenerateAttackPosition;
@@ -96,8 +89,13 @@ public class Dragonfly : BossBase
         _waitSpiderAttackState.GotReadyToPreAttack += StartSpiderPreAttack;
         _waitSpiderAttackState.Ended += StartSpiderAttack;
         
+        _movement.ReadyToAttackStateEntered += OnReadyToAttackStateEntered;
+        _movement.ReadyToSwarmAttackStateEntered += OnReadyToSwarmAttackStateEntered;
+        _movement.PreAttackStarted += OnPreAttackStarted;
+        _movement.AttackStarted += OnAttackStarted;
+        _movement.AttackEnded += OnAttackEnded;
+        _movement.SwarmCalled += OnSwarmCalled;
         _waitForBounceState.Ended += OnWaitForBounceStateEnded;
-        
         _movement.AfterAttackExitEnded += OnAfterAttackExitEnded;
         _movement.ReadyToSpiderAttackStateStarted += OnReadyToSpiderAttackStateStarted;
         _movement.CatchSpiderStarted += OnCatchSpiderStarted;
@@ -107,14 +105,6 @@ public class Dragonfly : BossBase
 
     private void OnDisable()
     {
-        
-        _movement.ReadyToAttackStateEntered -= OnReadyToAttackStateEntered;
-        _movement.ReadyToSwarmAttackStateEntered -= OnReadyToSwarmAttackStateEntered;
-        _movement.PreAttackStarted -= OnPreAttackStarted;
-        _movement.AttackStarted -= OnAttackStarted;
-        _movement.AttackEnded -= OnAttackEnded;
-        _movement.SwarmCalled -= OnSwarmCalled;
-        
         _patrolHeadState.Ended -= GenerateAttackPosition;
         _patrolTailState.Ended -= GenerateAttackPosition;
         _patrolSpiderState.Ended -= GenerateAttackPosition;
@@ -124,8 +114,13 @@ public class Dragonfly : BossBase
         _waitSpiderAttackState.GotReadyToPreAttack -= StartSpiderPreAttack;
         _waitSpiderAttackState.Ended -= StartSpiderAttack;
         
+        _movement.ReadyToAttackStateEntered -= OnReadyToAttackStateEntered;
+        _movement.ReadyToSwarmAttackStateEntered -= OnReadyToSwarmAttackStateEntered;
+        _movement.PreAttackStarted -= OnPreAttackStarted;
+        _movement.AttackStarted -= OnAttackStarted;
+        _movement.AttackEnded -= OnAttackEnded;
+        _movement.SwarmCalled -= OnSwarmCalled;
         _waitForBounceState.Ended -= OnWaitForBounceStateEnded;
-        
         _movement.AfterAttackExitEnded -= OnAfterAttackExitEnded;
         _movement.ReadyToSpiderAttackStateStarted -= OnReadyToSpiderAttackStateStarted;
         _movement.CatchSpiderStarted -= OnCatchSpiderStarted;
@@ -404,16 +399,17 @@ public class Dragonfly : BossBase
         _isActivated = true;
     }
 
+    // State Event Handle Methods
+    private void GenerateAttackPosition()
+    {
+        _isReadyToAttackWait = true;
+    }
+
     private void StartAttack(DragonflyPatrolAttackMode mode)
     {
         _movement.StartAttack(mode);
         _isAttacked = true;
         _isCollidedWithLamp = false;
-    }
-
-    private void GenerateAttackPosition()
-    {
-        _isReadyToAttackWait = true;
     }
 
     private void StartSpiderPreAttack()
@@ -429,17 +425,11 @@ public class Dragonfly : BossBase
         _isAttacked = true;
     }
 
-    
     // Event Handle Methods
     private void OnReadyToAttackStateEntered(IState movementState)
     {
         _patrolAttackMode = (DragonflyPatrolAttackMode)Random.Range(0, 2);
         _isReadyToPreAttackWait = true;
-    }
-
-    private void OnSwarmCalled()
-    {
-        _presentation.SwarmCall();
     }
 
     private void OnReadyToSwarmAttackStateEntered(IState movementState)
@@ -454,6 +444,12 @@ public class Dragonfly : BossBase
         }
     }
 
+    private void OnPreAttackStarted()
+    {
+        ReceivedLampAttack = false;
+        _presentation.PreAttackStart();
+    }
+
     private void OnAttackStarted()
     {
         _collisionController.EnableColliders();
@@ -465,6 +461,16 @@ public class Dragonfly : BossBase
         _collisionController.DisableColliders();
     }
 
+    private void OnSwarmCalled()
+    {
+        _presentation.SwarmCall();
+    }
+
+    private void OnWaitForBounceStateEnded()
+    {
+        _movement.TriggerBounce();
+    }
+
     private void OnAfterAttackExitEnded(IState movementState)
     {
         _returnMode = RETURN_MODES[Random.Range(0, 6)];
@@ -472,10 +478,15 @@ public class Dragonfly : BossBase
         _isReadyToPreAttackWait = true;
     }
 
-    private void OnPreAttackStarted()
+    private void OnReadyToSpiderAttackStateStarted()
     {
-        ReceivedLampAttack = false;
-        _presentation.PreAttackStart();
+        _isReadyToAttackWait = true;
+    }
+
+    private void OnCatchSpiderStarted(int direction)
+    {
+        _spider.gameObject.SetActive(true);
+        _spider.Play(direction);
     }
 
     private void OnSpiderEnterAnimationEnded()
@@ -488,26 +499,12 @@ public class Dragonfly : BossBase
         _spider.gameObject.transform.localPosition = pos;
     }
 
-    private void OnCatchSpiderStarted(int direction)
-    {
-        _spider.gameObject.SetActive(true);
-        _spider.Play(direction);
-    }
-
-    private void OnReadyToSpiderAttackStateStarted()
-    {
-        _isReadyToAttackWait = true;
-    }
-
     private void OnDeathAnimationEnded()
     {
         gameObject.SetActive(false); // TODO: fix naming to be consistent
     }
-
-    private void OnWaitForBounceStateEnded()
-    {
-        _movement.TriggerBounce();
-    }
+    
+    // TODO: use interfaces for it:
 
     #region Unused Enemy Base Methods
     public override void ReturnToPool()

@@ -62,7 +62,7 @@ public class PlayerUpgradeViewUI : MonoBehaviour, IInitializable
     }
 
 
-    // Event Handlers
+    // Event Handle Methods
 
     private void OnHealthUpgradeEnabledChanged(bool isEnabled)
     {

@@ -43,7 +43,5 @@ public class FDragonflyGameoverHoverState : ScriptableObject, IState
         _localTime += Time.deltaTime;
     }
 
-    public void OnExit()
-    {
-    }
+    public void OnExit() { }
 }

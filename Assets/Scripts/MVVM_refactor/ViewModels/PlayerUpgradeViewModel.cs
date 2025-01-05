@@ -93,6 +93,7 @@ public class PlayerUpgradeViewModel : IDisposable
     }
     
     
+    // Event Handle Methods
     /// <summary>
     /// Handle Start onf the stage
     /// </summary>

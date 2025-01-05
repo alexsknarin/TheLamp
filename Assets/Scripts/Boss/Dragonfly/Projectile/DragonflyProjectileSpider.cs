@@ -119,7 +119,8 @@ public class DragonflyProjectileSpider : EnemyBase
             ReceiveDamage(arg1);
         }
     }
-
+    
+    // Event Handlers
     private void OnEnterAnimationEndHandle()
     {
         _presentation.SwitchToCaughtState();

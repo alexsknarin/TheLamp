@@ -646,17 +646,6 @@ public class FWaspMovement : MonoBehaviour, IInitializable
         };
     }
 
-    private void OnDeathStateEnded()
-    {
-        _isPlaying = false;
-        DeathStateEnded?.Invoke();
-    }
-
-    private void OnBossAttackStarted()
-    {
-        BossAttackStarted?.Invoke();
-    }
-
     private void Update()
     {
         if (_isPlaying)
@@ -679,5 +668,18 @@ public class FWaspMovement : MonoBehaviour, IInitializable
             }
             transform.position = newPosition;
         }
+    }
+    
+    
+    // Event Handle Methods
+    private void OnDeathStateEnded()
+    {
+        _isPlaying = false;
+        DeathStateEnded?.Invoke();
+    }
+
+    private void OnBossAttackStarted()
+    {
+        BossAttackStarted?.Invoke();
     }
 }

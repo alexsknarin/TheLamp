@@ -52,7 +52,5 @@ public class DragonflyWaitTailAttackState : IState
         }
     }
 
-    public void OnExit()
-    {
-    }
+    public void OnExit() { }
 }

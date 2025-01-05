@@ -50,7 +50,5 @@ public class FDragonflyAttackHeadState : ScriptableObject, IState
         _attackAccelerationValue += _acceleration * Time.deltaTime;
     }
 
-    public void OnExit()
-    {
-    }
+    public void OnExit() { }
 }

@@ -202,11 +202,8 @@ public class Enemy : EnemyBase
         return transform.position;
     }
 
-    private void OnMovementReseted()
-    {
-        _enemyPresentation.Initialize();
-    }
-
+    
+    // Event Handle Methods
     private void OnPreAttackStarted()
     {
         ReceivedLampAttack = false;
@@ -226,15 +223,20 @@ public class Enemy : EnemyBase
         IsAttacking = false;
     }
 
-    private void OnStickStarted()
-    {
-        Debug.Log("Stick status enabled");
-        IsStick = true;
-    }
-
     private void OnEnemyDeactivated()
     {
         EnemyDeactivated?.Invoke(this);
         _objectPool.Release(this);
+    }
+
+    private void OnMovementReseted()
+    {
+        _enemyPresentation.Initialize();
+    }
+
+    private void OnStickStarted()
+    {
+        Debug.Log("Stick status enabled");
+        IsStick = true;
     }
 }

@@ -9,7 +9,14 @@ public class DamageFlash : DamageIndication
     private Material _material;
     private bool _isActive = false;
     private float _localTime;
-    
+
+    public override void Initialize()
+    {
+        _material = _meshRenderer.material;
+        _material.SetFloat("_AttackSemaphore", 0f);
+        _material.SetFloat("_Damage", 1f);
+    }
+
     public override void Play()
     {
         _isActive = true;
@@ -19,7 +26,7 @@ public class DamageFlash : DamageIndication
         _damageParticles.SendEvent("OnDamage");
     }
 
-    void Update()
+    private void Update()
     {
         if (_isActive)
         {
@@ -35,12 +42,5 @@ public class DamageFlash : DamageIndication
             _material.SetFloat("_Damage", 9f);
             _localTime += Time.deltaTime;
         }
-    }
-    
-    public override void Initialize()
-    {
-        _material = _meshRenderer.material;
-        _material.SetFloat("_AttackSemaphore", 0f);
-        _material.SetFloat("_Damage", 1f);
     }
 }

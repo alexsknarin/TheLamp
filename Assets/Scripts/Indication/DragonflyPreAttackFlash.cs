@@ -6,19 +6,6 @@ public class DragonflyPreAttackFlash : MonoBehaviour, IInitializable
     [SerializeField] private MeshRenderer _wingsMeshRenderer;
     private Material _bodyMaterial;
     private Material _wingsMaterial;
-    
-    public void PreAttackStart()
-    {
-        _bodyMaterial.SetFloat("_AttackSemaphore", 1f);
-        _wingsMaterial.SetFloat("_AttackSemaphore", 1f);
-    }
-    
-    public void PreAttackEnd()
-    {
-        _bodyMaterial.SetFloat("_AttackSemaphore", 0f);
-        _wingsMaterial.SetFloat("_AttackSemaphore", 0f);
-        
-    }
 
     public void Initialize()
     {
@@ -27,5 +14,18 @@ public class DragonflyPreAttackFlash : MonoBehaviour, IInitializable
         
         _bodyMaterial.SetFloat("_AttackSemaphore", 0f);
         _wingsMaterial.SetFloat("_AttackSemaphore", 0f);
+    }
+
+    public void PreAttackStart()
+    {
+        _bodyMaterial.SetFloat("_AttackSemaphore", 1f);
+        _wingsMaterial.SetFloat("_AttackSemaphore", 1f);
+    }
+
+    public void PreAttackEnd()
+    {
+        _bodyMaterial.SetFloat("_AttackSemaphore", 0f);
+        _wingsMaterial.SetFloat("_AttackSemaphore", 0f);
+        
     }
 }

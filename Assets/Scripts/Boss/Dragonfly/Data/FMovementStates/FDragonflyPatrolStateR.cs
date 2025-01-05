@@ -31,9 +31,7 @@ public class FDragonflyPatrolStateR : ScriptableObject, IState
         Started?.Invoke();
     }
 
-    public void Tick()
-    {
-    }
+    public void Tick() { }
 
     public void OnExit()
     {

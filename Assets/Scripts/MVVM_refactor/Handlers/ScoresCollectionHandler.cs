@@ -21,6 +21,7 @@ public class ScoresCollectionHandler: IInitializable, IDisposable
         EnemyBase.EnemyDied += OnEnemyDied;
     }
     
+    // Event Handle Methods
     private void OnEnemyDied(EnemyBase enemy)
     {
         int score = 0;

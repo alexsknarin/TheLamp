@@ -19,7 +19,8 @@ public class LampHealthBarView : MonoBehaviour
         _playerGameplayViewModel.LastHealthPointEnded -= OnLastHealthPointEnded;
         _playerGameplayViewModel.HealthUpgraded -= OnHealthUpgraded;
     }
-
+    
+    // Event Handle Methods
     private void OnLampNormalizedHealthChanged(object sender, Observable<float>.ChangedEventArgs e)
     {
         _lampHealthBarController.SetHealth(e.NewValue);

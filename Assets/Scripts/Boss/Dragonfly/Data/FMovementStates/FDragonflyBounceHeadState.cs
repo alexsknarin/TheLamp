@@ -27,7 +27,5 @@ public class FDragonflyBounceHeadState : ScriptableObject, IState
         _visibleBodyTransform.position += -_attackDirection * (_speed * Time.deltaTime);
     }
 
-    public void OnExit()
-    {
-    }
+    public void OnExit() { }
 }

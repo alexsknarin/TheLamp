@@ -53,7 +53,7 @@ public class GameStageViewModel : IDisposable
         _gameModel.HandleAdvertisementEnd();
     }
     
-
+    // Event Handle Methods
     private void OnGameStageStateChanged(GameStageState newState)
     {
         switch (newState)

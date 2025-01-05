@@ -18,7 +18,8 @@ public class LampDamageViewUI : MonoBehaviour
         _playerGameplayViewModel.LampDamaged -= OnLampDamaged;
         _playerGameplayViewModel.LampDied -= OnLampDied;
     }
-
+    
+    // Event Handle Methods
     private void OnLampDamaged(float duration)
     {
         _brokenGlassEffect.Play(BrokenGlassEventType.Damage); // TODO: replace with duration

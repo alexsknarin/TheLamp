@@ -186,6 +186,7 @@ public class GameModel : IDisposable, ILampDeadEventProviderService
         }
     }
     
+    // Game State change Active methods
     public void StartGame()
     {
         Debug.Log("!!!!! The Game Has Been Started !!!!!");
@@ -202,7 +203,34 @@ public class GameModel : IDisposable, ILampDeadEventProviderService
         LampGlassDamage = _currentGameState.GlassDamageData;
         _lampDamageDataHandler.MaxHealth = _currentGameState.LampMaxHealth;
     }
+    
+    private void StartPrepareIn()
+    {
+        CurrentGameStageState = GameStageState.PrepareIn;
+        Debug.Log("Starting PrepareIn");
+    }
 
+    private void StartPrepare()
+    {
+        CurrentGameStageState = GameStageState.Prepare;
+        Debug.Log("Starting Prepare");
+    }
+
+    private void StartPrepareOut()
+    {
+        CurrentGameStageState = GameStageState.PrepareOut;
+        Debug.Log("Starting PrepareOut");
+    }
+
+    private void StartGameOver()
+    {
+        CurrentGameStageState = GameStageState.GameOverIn;
+        _playerAttackHandler.StopCooldown();
+        _enemyController.HandleGameOver();
+        Debug.Log("Starting Game Over");
+    }
+
+    // Game State change Passive methods
     public void HandleIntroEnd()
     {
         StartPrepareIn();    
@@ -211,6 +239,11 @@ public class GameModel : IDisposable, ILampDeadEventProviderService
     public void HandlePrepareInEnd()
     {
         StartPrepare();
+    }
+
+    private void HandlePrepareEnd()
+    {
+        StartPrepareOut();
     }
 
     public void HandlePrepareOutEnd()
@@ -336,8 +369,7 @@ public class GameModel : IDisposable, ILampDeadEventProviderService
         _playerCollidersPropertyController.SetAttackZoneRadius(LampAttackDistance);
     }
 
-    
-    // --- Game Over ---
+    // Game End Handle Methods
     public void HandleRestartGameWitAdFromGameOver()
     {
         _isAdPlaying = true;
@@ -383,24 +415,6 @@ public class GameModel : IDisposable, ILampDeadEventProviderService
         StartGame();
     }
 
-    private void StartPrepareIn()
-    {
-        CurrentGameStageState = GameStageState.PrepareIn;
-        Debug.Log("Starting PrepareIn");
-    }
-
-    private void StartPrepare()
-    {
-        CurrentGameStageState = GameStageState.Prepare;
-        Debug.Log("Starting Prepare");
-    }
-
-    private void StartPrepareOut()
-    {
-        CurrentGameStageState = GameStageState.PrepareOut;
-        Debug.Log("Starting PrepareOut");
-    }
-
     private void StartWave()
     {
         CurrentGameStageState = GameStageState.Wave;
@@ -408,22 +422,7 @@ public class GameModel : IDisposable, ILampDeadEventProviderService
         _enemyController.StartWave(_currentGameState.Wave);
     }
 
-    private void StartGameOver()
-    {
-        CurrentGameStageState = GameStageState.GameOverIn;
-        _playerAttackHandler.StopCooldown();
-        _enemyController.HandleGameOver();
-        Debug.Log("Starting Game Over");
-    }
-
-
-    private void HandlePrepareEnd()
-    {
-        StartPrepareOut();
-    }
-
-    // --- Upgrades ---
-
+    // Event Handle Methods
     private void OnWaveEnded()
     {
         Debug.Log($"Wave {_currentGameState.Wave} Ended");
@@ -432,18 +431,15 @@ public class GameModel : IDisposable, ILampDeadEventProviderService
         StartPrepareIn();
     }
 
-
     private void OnPlayerAttackEnded()
     {
         _isAttacking = false;
     }
 
-
     private void OnPowerChanged(float power)
     {
         CurrentPower = power;
     }
-
 
     private void OnLampBlockedStarted(bool isBlocked, EnemyBase enemy)
     {
@@ -452,7 +448,6 @@ public class GameModel : IDisposable, ILampDeadEventProviderService
         // TODO: take lamp position into consideration
         _lampMovementController.AddForce(-enemy.ProvideImpactPoint().normalized.x * 2);
     }
-
 
     private void OnEnemyAttackBounced(bool isDeflected, EnemyBase enemy)
     {
@@ -482,7 +477,6 @@ public class GameModel : IDisposable, ILampDeadEventProviderService
             LampDamageStarted?.Invoke(_gameConfigService.PlayerConfig.DamageDuration);
         }
     }
-
 
     private void OnScoreChanged(int newScore)
     {

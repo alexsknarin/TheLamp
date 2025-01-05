@@ -31,7 +31,5 @@ public class DragonflyPatrolTailState : IState
         }
     }
 
-    public void OnExit()
-    {
-    }
+    public void OnExit() { }
 }

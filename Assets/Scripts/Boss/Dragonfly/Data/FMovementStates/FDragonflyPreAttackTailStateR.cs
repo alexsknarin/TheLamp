@@ -55,9 +55,7 @@ public class FDragonflyPreAttackTailStateR : ScriptableObject, IState
         CheckForStateChange();
     }
 
-    public void OnExit()
-    {
-    }
+    public void OnExit() { }
 
     private void CheckForStateChange()
     {

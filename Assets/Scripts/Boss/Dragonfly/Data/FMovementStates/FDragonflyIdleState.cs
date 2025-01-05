@@ -22,11 +22,7 @@ public class FDragonflyIdleState : ScriptableObject, IState
         _visibleBodyTransform.rotation = Quaternion.identity;
     }
 
-    public void Tick()
-    {
-    }
+    public void Tick() { }
 
-    public void OnExit()
-    {
-    }
+    public void OnExit() { }
 }

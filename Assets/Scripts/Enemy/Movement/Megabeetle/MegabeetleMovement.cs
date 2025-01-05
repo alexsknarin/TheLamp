@@ -51,12 +51,12 @@ public class MegabeetleMovement : EnemyMovement
 
     private void OnEnable()
     {
-        _lampDeadEventProvider.LampDied += FallOnLampDestroyed;
+        _lampDeadEventProvider.LampDied += OnLampDied;
     }
 
     private void OnDisable()
     {
-        _lampDeadEventProvider.LampDied -= FallOnLampDestroyed;
+        _lampDeadEventProvider.LampDied -= OnLampDied;
     }
 
     public override void Initialize()
@@ -329,26 +329,6 @@ public class MegabeetleMovement : EnemyMovement
         _movementStateMachine.SetState(_currentState, _position2d, _sideDirection, _depthDirection);
     }
 
-    private void FallOnLampDestroyed(EnemyBase enemy)
-    {
-        if (_isPlaying)
-        {
-            transform.parent = null;
-            if (_currentState.State == EnemyState.StickLanding ||
-                _currentState.State == EnemyState.Stick ||
-                _currentState.State == EnemyState.StickAttack ||
-                _currentState.State == EnemyState.StickPreAttack ||
-                _currentState.State == EnemyState.StickPreAttackPause)
-            {
-                StartCoroutine(FallDelayedStart());
-            }
-            else
-            {
-                StartCoroutine(SpreadDelayedStart());
-            }
-        }
-    }
-
     private void MovementSetup()
     {
         _sideDirection = RandomDirection.Generate();
@@ -422,5 +402,26 @@ public class MegabeetleMovement : EnemyMovement
         _movementStateMachine.CheckForStateChange();
         
         Debug.DrawLine(_prevPosition2d, _prevPosition2d + (_position2d - _prevPosition2d).normalized * 0.02f, Color.cyan, 5f);
+    }
+
+    // Event Handler Methods
+    private void OnLampDied(EnemyBase enemy)
+    {
+        if (_isPlaying)
+        {
+            transform.parent = null;
+            if (_currentState.State == EnemyState.StickLanding ||
+                _currentState.State == EnemyState.Stick ||
+                _currentState.State == EnemyState.StickAttack ||
+                _currentState.State == EnemyState.StickPreAttack ||
+                _currentState.State == EnemyState.StickPreAttackPause)
+            {
+                StartCoroutine(FallDelayedStart());
+            }
+            else
+            {
+                StartCoroutine(SpreadDelayedStart());
+            }
+        }
     }
 }

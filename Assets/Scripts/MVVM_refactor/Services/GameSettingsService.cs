@@ -18,28 +18,29 @@ public class GameSettingsService: IGameSettingsService, IInitializable, IDisposa
 
     public void Initialize()
     {
-        _gameSettingsModel.IsConsentSetChanged += HandleConsentSetOnChangedEvent;
-        _gameSettingsModel.IsDataCollectionEnabledChanged += HandleDataCollectionEnabledChanged;
+        _gameSettingsModel.IsConsentSetChanged += OnIsConsentSetChanged;
+        _gameSettingsModel.IsDataCollectionEnabledChanged += OnIsDataCollectionEnabledChanged;
     }
 
     public void Dispose()
     {
-        _gameSettingsModel.IsConsentSetChanged += HandleConsentSetOnChangedEvent;
-        _gameSettingsModel.IsDataCollectionEnabledChanged += HandleDataCollectionEnabledChanged;
+        _gameSettingsModel.IsConsentSetChanged += OnIsConsentSetChanged;
+        _gameSettingsModel.IsDataCollectionEnabledChanged += OnIsDataCollectionEnabledChanged;
     }
 
     private void Save()
     {
         _gameSettingsProviderService.Save();
     }
-
-    private void HandleConsentSetOnChangedEvent(bool value)
+    
+    // Event Handle Methods
+    private void OnIsConsentSetChanged(bool value)
     {
         Save();
         IsConsentSetChanged?.Invoke(value);
     }
 
-    private void HandleDataCollectionEnabledChanged(bool value)
+    private void OnIsDataCollectionEnabledChanged(bool value)
     {
         Save();
         IsDataCollectionEnabledChanged?.Invoke(value);

@@ -56,7 +56,5 @@ public class FDragonflyAttackHoverState : ScriptableObject, IState
         }
     }
 
-    public void OnExit()
-    {
-    }
+    public void OnExit() { }
 }

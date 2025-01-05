@@ -144,11 +144,7 @@ public class Megamothling : BossBase
         return transform.position;
     }
 
-    private void OnMovementReseted()
-    {
-        _enemyPresentation.Initialize();
-    }
-
+    // Event Handle Methods
     private void OnPreAttackStarted()
     {
         ReceivedLampAttack = false;
@@ -166,6 +162,11 @@ public class Megamothling : BossBase
     private void OnAttackEnded()
     {
         IsAttacking = false;
+    }
+
+    private void OnMovementReseted()
+    {
+        _enemyPresentation.Initialize();
     }
 
     private void OnStickStarted()

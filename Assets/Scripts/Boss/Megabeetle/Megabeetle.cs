@@ -154,16 +154,7 @@ public class Megabeetle : BossBase
         }    
     }
 
-    private void OnMovementReseted()
-    {
-        _enemyPresentation.Initialize();
-    }
-
-    private void OnSpreadTriggered()
-    {
-        OnTriggerSpreadInvoke();
-    }
-
+    // Event Handle Methods
     private void OnPreAttackStarted()
     {
         ReceivedLampAttack = false;
@@ -172,18 +163,27 @@ public class Megabeetle : BossBase
         IsAttacking = true;
     }
 
-    private void OnStickStarted()
+    private void OnPreAttackEnded()
     {
-        IsStick = true;
-    }
-
-    private void OnEnemyDeactivated()
-    {
+        _enemyPresentation.PreAttackEnd();
+        ReadyToCollide = true;
     }
 
     private void OnAttackEnded()
     {
         IsAttacking = false;
+    }
+
+    private void OnEnemyDeactivated() { }
+
+    private void OnMovementReseted()
+    {
+        _enemyPresentation.Initialize();
+    }
+
+    private void OnStickStarted()
+    {
+        IsStick = true;
     }
 
     private void OnDeathStateEnded()
@@ -194,14 +194,13 @@ public class Megabeetle : BossBase
         gameObject.SetActive(false);
     }
 
-    private void OnPreAttackEnded()
-    {
-        _enemyPresentation.PreAttackEnd();
-        ReadyToCollide = true;
-    }
-
     private void OnStickAttackStateEnded()
     {
         OnStickAttackedEvent?.Invoke(this);
+    }
+
+    private void OnSpreadTriggered()
+    {
+        OnTriggerSpreadInvoke();
     }
 }

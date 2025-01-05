@@ -36,7 +36,5 @@ public class FDragonflyBounceTailStateL : ScriptableObject, IState
         _visibleBodyTransform.localRotation = Quaternion.Euler(eulers);
     }
 
-    public void OnExit()
-    {
-    }
+    public void OnExit() { }
 }

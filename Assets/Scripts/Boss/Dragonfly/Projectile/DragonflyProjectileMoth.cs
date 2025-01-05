@@ -28,9 +28,9 @@ public class DragonflyProjectileMoth : EnemyBase
         // Presentation setup
     }
 
-    public void TriggerGameover()
+    public void TriggerGameOver()
     {
-        _movement.TriggerGameover();
+        _movement.TriggerGameOver();
     }
 
     public override void StartAttack()
@@ -75,12 +75,12 @@ public class DragonflyProjectileMoth : EnemyBase
 
     public override void UpdateAttackAvailability()
     {
-        throw new System.NotImplementedException();
+        throw new System.NotImplementedException(); // TODO: - interface
     }
 
     public override void ReturnToPool()
     {
-        throw new System.NotImplementedException();
+        throw new System.NotImplementedException(); // TODO: - interface
     }
 
     public override Vector3 ProvideImpactPoint()
@@ -90,7 +90,7 @@ public class DragonflyProjectileMoth : EnemyBase
 
     public override void SpreadStart()
     {
-        throw new System.NotImplementedException();
+        throw new System.NotImplementedException(); // TODO: - interface
     }
 
     private void TMPHandleLampAttack(int arg1, float arg2, float arg3, float arg4)
@@ -100,7 +100,8 @@ public class DragonflyProjectileMoth : EnemyBase
             ReceiveDamage(arg1);
         }
     }
-
+    
+    // Event Handlers
     private void OnFallEnded()
     {
         gameObject.SetActive(false);

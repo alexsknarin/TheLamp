@@ -691,6 +691,7 @@ public class FDragonflyMovement : MonoBehaviour
         }
     }
 
+    // Event Handle Methods
     private void OnAnimClipEnded()
     {
         _isAnimClipEnded = true;
@@ -700,8 +701,6 @@ public class FDragonflyMovement : MonoBehaviour
     {
         SwarmCalled?.Invoke();
     }
-
-    #region State Event Handle methods
 
     private void OnReadyToAttackEnter()
     {
@@ -752,6 +751,4 @@ public class FDragonflyMovement : MonoBehaviour
     {
         DeathAnimationEnded?.Invoke();
     }
-
-    #endregion
 }

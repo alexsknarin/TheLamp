@@ -67,9 +67,7 @@ public class FDragonflySpiderPreattackHeadTransitionStateL : ScriptableObject, I
         CheckForStateChange();
     }
 
-    public void OnExit()
-    {
-    }
+    public void OnExit() { }
 
     private void CheckForStateChange()
     {

@@ -65,17 +65,7 @@ public class EnemyController : MonoBehaviour, IInitializable
         BossBase.SpreadTriggering += OnSpreadTriggering;
         BossBase.BossDied += OnBossDied;
     }
-    
-    private void OnDisable()
-    {
-        Enemy.EnemyDeactivated -= OnEnemyDeactivated;
-        Enemy.EnemyDeactivated -= CheckForFireflyExplosion;
-        LampStickZoneCollisionHandler.CollidedWithStickyEnemyStatic -= UpdateLadybugsOnScreen;
-        _enemySpawner.BossSpawned -= OnBossSpawned;
-        BossBase.SpreadTriggering -= OnSpreadTriggering;
-        BossBase.BossDied -= OnBossDied;
-    }
-    
+
     public void Initialize()
     {
         _spawnQueueGenerator = new SpawnQueueGenerator(_gameConfigService.SpawnQueueConfig.Data);
@@ -143,7 +133,17 @@ public class EnemyController : MonoBehaviour, IInitializable
             Debug.Log(waveData);
         }
     }
-    
+
+    private void OnDisable()
+    {
+        Enemy.EnemyDeactivated -= OnEnemyDeactivated;
+        Enemy.EnemyDeactivated -= CheckForFireflyExplosion;
+        LampStickZoneCollisionHandler.CollidedWithStickyEnemyStatic -= UpdateLadybugsOnScreen;
+        _enemySpawner.BossSpawned -= OnBossSpawned;
+        BossBase.SpreadTriggering -= OnSpreadTriggering;
+        BossBase.BossDied -= OnBossDied;
+    }
+
     public void StartWave(int wave)
     {
         Debug.Log("Wave started");
@@ -227,64 +227,6 @@ public class EnemyController : MonoBehaviour, IInitializable
         _isWaveInitialized = true;
     }
 
-    // Event Handlers
-
-    /// <summary>
-    /// Update enemies list
-    /// </summary>
-    /// <param name="enemy"></param>
-    private void OnEnemyDeactivated(EnemyBase enemy)
-    {
-        _enemies.Remove(enemy);
-        _enemiesKilled++;
-        if (enemy.EnemyType == EnemyType.Ladybug) // TODO: Interfaces check interface instead of a type variable
-        {
-            _ladybugsPatrolling.Remove(enemy); // TODO: Interfaces
-        }
-    }
-
-    private void UpdateLadybugsOnScreen(EnemyBase enemy)
-    {
-        // Remove stick ladybug for damageable list
-        if (enemy.EnemyType == EnemyType.Ladybug) // TODO: Interfaces
-        {
-            _ladybugsPatrolling.Remove(enemy); // TODO: Interfaces
-        }
-    }
-
-    private void CheckForFireflyExplosion(EnemyBase enemy)
-    {
-        if(enemy.EnemyType != EnemyType.Firefly)
-        {
-            return;
-        }
-        _enemiesFireflyExploder.StartExplosion(enemy);
-        FireflyExplosionStarted?.Invoke();
-    }
-
-    private void OnBossSpawned(BossBase boss)
-    {
-        boss.Play();
-        _enemyAttacker.ActivateBoss(boss); // Boss appearance should stop any ongoing attack
-        BossSpawned?.Invoke(boss);
-    }
-
-    private void OnSpreadTriggering()
-    {
-        foreach (var enemy in _enemies)
-        {
-            enemy.SpreadStart();
-        }
-    }
-
-    private void OnBossDied()
-    {
-        BossDied?.Invoke(_enemySpawner.Boss);
-        _enemyAttacker.DeactivateBoss();
-        _enemies.Remove(_enemySpawner.Boss);
-        _enemiesKilled++;
-    }
-    
     private void ReturnAllActiveEnemiesToPool()
     {
         // Enemies
@@ -315,5 +257,63 @@ public class EnemyController : MonoBehaviour, IInitializable
                 WaveEnded?.Invoke();
             }
         }
+    }
+    
+    
+    // Event Handle Methods
+    /// <summary>
+    /// Update enemies list
+    /// </summary>
+    /// <param name="enemy"></param>
+    private void OnEnemyDeactivated(EnemyBase enemy)
+    {
+        _enemies.Remove(enemy);
+        _enemiesKilled++;
+        if (enemy.EnemyType == EnemyType.Ladybug) // TODO: Interfaces check interface instead of a type variable
+        {
+            _ladybugsPatrolling.Remove(enemy); // TODO: Interfaces
+        }
+    }
+
+    private void CheckForFireflyExplosion(EnemyBase enemy)
+    {
+        if(enemy.EnemyType != EnemyType.Firefly)
+        {
+            return;
+        }
+        _enemiesFireflyExploder.StartExplosion(enemy);
+        FireflyExplosionStarted?.Invoke();
+    }
+
+    private void UpdateLadybugsOnScreen(EnemyBase enemy)
+    {
+        // Remove stick ladybug for damageable list
+        if (enemy.EnemyType == EnemyType.Ladybug) // TODO: Interfaces
+        {
+            _ladybugsPatrolling.Remove(enemy); // TODO: Interfaces
+        }
+    }
+
+    private void OnBossSpawned(BossBase boss)
+    {
+        boss.Play();
+        _enemyAttacker.ActivateBoss(boss); // Boss appearance should stop any ongoing attack
+        BossSpawned?.Invoke(boss);
+    }
+
+    private void OnSpreadTriggering()
+    {
+        foreach (var enemy in _enemies)
+        {
+            enemy.SpreadStart();
+        }
+    }
+
+    private void OnBossDied()
+    {
+        BossDied?.Invoke(_enemySpawner.Boss);
+        _enemyAttacker.DeactivateBoss();
+        _enemies.Remove(_enemySpawner.Boss);
+        _enemiesKilled++;
     }
 }

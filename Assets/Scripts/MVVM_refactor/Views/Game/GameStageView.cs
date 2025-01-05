@@ -85,7 +85,6 @@ public class GameStageView : MonoBehaviour, IInitializable
 
 
     // Animation controllers Event Handlers
-
     private void OnIntroFinished()
     {
         _gameStageViewModel.HandleIntroEnd();    
