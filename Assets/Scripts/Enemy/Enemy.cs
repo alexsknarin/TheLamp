@@ -5,6 +5,7 @@ using UnityEngine.Serialization;
 
 public class Enemy : EnemyBase
 {
+    [SerializeField] private bool _isStick;
     [SerializeField] private EnemyType _enemyType;
     [SerializeField] private int _maxHealth;
     [SerializeField] private int _currentHealth;
@@ -51,7 +52,7 @@ public class Enemy : EnemyBase
     
     public override void Initialize()
     {
-        
+        Debug.Log($"Enemy {gameObject.name} initialized");
         _enemyMovement.Construct(_lampPositionProviderService);
         _enemyMovement.Initialize();
         _enemyPresentation.Initialize();
@@ -62,6 +63,7 @@ public class Enemy : EnemyBase
         ReceivedLampAttack = false;
         IsAttacking = false;
         IsStick = false;
+        _isStick = false;
         _isDead = false;
     }
 
@@ -157,9 +159,11 @@ public class Enemy : EnemyBase
 
     public override void ReceiveDamage(int damage)
     {
-        if (!IsStick)
+        if (_enemyType != EnemyType.Ladybug)
+        {
             ReadyToLampDamage = false; // TODO: better mechanism - separate IStickyDamageable class or somthing
-
+        }
+        
         _currentHealth -= damage;
 
         if (_currentHealth > 0)
@@ -236,7 +240,8 @@ public class Enemy : EnemyBase
 
     private void OnStickStarted()
     {
-        Debug.Log("Stick status enabled");
+        Debug.Log($"Stick status enabled for {gameObject.name}");
         IsStick = true;
+        _isStick = true;
     }
 }

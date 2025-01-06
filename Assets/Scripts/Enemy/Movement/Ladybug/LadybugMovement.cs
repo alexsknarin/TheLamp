@@ -181,6 +181,7 @@ public class LadybugMovement : EnemyMovement
 
         _currentState = newState;
         State = _currentState.State;
+        _stateDebug = _currentState.State;
         _movementStateMachine.SetState(_currentState, _position2d, _sideDirection, _depthDirection);
     }
     
