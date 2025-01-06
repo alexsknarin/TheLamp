@@ -5,6 +5,7 @@ public class PlayerGameplayViewUI : MonoBehaviour, IInitializable
 {
     [SerializeField] private Button _exitButton;
     [SerializeField] private Button _restartButton;
+    // [SerializeField] private 
     
     private PlayerGameplayViewModel _playerGameplayViewModel;
     

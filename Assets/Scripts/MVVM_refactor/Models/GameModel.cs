@@ -207,19 +207,16 @@ public class GameModel : IDisposable, ILampDeadEventProviderService
     private void StartPrepareIn()
     {
         CurrentGameStageState = GameStageState.PrepareIn;
-        Debug.Log("Starting PrepareIn");
     }
 
     private void StartPrepare()
     {
         CurrentGameStageState = GameStageState.Prepare;
-        Debug.Log("Starting Prepare");
     }
 
     private void StartPrepareOut()
     {
         CurrentGameStageState = GameStageState.PrepareOut;
-        Debug.Log("Starting PrepareOut");
     }
 
     private void StartGameOver()
@@ -227,7 +224,6 @@ public class GameModel : IDisposable, ILampDeadEventProviderService
         CurrentGameStageState = GameStageState.GameOverIn;
         _playerAttackHandler.StopCooldown();
         _enemyController.HandleGameOver();
-        Debug.Log("Starting Game Over");
     }
 
     // Game State change Passive methods
@@ -254,18 +250,15 @@ public class GameModel : IDisposable, ILampDeadEventProviderService
     public void HandleGameOverInEnd()
     {
         CurrentGameStageState = GameStageState.GameOver;
-        Debug.Log("Finally Game is Over");
     }
 
     public void HandleGameOverOutEnd()
     {
-        Debug.Log("Game Over Out Ended ... Starting game Again");
         RestartGame();
     }
 
     public void HandleAdvertisementEnd()
     {
-        Debug.Log("Game Over Out Ended after watching ad ... Starting game again");
         _gameStateProviderService.SaveUpgradesOnly();
         RestartGame();
     }
@@ -385,8 +378,11 @@ public class GameModel : IDisposable, ILampDeadEventProviderService
 
     public void HandleImmediateRestartGame()
     {
+        Debug.Log("Restart button clicked");
         _gameStateProviderService.SaveDefaultState();
+        Debug.Log("Default State Saved");
         _isAdPlaying = false;
+        Debug.Log("Restarting the game");
         RestartGame();
     }
 
@@ -410,8 +406,9 @@ public class GameModel : IDisposable, ILampDeadEventProviderService
         CurrentGameState = _gameStateProviderService.Get();
         Debug.Log("New GameState Generated");
         Debug.Log($"Wave: {CurrentGameState.Wave}");
+        _playerEnemyInteractionHandler.Reset();
         _enemyController.Restart();
-        _lampMovementController.Restart();
+        _lampMovementController.Reset();
         StartGame();
     }
 

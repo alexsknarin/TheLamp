@@ -1,4 +1,5 @@
 using System;
+using UnityEngine;
 
 public class PlayerGameplayViewModel : IDisposable
 {
@@ -104,6 +105,7 @@ public class PlayerGameplayViewModel : IDisposable
 
     private void OnLampDamageStarted(float duration)
     {
+        Debug.Log("Lamp Damaged");
         LampDamaged?.Invoke(duration);
     }
 

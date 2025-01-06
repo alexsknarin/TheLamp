@@ -32,6 +32,7 @@ public class IntroGameStageAnimationController : MonoBehaviour, IInitializable
     [SerializeField] private FadableButtonPresentation _restartButton;
     [SerializeField] private FadableButtonPresentation _enableDataButton;
     [SerializeField] private FadableButtonPresentation _disableDataButton;
+    [SerializeField] private GameObject _upgradeUi;
     private Material _lampAttackZoneMaterial;
     private UnityEngine.Rendering.Universal.ColorAdjustments _colorAdjustments;
     private float _localTime;
@@ -50,7 +51,7 @@ public class IntroGameStageAnimationController : MonoBehaviour, IInitializable
             throw new NullReferenceException(nameof(_colorAdjustments));
         _colorAdjustments.postExposure.Override(_startExposure);
         _lampAttackZoneMaterial = _lampAttackZoneRenderer.material;
-
+        
         _isPlaying = false;
     }
     
@@ -64,6 +65,7 @@ public class IntroGameStageAnimationController : MonoBehaviour, IInitializable
         _lampAttackZoneRenderer.gameObject.SetActive(true);
         _ingameUi.SetActive(true);
         _waveText.SetActive(false);
+        _upgradeUi.SetActive(false);
         _exitButton.SetVisibilityLevel(0);
         _restartButton.SetVisibilityLevel(0);
         _enableDataButton.SetVisibilityLevel(0);

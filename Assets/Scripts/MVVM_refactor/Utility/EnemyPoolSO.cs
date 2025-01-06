@@ -101,6 +101,7 @@ public class EnemyPoolSO : ScriptableObject, IInitializable, IEnemyPool
     
     private void OnReleaseToPool(Enemy pooledObject)
     {
+        pooledObject.transform.SetParent(null);
         pooledObject.gameObject.SetActive(false);
     }
     

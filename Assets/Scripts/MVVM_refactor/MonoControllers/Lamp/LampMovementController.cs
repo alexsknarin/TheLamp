@@ -40,7 +40,7 @@ public class LampMovementController : MonoBehaviour, IInitializable
         _deviationAngle = 0;
     }
 
-    public void Restart()
+    public void Reset()
     {
         transform.position = Vector3.zero;
         transform.localRotation = Quaternion.identity;
