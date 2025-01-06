@@ -378,11 +378,8 @@ public class GameModel : IDisposable, ILampDeadEventProviderService
 
     public void HandleImmediateRestartGame()
     {
-        Debug.Log("Restart button clicked");
         _gameStateProviderService.SaveDefaultState();
-        Debug.Log("Default State Saved");
         _isAdPlaying = false;
-        Debug.Log("Restarting the game");
         RestartGame();
     }
 

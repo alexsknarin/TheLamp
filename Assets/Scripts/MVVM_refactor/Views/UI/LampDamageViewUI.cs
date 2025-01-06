@@ -22,7 +22,6 @@ public class LampDamageViewUI : MonoBehaviour
     // Event Handle Methods
     private void OnLampDamaged(float duration)
     {
-        Debug.Log("DAMAGE UI ANIMATION!!!");
         _brokenGlassEffect.Play(BrokenGlassEventType.Damage); // TODO: replace with duration
     }
 

@@ -44,7 +44,6 @@ public class PlayerEnemyInteractionHandler : MonoBehaviour, IInitializable
 
     public void Reset()
     {
-        Debug.Log("Resetting PlayerEnemyInteractionHandler - _isAssessingDamage disabled");
         _isAssessingDamage = false;
     }
     
@@ -66,10 +65,8 @@ public class PlayerEnemyInteractionHandler : MonoBehaviour, IInitializable
     /// <param name="enemy"></param>
     private void OnEnemyExitedAttackExitZone(EnemyBase enemy)
     {
-        Debug.Log("Trying to Assess Damage");
         if (_isAssessingDamage)
         {
-            Debug.Log("Assessing Damage");
             if (enemy.ReceivedLampAttack && (enemy.EnemyType != EnemyType.Ladybug || enemy.EnemyType != EnemyType.Megabeetle)) // TODO: replace with ISticky interface
             {
                 _isAssessingDamage = false;

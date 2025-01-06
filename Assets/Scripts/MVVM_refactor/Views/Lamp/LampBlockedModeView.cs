@@ -21,7 +21,6 @@ public class LampBlockedModeView : MonoBehaviour
 
     private void OnIsBlockedChanged(object sender, Observable<bool>.ChangedEventArgs e)
     {
-        Debug.Log("Set Blocked Mode: " + e.NewValue);
         _lampEmissionController.IsBlockedMode = e.NewValue;
     }
 }

@@ -25,11 +25,8 @@ public class LampDamageDataHandler
             glassDamageData.CracksNumberBottom++;
         }
         glassDamageData.CracksAmountRight = NormalizeDamageWeight(glassDamageData.CracksNumberRight, MaxHealth);
-        Debug.Log("CracksAmountRight: " + glassDamageData.CracksAmountRight);
         glassDamageData.CracksAmountLeft = NormalizeDamageWeight(glassDamageData.CracksNumberLeft, MaxHealth);
-        Debug.Log("CracksAmountLeft: " + glassDamageData.CracksAmountLeft);
         glassDamageData.CracksAmountBottom = NormalizeDamageWeight(glassDamageData.CracksNumberBottom, MaxHealth);
-        Debug.Log("CracksAmountBottom: " + glassDamageData.CracksAmountBottom);
         
         // Update the impact points
         // There are only three impact points, so we need to cycle through them
