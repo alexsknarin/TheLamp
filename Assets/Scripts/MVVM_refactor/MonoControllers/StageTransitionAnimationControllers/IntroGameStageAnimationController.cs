@@ -98,7 +98,6 @@ public class IntroGameStageAnimationController : MonoBehaviour, IInitializable
             float health = Mathf.Lerp(0, _currentHealth, phaseAnimated);
             _lampHealthBarController.SetHealth(health);
             _lampEmissionController.Intensity = _lampIntensityAnimCurve.Evaluate(phase);
-            Debug.Log(_lampIntensityAnimCurve.Evaluate(phase));
             _lampEmissionController.BlockedModeMix = _lampNoiseAmountAnimCurve.Evaluate(phase);
             _lampAttackZoneMaterial.SetFloat("_Alpha", Mathf.Lerp(0, 0.005f, _lampIntensityAnimCurve.Evaluate(phase)));
             // UI

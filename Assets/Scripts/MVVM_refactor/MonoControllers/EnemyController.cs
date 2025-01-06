@@ -124,7 +124,7 @@ public class EnemyController : MonoBehaviour, IInitializable
         // Debug Spawn Queue
         for(int i=0; i<_spawnQueue.Count(); i++)
         {
-            Debug.Log($"Wave : {i}");
+            Debug.Log($"Wave : {i} --- Count: {_spawnQueue.Get(i).Count()}");
             string waveData = "";
             for(int j=0; j<_spawnQueue.Get(i).Count(); j++)
             {

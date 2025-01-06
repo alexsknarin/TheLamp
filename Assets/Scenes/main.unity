@@ -543,12 +543,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54e13a067bd403b4f8d46a679f931120, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _intensity: 0
-  _isBlockedMode: 0
-  _blockedModeMix: 0
+  <Intensity>k__BackingField: 0
+  <IsBlockedMode>k__BackingField: 0
+  <BlockedModeMix>k__BackingField: 0
   _blockedModeNoseFrequency: 20
-  _isDamageEnabled: 1
-  _damageMix: 0
+  <IsDamageEnabled>k__BackingField: 0
+  <DamageMix>k__BackingField: 0
   _lampInternalMeshRenderer: {fileID: 1207658691}
   _lampGlassMeshRenderer: {fileID: 738155935}
   _lampSocketMeshRenderer: {fileID: 1900091331}

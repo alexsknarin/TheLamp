@@ -6,10 +6,9 @@ public class GameRootContext : MonoBehaviour
 {
     [Header("Data")]
     [SerializeField] private GoogleSheetsDataReader _googleSheetsDataReader;
-    [FormerlySerializedAs("_gameConfigProviderServiceService")] [FormerlySerializedAs("_gameConfigProvider")] [SerializeField] private SoGameConfigProviderService _gameConfigProviderService;
+    [SerializeField] private SoGameConfigProviderService _gameConfigProviderService;
     [SerializeField] private DefaultGameStateData _defaultGameStateData;
     [SerializeField] private DefaultGameSettingsData _defaultGameSettingsData;
-    [FormerlySerializedAs("_consentSettingsUIView")]
     [Header("Views")]
     [SerializeField] private ConsentSettingsViewUI _consentSettingsViewUI;
     [SerializeField] private GameStageView _gameStageView;
@@ -50,7 +49,6 @@ public class GameRootContext : MonoBehaviour
     private GameStageViewModel _gameStageViewModel;
     private GameStateViewModel _gameStateViewModel;
     private PlayerGameplayViewModel _playerGameplayViewModel;
-    private SoGameConfigProviderService _soGameConfigProviderService;
     private GameConfigService _gameConfigService;
     private PlayerAttackViewModel _playerAttackViewModel;
     private ScoresCollectionHandler _scoresCollectionHandler;

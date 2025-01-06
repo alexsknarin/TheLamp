@@ -41,7 +41,7 @@ public class SpawnQueueGenerator
             
             // Introduce a new enemy
             string enemyIntro = (jsonObject[2][i][18]).ToString().Replace("\"", "");
-            if ( !string.IsNullOrEmpty(enemyIntro))
+            if (!string.IsNullOrEmpty(enemyIntro))
             {
                 EnemyType firstEnemyType = (EnemyType)System.Enum.Parse(typeof(EnemyType), enemyIntro);
                 enemyQueue.Add(firstEnemyType);
@@ -69,12 +69,13 @@ public class SpawnQueueGenerator
                 totalEnemies--;
             }
             
+            // Add boss
             if (bossMegabeetleCount + bossMegamothlingCount + bossWaspCount + bossDragonflyCount > 0)
             {
                 totalEnemies++;
             }
 
-            int bossPosition = 0;
+            int bossPosition = 10000;
             if (bossWaspCount > 0)
             {
                 if (totalEnemies > 4)
