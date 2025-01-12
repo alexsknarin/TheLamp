@@ -34,9 +34,12 @@ public class GameRootContext : MonoBehaviour
     [SerializeField] private LampEmissionController _lampEmissionController;
     [SerializeField] private LampMovementController _lampMovementController;
     [Header("Bosses")]
+    [SerializeField] private Megamothling _megamothling;
     [SerializeField] private Wasp _wasp;
     [SerializeField] private FWaspMovement _waspMovement;
+    [SerializeField] private Megabeetle _megabeetle;
     [SerializeField] private MegabeetleMovement _megabeetleMovement;
+    [SerializeField] private Dragonfly _dragonfly;
     
     private PlayerAttackHandler _playerAttackHandler;
     private GameSettingsService _gameSettingsService;
@@ -138,10 +141,15 @@ public class GameRootContext : MonoBehaviour
         _gameOverViewUI.Bind(_gameOverViewModel);
         _gameOverViewUI.Initialize();
         
-        // Bosses
+        // Bosses TMP
+        _megamothling.Initialize();                                          // TODO: factory should do initialization AND construct
         _wasp.Construct(_gameModel);
+        _wasp.Initialize();                                                // TODO: need to spawn bosses - load them later - this is TMP
         _waspMovement.Construct(_lampPositionProviderService);
+        _megabeetle.Initialize();
         _megabeetleMovement.Construct(_gameModel);
+        _dragonfly.Initialize();                
+
         
         // Load Game Config
         _googleSheetsDataReader.OnDataLoadedEvent += OnGameConfigLoaded;

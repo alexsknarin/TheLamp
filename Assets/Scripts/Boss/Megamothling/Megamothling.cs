@@ -45,13 +45,6 @@ public class Megamothling : BossBase
         gameObject.SetActive(false);
     }
 
-    public override void Play()
-    {
-        gameObject.SetActive(true);
-        _enemyPresentation.ResetTrail();
-        _enemyMovement.Play();
-    }
-
     public override void Reset()
     {
         ReceivedLampAttack = false;
@@ -60,6 +53,13 @@ public class Megamothling : BossBase
         _enemyPresentation.Initialize();
         _enemyMovement.MovementReset();
         gameObject.SetActive(false);
+    }
+
+    public override void Play()
+    {
+        gameObject.SetActive(true);
+        _enemyPresentation.ResetTrail();
+        _enemyMovement.Play();
     }
 
     public override void UpdateAttackAvailability()

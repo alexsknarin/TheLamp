@@ -39,11 +39,21 @@ public class Wasp : BossBase
 
     public override void Initialize() // TODO: reuse Initialze for global initialization. Ths is Setup
     {
+        _attackPause = new WaitForSeconds(_attackPauseTime);
+        
         ReceivedLampAttack = false;
         _isGameover = false;
         _currentHealth = _maxHealth;
         _waspPresentation.Initialize();
         _fWaspMovement.Initialize();
+        gameObject.SetActive(false);
+    }
+
+    public override void Reset()
+    {
+        ReceivedLampAttack = false;
+        _currentHealth = _maxHealth;
+        _waspPresentation.Initialize();
         gameObject.SetActive(false);
     }
 
@@ -54,14 +64,6 @@ public class Wasp : BossBase
         _waspPresentation.ResetTrail();
         _waspPresentation.Initialize();
         _fWaspMovement.Play();
-    }
-
-    public override void Reset()
-    {
-        ReceivedLampAttack = false;
-        _currentHealth = _maxHealth;
-        _waspPresentation.Initialize();
-        gameObject.SetActive(false);
     }
 
     public void TriggerSpread()
@@ -140,14 +142,7 @@ public class Wasp : BossBase
         _fWaspMovement.SetCollidedWithLamp();
     }
 
-    private void Awake()
-    {
-        _attackPause = new WaitForSeconds(_attackPauseTime);
-    }
-
-
     // Let movement FSM to switch to idle state properly and then deactivate
-
     private IEnumerator DeactivateOnDeath()
     {
         yield return null;

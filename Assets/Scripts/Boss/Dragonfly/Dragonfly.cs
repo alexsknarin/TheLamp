@@ -130,6 +130,16 @@ public class Dragonfly : BossBase
 
     public override void Initialize()
     {
+        _patrolAttackPositionProvider = new DragonflyPatrolAttackPositionProvider(
+            _patrolAttackZonesL, 
+            _patrolAttackZonesR, 
+            _tailAttackPositionBase
+        );
+        
+        CreateStates();
+        CreateStateTransitions();
+        
+        
         _isDead = false;
         _isActivated = false;
         _isReadyToPreAttackWait = false;
@@ -233,31 +243,8 @@ public class Dragonfly : BossBase
         Debug.LogWarning("Dragonfly penetrated collision zone");
     }
 
-    private void Awake()
+    private void CreateStateTransitions()
     {
-        _patrolAttackPositionProvider = new DragonflyPatrolAttackPositionProvider(
-            _patrolAttackZonesL, 
-            _patrolAttackZonesR, 
-            _tailAttackPositionBase
-        );
-        
-        // Initialize the states
-        _inactiveState = new DragonflyInactiveState();
-        _passiveState = new DragonflyPassiveState();
-        _patrolState = new DragonflyPatrolState();
-        _hoverState = new DragonflyHoverState();
-        _patrolHeadState = new DragonflyPatrolHeadState(_patrolWaitMin, _patrolWaitMax);
-        _patrolTailState = new DragonflyPatrolTailState(_patrolTailWaitMin, _patrolTailWaitMax);
-        _waitHeadAttackState = new DragonflyWaitHeadAttackState(_visibleBodyTransform, _patrolAttackPositionProvider, _movement);
-        _waitTailAttackState = new DragonflyWaitTailAttackState(_visibleBodyTransform, _patrolAttackPositionProvider, _movement);
-        _waitHoverAttackState = new DragonflyWaitHoverAttackState(_hoverWaitMin, _hoverWaitMax);
-        _spiderEnterState = new DragonflySpiderEnterState();
-        _patrolSpiderState = new DragonflyPatrolSpiderState(_spiderPatrolWaitMin, _spiderPatrolWaitMax);
-        _waitSpiderAttackState = new DragonflyWaitSpiderAttackState(_visibleBodyTransform, _spiderAttackPositionBase);
-        _swarmAttackState = new DragonflySwarmAttackState(_swarmAttackDuration);
-        _waitForBounceState = new DragonflyWaitForBounceState();
-        
-        // Set up State Machine Transitions
         // Enter
         At(_inactiveState, _patrolState, () => _isActivated && _enterType == DragonflyEnterType.Patrol);
         At(_inactiveState, _hoverState, () => _isActivated && _enterType == DragonflyEnterType.Hover);
@@ -294,7 +281,7 @@ public class Dragonfly : BossBase
         
         void At(IState from, IState to, Func<bool> condition) => _stateMachine.AddTransition(from, to, condition);
         
-        #region Transition Predicate Delegates
+        
         Func<bool> IsReadyToPatrolHead() => () =>
         {
             if (_isReadyToPreAttackWait && _patrolAttackMode == DragonflyPatrolAttackMode.Head)
@@ -374,7 +361,25 @@ public class Dragonfly : BossBase
             }
             return false;
         };
-        #endregion
+    }
+
+    private void CreateStates()
+    {
+        // Initialize the states
+        _inactiveState = new DragonflyInactiveState();
+        _passiveState = new DragonflyPassiveState();
+        _patrolState = new DragonflyPatrolState();
+        _hoverState = new DragonflyHoverState();
+        _patrolHeadState = new DragonflyPatrolHeadState(_patrolWaitMin, _patrolWaitMax);
+        _patrolTailState = new DragonflyPatrolTailState(_patrolTailWaitMin, _patrolTailWaitMax);
+        _waitHeadAttackState = new DragonflyWaitHeadAttackState(_visibleBodyTransform, _patrolAttackPositionProvider, _movement);
+        _waitTailAttackState = new DragonflyWaitTailAttackState(_visibleBodyTransform, _patrolAttackPositionProvider, _movement);
+        _waitHoverAttackState = new DragonflyWaitHoverAttackState(_hoverWaitMin, _hoverWaitMax);
+        _spiderEnterState = new DragonflySpiderEnterState();
+        _patrolSpiderState = new DragonflyPatrolSpiderState(_spiderPatrolWaitMin, _spiderPatrolWaitMax);
+        _waitSpiderAttackState = new DragonflyWaitSpiderAttackState(_visibleBodyTransform, _spiderAttackPositionBase);
+        _swarmAttackState = new DragonflySwarmAttackState(_swarmAttackDuration);
+        _waitForBounceState = new DragonflyWaitForBounceState();
     }
 
     private void Update()

@@ -195,6 +195,9 @@ public class FWaspMovement : MonoBehaviour, IInitializable
 
     public void Initialize()
     {
+        CreateMovementStates();
+        StateMachineSetup();
+        
         _isPlaying = false;
         _isAnimClipEnded = false;
         _isLampDestroyed = false;
@@ -248,12 +251,6 @@ public class FWaspMovement : MonoBehaviour, IInitializable
     public void SetCollidedWithLamp()
     {
         _isCollided = true;
-    }
-
-    private void Awake()
-    {
-        CreateMovementStates();
-        StateMachineSetup();
     }
 
     private void CreateMovementStates()

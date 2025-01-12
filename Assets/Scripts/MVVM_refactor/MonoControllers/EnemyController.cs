@@ -78,11 +78,11 @@ public class EnemyController : MonoBehaviour, IInitializable
         _enemiesReadyToAttack = new List<EnemyBase>();
         _enemiesLampAttackHandler = new FEnemiesLampAttackHandler();
 
-        // Init all bosses
-        _waspBoss.Initialize();
-        _megamothlingBoss.Initialize();
-        _megabeetleBoss.Initialize();
-        _dragonflyBoss.Initialize();
+        // // Init all bosses
+        // _waspBoss.Initialize();
+        // _megamothlingBoss.Initialize();
+        // _megabeetleBoss.Initialize();
+        // _dragonflyBoss.Initialize();
 
         _tickables = new List<ITickable>();
         // Create enemy spawner

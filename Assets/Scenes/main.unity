@@ -6218,9 +6218,12 @@ MonoBehaviour:
   _playerEnemyInteractionHandler: {fileID: 1934066260}
   _lampEmissionController: {fileID: 23663153}
   _lampMovementController: {fileID: 1934066248}
+  _megamothling: {fileID: 455450631368144087}
   _wasp: {fileID: 1966729921}
   _waspMovement: {fileID: 1966729922}
+  _megabeetle: {fileID: 1180215397}
   _megabeetleMovement: {fileID: 1657476345}
+  _dragonfly: {fileID: 1536401419}
 --- !u!4 &1037269785
 Transform:
   m_ObjectHideFlags: 0
