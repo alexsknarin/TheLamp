@@ -16,16 +16,6 @@ public abstract class BossBase : EnemyBase
     
     public abstract void Play();
 
-    public override void HandleEnteringAttackZone()
-    {
-        ReadyToLampDamage = true;
-    }
-
-    public override void HandleExitingAttackExitZone()
-    {
-        ReadyToLampDamage = false;
-    }
-
     protected virtual void OnTriggerSpreadInvoke()
     {
         SpreadTriggering?.Invoke();

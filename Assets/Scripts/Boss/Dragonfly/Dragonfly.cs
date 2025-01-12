@@ -201,11 +201,6 @@ public class Dragonfly : BossBase
         _swarm.TriggerGameover();
     }
     
-    public override void HandleEnteringAttackZone()
-    {
-        ReadyToLampDamage = true;
-    }
-
     public void HandleEnteringAttackExitZone()
     {
         _isInAttackExitZone = true;

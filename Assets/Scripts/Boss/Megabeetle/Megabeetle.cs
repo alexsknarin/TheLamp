@@ -108,11 +108,6 @@ public class Megabeetle : BossBase
         // _enemyMovement.TriggerFall();
     }
 
-    public override void HandleExitingAttackExitZone()
-    {
-        ReadyToLampDamage = false;
-    }
-
     public override void HandleCollisionWithStickZone()
     {
         _enemyMovement.TriggerStick();

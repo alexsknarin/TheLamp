@@ -135,21 +135,11 @@ public class Enemy : EnemyBase
         _enemyMovement.TriggerAttack();
     }
 
-    public override void HandleEnteringAttackZone()
-    {
-        ReadyToLampDamage = true;    
-    }
-
     public override void HandleCollisionWithLamp()
     {
         ReadyToCollide = false;
         ReadyToLampDamage = true;
         _enemyMovement.TriggerFall();
-    }
-
-    public override void HandleExitingAttackExitZone()
-    {
-        ReadyToLampDamage = false;
     }
 
     public override void HandleCollisionWithStickZone()

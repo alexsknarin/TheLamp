@@ -58,21 +58,11 @@ public class DragonflyProjectileSpider : EnemyBase
         _trailRenderer.emitting = true;
     }
 
-    public override void HandleEnteringAttackZone()
-    {
-        ReadyToLampDamage = true;
-    }
-
     public override void HandleCollisionWithLamp()
     {
         ReadyToCollide = false;
         ReadyToLampDamage = true;
         _movement.TriggerFall();
-    }
-
-    public override void HandleExitingAttackExitZone()
-    {
-        ReadyToLampDamage = false;
     }
 
     public override void HandleCollisionWithStickZone()

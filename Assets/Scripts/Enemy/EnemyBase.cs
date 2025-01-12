@@ -15,9 +15,17 @@ public abstract class EnemyBase : MonoBehaviour, IInitializable
     public virtual void HandleLampDestroyed() {}
     public abstract void SpreadStart();
     public abstract void StartAttack();
-    public abstract void HandleEnteringAttackZone();
+
+    public virtual void HandleEnteringAttackZone()
+    {
+        ReadyToLampDamage = true;
+    }
+
     public abstract void HandleCollisionWithLamp();
-    public abstract void HandleExitingAttackExitZone();
+    public virtual void HandleExitingAttackExitZone()
+    {
+        ReadyToLampDamage = false;
+    }
     public abstract void HandleCollisionWithStickZone();
     public abstract void ReceiveDamage(int damage);
     public abstract void UpdateAttackAvailability();

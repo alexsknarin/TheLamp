@@ -107,11 +107,6 @@ public class Megamothling : BossBase
         _enemyMovement.TriggerStick();
     }
 
-    public override void HandleExitingAttackExitZone()
-    {
-        ReadyToLampDamage = false;
-    }
-
     public override void ReceiveDamage(int damage)
     {
         ReadyToLampDamage = false;
