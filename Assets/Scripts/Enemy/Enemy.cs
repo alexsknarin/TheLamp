@@ -12,13 +12,13 @@ public class Enemy : EnemyBase
     [SerializeField] private EnemyMovement _enemyMovement;
     [SerializeField] private EnemyPresentation _enemyPresentation;
     private bool _isDead = false;
-    private ILampPositionProviderService _lampPositionProviderService;
+    // private ILampPositionProviderService _lampPositionProviderService;
     private IObjectPool<Enemy> _objectPool;
 
-    public void Construct(ILampPositionProviderService lampPositionProviderService)
-    {
-        _lampPositionProviderService = lampPositionProviderService;
-    }
+    // public void Construct(ILampPositionProviderService lampPositionProviderService)
+    // {
+    //     _lampPositionProviderService = lampPositionProviderService;
+    // }
 
     public static event Action<Enemy> EnemyDeactivated;
     public static event Action<Enemy> EnemyDamaged;
@@ -53,7 +53,6 @@ public class Enemy : EnemyBase
     public override void Initialize()
     {
         Debug.Log($"Enemy {gameObject.name} initialized");
-        _enemyMovement.Construct(_lampPositionProviderService);
         _enemyMovement.Initialize();
         _enemyPresentation.Initialize();
         _currentHealth = _maxHealth;
