@@ -139,7 +139,7 @@ public class Enemy : EnemyBase
     {
         ReadyToCollide = false;
         ReadyToLampDamage = true;
-        _enemyMovement.TriggerFall();
+        _enemyMovement.TriggerFall(); // TODO: interface for enemy movement and get implementation back into the  base class
     }
 
     public override void HandleCollisionWithStickZone()

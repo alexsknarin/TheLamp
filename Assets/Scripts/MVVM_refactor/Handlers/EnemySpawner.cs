@@ -15,7 +15,7 @@ public class EnemySpawner : ITickable
     
     // Dependencies
     private readonly SpawnQueue _spawnQueue;
-    private List<EnemyBase> _enemies; // TODO: replace with actual enemy objects from Enemy Manager
+    private List<EnemyBase> _enemies; // TODO: replace with actual enemy objects from Enemy Manager // TODO: enemy spawner shouldn't keep a list of enemies
     private IEnemyPool _enemyPool;
     private float _firstEnemySpawnDelay;
     // Bosses

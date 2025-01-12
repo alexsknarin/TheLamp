@@ -8,7 +8,7 @@ public abstract class EnemyMovement : MonoBehaviour, IStateMachineOwner, IInitia
     public event Action PreAttackEnded;
     public event Action AttackEnded;
     public event Action StickStarted;
-    public event Action EnemyDeactivated;
+    public event Action EnemyDeactivated; // TODO: rename to Enemy Death State Ended or something like that - movement shouldn't know anything about active-inactive states
     public event Action MovementReseted;
     public EnemyState State { get; protected set; }
     public int SideDirection { get; protected set; }
@@ -19,35 +19,35 @@ public abstract class EnemyMovement : MonoBehaviour, IStateMachineOwner, IInitia
     public abstract void TriggerDeath();
     public abstract void TriggerAttack();
     public abstract void TriggerSpread();
-    public abstract void TriggerStick();
+    public abstract void TriggerStick(); // TODO: move it into a separate interface or reimplement in the ladybug movement specifically
     public abstract void SwitchState();
 
-    protected virtual void OnPreAttackStartInvoke()
+    protected void OnPreAttackStartInvoke()
     {
         PreAttackStarted?.Invoke();
     }
 
-    protected virtual void OnPreAttackEndInvoke()
+    protected void OnPreAttackEndInvoke()
     {
         PreAttackEnded?.Invoke();
     }
     
-    protected virtual void OnAttackEndInvoke()
+    protected void OnAttackEndInvoke()
     {
         AttackEnded?.Invoke();
     }
     
-    protected virtual void OnStickStartInvoke()
+    protected void OnStickStartInvoke()
     {
         StickStarted?.Invoke();
     }
    
-    protected virtual void OnEnemyDeactivatedInvoke()
+    protected void OnEnemyDeactivatedInvoke()
     {
         EnemyDeactivated?.Invoke();
     }
     
-    protected virtual void OnMovementResetInvoke()
+    protected void OnMovementResetInvoke()
     {
         MovementReseted?.Invoke();
     }

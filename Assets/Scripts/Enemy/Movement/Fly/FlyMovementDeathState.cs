@@ -35,7 +35,7 @@ public class FlyMovementDeathState: EnemyMovementBaseState
   
     public override void CheckForStateChange()
     {
-        if (Position.y < -6f)
+        if (Position.y < -6f) // TODO: MAGIC number
         {
             _owner.SwitchState();
         }
