@@ -13,6 +13,16 @@ MonoBehaviour:
   m_Name: GameConfig
   m_EditorClassIdentifier: 
   <IsTestStartWave>k__BackingField: 0
-  <TestStartWave>k__BackingField: 12
+  <TestStartWave>k__BackingField: 13
   <FireflyExplosionRadius>k__BackingField: 0.8
   <FireflyExplosionDuration>k__BackingField: 0.36
+  <IntroStageSkip>k__BackingField: 1
+  <IntroStageDuration>k__BackingField: 2
+  <PrepareInStageSkip>k__BackingField: 0
+  <PrepareInStageDuration>k__BackingField: 0.5
+  <PrepareOutStageSkip>k__BackingField: 0
+  <PrepareOutStageDuration>k__BackingField: 0.5
+  <GameoverInStageSkip>k__BackingField: 0
+  <GameoverInStageDuration>k__BackingField: 0.5
+  <GameoverOutStageSkip>k__BackingField: 0
+  <GameoverOutStageDuration>k__BackingField: 0.7

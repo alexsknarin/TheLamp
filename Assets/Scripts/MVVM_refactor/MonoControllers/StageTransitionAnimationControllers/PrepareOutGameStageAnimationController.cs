@@ -7,8 +7,6 @@ public class PrepareOutGameStageAnimationController : MonoBehaviour
     private readonly Color HINT_TEXT_FULL_COLOR = new Color(1, 1, 1, 0.21f);
     private readonly Color HINT_TEXT_OFF_COLOR = new Color(1, 1, 1, 0.0f);
     [Header("Settings")]
-    [SerializeField] private bool _skip = false;   
-    [SerializeField] private float _duration;
     [SerializeField] private TextFader _waveText;
     [SerializeField] private GameObject _upgradeButtonsPanel;
     [SerializeField] private FadableButtonPresentation _upgradeHealthButtonPresentation;
@@ -17,12 +15,16 @@ public class PrepareOutGameStageAnimationController : MonoBehaviour
     [SerializeField] private TMP_Text _hintText1;
     [SerializeField] private TMP_Text _hintText2;
     [SerializeField] private TMP_Text _hintText3;
+    private bool _skip = false;   
+    private float _duration;
     private float _localTime;
     private bool _isPlaying;
     public event Action PrepareOutFinished;
     
-    public void Play()
+    public void Play(bool skip, float duration)
     {
+        _skip = skip;
+        _duration = duration;
         _waveText.SetVisibilityLevel(1);
         
         _upgradeHealthButtonPresentation.SetVisibilityLevel(1);

@@ -53,29 +53,29 @@ public class GameStageView : MonoBehaviour, IInitializable
     }
 
     // View Model Event Handlers
-    private void OnIntroStarted(float normalizedHealth)
+    private void OnIntroStarted(bool skipStage, float duration, float normalizedHealth)
     {
-        _introGameStageAnimationController.Play(normalizedHealth);
+        _introGameStageAnimationController.Play(skipStage, duration, normalizedHealth);
     }
 
-    private void OnPrepareInStarted(bool isUpgradeUiRequired, int waveNum)
+    private void OnPrepareInStarted(bool skipStage, float duration, bool isUpgradeUiRequired, int waveNum)
     {
-        _prepareInGameStageAnimationController.Play(isUpgradeUiRequired, waveNum);
+        _prepareInGameStageAnimationController.Play(skipStage, duration, isUpgradeUiRequired, waveNum);
     }
 
-    private void OnPrepareOutStarted()
+    private void OnPrepareOutStarted(bool skipStage, float duration)
     {
-        _prepareOutGameStageAnimationController.Play();   
+        _prepareOutGameStageAnimationController.Play(skipStage, duration);   
     }
 
-    private void OnGameOverInStarted(Vector3 enemyPosition)
+    private void OnGameOverInStarted(bool skipStage, float duration, Vector3 enemyPosition)
     {
-        _gameOverInGameStageAnimationController.Play(enemyPosition);
+        _gameOverInGameStageAnimationController.Play(skipStage, duration, enemyPosition);
     }
 
-    private void OnGameOverOutStarted()
+    private void OnGameOverOutStarted(bool skipStage, float duration)
     {
-        _gameOverOutGameStageAnimationController.Play();
+        _gameOverOutGameStageAnimationController.Play(skipStage, duration);
     }
 
     private void OnAdvertisementStarted()

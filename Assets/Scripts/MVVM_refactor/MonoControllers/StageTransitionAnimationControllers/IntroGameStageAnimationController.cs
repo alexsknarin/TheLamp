@@ -5,8 +5,6 @@ using UnityEngine.Rendering;
 public class IntroGameStageAnimationController : MonoBehaviour, IInitializable
 {
     [Header("Settings")]
-    [SerializeField] private bool _skip = false;   
-    [SerializeField] private float _duration;
     [SerializeField] private float _cameraStartZPosition = -7.1f;
     [SerializeField] private float _cameraEndZPosition = -5.88f;
     [SerializeField] private float _startExposure = -8;
@@ -33,6 +31,8 @@ public class IntroGameStageAnimationController : MonoBehaviour, IInitializable
     [SerializeField] private FadableButtonPresentation _enableDataButton;
     [SerializeField] private FadableButtonPresentation _disableDataButton;
     [SerializeField] private GameObject _upgradeUi;
+    private bool _skip = false;   
+    private float _duration;
     private Material _lampAttackZoneMaterial;
     private UnityEngine.Rendering.Universal.ColorAdjustments _colorAdjustments;
     private float _localTime;
@@ -55,8 +55,11 @@ public class IntroGameStageAnimationController : MonoBehaviour, IInitializable
         _isPlaying = false;
     }
     
-    public void Play(float normalizedHealth)
+    public void Play(bool skip, float duration, float normalizedHealth)
     {
+        _skip = skip;
+        _duration = duration;
+        
         _lampGlassObject.SetActive(true);
         _lampFracturedGlassObject.SetActive(false);
         
