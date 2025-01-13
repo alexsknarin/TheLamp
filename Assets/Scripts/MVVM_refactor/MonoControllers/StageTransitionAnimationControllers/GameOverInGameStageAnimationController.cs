@@ -5,8 +5,6 @@ using UnityEngine.Rendering;
 public class GameOverInGameStageAnimationController : MonoBehaviour
 {
     [Header("Settings")]
-    [SerializeField] private bool _skip = false;   
-    [SerializeField] private float _duration;
     [SerializeField] private float _lampDestructionDuration = 3;
     [SerializeField] private float _cameraStartZPosition = -5.88f;
     [SerializeField] private float _cameraEndZPosition = -7.1f;
@@ -28,6 +26,8 @@ public class GameOverInGameStageAnimationController : MonoBehaviour
     [SerializeField] private GameObject _ingameUi;
     [Header("Lamp")]
     [SerializeField] private LampDeathAnimation _lampDeathAnimation;
+    private bool _skip = false;   
+    private float _duration;
     private UnityEngine.Rendering.Universal.ColorAdjustments _colorAdjustments;
     private float _localTime;
     private bool _isPlaying;
@@ -49,8 +49,11 @@ public class GameOverInGameStageAnimationController : MonoBehaviour
         _isPlaying = false;
     }
 
-    public void Play(Vector3 enemyPosition)
+    public void Play(bool skip, float duration, Vector3 enemyPosition)
     {
+        _skip = skip;
+        _duration = duration;
+        
         if (_skip)
         {
             SetFinalState();

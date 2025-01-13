@@ -4,9 +4,11 @@ using UnityEngine;
 public class GameStageViewModel : IDisposable
 {
     private GameModel _gameModel;
-    public GameStageViewModel(GameModel gameModel)
+    private IGameConfigService _gameConfigService;
+    public GameStageViewModel(GameModel gameModel, IGameConfigService gameConfigService)
     {
         _gameModel = gameModel;
+        _gameConfigService = gameConfigService;
         _gameModel.GameStageStateChanged += OnGameStageStateChanged;
     }
 
@@ -14,12 +16,17 @@ public class GameStageViewModel : IDisposable
     {
         _gameModel.GameStageStateChanged -= OnGameStageStateChanged;
     }
-
-    public event Action<float> IntroStarted;
-    public event Action<bool, int> PrepareInStarted;
-    public event Action PrepareOutStarted;
-    public event Action<Vector3> GameOverInStarted;
-    public event Action GameOverOutStarted;
+    
+    public delegate void IntroStartedEvent(bool skipStage, float duration, float normalizedHealth);
+    public delegate void PrepareInStartedEvent(bool skipStage, float duration, bool isUpgradeUiRequired, int waveNum);
+    public delegate void PrepareOutStartedEvent(bool skipStage, float duration);
+    public delegate void GameOverInStartedEvent(bool skipStage, float duration, Vector3 lastEnemyPosition);
+    public delegate void GameOverOutStartedEvent(bool skipStage, float duration);
+    public event IntroStartedEvent IntroStarted;
+    public event PrepareInStartedEvent PrepareInStarted;
+    public event PrepareOutStartedEvent PrepareOutStarted;
+    public event GameOverInStartedEvent GameOverInStarted;
+    public event GameOverOutStartedEvent GameOverOutStarted;
     public event Action AdvertisementStarted;
 
 
@@ -59,19 +66,38 @@ public class GameStageViewModel : IDisposable
         switch (newState)
         {
             case GameStageState.Intro:
-                IntroStarted?.Invoke((float)_gameModel.LampHealth / (float)_gameModel.LampMaxHealth);
+                IntroStarted?.Invoke(
+                    _gameConfigService.GameConfig.IntroStageSkip,
+                    _gameConfigService.GameConfig.IntroStageDuration,
+                    (float)_gameModel.LampHealth / (float)_gameModel.LampMaxHealth
+                    );
                 break;
             case GameStageState.PrepareIn:
-                PrepareInStarted?.Invoke(_gameModel.UpgradePoints>0, _gameModel.Wave);
+                PrepareInStarted?.Invoke(
+                    _gameConfigService.GameConfig.PrepareInStageSkip,
+                    _gameConfigService.GameConfig.PrepareInStageDuration,
+                    _gameModel.UpgradePoints>0, 
+                    _gameModel.Wave
+                    );
                 break;
             case GameStageState.PrepareOut:
-                PrepareOutStarted?.Invoke();
+                PrepareOutStarted?.Invoke(
+                    _gameConfigService.GameConfig.PrepareOutStageSkip,
+                    _gameConfigService.GameConfig.PrepareOutStageDuration
+                    );
                 break;
             case GameStageState.GameOverIn:
-                GameOverInStarted?.Invoke(_gameModel.LastEnemyPosition);
+                GameOverInStarted?.Invoke(
+                    _gameConfigService.GameConfig.GameoverInStageSkip,
+                    _gameConfigService.GameConfig.GameoverInStageDuration,
+                    _gameModel.LastEnemyPosition
+                    );
                 break;
             case GameStageState.GameOverOut:
-                GameOverOutStarted?.Invoke();
+                GameOverOutStarted?.Invoke(
+                    _gameConfigService.GameConfig.GameoverOutStageSkip,
+                    _gameConfigService.GameConfig.GameoverOutStageDuration
+                    );
                 break;
             case GameStageState.Advertisement:
                 AdvertisementStarted?.Invoke();

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 // TODO: Remeake without MONOBHEAVIOR ??? SO + Tickable - after bosses are made into prefabs
+// Settings to configs
 
 public class EnemyController : MonoBehaviour, IInitializable
 {
@@ -49,6 +50,7 @@ public class EnemyController : MonoBehaviour, IInitializable
     }
     
     // Events
+    public event Action AttackClicked;
     public event Action WaveStarted;
     public event Action<EnemyBase> EnemySpawned;
     public event Action<EnemyBase> EnemyDied;
@@ -197,6 +199,8 @@ public class EnemyController : MonoBehaviour, IInitializable
     {
         // TODO: blocked attack support
         // we will use blocked bool as a parameter to have the only one method to call attack
+        
+        AttackClicked?.Invoke();
         
         int attackPower = Converters.PowerToAttackPower(power);
         if (attackPower > 0)

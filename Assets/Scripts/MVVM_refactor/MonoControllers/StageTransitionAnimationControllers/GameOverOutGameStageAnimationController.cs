@@ -3,9 +3,6 @@ using UnityEngine;
 
 public class GameOverOutGameStageAnimationController : MonoBehaviour
 {
-    [Header("Settings")]
-    [SerializeField] private bool _skip = false;   
-    [SerializeField] private float _duration;
     [Header("UI")]
     [SerializeField] private GameObject _gameOverUi;
     [SerializeField] private TextFader _gameOverText;
@@ -13,14 +10,18 @@ public class GameOverOutGameStageAnimationController : MonoBehaviour
     [SerializeField] private FadableButtonPresentation _restartWithAdButton;
     [SerializeField] private FadableButtonPresentation _restartNoAdButton;
     [SerializeField] private FadableButtonPresentation _exitButton;
+    private bool _skip = false;   
+    private float _duration;
 
     private float _localTime;
     private bool _isPlaying;
     
     public event Action GameoverOutFinished;
 
-    public void Play()
+    public void Play(bool skip, float duration)
     {
+        _skip = skip;
+        _duration = duration;
         _localTime = 0;
         _isPlaying = true;
     }

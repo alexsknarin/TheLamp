@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "SOGameConfigProviderService", menuName = "Configs/SOGameConfigProviderService")]
-public class SoGameConfigProviderService : ScriptableObject, IGameConfigProviderService
+public class SoGameConfigProvider : ScriptableObject, IGameConfigProvider
 {
     [field:SerializeField] public SpawnQueueData SpawnQueueData { get; private set; }
     [field:SerializeField] public ScoreConfig ScoreConfig { get; private set; }

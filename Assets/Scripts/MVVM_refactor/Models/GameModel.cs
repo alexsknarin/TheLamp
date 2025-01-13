@@ -63,11 +63,12 @@ public class GameModel : IDisposable, ILampDeadEventProviderService
         _scoresCollectionHandler.ScoreChanged -= OnScoreChanged;
     }
     
-
+    // Events
     public event Action<GameState> GameStateChanged;
     public event Action<GameStageState> GameStageStateChanged;
     public event Action<int> LampLevelChanged;
     public event Action<float> PowerChanged;
+    public event Action UpgradeClicked;
     public event Action<int> LampHealthChanged;
     public event Action<int> LampMaxHealthChanged;
     public event Action<GlassDamageData> LampGlassDamageChanged;
@@ -295,6 +296,7 @@ public class GameModel : IDisposable, ILampDeadEventProviderService
 
     public void HandleHealthUpgrade()
     {
+        UpgradeClicked?.Invoke();
         if (UpgradePoints <= 0)
         {
             Debug.LogWarning("GameModel: Health: Not enough upgrade points!");
@@ -319,6 +321,7 @@ public class GameModel : IDisposable, ILampDeadEventProviderService
 
     public void HandleCooldownUpgrade()
     {
+        UpgradeClicked?.Invoke();
         if (UpgradePoints <= 0)
         {
             Debug.LogWarning("Not enough upgrade points");
@@ -342,6 +345,7 @@ public class GameModel : IDisposable, ILampDeadEventProviderService
 
     public void HandleAttackDistanceUpgrade()
     {
+        UpgradeClicked?.Invoke();
         if (UpgradePoints <= 0)
         {
             Debug.LogWarning("Not enough upgrade points");

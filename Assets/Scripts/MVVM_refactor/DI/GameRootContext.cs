@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Diagnostics.Tracing;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -6,7 +7,7 @@ public class GameRootContext : MonoBehaviour
 {
     [Header("Data")]
     [SerializeField] private GoogleSheetsDataReader _googleSheetsDataReader;
-    [SerializeField] private SoGameConfigProviderService _gameConfigProviderService;
+    [FormerlySerializedAs("_gameConfigProviderService")] [SerializeField] private SoGameConfigProvider _gameConfigProvider;
     [SerializeField] private DefaultGameStateData _defaultGameStateData;
     [SerializeField] private DefaultGameSettingsData _defaultGameSettingsData;
     [Header("Views")]
@@ -40,107 +41,49 @@ public class GameRootContext : MonoBehaviour
     [SerializeField] private Megabeetle _megabeetle;
     [SerializeField] private MegabeetleMovement _megabeetleMovement;
     [SerializeField] private Dragonfly _dragonfly;
-    
-    private PlayerAttackHandler _playerAttackHandler;
+
+    private CoroutineHost _coroutineHost;
+
+    private IGameSettingsProviderService _gameSettingsProviderService;
     private GameSettingsService _gameSettingsService;
     private UGSAuthenticationService _ugsAuthenticationService;
-    
-    private IGameSettingsProviderService _gameSettingsProviderService;
+    private IGameStateProviderService _gameStateProviderService;
+    private GameConfigService _gameConfigService;
+    private HapticFeedbackService _hapticFeedbackService;
+    private PlayerAttackHandler _playerAttackHandler;
+    private ScoresCollectionHandler _scoresCollectionHandler;
+    private GameModel _gameModel;
     private GameSettingsModel _gameSettingsModel;
     private GameSettingsViewModel _gameSettingsViewModel;
-    private IGameStateProviderService _gameStateProviderService;
     private GameStageViewModel _gameStageViewModel;
     private GameStateViewModel _gameStateViewModel;
     private PlayerGameplayViewModel _playerGameplayViewModel;
-    private GameConfigService _gameConfigService;
     private PlayerAttackViewModel _playerAttackViewModel;
-    private ScoresCollectionHandler _scoresCollectionHandler;
     private PlayerUpgradeViewModel _playerUpgradeViewModel;
     private GameOverViewModel _gameOverViewModel;
-    private GameModel _gameModel;
+    private HapticFeedbackEventListener _hapticFeedbackEventListener;
 
-    private List<IDisposable> _disposables = new List<IDisposable>();
-    private List<ITickable> _tickables = new List<ITickable>();
+    private List<IDisposable> _disposables = new();
+    private List<ITickable> _tickables = new();
     
     private void Awake()
     {
         Application.targetFrameRate = 60;
         Screen.sleepTimeout = SleepTimeout.NeverSleep;
-        CoroutineHost coroutineHost = GetComponent<CoroutineHost>();
+        _coroutineHost = GetComponent<CoroutineHost>();
         
         Debug.Log("------------------------------------------");
-        Debug.Log("------ Starting Game Initialization ------");
-        Debug.Log("------ Game Settings Initialization ------");
-        _gameSettingsProviderService = new PlayerPrefsGameSettingsProviderService(_defaultGameSettingsData.GameSettings);
-        _gameSettingsModel = new GameSettingsModel(_gameSettingsProviderService.Get());
-        _gameSettingsService = new GameSettingsService(_gameSettingsProviderService, _gameSettingsModel);
-        _gameSettingsService.Initialize();
-        _gameSettingsViewModel = new GameSettingsViewModel(_gameSettingsModel);
-        _disposables.Add(_gameSettingsViewModel);
-        _gameSettingsViewModel.Initialize();
-        
-        Debug.Log("------ UI Initialization ------");
-        _consentSettingsViewUI.Bind(_gameSettingsViewModel);
-        _consentSettingsViewUI.Initialize();
-        
-        Debug.Log("------ Analytics Initialization ------");
-        _ugsAuthenticationService = new UGSAuthenticationService();
-        _ugsAuthenticationService.Initialize();
-        _unityAnalyticsService.Construct(_gameSettingsService, _ugsAuthenticationService);
-        _unityAnalyticsService.Initialize(); 
-        
-        
         Debug.Log("------ Game Initialization ------");
-        // Game Config
-        _gameConfigService = new GameConfigService(_gameConfigProviderService);
-        _enemyController.Construct(_gameConfigService);
-        _lampMovementController.Initialize();
-        // Game State       
-        _gameStateProviderService = new PlayerPrefsGameStateProviderService(_defaultGameStateData.GameState);
-        _playerAttackHandler = new PlayerAttackHandler(coroutineHost);
-        _scoresCollectionHandler = new ScoresCollectionHandler(_gameConfigService);
-        _gameModel = new GameModel(
-            _gameStateProviderService, 
-            _enemyController, 
-            _gameConfigService, 
-            _playerAttackHandler, 
-            _playerCollidersPropertyController,
-            _playerEnemyInteractionHandler,
-            _lampMovementController,
-            _scoresCollectionHandler);
-        _tickables.Add(_playerAttackHandler);
-        _lampHealthBarController.Initialize();
-        _gameStageViewModel = new GameStageViewModel(_gameModel);
-        _disposables.Add(_gameStageViewModel);
-        _gameStageView.Bind(_gameStageViewModel);
-        _gameStageView.Initialize();
-        _playerAttackViewModel = new PlayerAttackViewModel(_gameModel);
-        _playerAttackUIView.Bind(_playerAttackViewModel);
-        _gameStateViewModel = new GameStateViewModel(_gameModel);
-        _gameStateView.Bind(_gameStateViewModel);
-        _playerGameplayViewModel = new PlayerGameplayViewModel(_gameModel);
-        _lampAttackView.Bind(_playerGameplayViewModel, _gameConfigService);
-        _lampAttackView.Initialize();
-        _lampCooldownView.Bind(_playerGameplayViewModel);
-        _lampCooldownView.Initialize();
-        _lampBlockedModeView.Bind(_playerGameplayViewModel);
-        _disposables.Add(_playerGameplayViewModel);
-        _lampHealthBarView.Bind(_playerGameplayViewModel);
-        _playerEnemyInteractionHandler.Initialize();
-        _lampDamageViewUI.Bind(_playerGameplayViewModel);
-        _lampDamageView.Bind(_playerGameplayViewModel);
-        _lampEmissionController.Initialize();
-        _scoresCollectionHandler.Initialize();
-        _disposables.Add(_scoresCollectionHandler);
-        _playerGameplayViewUI.Bind(_playerGameplayViewModel);
-        _playerGameplayViewUI.Initialize();
-        _playerUpgradeViewModel = new PlayerUpgradeViewModel(_gameModel, _gameConfigService);
-        _playerUpgradeViewUI.Bind(_playerUpgradeViewModel);
-        _playerUpgradeViewUI.Initialize();
-        _gameOverViewModel = new GameOverViewModel(_gameModel);
-        _gameOverViewUI.Bind(_gameOverViewModel);
-        _gameOverViewUI.Initialize();
-        
+
+        ServicesSetup();
+        HandlersSetup();
+        ControllersSetup();
+        GameModelSetup();
+        ViewModelsSetup();
+        BindViews();
+        EventListenersSetup();
+
+
         // Bosses TMP
         _megamothling.Initialize();                                          // TODO: factory should do initialization AND construct
         _wasp.Construct(_gameModel);
@@ -154,6 +97,122 @@ public class GameRootContext : MonoBehaviour
         // Load Game Config
         _googleSheetsDataReader.OnDataLoadedEvent += OnGameConfigLoaded;
         _googleSheetsDataReader.Initialize();
+    }
+
+    private void ServicesSetup()
+    {
+        // Game Settings
+        _gameSettingsProviderService = new PlayerPrefsGameSettingsProviderService(_defaultGameSettingsData.GameSettings);
+        _gameSettingsModel = new GameSettingsModel(_gameSettingsProviderService.Get());
+        _gameSettingsService = new GameSettingsService(_gameSettingsProviderService, _gameSettingsModel);
+        _gameSettingsService.Initialize();
+        
+        // Game Services - Analytics
+        _ugsAuthenticationService = new UGSAuthenticationService();
+        _ugsAuthenticationService.Initialize();
+        _unityAnalyticsService.Construct(_gameSettingsService, _ugsAuthenticationService);
+        _unityAnalyticsService.Initialize();
+        
+        // Game Config
+        _gameConfigService = new GameConfigService(_gameConfigProvider);
+        
+        // Game State
+        _gameStateProviderService = new PlayerPrefsGameStateProviderService(_defaultGameStateData.GameState);
+        
+        // Haptic
+        _hapticFeedbackService = new HapticFeedbackService();
+    }
+
+    private void HandlersSetup()
+    {
+        _playerAttackHandler = new PlayerAttackHandler(_coroutineHost);
+        _tickables.Add(_playerAttackHandler);
+        _scoresCollectionHandler = new ScoresCollectionHandler(_gameConfigService);
+        _playerEnemyInteractionHandler.Initialize();
+        _scoresCollectionHandler.Initialize();
+        _disposables.Add(_scoresCollectionHandler);
+    }
+
+    private void ControllersSetup()
+    {
+        _enemyController.Construct(_gameConfigService);
+        _lampMovementController.Initialize();
+        _lampHealthBarController.Initialize();
+        _lampEmissionController.Initialize();
+    }
+
+    private void GameModelSetup()
+    {
+        _gameModel = new GameModel(
+            _gameStateProviderService, 
+            _enemyController, 
+            _gameConfigService, 
+            _playerAttackHandler, 
+            _playerCollidersPropertyController,
+            _playerEnemyInteractionHandler,
+            _lampMovementController,
+            _scoresCollectionHandler);
+    }
+
+    private void ViewModelsSetup()
+    {
+        _gameSettingsViewModel = new GameSettingsViewModel(_gameSettingsModel);
+        _disposables.Add(_gameSettingsViewModel);
+        _gameSettingsViewModel.Initialize();
+        _gameStageViewModel = new GameStageViewModel(_gameModel, _gameConfigService);
+        _disposables.Add(_gameStageViewModel);
+        _playerAttackViewModel = new PlayerAttackViewModel(_gameModel);
+        _gameStateViewModel = new GameStateViewModel(_gameModel);
+        _playerGameplayViewModel = new PlayerGameplayViewModel(_gameModel);
+        _disposables.Add(_playerGameplayViewModel);
+        _playerUpgradeViewModel = new PlayerUpgradeViewModel(_gameModel, _gameConfigService);
+        _gameOverViewModel = new GameOverViewModel(_gameModel);
+    }
+
+    private void BindViews()
+    {
+        _consentSettingsViewUI.Bind(_gameSettingsViewModel);
+        _consentSettingsViewUI.Initialize();
+        
+        _gameStageView.Bind(_gameStageViewModel);
+        _gameStageView.Initialize();
+        
+        _playerAttackUIView.Bind(_playerAttackViewModel);
+        _gameStateView.Bind(_gameStateViewModel);
+        
+        _lampAttackView.Bind(_playerGameplayViewModel, _gameConfigService);
+        _lampAttackView.Initialize();
+        
+        _lampCooldownView.Bind(_playerGameplayViewModel);
+        _lampCooldownView.Initialize();
+        
+        _lampBlockedModeView.Bind(_playerGameplayViewModel);
+        
+        
+        _lampHealthBarView.Bind(_playerGameplayViewModel);
+        _lampDamageViewUI.Bind(_playerGameplayViewModel);
+        _lampDamageView.Bind(_playerGameplayViewModel);
+
+        
+        
+        _playerGameplayViewUI.Bind(_playerGameplayViewModel);
+        _playerGameplayViewUI.Initialize();
+        
+        _playerUpgradeViewUI.Bind(_playerUpgradeViewModel);
+        _playerUpgradeViewUI.Initialize();
+        
+        _gameOverViewUI.Bind(_gameOverViewModel);
+        _gameOverViewUI.Initialize();
+    }
+
+    private void EventListenersSetup()
+    {
+        _hapticFeedbackEventListener = new HapticFeedbackEventListener(
+            _hapticFeedbackService,
+            _enemyController,
+            _gameModel
+        );
+        _disposables.Add(_hapticFeedbackEventListener);
     }
 
     private void Update()
