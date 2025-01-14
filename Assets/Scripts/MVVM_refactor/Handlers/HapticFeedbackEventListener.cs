@@ -1,5 +1,3 @@
-using UnityEngine;
-
 public class HapticFeedbackEventListener: IDisposable
 {
     private HapticFeedbackService _hapticFeedbackService;
