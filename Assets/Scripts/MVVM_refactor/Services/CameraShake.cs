@@ -66,8 +66,8 @@ public class CameraShake : MonoBehaviour
     private void Start()
     {
         _originalPos = transform.position;
-        _waspShakeDistance = Mathf.Abs(_waspProximityMaxDistance - _waspProximityMinDistance);
-        _megamothlingShakeDistance = Mathf.Abs(_megamothlingProximityMaxDistance - _megamothlingProximityMinDistance);
+        // _waspShakeDistance = Mathf.Abs(_waspProximityMaxDistance - _waspProximityMinDistance);
+        // _megamothlingShakeDistance = Mathf.Abs(_megamothlingProximityMaxDistance - _megamothlingProximityMinDistance);
         _megabeetleShakeDistance = Mathf.Abs(_megabeetleProximityMaxDistance - _megabeetleProximityMinDistance);
         _dragonflyShakeDistance = Mathf.Abs(_dragonflyProximityMaxDistance - _dragonflyProximityMinDistance);
         _isShaking = false;
@@ -83,17 +83,17 @@ public class CameraShake : MonoBehaviour
             }
         }
         
-        if (_waspTransform.position.z < _waspProximityMaxDistance)
-        {
-            float shakephase = Mathf.Abs(_waspTransform.position.z - _waspProximityMaxDistance) / _waspShakeDistance;
-            transform.position = Vector3.Lerp(_originalPos, _originalPos + (Vector3)(Random.insideUnitCircle * _waspProximityShakeAmplitude), shakephase);   
-        }
+        // if (_waspTransform.position.z < _waspProximityMaxDistance)
+        // {
+        //     float shakephase = Mathf.Abs(_waspTransform.position.z - _waspProximityMaxDistance) / _waspShakeDistance;
+        //     transform.position = Vector3.Lerp(_originalPos, _originalPos + (Vector3)(Random.insideUnitCircle * _waspProximityShakeAmplitude), shakephase);   
+        // }
         
-        if (_megamothlingTransform.position.z < _megamothlingProximityMaxDistance)
-        {
-            float shakephase = Mathf.Abs(_megamothlingTransform.position.z - _megamothlingProximityMaxDistance) / _megamothlingShakeDistance;
-            transform.position = Vector3.Lerp(_originalPos, _originalPos + (Vector3)(Random.insideUnitCircle * _megamothlingProximityShakeAmplitude), shakephase);   
-        }
+        // if (_megamothlingTransform.position.z < _megamothlingProximityMaxDistance)
+        // {
+        //     float shakephase = Mathf.Abs(_megamothlingTransform.position.z - _megamothlingProximityMaxDistance) / _megamothlingShakeDistance;
+        //     transform.position = Vector3.Lerp(_originalPos, _originalPos + (Vector3)(Random.insideUnitCircle * _megamothlingProximityShakeAmplitude), shakephase);   
+        // }
         
         if (_megabeetleTransform.position.z < _megabeetleProximityMaxDistance)
         {

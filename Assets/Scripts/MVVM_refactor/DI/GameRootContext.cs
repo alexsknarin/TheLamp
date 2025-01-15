@@ -62,6 +62,8 @@ public class GameRootContext : MonoBehaviour
     private PlayerUpgradeViewModel _playerUpgradeViewModel;
     private GameOverViewModel _gameOverViewModel;
     private HapticFeedbackEventListener _hapticFeedbackEventListener;
+    // Factories
+    private BossCameraShakeFactory _bossCameraShakeFactory;
 
     private List<IDisposable> _disposables = new();
     private List<ITickable> _tickables = new();
@@ -97,6 +99,14 @@ public class GameRootContext : MonoBehaviour
         // Load Game Config
         _googleSheetsDataReader.OnDataLoadedEvent += OnGameConfigLoaded;
         _googleSheetsDataReader.Initialize();
+        
+        
+        // Factory test
+        var bossCameraShakeFactory = new BossCameraShakeFactory();
+        var cameraShakeStrategy = bossCameraShakeFactory.CreateCameraShakeStrategy(_wasp);
+        cameraShakeStrategy.Execute();
+        cameraShakeStrategy.Execute();
+        
     }
 
     private void ServicesSetup()
