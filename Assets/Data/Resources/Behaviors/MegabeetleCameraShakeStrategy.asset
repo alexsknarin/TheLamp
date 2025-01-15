@@ -9,51 +9,51 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fdc3046ea46ce8f48a1dfda3005080c9, type: 3}
-  m_Name: MegamothlingCameraShakeStrategy
+  m_Script: {fileID: 11500000, guid: 0ac8c144f9696b04c954d2c44736c761, type: 3}
+  m_Name: MegabeetleCameraShakeStrategy
   m_EditorClassIdentifier: 
-  _megamothlingProximityShakeAmplitude: 0.0095
-  _megamothlingProximityCurve:
+  _megabeetleProximityShakeAmplitude: 0.0145
+  _megabeetleProximityCurve:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
       time: 0
       value: 0
-      inSlope: 9.146153
-      outSlope: 9.146153
+      inSlope: 6.2077975
+      outSlope: 6.2077975
       tangentMode: 34
       weightedMode: 0
       inWeight: 0
       outWeight: 0.33333334
     - serializedVersion: 3
-      time: 0.052
-      value: 0.4756
-      inSlope: 5.569851
-      outSlope: 5.569851
+      time: 0.12426312
+      value: 0.77140033
+      inSlope: 3.684
+      outSlope: 3.684
       tangentMode: 34
       weightedMode: 0
       inWeight: 0.33333334
       outWeight: 0.33333334
     - serializedVersion: 3
-      time: 0.3
-      value: 0.97
-      inSlope: 0.00305908
-      outSlope: 0.00305908
+      time: 0.30293143
+      value: 0.97869176
+      inSlope: -0.08690754
+      outSlope: -0.08690754
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.17458111
+      inWeight: 0.1722414
+      outWeight: 0.33333334
     - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: 0
-      outSlope: 0
+      time: 0.99645996
+      value: 0.003566742
+      inSlope: -0.110135816
+      outSlope: -0.110135816
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0.33333334
+      inWeight: 0.12034895
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  _megamothlingProximityMaxDistance: -0.5
-  _megamothlingProximityMinDistance: -6
+  _megabeetleProximityMaxDistance: -0.5
+  _megabeetleProximityMinDistance: -6

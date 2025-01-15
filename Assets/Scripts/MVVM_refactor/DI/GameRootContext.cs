@@ -27,6 +27,7 @@ public class GameRootContext : MonoBehaviour
     [Header("Services")]
     [SerializeField] private UnityAnalyticsService _unityAnalyticsService;
     [SerializeField] private LampPositionProviderService _lampPositionProviderService;
+    [SerializeField] private CameraShakeService _cameraShakeService;
     [Header("Controllers")]
     [SerializeField] private LampHealthBarController _lampHealthBarController;
     [SerializeField] private EnemyController _enemyController;
@@ -50,6 +51,8 @@ public class GameRootContext : MonoBehaviour
     private IGameStateProviderService _gameStateProviderService;
     private GameConfigService _gameConfigService;
     private HapticFeedbackService _hapticFeedbackService;
+    
+    private CameraShakeEventListener _cameraShakeEventListener;
     private PlayerAttackHandler _playerAttackHandler;
     private ScoresCollectionHandler _scoresCollectionHandler;
     private GameModel _gameModel;
@@ -100,12 +103,13 @@ public class GameRootContext : MonoBehaviour
         _googleSheetsDataReader.OnDataLoadedEvent += OnGameConfigLoaded;
         _googleSheetsDataReader.Initialize();
         
+        // Camera Shake Factories
+        _bossCameraShakeFactory = new BossCameraShakeFactory();
         
-        // Factory test
-        var bossCameraShakeFactory = new BossCameraShakeFactory();
-        var cameraShakeStrategy = bossCameraShakeFactory.CreateCameraShakeStrategy(_wasp);
-        cameraShakeStrategy.Execute();
-        cameraShakeStrategy.Execute();
+        // Camera Shake Test
+        _cameraShakeEventListener = new CameraShakeEventListener(_gameModel, _enemyController, _cameraShakeService, _bossCameraShakeFactory);
+        _disposables.Add(_cameraShakeEventListener);
+        
         
     }
 
@@ -131,6 +135,10 @@ public class GameRootContext : MonoBehaviour
         
         // Haptic
         _hapticFeedbackService = new HapticFeedbackService();
+        
+        // Camera Shake
+        _cameraShakeService.Initialize();
+
     }
 
     private void HandlersSetup()

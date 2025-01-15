@@ -2150,7 +2150,7 @@ GameObject:
   - component: {fileID: 330585545}
   - component: {fileID: 330585544}
   - component: {fileID: 330585547}
-  - component: {fileID: 330585548}
+  - component: {fileID: 330585549}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -2276,7 +2276,7 @@ MonoBehaviour:
     m_MipBias: 0
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
---- !u!114 &330585548
+--- !u!114 &330585549
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2285,7 +2285,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 330585543}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 14798b0bea50baa42b7bf7a82e5dbe48, type: 3}
+  m_Script: {fileID: 11500000, guid: 0619c77178f66514096ae5078f8a698d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _shakeAmplitude: 0.041
@@ -2323,208 +2323,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  _megamothlingProximityShakeAmplitude: 0.0095
-  _megamothlingProximityCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 9.067239
-      outSlope: 9.067239
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 0.052562077
-      value: 0.4765929
-      inSlope: 4.2830486
-      outSlope: 4.2830486
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 0.99645996
-      value: 0.003566742
-      inSlope: -0.110135816
-      outSlope: -0.110135816
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.12034895
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  _megamothlingTransform: {fileID: 455450631368144097}
-  _megamothlingProximityMaxDistance: -0.5
-  _megamothlingProximityMinDistance: -6
-  _waspProximityShakeAmplitude: 0.016
-  _waspProximityCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0.6849934
-      outSlope: 0.6849934
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0.07864388
-    - serializedVersion: 3
-      time: 0.3453325
-      value: 0.9422986
-      inSlope: 0.7308313
-      outSlope: 0.7308313
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.08478886
-      outWeight: 0.11356936
-    - serializedVersion: 3
-      time: 0.65127236
-      value: 0.9479257
-      inSlope: -0.592473
-      outSlope: -0.592473
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.090806305
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 0.9987793
-      value: 0.0014038086
-      inSlope: -0.21677527
-      outSlope: -0.21677527
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.119703874
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  _waspTransform: {fileID: 1966729913}
-  _waspProximityMaxDistance: -2
-  _waspProximityMinDistance: -5.1
-  _megabeetleProximityShakeAmplitude: 0.0145
-  _megabeetleProximityCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 6.2077975
-      outSlope: 6.2077975
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 0.12426312
-      value: 0.77140033
-      inSlope: 3.684
-      outSlope: 3.684
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 0.30293143
-      value: 0.97869176
-      inSlope: -0.08690754
-      outSlope: -0.08690754
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.1722414
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 0.99645996
-      value: 0.003566742
-      inSlope: -0.110135816
-      outSlope: -0.110135816
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.12034895
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  _megabeetleTransform: {fileID: 1657476338}
-  _megabeetleProximityMaxDistance: -0.5
-  _megabeetleProximityMinDistance: -6
-  _dragonflyProximityShakeAmplitude: 0.02
-  _dragonflyProximityCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0.00017645955
-      inSlope: 0.84823096
-      outSlope: 0.84823096
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0.37252033
-    - serializedVersion: 3
-      time: 0.1096901
-      value: 0.29381064
-      inSlope: 3.3377516
-      outSlope: 3.3377516
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.35963094
-    - serializedVersion: 3
-      time: 0.24146275
-      value: 0.68277586
-      inSlope: 2.1573586
-      outSlope: 2.1573586
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 0.44409865
-      value: 0.95895386
-      inSlope: 0.5381785
-      outSlope: 0.5381785
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.26671538
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 0.59223485
-      value: 0.99537736
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 0.8147958
-      value: 0.8421026
-      inSlope: -1.6155794
-      outSlope: -1.6155794
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.20127176
-      outWeight: 0.22745284
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: -8.762808
-      outSlope: -8.762808
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.10911489
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  _dragonflyTransform: {fileID: 1720334790}
-  _dragonflyProximityMaxDistance: -1.1
-  _dragonflyProximityMinDistance: -8.1
 --- !u!1 &341007278
 GameObject:
   m_ObjectHideFlags: 0
@@ -6191,7 +5989,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _googleSheetsDataReader: {fileID: 1037269786}
-  _gameConfigProviderService: {fileID: 11400000, guid: 3f3efefe08686ca42805053945790993,
+  _gameConfigProvider: {fileID: 11400000, guid: 3f3efefe08686ca42805053945790993,
     type: 2}
   _defaultGameStateData: {fileID: 11400000, guid: 3ff52fe343e4e854fa10511aaf897c66,
     type: 2}
@@ -6212,6 +6010,7 @@ MonoBehaviour:
   _playerGameplayViewUI: {fileID: 1291610362}
   _unityAnalyticsService: {fileID: 1595482322}
   _lampPositionProviderService: {fileID: 1934066263}
+  _cameraShakeService: {fileID: 330585549}
   _lampHealthBarController: {fileID: 969163320}
   _enemyController: {fileID: 2110688078}
   _playerCollidersPropertyController: {fileID: 1934066258}
@@ -9495,12 +9294,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 458789824}
   m_LocalEulerAnglesHint: {x: 3.939, y: -4.88, z: -175.831}
---- !u!4 &1657476338 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 63842585345263973, guid: b7287b02b66117d41a9878933f72b080,
-    type: 3}
-  m_PrefabInstance: {fileID: 1180215396}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &1657476345 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1362534363766813855, guid: b7287b02b66117d41a9878933f72b080,
@@ -9755,12 +9548,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1037585458}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &1720334790 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 7331037268719211253, guid: 5abdecc64f378fa42a25d190ec1a9a13,
-    type: 3}
-  m_PrefabInstance: {fileID: 5730853438032948457}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1733480388
 GameObject:
   m_ObjectHideFlags: 0
@@ -9965,8 +9752,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f7068c7d2ed1f84db4f302f148a127b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _skip: 0
-  _duration: 2
   _cameraStartZPosition: -7.1
   _cameraEndZPosition: -5.88
   _startExposure: -8
@@ -10270,8 +10055,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b24545b221f14f1499ca9b8cf59109b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _skip: 1
-  _duration: 0.5
   _waveText: {fileID: 537243428}
   _upgradeButtonsPanel: {fileID: 1256375426}
   _upgradeHealthButtonPresentation: {fileID: 949593468}
@@ -10292,8 +10075,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f9e8a42fc42b0240b1f990966f9098b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _skip: 1
-  _duration: 0.5
   _waveText: {fileID: 537243428}
   _upgradeButtonsPanel: {fileID: 1256375426}
   _upgradeHealthButtonPresentation: {fileID: 949593468}
@@ -10314,8 +10095,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28340f31946cbbc4fa5c7722941a7e5e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _skip: 0
-  _duration: 5.5
   _lampDestructionDuration: 3
   _cameraStartZPosition: -5.88
   _cameraEndZPosition: -7.1
@@ -10459,8 +10238,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7405230c44d45ea4f9c067c8f6f1b208, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _skip: 0
-  _duration: 0.7
   _gameOverUi: {fileID: 1889387872}
   _gameOverText: {fileID: 1969879655}
   _gameOverButtonsAnimationCurve:
@@ -11869,12 +11646,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1959573595}
   m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
---- !u!4 &1966729913 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 6534722627740550364, guid: db082986f50fad64f90c5d3f0bd3ddf3,
-    type: 3}
-  m_PrefabInstance: {fileID: 2929489649649167473}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &1966729921 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1177802453113491699, guid: db082986f50fad64f90c5d3f0bd3ddf3,
@@ -13019,12 +12790,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4059483228dbeef4f8ff831eaac8c910, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!4 &455450631368144097 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 9117976817519763160, guid: 9db76073115006346a2830d6a3cb2b06,
-    type: 3}
-  m_PrefabInstance: {fileID: 455450631368144086}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2929489649649167473
 PrefabInstance:
   m_ObjectHideFlags: 0

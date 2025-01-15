@@ -54,7 +54,7 @@ public class EnemyController : MonoBehaviour, IInitializable
     public event Action WaveStarted;
     public event Action<EnemyBase> EnemySpawned;
     public event Action<EnemyBase> EnemyDied;
-    public event Action<EnemyBase> BossSpawned;
+    public event Action<BossBase> BossSpawned;
     public event Action<EnemyBase> BossDied;
     public event Action FireflyExplosionStarted;
     public event Action WaveEnded;

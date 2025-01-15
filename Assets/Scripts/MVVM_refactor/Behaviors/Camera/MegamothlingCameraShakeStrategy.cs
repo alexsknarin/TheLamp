@@ -1,34 +1,37 @@
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "MegamothlingCameraShakeStrategy", menuName = "Camera Shake/MegamothlingCameraShakeStrategy")]
-public class MegamothlingCameraShakeStrategy : ScriptableObject, IInitializable, ICameraShakeStrategy
+public class MegamothlingCameraShakeStrategy : BaseCameraShakeStrategy
 {
     [SerializeField] private float _megamothlingProximityShakeAmplitude;
     [SerializeField] private AnimationCurve _megamothlingProximityCurve;
     [SerializeField] private float _megamothlingProximityMaxDistance;
     [SerializeField] private float _megamothlingProximityMinDistance;
     private Transform _bossTransform;
-    private float _megamothlingShakeDistance;
+    private float _shakeDistance;
     
-    public void Construct(Transform bossTransform)
+    public override void Construct(Transform bossTransform)
     {
+        Debug.Log("Megamothling Strategy Construct");
         _bossTransform = bossTransform;
     }
     
-    public void Initialize()
+    public override void Initialize()
     {
-        _megamothlingShakeDistance = Mathf.Abs(_megamothlingProximityMaxDistance - _megamothlingProximityMinDistance);
+        Debug.Log("Megamothling Strategy Initialize");
+        _shakeDistance = Mathf.Abs(_megamothlingProximityMaxDistance - _megamothlingProximityMinDistance);
     }
 
-    public Vector3 Execute()
+    public override Vector3 Execute()
     {
         Debug.Log("Megamothling Strategy Execute");
         if (_bossTransform.position.z < _megamothlingProximityMaxDistance)
         {
             float shakephase = Mathf.Abs(
-                _bossTransform.position.z - _megamothlingProximityMaxDistance) / _megamothlingShakeDistance;
+                _bossTransform.position.z - _megamothlingProximityMaxDistance) / _shakeDistance;
             Vector3 displace = Vector3.Lerp(
-                Vector3.zero, Vector3.zero + (Vector3)(Random.insideUnitCircle * _megamothlingProximityShakeAmplitude), 
+                Vector3.zero, 
+                (Vector3)(Random.insideUnitCircle * _megamothlingProximityShakeAmplitude), 
                 shakephase
                 );
             return displace;
