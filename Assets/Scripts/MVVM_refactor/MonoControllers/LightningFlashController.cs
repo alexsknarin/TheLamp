@@ -1,9 +1,6 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class LightningFlash : MonoBehaviour
+public class LightningFlashController : MonoBehaviour, IInitializable
 {
     [SerializeField] private Light _light;  
     [SerializeField] private float _flashDuration;
@@ -12,25 +9,12 @@ public class LightningFlash : MonoBehaviour
     private float _localTime;
     private bool _isPlaying = false;
 
-    private void OnEnable()
-    {
-        // TODO: inject with DI
-        // EnemyManager.OnBossAppearEvent += Play;
-        // EnemyManager.OnBossDeathEvent += Play;
-    }
-    
-    private void OnDisable()
-    {
-        // EnemyManager.OnBossAppearEvent -= Play;
-        // EnemyManager.OnBossDeathEvent -= Play;
-    }
-    
-    private void Start()
+    public void Initialize()
     {
         _light.enabled = false;
     }
 
-    private void Play(EnemyBase enemy)
+    public void Play()
     {
         _light.enabled = true;
         _light.intensity = 0;
@@ -39,6 +23,7 @@ public class LightningFlash : MonoBehaviour
     }
 
     // Update is called once per frame
+
     void Update()
     {
         if (_isPlaying)

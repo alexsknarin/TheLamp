@@ -35,6 +35,7 @@ public class GameRootContext : MonoBehaviour
     [SerializeField] private PlayerEnemyInteractionHandler _playerEnemyInteractionHandler;
     [SerializeField] private LampEmissionController _lampEmissionController;
     [SerializeField] private LampMovementController _lampMovementController;
+    [SerializeField] private LightningFlashController _lightningFlashController;
     [Header("Bosses")]
     [SerializeField] private Megamothling _megamothling;
     [SerializeField] private Wasp _wasp;
@@ -65,6 +66,7 @@ public class GameRootContext : MonoBehaviour
     private PlayerUpgradeViewModel _playerUpgradeViewModel;
     private GameOverViewModel _gameOverViewModel;
     private HapticFeedbackEventListener _hapticFeedbackEventListener;
+    private LightningFlashEventsListener _lightningFlashEventsListener;
     // Factories
     private BossCameraShakeFactory _bossCameraShakeFactory;
 
@@ -109,6 +111,9 @@ public class GameRootContext : MonoBehaviour
         // Camera Shake Test
         _cameraShakeEventListener = new CameraShakeEventListener(_gameModel, _enemyController, _cameraShakeService, _bossCameraShakeFactory);
         _disposables.Add(_cameraShakeEventListener);
+        
+        _lightningFlashEventsListener = new LightningFlashEventsListener(_enemyController, _lightningFlashController);
+        _disposables.Add(_lightningFlashEventsListener);
         
         
     }
@@ -157,6 +162,7 @@ public class GameRootContext : MonoBehaviour
         _lampMovementController.Initialize();
         _lampHealthBarController.Initialize();
         _lampEmissionController.Initialize();
+        _lightningFlashController.Initialize();
     }
 
     private void GameModelSetup()
