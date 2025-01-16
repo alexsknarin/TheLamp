@@ -8,4 +8,5 @@ public interface IAnalyticsService
     public void SubmitLampDamageEvent(EnemyBase enemy);
     public void SubmitHealthUpgradeEvent();
     public void SubmitCoolUpgradeEvent();
+    public void SubmitAttackUpgradeEvent();
 }

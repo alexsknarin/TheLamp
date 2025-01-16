@@ -42,7 +42,7 @@ public class HapticFeedbackEventListener: IDisposable
         _hapticFeedbackService.DoExplosionVibration();
     }
 
-    private void OnLampDamaged(float obj)
+    private void OnLampDamaged(float obj, EnemyBase enemy)
     {
         _hapticFeedbackService.DoDamageVibration();
     }

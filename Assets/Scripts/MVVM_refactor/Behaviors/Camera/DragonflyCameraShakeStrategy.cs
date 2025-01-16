@@ -12,19 +12,16 @@ public class DragonflyCameraShakeStrategy: BaseCameraShakeStrategy
     
     public override void Construct(Transform bossTransform)
     {
-        Debug.Log("Dragonfly Strategy Construct");
         _bossTransform = bossTransform;
     }
 
     public override void Initialize()
     {
-        Debug.Log("Dragonfly Strategy Initialize");
         _shakeDistance = Mathf.Abs(_dragonflyProximityMaxDistance - _dragonflyProximityMinDistance);
     }
 
     public override Vector3 Execute()
     {
-        Debug.Log("Dragonfly Strategy Execute");
         if (_bossTransform.position.z < _dragonflyProximityMaxDistance)
         {
             float shakePhase = Mathf.Abs(_bossTransform.position.z - _dragonflyProximityMaxDistance) / _shakeDistance;

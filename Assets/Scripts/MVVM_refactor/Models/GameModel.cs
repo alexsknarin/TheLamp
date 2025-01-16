@@ -77,9 +77,15 @@ public class GameModel : IDisposable, ILampDeadEventProviderService
     public event Action<float> LampAttackDistanceChanged;
     public event Action<float> LampCooldownTimeChanged;
     public event Action<float> LampAttackStarted;
-    public event Action<float> LampDamageStarted;
+    public event Action<float, EnemyBase> LampDamageStarted;
     public event Action<Vector3> LampDeathHappened; // TODO: make single event for all lamp death events
     public event Action<EnemyBase> LampDied;
+    public event Action<int> WaveStarted;
+    public event Action<int> WaveEnded;
+    public event Action HealthUpgraded;
+    public event Action CoolDownUpgraded;
+    public event Action AttackDistanceUpgraded;
+    
 
     public int Wave => _currentGameState.Wave;
     public Vector3 LastEnemyPosition { get; private set; }
@@ -316,6 +322,7 @@ public class GameModel : IDisposable, ILampDeadEventProviderService
         if (LampHealth > LampMaxHealth)
         {
             LampMaxHealth = LampHealth;
+            HealthUpgraded?.Invoke();
         }
     }
 
@@ -341,6 +348,7 @@ public class GameModel : IDisposable, ILampDeadEventProviderService
         
         _playerAttackHandler.SetCooldownDuration(LampCooldownTime); // TODO: maybe combine it with PlayCooldown
         _playerAttackHandler.PlayCooldown();
+        CoolDownUpgraded?.Invoke();
     }
 
     public void HandleAttackDistanceUpgrade()
@@ -364,6 +372,7 @@ public class GameModel : IDisposable, ILampDeadEventProviderService
         }
         
         _playerCollidersPropertyController.SetAttackZoneRadius(LampAttackDistance);
+        AttackDistanceUpgraded?.Invoke();
     }
 
     // Game End Handle Methods
@@ -418,6 +427,7 @@ public class GameModel : IDisposable, ILampDeadEventProviderService
         CurrentGameStageState = GameStageState.Wave;
         Debug.Log("Starting Wave: " +_currentGameState.Wave);
         _enemyController.StartWave(_currentGameState.Wave);
+        WaveStarted?.Invoke(_currentGameState.Wave);
     }
 
     // Event Handle Methods
@@ -427,6 +437,7 @@ public class GameModel : IDisposable, ILampDeadEventProviderService
         _currentGameState.Wave++;
         _gameStateProviderService.SaveCurrentState();
         StartPrepareIn();
+        WaveEnded?.Invoke(_currentGameState.Wave);
     }
 
     private void OnPlayerAttackEnded()
@@ -472,7 +483,7 @@ public class GameModel : IDisposable, ILampDeadEventProviderService
             // Or calculate it in the LampMovementController because it knows about lamp position
             
             _lampMovementController.AddForce(-enemy.ProvideImpactPoint().normalized.x * 2); 
-            LampDamageStarted?.Invoke(_gameConfigService.PlayerConfig.DamageDuration);
+            LampDamageStarted?.Invoke(_gameConfigService.PlayerConfig.DamageDuration, enemy);
         }
     }
 

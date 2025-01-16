@@ -12,19 +12,16 @@ public class WaspCameraShakeStrategy : BaseCameraShakeStrategy
     
     public override void Construct(Transform bossTransform)
     {
-        Debug.Log("Wasp Strategy Construct");
         _bossTransform = bossTransform;
     }
     
     public override void Initialize()
     {
-        Debug.Log("Wasp Strategy Initialize");
         _shakeDistance = Mathf.Abs(_waspProximityMaxDistance - _waspProximityMinDistance);
     }
     
     public override Vector3 Execute()
     {
-        Debug.Log("Wasp Strategy Execute");
         if (_bossTransform.position.z < _waspProximityMaxDistance)
         {
             float shakePhase = Mathf.Abs(_bossTransform.position.z - _waspProximityMaxDistance) / _shakeDistance;

@@ -25,7 +25,7 @@ public class GameRootContext : MonoBehaviour
     [SerializeField] private GameOverViewUI _gameOverViewUI;
     [SerializeField] private PlayerGameplayViewUI _playerGameplayViewUI;
     [Header("Services")]
-    [SerializeField] private UnityAnalyticsService _unityAnalyticsService;
+    
     [SerializeField] private LampPositionProviderService _lampPositionProviderService;
     [SerializeField] private CameraShakeService _cameraShakeService;
     [Header("Controllers")]
@@ -52,6 +52,7 @@ public class GameRootContext : MonoBehaviour
     private IGameStateProviderService _gameStateProviderService;
     private GameConfigService _gameConfigService;
     private HapticFeedbackService _hapticFeedbackService;
+    private UnityAnalyticsService _unityAnalyticsService;
     
     private CameraShakeEventListener _cameraShakeEventListener;
     private PlayerAttackHandler _playerAttackHandler;
@@ -67,6 +68,7 @@ public class GameRootContext : MonoBehaviour
     private GameOverViewModel _gameOverViewModel;
     private HapticFeedbackEventListener _hapticFeedbackEventListener;
     private LightningFlashEventsListener _lightningFlashEventsListener;
+    private AnalyticsEventListener _analyticsEventListener;
     // Factories
     private BossCameraShakeFactory _bossCameraShakeFactory;
 
@@ -86,6 +88,7 @@ public class GameRootContext : MonoBehaviour
         HandlersSetup();
         ControllersSetup();
         GameModelSetup();
+        FactoriesSetup();
         ViewModelsSetup();
         BindViews();
         EventListenersSetup();
@@ -98,28 +101,20 @@ public class GameRootContext : MonoBehaviour
         _waspMovement.Construct(_lampPositionProviderService);
         _megabeetle.Initialize();
         _megabeetleMovement.Construct(_gameModel);
-        _dragonfly.Initialize();                
+        _dragonfly.Initialize();
 
-        
+
         // Load Game Config
         _googleSheetsDataReader.OnDataLoadedEvent += OnGameConfigLoaded;
         _googleSheetsDataReader.Initialize();
-        
-        // Camera Shake Factories
-        _bossCameraShakeFactory = new BossCameraShakeFactory();
-        
-        // Camera Shake Test
-        _cameraShakeEventListener = new CameraShakeEventListener(_gameModel, _enemyController, _cameraShakeService, _bossCameraShakeFactory);
-        _disposables.Add(_cameraShakeEventListener);
-        
-        _lightningFlashEventsListener = new LightningFlashEventsListener(_enemyController, _lightningFlashController);
-        _disposables.Add(_lightningFlashEventsListener);
-        
-        
+
     }
 
     private void ServicesSetup()
     {
+        // Game Config
+        _gameConfigService = new GameConfigService(_gameConfigProvider);
+        
         // Game Settings
         _gameSettingsProviderService = new PlayerPrefsGameSettingsProviderService(_defaultGameSettingsData.GameSettings);
         _gameSettingsModel = new GameSettingsModel(_gameSettingsProviderService.Get());
@@ -129,12 +124,15 @@ public class GameRootContext : MonoBehaviour
         // Game Services - Analytics
         _ugsAuthenticationService = new UGSAuthenticationService();
         _ugsAuthenticationService.Initialize();
-        _unityAnalyticsService.Construct(_gameSettingsService, _ugsAuthenticationService);
+        _unityAnalyticsService = new UnityAnalyticsService(
+            _gameSettingsService,
+            _ugsAuthenticationService,
+            _coroutineHost,
+            _gameConfigService
+            );
+        _disposables.Add(_unityAnalyticsService);
         _unityAnalyticsService.Initialize();
-        
-        // Game Config
-        _gameConfigService = new GameConfigService(_gameConfigProvider);
-        
+
         // Game State
         _gameStateProviderService = new PlayerPrefsGameStateProviderService(_defaultGameStateData.GameState);
         
@@ -176,6 +174,12 @@ public class GameRootContext : MonoBehaviour
             _playerEnemyInteractionHandler,
             _lampMovementController,
             _scoresCollectionHandler);
+    }
+
+    private void FactoriesSetup()
+    {
+        // Camera Shake Factories
+        _bossCameraShakeFactory = new BossCameraShakeFactory();
     }
 
     private void ViewModelsSetup()
@@ -237,6 +241,15 @@ public class GameRootContext : MonoBehaviour
             _gameModel
         );
         _disposables.Add(_hapticFeedbackEventListener);
+        
+        // Camera Shake Test
+        _cameraShakeEventListener = new CameraShakeEventListener(_gameModel, _enemyController, _cameraShakeService, _bossCameraShakeFactory);
+        _disposables.Add(_cameraShakeEventListener);
+        
+        _lightningFlashEventsListener = new LightningFlashEventsListener(_enemyController, _lightningFlashController);
+        _disposables.Add(_lightningFlashEventsListener);
+        
+        _analyticsEventListener = new AnalyticsEventListener(_unityAnalyticsService, _gameModel);
     }
 
     private void Update()

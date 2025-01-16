@@ -6008,7 +6008,6 @@ MonoBehaviour:
   _playerUpgradeViewUI: {fileID: 1291610360}
   _gameOverViewUI: {fileID: 1291610361}
   _playerGameplayViewUI: {fileID: 1291610362}
-  _unityAnalyticsService: {fileID: 1595482322}
   _lampPositionProviderService: {fileID: 1934066263}
   _cameraShakeService: {fileID: 330585549}
   _lampHealthBarController: {fileID: 969163320}
@@ -8999,7 +8998,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1595482320}
-  - component: {fileID: 1595482322}
   m_Layer: 0
   m_Name: GameServices
   m_TagString: Untagged
@@ -9022,18 +9020,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1595482322
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1595482319}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5326b0212424aa044ad8e795ca99010f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1602371410
 GameObject:
   m_ObjectHideFlags: 0

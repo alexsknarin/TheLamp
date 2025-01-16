@@ -12,19 +12,16 @@ public class MegamothlingCameraShakeStrategy : BaseCameraShakeStrategy
     
     public override void Construct(Transform bossTransform)
     {
-        Debug.Log("Megamothling Strategy Construct");
         _bossTransform = bossTransform;
     }
     
     public override void Initialize()
     {
-        Debug.Log("Megamothling Strategy Initialize");
         _shakeDistance = Mathf.Abs(_megamothlingProximityMaxDistance - _megamothlingProximityMinDistance);
     }
 
     public override Vector3 Execute()
     {
-        Debug.Log("Megamothling Strategy Execute");
         if (_bossTransform.position.z < _megamothlingProximityMaxDistance)
         {
             float shakephase = Mathf.Abs(

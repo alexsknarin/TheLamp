@@ -12,19 +12,16 @@ public class MegabeetleCameraShakeStrategy: BaseCameraShakeStrategy
 
     public override void Construct(Transform bossTransform)
     {
-        Debug.Log("Megabeetle Strategy Construct");
         _bossTransform = bossTransform;
     }
 
     public override void Initialize()
     {
-        Debug.Log("Megabeetle Strategy Initialize");
         _shakeDistance = Mathf.Abs(_megabeetleProximityMaxDistance - _megabeetleProximityMinDistance);
     }
 
     public override Vector3 Execute()
     {
-        Debug.Log("Megabeetle Strategy Execute");
         if (_bossTransform.position.z < _megabeetleProximityMaxDistance)
         {
             float shakephase = Mathf.Abs(_bossTransform.position.z - _megabeetleProximityMaxDistance) / _shakeDistance;

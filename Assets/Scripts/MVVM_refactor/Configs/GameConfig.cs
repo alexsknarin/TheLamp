@@ -3,6 +3,8 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "GameConfig", menuName = "Configs/GameConfig")]
 public class GameConfig : ScriptableObject
 {
+    [field:Header("Analytics Settings")]
+    [field:SerializeField] public float AnalyticsTimeOutTime { get; private set; } = 10f;
     [field:Header("General Enemy Controller Settings")]
     [field:SerializeField] public bool IsTestStartWave { get; private set; } = false;
     [field:SerializeField] public int TestStartWave { get; private set; } = 0;

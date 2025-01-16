@@ -43,7 +43,7 @@ public class CameraShakeEventListener: IDisposable
         _cameraShakeService.StartDamageShake();
     }
 
-    private void OnLampDamageStarted(float obj)
+    private void OnLampDamageStarted(float obj, EnemyBase enemy)
     {
         _cameraShakeService.StartDamageShake();
     }

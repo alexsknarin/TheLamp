@@ -4,7 +4,7 @@ using Unity.Services.Core;
 using Unity.Services.Core.Environments;
 using UnityEngine;
 
-public class UGSAuthenticationService : IUGSAuthenticationService, IInitializable // Remove monobehaviour - use DI container
+public class UGSAuthenticationService : IUGSAuthenticationService, IInitializable
 {
     public bool IsConnected { get; private set; }
 

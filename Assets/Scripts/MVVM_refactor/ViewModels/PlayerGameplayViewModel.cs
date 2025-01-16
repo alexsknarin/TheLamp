@@ -103,7 +103,7 @@ public class PlayerGameplayViewModel : IDisposable
         IsBlocked.Value = isBlocked;
     }
 
-    private void OnLampDamageStarted(float duration)
+    private void OnLampDamageStarted(float duration, EnemyBase enemy)
     {
         LampDamaged?.Invoke(duration);
     }
