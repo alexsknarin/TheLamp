@@ -73,8 +73,6 @@ public class SpawnQueueGenerator
             if (bossMegabeetleCount + bossMegamothlingCount + bossWaspCount + bossDragonflyCount > 0)
             {
                 totalEnemies++;
-                Debug.Log($"MegaBeetle: {bossMegabeetleCount}, MegaMothling: {bossMegamothlingCount}, Wasp: {bossWaspCount}, Dragonfly: {bossDragonflyCount}");
-                Debug.Log("Boss added");
             }
 
             int bossPosition = 10000;
