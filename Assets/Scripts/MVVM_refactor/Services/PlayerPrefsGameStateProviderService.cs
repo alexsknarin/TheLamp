@@ -59,6 +59,7 @@ public class PlayerPrefsGameStateProviderService : IGameStateProviderService
         gameState.LampAttackDistance = _gameState.LampAttackDistance;
         gameState.LampCooldownTime = _gameState.LampCooldownTime;
         gameState.LampLevel = _gameState.LampLevel;
+        gameState.LampUpgradePoints = _gameState.LampUpgradePoints;
         
         string gameStateJson = JsonUtility.ToJson(gameState);
         PlayerPrefs.SetString("GameState", gameStateJson);

@@ -1,13 +1,11 @@
 using System.Collections.Generic;
-using System.Diagnostics.Tracing;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 public class GameRootContext : MonoBehaviour
 {
     [Header("Data")]
     [SerializeField] private GoogleSheetsDataReader _googleSheetsDataReader;
-    [FormerlySerializedAs("_gameConfigProviderService")] [SerializeField] private SoGameConfigProvider _gameConfigProvider;
+    [SerializeField] private SoGameConfigProvider _gameConfigProvider;
     [SerializeField] private DefaultGameStateData _defaultGameStateData;
     [SerializeField] private DefaultGameSettingsData _defaultGameSettingsData;
     [Header("Views")]
@@ -36,6 +34,7 @@ public class GameRootContext : MonoBehaviour
     [SerializeField] private LampEmissionController _lampEmissionController;
     [SerializeField] private LampMovementController _lampMovementController;
     [SerializeField] private LightningFlashController _lightningFlashController;
+    [SerializeField] private FakeAd _fakeAd;
     [Header("Bosses")]
     [SerializeField] private Megamothling _megamothling;
     [SerializeField] private Wasp _wasp;
@@ -45,8 +44,9 @@ public class GameRootContext : MonoBehaviour
     [SerializeField] private Dragonfly _dragonfly;
 
     private CoroutineHost _coroutineHost;
-
+    
     private IGameSettingsProviderService _gameSettingsProviderService;
+    private AdvertisementBaseService _advertisementService;
     private GameSettingsService _gameSettingsService;
     private UGSAuthenticationService _ugsAuthenticationService;
     private IGameStateProviderService _gameStateProviderService;
@@ -69,6 +69,7 @@ public class GameRootContext : MonoBehaviour
     private HapticFeedbackEventListener _hapticFeedbackEventListener;
     private LightningFlashEventsListener _lightningFlashEventsListener;
     private AnalyticsEventListener _analyticsEventListener;
+    private AdvertisementEventListener _advertisementEventListener;
     // Factories
     private BossCameraShakeFactory _bossCameraShakeFactory;
 
@@ -141,6 +142,10 @@ public class GameRootContext : MonoBehaviour
         
         // Camera Shake
         _cameraShakeService.Initialize();
+        
+        // Advertisement
+        _advertisementService = new FakeAdService(_fakeAd);
+        _advertisementService.Initialize();
 
     }
 
@@ -250,6 +255,9 @@ public class GameRootContext : MonoBehaviour
         _disposables.Add(_lightningFlashEventsListener);
         
         _analyticsEventListener = new AnalyticsEventListener(_unityAnalyticsService, _gameModel);
+        
+        _advertisementEventListener = new AdvertisementEventListener(_advertisementService, _gameModel);
+        _disposables.Add(_advertisementEventListener);
     }
 
     private void Update()

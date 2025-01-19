@@ -49,7 +49,7 @@ public class GameOverInGameStageAnimationController : MonoBehaviour
         _isPlaying = false;
     }
 
-    public void Play(bool skip, float duration, Vector3 enemyPosition)
+    public void Play(bool skip, bool isAdNeeded, float duration, Vector3 enemyPosition)
     {
         _skip = skip;
         _duration = duration;
@@ -71,7 +71,27 @@ public class GameOverInGameStageAnimationController : MonoBehaviour
         
         _localTime = 0;
         _isPlaying = true;
-
+        
+        if (isAdNeeded)
+        {
+            _restartWithAdButton.gameObject.SetActive(true);
+            var pos = _restartNoAdButton.transform.localPosition;
+            pos.y = -503;                                                       // TODO: fix magic numbers
+            _restartNoAdButton.transform.localPosition = pos;
+            pos = _exitButton.transform.localPosition;
+            pos.y = -685;                                                       // TODO: fix magic numbers
+            _exitButton.transform.localPosition = pos;
+        }
+        else
+        {
+            _restartWithAdButton.gameObject.SetActive(false);
+            var pos = _restartNoAdButton.transform.localPosition;
+            pos.y = -263;                                                       // TODO: fix magic numbers
+            _restartNoAdButton.transform.localPosition = pos;
+            pos = _exitButton.transform.localPosition;
+            pos.y = -445;                                                       // TODO: fix magic numbers
+            _exitButton.transform.localPosition = pos;
+        }
     }
 
     private void Update()

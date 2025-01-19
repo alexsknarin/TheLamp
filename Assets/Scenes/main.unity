@@ -6017,6 +6017,7 @@ MonoBehaviour:
   _lampEmissionController: {fileID: 23663153}
   _lampMovementController: {fileID: 1934066248}
   _lightningFlashController: {fileID: 104459}
+  _fakeAd: {fileID: 1516525759}
   _megamothling: {fileID: 455450631368144087}
   _wasp: {fileID: 1966729921}
   _waspMovement: {fileID: 1966729922}
@@ -9711,7 +9712,7 @@ MonoBehaviour:
   _prepareOutGameStageAnimationController: {fileID: 1736170228}
   _gameOverInGameStageAnimationController: {fileID: 1736170229}
   _gameOverOutGameStageAnimationController: {fileID: 1736170230}
-  _advertisementAnimationController: {fileID: 1736170231}
+  _advertisementStageAnimation: {fileID: 1736170231}
 --- !u!4 &1736170225
 Transform:
   m_ObjectHideFlags: 0
@@ -10263,13 +10264,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1736170223}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6d53b050df604fb418d14c69e465336c, type: 3}
+  m_Script: {fileID: 11500000, guid: edf05b50edd3b4443a38fe0bdc3498d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _fakeAd: {fileID: 1516525759}
-  _ingameUi: {fileID: 234870344}
   _gameOverUi: {fileID: 1889387872}
-  _waveText: {fileID: 537243422}
 --- !u!4 &1755611450 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 92097553111088338, guid: 556ccd576c35d634e88ba039c8700cfa,

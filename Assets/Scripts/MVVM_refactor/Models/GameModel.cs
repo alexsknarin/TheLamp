@@ -9,7 +9,6 @@ public class GameModel : IDisposable, ILampDeadEventProviderService
     private bool _isLampBlocked;
 
     private bool _isAttacking = false;
-    private bool _isAdPlaying = false;
 
     // Dependencies
     private IGameStateProviderService _gameStateProviderService;
@@ -64,6 +63,7 @@ public class GameModel : IDisposable, ILampDeadEventProviderService
     }
     
     // Events
+    public event Action GameStarted;
     public event Action<GameState> GameStateChanged;
     public event Action<GameStageState> GameStageStateChanged;
     public event Action<int> LampLevelChanged;
@@ -86,9 +86,9 @@ public class GameModel : IDisposable, ILampDeadEventProviderService
     public event Action CoolDownUpgraded;
     public event Action AttackDistanceUpgraded;
     
-
     public int Wave => _currentGameState.Wave;
     public Vector3 LastEnemyPosition { get; private set; }
+    
     public GameState CurrentGameState 
     {
         get => _currentGameState;
@@ -209,6 +209,7 @@ public class GameModel : IDisposable, ILampDeadEventProviderService
         _currentPower = 1.0f;
         LampGlassDamage = _currentGameState.GlassDamageData;
         _lampDamageDataHandler.MaxHealth = _currentGameState.LampMaxHealth;
+        GameStarted?.Invoke();
     }
     
     private void StartPrepareIn()
@@ -261,12 +262,6 @@ public class GameModel : IDisposable, ILampDeadEventProviderService
 
     public void HandleGameOverOutEnd()
     {
-        RestartGame();
-    }
-
-    public void HandleAdvertisementEnd()
-    {
-        _gameStateProviderService.SaveUpgradesOnly();
         RestartGame();
     }
 
@@ -376,23 +371,28 @@ public class GameModel : IDisposable, ILampDeadEventProviderService
     }
 
     // Game End Handle Methods
+
     public void HandleRestartGameWitAdFromGameOver()
     {
-        _isAdPlaying = true;
         CurrentGameStageState = GameStageState.Advertisement;
+    }
+
+    public void HandleAdvertisementEnd()
+    {
+        Debug.Log("Advertisement Ended");
+        _gameStateProviderService.SaveUpgradesOnly();
+        RestartGame();
     }
 
     public void HandleRestartGameNoAdFromGameOver()
     {
         _gameStateProviderService.SaveDefaultState();
-        _isAdPlaying = false;
         CurrentGameStageState = GameStageState.GameOverOut;
     }
 
     public void HandleImmediateRestartGame()
     {
         _gameStateProviderService.SaveDefaultState();
-        _isAdPlaying = false;
         RestartGame();
     }
 

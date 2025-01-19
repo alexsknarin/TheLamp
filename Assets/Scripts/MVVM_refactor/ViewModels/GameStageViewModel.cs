@@ -20,7 +20,7 @@ public class GameStageViewModel : IDisposable
     public delegate void IntroStartedEvent(bool skipStage, float duration, float normalizedHealth);
     public delegate void PrepareInStartedEvent(bool skipStage, float duration, bool isUpgradeUiRequired, int waveNum);
     public delegate void PrepareOutStartedEvent(bool skipStage, float duration);
-    public delegate void GameOverInStartedEvent(bool skipStage, float duration, Vector3 lastEnemyPosition);
+    public delegate void GameOverInStartedEvent(bool skipStage, bool isAdNeeded, float duration, Vector3 lastEnemyPosition);
     public delegate void GameOverOutStartedEvent(bool skipStage, float duration);
     public event IntroStartedEvent IntroStarted;
     public event PrepareInStartedEvent PrepareInStarted;
@@ -54,12 +54,7 @@ public class GameStageViewModel : IDisposable
     {
         _gameModel.HandleGameOverOutEnd();
     }
-
-    public void HandleAdvertisementEnd()
-    {
-        _gameModel.HandleAdvertisementEnd();
-    }
-    
+   
     // Event Handle Methods
     private void OnGameStageStateChanged(GameStageState newState)
     {
@@ -87,8 +82,10 @@ public class GameStageViewModel : IDisposable
                     );
                 break;
             case GameStageState.GameOverIn:
+                bool isAdNeeded = _gameModel.LampLevel > 0 || _gameModel.UpgradePoints > 0;
                 GameOverInStarted?.Invoke(
                     _gameConfigService.GameConfig.GameoverInStageSkip,
+                    isAdNeeded,
                     _gameConfigService.GameConfig.GameoverInStageDuration,
                     _gameModel.LastEnemyPosition
                     );

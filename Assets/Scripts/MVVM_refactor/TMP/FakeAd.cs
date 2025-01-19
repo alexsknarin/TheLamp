@@ -50,8 +50,9 @@ public class FakeAd : MonoBehaviour
             if (phase > 1)
             {
                 _isPlaying = false;
-                gameObject.SetActive(false);
+                Debug.Log("Fake ad: Ad Finished");
                 AdFinished?.Invoke();
+                gameObject.SetActive(false);
                 return;
             }   
             _bgImage.color = Color.Lerp(_startBgColor, _endBgColor, Mathf.Clamp01(phase * 5));

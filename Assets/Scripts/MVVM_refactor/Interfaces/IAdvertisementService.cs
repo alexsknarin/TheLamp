@@ -2,7 +2,7 @@ using System;
 
 public interface IAdvertisementService
 {
-    public event Action OnAdFinishedEvent;
-    public void Initialize();
+    public event Action AdSuccessfullyFinished;
+    public void LoadAd();
     public void ShowAd();
 }
