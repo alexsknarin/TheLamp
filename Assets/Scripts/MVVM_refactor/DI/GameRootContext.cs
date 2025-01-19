@@ -8,6 +8,8 @@ public class GameRootContext : MonoBehaviour
     [SerializeField] private SoGameConfigProvider _gameConfigProvider;
     [SerializeField] private DefaultGameStateData _defaultGameStateData;
     [SerializeField] private DefaultGameSettingsData _defaultGameSettingsData;
+    [Header("Scene Links")]
+    [SerializeField] private Transform _lampTransform;
     [Header("Views")]
     [SerializeField] private ConsentSettingsViewUI _consentSettingsViewUI;
     [SerializeField] private GameStageView _gameStageView;
@@ -23,8 +25,6 @@ public class GameRootContext : MonoBehaviour
     [SerializeField] private GameOverViewUI _gameOverViewUI;
     [SerializeField] private PlayerGameplayViewUI _playerGameplayViewUI;
     [Header("Services")]
-    
-    [SerializeField] private LampPositionProviderService _lampPositionProviderService;
     [SerializeField] private CameraShakeService _cameraShakeService;
     [Header("Controllers")]
     [SerializeField] private LampHealthBarController _lampHealthBarController;
@@ -53,6 +53,7 @@ public class GameRootContext : MonoBehaviour
     private GameConfigService _gameConfigService;
     private HapticFeedbackService _hapticFeedbackService;
     private UnityAnalyticsService _unityAnalyticsService;
+    private LampPositionProviderService _lampPositionProviderService;
     
     private CameraShakeEventListener _cameraShakeEventListener;
     private PlayerAttackHandler _playerAttackHandler;
@@ -107,6 +108,7 @@ public class GameRootContext : MonoBehaviour
 
         // Load Game Config
         _googleSheetsDataReader.OnDataLoadedEvent += OnGameConfigLoaded;
+        _googleSheetsDataReader.Construct(_coroutineHost);
         _googleSheetsDataReader.Initialize();
 
     }
@@ -146,6 +148,9 @@ public class GameRootContext : MonoBehaviour
         // Advertisement
         _advertisementService = new FakeAdService(_fakeAd);
         _advertisementService.Initialize();
+        
+        // Lamp Position
+        _lampPositionProviderService = new LampPositionProviderService(_lampTransform);
 
     }
 

@@ -3,7 +3,8 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Networking;
 
-public class GoogleSheetsDataReader : MonoBehaviour, IInitializable
+[CreateAssetMenu(fileName = "GoogleSheetsDataReader", menuName = "GoogleSheetsDataReader")]
+public class GoogleSheetsDataReader : ScriptableObject, IInitializable
 {
     [SerializeField] private string _sheetId;
     [SerializeField] private string _sheetName;
@@ -11,6 +12,13 @@ public class GoogleSheetsDataReader : MonoBehaviour, IInitializable
     [SerializeField] private bool _useCachedSpawnData;
     [SerializeField] private SpawnQueueData _spawnQueueDataCache;
     private string _sheetData;
+    private CoroutineHost _coroutineHost;
+
+    public void Construct(CoroutineHost coroutineHost)
+    {
+        _coroutineHost = coroutineHost;
+    }
+    
     public event Action OnDataLoadedEvent;
     public string SheetData => _sheetData;
 
@@ -22,7 +30,7 @@ public class GoogleSheetsDataReader : MonoBehaviour, IInitializable
         }
         else
         {
-            StartCoroutine(LoadSheetData());    
+            _coroutineHost.StartCoroutine(LoadSheetData());    
         }
     }
     
