@@ -7,11 +7,11 @@ public class LightningFlashController : MonoBehaviour, IInitializable
     [SerializeField] private AnimationCurve _flashCurve;
     [SerializeField] private float _lightMaxIntensity;
     private float _localTime;
-    private bool _isPlaying = false;
 
     public void Initialize()
     {
         _light.enabled = false;
+        enabled = false;
     }
 
     public void Play()
@@ -19,25 +19,20 @@ public class LightningFlashController : MonoBehaviour, IInitializable
         _light.enabled = true;
         _light.intensity = 0;
         _localTime = 0;
-        _isPlaying = true;
+        enabled = true;
     }
-
-    // Update is called once per frame
 
     void Update()
     {
-        if (_isPlaying)
+        float phase = _localTime / _flashDuration;
+        if (phase > 1)
         {
-            float phase = _localTime / _flashDuration;
-            if (phase > 1)
-            {
-                _light.intensity = 0;        
-                _isPlaying = false;
-                _light.enabled = false;
-            }
-            
-            _light.intensity = _flashCurve.Evaluate(phase) * _lightMaxIntensity;
-            _localTime += Time.deltaTime;
+            _light.intensity = 0;        
+            enabled = false;
+            _light.enabled = false;
         }
+        
+        _light.intensity = _flashCurve.Evaluate(phase) * _lightMaxIntensity;
+        _localTime += Time.deltaTime;
     }
 }

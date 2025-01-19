@@ -1,43 +1,44 @@
 using System;
 using UnityEngine;
 
-public class LampDamageAnimation : MonoBehaviour
+public class LampDamageAnimation : MonoBehaviour, IInitializable
 {
     [SerializeField] private LampEmissionController _lampEmissionController;
-    private bool _isPlaying = false;
     private float _duration;
     private float _localTime = 0;
 
     public event Action Finished;
+
+    public void Initialize()
+    {
+        enabled = false;
+    }
 
     public void Play(float duration)
     {
         _lampEmissionController.IsDamageEnabled = true;
         _lampEmissionController.DamageMix = 1f;
         
-        _isPlaying = true;
+        enabled = true;
         _duration = duration;
         _localTime = 0;
     }
 
-    void Update()
+    private void Update()
     {
-        if (_isPlaying)
+        float phase = _localTime / _duration;
+        if (phase > 1)
         {
-            float phase = _localTime / _duration;
-            if (phase > 1)
-            {
-                _lampEmissionController.DamageMix = 0f;
-                _lampEmissionController.IsDamageEnabled = false;
-                _lampEmissionController.Intensity = 0f;
-                _isPlaying = false;
-                Finished?.Invoke();
-                return;
-            }
-            _lampEmissionController.DamageMix = 1f - Mathf.Clamp(phase * 1.5f, 0, 1);
-            _lampEmissionController.Intensity = 1f - phase;
-            
-            _localTime += Time.deltaTime;    
+            _lampEmissionController.DamageMix = 0f;
+            _lampEmissionController.IsDamageEnabled = false;
+            _lampEmissionController.Intensity = 0f;
+            enabled = false;
+            Finished?.Invoke();
+            return;
         }
+        _lampEmissionController.DamageMix = 1f - Mathf.Clamp(phase * 1.5f, 0, 1);
+        _lampEmissionController.Intensity = 1f - phase;
+        
+        _localTime += Time.deltaTime;    
     }
 }

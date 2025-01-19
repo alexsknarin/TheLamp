@@ -2,7 +2,7 @@ using System;
 using TMPro;
 using UnityEngine;
 
-public class PrepareInGameStageAnimationController : MonoBehaviour
+public class PrepareInGameStageAnimationController : MonoBehaviour, IInitializable
 {
     private readonly Color HINT_TEXT_FULL_COLOR = new Color(1, 1, 1, 0.21f);
     private readonly Color HINT_TEXT_OFF_COLOR = new Color(1, 1, 1, 0.0f);
@@ -19,12 +19,17 @@ public class PrepareInGameStageAnimationController : MonoBehaviour
     private bool _skip = false;   
     private float _duration;
     private float _localTime;
-    private bool _isPlaying;
     private bool _isUpgradeRequired;
     public event Action PrepareInFinished;
-    
+
+    public void Initialize()
+    {
+        enabled = false;
+    }
+
     public void Play(bool skip, float duration, bool isUpgradeRequired, int waveNum)
     {
+        enabled = true;
         _skip = skip;
         _duration = duration;
         _isUpgradeRequired = isUpgradeRequired;
@@ -50,7 +55,6 @@ public class PrepareInGameStageAnimationController : MonoBehaviour
             return;
         }
         _localTime = 0;
-        _isPlaying = true;
     }
 
     private void SetFinalState()
@@ -70,26 +74,23 @@ public class PrepareInGameStageAnimationController : MonoBehaviour
 
     private void Update()
     {
-        if(_isPlaying) 
+        float phase = _localTime / _duration;
+        if (phase > 1)
         {
-            float phase = _localTime / _duration;
-            if (phase > 1)
-            {
-                _isPlaying = false; 
-                SetFinalState();
-                return;
-            }
-            _waveText.SetVisibilityLevel(phase);
-            if (_isUpgradeRequired)
-            {
-                _upgradeHealthButtonPresentation.SetVisibilityLevel(phase);
-                _upgradeAttackButtonPresentation.SetVisibilityLevel(phase);
-                _upgradeCooldownButtonPresentation.SetVisibilityLevel(phase);
-                _hintText1.color = Color.Lerp(HINT_TEXT_OFF_COLOR, HINT_TEXT_FULL_COLOR, phase);
-                _hintText2.color = Color.Lerp(HINT_TEXT_OFF_COLOR, HINT_TEXT_FULL_COLOR, phase);
-                _hintText3.color = Color.Lerp(HINT_TEXT_OFF_COLOR, HINT_TEXT_FULL_COLOR, phase);   
-            }
-            _localTime += Time.deltaTime;
+            enabled = false;
+            SetFinalState();
+            return;
         }
+        _waveText.SetVisibilityLevel(phase);
+        if (_isUpgradeRequired)
+        {
+            _upgradeHealthButtonPresentation.SetVisibilityLevel(phase);
+            _upgradeAttackButtonPresentation.SetVisibilityLevel(phase);
+            _upgradeCooldownButtonPresentation.SetVisibilityLevel(phase);
+            _hintText1.color = Color.Lerp(HINT_TEXT_OFF_COLOR, HINT_TEXT_FULL_COLOR, phase);
+            _hintText2.color = Color.Lerp(HINT_TEXT_OFF_COLOR, HINT_TEXT_FULL_COLOR, phase);
+            _hintText3.color = Color.Lerp(HINT_TEXT_OFF_COLOR, HINT_TEXT_FULL_COLOR, phase);   
+        }
+        _localTime += Time.deltaTime;
     }
 }

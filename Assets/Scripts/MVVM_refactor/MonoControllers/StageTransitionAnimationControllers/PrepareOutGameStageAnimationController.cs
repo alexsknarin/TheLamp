@@ -1,8 +1,9 @@
 using System;
 using TMPro;
 using UnityEngine;
+using UnityEngine.PlayerLoop;
 
-public class PrepareOutGameStageAnimationController : MonoBehaviour
+public class PrepareOutGameStageAnimationController : MonoBehaviour, IInitializable
 {
     private readonly Color HINT_TEXT_FULL_COLOR = new Color(1, 1, 1, 0.21f);
     private readonly Color HINT_TEXT_OFF_COLOR = new Color(1, 1, 1, 0.0f);
@@ -18,9 +19,13 @@ public class PrepareOutGameStageAnimationController : MonoBehaviour
     private bool _skip = false;   
     private float _duration;
     private float _localTime;
-    private bool _isPlaying;
     public event Action PrepareOutFinished;
-    
+
+    public void Initialize()
+    {
+        enabled = false;
+    }
+
     public void Play(bool skip, float duration)
     {
         _skip = skip;
@@ -40,7 +45,7 @@ public class PrepareOutGameStageAnimationController : MonoBehaviour
             return;
         }
         _localTime = 0;
-        _isPlaying = true;
+        enabled = true;
     }
 
     private void SetFinalState()
@@ -59,23 +64,20 @@ public class PrepareOutGameStageAnimationController : MonoBehaviour
 
     private void Update()
     {
-        if(_isPlaying) 
+        float phase = _localTime / _duration;
+        if (phase > 1)
         {
-            float phase = _localTime / _duration;
-            if (phase > 1)
-            {
-                _isPlaying = false;
-                SetFinalState();
-                return;
-            }
-            _waveText.SetVisibilityLevel(1-phase);
-            _upgradeHealthButtonPresentation.SetVisibilityLevel(1-phase);
-            _upgradeAttackButtonPresentation.SetVisibilityLevel(1-phase);
-            _upgradeCooldownButtonPresentation.SetVisibilityLevel(1-phase);
-            _hintText1.color = Color.Lerp(HINT_TEXT_OFF_COLOR, HINT_TEXT_FULL_COLOR, 1-phase);
-            _hintText2.color = Color.Lerp(HINT_TEXT_OFF_COLOR, HINT_TEXT_FULL_COLOR, 1-phase);
-            _hintText3.color = Color.Lerp(HINT_TEXT_OFF_COLOR, HINT_TEXT_FULL_COLOR, 1-phase);
-            _localTime += Time.deltaTime;
+            enabled = false;
+            SetFinalState();
+            return;
         }
+        _waveText.SetVisibilityLevel(1-phase);
+        _upgradeHealthButtonPresentation.SetVisibilityLevel(1-phase);
+        _upgradeAttackButtonPresentation.SetVisibilityLevel(1-phase);
+        _upgradeCooldownButtonPresentation.SetVisibilityLevel(1-phase);
+        _hintText1.color = Color.Lerp(HINT_TEXT_OFF_COLOR, HINT_TEXT_FULL_COLOR, 1-phase);
+        _hintText2.color = Color.Lerp(HINT_TEXT_OFF_COLOR, HINT_TEXT_FULL_COLOR, 1-phase);
+        _hintText3.color = Color.Lerp(HINT_TEXT_OFF_COLOR, HINT_TEXT_FULL_COLOR, 1-phase);
+        _localTime += Time.deltaTime;
     }
 }

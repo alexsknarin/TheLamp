@@ -54,7 +54,6 @@ public class FWaspMovement : MonoBehaviour, IInitializable
 
     private FStateMachine _stateMachine = new();
     private float _colliderRadius = 0.24f;
-    private bool _isPlaying = false;
     // State parameters
     private Side _side = Side.Left;
     private bool _isAnimClipEnded = false;
@@ -198,7 +197,7 @@ public class FWaspMovement : MonoBehaviour, IInitializable
         CreateMovementStates();
         StateMachineSetup();
         
-        _isPlaying = false;
+        enabled = false;
         _isAnimClipEnded = false;
         _isLampDestroyed = false;
         _isDamaged = false;
@@ -207,7 +206,7 @@ public class FWaspMovement : MonoBehaviour, IInitializable
 
     public void Play()
     {
-        _isPlaying = true;
+        enabled = true;
         _isAnimClipEnded = false;
         _side = (Side)Random.Range(0, 2);
     }
@@ -309,8 +308,8 @@ public class FWaspMovement : MonoBehaviour, IInitializable
     private void StateMachineSetup()
     {
         // Enter
-        At(_idleState, _enterLState, () => _isPlaying && _side == Side.Left);
-        At(_idleState, _enterRState, () => _isPlaying && _side == Side.Right);
+        At(_idleState, _enterLState, () => enabled && _side == Side.Left);
+        At(_idleState, _enterRState, () => enabled && _side == Side.Right);
         // Enter to Attacks
         At(_enterLState, _attack01LState, IsAnimationEndedTwoOption01());
         At(_enterLState, _attack03LState, IsAnimationEndedTwoOption02());
@@ -536,7 +535,7 @@ public class FWaspMovement : MonoBehaviour, IInitializable
             {
                 _isAnimClipEnded = false;
                 _isLampDestroyed = false;
-                _isPlaying = false;
+                enabled = false;
                 return true;
             }
             return false;
@@ -645,11 +644,8 @@ public class FWaspMovement : MonoBehaviour, IInitializable
 
     private void Update()
     {
-        if (_isPlaying)
-        {
-            _stateMachine.Tick();
-            _currentStateType = _stateMachine.CurrentStateType.ToString().Replace("FWasp", ""); // DEBUG
-        }
+        _stateMachine.Tick();
+        _currentStateType = _stateMachine.CurrentStateType.ToString().Replace("FWasp", ""); // DEBUG
     }
 
     private void LateUpdate()
@@ -671,7 +667,7 @@ public class FWaspMovement : MonoBehaviour, IInitializable
     // Event Handle Methods
     private void OnDeathStateEnded()
     {
-        _isPlaying = false;
+        enabled = false;
         DeathStateEnded?.Invoke();
     }
 

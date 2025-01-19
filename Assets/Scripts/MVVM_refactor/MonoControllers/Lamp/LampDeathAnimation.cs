@@ -27,8 +27,6 @@ public class LampDeathAnimation : MonoBehaviour
     private Vector3 _hitDirection;
     private Vector3 _fallDirection;
     
-
-    private bool _isPlaying = false;
     private float _duration;
     private float _localTime = 0;
     
@@ -54,6 +52,8 @@ public class LampDeathAnimation : MonoBehaviour
         _fracturedGlassObject.SetActive(false);
 
         _gravityAcceleration = _gravityStartAcceleration;
+        
+        enabled = false;
     }
 
     public void Play(float duration, Vector3 enemyPosition)
@@ -87,7 +87,7 @@ public class LampDeathAnimation : MonoBehaviour
         _gravityAcceleration = _gravityStartAcceleration;
         _duration = duration;
         _localTime = 0;
-        _isPlaying = true;
+        enabled = true;
     }
 
     private void InitializeBones()
@@ -115,32 +115,29 @@ public class LampDeathAnimation : MonoBehaviour
     
     private void Update()
     {
-        if (_isPlaying)
+        float phase = _localTime / _duration;
+        if (phase > 1)
         {
-            float phase = _localTime / _duration;
-            if (phase > 1)
-            {
-                _isPlaying = false;
-                _lampEmissionController.Intensity = 0;
-                _lampEmissionController.DamageMix = 0;
-                _lampEmissionController.IsDamageEnabled = false;
-                return;
-            }
-        
-            float phaseAnimated = _animCurve.Evaluate(phase);
-            _lampEmissionController.Intensity = phaseAnimated;
-            _lampEmissionController.DamageMix = _damageAnimCurve.Evaluate(phase);
-            
-            _fallDirection = Vector3.Lerp(_hitDirection, Vector3.down, phase).normalized;
-            
-            for (int i = 0; i < _bones.Length; i++)
-            {
-                _bones[i].position += _boneDirections[i] * (_destructionSpeed * _boneSpeeds[i] * Time.deltaTime) + _fallDirection * _gravityAcceleration;
-                _gravityAcceleration += 0.0019f * Time.deltaTime;
-                _bones[i].Rotate(Vector3.forward, _boneRotations[i] * Time.deltaTime);
-            }
-        
-            _localTime += Time.deltaTime;
+            enabled = false;
+            _lampEmissionController.Intensity = 0;
+            _lampEmissionController.DamageMix = 0;
+            _lampEmissionController.IsDamageEnabled = false;
+            return;
         }
+    
+        float phaseAnimated = _animCurve.Evaluate(phase);
+        _lampEmissionController.Intensity = phaseAnimated;
+        _lampEmissionController.DamageMix = _damageAnimCurve.Evaluate(phase);
+        
+        _fallDirection = Vector3.Lerp(_hitDirection, Vector3.down, phase).normalized;
+        
+        for (int i = 0; i < _bones.Length; i++)
+        {
+            _bones[i].position += _boneDirections[i] * (_destructionSpeed * _boneSpeeds[i] * Time.deltaTime) + _fallDirection * _gravityAcceleration;
+            _gravityAcceleration += 0.0019f * Time.deltaTime;
+            _bones[i].Rotate(Vector3.forward, _boneRotations[i] * Time.deltaTime);
+        }
+    
+        _localTime += Time.deltaTime;
     }
 }

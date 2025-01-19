@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class GameOverOutGameStageAnimationController : MonoBehaviour
+public class GameOverOutGameStageAnimationController : MonoBehaviour, IInitializable
 {
     [Header("UI")]
     [SerializeField] private GameObject _gameOverUi;
@@ -14,37 +14,37 @@ public class GameOverOutGameStageAnimationController : MonoBehaviour
     private float _duration;
 
     private float _localTime;
-    private bool _isPlaying;
     
     public event Action GameoverOutFinished;
+
+    public void Initialize()
+    {
+        enabled = false;
+    }
 
     public void Play(bool skip, float duration)
     {
         _skip = skip;
         _duration = duration;
         _localTime = 0;
-        _isPlaying = true;
+        enabled = true;
     }
-    
+
     private void Update()
     {
-        if (_isPlaying)
+        float phase = _localTime / _duration;
+        if (_localTime >= _duration)
         {
-            float phase = _localTime / _duration;
-            if (_localTime >= _duration)
-            {
-                _gameOverUi.SetActive(false);
-                _isPlaying = false;
-                GameoverOutFinished?.Invoke();
-            }
-            
-            _gameOverText.SetVisibilityLevel(1-phase);
-            _restartWithAdButton.SetVisibilityLevel(_gameOverButtonsAnimationCurve.Evaluate(phase));
-            _restartNoAdButton.SetVisibilityLevel(_gameOverButtonsAnimationCurve.Evaluate(phase));
-            _exitButton.SetVisibilityLevel(_gameOverButtonsAnimationCurve.Evaluate(phase));
-            
-            _localTime += Time.deltaTime;
-            
+            _gameOverUi.SetActive(false);
+            enabled = false;
+            GameoverOutFinished?.Invoke();
         }
+        
+        _gameOverText.SetVisibilityLevel(1-phase);
+        _restartWithAdButton.SetVisibilityLevel(_gameOverButtonsAnimationCurve.Evaluate(phase));
+        _restartNoAdButton.SetVisibilityLevel(_gameOverButtonsAnimationCurve.Evaluate(phase));
+        _exitButton.SetVisibilityLevel(_gameOverButtonsAnimationCurve.Evaluate(phase));
+        
+        _localTime += Time.deltaTime;
     }
 }

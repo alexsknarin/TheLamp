@@ -37,7 +37,6 @@ public class IntroGameStageAnimationController : MonoBehaviour, IInitializable
     private Material _lampAttackZoneMaterial;
     private UnityEngine.Rendering.Universal.ColorAdjustments _colorAdjustments;
     private float _localTime;
-    private bool _isPlaying;
     private float _currentHealth;
     
     public event Action IntroFinished;
@@ -53,11 +52,12 @@ public class IntroGameStageAnimationController : MonoBehaviour, IInitializable
         _colorAdjustments.postExposure.Override(_startExposure);
         _lampAttackZoneMaterial = _lampAttackZoneRenderer.material;
         
-        _isPlaying = false;
+        enabled = false;
     }
     
     public void Play(bool skip, float duration, float normalizedHealth)
     {
+        
         _skip = skip;
         _duration = duration;
         
@@ -82,44 +82,42 @@ public class IntroGameStageAnimationController : MonoBehaviour, IInitializable
             return;
         }
         
+        enabled = true;
         _localTime = 0;
-        _isPlaying = true;
     }
     
     private void Update()
     {
-        if (_isPlaying)
+        float phase = _localTime / _duration;
+        if (phase > 1)
         {
-            float phase = _localTime / _duration;
-            if (phase > 1)
-            {
-                SetFinalState();
-            }
-            // Environment  
-            _colorAdjustments.postExposure.Override(Mathf.Lerp(_startExposure, _endExposure, phase));
-            Vector3 cameraPosition = _cameraTransform.position;
-            cameraPosition.z = Mathf.Lerp(_cameraStartZPosition, _cameraEndZPosition, _cameraAnimationCurve.Evaluate(phase));
-            _cameraTransform.position = cameraPosition;
-            // Lamp
-            float phaseAnimated = _animCurve.Evaluate(phase);
-            float health = Mathf.Lerp(0, _currentHealth, phaseAnimated);
-            _lampHealthBarController.SetHealth(health);
-            _lampEmissionController.Intensity = _lampIntensityAnimCurve.Evaluate(phase);
-            _lampEmissionController.BlockedModeMix = _lampNoiseAmountAnimCurve.Evaluate(phase);
-            _lampAttackZoneMaterial.SetFloat("_Alpha", Mathf.Lerp(0, 0.005f, _lampIntensityAnimCurve.Evaluate(phase)));
-            // UI
-            _exitButton.SetVisibilityLevel(_uiAnimationCurve.Evaluate(phase));
-            _restartButton.SetVisibilityLevel(_uiAnimationCurve.Evaluate(phase));
-            _enableDataButton.SetVisibilityLevel(_uiAnimationCurve.Evaluate(phase));
-            _disableDataButton.SetVisibilityLevel(_uiAnimationCurve.Evaluate(phase));
-            
-            _localTime += Time.deltaTime;
+            SetFinalState();
+            enabled = false;
         }
+        // Environment  
+        _colorAdjustments.postExposure.Override(Mathf.Lerp(_startExposure, _endExposure, phase));
+        Vector3 cameraPosition = _cameraTransform.position;
+        cameraPosition.z = Mathf.Lerp(_cameraStartZPosition, _cameraEndZPosition, _cameraAnimationCurve.Evaluate(phase));
+        _cameraTransform.position = cameraPosition;
+        // Lamp
+        float phaseAnimated = _animCurve.Evaluate(phase);
+        float health = Mathf.Lerp(0, _currentHealth, phaseAnimated);
+        _lampHealthBarController.SetHealth(health);
+        _lampEmissionController.Intensity = _lampIntensityAnimCurve.Evaluate(phase);
+        _lampEmissionController.BlockedModeMix = _lampNoiseAmountAnimCurve.Evaluate(phase);
+        _lampAttackZoneMaterial.SetFloat("_Alpha", Mathf.Lerp(0, 0.005f, _lampIntensityAnimCurve.Evaluate(phase)));
+        // UI
+        _exitButton.SetVisibilityLevel(_uiAnimationCurve.Evaluate(phase));
+        _restartButton.SetVisibilityLevel(_uiAnimationCurve.Evaluate(phase));
+        _enableDataButton.SetVisibilityLevel(_uiAnimationCurve.Evaluate(phase));
+        _disableDataButton.SetVisibilityLevel(_uiAnimationCurve.Evaluate(phase));
+        
+        _localTime += Time.deltaTime;
+        
     }
 
     private void SetFinalState()
     {
-        _isPlaying = false;
         _localTime = 0;
         // Environment
         Vector3 cameraPosition = _cameraTransform.position;

@@ -226,13 +226,12 @@ public class GameRootContext : MonoBehaviour
         
         _lampBlockedModeView.Bind(_playerGameplayViewModel);
         
-        
         _lampHealthBarView.Bind(_playerGameplayViewModel);
+        
         _lampDamageViewUI.Bind(_playerGameplayViewModel);
         _lampDamageView.Bind(_playerGameplayViewModel);
+        _lampDamageView.Initialize();
 
-        
-        
         _playerGameplayViewUI.Bind(_playerGameplayViewModel);
         _playerGameplayViewUI.Initialize();
         

@@ -13,6 +13,8 @@ public class GameStageView : MonoBehaviour, IInitializable
     public void Initialize()
     {
         _introGameStageAnimationController.Initialize();
+        _prepareInGameStageAnimationController.Initialize();
+        _prepareOutGameStageAnimationController.Initialize();
         _gameOverInGameStageAnimationController.Initialize();
     }
 

@@ -9,7 +9,6 @@ public class LampAttackView : MonoBehaviour, IInitializable
     [SerializeField] private AnimationCurve _attackZonePowerCurve;
     private Material _lampAttackZoneMaterial;
     
-    private bool _isPlaying = false;
     private float _localTime;
     private float _duration;
     private float _lightPower;
@@ -27,16 +26,17 @@ public class LampAttackView : MonoBehaviour, IInitializable
         _playerGameplayViewModel.AttackDistance.Changed += OnAttackDistanceChanged;
     }
 
-    public void Initialize()
-    {
-        _lampAttackZoneMaterial = _lampAttackZoneObject.GetComponent<MeshRenderer>().material;
-        _attackDistanceUpgradeAnimationController.Initialize();
-    }
-
     private void OnDestroy()
     {
         _playerGameplayViewModel.AttackStart -= OnAttackStart;
         _playerGameplayViewModel.AttackDistance.Changed -= OnAttackDistanceChanged;
+    }
+
+    public void Initialize()
+    {
+        _lampAttackZoneMaterial = _lampAttackZoneObject.GetComponent<MeshRenderer>().material;
+        _attackDistanceUpgradeAnimationController.Initialize();
+        enabled = false;
     }
 
     private void OnAttackStart(float power, bool isBlockedAttack)
@@ -47,7 +47,7 @@ public class LampAttackView : MonoBehaviour, IInitializable
             _attackZonePower = _attackZonePowerCurve.Evaluate(power);
         _duration = _gameConfigService.PlayerConfig.AttackDuration;
         _localTime = 0;
-        _isPlaying = true;
+        enabled = true;
     }
 
     private void PerformAttack()
@@ -55,9 +55,9 @@ public class LampAttackView : MonoBehaviour, IInitializable
         float phase = _localTime / _duration;
         if (phase > 1)
         {
-            _isPlaying = false;
             _lampEmissionController.Intensity = 0f;
             _lampAttackZoneMaterial.SetFloat("_Alpha", 0);
+            enabled = false;
             return;
         }
         _lampEmissionController.Intensity = Mathf.Lerp(_lightPower, 0, phase);
@@ -74,9 +74,6 @@ public class LampAttackView : MonoBehaviour, IInitializable
 
     private void Update()
     {
-        if (_isPlaying)
-        {
-            PerformAttack();
-        }
+        PerformAttack();
     }
 }

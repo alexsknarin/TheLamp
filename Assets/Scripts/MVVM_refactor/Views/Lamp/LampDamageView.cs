@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class LampDamageView : MonoBehaviour
+public class LampDamageView : MonoBehaviour, IInitializable
 {
     [SerializeField] private LampDamageAnimation _lampDamageAnimation;
     [SerializeField] private LampEmissionController _lampEmissionController;
@@ -23,6 +23,11 @@ public class LampDamageView : MonoBehaviour
         _playerGameplayViewModel.LampDied -= OnLampDied;
         _playerGameplayViewModel.LampGlassDamageChanged -= OnLampGlassDamageChanged;
         _lampDamageAnimation.Finished -= _playerGameplayViewModel.OnDamageStateEnded;
+    }
+
+    public void Initialize()
+    {
+        _lampDamageAnimation.Initialize();
     }
 
     /// <summary>

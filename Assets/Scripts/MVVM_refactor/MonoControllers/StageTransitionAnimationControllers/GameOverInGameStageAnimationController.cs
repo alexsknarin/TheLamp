@@ -30,7 +30,6 @@ public class GameOverInGameStageAnimationController : MonoBehaviour
     private float _duration;
     private UnityEngine.Rendering.Universal.ColorAdjustments _colorAdjustments;
     private float _localTime;
-    private bool _isPlaying;
 
     public event Action GameoverInFinished;
 
@@ -45,8 +44,7 @@ public class GameOverInGameStageAnimationController : MonoBehaviour
         _colorAdjustments.postExposure.Override(_startExposure);
         
         _lampDeathAnimation.Initialize();
-        
-        _isPlaying = false;
+        enabled = false;
     }
 
     public void Play(bool skip, bool isAdNeeded, float duration, Vector3 enemyPosition)
@@ -70,7 +68,7 @@ public class GameOverInGameStageAnimationController : MonoBehaviour
         _lampDeathAnimation.Play(_lampDestructionDuration, enemyPosition);
         
         _localTime = 0;
-        _isPlaying = true;
+        enabled = true;
         
         if (isAdNeeded)
         {
@@ -96,33 +94,30 @@ public class GameOverInGameStageAnimationController : MonoBehaviour
 
     private void Update()
     {
-        if (_isPlaying)
+        float phase = _localTime / _duration;
+        if (phase > 1)
         {
-            float phase = _localTime / _duration;
-            if (phase > 1)
-            {
-                SetFinalState();
-            }
-            
-            Vector3 cameraPosition = _cameraTransform.position;
-            cameraPosition.z = Mathf.Lerp(_cameraStartZPosition, _cameraEndZPosition, _cameraAnimationCurve.Evaluate(phase));
-            _cameraTransform.position = cameraPosition;
-            _colorAdjustments.postExposure.Override(Mathf.Lerp(_startExposure, _endExposure, phase));
-            
-            _gameOverText.SetVisibilityLevel(_gameOverTextAnimationCurve.Evaluate(phase));
-            
-            _restartWithAdButton.SetVisibilityLevel(_gameOverButtonsAnimationCurve.Evaluate(phase));
-            _restartNoAdButton.SetVisibilityLevel(_gameOverButtonsAnimationCurve.Evaluate(phase));
-            _exitButton.SetVisibilityLevel(_gameOverButtonsAnimationCurve.Evaluate(phase));
-            
-            
-            _localTime += Time.deltaTime;
+            enabled = false;
+            SetFinalState();
         }
+        
+        Vector3 cameraPosition = _cameraTransform.position;
+        cameraPosition.z = Mathf.Lerp(_cameraStartZPosition, _cameraEndZPosition, _cameraAnimationCurve.Evaluate(phase));
+        _cameraTransform.position = cameraPosition;
+        _colorAdjustments.postExposure.Override(Mathf.Lerp(_startExposure, _endExposure, phase));
+        
+        _gameOverText.SetVisibilityLevel(_gameOverTextAnimationCurve.Evaluate(phase));
+        
+        _restartWithAdButton.SetVisibilityLevel(_gameOverButtonsAnimationCurve.Evaluate(phase));
+        _restartNoAdButton.SetVisibilityLevel(_gameOverButtonsAnimationCurve.Evaluate(phase));
+        _exitButton.SetVisibilityLevel(_gameOverButtonsAnimationCurve.Evaluate(phase));
+        
+        
+        _localTime += Time.deltaTime;
     }
 
     private void SetFinalState()
     {
-        _isPlaying = false;
         _localTime = 0;
         
         // Environment
