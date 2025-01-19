@@ -37,65 +37,76 @@ public class LampDeathAnimation : MonoBehaviour
         _boneDirections = new Vector3[_bones.Length];
         _boneRotations = new float[_bones.Length];
         _boneSpeeds = new float[_bones.Length];
+        
         _boneOriginalPositions = new Vector3[_bones.Length];
         _boneOriginalRotations = new Quaternion[_bones.Length];
+        
         for (int i = 0; i < _bones.Length; i++)
         {
             _boneOriginalPositions[i] = _bones[i].position;
             _boneOriginalRotations[i] = _bones[i].localRotation;
         }
         
-        for (int i = 0; i < _bones.Length; i++)
-        {
-            _bones[i].position = _boneOriginalPositions[i];
-            _bones[i].localRotation = _boneOriginalRotations[i];
-        }
-        for (int i = 0; i < _bones.Length; i++)
-        {
-            _boneDirections[i] = _bones[i].position.normalized;
-            _boneRotations[i] = Random.Range(-270, 270) * _rotationSpeed;
-            _boneSpeeds[i] = Random.Range(0.9f, 1.9f);
-        }
+        InitializeBones();
+        
         _lampEmissionController.ShowGlass();
         _fracturedGlassBaseObject.SetActive(false);
         _fracturedGlassObject.SetActive(false);
 
         _gravityAcceleration = _gravityStartAcceleration;
     }
-    
+
     public void Play(float duration, Vector3 enemyPosition)
     {
         StartCoroutine(DisableAttackZone());
-        
+        InitializeBones();
+
         _lampEmissionController.Intensity = 1;
         _lampEmissionController.IsDamageEnabled = true;
         _lampEmissionController.DamageMix = 1;
-        
+
         // Glass destruction Setup
         _lampEmissionController.HideGlass();
         _fracturedGlassObject.SetActive(true);
         _fracturedGlassBaseObject.SetActive(true);
-        
+
         _fracturedGlassObject.transform.position = transform.position;
         _fracturedGlassObject.transform.localRotation = transform.localRotation;
-        
-                
+
+
         _hitDirection = enemyPosition.normalized;
         _hitDirection.x *= -1;
         _hitDirection.y = -Mathf.Abs(_hitDirection.y);
         if (Mathf.Abs(_hitDirection.x) > 0.55f)
         {
-            _hitDirection.x = Mathf.Sign(_hitDirection.x) * 0.525321f;
-            _hitDirection.y = Mathf.Sign(_hitDirection.y) * 0.85f;
-            _hitDirection = _hitDirection.normalized;
+           _hitDirection.x = Mathf.Sign(_hitDirection.x) * 0.525321f;
+           _hitDirection.y = Mathf.Sign(_hitDirection.y) * 0.85f;
+           _hitDirection = _hitDirection.normalized;
         }
         
-        
+        _gravityAcceleration = _gravityStartAcceleration;
         _duration = duration;
         _localTime = 0;
         _isPlaying = true;
     }
-    
+
+    private void InitializeBones()
+    {
+        for (int i = 0; i < _bones.Length; i++)
+        {
+            _bones[i].position = _boneOriginalPositions[i];
+            _bones[i].localRotation = _boneOriginalRotations[i];
+        }
+
+        for (int i = 0; i < _bones.Length; i++)
+        {
+            _boneDirections[i] = _bones[i].position.normalized;
+            _boneRotations[i] = Random.Range(-270, 270) * _rotationSpeed;
+            _boneSpeeds[i] = Random.Range(0.9f, 1.9f);
+        }
+    }
+
+
     private IEnumerator DisableAttackZone()
     {
         yield return null;

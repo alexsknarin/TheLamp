@@ -6140,7 +6140,7 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 556ccd576c35d634e88ba039c8700cfa,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7351915151845093115, guid: 556ccd576c35d634e88ba039c8700cfa,
         type: 3}
@@ -9772,6 +9772,7 @@ MonoBehaviour:
   _postProcessingVolume: {fileID: 832575518}
   _lampGlassObject: {fileID: 1686427690}
   _lampFracturedGlassObject: {fileID: 1565536643}
+  _lampFracturedGlassBaseObject: {fileID: 1565536643}
   _animCurve:
     serializedVersion: 2
     m_Curve:
