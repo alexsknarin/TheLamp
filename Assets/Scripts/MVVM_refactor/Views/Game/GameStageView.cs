@@ -16,6 +16,7 @@ public class GameStageView : MonoBehaviour, IInitializable
         _prepareInGameStageAnimationController.Initialize();
         _prepareOutGameStageAnimationController.Initialize();
         _gameOverInGameStageAnimationController.Initialize();
+        _gameOverOutGameStageAnimationController.Initialize();
     }
 
     public void Bind(GameStageViewModel viewModel)

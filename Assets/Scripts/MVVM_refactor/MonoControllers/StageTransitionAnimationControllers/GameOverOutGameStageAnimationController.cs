@@ -19,6 +19,7 @@ public class GameOverOutGameStageAnimationController : MonoBehaviour, IInitializ
 
     public void Initialize()
     {
+        _localTime = 0;
         enabled = false;
     }
 
@@ -27,6 +28,13 @@ public class GameOverOutGameStageAnimationController : MonoBehaviour, IInitializ
         _skip = skip;
         _duration = duration;
         _localTime = 0;
+        
+        if (_skip)
+        {
+            SetFinalState();
+            GameoverOutFinished?.Invoke();
+            return;
+        }
         enabled = true;
     }
 
@@ -35,7 +43,7 @@ public class GameOverOutGameStageAnimationController : MonoBehaviour, IInitializ
         float phase = _localTime / _duration;
         if (_localTime >= _duration)
         {
-            _gameOverUi.SetActive(false);
+            SetFinalState();
             enabled = false;
             GameoverOutFinished?.Invoke();
         }
@@ -46,5 +54,10 @@ public class GameOverOutGameStageAnimationController : MonoBehaviour, IInitializ
         _exitButton.SetVisibilityLevel(_gameOverButtonsAnimationCurve.Evaluate(phase));
         
         _localTime += Time.deltaTime;
+    }
+    
+    private void SetFinalState()
+    {
+        _gameOverUi.SetActive(false);
     }
 }

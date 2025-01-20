@@ -46,6 +46,7 @@ public class EnemyController : MonoBehaviour, IInitializable
     
     public void Construct(IGameConfigService gameConfigService)
     {
+        Debug.Log("EnemyController: Constructing EnemyController");
         _gameConfigService = gameConfigService;
     }
     
@@ -68,8 +69,19 @@ public class EnemyController : MonoBehaviour, IInitializable
         BossBase.BossDied += OnBossDied;
     }
 
+    private void OnDisable()
+    {
+        Enemy.EnemyDeactivated -= OnEnemyDeactivated;
+        Enemy.EnemyDeactivated -= CheckForFireflyExplosion;
+        LampStickZoneCollisionHandler.CollidedWithStickyEnemyStatic -= UpdateLadybugsOnScreen;
+        _enemySpawner.BossSpawned -= OnBossSpawned;
+        BossBase.SpreadTriggering -= OnSpreadTriggering;
+        BossBase.BossDied -= OnBossDied;
+    }
+
     public void Initialize()
     {
+        Debug.Log("EnemyController: Initializing EnemyController");
         _spawnQueueGenerator = new SpawnQueueGenerator(_gameConfigService.SpawnQueueConfig.Data);
         _spawnQueue = _spawnQueueGenerator.Generate();
         
@@ -121,7 +133,6 @@ public class EnemyController : MonoBehaviour, IInitializable
         _tickables.Add(_enemiesFireflyExploder);
         
         _isWaveInitialized = false;
-        _isGameActive = true;
         
         // Debug Spawn Queue
         // for(int i=0; i<_spawnQueue.Count(); i++)
@@ -135,17 +146,13 @@ public class EnemyController : MonoBehaviour, IInitializable
         //     Debug.Log(waveData);
         // }
     }
-
-    private void OnDisable()
+    
+    public void StartGame()
     {
-        Enemy.EnemyDeactivated -= OnEnemyDeactivated;
-        Enemy.EnemyDeactivated -= CheckForFireflyExplosion;
-        LampStickZoneCollisionHandler.CollidedWithStickyEnemyStatic -= UpdateLadybugsOnScreen;
-        _enemySpawner.BossSpawned -= OnBossSpawned;
-        BossBase.SpreadTriggering -= OnSpreadTriggering;
-        BossBase.BossDied -= OnBossDied;
+        Debug.Log("EnemyController: Starting Game.");
+        _isGameActive = true;
     }
-
+    
     public void StartWave(int wave)
     {
         Debug.Log("Wave started");
@@ -233,10 +240,14 @@ public class EnemyController : MonoBehaviour, IInitializable
 
     private void ReturnAllActiveEnemiesToPool()
     {
+        Debug.Log("Return all enemies to pool CALLED");
         // Enemies
-        foreach (var enemy in _enemies)
+        if (_enemies is not null)
         {
-            enemy.ReturnToPool();
+            foreach (var enemy in _enemies)
+            {
+                enemy.ReturnToPool();
+            }            
         }
         
         // Bosses

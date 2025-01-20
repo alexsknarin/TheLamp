@@ -22,7 +22,6 @@ public class GameModel : IDisposable, ILampDeadEventProviderService
     private ScoresCollectionHandler _scoresCollectionHandler;
     private UpgradeHandler _upgradeHandler = new UpgradeHandler();
 
-
     public GameModel(
         IGameStateProviderService gameStateProviderService, 
         EnemyController enemyController, 
@@ -33,6 +32,7 @@ public class GameModel : IDisposable, ILampDeadEventProviderService
         LampMovementController lampMovementController,
         ScoresCollectionHandler scoresCollectionHandler)
     {
+        Debug.Log(" +++ GameModel: Creating GameModel +++");
         _gameStateProviderService = gameStateProviderService;
         _currentGameState = gameStateProviderService.Get();
         _enemyController = enemyController;
@@ -196,7 +196,7 @@ public class GameModel : IDisposable, ILampDeadEventProviderService
     // Game State change Active methods
     public void StartGame()
     {
-        Debug.Log("!!!!! The Game Has Been Started !!!!!");
+        Debug.Log("!!!!! The Game Is About to get Started !!!!!");
         // Start the game
         if (_gameConfigService.GameConfig.IsTestStartWave)
         {
@@ -209,6 +209,7 @@ public class GameModel : IDisposable, ILampDeadEventProviderService
         _currentPower = 1.0f;
         LampGlassDamage = _currentGameState.GlassDamageData;
         _lampDamageDataHandler.MaxHealth = _currentGameState.LampMaxHealth;
+        _enemyController.StartGame();
         GameStarted?.Invoke();
     }
     
@@ -262,6 +263,7 @@ public class GameModel : IDisposable, ILampDeadEventProviderService
 
     public void HandleGameOverOutEnd()
     {
+        Debug.Log("Game Over Out Ended");
         RestartGame();
     }
 
@@ -392,6 +394,7 @@ public class GameModel : IDisposable, ILampDeadEventProviderService
 
     public void HandleImmediateRestartGame()
     {
+        Debug.Log(" +++++++++ Immediate Restart Game");
         _gameStateProviderService.SaveDefaultState();
         RestartGame();
     }
@@ -413,6 +416,7 @@ public class GameModel : IDisposable, ILampDeadEventProviderService
 
     private void RestartGame()
     {
+        Debug.Log(" --- --- Restarting Game");
         CurrentGameState = _gameStateProviderService.Get();
         Debug.Log("New GameState Generated");
         Debug.Log($"Wave: {CurrentGameState.Wave}");

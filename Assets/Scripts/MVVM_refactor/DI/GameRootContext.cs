@@ -83,18 +83,26 @@ public class GameRootContext : MonoBehaviour
         
         Debug.Log("------------------------------------------");
         Debug.Log("------ Game Initialization ------");
-
+        Debug.Log("------ Services ------");
         ServicesSetup();
+        Debug.Log("------ Handlers ------");
         HandlersSetup();
+        Debug.Log("------ Controllers ------");
         ControllersSetup();
+        Debug.Log("------ Game Model ------");
         GameModelSetup();
+        Debug.Log("------ Factories ------");
         FactoriesSetup();
+        Debug.Log("------ View Models ------");
         ViewModelsSetup();
+        Debug.Log("------ Binding Views ------");
         BindViews();
+        Debug.Log("------ Event Listeners ------");
         EventListenersSetup();
 
 
         // Bosses TMP
+        Debug.Log("------ Bosses Listeners ------");
         _megamothling.Initialize();                                          // TODO: factory should do initialization AND construct
         _wasp.Construct(_gameModel);
         _wasp.Initialize();                                                // TODO: need to spawn bosses - load them later - this is TMP
@@ -103,7 +111,7 @@ public class GameRootContext : MonoBehaviour
         _megabeetleMovement.Construct(_gameModel);
         _dragonfly.Initialize();
 
-
+        Debug.Log("------ Loading Gameconfig ------");
         // Load Game Config
         _googleSheetsDataReader.OnDataLoadedEvent += OnGameConfigLoaded;
         _googleSheetsDataReader.Construct(_coroutineHost);
@@ -153,9 +161,9 @@ public class GameRootContext : MonoBehaviour
         _playerAttackHandler = new PlayerAttackHandler(_coroutineHost);
         _tickables.Add(_playerAttackHandler);
         _scoresCollectionHandler = new ScoresCollectionHandler(_gameConfigService);
-        _playerEnemyInteractionHandler.Initialize();
         _scoresCollectionHandler.Initialize();
         _disposables.Add(_scoresCollectionHandler);
+        _playerEnemyInteractionHandler.Initialize();
     }
 
     private void ControllersSetup()
@@ -280,7 +288,7 @@ public class GameRootContext : MonoBehaviour
     private void OnGameConfigLoaded()
     {
         // Start Game
-        Debug.Log("------ Game Config Loaded ------");
+        Debug.Log("-+---- Game Config Loaded ----+-");
         _enemyController.Initialize();
         _gameModel.StartGame();
     }
