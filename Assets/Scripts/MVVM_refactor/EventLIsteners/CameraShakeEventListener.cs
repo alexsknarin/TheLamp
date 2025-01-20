@@ -41,6 +41,7 @@ public class CameraShakeEventListener: IDisposable
     private void OnLampDied(EnemyBase obj)
     {
         _cameraShakeService.StartDamageShake();
+        _cameraShakeService.DisableBossShake();
     }
 
     private void OnLampDamageStarted(float obj, EnemyBase enemy)
