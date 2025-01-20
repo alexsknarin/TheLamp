@@ -5,20 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c614c64c-27c0-44ed-ba1e-bc83a9a65fc7" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.TheLamp/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.TheLamp/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.TheLamp/.idea/encodings.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.TheLamp/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Data/Configs/GameConfig.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Data/Configs/GameConfig.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Materials/Lamp_GlassTransparent_material.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Materials/Lamp_GlassTransparent_material.mat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/WaspBaseTransform.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/WaspBaseTransform.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/WaspBaseTransform.prefab.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/WaspBaseTransform.prefab.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/main.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/main.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/MVVM_refactor/DI/GameRootContext.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/MVVM_refactor/DI/GameRootContext.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/MVVM_refactor/Models/GameModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/MVVM_refactor/Models/GameModel.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.TheLamp/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.TheLamp/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/MVVM_refactor/GameData/SpawnQueueGenerator.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/MVVM_refactor/GameData/SpawnQueueGenerator.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/MVVM_refactor/MonoControllers/EnemyController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/MVVM_refactor/MonoControllers/EnemyController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/MVVM_refactor/MonoControllers/StageTransitionAnimationControllers/GameOverOutGameStageAnimationController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/MVVM_refactor/MonoControllers/StageTransitionAnimationControllers/GameOverOutGameStageAnimationController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/MVVM_refactor/Views/Game/GameStageView.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/MVVM_refactor/Views/Game/GameStageView.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProjectSettings/ShaderGraphSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/ShaderGraphSettings.asset" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -105,7 +94,7 @@
       <option name="presentableId" value="Default" />
       <updated>1737346819660</updated>
       <workItem from="1737346821857" duration="85000" />
-      <workItem from="1737346918376" duration="6256000" />
+      <workItem from="1737346918376" duration="6697000" />
     </task>
     <servers />
   </component>
