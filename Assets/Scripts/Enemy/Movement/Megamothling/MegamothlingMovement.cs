@@ -48,13 +48,13 @@ public class MegamothlingMovement : EnemyMovement
     // State parameters
     private bool _isDead = false;
     private bool _isCollided = false;
-    private bool _isPlaying = false;
     
     public event Action OnBossAttackStartedEvent;
     public event Action DeathStateEnded;
 
     public override void Initialize()
     {
+        enabled = false;
         _isDead = false;
         _isCollided = false;
         _movementStateMachine = new EnemyMovementStateMachine();
@@ -74,7 +74,7 @@ public class MegamothlingMovement : EnemyMovement
 
     public void MovementReset()
     {
-        _isPlaying = false;
+        enabled = false;
         transform.position = IDLE_POSITION;
     }
 
@@ -98,7 +98,7 @@ public class MegamothlingMovement : EnemyMovement
         _movementStateMachine.SetState(_currentState, _position2d, _sideDirection, _depthDirection);
         _position2d = _currentState.Position;
         transform.position = _position2d;
-        _isPlaying = true;
+        enabled = true;
     }
 
     public override void TriggerDeath()
@@ -228,11 +228,6 @@ public class MegamothlingMovement : EnemyMovement
 
     private void Update()
     {
-        if (!_isPlaying)
-        {
-            return;
-        }
-        
         _prevPosition2d = _position2d;
         
         // Debug Only
