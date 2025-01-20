@@ -78,8 +78,28 @@ public class Dragonfly : BossBase
     
     public override EnemyType EnemyType => _enemyType;
 
-    private void OnEnable()
+    public override void Initialize()
     {
+        _patrolAttackPositionProvider = new DragonflyPatrolAttackPositionProvider(
+            _patrolAttackZonesL, 
+            _patrolAttackZonesR, 
+            _tailAttackPositionBase
+        );
+        
+        CreateStates();
+        CreateStateTransitions();
+        
+        enabled = false;
+        _isDead = false;
+        _isActivated = false;
+        _isReadyToPreAttackWait = false;
+        _isReadyToAttackWait = false;
+        _isAttacked = false;
+        _presentation.Initialize();
+        _spider.Initialize();
+        _movement.Initialize();
+        gameObject.SetActive(false);
+        
         _patrolHeadState.Ended += GenerateAttackPosition;
         _patrolTailState.Ended += GenerateAttackPosition;
         _patrolSpiderState.Ended += GenerateAttackPosition;
@@ -103,7 +123,7 @@ public class Dragonfly : BossBase
         _movement.DeathAnimationEnded += OnDeathAnimationEnded;
     }
 
-    private void OnDisable()
+    private void OnDestroy()
     {
         _patrolHeadState.Ended -= GenerateAttackPosition;
         _patrolTailState.Ended -= GenerateAttackPosition;
@@ -128,32 +148,10 @@ public class Dragonfly : BossBase
         _movement.DeathAnimationEnded -= OnDeathAnimationEnded;
     }
 
-    public override void Initialize()
-    {
-        _patrolAttackPositionProvider = new DragonflyPatrolAttackPositionProvider(
-            _patrolAttackZonesL, 
-            _patrolAttackZonesR, 
-            _tailAttackPositionBase
-        );
-        
-        CreateStates();
-        CreateStateTransitions();
-        
-        
-        _isDead = false;
-        _isActivated = false;
-        _isReadyToPreAttackWait = false;
-        _isReadyToAttackWait = false;
-        _isAttacked = false;
-        _presentation.Initialize();
-        _spider.Initialize();
-        _movement.Initialize();
-        gameObject.SetActive(false);
-    }
-
     public override void Play()
     {
         gameObject.SetActive(true);
+        enabled = true;
         _stateMachine.SetState(_inactiveState);        
         StartBossActivePhase();
     }
@@ -502,6 +500,7 @@ public class Dragonfly : BossBase
     private void OnDeathAnimationEnded()
     {
         gameObject.SetActive(false); // TODO: fix naming to be consistent
+        enabled = false;
     }
     
     // TODO: use interfaces for it:

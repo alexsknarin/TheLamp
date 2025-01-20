@@ -107,8 +107,8 @@ public class GameRootContext : MonoBehaviour
         _wasp.Construct(_gameModel);
         _wasp.Initialize();                                                // TODO: need to spawn bosses - load them later - this is TMP
         _waspMovement.Construct(_lampPositionProviderService);
-        _megabeetle.Initialize();
         _megabeetleMovement.Construct(_gameModel);
+        _megabeetle.Initialize();
         _dragonfly.Initialize();
 
         Debug.Log("------ Loading Gameconfig ------");

@@ -10,13 +10,12 @@ public class DragonflyDeathFlash : DamageIndication
     [SerializeField] private VisualEffect _damageParticles;
     private Material _bodyMaterial;
     private Material _wingsMaterial;
-    private bool _isActive = false;
     private float _localTime;
     private Transform _contactCollisionTransform;
 
     public override void Initialize()
     {
-        _isActive = false;
+        enabled = false;
         
         _bodyMaterial = _bodyMeshRenderer.material;
         _wingsMaterial = _wingsMeshRenderer.material;
@@ -32,7 +31,7 @@ public class DragonflyDeathFlash : DamageIndication
 
     public override void Play()
     {
-        _isActive = true;
+        enabled = true;
         _localTime = 0;
         _bodyMaterial.SetFloat("_DeathPhase", 0f);
         _wingsMaterial.SetFloat("_DeathPhase", 0f);
@@ -58,23 +57,20 @@ public class DragonflyDeathFlash : DamageIndication
 
     private void Update()
     {
-        if (_isActive)
+        float phase = _localTime / _duration;
+        if (phase > 1)
         {
-            float phase = _localTime / _duration;
-            if (phase > 1)
-            {
-                _isActive = false;
-                _bodyMaterial.SetFloat("_DeathPhase", 1f);
-                _wingsMaterial.SetFloat("_DeathPhase", 1f);
-                
-                _deathParticles.SendEvent("OnDeathStart");
-                _deathParticles.gameObject.SetActive(false);
-                return;
-            }
-            _bodyMaterial.SetFloat("_DeathPhase", phase);
-            _wingsMaterial.SetFloat("_DeathPhase", phase);
+            enabled = false;
+            _bodyMaterial.SetFloat("_DeathPhase", 1f);
+            _wingsMaterial.SetFloat("_DeathPhase", 1f);
             
-            _localTime += Time.deltaTime;
+            _deathParticles.SendEvent("OnDeathStart");
+            _deathParticles.gameObject.SetActive(false);
+            return;
         }
+        _bodyMaterial.SetFloat("_DeathPhase", phase);
+        _wingsMaterial.SetFloat("_DeathPhase", phase);
+        
+        _localTime += Time.deltaTime;
     }
 }

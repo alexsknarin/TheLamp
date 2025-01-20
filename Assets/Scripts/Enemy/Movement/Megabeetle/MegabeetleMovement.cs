@@ -38,8 +38,7 @@ public class MegabeetleMovement : EnemyMovement
     private bool _isDead = false;
     private bool _isFalling = false;
     private bool _isSpreading = false;
-    private bool _isPlaying = false;
-
+    
     public void Construct(ILampDeadEventProviderService lampDeadEventProviderService)
     {
         _lampDeadEventProvider = lampDeadEventProviderService;
@@ -49,21 +48,12 @@ public class MegabeetleMovement : EnemyMovement
     public event Action StickAttackStateEnded;
     public event Action SpreadTriggered;
 
-    private void OnEnable()
-    {
-        _lampDeadEventProvider.LampDied += OnLampDied;
-    }
-
-    private void OnDisable()
-    {
-        _lampDeadEventProvider.LampDied -= OnLampDied;
-    }
-
     public override void Initialize()
     {
         _isDead = false;
         _isFalling = false;
         _isSpreading = false;
+        enabled = false;
         
         _movementStateMachine = new EnemyMovementStateMachine();
         _enterState = new MegabeetleMovementEnterState(this, _speed, _radius, _verticalAmplitude);
@@ -78,8 +68,15 @@ public class MegabeetleMovement : EnemyMovement
         _fallState = new MegabeetleMovementFallState(this, _speed, _radius, _verticalAmplitude);
         _deathState = new MegabeetleMovementDeathState(this, _speed, _radius, _verticalAmplitude);
         _spreadState = new LadybugMovementSpreadState(this, _speed, _radius, _verticalAmplitude);
+        
+        _lampDeadEventProvider.LampDied += OnLampDied;
     }
-    
+
+    private void OnDestroy()
+    {
+        _lampDeadEventProvider.LampDied -= OnLampDied;
+    }
+
     public void Play()
     {
         MovementSetup();
@@ -87,7 +84,7 @@ public class MegabeetleMovement : EnemyMovement
 
     public void MovementReset()
     {
-        _isPlaying = false;
+        enabled = false;
         transform.position = IDLE_POSITION;
         OnMovementResetInvoke();
     }
@@ -339,7 +336,7 @@ public class MegabeetleMovement : EnemyMovement
         _movementStateMachine.SetState(_currentState, _position2d, _sideDirection, 1);
         _position2d = _currentState.Position;
         transform.position = _position2d;
-        _isPlaying = true;
+        enabled = true;
     }
 
     private Vector3 GenerateSpawnPosition(float distance, int direction)
@@ -369,11 +366,6 @@ public class MegabeetleMovement : EnemyMovement
 
     private void Update()
     {
-        if(!_isPlaying)
-        {
-            return;
-        }
-
         _prevPosition2d = _position2d;
         _currentState.ExecuteState(_position2d);
         _position2d = _currentState.Position;
@@ -407,7 +399,7 @@ public class MegabeetleMovement : EnemyMovement
     // Event Handler Methods
     private void OnLampDied(EnemyBase enemy)
     {
-        if (_isPlaying)
+        if (enabled)
         {
             transform.parent = null;
             if (_currentState.State == EnemyState.StickLanding ||

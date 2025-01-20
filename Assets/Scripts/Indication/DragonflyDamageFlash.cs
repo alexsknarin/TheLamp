@@ -23,7 +23,6 @@ public class DragonflyDamageFlash : DamageIndication
 
     public override void Play()
     {
-        
         _bodyMaterial.SetInt("_isDamaged", 1);
         _wingsMaterial.SetInt("_isDamaged", 1);
         StartCoroutine(WaitForDamageFlashEnd());
