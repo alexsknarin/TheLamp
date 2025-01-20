@@ -135,16 +135,16 @@ public class EnemyController : MonoBehaviour, IInitializable
         _isWaveInitialized = false;
         
         // Debug Spawn Queue
-        // for(int i=0; i<_spawnQueue.Count(); i++)
-        // {
-        //     Debug.Log($"Wave : {i} --- Count: {_spawnQueue.Get(i).Count()}");
-        //     string waveData = "";
-        //     for(int j=0; j<_spawnQueue.Get(i).Count(); j++)
-        //     {
-        //         waveData = waveData + " - " + _spawnQueue.Get(i).Get(j).ToString();
-        //     }
-        //     Debug.Log(waveData);
-        // }
+        for(int i=0; i<_spawnQueue.Count(); i++)
+        {
+            Debug.Log($"Wave : {i} --- Count: {_spawnQueue.Get(i).Count()}");
+            string waveData = "";
+            for(int j=0; j<_spawnQueue.Get(i).Count(); j++)
+            {
+                waveData = waveData + " - " + _spawnQueue.Get(i).Get(j).ToString();
+            }
+            Debug.Log(waveData);
+        }
     }
     
     public void StartGame()

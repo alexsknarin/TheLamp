@@ -13,6 +13,7 @@ public class SpawnQueueGenerator
     
     public SpawnQueue Generate()
     {
+        Debug.Log(" ************* Generating Spawn Queue ***************");
         _spawnQueue = new SpawnQueue();
         var jsonObject = JSON.Parse(_data);
 
@@ -33,6 +34,8 @@ public class SpawnQueueGenerator
             int bossDragonflyCount = jsonObject[2][i][10].AsInt;
             
             int totalEnemies = mothlingCount + flyCount + mothCount + fireflyCount + ladybugCount + spiderCount;
+            
+            Debug.Log("Total Enemies: " + totalEnemies);
             //Data
             enemyQueue.MaxEnemiesOnScreen = jsonObject[2][i][14].AsInt;
             enemyQueue.AggressionLevel = jsonObject[2][i][15].AsInt;
@@ -83,7 +86,7 @@ public class SpawnQueueGenerator
                     bossPosition = Random.Range(3, totalEnemies);
                 }
             }
-            else
+            else if (bossMegamothlingCount > 0 || bossMegabeetleCount > 0 || bossDragonflyCount > 0)
             {
                 if (totalEnemies > 3)
                 {
