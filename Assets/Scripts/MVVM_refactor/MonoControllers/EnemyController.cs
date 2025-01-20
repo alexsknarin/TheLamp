@@ -41,13 +41,14 @@ public class EnemyController : MonoBehaviour, IInitializable
     private int _enemiesKilled;
     private bool _isPlayerBlocked = false;
     private WaitForSeconds _waitAfterGameOver = new WaitForSeconds(3.9f); // TODO: Magic Number
-    // Dependencies    
+    // Dependencies 
     private IGameConfigService _gameConfigService;
+    private ILampPositionProviderService _lampPositionProviderService;
     
-    public void Construct(IGameConfigService gameConfigService)
+    public void Construct(IGameConfigService gameConfigService, ILampPositionProviderService lampPositionProviderService)
     {
-        Debug.Log("EnemyController: Constructing EnemyController");
         _gameConfigService = gameConfigService;
+        _lampPositionProviderService = lampPositionProviderService;
     }
     
     // Events
@@ -86,6 +87,7 @@ public class EnemyController : MonoBehaviour, IInitializable
         _spawnQueue = _spawnQueueGenerator.Generate();
         
         // TODO: use interfaces to build these lists
+        _enemyPool.Construct(_lampPositionProviderService);
         _enemyPool.Initialize();
         _enemies = new List<EnemyBase>();
         _ladybugsPatrolling = new List<EnemyBase>();

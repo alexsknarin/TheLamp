@@ -23,6 +23,14 @@ public class EnemyPoolSO : ScriptableObject, IInitializable, IEnemyPool
     private int _ladybugCount;
     private int _fireflyCount;
     private int _spiderCount;
+    
+    // TODO: temporary solution - will be replaced with enemy factory
+    private ILampPositionProviderService _lampPositionProviderService;
+    
+    public void Construct(ILampPositionProviderService lampPositionProviderService)
+    {
+        _lampPositionProviderService = lampPositionProviderService;
+    }
 
     public void Initialize()
     {
@@ -54,6 +62,7 @@ public class EnemyPoolSO : ScriptableObject, IInitializable, IEnemyPool
         Enemy enemyInstance = Instantiate(_flyPrefab);
         enemyInstance.ObjectPool = _flyPool;
         enemyInstance.name = "Fly" + _flyCount;
+        enemyInstance.gameObject.GetComponent<EnemyMovement>().Construct(_lampPositionProviderService);
         _flyCount++;
         return enemyInstance;
     }
@@ -63,6 +72,7 @@ public class EnemyPoolSO : ScriptableObject, IInitializable, IEnemyPool
         Enemy enemyInstance = Instantiate(_mothPrefab);
         enemyInstance.ObjectPool = _mothPool;
         enemyInstance.name = "Moth" + _mothCount;
+        enemyInstance.gameObject.GetComponent<EnemyMovement>().Construct(_lampPositionProviderService);
         _mothCount++;
         return enemyInstance;
     }
@@ -72,6 +82,7 @@ public class EnemyPoolSO : ScriptableObject, IInitializable, IEnemyPool
         Enemy enemyInstance = Instantiate(_ladybugPrefab);
         enemyInstance.ObjectPool = _ladybugPool;
         enemyInstance.name = "Ladybug" + _ladybugCount;
+        enemyInstance.gameObject.GetComponent<EnemyMovement>().Construct(_lampPositionProviderService);
         _ladybugCount++;
         return enemyInstance;
     }
@@ -81,6 +92,7 @@ public class EnemyPoolSO : ScriptableObject, IInitializable, IEnemyPool
         Enemy enemyInstance = Instantiate(_fireflyPrefab);
         enemyInstance.ObjectPool = _fireflyPool;
         enemyInstance.name = "Firefly" + _fireflyCount;
+        enemyInstance.gameObject.GetComponent<EnemyMovement>().Construct(_lampPositionProviderService);
         _fireflyCount++;
         return enemyInstance;
     }
@@ -90,6 +102,7 @@ public class EnemyPoolSO : ScriptableObject, IInitializable, IEnemyPool
         Enemy enemyInstance = Instantiate(_spiderPrefab);
         enemyInstance.ObjectPool = _spiderPool;
         enemyInstance.name = "Spider" + _spiderCount;
+        enemyInstance.gameObject.GetComponent<EnemyMovement>().Construct(_lampPositionProviderService);
         _spiderCount++;
         return enemyInstance;
     }

@@ -168,7 +168,7 @@ public class GameRootContext : MonoBehaviour
 
     private void ControllersSetup()
     {
-        _enemyController.Construct(_gameConfigService);
+        _enemyController.Construct(_gameConfigService, _lampPositionProviderService);
         _lampMovementController.Initialize();
         _lampHealthBarController.Initialize();
         _lampEmissionController.Initialize();
