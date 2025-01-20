@@ -5995,7 +5995,6 @@ MonoBehaviour:
     type: 2}
   _defaultGameSettingsData: {fileID: 11400000, guid: 81bc3d07cdcbd48499ac435952e88713,
     type: 2}
-  _lampTransform: {fileID: 1934066241}
   _consentSettingsViewUI: {fileID: 1291610359}
   _gameStageView: {fileID: 1736170224}
   _gameStateView: {fileID: 646836954}
@@ -6010,6 +6009,7 @@ MonoBehaviour:
   _gameOverViewUI: {fileID: 1291610361}
   _playerGameplayViewUI: {fileID: 1291610362}
   _cameraShakeService: {fileID: 330585549}
+  _lampPositionProviderService: {fileID: 1934066263}
   _lampHealthBarController: {fileID: 969163320}
   _enemyController: {fileID: 2110688078}
   _playerCollidersPropertyController: {fileID: 1934066258}
@@ -10749,6 +10749,7 @@ GameObject:
   - component: {fileID: 1934066261}
   - component: {fileID: 1934066252}
   - component: {fileID: 1934066251}
+  - component: {fileID: 1934066263}
   m_Layer: 0
   m_Name: LampObject
   m_TagString: Lamp
@@ -11440,6 +11441,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _lampDamageAnimation: {fileID: 1934066252}
   _lampEmissionController: {fileID: 23663153}
+--- !u!114 &1934066263
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1934066237}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67b59e27a2a6369438a0d6b6b5f690ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1944166815
 GameObject:
   m_ObjectHideFlags: 0

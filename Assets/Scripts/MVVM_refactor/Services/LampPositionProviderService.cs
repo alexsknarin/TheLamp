@@ -1,15 +1,16 @@
 using UnityEngine;
 
-public class LampPositionProviderService : ILampPositionProviderService
+public class LampPositionProviderService : MonoBehaviour, ILampPositionProviderService
 {
-    private Transform _lampTransform;
-    public LampPositionProviderService(Transform lampTransform)
-    {
-        _lampTransform = lampTransform;
-    }
+    private Vector3 _lampPosition;
     
     public Vector3 GetLampPosition()
     {
-        return _lampTransform.position;
+        return _lampPosition;
+    }
+
+    private void FixedUpdate()
+    {
+        _lampPosition = transform.position;
     }
 }
