@@ -6,8 +6,14 @@
   <component name="ChangeListManager">
     <list default="true" id="c614c64c-27c0-44ed-ba1e-bc83a9a65fc7" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.TheLamp/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.TheLamp/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Data/Configs/GameConfig.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Data/Configs/GameConfig.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Materials/Lamp_GlassTransparent_material.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Materials/Lamp_GlassTransparent_material.mat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/main.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/main.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Boss/Wasp/FWaspMovement.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Boss/Wasp/FWaspMovement.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Boss/Wasp/Wasp.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Boss/Wasp/Wasp.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/MVVM_refactor/GameData/SpawnQueueGenerator.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/MVVM_refactor/GameData/SpawnQueueGenerator.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/MVVM_refactor/MonoControllers/EnemyController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/MVVM_refactor/MonoControllers/EnemyController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/MVVM_refactor/MonoControllers/Lamp/PlayerEnemyInteractionHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/MVVM_refactor/MonoControllers/Lamp/PlayerEnemyInteractionHandler.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -94,7 +100,7 @@
       <option name="presentableId" value="Default" />
       <updated>1737346819660</updated>
       <workItem from="1737346821857" duration="85000" />
-      <workItem from="1737346918376" duration="6697000" />
+      <workItem from="1737346918376" duration="8353000" />
     </task>
     <servers />
   </component>

@@ -148,9 +148,11 @@ public class FWaspMovement : MonoBehaviour, IInitializable
     public event Action BossAttackStarted;
     public event Action DeathStateEnded;
 
-
-    private void OnEnable()
+    public void Initialize()
     {
+        CreateMovementStates();
+        StateMachineSetup();
+        
         _attack01LState.Started += OnBossAttackStarted;
         _attack01RState.Started += OnBossAttackStarted;
         _attack02LState.Started += OnBossAttackStarted;
@@ -168,9 +170,15 @@ public class FWaspMovement : MonoBehaviour, IInitializable
         _attack03DeathRState.Ended += OnDeathStateEnded;
         _attack04DeathLState.Ended += OnDeathStateEnded;
         _attack04DeathRState.Ended += OnDeathStateEnded;
+        
+        enabled = false;
+        _isAnimClipEnded = false;
+        _isLampDestroyed = false;
+        _isDamaged = false;
+        _isCollided = false;
     }
 
-    private void OnDisable()
+    private void OnDestroy()
     {
         _attack01LState.Started -= OnBossAttackStarted;
         _attack01RState.Started -= OnBossAttackStarted;
@@ -191,18 +199,6 @@ public class FWaspMovement : MonoBehaviour, IInitializable
         _attack04DeathRState.Ended -= OnDeathStateEnded;
     }
 
-
-    public void Initialize()
-    {
-        CreateMovementStates();
-        StateMachineSetup();
-        
-        enabled = false;
-        _isAnimClipEnded = false;
-        _isLampDestroyed = false;
-        _isDamaged = false;
-        _isCollided = false;
-    }
 
     public void Play()
     {
@@ -673,6 +669,7 @@ public class FWaspMovement : MonoBehaviour, IInitializable
 
     private void OnBossAttackStarted()
     {
+        Debug.Log("Boss Attack Started");
         BossAttackStarted?.Invoke();
     }
 }

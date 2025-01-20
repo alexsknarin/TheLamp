@@ -55,6 +55,7 @@ public class PlayerEnemyInteractionHandler : MonoBehaviour, IInitializable
     {
         if (!_isAssessingDamage)
         {
+            Debug.Log("Lamp collided with enemy: " + enemy.gameObject.name);
             _isAssessingDamage = true;
         }
     }
@@ -67,13 +68,16 @@ public class PlayerEnemyInteractionHandler : MonoBehaviour, IInitializable
     {
         if (_isAssessingDamage)
         {
+            Debug.Log("Enemy exited attack exit zone: " + enemy.gameObject.name);
             if (enemy.ReceivedLampAttack && (enemy.EnemyType != EnemyType.Ladybug || enemy.EnemyType != EnemyType.Megabeetle)) // TODO: replace with ISticky interface
             {
+                Debug.Log("Enemy received lamp attack: " + enemy.gameObject.name);
                 _isAssessingDamage = false;
                 EnemyAttackBounced?.Invoke(true, enemy);
             }
             else
             {
+                Debug.Log("Enemy did not receive lamp attack: " + enemy.gameObject.name);
                 _isAssessingDamage = false;
                 EnemyAttackBounced?.Invoke(false, enemy);
             }

@@ -23,20 +23,6 @@ public class Wasp : BossBase
 
     public override EnemyType EnemyType => EnemyType.Wasp;
 
-    private void OnEnable()
-    {
-        _fWaspMovement.BossAttackStarted += OnBossAttackStarted;
-        _fWaspMovement.DeathStateEnded += OnDeathStateEnded;
-        _lampDeadEventProvider.LampDied += OnLampDied;
-    }
-
-    private void OnDisable()
-    {
-        _fWaspMovement.BossAttackStarted -= OnBossAttackStarted;
-        _fWaspMovement.DeathStateEnded -= OnDeathStateEnded;
-        _lampDeadEventProvider.LampDied -= OnLampDied;
-    }
-
     public override void Initialize() // TODO: reuse Initialze for global initialization. Ths is Setup
     {
         _attackPause = new WaitForSeconds(_attackPauseTime);
@@ -47,6 +33,17 @@ public class Wasp : BossBase
         _waspPresentation.Initialize();
         _fWaspMovement.Initialize();
         gameObject.SetActive(false);
+        
+        _fWaspMovement.BossAttackStarted += OnBossAttackStarted;
+        _fWaspMovement.DeathStateEnded += OnDeathStateEnded;
+        _lampDeadEventProvider.LampDied += OnLampDied;
+    }
+
+    private void OnDestroy()
+    {
+        _fWaspMovement.BossAttackStarted -= OnBossAttackStarted;
+        _fWaspMovement.DeathStateEnded -= OnDeathStateEnded;
+        _lampDeadEventProvider.LampDied -= OnLampDied;
     }
 
     public override void Reset()
@@ -59,6 +56,7 @@ public class Wasp : BossBase
 
     public override void Play()
     {
+        ReceivedLampAttack = false;
         _isDead = false;
         gameObject.SetActive(true);
         _waspPresentation.ResetTrail();
