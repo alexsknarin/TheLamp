@@ -4,14 +4,14 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "FDragonflySpiderPatrolStateR", menuName = "FDragonflyMovementStates/FDragonflySpiderPatrolStateR")]
 public class FDragonflySpiderPatrolStateR : ScriptableObject, IState
 {
-    public event Action OnStartedEvent;
     private readonly int _sideDirection = -1;
-    
     // Dependencies
     private Transform _visibleBodyTransform;
     private Transform _spiderPatrolTransform;
     private DragonflyPatrolRotator _spiderPatrolRotator;
     
+    public event Action Started;
+
     public void SetDependencies(Transform visibleBodyTransform, Transform spiderPatrolTransform, 
         DragonflyPatrolRotator spiderPatrolRotator)
     {
@@ -30,12 +30,10 @@ public class FDragonflySpiderPatrolStateR : ScriptableObject, IState
         _visibleBodyTransform.SetParent(_spiderPatrolTransform, false);
         _visibleBodyTransform.localPosition = Vector3.zero;
         _visibleBodyTransform.localRotation = Quaternion.identity;
-        OnStartedEvent?.Invoke();
+        Started?.Invoke();
     }
 
-    public void Tick()
-    {
-    }
+    public void Tick() { }
 
     public void OnExit()
     {

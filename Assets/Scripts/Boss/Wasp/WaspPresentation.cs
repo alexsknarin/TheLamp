@@ -11,19 +11,12 @@ public class WaspPresentation : MonoBehaviour, IInitializable
     [SerializeField] private VisualEffect _damageParticles;
     [SerializeField] private VisualEffect _damageEmitParticles;
     [SerializeField] private float _deathDuration;
-
     private bool _isDead;
     private bool _isDamaged;
     private Material _waspBodyMaterial;
     private WaitForSeconds _damageFlashDuration = new WaitForSeconds(0.8f);
     private float _localTime;
 
-    private IEnumerator WaitForDamageFlashEnd()
-    {
-        yield return _damageFlashDuration;
-        _waspBodyMaterial.SetInt("_isDamaged", 0);
-    }
-    
     public void Initialize()
     {
         _waspBodyMeshRenderer.gameObject.SetActive(true);
@@ -37,7 +30,7 @@ public class WaspPresentation : MonoBehaviour, IInitializable
         _damageEmitParticles.SendEvent("OnEndEmit");
         _damageEmitParticles.SetFloat("Rate", 0);
     }
-   
+
     public void SetDamage(float damage)
     {
         _waspBodyMaterial.SetFloat("_DamagePhase", damage);
@@ -48,7 +41,7 @@ public class WaspPresentation : MonoBehaviour, IInitializable
         _damageEmitParticles.SetFloat("Rate", emitRate);
         StartCoroutine(WaitForDamageFlashEnd());
     }
-    
+
     public void PlayDeath()
     {
         _isDead = true;
@@ -66,6 +59,21 @@ public class WaspPresentation : MonoBehaviour, IInitializable
     public void ResetTrail()
     {
         _trailResetHandler.Initialize();
+    }
+
+    public void PlayDamageParticles()
+    {
+        Vector3 direction = transform.position;
+        direction.z = 0;
+        direction.Normalize();
+        _damageParticles.SetVector3("Direction", direction);
+        _damageParticles.SendEvent("OnDamage");
+    }
+
+    private IEnumerator WaitForDamageFlashEnd()
+    {
+        yield return _damageFlashDuration;
+        _waspBodyMaterial.SetInt("_isDamaged", 0);
     }
 
     private void PerformDeath()
@@ -88,16 +96,7 @@ public class WaspPresentation : MonoBehaviour, IInitializable
             _localTime += Time.deltaTime;
         }
     }
-    
-    public void PlayDamageParticles()
-    {
-        Vector3 direction = transform.position;
-        direction.z = 0;
-        direction.Normalize();
-        _damageParticles.SetVector3("Direction", direction);
-        _damageParticles.SendEvent("OnDamage");
-    }
-    
+
     private void Update()
     {
         PerformDeath();

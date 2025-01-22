@@ -6,22 +6,20 @@ public class FDragonflyAttackHoverState : ScriptableObject, IState
 {
     [SerializeField] private float _speed = 4f;
     [SerializeField] private float _acceleration = 0.75f;
-    
-    public event Action OnStartedEvent;
-    
     private float _attackAccelerationValue = 0;
     private Vector3 _attackDirection;
-
     // Dependencies
     private Transform _visibleBodyTransform;
     private Transform _baseTransform;
+
+    public event Action Started;
 
     public void SetDependencies(Transform visibleBodyTransform, Transform baseTransform)
     {
         _visibleBodyTransform = visibleBodyTransform;
         _baseTransform = baseTransform;
     }
-    
+
     public void OnEnter()
     {
         Vector3 currentPosition = _visibleBodyTransform.position;
@@ -46,7 +44,7 @@ public class FDragonflyAttackHoverState : ScriptableObject, IState
 #if UNITY_EDITOR  
         Debug.DrawLine(currentPosition, sideGoal, Color.yellow, 5f);
 #endif
-        OnStartedEvent?.Invoke();
+        Started?.Invoke();
     }
 
     public void Tick()
@@ -58,7 +56,5 @@ public class FDragonflyAttackHoverState : ScriptableObject, IState
         }
     }
 
-    public void OnExit()
-    {
-    }
+    public void OnExit() { }
 }

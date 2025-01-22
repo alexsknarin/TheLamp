@@ -6,9 +6,7 @@ using UnityEngine;
 public class FDragonflyBounceTailStateL : ScriptableObject, IState
 {
     [SerializeField] private float _rotationSpeed = 125f;
-
     private readonly int _sideDirection = 1;
-
     // Dependencies
     private Transform _visibleBodyTransform;
     private Transform _patrolTransform;
@@ -38,7 +36,5 @@ public class FDragonflyBounceTailStateL : ScriptableObject, IState
         _visibleBodyTransform.localRotation = Quaternion.Euler(eulers);
     }
 
-    public void OnExit()
-    {
-    }
+    public void OnExit() { }
 }

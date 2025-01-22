@@ -2,13 +2,12 @@ using UnityEngine;
 
 public class FlyMovementDeathState: EnemyMovementBaseState
 {
-    public override EnemyState State => EnemyState.Death;
     private Vector3 _bounceForce;
     private Vector3 _gravityForce;
     private float _bounceForceMagnitude = 4f;
     private float _gravityForceMagnitude = .2f;
     private float _dragAmount = 0.94f;
-    
+
     public FlyMovementDeathState(IStateMachineOwner owner, float speed, float radius, float verticalAmplitude) : base()
     {
         _speed = speed;
@@ -16,6 +15,8 @@ public class FlyMovementDeathState: EnemyMovementBaseState
         _verticalAmplitude = verticalAmplitude;
         _owner = owner;
     }
+
+    public override EnemyState State => EnemyState.Death;
 
     public override void EnterState(Vector3 currentPosition, int sideDirection, int depthDirection)
     {
@@ -34,7 +35,7 @@ public class FlyMovementDeathState: EnemyMovementBaseState
   
     public override void CheckForStateChange()
     {
-        if (Position.y < -6f)
+        if (Position.y < -6f) // TODO: MAGIC number
         {
             _owner.SwitchState();
         }

@@ -8,23 +8,21 @@ public class FDragonflyPreAttackHeadStateR : ScriptableObject, IState
     [SerializeField] private float _duration = 0.4f;
     [SerializeField] private float _deccelerationPower = 2f;
     [SerializeField] private float _sideSpeed = 0.5f;
-    
-    public event Action OnStartedEvent;
-    
     private Vector3 _attackDirection;
     private readonly int _sideDirection = -1;
     private float _localTime = 0f;
     private float _phase = 0f;
     private Quaternion _startRotation;
     private Quaternion _endRotation;
-    
     private bool _readyToSwitch = false;
-    public bool ReadyToSwitch => _readyToSwitch;
-    
     // Dependencies
     private Transform _visibleBodyTransform;
     private Transform _baseTransform;
     
+    public event Action Started;
+    
+    public bool ReadyToSwitch => _readyToSwitch;
+
     public void SetDependencies(Transform visibleBodyTransform, Transform baseTransform)
     {
         _visibleBodyTransform = visibleBodyTransform;
@@ -41,7 +39,7 @@ public class FDragonflyPreAttackHeadStateR : ScriptableObject, IState
         _startRotation = _visibleBodyTransform.rotation;
         _endRotation = Quaternion.LookRotation(_attackDirection, Vector3.up);
         _readyToSwitch = false;
-        OnStartedEvent?.Invoke();
+        Started?.Invoke();
     }
 
     public void Tick()
@@ -61,9 +59,7 @@ public class FDragonflyPreAttackHeadStateR : ScriptableObject, IState
         CheckForStateChange();
     }
 
-    public void OnExit()
-    {
-    }
+    public void OnExit() { }
 
     private void CheckForStateChange()
     {

@@ -5,20 +5,18 @@ public class FDragonflySpiderPreattackHeadTransitionStateR : ScriptableObject, I
 {
     [SerializeField] private float _duration = 0.65f;
     private Transform _patrolTransformParent;
-    
     private float _phase;
     private float _localTime;
     private readonly int _sideDirection = -1;
-    
     private bool _readyToSwitch = false;
-    public bool ReadyToSwitch => _readyToSwitch;
-    
     // Dependencies
     private Transform _visibleBodyTransform;
     private Transform _patrolTransform;
     private Transform _spiderPatrolTransform;
     private DragonflyPatrolRotator _patrolRotator;
     private DragonflyPatrolRotator _spiderPatrolRotator;
+    
+    public bool ReadyToSwitch => _readyToSwitch;
 
     public void SetDependencies(Transform visibleBodyTransform, Transform patrolTransform, Transform spiderPatrolTransform, 
         DragonflyPatrolRotator patrolRotator, DragonflyPatrolRotator spiderPatrolRotator)
@@ -69,9 +67,7 @@ public class FDragonflySpiderPreattackHeadTransitionStateR : ScriptableObject, I
         CheckForStateChange();
     }
 
-    public void OnExit()
-    {
-    }
+    public void OnExit() { }
 
     private void CheckForStateChange()
     {

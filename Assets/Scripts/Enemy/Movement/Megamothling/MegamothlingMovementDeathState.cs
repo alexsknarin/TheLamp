@@ -2,7 +2,6 @@ using UnityEngine;
 
 public class MegamothlingMovementDeathState: EnemyMovementBaseState
 {
-    public override EnemyState State => EnemyState.Death;
     private Vector3 _bounceForce;
     private Vector3 _gravityForce;
     private float _bounceForceMagnitude = 2f;
@@ -10,7 +9,7 @@ public class MegamothlingMovementDeathState: EnemyMovementBaseState
     private float _dragAmount = 0.94f;
     private float _duration = 1.7f;
     private float _localTime;
-    
+
     public MegamothlingMovementDeathState(IStateMachineOwner owner, float speed, float radius, float verticalAmplitude) : base()
     {
         _speed = speed;
@@ -18,6 +17,8 @@ public class MegamothlingMovementDeathState: EnemyMovementBaseState
         _verticalAmplitude = verticalAmplitude;
         _owner = owner;
     }
+
+    public override EnemyState State => EnemyState.Death;
 
     public override void EnterState(Vector3 currentPosition, int sideDirection, int depthDirection)
     {

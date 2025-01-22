@@ -12,7 +12,22 @@ public class DragonflyHealthIndication : MonoBehaviour, IInitializable
     private Material _bodyMaterial;
     private Material _wingsMaterial;
     private bool _isParticleSystemActive = false;
-    
+
+    public void Initialize()
+    {
+        _bodyMaterial = _bodyMeshRenderer.material;
+        _wingsMaterial = _wingsMeshRenderer.material;
+        _bodyMaterial.SetFloat("_DamagePhase", 0f);
+        _wingsMaterial.SetFloat("_DamagePhase", 0f);
+        
+        _isParticleSystemActive = false;
+        _damageEmitParticles.SendEvent("OnEndEmit");
+        _damageEmitParticles.SetFloat("Rate", 0);
+        _damageEmitParticles.SetFloat("LifeMin", _damageLifeMin);
+        _damageEmitParticles.SetFloat("LifeMax", _damageLifeMax);
+        _damageEmitParticles.gameObject.SetActive(false);
+    }
+
     public void Refresh(int currentHealth, int maxHealth)
     {
         float damagePhase = ((float)(maxHealth - currentHealth) / maxHealth) * 0.5f;
@@ -31,20 +46,5 @@ public class DragonflyHealthIndication : MonoBehaviour, IInitializable
         {
             _damageEmitParticles.SetFloat("Rate", damagePhase * _damageEmitRate);
         }
-    }
-    
-    public void Initialize()
-    {
-        _bodyMaterial = _bodyMeshRenderer.material;
-        _wingsMaterial = _wingsMeshRenderer.material;
-        _bodyMaterial.SetFloat("_DamagePhase", 0f);
-        _wingsMaterial.SetFloat("_DamagePhase", 0f);
-        
-        _isParticleSystemActive = false;
-        _damageEmitParticles.SendEvent("OnEndEmit");
-        _damageEmitParticles.SetFloat("Rate", 0);
-        _damageEmitParticles.SetFloat("LifeMin", _damageLifeMin);
-        _damageEmitParticles.SetFloat("LifeMax", _damageLifeMax);
-        _damageEmitParticles.gameObject.SetActive(false);
     }
 }

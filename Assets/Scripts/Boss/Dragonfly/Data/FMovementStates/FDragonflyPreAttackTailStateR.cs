@@ -7,21 +7,19 @@ public class FDragonflyPreAttackTailStateR : ScriptableObject, IState
     [SerializeField] private float _duration = 0.35f;
     [SerializeField] private float _distance = -0.5f;
     [SerializeField] private AnimationCurve _curve;
-    
-    public event Action OnStartedEvent;
-    
     private readonly int _sideDirection = -1;
     private float _localTime = 0f;
     private float _phase = 0f;
-    
     private bool _readyToSwitch = false;
-    public bool ReadyToSwitch => _readyToSwitch;
-    
     // Dependencies
     private Transform _visibleBodyTransform;
     private Transform _patrolTransform;
     private DragonflyPatrolRotator _patrolRotator;
+
+    public bool ReadyToSwitch => _readyToSwitch;
     
+    public event Action Started;
+
     public void SetDependencies(Transform visibleBodyTransform, Transform patrolTransform, DragonflyPatrolRotator patrolRotator)
     {
         _visibleBodyTransform = visibleBodyTransform;
@@ -43,7 +41,7 @@ public class FDragonflyPreAttackTailStateR : ScriptableObject, IState
         _localTime = 0f;
         _phase = 0f;
         _readyToSwitch = false;
-        OnStartedEvent?.Invoke();
+        Started?.Invoke();
     }
 
     public void Tick()
@@ -57,9 +55,7 @@ public class FDragonflyPreAttackTailStateR : ScriptableObject, IState
         CheckForStateChange();
     }
 
-    public void OnExit()
-    {
-    }
+    public void OnExit() { }
 
     private void CheckForStateChange()
     {

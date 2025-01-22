@@ -3,20 +3,20 @@ using UnityEngine;
 
 public class LampAttackExitZoneCollisionHandler : MonoBehaviour
 {
-    public event Action<EnemyBase> OnExitAttackExitZoneEvent; 
+    public event Action<EnemyBase> EnemyExitedAttackExitZone; 
     private void OnTriggerExit2D(Collider2D other)
     {
         if (other.gameObject.CompareTag("Enemy") || other.gameObject.CompareTag("Boss"))
         {
             EnemyBase enemy = other.GetComponent<EnemyBase>();
-            OnExitAttackExitZoneEvent?.Invoke(enemy);
+            EnemyExitedAttackExitZone?.Invoke(enemy);
             enemy.HandleExitingAttackExitZone();
         }
         
         if (other.gameObject.CompareTag("Dragonfly"))
         {
             EnemyBase dragonfly = other.attachedRigidbody.gameObject.GetComponent<Dragonfly>();
-            OnExitAttackExitZoneEvent?.Invoke(dragonfly);
+            EnemyExitedAttackExitZone?.Invoke(dragonfly);
             dragonfly.HandleExitingAttackExitZone();
         }
     }

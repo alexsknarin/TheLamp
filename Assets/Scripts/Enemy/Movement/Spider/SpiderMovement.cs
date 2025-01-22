@@ -5,6 +5,8 @@ public class SpiderMovement : EnemyMovement
 {
     [Header("-- Movement Settings --")]
     [SerializeField] private float _speed;
+    // Debug
+    [SerializeField] private EnemyState _stateDebug;
     private int _sideDirection;
     private float _xCenter = 1.12f;
     // Movement States
@@ -18,12 +20,8 @@ public class SpiderMovement : EnemyMovement
     private FlyMovementDeathState _deathState;
     private Vector3 _position2d;
     private Vector3 _prevPosition2d; //Debug
-    
     // State parameters
     private bool _isDead = false;
-    
-    // Debug
-    [SerializeField] private EnemyState _stateDebug;
     
     public override void Initialize()
     {
@@ -37,33 +35,7 @@ public class SpiderMovement : EnemyMovement
         _deathState = new FlyMovementDeathState(this, _speed, _xCenter, 0);
         MovementSetup();
     }
-    
-    private void MovementSetup()
-    {
-        _sideDirection = RandomDirection.Generate();
-        SideDirection = _sideDirection;
-        _position2d = GenerateSpawnPosition(_sideDirection);
-        _currentState = _enterState;
-        _movementStateMachine.SetState(_currentState, _position2d, _sideDirection, 1);
-        _position2d = _currentState.Position;
-        transform.position = _position2d;
-        _isDead = false;
-    }
-    
-    private void MovementReset()
-    {
-        OnMovementResetInvoke();
-        MovementSetup();    
-    }
-  
-    private Vector3 GenerateSpawnPosition(int direction)
-    {
-        Vector3 spawnPosition = Vector3.up * 5f;
-        spawnPosition.x = _xCenter;
-        spawnPosition.x *= direction;
-        return spawnPosition;
-    }
-    
+
     public override void TriggerFall()
     {
         if(_currentState.State == EnemyState.Attack)
@@ -71,7 +43,7 @@ public class SpiderMovement : EnemyMovement
             SwitchState();
         }
     }
-    
+
     public override void TriggerDeath()
     {
         if(_currentState.State != EnemyState.Death)
@@ -85,15 +57,11 @@ public class SpiderMovement : EnemyMovement
     {
         SwitchState();
     }
-    
-    public override void TriggerSpread()
-    {
-    }
-    
-    public override void TriggerStick()
-    {
-    }
-    
+
+    public override void TriggerSpread() { }
+
+    public override void TriggerStick() { }
+
     public override void SwitchState()
     {
         EnemyMovementBaseState newState = _currentState;
@@ -166,6 +134,32 @@ public class SpiderMovement : EnemyMovement
         _currentState = newState;
         State = _currentState.State;
         _movementStateMachine.SetState(_currentState, _position2d, _sideDirection, 1);
+    }
+
+    private void MovementSetup()
+    {
+        _sideDirection = RandomDirection.Generate();
+        SideDirection = _sideDirection;
+        _position2d = GenerateSpawnPosition(_sideDirection);
+        _currentState = _enterState;
+        _movementStateMachine.SetState(_currentState, _position2d, _sideDirection, 1);
+        _position2d = _currentState.Position;
+        transform.position = _position2d;
+        _isDead = false;
+    }
+
+    private void MovementReset()
+    {
+        OnMovementResetInvoke();
+        MovementSetup();    
+    }
+
+    private Vector3 GenerateSpawnPosition(int direction)
+    {
+        Vector3 spawnPosition = Vector3.up * 5f;
+        spawnPosition.x = _xCenter;
+        spawnPosition.x *= direction;
+        return spawnPosition;
     }
 
     private void Update()

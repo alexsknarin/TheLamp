@@ -2,12 +2,11 @@ using UnityEngine;
 
 public class MegamothlingMovementAttackState: EnemyMovementBaseState
 {
-    public override EnemyState State => EnemyState.Attack;
     private float _acceleration = 3.1f; //13.5f;
     private float _depthDecrement = 0.2f;
     private float _acceleratedSpeed = 1f;
     private float _startDistance;
-    
+
     public MegamothlingMovementAttackState(IStateMachineOwner owner, float speed, float radius, float verticalAmplitude) : base()
     {
         _speed = speed;
@@ -15,7 +14,9 @@ public class MegamothlingMovementAttackState: EnemyMovementBaseState
         _verticalAmplitude = verticalAmplitude;
         _owner = owner;
     }
-    
+
+    public override EnemyState State => EnemyState.Attack;
+
     public override void EnterState(Vector3 currentPosition, int sideDirection, int depthDirection)
     {
         _sideDirection = sideDirection;

@@ -3,16 +3,16 @@ using UnityEngine;
 
 public class DragonflyAnimationClipEventHandler : MonoBehaviour
 {
-    public event Action OnClipEndedEvent;
-    public event Action OnSwarmCallEvent;
+    public event Action AnimClipEnded;
+    public event Action SwarmCalled;
     
     public void ClipEnded()
     {
-        OnClipEndedEvent?.Invoke();
+        AnimClipEnded?.Invoke();
     }
     
     public void SwarmCall()
     {
-        OnSwarmCallEvent?.Invoke();
+        SwarmCalled?.Invoke();
     }
 }

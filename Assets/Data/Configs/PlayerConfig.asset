@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3564bbbed3c280c44a99d6c5a21b6da0, type: 3}
+  m_Name: PlayerConfig
+  m_EditorClassIdentifier: 
+  <IsDamageable>k__BackingField: 1
+  <AttackDuration>k__BackingField: 0.15
+  <DamageDuration>k__BackingField: 0.2
+  <HealthCap>k__BackingField: 50
+  <CooldownTimeCap>k__BackingField: 0.75
+  <CooldownDecrement>k__BackingField: 0.06
+  <AttackDistanceCap>k__BackingField: 0.82
+  <AttackDistanceIncrement>k__BackingField: 0.01
+  <AttackDistanceUpgradeAnimationTime>k__BackingField: 0.45

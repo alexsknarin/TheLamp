@@ -2,13 +2,12 @@ using UnityEngine;
 
 public class MegamothlingMovementFallState: EnemyMovementBaseState
 {
-    public override EnemyState State => EnemyState.Fall;
     private Vector3 _bounceForce;
     private Vector3 _gravityForce;
     private float _bounceForceMagnitude = 2f;
     private float _gravityForceMagnitude = .1f;
     private float _dragAmount = 0.94f;
-    
+
     public MegamothlingMovementFallState(IStateMachineOwner owner, float speed, float radius, float verticalAmplitude) : base()
     {
         _speed = speed;
@@ -16,7 +15,9 @@ public class MegamothlingMovementFallState: EnemyMovementBaseState
         _verticalAmplitude = verticalAmplitude;
         _owner = owner;
     }
-    
+
+    public override EnemyState State => EnemyState.Fall;
+
     public override void EnterState(Vector3 currentPosition, int sideDirection, int depthDirection)
     {
         _sideDirection = sideDirection;

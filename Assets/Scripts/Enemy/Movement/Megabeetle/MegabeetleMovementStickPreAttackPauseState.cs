@@ -2,11 +2,10 @@ using UnityEngine;
 
 public class MegabeetleMovementStickPreAttackPauseState: EnemyMovementBaseState
 {
-    public override EnemyState State => EnemyState.StickPreAttackPause;
     private float _duration = 0.12f;
     private float _localTime = 0f;
     private float _phase = 0f;
-    
+
     public MegabeetleMovementStickPreAttackPauseState(IStateMachineOwner owner, float speed, float radius, float verticalAmplitude) : base()
     {
         _speed = speed;
@@ -14,7 +13,9 @@ public class MegabeetleMovementStickPreAttackPauseState: EnemyMovementBaseState
         _verticalAmplitude = verticalAmplitude;
         _owner = owner;
     }
-    
+
+    public override EnemyState State => EnemyState.StickPreAttackPause;
+
     public override void EnterState(Vector3 currentPosition, int sideDirection, int depthDirection)
     {
         Position = currentPosition;

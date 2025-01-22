@@ -4,24 +4,22 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "FDragonflySpiderPushStateR", menuName = "FDragonflyMovementStates/FDragonflySpiderPushStateR")]
 public class FDragonflySpiderPushStateR : ScriptableObject, IState
 {
-    public event Action OnEndedEvent;
-    
     [SerializeField] private float _distance = 0.5f;
     [SerializeField] private float _duration = 0.5f;
     [SerializeField] private AnimationCurve _animCurve;
-    
     private readonly int _sideDirection = -1;
     private float _localTime = 0f;
     private float _phase = 0f;
-    
     private bool _readyToSwitch = false;
-    public bool ReadyToSwitch => _readyToSwitch;
-    
     // Dependencies
     private Transform _visibleBodyTransform;
     private Transform _spiderPatrolTransform;
     private DragonflyPatrolRotator _spiderPatrolRotator;
+
+    public event Action Ended;
     
+    public bool ReadyToSwitch => _readyToSwitch;
+
     public void SetDependencies(Transform visibleBodyTransform, Transform spiderPatrolTransform, 
         DragonflyPatrolRotator spiderPatrolRotator)
     {
@@ -58,7 +56,7 @@ public class FDragonflySpiderPushStateR : ScriptableObject, IState
     public void OnExit()
     {
         _spiderPatrolRotator.Stop();
-        OnEndedEvent?.Invoke();
+        Ended?.Invoke();
     }
 
     private void CheckForStateChange()

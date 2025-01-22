@@ -12,13 +12,7 @@ public class DragonflyDamageFlash : DamageIndication
     private Material _wingsMaterial;
     private WaitForSeconds _damageFlashDuration = new WaitForSeconds(1.2f); // TODO: make use parameter - initialize in Initialize()
     private Transform _contactCollisionTransform;
-    
-    private IEnumerator WaitForDamageFlashEnd()
-    {
-        yield return _damageFlashDuration;
-        _bodyMaterial.SetInt("_isDamaged", 0);
-        _wingsMaterial.SetInt("_isDamaged", 0);
-    }
+
     public override void Initialize()
     {
         _bodyMaterial = _bodyMeshRenderer.material;
@@ -26,15 +20,9 @@ public class DragonflyDamageFlash : DamageIndication
         _bodyMaterial.SetFloat("_AttackSemaphore", 0f);
         _wingsMaterial.SetFloat("_AttackSemaphore", 0f);
     }
-    
-    public void SetContactCollisionTransform(Transform contactCollisionTransform)
-    {
-        _contactCollisionTransform = contactCollisionTransform;
-    }
-    
+
     public override void Play()
     {
-        
         _bodyMaterial.SetInt("_isDamaged", 1);
         _wingsMaterial.SetInt("_isDamaged", 1);
         StartCoroutine(WaitForDamageFlashEnd());
@@ -47,5 +35,16 @@ public class DragonflyDamageFlash : DamageIndication
             _damageParticles.SendEvent("OnDamage");
         }
     }
-   
+
+    public void SetContactCollisionTransform(Transform contactCollisionTransform)
+    {
+        _contactCollisionTransform = contactCollisionTransform;
+    }
+
+    private IEnumerator WaitForDamageFlashEnd()
+    {
+        yield return _damageFlashDuration;
+        _bodyMaterial.SetInt("_isDamaged", 0);
+        _wingsMaterial.SetInt("_isDamaged", 0);
+    }
 }

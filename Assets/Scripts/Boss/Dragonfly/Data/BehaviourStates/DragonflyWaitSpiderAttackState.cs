@@ -3,26 +3,23 @@ using UnityEngine;
 
 public class DragonflyWaitSpiderAttackState : IState
 {
-    public event Action OnEndedEvent;
-    public event Action OnReadyToPreAttackEvent;
-    
     private Vector3 _targetPosition;
-
     private readonly Transform _transform;
     private readonly Vector3 _attackPositionBase;
-    
     private bool _isLastPatrolDirectionSet = false;
     private int _lastPatrolDirection = 0;
-    
     private float _preattackDistance = 0.4f;
     private bool _isReadyToPreAttack = false;
-   
+
     public DragonflyWaitSpiderAttackState(Transform visibleBodyTransform, Vector3 attackPositionBase)
     {
         _transform = visibleBodyTransform;
         _attackPositionBase = attackPositionBase;
     }
-    
+
+    public event Action Ended;
+    public event Action GotReadyToPreAttack;
+
     public void OnEnter()
     {
         _targetPosition = _attackPositionBase;
@@ -45,7 +42,7 @@ public class DragonflyWaitSpiderAttackState : IState
         if (!_isReadyToPreAttack && distance < _preattackDistance)
         {
             _isReadyToPreAttack = true;
-            OnReadyToPreAttackEvent?.Invoke();
+            GotReadyToPreAttack?.Invoke();
         }
         
         if (distance < 0.25f)
@@ -60,13 +57,11 @@ public class DragonflyWaitSpiderAttackState : IState
                 float currentPatrolDirection = (int)Mathf.Sign((_targetPosition - currentPosition).normalized.x);
                 if (currentPatrolDirection + _lastPatrolDirection == 0)
                 {
-                    OnEndedEvent?.Invoke();
+                    Ended?.Invoke();
                 }
             }
         }
     }
 
-    public void OnExit()
-    {
-    }
+    public void OnExit() { }
 }

@@ -9,38 +9,26 @@ public class DragonflyProjectileSpider : EnemyBase
     [SerializeField] private DragonflySpiderPresentation _presentation;
     [SerializeField] private Collider2D _collider;
     [SerializeField] private TrailRenderer _trailRenderer;
+    public event Action EnterAnimationEnded;
     public override EnemyType EnemyType => _enemyType;
-    public event Action OnEnterAnimationEndEvent;
-    
+
     private void OnEnable()
     {
-        LampAttackModel.OnLampAttackEvent += TMPHandleLampAttack;
-        _movement.OnEnterAnimationEndEvent += OnEnterAnimationEndHandle;
-        _movement.OnFallEndedEvent += OnFallEndedHandle;
+        // LampAttackModel.OnLampAttackEvent += TMPHandleLampAttack; // TODO: fix this
+        _movement.EnterAnimationEnded += OnEnterAnimationEndHandle;
+        _movement.FallEnded += OnFallEndedHandle;
         
     }
-    
     private void OnDisable()
     {
-        LampAttackModel.OnLampAttackEvent -= TMPHandleLampAttack;
-        _movement.OnEnterAnimationEndEvent -= OnEnterAnimationEndHandle;
-        _movement.OnFallEndedEvent -= OnFallEndedHandle;
+        // LampAttackModel.OnLampAttackEvent -= TMPHandleLampAttack;
+        _movement.EnterAnimationEnded -= OnEnterAnimationEndHandle;
+        _movement.FallEnded -= OnFallEndedHandle;
     }
 
     public override void Initialize()
     {
         _presentation.Initialize();
-    }
-
-    private void OnFallEndedHandle()
-    {
-        gameObject.SetActive(false);
-    }
-
-    private void OnEnterAnimationEndHandle()
-    {
-        _presentation.SwitchToCaughtState();
-        OnEnterAnimationEndEvent?.Invoke();
     }
 
     public void Play(int direction)
@@ -54,7 +42,7 @@ public class DragonflyProjectileSpider : EnemyBase
         
         // Presentation setup
     }
-    
+
     public void StartPreAttack()
     {
         _presentation.PreAttackStart();
@@ -70,21 +58,11 @@ public class DragonflyProjectileSpider : EnemyBase
         _trailRenderer.emitting = true;
     }
 
-    public override void HandleEnteringAttackZone()
-    {
-        ReadyToLampDamage = true;
-    }
-
     public override void HandleCollisionWithLamp()
     {
         ReadyToCollide = false;
         ReadyToLampDamage = true;
         _movement.TriggerFall();
-    }
-
-    public override void HandleExitingAttackExitZone()
-    {
-        ReadyToLampDamage = false;
     }
 
     public override void HandleCollisionWithStickZone()
@@ -113,22 +91,34 @@ public class DragonflyProjectileSpider : EnemyBase
     {
         throw new System.NotImplementedException();
     }
-    
+
     public override Vector3 ProvideImpactPoint()
     {
         return transform.position;
     }
-    
+
     public override void SpreadStart()
     {
         throw new System.NotImplementedException();
     }
-    
+
     private void TMPHandleLampAttack(int arg1, float arg2, float arg3, float arg4)
     {
         if (ReadyToLampDamage)
         {
             ReceiveDamage(arg1);
         }
+    }
+    
+    // Event Handlers
+    private void OnEnterAnimationEndHandle()
+    {
+        _presentation.SwitchToCaughtState();
+        EnterAnimationEnded?.Invoke();
+    }
+
+    private void OnFallEndedHandle()
+    {
+        gameObject.SetActive(false);
     }
 }

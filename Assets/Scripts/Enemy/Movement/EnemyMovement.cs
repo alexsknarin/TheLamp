@@ -3,50 +3,52 @@ using UnityEngine;
 
 public abstract class EnemyMovement : MonoBehaviour, IStateMachineOwner, IInitializable
 {
+    public virtual void Construct(ILampPositionProviderService lampPositionProviderService) { }
+    public event Action PreAttackStarted;
+    public event Action PreAttackEnded;
+    public event Action AttackEnded;
+    public event Action StickStarted;
+    public event Action EnemyDeactivated; // TODO: rename to Enemy Death State Ended or something like that - movement shouldn't know anything about active-inactive states
+    public event Action MovementReseted;
     public EnemyState State { get; protected set; }
     public int SideDirection { get; protected set; }
-    public event Action OnPreAttackStartEvent;
-    public event Action OnPreAttackEndEvent;
-    public event Action OnAttackEndEvent;
-    public event Action OnStickStartEvent;
-    public event Action OnEnemyDeactivatedEvent; 
-    public event Action OnMovementResetEvent;
 
     public abstract void Initialize();
+    public virtual void HandleLampDestroyed() { }
     public abstract void TriggerFall();
     public abstract void TriggerDeath();
     public abstract void TriggerAttack();
     public abstract void TriggerSpread();
-    public abstract void TriggerStick();
+    public abstract void TriggerStick(); // TODO: move it into a separate interface or reimplement in the ladybug movement specifically
     public abstract void SwitchState();
 
-    protected virtual void OnPreAttackStartInvoke()
+    protected void OnPreAttackStartInvoke()
     {
-        OnPreAttackStartEvent?.Invoke();
+        PreAttackStarted?.Invoke();
     }
 
-    protected virtual void OnPreAttackEndInvoke()
+    protected void OnPreAttackEndInvoke()
     {
-        OnPreAttackEndEvent?.Invoke();
+        PreAttackEnded?.Invoke();
     }
     
-    protected virtual void OnAttackEndInvoke()
+    protected void OnAttackEndInvoke()
     {
-        OnAttackEndEvent?.Invoke();
+        AttackEnded?.Invoke();
     }
     
-    protected virtual void OnStickStartInvoke()
+    protected void OnStickStartInvoke()
     {
-        OnStickStartEvent?.Invoke();
+        StickStarted?.Invoke();
     }
    
-    protected virtual void OnEnemyDeactivatedInvoke()
+    protected void OnEnemyDeactivatedInvoke()
     {
-        OnEnemyDeactivatedEvent?.Invoke();
+        EnemyDeactivated?.Invoke();
     }
     
-    protected virtual void OnMovementResetInvoke()
+    protected void OnMovementResetInvoke()
     {
-        OnMovementResetEvent?.Invoke();
+        MovementReseted?.Invoke();
     }
 }

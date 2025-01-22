@@ -1,6 +1,5 @@
 using System;
 using UnityEngine;
-using Object = System.Object;
 
 public class FDragonflyMovement : MonoBehaviour
 {
@@ -62,22 +61,7 @@ public class FDragonflyMovement : MonoBehaviour
     [SerializeField] private FDragonflySpiderPreattackHeadTransitionStateR _spiderPreAttackHeadTransitionStateR;
     [SerializeField] private FDragonflySpiderPushStateL _spiderPushStateL;
     [SerializeField] private FDragonflySpiderPushStateR _spiderPushStateR;
-    
-    // Events
-    public event Action<IState> OnReadyToAttackStateEnteredEvent; // TODO: possibly Use Type instead of IState 
-    public event Action<IState> OnReadyToSwarmAttackStateEnteredEvent;
-    public event Action<IState> OnAfterAttackExitEndedEvent; // TODO: possibly Use Type instead of IState
-    public event Action OnAttackStartedEvent;
-    public event Action OnPreAttackStartedEvent;
-    public event Action OnAttackEndedEvent;
-    public event Action<int> OnCatchSpiderStartedEvent;
-    public event Action OnReadyToSpiderAttackStateEnteredEvent;
-    public event Action OnDeathAnimationEndedEvent;
-    public event Action OnSwarmCallEvent;
-
     private FStateMachine _stateMachine = new();
-    public IState MovementState => _stateMachine.CurrentState;
-    
     // Animation 
     private readonly int _idleHash = Animator.StringToHash("Idle");
     private readonly int _enterToPatrolLHash = Animator.StringToHash("EnterToPatrolL");
@@ -92,19 +76,14 @@ public class FDragonflyMovement : MonoBehaviour
     private readonly int _returnTransitionLRTBHash = Animator.StringToHash("ReturnTransitionLRTB");
     private readonly int _returnTransitionRLBTHash = Animator.StringToHash("ReturnTransitionRLBT");
     private readonly int _returnTransitionRLTBHash = Animator.StringToHash("ReturnTransitionRLTB");
-    
     // Attack Modes
     private bool _isAttacking = false;
     private DragonflyPatrolAttackMode _currentPatrolAttackMode;
-    
     // Tracking previous state
     private IState _previousState;
     private DragonflyReturnMode _resolvedReturnMode;
-
-    
     // Return Resolve
     private int _returnSideDirection;
-
     private bool _isPlaying = false;
     private bool _isAnimClipEnded = false;
     private bool _isBounced = false;
@@ -113,122 +92,304 @@ public class FDragonflyMovement : MonoBehaviour
     private bool _isAttackSuccess;
     private bool _isAttackFail;
     private bool _isDead;
+    
+    // Events
+    public event Action<IState> ReadyToAttackStateEntered; // TODO: possibly Use Type instead of IState 
+    public event Action<IState> ReadyToSwarmAttackStateEntered;
+    public event Action<IState> AfterAttackExitEnded; // TODO: possibly Use Type instead of IState
+    public event Action AttackStarted;
+    public event Action PreAttackStarted;
+    public event Action AttackEnded;
+    public event Action<int> CatchSpiderStarted;
+    public event Action ReadyToSpiderAttackStateStarted;
+    public event Action DeathAnimationEnded;
+    public event Action SwarmCalled;
+    
+    public IState MovementState => _stateMachine.CurrentState;
 
     private void OnEnable()
     {
-        _animationClipEvents.OnClipEndedEvent += OnClipEndedHandle;
-        _animationClipEvents.OnSwarmCallEvent += OnSwarmCallHandle;
-        _spiderPushStateL.OnEndedEvent += OnSwarmCallHandle;
+        _animationClipEvents.AnimClipEnded += OnAnimClipEnded;
+        _animationClipEvents.SwarmCalled += OnSwarmCalled;
+        _spiderPushStateL.Ended += OnSwarmCalled;
         
-        _hoverState.OnStartedEvent += OnReadyToAttackEnterHandle;
-        _patrolStateL.OnStartedEvent += OnReadyToAttackEnterHandle; // 
-        _patrolStateR.OnStartedEvent += OnReadyToAttackEnterHandle; //
+        _hoverState.Started += OnReadyToAttackEnter;
+        _patrolStateL.Started += OnReadyToAttackEnter; // 
+        _patrolStateR.Started += OnReadyToAttackEnter; //
         
-        _patrolStateL.OnStartedEvent += OnReadyToSwarmAttackEnterHandle;
-        _patrolStateR.OnStartedEvent += OnReadyToSwarmAttackEnterHandle;
+        _patrolStateL.Started += OnReadyToSwarmAttackEnter;
+        _patrolStateR.Started += OnReadyToSwarmAttackEnter;
         
-        _spiderPatrolStateL.OnStartedEvent += OnReadyToSpiderAttackHandle;
-        _spiderPatrolStateR.OnStartedEvent += OnReadyToSpiderAttackHandle;
+        _spiderPatrolStateL.Started += OnReadyToSpiderAttack;
+        _spiderPatrolStateR.Started += OnReadyToSpiderAttack;
         
-        _catchSpiderStateL.OnStartedEvent += OnCatchSpiderStartedLHandle;
-        _catchSpiderStateR.OnStartedEvent += OnCatchSpiderStartedRHandle;
+        _catchSpiderStateL.Started += OnCatchSpiderStartedL;
+        _catchSpiderStateR.Started += OnCatchSpiderStartedR;
         
-        _preAttackHeadStateL.OnStartedEvent += OnPreAttackStartedHandle;
-        _preAttackHeadStateR.OnStartedEvent += OnPreAttackStartedHandle;
-        _preAttackTailStateL.OnStartedEvent += OnPreAttackStartedHandle;
-        _preAttackTailStateR.OnStartedEvent += OnPreAttackStartedHandle;
-        _preAttackHoverState.OnStartedEvent += OnPreAttackStartedHandle;
+        _preAttackHeadStateL.Started += OnPreAttackStarted;
+        _preAttackHeadStateR.Started += OnPreAttackStarted;
+        _preAttackTailStateL.Started += OnPreAttackStarted;
+        _preAttackTailStateR.Started += OnPreAttackStarted;
+        _preAttackHoverState.Started += OnPreAttackStarted;
         
-        _attackHeadState.OnStartedEvent += OnAttackStartedHandle;
-        _attackTailStateL.OnStartedEvent += OnAttackStartedHandle;
-        _attackTailStateR.OnStartedEvent += OnAttackStartedHandle;
-        _attackHoverState.OnStartedEvent += OnAttackStartedHandle;
+        _attackHeadState.Started += OnAttackStarted;
+        _attackTailStateL.Started += OnAttackStarted;
+        _attackTailStateR.Started += OnAttackStarted;
+        _attackHoverState.Started += OnAttackStarted;
         
-        _deathHeadState.OnStartedEvent += OnAttackEndedHandle;
-        _deathTailStateL.OnStartedEvent += OnAttackEndedHandle;
-        _deathTailStateR.OnStartedEvent += OnAttackEndedHandle;
-        _attackHeadSuccessState.OnStartedEvent += OnAttackEndedHandle;
-        _fallHeadState.OnStartedEvent += OnAttackEndedHandle;
-        _attackTailFailL.OnStartedEvent += OnAttackEndedHandle;
-        _attackTailFailR.OnStartedEvent += OnAttackEndedHandle;
-        _attackTailSuccessL.OnStartedEvent += OnAttackEndedHandle;
-        _attackTailSuccessR.OnStartedEvent += OnAttackEndedHandle;
-        _returnHoverState.OnStartedEvent += OnAttackEndedHandle;
+        _deathHeadState.Started += OnAttackEnded;
+        _deathTailStateL.Started += OnAttackEnded;
+        _deathTailStateR.Started += OnAttackEnded;
+        _attackHeadSuccessState.Started += OnAttackEnded;
+        _fallHeadState.Started += OnAttackEnded;
+        _attackTailFailL.Started += OnAttackEnded;
+        _attackTailFailR.Started += OnAttackEnded;
+        _attackTailSuccessL.Started += OnAttackEnded;
+        _attackTailSuccessR.Started += OnAttackEnded;
+        _returnHoverState.Started += OnAttackEnded;
         
-        _attackHeadSuccessState.OnEndedEvent += OnAfterAttackExitEndedHandle;
-        _attackTailSuccessL.OnEndedEvent += OnAfterAttackExitEndedHandle;
-        _attackTailSuccessR.OnEndedEvent += OnAfterAttackExitEndedHandle;
-        _attackTailFailL.OnEndedEvent += OnAfterAttackExitEndedHandle;
-        _attackTailFailR.OnEndedEvent += OnAfterAttackExitEndedHandle;
-        _fallHeadState.OnEndedEvent += OnAfterAttackExitEndedHandle;
-        _returnHoverState.OnEndedEvent += OnAfterAttackExitEndedHandle;
-        _deathHeadState.OnEndedEvent += OnAfterAttackExitEndedHandle;
-        _deathTailStateL.OnEndedEvent += OnAfterAttackExitEndedHandle;
-        _deathTailStateR.OnEndedEvent += OnAfterAttackExitEndedHandle;
+        _attackHeadSuccessState.Ended += OnAfterAttackExitEnded;
+        _attackTailSuccessL.Ended += OnAfterAttackExitEnded;
+        _attackTailSuccessR.Ended += OnAfterAttackExitEnded;
+        _attackTailFailL.Ended += OnAfterAttackExitEnded;
+        _attackTailFailR.Ended += OnAfterAttackExitEnded;
+        _fallHeadState.Ended += OnAfterAttackExitEnded;
+        _returnHoverState.Ended += OnAfterAttackExitEnded;
+        _deathHeadState.Ended += OnAfterAttackExitEnded;
+        _deathTailStateL.Ended += OnAfterAttackExitEnded;
+        _deathTailStateR.Ended += OnAfterAttackExitEnded;
         
-        _deathHeadState.OnEndedEvent += OnDeathAnimationEndedHandle;
-        _deathTailStateL.OnEndedEvent += OnDeathAnimationEndedHandle;
-        _deathTailStateR.OnEndedEvent += OnDeathAnimationEndedHandle;
+        _deathHeadState.Ended += OnDeathAnimationEnded;
+        _deathTailStateL.Ended += OnDeathAnimationEnded;
+        _deathTailStateR.Ended += OnDeathAnimationEnded;
     }
 
     private void OnDisable()
     {
-        _animationClipEvents.OnClipEndedEvent -= OnClipEndedHandle;
-        _animationClipEvents.OnSwarmCallEvent -= OnSwarmCallHandle;
-        _spiderPushStateL.OnEndedEvent -= OnSwarmCallHandle;
+        _animationClipEvents.AnimClipEnded -= OnAnimClipEnded;
+        _animationClipEvents.SwarmCalled -= OnSwarmCalled;
+        _spiderPushStateL.Ended -= OnSwarmCalled;
         
-        _hoverState.OnStartedEvent -= OnReadyToAttackEnterHandle;
-        _patrolStateL.OnStartedEvent -= OnReadyToAttackEnterHandle; // 
-        _patrolStateR.OnStartedEvent -= OnReadyToAttackEnterHandle; //
+        _hoverState.Started -= OnReadyToAttackEnter;
+        _patrolStateL.Started -= OnReadyToAttackEnter; // 
+        _patrolStateR.Started -= OnReadyToAttackEnter; //
         
-        _patrolStateL.OnStartedEvent -= OnReadyToSwarmAttackEnterHandle;
-        _patrolStateR.OnStartedEvent -= OnReadyToSwarmAttackEnterHandle;
+        _patrolStateL.Started -= OnReadyToSwarmAttackEnter;
+        _patrolStateR.Started -= OnReadyToSwarmAttackEnter;
         
-        _spiderPatrolStateL.OnStartedEvent -= OnReadyToSpiderAttackHandle;
-        _spiderPatrolStateR.OnStartedEvent -= OnReadyToSpiderAttackHandle;
+        _spiderPatrolStateL.Started -= OnReadyToSpiderAttack;
+        _spiderPatrolStateR.Started -= OnReadyToSpiderAttack;
         
-        _catchSpiderStateL.OnStartedEvent -= OnCatchSpiderStartedLHandle;
-        _catchSpiderStateR.OnStartedEvent -= OnCatchSpiderStartedRHandle;
+        _catchSpiderStateL.Started -= OnCatchSpiderStartedL;
+        _catchSpiderStateR.Started -= OnCatchSpiderStartedR;
         
-        _preAttackHeadStateL.OnStartedEvent -= OnPreAttackStartedHandle;
-        _preAttackHeadStateR.OnStartedEvent -= OnPreAttackStartedHandle;
-        _preAttackTailStateL.OnStartedEvent -= OnPreAttackStartedHandle;
-        _preAttackTailStateR.OnStartedEvent -= OnPreAttackStartedHandle;
-        _preAttackHoverState.OnStartedEvent -= OnPreAttackStartedHandle;
+        _preAttackHeadStateL.Started -= OnPreAttackStarted;
+        _preAttackHeadStateR.Started -= OnPreAttackStarted;
+        _preAttackTailStateL.Started -= OnPreAttackStarted;
+        _preAttackTailStateR.Started -= OnPreAttackStarted;
+        _preAttackHoverState.Started -= OnPreAttackStarted;
         
-        _attackHeadState.OnStartedEvent -= OnAttackStartedHandle;
-        _attackTailStateL.OnStartedEvent -= OnAttackStartedHandle;
-        _attackTailStateR.OnStartedEvent -= OnAttackStartedHandle;
-        _attackHoverState.OnStartedEvent -= OnAttackStartedHandle;
+        _attackHeadState.Started -= OnAttackStarted;
+        _attackTailStateL.Started -= OnAttackStarted;
+        _attackTailStateR.Started -= OnAttackStarted;
+        _attackHoverState.Started -= OnAttackStarted;
         
-        _deathHeadState.OnStartedEvent -= OnAttackEndedHandle;
-        _deathTailStateL.OnStartedEvent -= OnAttackEndedHandle;
-        _deathTailStateR.OnStartedEvent -= OnAttackEndedHandle;
-        _attackHeadSuccessState.OnStartedEvent -= OnAttackEndedHandle;
-        _fallHeadState.OnStartedEvent -= OnAttackEndedHandle;
-        _attackTailFailL.OnStartedEvent -= OnAttackEndedHandle;
-        _attackTailFailR.OnStartedEvent -= OnAttackEndedHandle;
-        _attackTailSuccessL.OnStartedEvent -= OnAttackEndedHandle;
-        _attackTailSuccessR.OnStartedEvent -= OnAttackEndedHandle;
-        _returnHoverState.OnStartedEvent -= OnAttackEndedHandle;
+        _deathHeadState.Started -= OnAttackEnded;
+        _deathTailStateL.Started -= OnAttackEnded;
+        _deathTailStateR.Started -= OnAttackEnded;
+        _attackHeadSuccessState.Started -= OnAttackEnded;
+        _fallHeadState.Started -= OnAttackEnded;
+        _attackTailFailL.Started -= OnAttackEnded;
+        _attackTailFailR.Started -= OnAttackEnded;
+        _attackTailSuccessL.Started -= OnAttackEnded;
+        _attackTailSuccessR.Started -= OnAttackEnded;
+        _returnHoverState.Started -= OnAttackEnded;
         
-        _attackHeadSuccessState.OnEndedEvent -= OnAfterAttackExitEndedHandle;
-        _attackTailSuccessL.OnEndedEvent -= OnAfterAttackExitEndedHandle;
-        _attackTailSuccessR.OnEndedEvent -= OnAfterAttackExitEndedHandle;
-        _attackTailFailL.OnEndedEvent -= OnAfterAttackExitEndedHandle;
-        _attackTailFailR.OnEndedEvent -= OnAfterAttackExitEndedHandle;
-        _fallHeadState.OnEndedEvent -= OnAfterAttackExitEndedHandle;
-        _returnHoverState.OnEndedEvent -= OnAfterAttackExitEndedHandle;
-        _deathHeadState.OnEndedEvent -= OnAfterAttackExitEndedHandle;
-        _deathTailStateL.OnEndedEvent -= OnAfterAttackExitEndedHandle;
-        _deathTailStateR.OnEndedEvent -= OnAfterAttackExitEndedHandle;
+        _attackHeadSuccessState.Ended -= OnAfterAttackExitEnded;
+        _attackTailSuccessL.Ended -= OnAfterAttackExitEnded;
+        _attackTailSuccessR.Ended -= OnAfterAttackExitEnded;
+        _attackTailFailL.Ended -= OnAfterAttackExitEnded;
+        _attackTailFailR.Ended -= OnAfterAttackExitEnded;
+        _fallHeadState.Ended -= OnAfterAttackExitEnded;
+        _returnHoverState.Ended -= OnAfterAttackExitEnded;
+        _deathHeadState.Ended -= OnAfterAttackExitEnded;
+        _deathTailStateL.Ended -= OnAfterAttackExitEnded;
+        _deathTailStateR.Ended -= OnAfterAttackExitEnded;
         
-        _deathHeadState.OnEndedEvent -= OnDeathAnimationEndedHandle;
-        _deathTailStateL.OnEndedEvent -= OnDeathAnimationEndedHandle;
-        _deathTailStateR.OnEndedEvent -= OnDeathAnimationEndedHandle;
+        _deathHeadState.Ended -= OnDeathAnimationEnded;
+        _deathTailStateL.Ended -= OnDeathAnimationEnded;
+        _deathTailStateR.Ended -= OnDeathAnimationEnded;
     }
 
-    private void Awake() // TODO: Move to Initialize ????
+    public void Initialize()
+    {
+        _isPlaying = false;
+        _isAnimClipEnded = false;
+        _isBounced = false;
+        _isAttackSuccess = false;
+        _isAttackFail = false;
+        _isDead = false;
+        
+        _stateMachine.SetState(_idleState);
+        _currentStateType = _stateMachine.CurrentStateType.ToString().Replace("FDragonfly", ""); // DEBUG
+    }
+
+    public void Play(DragonflyEnterType state, int sideDirection)
+    {
+        _isDead = false;
+        _isAttackSuccess = false;
+        _isAttackFail = false;
+        _sideDirection = sideDirection;
+        _enterState = state;
+        _isPlaying = true;
+    }
+
+    public void StartAttack(DragonflyPatrolAttackMode mode)
+    {
+        _currentPatrolAttackMode = mode;
+        _isAttacking = true;
+    }
+
+    public void ResolveReturnTransition(DragonflyReturnMode mode)
+    {
+        _previousState = _stateMachine.CurrentState;
+        _resolvedReturnMode = mode;
+        IState resolvedState = null;
+        
+        switch (mode)
+        {
+            case DragonflyReturnMode.PatrolL:
+                resolvedState = _moveToPatrolStateL;
+                break;
+            case DragonflyReturnMode.PatrolR:
+                resolvedState = _moveToPatrolStateR;
+                break;
+            case DragonflyReturnMode.SpiderL:
+                resolvedState = _catchSpiderStateL;
+                break;
+            case DragonflyReturnMode.SpiderR:
+                resolvedState = _catchSpiderStateR;
+                break;
+            case DragonflyReturnMode.Hover:
+                resolvedState = _moveToHoverState;
+                break;
+        }
+        
+        // Immediately switch to the resolved state if possible
+        
+        if ((ReferenceEquals(_stateMachine.CurrentState, _attackHeadSuccessState) && _visibleBodyTransform.position.x < 0))
+        {
+            if (ReferenceEquals(resolvedState, _moveToPatrolStateR) || ReferenceEquals(resolvedState, _catchSpiderStateL))
+            {
+                _stateMachine.SetState(resolvedState);
+                
+            }
+            else
+            {
+                _stateMachine.SetState(_returnTransitionLRTBState);
+            }
+        }
+        else if (ReferenceEquals(_stateMachine.CurrentState, _attackHeadSuccessState) && _visibleBodyTransform.position.x > 0)
+        {
+            if (ReferenceEquals(resolvedState, _moveToPatrolStateL) || ReferenceEquals(resolvedState, _catchSpiderStateR))
+            {
+                _stateMachine.SetState(resolvedState);
+            }else
+            {
+                _stateMachine.SetState(_returnTransitionRLTBState);
+            }
+        } 
+        else if (ReferenceEquals(_stateMachine.CurrentState, _attackTailSuccessL))
+        {
+            if (ReferenceEquals(resolvedState, _moveToPatrolStateR) || 
+                ReferenceEquals(resolvedState, _catchSpiderStateL) ||
+                ReferenceEquals(resolvedState, _moveToHoverState))
+            {
+                _stateMachine.SetState(resolvedState);
+            }
+            else
+            {
+                _stateMachine.SetState(_returnTransitionLRTBState);
+            }
+        } 
+        else if (ReferenceEquals(_stateMachine.CurrentState, _attackTailSuccessR))
+        {
+            if (ReferenceEquals(resolvedState, _moveToPatrolStateL) || 
+                ReferenceEquals(resolvedState, _catchSpiderStateR) ||
+                ReferenceEquals(resolvedState, _moveToHoverState))
+            {
+                _stateMachine.SetState(resolvedState);
+            }
+            else
+            {
+                _stateMachine.SetState(_returnTransitionRLTBState);
+            }
+        } 
+        else if (ReferenceEquals(_stateMachine.CurrentState, _fallHeadState) ||
+                 ReferenceEquals(_stateMachine.CurrentState, _returnHoverState) ||
+                 ReferenceEquals(_stateMachine.CurrentState, _attackTailFailL) ||
+                 ReferenceEquals(_stateMachine.CurrentState, _attackTailFailR))
+        {
+            if (ReferenceEquals(resolvedState, _moveToPatrolStateL) ||
+                ReferenceEquals(resolvedState, _moveToPatrolStateR) ||
+                ReferenceEquals(resolvedState, _moveToHoverState))
+            {
+                _stateMachine.SetState(resolvedState);
+            }
+            else if (ReferenceEquals(resolvedState, _catchSpiderStateL) && _visibleBodyTransform.position.x < 0)
+            {
+                _stateMachine.SetState(resolvedState);
+            }
+            else if (ReferenceEquals(resolvedState, _catchSpiderStateL) && _visibleBodyTransform.position.x > 0)
+            {
+                _stateMachine.SetState(_returnTransitionRLBTState);
+            }
+            else if (ReferenceEquals(resolvedState, _catchSpiderStateR) && _visibleBodyTransform.position.x > 0)
+            {
+                _stateMachine.SetState(resolvedState);
+            }
+            else if (ReferenceEquals(resolvedState, _catchSpiderStateR) && _visibleBodyTransform.position.x < 0)
+            {
+                _stateMachine.SetState(_returnTransitionLRBTState);
+            }
+        }
+#if  UNITY_EDITOR
+        _currentStateType = resolvedState?.ToString().Replace("FDragonfly", ""); // DEBUG
+#endif 
+    }
+    
+    public void TriggerBounce()
+    {
+        _isBounced = true;
+    }
+
+    public void TriggerFall(bool isReceivedDamage)
+    {
+        if (isReceivedDamage)
+        {
+            _isAttackSuccess = false;
+            _isAttackFail = true;
+        }
+        else
+        {
+            _isAttackSuccess = true;
+            _isAttackFail = false;
+        }
+    }
+
+    public void TriggerDeath()
+    {
+        _isAttackSuccess = false;
+        _isAttackFail = false;
+        _isDead = true;
+    }
+    
+    public void TriggerGameOver()
+    {
+        _stateMachine.SetState(_gameoverHoverState);
+    }
+
+    private void Awake() 
     {
         _isPlaying = false;
         SetMovementStatesDependencies();
@@ -521,29 +682,6 @@ public class FDragonflyMovement : MonoBehaviour
         #endregion
     }
 
-    public void Initialize()
-    {
-        _isPlaying = false;
-        _isAnimClipEnded = false;
-        _isBounced = false;
-        _isAttackSuccess = false;
-        _isAttackFail = false;
-        _isDead = false;
-        
-        _stateMachine.SetState(_idleState);
-        _currentStateType = _stateMachine.CurrentStateType.ToString().Replace("FDragonfly", ""); // DEBUG
-    }
-
-    public void Play(DragonflyEnterType state, int sideDirection)
-    {
-        _isDead = false;
-        _isAttackSuccess = false;
-        _isAttackFail = false;
-        _sideDirection = sideDirection;
-        _enterState = state;
-        _isPlaying = true;
-    }
-
     private void Update()
     {
         if (_isPlaying)
@@ -553,212 +691,64 @@ public class FDragonflyMovement : MonoBehaviour
         }
     }
 
-    public void StartAttack(DragonflyPatrolAttackMode mode)
-    {
-        _currentPatrolAttackMode = mode;
-        _isAttacking = true;
-    }
-
-    public void ResolveReturnTransition(DragonflyReturnMode mode)
-    {
-        _previousState = _stateMachine.CurrentState;
-        _resolvedReturnMode = mode;
-        IState resolvedState = null;
-        
-        switch (mode)
-        {
-            case DragonflyReturnMode.PatrolL:
-                resolvedState = _moveToPatrolStateL;
-                break;
-            case DragonflyReturnMode.PatrolR:
-                resolvedState = _moveToPatrolStateR;
-                break;
-            case DragonflyReturnMode.SpiderL:
-                resolvedState = _catchSpiderStateL;
-                break;
-            case DragonflyReturnMode.SpiderR:
-                resolvedState = _catchSpiderStateR;
-                break;
-            case DragonflyReturnMode.Hover:
-                resolvedState = _moveToHoverState;
-                break;
-        }
-        
-        // Immediately switch to the resolved state if possible
-        
-        if ((ReferenceEquals(_stateMachine.CurrentState, _attackHeadSuccessState) && _visibleBodyTransform.position.x < 0))
-        {
-            if (ReferenceEquals(resolvedState, _moveToPatrolStateR) || ReferenceEquals(resolvedState, _catchSpiderStateL))
-            {
-                _stateMachine.SetState(resolvedState);
-                
-            }
-            else
-            {
-                _stateMachine.SetState(_returnTransitionLRTBState);
-            }
-        }
-        else if (ReferenceEquals(_stateMachine.CurrentState, _attackHeadSuccessState) && _visibleBodyTransform.position.x > 0)
-        {
-            if (ReferenceEquals(resolvedState, _moveToPatrolStateL) || ReferenceEquals(resolvedState, _catchSpiderStateR))
-            {
-                _stateMachine.SetState(resolvedState);
-            }else
-            {
-                _stateMachine.SetState(_returnTransitionRLTBState);
-            }
-        } 
-        else if (ReferenceEquals(_stateMachine.CurrentState, _attackTailSuccessL))
-        {
-            if (ReferenceEquals(resolvedState, _moveToPatrolStateR) || 
-                ReferenceEquals(resolvedState, _catchSpiderStateL) ||
-                ReferenceEquals(resolvedState, _moveToHoverState))
-            {
-                _stateMachine.SetState(resolvedState);
-            }
-            else
-            {
-                _stateMachine.SetState(_returnTransitionLRTBState);
-            }
-        } 
-        else if (ReferenceEquals(_stateMachine.CurrentState, _attackTailSuccessR))
-        {
-            if (ReferenceEquals(resolvedState, _moveToPatrolStateL) || 
-                ReferenceEquals(resolvedState, _catchSpiderStateR) ||
-                ReferenceEquals(resolvedState, _moveToHoverState))
-            {
-                _stateMachine.SetState(resolvedState);
-            }
-            else
-            {
-                _stateMachine.SetState(_returnTransitionRLTBState);
-            }
-        } 
-        else if (ReferenceEquals(_stateMachine.CurrentState, _fallHeadState) ||
-                   ReferenceEquals(_stateMachine.CurrentState, _returnHoverState) ||
-                   ReferenceEquals(_stateMachine.CurrentState, _attackTailFailL) ||
-                   ReferenceEquals(_stateMachine.CurrentState, _attackTailFailR))
-        {
-            if (ReferenceEquals(resolvedState, _moveToPatrolStateL) ||
-                ReferenceEquals(resolvedState, _moveToPatrolStateR) ||
-                ReferenceEquals(resolvedState, _moveToHoverState))
-            {
-                _stateMachine.SetState(resolvedState);
-            }
-            else if (ReferenceEquals(resolvedState, _catchSpiderStateL) && _visibleBodyTransform.position.x < 0)
-            {
-                _stateMachine.SetState(resolvedState);
-            }
-            else if (ReferenceEquals(resolvedState, _catchSpiderStateL) && _visibleBodyTransform.position.x > 0)
-            {
-                _stateMachine.SetState(_returnTransitionRLBTState);
-            }
-            else if (ReferenceEquals(resolvedState, _catchSpiderStateR) && _visibleBodyTransform.position.x > 0)
-            {
-                _stateMachine.SetState(resolvedState);
-            }
-            else if (ReferenceEquals(resolvedState, _catchSpiderStateR) && _visibleBodyTransform.position.x < 0)
-            {
-                _stateMachine.SetState(_returnTransitionLRBTState);
-            }
-        }
-#if  UNITY_EDITOR
-        _currentStateType = resolvedState?.ToString().Replace("FDragonfly", ""); // DEBUG
-#endif 
-    }
-
-    public void TriggerBounce()
-    {
-        _isBounced = true;
-    }
-
-    public void TriggerFall(bool isReceivedDamage)
-    {
-        if (isReceivedDamage)
-        {
-            _isAttackSuccess = false;
-            _isAttackFail = true;
-        }
-        else
-        {
-            _isAttackSuccess = true;
-            _isAttackFail = false;
-        }
-    }
-
-    public void TriggerDeath()
-    {
-        _isAttackSuccess = false;
-        _isAttackFail = false;
-        _isDead = true;
-    }
-    
-    public void TriggerGameOver()
-    {
-        _stateMachine.SetState(_gameoverHoverState);
-    }
-
-    private void OnClipEndedHandle()
+    // Event Handle Methods
+    private void OnAnimClipEnded()
     {
         _isAnimClipEnded = true;
     }
 
-    private void OnSwarmCallHandle()
+    private void OnSwarmCalled()
     {
-        OnSwarmCallEvent?.Invoke();
+        SwarmCalled?.Invoke();
     }
 
-    #region State Event Handle methods
-
-    private void OnReadyToAttackEnterHandle()
+    private void OnReadyToAttackEnter()
     {
-        OnReadyToAttackStateEnteredEvent?.Invoke(_stateMachine.CurrentState);
+        ReadyToAttackStateEntered?.Invoke(_stateMachine.CurrentState);
     }
 
-    private void OnReadyToSwarmAttackEnterHandle()
+    private void OnReadyToSwarmAttackEnter()
     {
-        OnReadyToSwarmAttackStateEnteredEvent?.Invoke(_stateMachine.CurrentState);
+        ReadyToSwarmAttackStateEntered?.Invoke(_stateMachine.CurrentState);
     }
 
-    private void OnReadyToSpiderAttackHandle()
+    private void OnReadyToSpiderAttack()
     {
-        OnReadyToSpiderAttackStateEnteredEvent?.Invoke();
+        ReadyToSpiderAttackStateStarted?.Invoke();
     }
 
-    private void OnCatchSpiderStartedLHandle()
+    private void OnCatchSpiderStartedL()
     {
-        OnCatchSpiderStartedEvent?.Invoke(1);
+        CatchSpiderStarted?.Invoke(1);
     }
 
-    private void OnCatchSpiderStartedRHandle()
+    private void OnCatchSpiderStartedR()
     {
-        OnCatchSpiderStartedEvent?.Invoke(-1);
+        CatchSpiderStarted?.Invoke(-1);
     }
 
-    private void OnPreAttackStartedHandle()
+    private void OnPreAttackStarted()
     {
-        OnPreAttackStartedEvent?.Invoke();
+        PreAttackStarted?.Invoke();
     }
 
-    private void OnAttackStartedHandle()
+    private void OnAttackStarted()
     {
-        OnAttackStartedEvent?.Invoke();
+        AttackStarted?.Invoke();
     }
 
-    private void OnAttackEndedHandle()
+    private void OnAttackEnded()
     {
-        OnAttackEndedEvent?.Invoke();
+        AttackEnded?.Invoke();
     }
 
-    private void OnAfterAttackExitEndedHandle()
+    private void OnAfterAttackExitEnded()
     {
-        OnAfterAttackExitEndedEvent?.Invoke(_stateMachine.CurrentState);
+        AfterAttackExitEnded?.Invoke(_stateMachine.CurrentState);
     }
 
-    private void OnDeathAnimationEndedHandle()
+    private void OnDeathAnimationEnded()
     {
-        OnDeathAnimationEndedEvent?.Invoke();
+        DeathAnimationEnded?.Invoke();
     }
-
-    #endregion
 }

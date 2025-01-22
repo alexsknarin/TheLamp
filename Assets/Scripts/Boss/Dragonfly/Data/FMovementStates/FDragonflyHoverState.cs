@@ -8,13 +8,12 @@ public class FDragonflyHoverState : ScriptableObject, IState
     [SerializeField] private float _frequency = 0.33f;
     private float _localTime = 0f;
     private Vector3 _hoverPos = Vector3.zero;
-    
-    public event Action OnStartedEvent;
-
     // Dependencies
     private Transform _visibleBodyTransform;
     private Transform _baseTransform;
     
+    public event Action Started;
+
     public void SetDependencies(Transform visibleBodyTransform, Transform baseTransform)
     {
         _visibleBodyTransform = visibleBodyTransform;
@@ -26,7 +25,7 @@ public class FDragonflyHoverState : ScriptableObject, IState
         _visibleBodyTransform.SetParent(_baseTransform);
         _hoverPos = _visibleBodyTransform.localPosition;
         _localTime = 0f;
-        OnStartedEvent?.Invoke();
+        Started?.Invoke();
     }
 
     public void Tick()
@@ -39,7 +38,5 @@ public class FDragonflyHoverState : ScriptableObject, IState
         _localTime += Time.deltaTime;
     }
 
-    public void OnExit()
-    {
-    }
+    public void OnExit() { }
 }

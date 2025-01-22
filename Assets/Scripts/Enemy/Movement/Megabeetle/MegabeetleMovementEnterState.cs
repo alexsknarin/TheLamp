@@ -2,7 +2,6 @@
 
 public class MegabeetleMovementEnterState: EnemyMovementBaseState
 {
-    public override EnemyState State => EnemyState.Enter;
     private float _patrolStartOffsetAngle;
     private float _enterTimeOffset;
     private float _phase;
@@ -21,7 +20,9 @@ public class MegabeetleMovementEnterState: EnemyMovementBaseState
         _verticalAmplitude = verticalAmplitude;
         _owner = owner;
     }
-    
+
+    public override EnemyState State => EnemyState.Enter;
+
     public override void EnterState(Vector3 currentPosition, int sideDirection, int depthDirection)
     {
         _sideDirection = sideDirection;

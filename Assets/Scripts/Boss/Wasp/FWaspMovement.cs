@@ -5,32 +5,64 @@ using Random = UnityEngine.Random;
 
 public class FWaspMovement : MonoBehaviour, IInitializable
 {
+    private readonly List<Type> TWO_OPTION_OUTCOME = new()
+    {
+        typeof(FWaspEnterLState),
+        typeof(FWaspEnterRState),
+        typeof(FWaspAttack01Success01LState),
+        typeof(FWaspAttack01Success01RState),
+        typeof(FWaspAttack02Success01LState),
+        typeof(FWaspAttack02Success01RState),
+        typeof(FWaspAttack03Success01LState),
+        typeof(FWaspAttack03Success01RState),
+        typeof(FWaspAttack02BounceLState),
+        typeof(FWaspAttack02BounceRState),
+        typeof(FWaspAttack02Fail01LState),
+        typeof(FWaspAttack02Fail01RState),
+        typeof(FWaspAttack03Fail01LState),
+        typeof(FWaspAttack03Fail01RState),
+        typeof(FWaspAttack04Fail01LState),
+        typeof(FWaspAttack04Fail01RState)
+    };
+
+    private readonly List<Type> THREE_OPTION_OUTCOME = new()
+    {
+        typeof(FWaspAttack01BounceLState),
+        typeof(FWaspAttack01BounceRState),
+        typeof(FWaspAttack04Success01LState),
+        typeof(FWaspAttack04Success01RState),
+        typeof(FWaspAttack01Fail01LState)
+    };
+
+    private readonly List<Type> ATTACK_STATES = new()
+    {
+        typeof(FWaspAttack01LState),
+        typeof(FWaspAttack01RState),
+        typeof(FWaspAttack02LState),
+        typeof(FWaspAttack02RState),
+        typeof(FWaspAttack03LState),
+        typeof(FWaspAttack03RState),
+        typeof(FWaspAttack04LState),
+        typeof(FWaspAttack04RState)        
+    };
+    
     [SerializeField] private string _currentStateType;
     [SerializeField] private Animator _animator;
     [SerializeField] private Transform _baseTransform;
-    
-    public event Action OnBossAttackStartedEvent;
-    public event Action OnDeathStateEndedEvent;
-    
+    private ILampPositionProviderService _lampPositionProvider;
+
+
     private FStateMachine _stateMachine = new();
-    
     private float _colliderRadius = 0.24f;
-    
-    private bool _isPlaying = false;
-    
     // State parameters
     private Side _side = Side.Left;
-    
     private bool _isAnimClipEnded = false;
-    
     private int _twoOptiosSplit = 0;
     private int _threeOptiosSplit = 0;
-    
     private bool _isDamaged = false;
     private bool _isDead = false;
     private bool _isLampDestroyed = false; // TODO: replace all this with enum? sucess, damaged, dead, lampDestroyed
     private bool _isCollided = false;
-
     // Animation 
     private readonly int _idleHash = Animator.StringToHash("Idle");
     private readonly int _enterHash = Animator.StringToHash("Enter");
@@ -57,7 +89,6 @@ public class FWaspMovement : MonoBehaviour, IInitializable
     private readonly int _attack04Fail01Hash = Animator.StringToHash("Attack04_Fail01");
     private readonly int _attack04Success01Hash = Animator.StringToHash("Attack04_Success01");
     private readonly int _attack04Death01Hash = Animator.StringToHash("Attack04_Death01");
-    
     // States
     private FWaspIdleState _idleState;
     private FWaspEnterLState _enterLState;
@@ -75,7 +106,7 @@ public class FWaspMovement : MonoBehaviour, IInitializable
     private FWaspAttack01Success03LState _attack01Success03LState;
     private FWaspAttack01Success03RState _attack01Success03RState;
     private FWaspAttack01DeathLState _attack01DeathLState;
-    private FWaspAttack01DeathRState _attack01DeathRState;  
+    private FWaspAttack01DeathRState _attack01DeathRState;
     private FWaspAttack02LState _attack02LState;
     private FWaspAttack02RState _attack02RState;
     private FWaspAttack02BounceLState _attack02BounceLState;
@@ -109,95 +140,112 @@ public class FWaspMovement : MonoBehaviour, IInitializable
     private FWaspAttack04DeathLState _attack04DeathLState;
     private FWaspAttack04DeathRState _attack04DeathRState;
 
-    private readonly List<Type> TWO_OPTION_OUTCOME = new()
+    public void Construct(ILampPositionProviderService lampPositionProvider)
     {
-        typeof(FWaspEnterLState),
-        typeof(FWaspEnterRState),
-        typeof(FWaspAttack01Success01LState),
-        typeof(FWaspAttack01Success01RState),
-        typeof(FWaspAttack02Success01LState),
-        typeof(FWaspAttack02Success01RState),
-        typeof(FWaspAttack03Success01LState),
-        typeof(FWaspAttack03Success01RState),
-        typeof(FWaspAttack02BounceLState),
-        typeof(FWaspAttack02BounceRState),
-        typeof(FWaspAttack02Fail01LState),
-        typeof(FWaspAttack02Fail01RState),
-        typeof(FWaspAttack03Fail01LState),
-        typeof(FWaspAttack03Fail01RState),
-        typeof(FWaspAttack04Fail01LState),
-        typeof(FWaspAttack04Fail01RState)
-    }; 
-    
-    private readonly List<Type> THREE_OPTION_OUTCOME = new()
-    {
-        typeof(FWaspAttack01BounceLState),
-        typeof(FWaspAttack01BounceRState),
-        typeof(FWaspAttack04Success01LState),
-        typeof(FWaspAttack04Success01RState),
-        typeof(FWaspAttack01Fail01LState)
-    };
-    
-    private readonly List<Type> ATTACK_STATES = new()
-    {
-        typeof(FWaspAttack01LState),
-        typeof(FWaspAttack01RState),
-        typeof(FWaspAttack02LState),
-        typeof(FWaspAttack02RState),
-        typeof(FWaspAttack03LState),
-        typeof(FWaspAttack03RState),
-        typeof(FWaspAttack04LState),
-        typeof(FWaspAttack04RState)        
-    };
-
-    
-
-    private void OnEnable()
-    {
-        _attack01LState.OnStartedEvent += OnBossAttackStartedHandle;
-        _attack01RState.OnStartedEvent += OnBossAttackStartedHandle;
-        _attack02LState.OnStartedEvent += OnBossAttackStartedHandle;
-        _attack02RState.OnStartedEvent += OnBossAttackStartedHandle;
-        _attack03LState.OnStartedEvent += OnBossAttackStartedHandle;
-        _attack03RState.OnStartedEvent += OnBossAttackStartedHandle;
-        _attack04LState.OnStartedEvent += OnBossAttackStartedHandle;
-        _attack04RState.OnStartedEvent += OnBossAttackStartedHandle;
-        
-        _attack01DeathLState.OnEndedEvent += OnDeathStateEndedHandle;
-        _attack01DeathRState.OnEndedEvent += OnDeathStateEndedHandle;
-        _attack02DeathLState.OnEndedEvent += OnDeathStateEndedHandle;
-        _attack02DeathRState.OnEndedEvent += OnDeathStateEndedHandle;
-        _attack03DeathLState.OnEndedEvent += OnDeathStateEndedHandle;
-        _attack03DeathRState.OnEndedEvent += OnDeathStateEndedHandle;
-        _attack04DeathLState.OnEndedEvent += OnDeathStateEndedHandle;
-        _attack04DeathRState.OnEndedEvent += OnDeathStateEndedHandle;
+        _lampPositionProvider = lampPositionProvider;
     }
 
-    private void OnDisable()
-    {
-        _attack01LState.OnStartedEvent -= OnBossAttackStartedHandle;
-        _attack01RState.OnStartedEvent -= OnBossAttackStartedHandle;
-        _attack02LState.OnStartedEvent -= OnBossAttackStartedHandle;
-        _attack02RState.OnStartedEvent -= OnBossAttackStartedHandle;
-        _attack03LState.OnStartedEvent -= OnBossAttackStartedHandle;
-        _attack03RState.OnStartedEvent -= OnBossAttackStartedHandle;
-        _attack04LState.OnStartedEvent -= OnBossAttackStartedHandle;
-        _attack04RState.OnStartedEvent -= OnBossAttackStartedHandle;
-        
-        _attack01DeathLState.OnEndedEvent -= OnDeathStateEndedHandle;
-        _attack01DeathRState.OnEndedEvent -= OnDeathStateEndedHandle;
-        _attack02DeathLState.OnEndedEvent -= OnDeathStateEndedHandle;
-        _attack02DeathRState.OnEndedEvent -= OnDeathStateEndedHandle;
-        _attack03DeathLState.OnEndedEvent -= OnDeathStateEndedHandle;
-        _attack03DeathRState.OnEndedEvent -= OnDeathStateEndedHandle;
-        _attack04DeathLState.OnEndedEvent -= OnDeathStateEndedHandle;
-        _attack04DeathRState.OnEndedEvent -= OnDeathStateEndedHandle;
-    }
+    public event Action BossAttackStarted;
+    public event Action DeathStateEnded;
 
-    private void Awake()
+    public void Initialize()
     {
         CreateMovementStates();
         StateMachineSetup();
+        
+        _attack01LState.Started += OnBossAttackStarted;
+        _attack01RState.Started += OnBossAttackStarted;
+        _attack02LState.Started += OnBossAttackStarted;
+        _attack02RState.Started += OnBossAttackStarted;
+        _attack03LState.Started += OnBossAttackStarted;
+        _attack03RState.Started += OnBossAttackStarted;
+        _attack04LState.Started += OnBossAttackStarted;
+        _attack04RState.Started += OnBossAttackStarted;
+        
+        _attack01DeathLState.Ended += OnDeathStateEnded;
+        _attack01DeathRState.Ended += OnDeathStateEnded;
+        _attack02DeathLState.Ended += OnDeathStateEnded;
+        _attack02DeathRState.Ended += OnDeathStateEnded;
+        _attack03DeathLState.Ended += OnDeathStateEnded;
+        _attack03DeathRState.Ended += OnDeathStateEnded;
+        _attack04DeathLState.Ended += OnDeathStateEnded;
+        _attack04DeathRState.Ended += OnDeathStateEnded;
+        
+        enabled = false;
+        _isAnimClipEnded = false;
+        _isLampDestroyed = false;
+        _isDamaged = false;
+        _isCollided = false;
+    }
+
+    private void OnDestroy()
+    {
+        _attack01LState.Started -= OnBossAttackStarted;
+        _attack01RState.Started -= OnBossAttackStarted;
+        _attack02LState.Started -= OnBossAttackStarted;
+        _attack02RState.Started -= OnBossAttackStarted;
+        _attack03LState.Started -= OnBossAttackStarted;
+        _attack03RState.Started -= OnBossAttackStarted;
+        _attack04LState.Started -= OnBossAttackStarted;
+        _attack04RState.Started -= OnBossAttackStarted;
+        
+        _attack01DeathLState.Ended -= OnDeathStateEnded;
+        _attack01DeathRState.Ended -= OnDeathStateEnded;
+        _attack02DeathLState.Ended -= OnDeathStateEnded;
+        _attack02DeathRState.Ended -= OnDeathStateEnded;
+        _attack03DeathLState.Ended -= OnDeathStateEnded;
+        _attack03DeathRState.Ended -= OnDeathStateEnded;
+        _attack04DeathLState.Ended -= OnDeathStateEnded;
+        _attack04DeathRState.Ended -= OnDeathStateEnded;
+    }
+
+
+    public void Play()
+    {
+        enabled = true;
+        _isAnimClipEnded = false;
+        _side = (Side)Random.Range(0, 2);
+    }
+
+    public void SetDamaged()
+    {
+        _isDamaged = true;
+    }
+
+    public void SetDead()
+    {
+        _isDead = true;
+    }
+
+    public void SetLampDestroyed()
+    {
+        _isLampDestroyed = true;
+    }
+
+
+    public void ClipEnded()
+    {
+        _isAnimClipEnded = true;
+
+        if (_isDead || _isLampDestroyed)
+        {
+            return;
+        }
+        
+        if (TWO_OPTION_OUTCOME.Contains(_stateMachine.CurrentStateType))
+        {
+            _twoOptiosSplit = Random.Range(0, 2);
+        }
+        
+        if (THREE_OPTION_OUTCOME.Contains(_stateMachine.CurrentStateType))
+        {
+            _threeOptiosSplit = Random.Range(0, 3);
+        }
+    }
+
+    public void SetCollidedWithLamp()
+    {
+        _isCollided = true;
     }
 
     private void CreateMovementStates()
@@ -256,8 +304,8 @@ public class FWaspMovement : MonoBehaviour, IInitializable
     private void StateMachineSetup()
     {
         // Enter
-        At(_idleState, _enterLState, () => _isPlaying && _side == Side.Left);
-        At(_idleState, _enterRState, () => _isPlaying && _side == Side.Right);
+        At(_idleState, _enterLState, () => enabled && _side == Side.Left);
+        At(_idleState, _enterRState, () => enabled && _side == Side.Right);
         // Enter to Attacks
         At(_enterLState, _attack01LState, IsAnimationEndedTwoOption01());
         At(_enterLState, _attack03LState, IsAnimationEndedTwoOption02());
@@ -483,7 +531,7 @@ public class FWaspMovement : MonoBehaviour, IInitializable
             {
                 _isAnimClipEnded = false;
                 _isLampDestroyed = false;
-                _isPlaying = false;
+                enabled = false;
                 return true;
             }
             return false;
@@ -590,82 +638,10 @@ public class FWaspMovement : MonoBehaviour, IInitializable
         };
     }
 
-
-    public void Initialize()
-    {
-        _isPlaying = false;
-        _isAnimClipEnded = false;
-        _isLampDestroyed = false;
-        _isDamaged = false;
-        _isCollided = false;
-    }
-
-    public void Play()
-    {
-        _isPlaying = true;
-        _isAnimClipEnded = false;
-        _side = (Side)Random.Range(0, 2);
-    }
-    
-    public void SetDamaged()
-    {
-        _isDamaged = true;
-    }
-    
-    public void SetDead()
-    {
-        _isDead = true;
-    }
-    
-    public void SetLampDestroyed()
-    {
-        _isLampDestroyed = true;
-    }
-
-
-    public void ClipEnded()
-    {
-        _isAnimClipEnded = true;
-
-        if (_isDead || _isLampDestroyed)
-        {
-            return;
-        }
-        
-        if (TWO_OPTION_OUTCOME.Contains(_stateMachine.CurrentStateType))
-        {
-            _twoOptiosSplit = Random.Range(0, 2);
-        }
-        
-        if (THREE_OPTION_OUTCOME.Contains(_stateMachine.CurrentStateType))
-        {
-            _threeOptiosSplit = Random.Range(0, 3);
-        }
-    }
-    
-    public void SetCollidedWithLamp()
-    {
-        _isCollided = true;
-    }
-
-    private void OnDeathStateEndedHandle()
-    {
-        _isPlaying = false;
-        OnDeathStateEndedEvent?.Invoke();
-    }
-
-    private void OnBossAttackStartedHandle()
-    {
-        OnBossAttackStartedEvent?.Invoke();
-    }
-
     private void Update()
     {
-        if (_isPlaying)
-        {
-            _stateMachine.Tick();
-            _currentStateType = _stateMachine.CurrentStateType.ToString().Replace("FWasp", ""); // DEBUG
-        }
+        _stateMachine.Tick();
+        _currentStateType = _stateMachine.CurrentStateType.ToString().Replace("FWasp", ""); // DEBUG
     }
 
     private void LateUpdate()
@@ -674,13 +650,26 @@ public class FWaspMovement : MonoBehaviour, IInitializable
         if (ATTACK_STATES.Contains(_stateMachine.CurrentStateType))
         {
             // Check if lamp was penetrated
-            // TODO: replace with proper DI system
             Vector3 newPosition = transform.position;
-            if ((newPosition - Lamp.LampTransform.position).magnitude < _colliderRadius + 0.5f)
+            if ((newPosition - _lampPositionProvider.GetLampPosition()).magnitude < _colliderRadius + 0.5f)
             {
-                newPosition = Lamp.LampTransform.position + newPosition.normalized * (0.5f + _colliderRadius);
+                newPosition = _lampPositionProvider.GetLampPosition() + newPosition.normalized * (0.5f + _colliderRadius);
             }
             transform.position = newPosition;
         }
+    }
+    
+    
+    // Event Handle Methods
+    private void OnDeathStateEnded()
+    {
+        enabled = false;
+        DeathStateEnded?.Invoke();
+    }
+
+    private void OnBossAttackStarted()
+    {
+        Debug.Log("Boss Attack Started");
+        BossAttackStarted?.Invoke();
     }
 }

@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -15,6 +12,7 @@ public class BrokenGlassEffect : MonoBehaviour
     
     public void Play(BrokenGlassEventType eventType)
     {
+        gameObject.SetActive(true);
         switch (eventType)
         {
             case BrokenGlassEventType.Damage:
@@ -37,6 +35,7 @@ public class BrokenGlassEffect : MonoBehaviour
             {
                 _isActive = false;
                 _brokenGlassImage.color = new Color(1, 1, 1, 0);
+                gameObject.SetActive(false);
                 return;
             }
             _brokenGlassImage.color = new Color(1, 1, 1, (1-phase)*0.35f);

@@ -5,45 +5,54 @@ using UnityEngine.Serialization;
 
 public class Enemy : EnemyBase
 {
+    [SerializeField] private bool _isStick;
     [SerializeField] private EnemyType _enemyType;
     [SerializeField] private int _maxHealth;
     [SerializeField] private int _currentHealth;
     [SerializeField] private EnemyMovement _enemyMovement;
     [SerializeField] private EnemyPresentation _enemyPresentation;
-    public override EnemyType EnemyType => _enemyType;
     private bool _isDead = false;
-    
+    // private ILampPositionProviderService _lampPositionProviderService;
     private IObjectPool<Enemy> _objectPool;
+
+    // public void Construct(ILampPositionProviderService lampPositionProviderService)
+    // {
+    //     _lampPositionProviderService = lampPositionProviderService;
+    // }
+
+    public static event Action<Enemy> EnemyDeactivated;
+    public static event Action<Enemy> EnemyDamaged;
+
     public IObjectPool<Enemy> ObjectPool
     {
         set => _objectPool = value;
     }
+    public override EnemyType EnemyType => _enemyType;
 
-    public static event Action<Enemy> OnEnemyDeactivatedEvent;
-    public static event Action<Enemy> OnEnemyDamagedEvent;
 
     private void OnEnable()
     {
-        _enemyMovement.OnPreAttackStartEvent += OnPreAttackStart;
-        _enemyMovement.OnPreAttackEndEvent += OnPreAttackEnd;
-        _enemyMovement.OnAttackEndEvent += AttackStatusEnable;
-        _enemyMovement.OnEnemyDeactivatedEvent += OnDeactivated;
-        _enemyMovement.OnMovementResetEvent += OnMovementReset;
-        _enemyMovement.OnStickStartEvent += StickStatusEnable;
+        _enemyMovement.PreAttackStarted += OnPreAttackStarted;
+        _enemyMovement.PreAttackEnded += OnPreAttackEnded;
+        _enemyMovement.AttackEnded += OnAttackEnded;
+        _enemyMovement.EnemyDeactivated += OnEnemyDeactivated;
+        _enemyMovement.MovementReseted += OnMovementReseted;
+        _enemyMovement.StickStarted += OnStickStarted;
     }
     
     private void OnDisable()
     {
-        _enemyMovement.OnPreAttackStartEvent -= OnPreAttackStart;
-        _enemyMovement.OnPreAttackEndEvent -= OnPreAttackEnd;
-        _enemyMovement.OnAttackEndEvent -= AttackStatusEnable;
-        _enemyMovement.OnEnemyDeactivatedEvent -= OnDeactivated;
-        _enemyMovement.OnMovementResetEvent -= OnMovementReset;
-        _enemyMovement.OnStickStartEvent -= StickStatusEnable;
+        _enemyMovement.PreAttackStarted -= OnPreAttackStarted;
+        _enemyMovement.PreAttackEnded -= OnPreAttackEnded;
+        _enemyMovement.AttackEnded -= OnAttackEnded;
+        _enemyMovement.EnemyDeactivated -= OnEnemyDeactivated;
+        _enemyMovement.MovementReseted -= OnMovementReseted;
+        _enemyMovement.StickStarted -= OnStickStarted;
     }
     
     public override void Initialize()
     {
+        Debug.Log($"Enemy {gameObject.name} initialized");
         _enemyMovement.Initialize();
         _enemyPresentation.Initialize();
         _currentHealth = _maxHealth;
@@ -53,14 +62,10 @@ public class Enemy : EnemyBase
         ReceivedLampAttack = false;
         IsAttacking = false;
         IsStick = false;
+        _isStick = false;
         _isDead = false;
     }
-    
-    private void OnMovementReset()
-    {
-        _enemyPresentation.Initialize();
-    }
-    
+
     public override void UpdateAttackAvailability()
     {
         float x = transform.position.x;
@@ -118,58 +123,24 @@ public class Enemy : EnemyBase
             ReadyToAttack = true;
         }
     }
-    
+
     public override void SpreadStart()
     {
         _enemyMovement.TriggerSpread();
     }
-   
+
     public override void StartAttack()
     {
         _enemyMovement.TriggerAttack();
     }
-    
-    private void OnPreAttackStart()
-    {
-        ReceivedLampAttack = false;
-        _enemyPresentation.PreAttackStart();
-        ReadyToAttack = false;
-        IsAttacking = true;
-    }
-    
-    private void OnPreAttackEnd()
-    {
-        _enemyPresentation.PreAttackEnd();
-        ReadyToCollide = true;
-    }
-    
-    private void AttackStatusEnable()
-    {
-        IsAttacking = false;
-    }
-    
-    private void StickStatusEnable()
-    {
-        IsStick = true;
-    }
-    
-    public override void HandleEnteringAttackZone()
-    {
-        ReadyToLampDamage = true;    
-    }
-    
+
     public override void HandleCollisionWithLamp()
     {
         ReadyToCollide = false;
         ReadyToLampDamage = true;
-        _enemyMovement.TriggerFall();
+        _enemyMovement.TriggerFall(); // TODO: interface for enemy movement and get implementation back into the  base class
     }
-    
-    public override void HandleExitingAttackExitZone()
-    {
-        ReadyToLampDamage = false;
-    }
-    
+
     public override void HandleCollisionWithStickZone()
     {
         _enemyMovement.TriggerStick();
@@ -177,7 +148,11 @@ public class Enemy : EnemyBase
 
     public override void ReceiveDamage(int damage)
     {
-        ReadyToLampDamage = false;
+        if (_enemyType != EnemyType.Ladybug)
+        {
+            ReadyToLampDamage = false; // TODO: better mechanism - separate IStickyDamageable class or somthing
+        }
+        
         _currentHealth -= damage;
 
         if (_currentHealth > 0)
@@ -185,7 +160,7 @@ public class Enemy : EnemyBase
             ReceivedLampAttack = true;
             _enemyPresentation.DamageFlash();
             _enemyPresentation.HealthUpdate(_currentHealth, _maxHealth);
-            OnEnemyDamagedEvent?.Invoke(this);
+            EnemyDamaged?.Invoke(this);
             _enemyMovement.TriggerFall();
         }
         else
@@ -210,14 +185,52 @@ public class Enemy : EnemyBase
         }
     }
 
+    public override void HandleLampDestroyed()
+    {
+        _enemyMovement.HandleLampDestroyed();
+    }
+
     public override Vector3 ProvideImpactPoint()
     {
         return transform.position;
     }
 
-    private void OnDeactivated()
+    
+    // Event Handle Methods
+    private void OnPreAttackStarted()
     {
-        OnEnemyDeactivatedEvent?.Invoke(this);
+        ReceivedLampAttack = false;
+        _enemyPresentation.PreAttackStart();
+        ReadyToAttack = false;
+        IsAttacking = true;
+    }
+
+    private void OnPreAttackEnded()
+    {
+        _enemyPresentation.PreAttackEnd();
+        ReadyToCollide = true;
+    }
+
+    private void OnAttackEnded()
+    {
+        IsAttacking = false;
+    }
+
+    private void OnEnemyDeactivated()
+    {
+        EnemyDeactivated?.Invoke(this);
         _objectPool.Release(this);
+    }
+
+    private void OnMovementReseted()
+    {
+        _enemyPresentation.Initialize();
+    }
+
+    private void OnStickStarted()
+    {
+        Debug.Log($"Stick status enabled for {gameObject.name}");
+        IsStick = true;
+        _isStick = true;
     }
 }

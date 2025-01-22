@@ -6,21 +6,20 @@ public class FDragonflyAttackHeadState : ScriptableObject, IState
 {
     [SerializeField] private float _speed = 4f;
     [SerializeField] private float _acceleration = 0.75f;
-    
-    public event Action OnStartedEvent;
-    
     private float _attackAccelerationValue = 0;
     private Vector3 _attackDirection;
-
     // Dependencies
     private Transform _visibleBodyTransform;
     private Transform _baseTransform;
     
+    public event Action Started;
+
     public void SetDependencies(Transform visibleBodyTransform, Transform baseTransform)
     {
         _visibleBodyTransform = visibleBodyTransform;
         _baseTransform = baseTransform;
     }
+
     public void OnEnter()
     {
         Vector3 currentPosition = _visibleBodyTransform.position;
@@ -42,7 +41,7 @@ public class FDragonflyAttackHeadState : ScriptableObject, IState
             sideGoal *= 0.85f;
         }
         _attackDirection = (sideGoal - currentPosition).normalized;
-        OnStartedEvent?.Invoke();
+        Started?.Invoke();
     }
 
     public void Tick()
@@ -51,7 +50,5 @@ public class FDragonflyAttackHeadState : ScriptableObject, IState
         _attackAccelerationValue += _acceleration * Time.deltaTime;
     }
 
-    public void OnExit()
-    {
-    }
+    public void OnExit() { }
 }

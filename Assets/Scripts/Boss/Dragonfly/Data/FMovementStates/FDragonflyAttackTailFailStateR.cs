@@ -11,19 +11,17 @@ public class FDragonflyAttackTailFailStateR : ScriptableObject, IState
     [SerializeField] private float _moveAcceleration = 1.9f;
     [SerializeField] private AnimationCurve _rzMixCurve;
     [SerializeField] private float _rzMaxValue;
-    
-    public event Action OnStartedEvent;
-    public event Action OnEndedEvent;
-    
     private float _localTime = 0f;
     private float _phase = 0f;
     private readonly int _sideDirection = -1;
     private bool _isAfterDelay = false;
     private float _startRz;
-   
     // Dependencies
     private Transform _visibleBodyTransform;
     private Transform _baseTransform;
+    
+    public event Action Started;
+    public event Action Ended;
 
     public void SetDependencies(Transform visibleBodyTransform, Transform baseTransform)
     {
@@ -38,7 +36,7 @@ public class FDragonflyAttackTailFailStateR : ScriptableObject, IState
         _localTime = 0f;
         _phase = 0f;
         _isAfterDelay = false;
-        OnStartedEvent?.Invoke();
+        Started?.Invoke();
     }
     
     public void Tick()
@@ -62,9 +60,7 @@ public class FDragonflyAttackTailFailStateR : ScriptableObject, IState
         CheckForStateChange();
     }
 
-    public void OnExit()
-    {
-    }
+    public void OnExit() { }
 
     private void CheckForStateChange()
     {
@@ -80,7 +76,7 @@ public class FDragonflyAttackTailFailStateR : ScriptableObject, IState
         else if (_isAfterDelay && _localTime > _afterDelay)
         {
             _isAfterDelay = false;
-            OnEndedEvent?.Invoke();
+            Ended?.Invoke();
         }
     }
 }

@@ -11,40 +11,36 @@ public class Megabeetle : BossBase
     [SerializeField] private int _healthToFallThreshold;
     [SerializeField] private MegabeetleMovement _enemyMovement;
     [SerializeField] private MegabeetlePresentation _enemyPresentation;
-    public override EnemyType EnemyType => _enemyType;
-    public static event Action<EnemyBase> OnStickAttackedEvent;
     private int _currentHealthToFall;
     private bool _isDead = false;
-    
+    public static event Action<EnemyBase> OnStickAttackedEvent;
+
+    public override EnemyType EnemyType => _enemyType;
+
     private void OnEnable()
     {
-        _enemyMovement.OnPreAttackStartEvent += OnPreAttackStartHandle;
-        _enemyMovement.OnPreAttackEndEvent += OnPreAttackEndHandle;
-        _enemyMovement.OnAttackEndEvent += AttackStatusEnable;
-        _enemyMovement.OnEnemyDeactivatedEvent += OnDeactivatedHandle;
-        _enemyMovement.OnMovementResetEvent += OnMovementResetHandle;
-        _enemyMovement.OnStickStartEvent += StickStatusEnable;
-        _enemyMovement.OnDeathStateEndedEvent += HandleDeathMoveStateEnd;
-        _enemyMovement.OnStickAttackStateEndedEvent += HandleStickAttack;
-        _enemyMovement.OnTriggerSpreadEvent += MegabeetleTriggerSpread;
-    }
-    
-    private void OnDisable()
-    {
-        _enemyMovement.OnPreAttackStartEvent -= OnPreAttackStartHandle;
-        _enemyMovement.OnPreAttackEndEvent -= OnPreAttackEndHandle;
-        _enemyMovement.OnAttackEndEvent -= AttackStatusEnable;
-        _enemyMovement.OnEnemyDeactivatedEvent -= OnDeactivatedHandle;
-        _enemyMovement.OnMovementResetEvent -= OnMovementResetHandle;
-        _enemyMovement.OnStickStartEvent -= StickStatusEnable;
-        _enemyMovement.OnDeathStateEndedEvent -= HandleDeathMoveStateEnd;
-        _enemyMovement.OnStickAttackStateEndedEvent -= HandleStickAttack;
-        _enemyMovement.OnTriggerSpreadEvent -= MegabeetleTriggerSpread;
+        _enemyMovement.PreAttackStarted += OnPreAttackStarted;
+        _enemyMovement.PreAttackEnded += OnPreAttackEnded;
+        _enemyMovement.AttackEnded += OnAttackEnded;
+        _enemyMovement.EnemyDeactivated += OnEnemyDeactivated;
+        _enemyMovement.MovementReseted += OnMovementReseted;
+        _enemyMovement.StickStarted += OnStickStarted;
+        _enemyMovement.DeathStateEnded += OnDeathStateEnded;
+        _enemyMovement.StickAttackStateEnded += OnStickAttackStateEnded;
+        _enemyMovement.SpreadTriggered += OnSpreadTriggered;
     }
 
-    private void MegabeetleTriggerSpread()
+    private void OnDisable()
     {
-        OnTriggerSpreadInvoke();
+        _enemyMovement.PreAttackStarted -= OnPreAttackStarted;
+        _enemyMovement.PreAttackEnded -= OnPreAttackEnded;
+        _enemyMovement.AttackEnded -= OnAttackEnded;
+        _enemyMovement.EnemyDeactivated -= OnEnemyDeactivated;
+        _enemyMovement.MovementReseted -= OnMovementReseted;
+        _enemyMovement.StickStarted -= OnStickStarted;
+        _enemyMovement.DeathStateEnded -= OnDeathStateEnded;
+        _enemyMovement.StickAttackStateEnded -= OnStickAttackStateEnded;
+        _enemyMovement.SpreadTriggered -= OnSpreadTriggered;
     }
 
     public override void Initialize()
@@ -62,14 +58,14 @@ public class Megabeetle : BossBase
         _currentHealthToFall = 0;
         gameObject.SetActive(false);
     }
-    
+
     public override void Play()
     {
         gameObject.SetActive(true);
         _enemyMovement.Play();
         _enemyPresentation.ResetTrail();
     }
-    
+
     public override void Reset()
     {
         ReceivedLampAttack = false;
@@ -79,49 +75,22 @@ public class Megabeetle : BossBase
         _enemyMovement.MovementReset();
         gameObject.SetActive(false);
     }
-    
-    private void OnMovementResetHandle()
-    {
-        _enemyPresentation.Initialize();
-    }
-    
+
     public override void UpdateAttackAvailability()
     {
         ReadyToAttack = false;
     }
-    
+
     public override void SpreadStart()
     {
         _enemyMovement.TriggerSpread();
     }
-   
+
+    public override void ReturnToPool() { }
+
     public override void StartAttack()
     {
         _enemyMovement.TriggerAttack();
-    }
-    
-    private void OnPreAttackStartHandle()
-    {
-        ReceivedLampAttack = false;
-        _enemyPresentation.PreAttackStart();
-        ReadyToAttack = false;
-        IsAttacking = true;
-    }
-    
-    private void OnPreAttackEndHandle()
-    {
-        _enemyPresentation.PreAttackEnd();
-        ReadyToCollide = true;
-    }
-    
-    private void AttackStatusEnable()
-    {
-        IsAttacking = false;
-    }
-    
-    private void StickStatusEnable()
-    {
-        IsStick = true;
     }
 
     public override void HandleEnteringAttackZone()
@@ -131,22 +100,22 @@ public class Megabeetle : BossBase
             ReadyToLampDamage = true;    
         }
     }
-    
+
     public override void HandleCollisionWithLamp()
     {
         // ReadyToCollide = false;
         // ReadyToLampDamage = true;
         // _enemyMovement.TriggerFall();
     }
-    
-    public override void HandleExitingAttackExitZone()
-    {
-        ReadyToLampDamage = false;
-    }
-    
+
     public override void HandleCollisionWithStickZone()
     {
         _enemyMovement.TriggerStick();
+    }
+
+    public override Vector3 ProvideImpactPoint()
+    {
+        return transform.position;
     }
 
     public override void ReceiveDamage(int damage)
@@ -180,29 +149,53 @@ public class Megabeetle : BossBase
         }    
     }
 
-    public override void ReturnToPool()
+    // Event Handle Methods
+    private void OnPreAttackStarted()
     {
+        ReceivedLampAttack = false;
+        _enemyPresentation.PreAttackStart();
+        ReadyToAttack = false;
+        IsAttacking = true;
     }
-    
-    public override Vector3 ProvideImpactPoint()
+
+    private void OnPreAttackEnded()
     {
-        return transform.position;
+        _enemyPresentation.PreAttackEnd();
+        ReadyToCollide = true;
     }
-    
-    private void OnDeactivatedHandle()
+
+    private void OnAttackEnded()
     {
+        IsAttacking = false;
     }
-    
-    private void HandleDeathMoveStateEnd()
+
+    private void OnEnemyDeactivated() { }
+
+    private void OnMovementReseted()
+    {
+        _enemyPresentation.Initialize();
+    }
+
+    private void OnStickStarted()
+    {
+        IsStick = true;
+    }
+
+    private void OnDeathStateEnded()
     {
         OnDeathInvoke();
         _enemyMovement.MovementReset();
         _enemyPresentation.Initialize();
         gameObject.SetActive(false);
     }
-    
-    private void HandleStickAttack()
+
+    private void OnStickAttackStateEnded()
     {
         OnStickAttackedEvent?.Invoke(this);
+    }
+
+    private void OnSpreadTriggered()
+    {
+        OnTriggerSpreadInvoke();
     }
 }

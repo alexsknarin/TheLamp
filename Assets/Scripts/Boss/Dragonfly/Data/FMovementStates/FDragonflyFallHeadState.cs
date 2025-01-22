@@ -10,20 +10,18 @@ public class FDragonflyFallHeadState : ScriptableObject, IState
     [SerializeField] private AnimationCurve _headFallFallDownCurve;
     [SerializeField] private float _bounceDistance = .25f;
     [SerializeField] private AnimationCurve _bounceCurve;
-
-    public event Action OnStartedEvent;
-    public event Action OnEndedEvent;
-    
     private float _headFallStartPosY = 0f;
     private float _localTime = 0f;
     private float _phase = 0f;
     private bool _isAfterDelay = false;
-    
     // Dependencies
     private Transform _visibleBodyTransform;
     private Transform _fallPointTransform;
     private float _bouncePosition = 0f;
     
+    public event Action Started;
+    public event Action Ended;
+
     public void SetDependencies(Transform visibleBodyTransform, Transform fallPointTransform)
     {
         _visibleBodyTransform = visibleBodyTransform;
@@ -41,7 +39,7 @@ public class FDragonflyFallHeadState : ScriptableObject, IState
         _phase = 0f;
         _isAfterDelay = false;
         _bouncePosition = 0f;
-        OnStartedEvent?.Invoke();
+        Started?.Invoke();
     }
 
     public void Tick()
@@ -63,9 +61,7 @@ public class FDragonflyFallHeadState : ScriptableObject, IState
         CheckForStateChange();
     }
 
-    public void OnExit()
-    {
-    }
+    public void OnExit() { }
 
     private void CheckForStateChange()
     {
@@ -81,7 +77,7 @@ public class FDragonflyFallHeadState : ScriptableObject, IState
         else if (_isAfterDelay && _localTime > _afterDelay)
         {
             _isAfterDelay = false;
-            OnEndedEvent?.Invoke();
+            Ended?.Invoke();
         }
     }
 }

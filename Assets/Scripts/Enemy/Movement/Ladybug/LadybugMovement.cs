@@ -1,6 +1,4 @@
-using System;
 using UnityEngine;
-using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 public class LadybugMovement : EnemyMovement
@@ -11,6 +9,8 @@ public class LadybugMovement : EnemyMovement
     [SerializeField] private float _verticalAmplitude;
     [SerializeField] private bool _isSmoothDampEnabled;
     [SerializeField] private bool _isDepthEnabled;
+    // Debug
+    [SerializeField] private EnemyState _stateDebug;
     // Movement States
     private EnemyMovementStateMachine _movementStateMachine;
     private EnemyMovementBaseState _currentState;
@@ -26,19 +26,6 @@ public class LadybugMovement : EnemyMovement
     private Vector3 _prevPosition2d;
     // State parameters
     private bool _isDead = false;
-    
-    // Debug
-    [SerializeField] private EnemyState _stateDebug;
-
-    private void OnEnable()
-    {
-        Lamp.OnLampDeadEvent += FallOnLampDestroyed; // TODO: manage from enemy Manager
-    }
-    
-    private void OnDisable()
-    {
-        Lamp.OnLampDeadEvent -= FallOnLampDestroyed;
-    }
 
     public override void Initialize()
     {
@@ -80,8 +67,16 @@ public class LadybugMovement : EnemyMovement
         return spawnPosition;
     }
     
-    public override void TriggerFall()
+    public override void TriggerFall() { }
+    
+    public override void HandleLampDestroyed()
     {
+        transform.parent = null;
+        if(_currentState.State == EnemyState.Stick)
+        {
+            _isDead = true;
+            SwitchState();
+        }
     }
 
     public void FallOnLampDestroyed(EnemyBase enemy)
@@ -102,9 +97,7 @@ public class LadybugMovement : EnemyMovement
             SwitchState();
         }
     }
-    public override void TriggerAttack()
-    {
-    }
+    public override void TriggerAttack() { }
     
     public override void TriggerSpread()
     {
@@ -188,6 +181,7 @@ public class LadybugMovement : EnemyMovement
 
         _currentState = newState;
         State = _currentState.State;
+        _stateDebug = _currentState.State;
         _movementStateMachine.SetState(_currentState, _position2d, _sideDirection, _depthDirection);
     }
     

@@ -11,18 +11,16 @@ public class FDragonflyAttackTailSuccessStateL : ScriptableObject, IState
     [SerializeField] private AnimationCurve _rxCurve;
     [SerializeField] private AnimationCurve _ryCurve;
     [SerializeField] private AnimationCurve _rzCurve;
-    public event Action OnStartedEvent;
-    public event Action OnEndedEvent;
-
     private Vector3 _startPosition;
     private Vector3 _startEuelerRotation;
     private float _localTime = 0f;
     private float _phase = 0f;
-
     // Dependencies
     private Transform _visibleBodyTransform;
     private Transform _baseTransform;
-    
+    public event Action Started;
+    public event Action Ended;
+
     public void SetDependencies(Transform visibleBodyTransform, Transform baseTransform)
     {
         _visibleBodyTransform = visibleBodyTransform;
@@ -36,7 +34,7 @@ public class FDragonflyAttackTailSuccessStateL : ScriptableObject, IState
         _startEuelerRotation = _visibleBodyTransform.eulerAngles;
         _localTime = 0f;
         _phase = 0f;
-        OnStartedEvent?.Invoke();
+        Started?.Invoke();
     }
     
     public void Tick()
@@ -58,16 +56,14 @@ public class FDragonflyAttackTailSuccessStateL : ScriptableObject, IState
         CheckForStateChange();
     }
 
-    public void OnExit()
-    {
-    }
+    public void OnExit() { }
 
     private void CheckForStateChange()
     {
         _phase = _localTime / _duration;
         if (_phase > 1)
         {
-            OnEndedEvent?.Invoke();
+            Ended?.Invoke();
         }
     }
 }

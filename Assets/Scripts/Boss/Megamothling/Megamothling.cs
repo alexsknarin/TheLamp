@@ -7,27 +7,27 @@ public class Megamothling : BossBase
     [SerializeField] private int _currentHealth;
     [SerializeField] private MegamothlingMovement _enemyMovement;
     [SerializeField] private MegamothlingPresentation _enemyPresentation;
-    public override EnemyType EnemyType => _enemyType;
     private bool _isDead = false;
+    public override EnemyType EnemyType => _enemyType;
 
     private void OnEnable()
     {
-        _enemyMovement.OnPreAttackStartEvent += OnPreAttackStart;
-        _enemyMovement.OnPreAttackEndEvent += OnPreAttackEnd;
-        _enemyMovement.OnAttackEndEvent += AttackStatusEnable;
-        _enemyMovement.OnMovementResetEvent += OnMovementReset;
-        _enemyMovement.OnStickStartEvent += StickStatusEnable;
-        _enemyMovement.OnDeathStateEndedEvent += HandleDeathMoveStateEnd;
+        _enemyMovement.PreAttackStarted += OnPreAttackStarted;
+        _enemyMovement.PreAttackEnded += OnPreAttackEnded;
+        _enemyMovement.AttackEnded += OnAttackEnded;
+        _enemyMovement.MovementReseted += OnMovementReseted;
+        _enemyMovement.StickStarted += OnStickStarted;
+        _enemyMovement.DeathStateEnded += OnDeathStateEnded;
     }
     
     private void OnDisable()
     {
-        _enemyMovement.OnPreAttackStartEvent -= OnPreAttackStart;
-        _enemyMovement.OnPreAttackEndEvent -= OnPreAttackEnd;
-        _enemyMovement.OnAttackEndEvent -= AttackStatusEnable;
-        _enemyMovement.OnMovementResetEvent -= OnMovementReset;
-        _enemyMovement.OnStickStartEvent -= StickStatusEnable;
-        _enemyMovement.OnDeathStateEndedEvent -= HandleDeathMoveStateEnd;
+        _enemyMovement.PreAttackStarted -= OnPreAttackStarted;
+        _enemyMovement.PreAttackEnded -= OnPreAttackEnded;
+        _enemyMovement.AttackEnded -= OnAttackEnded;
+        _enemyMovement.MovementReseted -= OnMovementReseted;
+        _enemyMovement.StickStarted -= OnStickStarted;
+        _enemyMovement.DeathStateEnded -= OnDeathStateEnded;
     }
     
     public override void Initialize()
@@ -45,13 +45,6 @@ public class Megamothling : BossBase
         gameObject.SetActive(false);
     }
 
-    public override void Play()
-    {
-        gameObject.SetActive(true);
-        _enemyPresentation.ResetTrail();
-        _enemyMovement.Play();
-    }
-
     public override void Reset()
     {
         ReceivedLampAttack = false;
@@ -62,9 +55,11 @@ public class Megamothling : BossBase
         gameObject.SetActive(false);
     }
 
-    private void OnMovementReset()
+    public override void Play()
     {
-        _enemyPresentation.Initialize();
+        gameObject.SetActive(true);
+        _enemyPresentation.ResetTrail();
+        _enemyMovement.Play();
     }
 
     public override void UpdateAttackAvailability()
@@ -93,30 +88,6 @@ public class Megamothling : BossBase
         _enemyMovement.TriggerAttack();
     }
 
-    private void OnPreAttackStart()
-    {
-        ReceivedLampAttack = false;
-        _enemyPresentation.PreAttackStart();
-        ReadyToAttack = false;
-        IsAttacking = true;
-    }
-
-    private void OnPreAttackEnd()
-    {
-        _enemyPresentation.PreAttackEnd();
-        ReadyToCollide = true;
-    }
-
-    private void AttackStatusEnable()
-    {
-        IsAttacking = false;
-    }
-
-    private void StickStatusEnable()
-    {
-        IsStick = true;
-    }
-
     public override void HandleEnteringAttackZone()
     {
         if (_enemyMovement.State == EnemyState.Attack || _enemyType == EnemyType.Ladybug)
@@ -129,11 +100,6 @@ public class Megamothling : BossBase
     {
         ReadyToCollide = false;
         _enemyMovement.TriggerFall();
-    }
-
-    public override void HandleExitingAttackExitZone()
-    {
-        ReadyToLampDamage = false;
     }
 
     public override void HandleCollisionWithStickZone()
@@ -166,17 +132,44 @@ public class Megamothling : BossBase
         }    
     }
 
-    public override void ReturnToPool()
-    {
-    }
+    public override void ReturnToPool() { }
 
     public override Vector3 ProvideImpactPoint()
     {
         return transform.position;
     }
 
+    // Event Handle Methods
+    private void OnPreAttackStarted()
+    {
+        ReceivedLampAttack = false;
+        _enemyPresentation.PreAttackStart();
+        ReadyToAttack = false;
+        IsAttacking = true;
+    }
 
-    private void HandleDeathMoveStateEnd()
+    private void OnPreAttackEnded()
+    {
+        _enemyPresentation.PreAttackEnd();
+        ReadyToCollide = true;
+    }
+
+    private void OnAttackEnded()
+    {
+        IsAttacking = false;
+    }
+
+    private void OnMovementReseted()
+    {
+        _enemyPresentation.Initialize();
+    }
+
+    private void OnStickStarted()
+    {
+        IsStick = true;
+    }
+
+    private void OnDeathStateEnded()
     {
         OnDeathInvoke();
         _enemyMovement.MovementReset();

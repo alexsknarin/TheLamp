@@ -9,24 +9,23 @@ public class FDragonflyAttackHeadSuccessState : ScriptableObject, IState
     [SerializeField] private AnimationCurve _tyCurve;
     [SerializeField] private AnimationCurve _tzCurve;
     [SerializeField] private AnimationCurve _rxCurve;
-    
-    public event Action OnStartedEvent; 
-    public event Action OnEndedEvent; 
-    
     private float _localTime = 0f;
     private float _phase = 0f;
     private bool _isAfterDelay = false;
-    
+
     // Dependencies
     private Transform _visibleBodyTransform;
     private Transform _fallPointTransform;
-    
+
+    public event Action Started;
+    public event Action Ended;
+
     public void SetDependencies(Transform visibleBodyTransform, Transform fallPointTransform)
     {
         _visibleBodyTransform = visibleBodyTransform;
         _fallPointTransform = fallPointTransform;
     }
-    
+
     public void OnEnter()
     {
         _fallPointTransform.position = _visibleBodyTransform.position;
@@ -39,7 +38,7 @@ public class FDragonflyAttackHeadSuccessState : ScriptableObject, IState
         _localTime = 0f;
         _phase = 0f;    
         _isAfterDelay = false;
-        OnStartedEvent?.Invoke();
+        Started?.Invoke();
     }
 
     public void Tick()
@@ -71,7 +70,7 @@ public class FDragonflyAttackHeadSuccessState : ScriptableObject, IState
         else if (_isAfterDelay && _localTime > _afterDelay)
         {
             _isAfterDelay = false;
-            OnEndedEvent?.Invoke();
+            Ended?.Invoke();
         }
     }
     

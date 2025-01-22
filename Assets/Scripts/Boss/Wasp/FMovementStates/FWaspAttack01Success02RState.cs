@@ -3,9 +3,8 @@ using UnityEngine;
 
 public class FWaspAttack01Success02RState : FWaspAttack01RState
 {
-    public FWaspAttack01Success02RState(Animator animator, int clipHash, Transform baseTransform) : base(animator, clipHash, baseTransform)
-    {
-    }
+    public FWaspAttack01Success02RState(Animator animator, int clipHash, Transform baseTransform) : 
+        base(animator, clipHash, baseTransform) { }
     
     public override void OnEnter()
     {

@@ -5,7 +5,7 @@ public class DragonflyCollisionCatcher : MonoBehaviour
 {
     [SerializeField] private GameObject _colliders;
     
-    public event Action OnCollidedEvent;
+    public event Action Collided;
     
     public void EnableColliders()
     {
@@ -19,6 +19,6 @@ public class DragonflyCollisionCatcher : MonoBehaviour
     
     private void OnTriggerEnter2D(Collider2D other)
     {
-        OnCollidedEvent?.Invoke();
+        Collided?.Invoke();
     }
 }

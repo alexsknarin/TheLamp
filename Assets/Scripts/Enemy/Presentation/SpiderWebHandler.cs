@@ -22,7 +22,6 @@ public class SpiderWebHandler : MonoBehaviour
         _endPoint = transform.position;
         _isShrinking = false;
         _isActive = true;
-
     }
     
     public void StartShrink(bool isDamaged)

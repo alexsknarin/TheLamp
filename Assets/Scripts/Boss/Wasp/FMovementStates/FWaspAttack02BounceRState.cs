@@ -2,9 +2,8 @@ using UnityEngine;
 
 public class FWaspAttack02BounceRState : FWaspAnimBaseState
 {
-    public FWaspAttack02BounceRState(Animator animator, int clipHash, Transform baseTransform) : base(animator, clipHash, baseTransform)
-    {
-    }
+    public FWaspAttack02BounceRState(Animator animator, int clipHash, Transform baseTransform) : 
+        base(animator, clipHash, baseTransform) { }
     
     public override void OnEnter()
     {

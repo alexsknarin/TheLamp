@@ -3002,7 +3002,7 @@
     "m_Title": "Damage Cracks",
     "m_Position": {
         "x": -10268.666015625,
-        "y": 6058.66259765625
+        "y": 6057.33349609375
     }
 }
 
@@ -3275,7 +3275,7 @@
     },
     "m_DefaultValue": {
         "x": 0.0,
-        "y": 0.0
+        "y": 1.0
     },
     "m_Labels": []
 }
@@ -4124,7 +4124,7 @@
     "m_DefaultValue": {
         "x": 0.0,
         "y": 0.0,
-        "z": 0.0
+        "z": 1.0
     },
     "m_Labels": []
 }
@@ -4243,8 +4243,8 @@
     "m_ObjectId": "155c0784d67d43609abbf94df6c7edb4",
     "m_Title": "New Group",
     "m_Position": {
-        "x": -11171.9990234375,
-        "y": 11483.998046875
+        "x": -11171.998046875,
+        "y": 11484.0
     }
 }
 
@@ -4825,6 +4825,9 @@
     "m_AlphaClip": false,
     "m_CastShadows": true,
     "m_ReceiveShadows": true,
+    "m_DisableTint": false,
+    "m_AdditionalMotionVectorMode": 0,
+    "m_AlembicMotionVectors": false,
     "m_SupportsLODCrossFade": false,
     "m_CustomEditorGUI": "",
     "m_SupportVFX": false
@@ -5300,8 +5303,8 @@
     "m_ObjectId": "233cb704fd8543388be3f334be98d1e7",
     "m_Title": "New Group",
     "m_Position": {
-        "x": -11211.9990234375,
-        "y": 13267.931640625
+        "x": -11211.998046875,
+        "y": 13267.3330078125
     }
 }
 
@@ -5411,8 +5414,8 @@
         "y": 0.5
     },
     "m_DefaultValue": {
-        "x": 0.0,
-        "y": 0.0
+        "x": 0.5,
+        "y": 0.5
     },
     "m_Labels": []
 }
@@ -5446,7 +5449,7 @@
     },
     "m_DefaultValue": {
         "x": 0.0,
-        "y": 0.0
+        "y": 1.0
     },
     "m_Labels": []
 }
@@ -5678,8 +5681,8 @@
         "y": 1.0
     },
     "m_DefaultValue": {
-        "x": 0.0,
-        "y": 0.0
+        "x": -1.0,
+        "y": 1.0
     },
     "m_Labels": []
 }
@@ -5730,6 +5733,7 @@
     "m_SourceType": 1,
     "m_FunctionName": "refr",
     "m_FunctionSource": "",
+    "m_FunctionSourceUsePragmas": true,
     "m_FunctionBody": "Out = refract(ViewDirection, Normal, Ior);"
 }
 
@@ -5869,7 +5873,7 @@
     },
     "m_DefaultValue": {
         "x": 0.0,
-        "y": 0.0
+        "y": 1.0
     },
     "m_Labels": []
 }
@@ -6355,8 +6359,8 @@
         "y": 0.5
     },
     "m_DefaultValue": {
-        "x": 0.0,
-        "y": 0.0
+        "x": 0.5,
+        "y": 0.5
     },
     "m_Labels": []
 }
@@ -6376,8 +6380,8 @@
         "y": 0.26499998569488528
     },
     "m_DefaultValue": {
-        "x": 0.0,
-        "y": 0.0
+        "x": -1.0,
+        "y": 1.0
     },
     "m_Labels": []
 }
@@ -7295,7 +7299,7 @@
     "m_StageCapability": 3,
     "m_BareResource": false,
     "m_Texture": {
-        "m_SerializedTexture": "{\"texture\":{\"instanceID\":0}}",
+        "m_SerializedTexture": "",
         "m_Guid": ""
     },
     "m_DefaultType": 0
@@ -9548,8 +9552,8 @@
         "y": 5.0
     },
     "m_DefaultValue": {
-        "x": 0.0,
-        "y": 0.0
+        "x": -1.0,
+        "y": 1.0
     },
     "m_Labels": []
 }
@@ -9570,7 +9574,7 @@
     },
     "m_DefaultValue": {
         "x": 0.0,
-        "y": 0.0
+        "y": 1.0
     },
     "m_Labels": []
 }
@@ -9638,8 +9642,8 @@
         "y": 5.0
     },
     "m_DefaultValue": {
-        "x": 0.0,
-        "y": 0.0
+        "x": -1.0,
+        "y": 1.0
     },
     "m_Labels": []
 }
@@ -9702,7 +9706,7 @@
     "m_StageCapability": 3,
     "m_BareResource": false,
     "m_Texture": {
-        "m_SerializedTexture": "{\"texture\":{\"instanceID\":0}}",
+        "m_SerializedTexture": "",
         "m_Guid": ""
     },
     "m_DefaultType": 0
@@ -9723,8 +9727,8 @@
         "y": 0.5
     },
     "m_DefaultValue": {
-        "x": 0.0,
-        "y": 0.0
+        "x": 0.5,
+        "y": 0.5
     },
     "m_Labels": []
 }
@@ -10190,8 +10194,8 @@
     "m_ObjectId": "68c9ae56aa234150a80bd30dd7c075a3",
     "m_Title": "Thin Wall Refraction",
     "m_Position": {
-        "x": -5634.66650390625,
-        "y": 564.000244140625
+        "x": -5634.66552734375,
+        "y": 564.0
     }
 }
 
@@ -10403,8 +10407,8 @@
     "m_ObjectId": "6c6191eef39b4c1e901c7be431683626",
     "m_Title": "New Group",
     "m_Position": {
-        "x": -11211.337890625,
-        "y": 12312.4326171875
+        "x": -11211.998046875,
+        "y": 12312.0
     }
 }
 
@@ -11027,7 +11031,7 @@
     },
     "m_DefaultValue": {
         "x": 0.0,
-        "y": 0.0
+        "y": 1.0
     },
     "m_Labels": []
 }
@@ -11535,8 +11539,8 @@
     "m_ObjectId": "79a69cf9afd64d9eaff5636364249eb9",
     "m_Title": "Emission",
     "m_Position": {
-        "x": -1841.523193359375,
-        "y": 1786.0882568359375
+        "x": -1841.999267578125,
+        "y": 1786.0008544921875
     }
 }
 
@@ -11665,7 +11669,7 @@
     "m_StageCapability": 3,
     "m_BareResource": false,
     "m_Texture": {
-        "m_SerializedTexture": "{\"texture\":{\"instanceID\":0}}",
+        "m_SerializedTexture": "",
         "m_Guid": ""
     },
     "m_DefaultType": 0
@@ -12034,7 +12038,7 @@
     },
     "m_DefaultValue": {
         "x": 0.0,
-        "y": 0.0
+        "y": 1.0
     },
     "m_Labels": []
 }
@@ -12311,8 +12315,8 @@
         "y": 0.6100000143051148
     },
     "m_DefaultValue": {
-        "x": 0.0,
-        "y": 0.0
+        "x": -1.0,
+        "y": 1.0
     },
     "m_Labels": []
 }
@@ -13949,7 +13953,7 @@
     },
     "m_DefaultValue": {
         "x": 0.0,
-        "y": 0.0
+        "y": 1.0
     },
     "m_Labels": []
 }
@@ -14379,8 +14383,8 @@
         "y": 0.5
     },
     "m_DefaultValue": {
-        "x": 0.0,
-        "y": 0.0
+        "x": 0.5,
+        "y": 0.5
     },
     "m_Labels": []
 }
@@ -15827,8 +15831,8 @@
         "y": 0.5
     },
     "m_DefaultValue": {
-        "x": 0.0,
-        "y": 0.0
+        "x": 0.5,
+        "y": 0.5
     },
     "m_Labels": []
 }
@@ -15999,8 +16003,8 @@
     "m_ObjectId": "b815c382211343b985fd490083686f5a",
     "m_Title": "Refraction DIrt",
     "m_Position": {
-        "x": -1840.66650390625,
-        "y": 583.9999389648438
+        "x": -1840.666015625,
+        "y": 584.0008544921875
     }
 }
 
@@ -16106,8 +16110,8 @@
         "y": 0.5
     },
     "m_DefaultValue": {
-        "x": 0.0,
-        "y": 0.0
+        "x": 0.5,
+        "y": 0.5
     },
     "m_Labels": []
 }
@@ -17757,7 +17761,7 @@
     "m_StageCapability": 3,
     "m_BareResource": false,
     "m_Texture": {
-        "m_SerializedTexture": "{\"texture\":{\"instanceID\":0}}",
+        "m_SerializedTexture": "",
         "m_Guid": ""
     },
     "m_DefaultType": 0
@@ -18456,8 +18460,8 @@
     "m_ObjectId": "e307a92912844a3db27f207a44646ff4",
     "m_Title": "GLASS",
     "m_Position": {
-        "x": -4267.3330078125,
-        "y": 96.66674041748047
+        "x": -4267.33251953125,
+        "y": 96.6678237915039
     }
 }
 
@@ -18588,7 +18592,7 @@
     "m_StageCapability": 3,
     "m_BareResource": false,
     "m_Texture": {
-        "m_SerializedTexture": "{\"texture\":{\"instanceID\":0}}",
+        "m_SerializedTexture": "",
         "m_Guid": ""
     },
     "m_DefaultType": 0
@@ -18981,8 +18985,8 @@
         "y": 1.0
     },
     "m_DefaultValue": {
-        "x": 0.0,
-        "y": 0.0
+        "x": -1.0,
+        "y": 1.0
     },
     "m_Labels": []
 }
@@ -19388,8 +19392,8 @@
         "y": 0.5
     },
     "m_DefaultValue": {
-        "x": 0.0,
-        "y": 0.0
+        "x": 0.5,
+        "y": 0.5
     },
     "m_Labels": []
 }
@@ -19505,8 +19509,8 @@
         "y": 0.5
     },
     "m_DefaultValue": {
-        "x": 0.0,
-        "y": 0.0
+        "x": 0.5,
+        "y": 0.5
     },
     "m_Labels": []
 }
@@ -19954,8 +19958,8 @@
         "y": 7.5
     },
     "m_DefaultValue": {
-        "x": 0.0,
-        "y": 0.0
+        "x": -1.0,
+        "y": 1.0
     },
     "m_Labels": []
 }

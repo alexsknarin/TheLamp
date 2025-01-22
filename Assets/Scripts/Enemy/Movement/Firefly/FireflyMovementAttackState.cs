@@ -2,29 +2,37 @@ using UnityEngine;
 
 public class FireflyMovementAttackState: EnemyMovementBaseState
 {
-    public override EnemyState State => EnemyState.Attack;
+    private ILampPositionProviderService _lampPositionProvider;
     private float _acceleration = 13.5f;
     private float _depthDecrement = 0.4f;
     private float _acceleratedSpeed = 1f;
     private float _startDistance;
-    
     private readonly float _fireflyRadius = 0.1f;
-    
-    public FireflyMovementAttackState(IStateMachineOwner owner, float speed, float radius, float verticalAmplitude) : base()
+
+    public FireflyMovementAttackState(
+        IStateMachineOwner owner,
+        ILampPositionProviderService lampPositionProvider,
+        float speed, 
+        float radius, 
+        float verticalAmplitude
+        ) : base()
     {
+        _owner = owner;
+        _lampPositionProvider = lampPositionProvider;
         _speed = speed;
         _radius = radius;
         _verticalAmplitude = verticalAmplitude;
-        _owner = owner;
     }
-    
+
+    public override EnemyState State => EnemyState.Attack;
+
     public override void EnterState(Vector3 currentPosition, int sideDirection, int depthDirection)
     {
         _sideDirection = sideDirection;
         _acceleratedSpeed = 1f;
         _startDistance = currentPosition.magnitude - 0.65f;
     }
-    
+
     public override void ExecuteState(Vector3 currentPosition)
     {
         Vector3 newPosition = currentPosition;
@@ -33,10 +41,9 @@ public class FireflyMovementAttackState: EnemyMovementBaseState
         _acceleratedSpeed += _acceleration * Time.deltaTime;
         
         // Check if lamp was penetrated
-        // TODO: replace with proper DI system, oprimize
-        if ((newPosition - Lamp.LampTransform.position).magnitude < _fireflyRadius + 0.5f)
+        if ((newPosition - _lampPositionProvider.GetLampPosition()).magnitude < _fireflyRadius + 0.5f)
         {
-            newPosition = Lamp.LampTransform.position + newPosition.normalized * (0.5f + _fireflyRadius);
+            newPosition = _lampPositionProvider.GetLampPosition() + newPosition.normalized * (0.5f + _fireflyRadius);
         }
         
         Position = newPosition;
