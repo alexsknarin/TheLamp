@@ -48,6 +48,7 @@ public class GameModel : IDisposable, ILampDeadEventProviderService
         _playerAttackHandler.PlayerAttackEnded += OnPlayerAttackEnded;
         _playerAttackHandler.PowerChanged += OnPowerChanged;
         _playerEnemyInteractionHandler.LampBlockedStarted += OnLampBlockedStarted;
+        _playerEnemyInteractionHandler.LampBlockedEnded += OnLampBlockedEnded;
         _playerEnemyInteractionHandler.EnemyAttackBounced += OnEnemyAttackBounced;
         _scoresCollectionHandler.ScoreChanged += OnScoreChanged;
     }
@@ -58,6 +59,7 @@ public class GameModel : IDisposable, ILampDeadEventProviderService
         _playerAttackHandler.PlayerAttackEnded -= OnPlayerAttackEnded;
         _playerAttackHandler.PowerChanged -= OnPowerChanged;
         _playerEnemyInteractionHandler.LampBlockedStarted -= OnLampBlockedStarted;
+        _playerEnemyInteractionHandler.LampBlockedEnded -= OnLampBlockedEnded;
         _playerEnemyInteractionHandler.EnemyAttackBounced -= OnEnemyAttackBounced;
         _scoresCollectionHandler.ScoreChanged -= OnScoreChanged;
     }
@@ -454,14 +456,20 @@ public class GameModel : IDisposable, ILampDeadEventProviderService
         CurrentPower = power;
     }
 
-    private void OnLampBlockedStarted(bool isBlocked, EnemyBase enemy)
+    private void OnLampBlockedStarted(Vector3 impactPoint)
     {
-        IsLampBlocked = isBlocked;
-        _enemyController.SetBlockedMode(isBlocked);
-        // TODO: take lamp position into consideration
-        _lampMovementController.AddForce(-enemy.ProvideImpactPoint().normalized.x * 2);
+        IsLampBlocked = true;
+        _enemyController.SetBlockedMode(IsLampBlocked);
+        _lampMovementController.AddForce(-impactPoint.normalized.x * 2);
     }
-
+    
+    private void OnLampBlockedEnded(Vector3 impactPoint)
+    {
+        IsLampBlocked = false;
+        _enemyController.SetBlockedMode(IsLampBlocked);
+        _lampMovementController.AddForce(-impactPoint.normalized.x * 2);
+    }
+    
     private void OnEnemyAttackBounced(bool isDeflected, EnemyBase enemy)
     {
         if (!isDeflected || IsLampBlocked)

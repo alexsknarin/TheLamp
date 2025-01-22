@@ -11,7 +11,10 @@ public class PlayerEnemyInteractionHandler : MonoBehaviour, IInitializable
     private List<EnemyBase> _stickyEnemies; // TODO: replace Enemy with ISticky Interface
     
     public event Action<bool, EnemyBase> EnemyAttackBounced;  // TODO: Use Interface
-    public event Action<bool, EnemyBase> LampBlockedStarted; // TODO: Use Interface
+    // public event Action<bool, EnemyBase> LampBlockedStarted; // TODO: Use Interface
+    
+    public event Action<Vector3> LampBlockedStarted; 
+    public event Action<Vector3> LampBlockedEnded; 
 
     public void Initialize()
     {
@@ -68,16 +71,13 @@ public class PlayerEnemyInteractionHandler : MonoBehaviour, IInitializable
     {
         if (_isAssessingDamage)
         {
-            Debug.Log("Enemy exited attack exit zone: " + enemy.gameObject.name);
             if (enemy.ReceivedLampAttack && (enemy.EnemyType != EnemyType.Ladybug || enemy.EnemyType != EnemyType.Megabeetle)) // TODO: replace with ISticky interface
             {
-                Debug.Log("Enemy received lamp attack: " + enemy.gameObject.name);
                 _isAssessingDamage = false;
                 EnemyAttackBounced?.Invoke(true, enemy);
             }
             else
             {
-                Debug.Log("Enemy did not receive lamp attack: " + enemy.gameObject.name);
                 _isAssessingDamage = false;
                 EnemyAttackBounced?.Invoke(false, enemy);
             }
@@ -92,7 +92,7 @@ public class PlayerEnemyInteractionHandler : MonoBehaviour, IInitializable
         {
             _stickyEnemies.Add(enemy);
         }
-        LampBlockedStarted?.Invoke(true, enemy);
+        LampBlockedStarted?.Invoke(enemy.ProvideImpactPoint());
     }
     
     // TODO: refactor this
@@ -105,7 +105,7 @@ public class PlayerEnemyInteractionHandler : MonoBehaviour, IInitializable
                 _stickyEnemies.Remove(enemy);
                 if( _stickyEnemies.Count <= 0)
                 {
-                    LampBlockedStarted?.Invoke(false, enemy);
+                    LampBlockedEnded?.Invoke(enemy.ProvideImpactPoint());
                 }    
             }
             if (enemy.gameObject.activeInHierarchy)
