@@ -189,9 +189,9 @@ public class MothlingMovement : EnemyMovement
 
     private void MovementSetup()
     {
-        _sideDirection = RandomDirection.Generate();
+        _sideDirection = 1; //RandomDirection.Generate();
         SideDirection = _sideDirection;
-        _depthDirection = RandomDirection.Generate();
+        _depthDirection = 1; //RandomDirection.Generate();
         _position2d = GenerateSpawnPosition(-_sideDirection);
         
         _currentState = _enterState;
@@ -209,6 +209,7 @@ public class MothlingMovement : EnemyMovement
     private Vector3 GenerateSpawnPosition(int direction)
     {
         Vector3 spawnPosition = (Vector3)(Random.insideUnitCircle * _spawnAreaSize) + _spawnAreaCenter;
+        spawnPosition = _spawnAreaCenter;
         spawnPosition.x *= direction;
         return spawnPosition;
     }

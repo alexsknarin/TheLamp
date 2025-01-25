@@ -1,31 +1,28 @@
 using UnityEngine;
 
-public class FMothlingMovementPatrolStateRIn: FMothlingMovementStateBase
+public class FMothlingMovementPatrolState: FMothlingMovementStateBase
 {
     // TODO: provided by the factory or even hardcoded
     // Get from the config via factory DI into all states
-    protected readonly Vector3 _cameraPosition = new Vector3(0, 0, -5.88f);
-    protected Vector2 _spawnAreaCenter = new Vector2(3.6f, -2.6f); 
-    protected float _speed = 0.81f;
-    protected float _radius = 1.55f;
-    protected float _verticalAmplitude = 0.93f;
-    protected float _spawnAreaSize = 0.5f;
+    private readonly Vector3 _cameraPosition = new Vector3(0, 0, -5.88f); // DI?
+    
+    public Vector2 _spawnAreaCenter = new Vector2(3.6f, -2.6f);
+    private float _speed = 0.81f;
+    private float _radius = 1.55f;
+    private float _verticalAmplitude = 0.93f;
+    public float _spawnAreaSize = 0.5f;
     
     // Dependencies
     private readonly IPosition2DProvider _positionProvider;
     
-    // LR IN OUT settings
-    protected int _sideDirection = 1; // L R
-    protected int _depthDirection = 1; // In Out
-    
     // Local variables
-    private float _verticalAdaptDuration = 2f;
+    private readonly float _verticalAdaptDuration = 2f;
+    private readonly float _depthMultiplier = 1f;
     private float _patrolStartOffsetAngle;
-    private float _depthMultiplier = 1f;
     private float _phase;
     private float _localTime;
     
-    public FMothlingMovementPatrolStateRIn(IPosition2DProvider positionProvider)
+    public FMothlingMovementPatrolState(IPosition2DProvider positionProvider)
     {
         _positionProvider = positionProvider;
     }
@@ -35,7 +32,6 @@ public class FMothlingMovementPatrolStateRIn: FMothlingMovementStateBase
         Debug.Log("FMothlingMovementPatrolStateRIn OnEnter");
         Position2D = _positionProvider.Position2D;
         Vector3 horizontalVector = Vector2.right;
-        horizontalVector.x *= _sideDirection;
         _patrolStartOffsetAngle = Mathf.Acos(Vector3.Dot(horizontalVector.normalized, Position2D.normalized));
         _phase = 0;
         _localTime = 0;
@@ -52,24 +48,16 @@ public class FMothlingMovementPatrolStateRIn: FMothlingMovementStateBase
         }
         
         // Circle motion
-        _phase += Time.deltaTime * _speed * _sideDirection;
+        _phase += Time.deltaTime * _speed;
         
-        float offsetAngleWithDirection;
-        if (_sideDirection > 0)
-        {
-            offsetAngleWithDirection = -_patrolStartOffsetAngle;
-        }
-        else
-        {
-            offsetAngleWithDirection = _patrolStartOffsetAngle-Mathf.PI;
-        }
+        Vector3 circlePosition = EnemyMovementPatterns.CircleMotion(
+            -_patrolStartOffsetAngle, finalXRadius, _radius, _verticalAmplitude, _phase);
         
-        Vector3 circlePosition = EnemyMovementPatterns.CircleMotion(offsetAngleWithDirection, finalXRadius, _radius, _verticalAmplitude, _phase);
         Position2D = circlePosition;
         
         // Depth To Camera
         Vector3 cameraDirection = (_cameraPosition - (Vector3)Position2D).normalized;
-        DepthDirection = cameraDirection * (_depthDirection * Position2D.y * _depthMultiplier);
+        DepthDirection = cameraDirection * (Position2D.y * _depthMultiplier);
         
         _localTime += Time.deltaTime;
     }
