@@ -4984,9 +4984,10 @@ MonoBehaviour:
   _noise2Amplitude: 0.171
   _isSmoothDampEnabled: 1
   _smoothTime: 0.05
-  _isDepthEnabled: 0
+  _isDepthEnabled: 1
   _stateDebug: 
-  _sideDepthDirection: {x: 1, y: 1, z: 1}
+  _sideDirection: 1
+  _depthSideDirection: 0
 --- !u!23 &738155935 stripped
 MeshRenderer:
   m_CorrespondingSourceObject: {fileID: 2296735140330762001, guid: 3fc8442acd052ac4f9c1e690f3aa5d74,

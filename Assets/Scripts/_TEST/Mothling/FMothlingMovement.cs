@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 public class FMothlingMovement : FEnemyMovementBase, IPositionDirectionProvider
@@ -24,7 +25,8 @@ public class FMothlingMovement : FEnemyMovementBase, IPositionDirectionProvider
     [SerializeField] bool _isDepthEnabled;
     // Debug
     [SerializeField] private String _stateDebug;
-    [SerializeField] private Vector3Int _sideDepthDirection = Vector3Int.one;
+    [SerializeField] private int _sideDirection = 1;
+    [SerializeField] private int _depthSideDirection = 0;
     
     private Vector3 _position3D;
     // Debug only
@@ -122,7 +124,7 @@ public class FMothlingMovement : FEnemyMovementBase, IPositionDirectionProvider
         {
             if (_fallState.IsReadyToSwitch)
             {
-                _sideDepthDirection.x = -(int)Mathf.Sign(transform.position.x);
+                _sideDirection = -(int)Mathf.Sign(transform.position.x);
                 return true;
             }
             return false;
@@ -142,8 +144,8 @@ public class FMothlingMovement : FEnemyMovementBase, IPositionDirectionProvider
 
     public override void Play()
     {
-        _sideDepthDirection.x = RandomDirection.Generate();
-        _sideDepthDirection.z = RandomDirection.Generate();
+        _sideDirection = RandomDirection.Generate();
+        _depthSideDirection = -1; //RandomDirection.Generate();
         Position2D = GenerateSpawnPosition(-1);
         _position3D = Position2D;
         transform.position = _position3D;
@@ -208,12 +210,17 @@ public class FMothlingMovement : FEnemyMovementBase, IPositionDirectionProvider
         // Add Depth
         if (_isDepthEnabled)
         {
-            _position3D += _currentState.DepthDirection;
+            int depthDirection = _depthSideDirection;
+            // Always Jump forward in depth for Attack
+            if (_currentState.Equals(_preAttackState) || _currentState.Equals(_attackState))
+            {
+                depthDirection = 1;
+            }
+            _position3D += _currentState.DepthDirection * depthDirection;
         }
         
-        // Apply side and depth directions
-        _position3D.x *= _sideDepthDirection.x;
-        _position3D.z *= _sideDepthDirection.z;
+        // Apply side direction
+        _position3D.x *= _sideDirection;
         
         // Add SmoothDamp
         if (_isSmoothDampEnabled)

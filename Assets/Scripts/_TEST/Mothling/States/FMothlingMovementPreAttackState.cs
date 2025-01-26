@@ -35,14 +35,15 @@ public class FMothlingMovementPreAttackState: FMothlingMovementStateBase
         _direction = rotation * _direction;
         
         Position2D = _positionDirectionProvider.Position2D;
+        DepthDirection = (_cameraPosition - (Vector3)Position2D).normalized;
+        
         _localTime = 0;
         Started?.Invoke();
     }
 
     public override void Tick()
     {
-        Vector3 cameraDirection = (_cameraPosition - (Vector3)Position2D).normalized;
-        DepthDirection = cameraDirection * 1.0f;
+        DepthDirection = (_cameraPosition - (Vector3)Position2D).normalized;
         _acceleratedSpeed *= _acceleration;
         _localTime += Time.deltaTime;
         

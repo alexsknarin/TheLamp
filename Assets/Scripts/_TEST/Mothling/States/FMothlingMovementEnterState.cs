@@ -59,6 +59,7 @@ public class FMothlingMovementEnterState: FMothlingMovementStateBase
         _enterDirection = _enterDirection.normalized;
         
         Position2D = Position2D;
+        DepthDirection = (_cameraPosition - (Vector3)Position2D).normalized;
     }
 
     public override void Tick()
