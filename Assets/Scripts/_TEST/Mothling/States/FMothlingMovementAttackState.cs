@@ -8,7 +8,7 @@ public class FMothlingMovementAttackState: FMothlingMovementStateBase
     // State specific attributes
     private readonly float _depthDecrement = 0.42f;
     private float _startDistance;
-    private readonly float _speed = 0.81f;
+    private readonly float _speed = 0.81f * 1.1f;
     
     public FMothlingMovementAttackState(IPosition2DProvider positionProvider)
     {

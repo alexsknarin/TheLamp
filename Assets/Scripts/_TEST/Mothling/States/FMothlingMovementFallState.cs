@@ -24,13 +24,14 @@ public class FMothlingMovementFallState: FMothlingMovementStateBase
     public override void OnEnter()
     {
         _bounceForce = _positionProvider.Position2D.normalized * _bounceForceMagnitude;
-        _gravityForce = Vector3.zero;
+        Position2D = _positionProvider.Position2D;
+        _gravityForce = Vector2.zero;
         ReadyToSwitch = false;
     }
 
     public override void Tick()
     {
-        Position2D = Position2D + _bounceForce * Time.deltaTime + _gravityForce;
+        Position2D += _bounceForce * Time.deltaTime + _gravityForce;
         _bounceForce *= _dragAmount;
         _gravityForce += Vector2.down * (_gravityForceMagnitude * Time.deltaTime);
    

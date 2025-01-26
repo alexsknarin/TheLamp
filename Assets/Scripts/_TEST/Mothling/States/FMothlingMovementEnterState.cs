@@ -2,18 +2,23 @@ using UnityEngine;
 
 public class FMothlingMovementEnterState: FMothlingMovementStateBase
 {
-    // TODO: provided by the factory or even hardcoded
-    // Get from the config via factory DI into all states
-    private readonly Vector3 _cameraPosition = new Vector3(0, 0, -5.88f); // DI?
-    
-    // from config???
+    // Dependencies
+    private IPosition2DProvider _position2DProvider;
     private Vector2 _spawnAreaCenter = new Vector2(3.6f, -2.6f);
     private float _speed = 0.81f;
     private float _radius = 1.55f;
     private float _verticalAmplitude = 0.93f;
     private float _spawnAreaSize = 0.5f;
+    public FMothlingMovementEnterState(
+        IPosition2DProvider position2DProvider)
+    {
+        _position2DProvider = position2DProvider;
+    }
+    // DI from 
+    private readonly Vector3 _cameraPosition = new Vector3(0, 0, -5.88f); // DI?
     
     // State specific attributes
+    public static readonly Vector2 InvertX = new Vector2(-1, 1);
     private Vector2 _endPos = Vector3.zero;
     private Vector2 _enterDirection;
     private readonly float _depthMultiplier = 2f;
@@ -22,8 +27,11 @@ public class FMothlingMovementEnterState: FMothlingMovementStateBase
     public override void OnEnter()
     {
         ReadyToSwitch = false;
-        
-        Position2D = GenerateSpawnPosition(-1);
+        Position2D = _position2DProvider.Position2D;
+        if (Position2D.x > 0)
+        {
+            Position2D *= InvertX;
+        }
         
         float xProjectionLength = Mathf.Abs(Position2D.x);
         float enterDirectionLength = Vector3.Magnitude(Position2D);
@@ -58,12 +66,6 @@ public class FMothlingMovementEnterState: FMothlingMovementStateBase
         }
     }
 
-    private Vector3 GenerateSpawnPosition(int direction)
-    {
-        Vector3 spawnPosition = Random.insideUnitCircle * _spawnAreaSize + _spawnAreaCenter;
-        spawnPosition = _spawnAreaCenter;
-        spawnPosition.x *= direction;
-        return spawnPosition;
-    }
+
 
 }

@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class FMothlingMovement : FEnemyMovementBase, IPosition2DProvider
 {
@@ -9,7 +10,7 @@ public class FMothlingMovement : FEnemyMovementBase, IPosition2DProvider
     [SerializeField] private float _verticalAmplitude;
     [Header("---- Spawn Settings ----")]
     [SerializeField] private float _spawnAreaSize = 0.5f;
-    [SerializeField] private Vector3 _spawnAreaCenter;
+    [SerializeField] private Vector2 _spawnAreaCenter;
     [Header("---- Noise Settings ----")]
     [SerializeField] private bool _isNoiseEnabled;
     [SerializeField] private float _noise1Frequency;
@@ -45,7 +46,7 @@ public class FMothlingMovement : FEnemyMovementBase, IPosition2DProvider
     public override void Initialize()
     {
         Debug.Log("FMothlingMovement Initialize");
-        _enterState = new FMothlingMovementEnterState();
+        _enterState = new FMothlingMovementEnterState(this);
         _patrolState = new FMothlingMovementPatrolState(this);
         _preAttackState = new FMothlingMovementPreAttackState(this);
         _attackState = new FMothlingMovementAttackState(this);
@@ -56,6 +57,7 @@ public class FMothlingMovement : FEnemyMovementBase, IPosition2DProvider
         At(_patrolState, _preAttackState, IsAttackStarted());
         At(_preAttackState, _attackState, () => _preAttackState.ReadyToSwitch);
         At(_attackState, _fallState, IsCollided());
+        At(_fallState, _enterState, IsFallEnded());
        
         
         // Predicates
@@ -79,19 +81,32 @@ public class FMothlingMovement : FEnemyMovementBase, IPosition2DProvider
             return false;
         };
         
+        Func<bool> IsFallEnded() => () =>
+        {
+            if (_fallState.ReadyToSwitch)
+            {
+                Debug.Log("FMothlingMovement IsFallEnded: Position2D: " + transform.position);
+                _sideDepthDirection.x = -(int)Mathf.Sign(transform.position.x);
+                // _sideDepthDirection.z = RandomDirection.Generate();
+                return true;
+            }
+            return false;
+        };
+        
         
         void At(IState from, IState to, Func<bool> condition) => _stateMachine.AddTransition(from, to, condition);
-
-        _currentState = _enterState;
-        _stateMachine.SetState(_currentState);
     }
 
 
     public override void Play()
     {
-        Debug.Log("FMothlingMovement Play");
         _sideDepthDirection.x = 1; //RandomDirection.Generate();
         _sideDepthDirection.z = 1; //RandomDirection.Generate();
+        Position2D = GenerateSpawnPosition(-1);
+        
+        _currentState = _enterState;
+        _stateMachine.SetState(_currentState);
+        
         _isAttacking = false;
         _isCollided = false;
     }
@@ -119,7 +134,6 @@ public class FMothlingMovement : FEnemyMovementBase, IPosition2DProvider
         // Position2D = _currentState.Position2D;
         _currentState = (FMothlingMovementStateBase)_stateMachine.CurrentState;
         Position2D = _currentState.Position2D;
-        
         
         // Add Noise
         // if (_isNoiseEnabled && _currentState.State == EnemyStates.Patrol)  
@@ -156,5 +170,13 @@ public class FMothlingMovement : FEnemyMovementBase, IPosition2DProvider
         _position3D.x *= _sideDepthDirection.x;
         _position3D.z *= _sideDepthDirection.z;
         transform.position = _position3D;
+    }    
+    
+    private Vector2 GenerateSpawnPosition(int direction)
+    {
+        Vector2 spawnPosition = Random.insideUnitCircle * _spawnAreaSize + _spawnAreaCenter;
+        spawnPosition = _spawnAreaCenter; // TODO: remove
+        spawnPosition.x *= direction;
+        return spawnPosition;
     }
 }
