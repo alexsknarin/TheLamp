@@ -23,10 +23,15 @@ public class FMothlingMovement : FEnemyMovementBase, IPosition2DProvider
     [Header("---- Depth Settings ----")]
     [SerializeField] bool _isDepthEnabled;
     // Debug
-    [SerializeField] private EnemyState _stateDebug;
+    [SerializeField] private String _stateDebug;
     [SerializeField] private Vector3Int _sideDepthDirection = Vector3Int.one;
     
     private Vector3 _position3D;
+    // Debug only
+    private Vector3 _prevPosition;
+    private Vector3 _prevPosSmooth;
+    private Vector3 _velocity = Vector3.zero;
+    
 
     // State Machine fields
     private FStateMachine _stateMachine = new();
@@ -129,7 +134,6 @@ public class FMothlingMovement : FEnemyMovementBase, IPosition2DProvider
 
     public override void TriggerFall()
     {
-        Debug.Log("FMothlingMovement TriggerFall");
         if (_currentState.Equals(_attackState))
         {
             _isCollided = true;
@@ -138,35 +142,24 @@ public class FMothlingMovement : FEnemyMovementBase, IPosition2DProvider
 
     private void Update()
     {
+        // Debug only
+        _prevPosition = _position3D;
+        _prevPosSmooth = transform.position;
+
+        
         _stateMachine.Tick();
-        // Position2D = _currentState.Position2D;
         _currentState = (FMothlingMovementStateBase)_stateMachine.CurrentState;
+        _stateDebug = _currentState.GetType().Name; // Debug only
         Position2D = _currentState.Position2D;
         
         // Add Noise
-        // if (_isNoiseEnabled && _currentState.State == EnemyStates.Patrol)  
-        if (_isNoiseEnabled)  
+        if (_isNoiseEnabled)
         {
-            Vector3 trajectoryNoise1 = TrajectoryNoise.Generate(_noise1Frequency);
-            Vector3 trajectoryNoise2 = TrajectoryNoise.Generate(_noise2Frequency);
-
-            if (_currentState.Equals(_attackState))
-            {
-                float noiseMultiplier = 0.5f;
-                if (Position2D.magnitude < 0.86f)
-                {
-                    noiseMultiplier = 0.001f;
-                }   
-                trajectoryNoise1 *= noiseMultiplier;
-                trajectoryNoise2 *= noiseMultiplier;
-            }
-            
-            // _position2d += trajectoryNoise * _noiseAmplitude;
-            _position3D = (Vector3)Position2D + trajectoryNoise1 * _noise1Amplitude + trajectoryNoise2 * _noise2Amplitude;
+            AddMotionNoise();
         }
         else
         {
-            _position3D = (Vector3)Position2D;
+            _position3D = Position2D;
         }
         
         // Add Depth
@@ -175,11 +168,45 @@ public class FMothlingMovement : FEnemyMovementBase, IPosition2DProvider
             _position3D += _currentState.DepthDirection;
         }
         
+        // Apply side and depth directions
         _position3D.x *= _sideDepthDirection.x;
         _position3D.z *= _sideDepthDirection.z;
-        transform.position = _position3D;
-    }    
-    
+        
+        // Add SmoothDamp
+        if (_isSmoothDampEnabled)
+        {
+            transform.position = Vector3.SmoothDamp(transform.position, _position3D, ref _velocity, _smoothTime);
+        }
+        else
+        {
+            transform.position = _position3D;
+        }
+        
+        
+        Debug.DrawLine(_prevPosition, _prevPosition + (_position3D-_prevPosition).normalized*0.02f, Color.cyan, 5f);
+        Debug.DrawLine(_prevPosSmooth, _prevPosSmooth + (transform.position-_prevPosSmooth).normalized*0.02f, Color.yellow, 5f);
+    }
+
+    private void AddMotionNoise()
+    {
+        Vector3 trajectoryNoise1 = TrajectoryNoise.Generate(_noise1Frequency);
+        Vector3 trajectoryNoise2 = TrajectoryNoise.Generate(_noise2Frequency);
+
+        if (_currentState.Equals(_attackState))
+        {
+            float noiseMultiplier = 0.5f;
+            if (Position2D.magnitude < 0.86f)
+            {
+                noiseMultiplier = 0.001f;
+            }   
+            trajectoryNoise1 *= noiseMultiplier;
+            trajectoryNoise2 *= noiseMultiplier;
+        }
+            
+        // _position2d += trajectoryNoise * _noiseAmplitude;
+        _position3D = (Vector3)Position2D + trajectoryNoise1 * _noise1Amplitude + trajectoryNoise2 * _noise2Amplitude;
+    }
+
     private Vector2 GenerateSpawnPosition(int direction)
     {
         Vector2 spawnPosition = Random.insideUnitCircle * _spawnAreaSize + _spawnAreaCenter;

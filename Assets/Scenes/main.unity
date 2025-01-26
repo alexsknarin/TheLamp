@@ -2271,6 +2271,8 @@ MonoBehaviour:
   _lampCollisionDetectionService: {fileID: 1934066264}
   _mothlingEnemy: {fileID: 738002599}
   _mothlingRefEnemy: {fileID: 499554770}
+  _cameraTransform: {fileID: 330585546}
+  _lampPositionProviderService: {fileID: 1934066263}
 --- !u!1 &330585543
 GameObject:
   m_ObjectHideFlags: 0
@@ -5001,16 +5003,16 @@ MonoBehaviour:
   _radius: 1.55
   _verticalAmplitude: 0.93
   _spawnAreaSize: 0.5
-  _spawnAreaCenter: {x: 3.6, y: -2.6, z: 0}
-  _isNoiseEnabled: 0
+  _spawnAreaCenter: {x: 3.6, y: -2.6}
+  _isNoiseEnabled: 1
   _noise1Frequency: 7.214
   _noise1Amplitude: 0.061
   _noise2Frequency: 2
   _noise2Amplitude: 0.171
-  _isSmoothDampEnabled: 0
+  _isSmoothDampEnabled: 1
   _smoothTime: 0.05
   _isDepthEnabled: 1
-  _stateDebug: 0
+  _stateDebug: 
   _sideDepthDirection: {x: 1, y: 1, z: 1}
 --- !u!23 &738155935 stripped
 MeshRenderer:

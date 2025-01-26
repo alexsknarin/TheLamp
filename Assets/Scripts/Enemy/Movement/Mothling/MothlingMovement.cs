@@ -273,8 +273,8 @@ public class MothlingMovement : EnemyMovement
         // transform.position = _position;
         
         _movementStateMachine.CheckForStateChange();
-        Debug.DrawLine(_prevPosition, _prevPosition + (_position-_prevPosition).normalized*0.02f, Color.cyan, 5f);
-        Debug.DrawLine(_prevPosSmooth, _prevPosSmooth + (transform.position-_prevPosSmooth).normalized*0.02f, Color.yellow, 5f);
+        // Debug.DrawLine(_prevPosition, _prevPosition + (_position-_prevPosition).normalized*0.02f, Color.cyan, 5f);
+        // Debug.DrawLine(_prevPosSmooth, _prevPosSmooth + (transform.position-_prevPosSmooth).normalized*0.02f, Color.yellow, 5f);
         _stateDebug = _currentState.State;
     }
 }
