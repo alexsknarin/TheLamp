@@ -33,7 +33,10 @@ public class FEnemyManager : MonoBehaviour
         {
             _lampCollisionDetectionService.AddCollidable(_mothlingEnemy);
             _lampCollisionDetectionService.AddCollidable(_mothlingRefEnemy);
-            _mothlingEnemy.Attack();
+            if (_mothlingEnemy.IsReadyToAttack)
+            {
+                _mothlingEnemy.Attack();
+            }
             _mothlingRefEnemy.Attack();
         }
         

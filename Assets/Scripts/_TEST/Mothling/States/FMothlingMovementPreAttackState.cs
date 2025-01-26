@@ -28,7 +28,7 @@ public class FMothlingMovementPreAttackState: FMothlingMovementStateBase
 
     public override void OnEnter()
     {
-        ReadyToSwitch = false;
+        IsReadyToSwitch = false;
         _acceleratedSpeed = 1f;
         _direction = _positionDirectionProvider.Position2D.normalized;
         Quaternion rotation = Quaternion.Euler(0, 0, 60);
@@ -48,7 +48,7 @@ public class FMothlingMovementPreAttackState: FMothlingMovementStateBase
         
         if (_localTime > _duration)
         {
-            ReadyToSwitch = true;
+            IsReadyToSwitch = true;
         }
     }
     

@@ -36,7 +36,7 @@ public class FMothlingMovementEnterState: FMothlingMovementStateBase
 
     public override void OnEnter()
     {
-        ReadyToSwitch = false;
+        IsReadyToSwitch = false;
         Position2D = _positionDirectionProvider.Position2D;
         if (Position2D.x > 0)
         {
@@ -72,7 +72,7 @@ public class FMothlingMovementEnterState: FMothlingMovementStateBase
         
         if(Position2D.x > Mathf.Abs(_endPos.x))
         {
-            ReadyToSwitch = true;
+            IsReadyToSwitch = true;
         }
     }
 

@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class FMothlingMovementPatrolState: FMothlingMovementStateBase
@@ -33,6 +34,8 @@ public class FMothlingMovementPatrolState: FMothlingMovementStateBase
         _radius = radius;
         _verticalAmplitude = verticalAmplitude;
     }
+
+    public event Action Started;
     
     public override void OnEnter()
     {
@@ -41,6 +44,7 @@ public class FMothlingMovementPatrolState: FMothlingMovementStateBase
         _patrolStartOffsetAngle = Mathf.Acos(Vector3.Dot(horizontalVector.normalized, Position2D.normalized));
         _phase = 0;
         _localTime = 0;
+        Started?.Invoke();
     }
 
     public override void Tick()

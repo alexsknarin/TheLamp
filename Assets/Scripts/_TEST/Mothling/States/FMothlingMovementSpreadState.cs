@@ -20,7 +20,7 @@ public class FMothlingMovementSpreadState: FMothlingMovementStateBase
     
     public override void OnEnter()
     {
-        ReadyToSwitch = false;
+        IsReadyToSwitch = false;
         Position2D = _positionDirectionProvider.Position2D;
         // DepthDirection = _positionDirectionProvider.DepthDirection - (Vector3)Position2D;
         DepthDirection = _positionDirectionProvider.DepthDirection;
@@ -37,7 +37,7 @@ public class FMothlingMovementSpreadState: FMothlingMovementStateBase
         
         if(Position2D.magnitude > _maxDistance + _extraDistance)
         {
-            ReadyToSwitch = true;
+            IsReadyToSwitch = true;
         }
     }
 }

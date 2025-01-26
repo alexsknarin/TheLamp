@@ -28,7 +28,7 @@ public class FMothlingMovementDeathState: FMothlingMovementStateBase
         
         _bounceForce = Position2D.normalized * _bounceForceMagnitude;
         _gravityForce = Vector2.zero;
-        ReadyToSwitch = false;
+        IsReadyToSwitch = false;
     }
 
     public override void Tick()
@@ -39,7 +39,7 @@ public class FMothlingMovementDeathState: FMothlingMovementStateBase
    
         if (Position2D.y < -_fallBottomYcoordinate)
         {
-            ReadyToSwitch = true;
+            IsReadyToSwitch = true;
         }
     }
     

@@ -4936,6 +4936,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae06a63feb3b3d043b5dcdde877b85b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _maxHealth: 1
+  _currentHealth: 0
   _collisionRadius: 0.075
   _movement: {fileID: 738002601}
 --- !u!4 &738002600
@@ -4982,7 +4984,7 @@ MonoBehaviour:
   _noise2Amplitude: 0.171
   _isSmoothDampEnabled: 1
   _smoothTime: 0.05
-  _isDepthEnabled: 1
+  _isDepthEnabled: 0
   _stateDebug: 
   _sideDepthDirection: {x: 1, y: 1, z: 1}
 --- !u!23 &738155935 stripped

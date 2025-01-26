@@ -56,6 +56,7 @@ public class FMothlingMovement : FEnemyMovementBase, IPositionDirectionProvider
         _stateFactory = stateFactory;
     }
     
+    public event Action PatrolStarted;
     public event Action PreAttackStarted;
     public event Action PreAttackEnded;
     public event Action DeathStateEnded;
@@ -76,14 +77,15 @@ public class FMothlingMovement : FEnemyMovementBase, IPositionDirectionProvider
         _spreadState = (FMothlingMovementSpreadState)_stateFactory.Create(typeof(FMothlingMovementSpreadState));
         
         // Subscribe to state events
+        _patrolState.Started += OnPatrolStateStarted; 
         _preAttackState.Started += OnPreAttackStateStarted;
         _preAttackState.Ended += OnPreAttackStateEnded;
         _deathState.Ended += OnDeathStateEnded;
         
         // State transitions
-        At(_enterState, _patrolState, () => _enterState.ReadyToSwitch);
+        At(_enterState, _patrolState, () => _enterState.IsReadyToSwitch);
         At(_patrolState, _preAttackState, IsAttackStarted());
-        At(_preAttackState, _attackState, () => _preAttackState.ReadyToSwitch);
+        At(_preAttackState, _attackState, () => _preAttackState.IsReadyToSwitch);
         At(_attackState, _fallState, IsCollided());
         At(_fallState, _enterState, IsFallEnded());
         Any(_deathState, () => _isDead);
@@ -118,7 +120,7 @@ public class FMothlingMovement : FEnemyMovementBase, IPositionDirectionProvider
         
         Func<bool> IsFallEnded() => () =>
         {
-            if (_fallState.ReadyToSwitch)
+            if (_fallState.IsReadyToSwitch)
             {
                 _sideDepthDirection.x = -(int)Mathf.Sign(transform.position.x);
                 return true;
@@ -132,6 +134,7 @@ public class FMothlingMovement : FEnemyMovementBase, IPositionDirectionProvider
 
     private void OnDestroy()
     {
+        _patrolState.Started -= OnPatrolStateStarted; 
         _preAttackState.Started -= OnPreAttackStateStarted;
         _preAttackState.Ended -= OnPreAttackStateEnded;
         _deathState.Ended -= OnDeathStateEnded;
@@ -241,17 +244,19 @@ public class FMothlingMovement : FEnemyMovementBase, IPositionDirectionProvider
             trajectoryNoise1 *= noiseMultiplier;
             trajectoryNoise2 *= noiseMultiplier;
         }
-            
-        // _position2d += trajectoryNoise * _noiseAmplitude;
         _position3D = (Vector3)Position2D + trajectoryNoise1 * _noise1Amplitude + trajectoryNoise2 * _noise2Amplitude;
     }
 
     private Vector2 GenerateSpawnPosition(int direction)
     {
         Vector2 spawnPosition = Random.insideUnitCircle * _spawnAreaSize + _spawnAreaCenter;
-        spawnPosition = _spawnAreaCenter; // TODO: remove
         spawnPosition.x *= direction;
         return spawnPosition;
+    }
+
+    private void OnPatrolStateStarted()
+    {
+        PatrolStarted?.Invoke();
     }
 
     private void OnPreAttackStateStarted()
