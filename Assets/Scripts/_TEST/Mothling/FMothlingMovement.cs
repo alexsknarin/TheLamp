@@ -31,7 +31,6 @@ public class FMothlingMovement : FEnemyMovementBase, IPosition2DProvider
     private Vector3 _prevPosition;
     private Vector3 _prevPosSmooth;
     private Vector3 _velocity = Vector3.zero;
-    
 
     // State Machine
     private readonly FStateMachine _stateMachine = new();
@@ -49,7 +48,6 @@ public class FMothlingMovement : FEnemyMovementBase, IPosition2DProvider
     private bool _isAttacking = false;
     private bool _isCollided = false;
     private bool _isDead = false;
-        
     
     public void Construct(MothlingMovementStateFactory stateFactory)
     {
@@ -115,9 +113,11 @@ public class FMothlingMovement : FEnemyMovementBase, IPosition2DProvider
 
     public override void Play()
     {
-        _sideDepthDirection.x = 1; //RandomDirection.Generate();
-        _sideDepthDirection.z = 1; //RandomDirection.Generate();
+        _sideDepthDirection.x = RandomDirection.Generate();
+        _sideDepthDirection.z = RandomDirection.Generate();
         Position2D = GenerateSpawnPosition(-1);
+        _position3D = Position2D;
+        transform.position = _position3D;
         
         _currentState = _enterState;
         _stateMachine.SetState(_currentState);
