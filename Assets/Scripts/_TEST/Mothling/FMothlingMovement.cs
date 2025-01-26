@@ -145,7 +145,7 @@ public class FMothlingMovement : FEnemyMovementBase, IPositionDirectionProvider
     public override void Play()
     {
         _sideDirection = RandomDirection.Generate();
-        _depthSideDirection = -1; //RandomDirection.Generate();
+        _depthSideDirection = RandomDirection.Generate();
         Position2D = GenerateSpawnPosition(-1);
         _position3D = Position2D;
         transform.position = _position3D;
