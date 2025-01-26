@@ -85,6 +85,12 @@ public class MothlingMovementStateFactory
                 _verticalAmplitude
                 );
         }
+        if (stateType == typeof(FMothlingMovementDeathState))
+        {
+            return new FMothlingMovementDeathState(
+                _position2DProvider
+                );
+        }
         return null;
     }
     

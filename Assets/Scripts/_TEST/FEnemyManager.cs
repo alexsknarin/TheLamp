@@ -36,5 +36,11 @@ public class FEnemyManager : MonoBehaviour
             _mothlingEnemy.Attack();
             _mothlingRefEnemy.Attack();
         }
+        
+        if (Input.GetKeyDown(KeyCode.D))
+        {
+            _lampCollisionDetectionService.RemoveCollidable(_mothlingEnemy);
+            _mothlingEnemy.HandleDeath();
+        }
     }
 }

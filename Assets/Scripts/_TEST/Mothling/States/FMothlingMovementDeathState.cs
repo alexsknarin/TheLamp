@@ -1,21 +1,8 @@
 using UnityEngine;
 
-public class FMothlingMovementFallState: FMothlingMovementStateBase
+public class FMothlingMovementDeathState: FMothlingMovementStateBase
 {
     private IPosition2DProvider _positionProvider;
-    private readonly float _radius;
-    private readonly float _verticalAmplitude;
-    
-    public FMothlingMovementFallState(
-        IPosition2DProvider positionProvider,
-        float radius,
-        float verticalAmplitude
-    )
-    {
-        _positionProvider = positionProvider;
-        _radius = radius;
-        _verticalAmplitude = verticalAmplitude;
-    }
     
     // State specific attributes
     private Vector2 _bounceForce;
@@ -23,6 +10,13 @@ public class FMothlingMovementFallState: FMothlingMovementStateBase
     private readonly float _bounceForceMagnitude = 4f;
     private readonly float _gravityForceMagnitude = .2f;
     private readonly float _dragAmount = 0.94f;
+    private readonly float _speedMultiplier = 0.9f;
+    private readonly float _fallBottomYcoordinate = -6f;
+    
+    public FMothlingMovementDeathState(IPosition2DProvider positionProvider)
+    {
+        _positionProvider = positionProvider;
+    }
     
     public override void OnEnter()
     {
@@ -36,11 +30,11 @@ public class FMothlingMovementFallState: FMothlingMovementStateBase
 
     public override void Tick()
     {
-        Position2D += _bounceForce * Time.deltaTime + _gravityForce;
+        Position2D += _bounceForce * (Time.deltaTime * _speedMultiplier) + _gravityForce;
         _bounceForce *= _dragAmount;
         _gravityForce += Vector2.down * (_gravityForceMagnitude * Time.deltaTime);
    
-        if (Position2D.y < -_radius * _verticalAmplitude * 1.1)
+        if (Position2D.y < -_fallBottomYcoordinate)
         {
             ReadyToSwitch = true;
         }

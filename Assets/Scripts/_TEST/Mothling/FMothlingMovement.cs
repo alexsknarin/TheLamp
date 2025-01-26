@@ -33,20 +33,23 @@ public class FMothlingMovement : FEnemyMovementBase, IPosition2DProvider
     private Vector3 _velocity = Vector3.zero;
     
 
-    // State Machine fields
-    private FStateMachine _stateMachine = new();
+    // State Machine
+    private readonly FStateMachine _stateMachine = new();
     private MothlingMovementStateFactory _stateFactory;
-    
+    // States
     private FMothlingMovementStateBase _currentState;
     private FMothlingMovementEnterState _enterState;
     private FMothlingMovementPatrolState _patrolState;
     private FMothlingMovementPreAttackState _preAttackState;
     private FMothlingMovementAttackState _attackState;
     private FMothlingMovementFallState _fallState;
+    private FMothlingMovementDeathState _deathState;
     
     // State parameters
     private bool _isAttacking = false;
     private bool _isCollided = false;
+    private bool _isDead = false;
+        
     
     public void Construct(MothlingMovementStateFactory stateFactory)
     {
@@ -64,6 +67,7 @@ public class FMothlingMovement : FEnemyMovementBase, IPosition2DProvider
         _preAttackState = (FMothlingMovementPreAttackState)_stateFactory.Create(typeof(FMothlingMovementPreAttackState));
         _attackState = (FMothlingMovementAttackState)_stateFactory.Create(typeof(FMothlingMovementAttackState));
         _fallState = (FMothlingMovementFallState)_stateFactory.Create(typeof(FMothlingMovementFallState));
+        _deathState = (FMothlingMovementDeathState)_stateFactory.Create(typeof(FMothlingMovementDeathState));
         
         // State transitions
         At(_enterState, _patrolState, () => _enterState.ReadyToSwitch);
@@ -71,7 +75,7 @@ public class FMothlingMovement : FEnemyMovementBase, IPosition2DProvider
         At(_preAttackState, _attackState, () => _preAttackState.ReadyToSwitch);
         At(_attackState, _fallState, IsCollided());
         At(_fallState, _enterState, IsFallEnded());
-       
+        Any(_deathState, () => _isDead);
         
         // Predicates
         Func<bool> IsAttackStarted() => () =>
@@ -98,16 +102,14 @@ public class FMothlingMovement : FEnemyMovementBase, IPosition2DProvider
         {
             if (_fallState.ReadyToSwitch)
             {
-                Debug.Log("FMothlingMovement IsFallEnded: Position2D: " + transform.position);
                 _sideDepthDirection.x = -(int)Mathf.Sign(transform.position.x);
-                // _sideDepthDirection.z = RandomDirection.Generate();
                 return true;
             }
             return false;
         };
         
-        
         void At(IState from, IState to, Func<bool> condition) => _stateMachine.AddTransition(from, to, condition);
+        void Any(IState to, Func<bool> condition) => _stateMachine.AddAnyTransition(to, condition);
     }
 
 
@@ -122,6 +124,7 @@ public class FMothlingMovement : FEnemyMovementBase, IPosition2DProvider
         
         _isAttacking = false;
         _isCollided = false;
+        _isDead = false;
     }
 
     public override void TriggerAttack()
@@ -138,6 +141,11 @@ public class FMothlingMovement : FEnemyMovementBase, IPosition2DProvider
         {
             _isCollided = true;
         }
+    }
+
+    public override void TriggerDeath()
+    {
+        _isDead = true;
     }
 
     private void Update()
@@ -181,7 +189,6 @@ public class FMothlingMovement : FEnemyMovementBase, IPosition2DProvider
         {
             transform.position = _position3D;
         }
-        
         
         Debug.DrawLine(_prevPosition, _prevPosition + (_position3D-_prevPosition).normalized*0.02f, Color.cyan, 5f);
         Debug.DrawLine(_prevPosSmooth, _prevPosSmooth + (transform.position-_prevPosSmooth).normalized*0.02f, Color.yellow, 5f);

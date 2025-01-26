@@ -24,7 +24,7 @@ public class FMothling: MonoBehaviour, ICollidable, IInitializable
     {
         _movement.TriggerAttack();
     }
-
+    
     public void HandleCollision(Vector2 newPosition)
     {
         Vector3 newPosition3d = transform.position;
@@ -33,5 +33,10 @@ public class FMothling: MonoBehaviour, ICollidable, IInitializable
         transform.position = newPosition;
         
         _movement.TriggerFall();
+    }
+    
+    public void HandleDeath()
+    {
+        _movement.TriggerDeath();
     }
 }
