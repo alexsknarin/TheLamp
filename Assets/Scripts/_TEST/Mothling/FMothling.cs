@@ -62,12 +62,7 @@ public class FMothling: MonoBehaviour, ICollidable, IInitializable
 
     public void HandleCollision(Vector2 newPosition)
     {
-        Vector3 newPosition3d = transform.position;
-        newPosition3d.x = newPosition.x;
-        newPosition3d.y = newPosition.y;
-        transform.position = newPosition;
-        
-        _movement.TriggerFall();
+        _movement.TriggerFall(newPosition);
     }
 
     public void HandleDeath()
@@ -78,5 +73,12 @@ public class FMothling: MonoBehaviour, ICollidable, IInitializable
     private void OnPatrolStarted()
     {
         _isInAttackReadyState = true;
+    }
+
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.cyan;
+        Gizmos.DrawWireSphere(transform.position, _collisionRadius);
     }
 }

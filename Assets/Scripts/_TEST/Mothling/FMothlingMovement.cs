@@ -166,10 +166,17 @@ public class FMothlingMovement : FEnemyMovementBase, IPositionDirectionProvider
         }
     }
 
-    public override void TriggerFall()
+    public override void TriggerFall(Vector2 newPosition)
     {
         if (_currentState.Equals(_attackState))
         {
+            // Fix potential collision penetration
+            Vector3 newPosition3D = transform.position;
+            newPosition3D.x = newPosition.x;
+            newPosition3D.y = newPosition.y;
+            transform.position = newPosition3D;
+            Position2D = newPosition;
+            
             _isCollided = true;
         }
     }

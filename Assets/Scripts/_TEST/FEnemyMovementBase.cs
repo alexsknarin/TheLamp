@@ -6,7 +6,7 @@ public abstract class FEnemyMovementBase : MonoBehaviour, IInitializable, IEnemy
     public abstract void Initialize();
     public abstract void Play();
     public abstract void TriggerAttack();
-    public abstract void TriggerFall(); 
+    public abstract void TriggerFall(Vector2 newPosition); 
     public abstract void TriggerDeath(); 
     public abstract void TriggerSpread();
 }
