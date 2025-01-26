@@ -1,16 +1,32 @@
+using System;
 using UnityEngine;
 
-public class FMothlingPresentation : MonoBehaviour
+public class FMothlingPresentation : MonoBehaviour, IInitializable
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    [SerializeField] private FMothlingMovement _movement;
+    [SerializeField] private PreAttackFlash _preAttackFlash;
+    
+    public void Initialize()
     {
+        _preAttackFlash.Initialize();
         
+        _movement.PreAttackStarted += OnPreAttackStarted;
+        _movement.PreAttackEnded += OnPreAttackEnded;
     }
 
-    // Update is called once per frame
-    void Update()
+    private void OnDestroy()
     {
-        
+        _movement.PreAttackStarted -= OnPreAttackStarted;
+        _movement.PreAttackEnded -= OnPreAttackEnded;
+    }
+
+    private void OnPreAttackStarted()
+    {
+        _preAttackFlash.PreAttackStart();
+    }
+    
+    private void OnPreAttackEnded()
+    {
+        _preAttackFlash.PreAttackEnd();
     }
 }

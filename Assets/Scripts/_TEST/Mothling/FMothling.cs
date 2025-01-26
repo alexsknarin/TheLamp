@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-[RequireComponent(typeof(FMothlingMovement))]
+[RequireComponent(typeof(FMothlingMovement), typeof(FMothlingPresentation))]   
 public class FMothling: MonoBehaviour, ICollidable, IInitializable
 {
     [Header("-- Attributes --")]

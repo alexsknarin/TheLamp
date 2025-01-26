@@ -18,7 +18,7 @@ public class FEnemyManager : MonoBehaviour
             _lampPositionProviderService
             );
         _mothlingEnemy.GetComponent<FMothlingMovement>().Construct(_mothlingMovementStateFactory);
-        Debug.Log("FEnemyManager Awake - enemy constructed");
+        _mothlingEnemy.GetComponent<FMothlingPresentation>().Initialize();
         _mothlingEnemy.Initialize();
     }
 
