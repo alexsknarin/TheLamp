@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class FMothlingMovementDeathState: FMothlingMovementStateBase
@@ -17,6 +18,8 @@ public class FMothlingMovementDeathState: FMothlingMovementStateBase
     {
         _positionDirectionProvider = positionDirectionProvider;
     }
+
+    public event Action Ended;
     
     public override void OnEnter()
     {
@@ -38,5 +41,10 @@ public class FMothlingMovementDeathState: FMothlingMovementStateBase
         {
             ReadyToSwitch = true;
         }
+    }
+    
+    public override void OnExit()
+    {
+        Ended?.Invoke();
     }
 }

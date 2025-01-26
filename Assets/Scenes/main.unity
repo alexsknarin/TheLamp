@@ -1764,7 +1764,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: 33af5b9441a5ae9438fbe52e77405125, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2736,7 +2736,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: 33af5b9441a5ae9438fbe52e77405125, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -3220,7 +3220,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: 33af5b9441a5ae9438fbe52e77405125, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -4448,7 +4448,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: 33af5b9441a5ae9438fbe52e77405125, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -4916,7 +4916,6 @@ GameObject:
   m_Component:
   - component: {fileID: 738002600}
   - component: {fileID: 738002599}
-  - component: {fileID: 738002598}
   - component: {fileID: 738002601}
   m_Layer: 0
   m_Name: FMothling
@@ -4925,34 +4924,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &738002598
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 738002597}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3a8c97e537ee26642ab876cd7b671418, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _speed: 0.81
-  _radius: 1.55
-  _verticalAmplitude: 0.93
-  _spawnAreaSize: 0.5
-  _spawnAreaCenter: {x: 3.6, y: -2.6, z: 0}
-  _isNoiseEnabled: 0
-  _noise1Frequency: 7.214
-  _noise1Amplitude: 0.061
-  _noise2Frequency: 2
-  _noise2Amplitude: 0.171
-  _isSmoothDampEnabled: 0
-  _smoothTime: 0.05
-  _isDepthEnabled: 1
-  _stateDebug: 0
-  _sideDirection: 0
-  _depthDirection: 0
 --- !u!114 &738002599
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11289,7 +11260,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: 33af5b9441a5ae9438fbe52e77405125, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

@@ -55,6 +55,10 @@ public class FMothlingMovement : FEnemyMovementBase, IPositionDirectionProvider
     {
         _stateFactory = stateFactory;
     }
+    
+    public event Action PreAttackStarted;
+    public event Action PreAttackEnded;
+    public event Action DeathStateEnded;
 
     public Vector2 Position2D { get; private set; } 
     public Vector3 DepthDirection { get; private set; } 
@@ -70,6 +74,11 @@ public class FMothlingMovement : FEnemyMovementBase, IPositionDirectionProvider
         _fallState = (FMothlingMovementFallState)_stateFactory.Create(typeof(FMothlingMovementFallState));
         _deathState = (FMothlingMovementDeathState)_stateFactory.Create(typeof(FMothlingMovementDeathState));
         _spreadState = (FMothlingMovementSpreadState)_stateFactory.Create(typeof(FMothlingMovementSpreadState));
+        
+        // Subscribe to state events
+        _preAttackState.Started += OnPreAttackStateStarted;
+        _preAttackState.Ended += OnPreAttackStateEnded;
+        _deathState.Ended += OnDeathStateEnded;
         
         // State transitions
         At(_enterState, _patrolState, () => _enterState.ReadyToSwitch);
@@ -121,6 +130,12 @@ public class FMothlingMovement : FEnemyMovementBase, IPositionDirectionProvider
         void Any(IState to, Func<bool> condition) => _stateMachine.AddAnyTransition(to, condition);
     }
 
+    private void OnDestroy()
+    {
+        _preAttackState.Started -= OnPreAttackStateStarted;
+        _preAttackState.Ended -= OnPreAttackStateEnded;
+        _deathState.Ended -= OnDeathStateEnded;
+    }
 
     public override void Play()
     {
@@ -237,5 +252,20 @@ public class FMothlingMovement : FEnemyMovementBase, IPositionDirectionProvider
         spawnPosition = _spawnAreaCenter; // TODO: remove
         spawnPosition.x *= direction;
         return spawnPosition;
+    }
+
+    private void OnPreAttackStateStarted()
+    {
+        PreAttackStarted?.Invoke();
+    }
+
+    private void OnPreAttackStateEnded()
+    {
+        PreAttackEnded?.Invoke();
+    }
+
+    private void OnDeathStateEnded()
+    {
+        DeathStateEnded?.Invoke();
     }
 }

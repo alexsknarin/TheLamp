@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class FMothlingMovementPreAttackState: FMothlingMovementStateBase
@@ -22,6 +23,9 @@ public class FMothlingMovementPreAttackState: FMothlingMovementStateBase
         _positionDirectionProvider = positionDirectionProvider;
     }
 
+    public event Action Started;
+    public event Action Ended;
+
     public override void OnEnter()
     {
         ReadyToSwitch = false;
@@ -32,6 +36,7 @@ public class FMothlingMovementPreAttackState: FMothlingMovementStateBase
         
         Position2D = _positionDirectionProvider.Position2D;
         _localTime = 0;
+        Started?.Invoke();
     }
 
     public override void Tick()
@@ -45,5 +50,10 @@ public class FMothlingMovementPreAttackState: FMothlingMovementStateBase
         {
             ReadyToSwitch = true;
         }
+    }
+    
+    public override void OnExit()
+    {
+        Ended?.Invoke();
     }
 }
