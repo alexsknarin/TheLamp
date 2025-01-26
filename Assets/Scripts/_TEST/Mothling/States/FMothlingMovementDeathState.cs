@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class FMothlingMovementDeathState: FMothlingMovementStateBase
 {
-    private IPosition2DProvider _positionProvider;
+    private IPositionDirectionProvider _positionDirectionProvider;
     
     // State specific attributes
     private Vector2 _bounceForce;
@@ -13,14 +13,14 @@ public class FMothlingMovementDeathState: FMothlingMovementStateBase
     private readonly float _speedMultiplier = 0.9f;
     private readonly float _fallBottomYcoordinate = -6f;
     
-    public FMothlingMovementDeathState(IPosition2DProvider positionProvider)
+    public FMothlingMovementDeathState(IPositionDirectionProvider positionDirectionProvider)
     {
-        _positionProvider = positionProvider;
+        _positionDirectionProvider = positionDirectionProvider;
     }
     
     public override void OnEnter()
     {
-        Position2D = _positionProvider.Position2D;
+        Position2D = _positionDirectionProvider.Position2D;
         DepthDirection = Vector3.zero;
         
         _bounceForce = Position2D.normalized * _bounceForceMagnitude;

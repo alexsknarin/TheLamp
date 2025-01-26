@@ -42,5 +42,11 @@ public class FEnemyManager : MonoBehaviour
             _lampCollisionDetectionService.RemoveCollidable(_mothlingEnemy);
             _mothlingEnemy.HandleDeath();
         }
+        
+        if (Input.GetKeyDown(KeyCode.S))
+        {
+            _lampCollisionDetectionService.RemoveCollidable(_mothlingEnemy);
+            _mothlingEnemy.Spread();
+        }
     }
 }

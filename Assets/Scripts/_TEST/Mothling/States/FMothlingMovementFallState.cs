@@ -2,17 +2,17 @@ using UnityEngine;
 
 public class FMothlingMovementFallState: FMothlingMovementStateBase
 {
-    private IPosition2DProvider _positionProvider;
+    private IPositionDirectionProvider _positionDirectionProvider;
     private readonly float _radius;
     private readonly float _verticalAmplitude;
     
     public FMothlingMovementFallState(
-        IPosition2DProvider positionProvider,
+        IPositionDirectionProvider positionDirectionProvider,
         float radius,
         float verticalAmplitude
     )
     {
-        _positionProvider = positionProvider;
+        _positionDirectionProvider = positionDirectionProvider;
         _radius = radius;
         _verticalAmplitude = verticalAmplitude;
     }
@@ -26,7 +26,7 @@ public class FMothlingMovementFallState: FMothlingMovementStateBase
     
     public override void OnEnter()
     {
-        Position2D = _positionProvider.Position2D;
+        Position2D = _positionDirectionProvider.Position2D;
         DepthDirection = Vector3.zero;
         
         _bounceForce = Position2D.normalized * _bounceForceMagnitude;

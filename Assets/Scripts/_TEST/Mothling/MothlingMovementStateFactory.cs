@@ -6,7 +6,7 @@ public class MothlingMovementStateFactory
     private Transform _cameraTransform;
     private ILampPositionProviderService _lampPositionProviderService;
     
-    private IPosition2DProvider _position2DProvider;
+    private IPositionDirectionProvider _positionDirectionProvider;
     private float _speed;
     private float _radius;
     private float _verticalAmplitude;
@@ -24,13 +24,13 @@ public class MothlingMovementStateFactory
     }
     
     public void SetEnemyDependencies(
-        IPosition2DProvider position2DProvider,
+        IPositionDirectionProvider positionDirectionProvider,
         float speed,
         float radius,
         float verticalAmplitude
         )
     {
-        _position2DProvider = position2DProvider;
+        _positionDirectionProvider = positionDirectionProvider;
         _speed = speed;
         _radius = radius;
         _verticalAmplitude = verticalAmplitude;
@@ -43,7 +43,7 @@ public class MothlingMovementStateFactory
         {
             return new FMothlingMovementEnterState(
                 _cameraTransform.position,
-                _position2DProvider,
+                _positionDirectionProvider,
                 _lampPositionProviderService,
                 _speed,
                 _radius,
@@ -54,7 +54,7 @@ public class MothlingMovementStateFactory
         {
             return new FMothlingMovementPatrolState(
                 _cameraTransform.position,
-                _position2DProvider,
+                _positionDirectionProvider,
                 _lampPositionProviderService,
                 _speed,
                 _radius,
@@ -65,14 +65,14 @@ public class MothlingMovementStateFactory
         {
             return new FMothlingMovementPreAttackState(
                 _cameraTransform.position,
-                _position2DProvider
+                _positionDirectionProvider
                 );
         }
         if (stateType == typeof(FMothlingMovementAttackState))
         {
             return new FMothlingMovementAttackState(
                 _cameraTransform.position,
-                _position2DProvider,
+                _positionDirectionProvider,
                 _lampPositionProviderService,
                 _speed
                 );
@@ -80,7 +80,7 @@ public class MothlingMovementStateFactory
         if (stateType == typeof(FMothlingMovementFallState))
         {
             return new FMothlingMovementFallState(
-                _position2DProvider,
+                _positionDirectionProvider,
                 _radius,
                 _verticalAmplitude
                 );
@@ -88,7 +88,14 @@ public class MothlingMovementStateFactory
         if (stateType == typeof(FMothlingMovementDeathState))
         {
             return new FMothlingMovementDeathState(
-                _position2DProvider
+                _positionDirectionProvider
+                );
+        }
+        if (stateType == typeof(FMothlingMovementSpreadState))
+        {
+            return new FMothlingMovementSpreadState(
+                _positionDirectionProvider,
+                _speed
                 );
         }
         return null;

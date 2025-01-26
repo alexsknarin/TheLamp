@@ -25,6 +25,11 @@ public class FMothling: MonoBehaviour, ICollidable, IInitializable
         _movement.TriggerAttack();
     }
     
+    public void Spread()
+    {
+        _movement.TriggerSpread();
+    }
+    
     public void HandleCollision(Vector2 newPosition)
     {
         Vector3 newPosition3d = transform.position;

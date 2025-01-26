@@ -5,7 +5,7 @@ public class FMothlingMovementPatrolState: FMothlingMovementStateBase
     // Dependencies
 
     private readonly Vector3 _cameraPosition = new Vector3(0, 0, -5.88f); // DI?
-    private readonly IPosition2DProvider _position2DProvider;
+    private readonly IPositionDirectionProvider _positionDirectionProvider;
     private ILampPositionProviderService _lampPositionProviderService; // TODO: enable later
     private readonly float _speed;
     private readonly float _radius;
@@ -20,14 +20,14 @@ public class FMothlingMovementPatrolState: FMothlingMovementStateBase
     
     public FMothlingMovementPatrolState(
         Vector3 cameraPosition,
-        IPosition2DProvider position2DProvider,
+        IPositionDirectionProvider positionDirectionProvider,
         ILampPositionProviderService lampPositionProviderService,
         float speed,
         float radius,
         float verticalAmplitude)
     {
         // _cameraPosition = cameraPosition; // TODO: enable later
-        _position2DProvider = position2DProvider;
+        _positionDirectionProvider = positionDirectionProvider;
         _lampPositionProviderService = lampPositionProviderService;
         _speed = speed;
         _radius = radius;
@@ -36,7 +36,7 @@ public class FMothlingMovementPatrolState: FMothlingMovementStateBase
     
     public override void OnEnter()
     {
-        Position2D = _position2DProvider.Position2D;
+        Position2D = _positionDirectionProvider.Position2D;
         Vector3 horizontalVector = Vector2.right;
         _patrolStartOffsetAngle = Mathf.Acos(Vector3.Dot(horizontalVector.normalized, Position2D.normalized));
         _phase = 0;

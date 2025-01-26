@@ -4,7 +4,7 @@ public class FMothlingMovementEnterState: FMothlingMovementStateBase
 {
     // Dependencies
     private readonly Vector3 _cameraPosition = new Vector3(0, 0, -5.88f);
-    private readonly IPosition2DProvider _position2DProvider;
+    private readonly IPositionDirectionProvider _positionDirectionProvider;
     private ILampPositionProviderService _lampPositionProviderService; // TODO: enable later
     private readonly float _speed;
     private readonly float _radius;
@@ -19,7 +19,7 @@ public class FMothlingMovementEnterState: FMothlingMovementStateBase
 
     public FMothlingMovementEnterState(
             Vector3 cameraPosition,
-            IPosition2DProvider position2DProvider,
+            IPositionDirectionProvider positionDirectionProvider,
             ILampPositionProviderService lampPositionProviderService,
             float speed,
             float radius,
@@ -27,7 +27,7 @@ public class FMothlingMovementEnterState: FMothlingMovementStateBase
         )
     {
         // _cameraPosition = cameraPosition; // TODO: enable later
-        _position2DProvider = position2DProvider;
+        _positionDirectionProvider = positionDirectionProvider;
         _lampPositionProviderService = lampPositionProviderService;
         _speed = speed;
         _radius = radius;
@@ -37,7 +37,7 @@ public class FMothlingMovementEnterState: FMothlingMovementStateBase
     public override void OnEnter()
     {
         ReadyToSwitch = false;
-        Position2D = _position2DProvider.Position2D;
+        Position2D = _positionDirectionProvider.Position2D;
         if (Position2D.x > 0)
         {
             Position2D *= _invertX;

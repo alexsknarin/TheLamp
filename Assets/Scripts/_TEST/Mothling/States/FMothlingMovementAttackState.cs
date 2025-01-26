@@ -4,7 +4,7 @@ public class FMothlingMovementAttackState: FMothlingMovementStateBase
 {
     // Dependencies
     private readonly Vector3 _cameraPosition = new Vector3(0, 0, -5.88f);
-    private readonly IPosition2DProvider _position2DProvider;
+    private readonly IPositionDirectionProvider _positionDirectionProvider;
     private ILampPositionProviderService _lampPositionProviderService;  // TODO: enable later
     private readonly float _speed;
 
@@ -15,28 +15,27 @@ public class FMothlingMovementAttackState: FMothlingMovementStateBase
 
     public FMothlingMovementAttackState(
         Vector3 cameraPosition,
-        IPosition2DProvider positionProvider,
+        IPositionDirectionProvider positionDirectionProvider,
         ILampPositionProviderService lampPositionProviderService,
         float speed
         )
     {
         // _cameraPosition = cameraPosition; // TODO: enable later
-        _position2DProvider = positionProvider;
+        _positionDirectionProvider = positionDirectionProvider;
         _lampPositionProviderService = lampPositionProviderService;
         _speed = speed * _speedMultiplier;
     }
     
     public override void OnEnter()
     {
-        _startDistance = _position2DProvider.Position2D.magnitude - 0.65f;
+        _startDistance = _positionDirectionProvider.Position2D.magnitude - 0.65f;
+        Position2D = _positionDirectionProvider.Position2D;
     }
 
     public override void Tick()
     {
-        Vector2 newPosition = _position2DProvider.Position2D;
-        Vector2 direction = -newPosition.normalized;
-        newPosition += direction * (_speed * Time.deltaTime);
-        Position2D = newPosition;
+        Vector2 direction = -Position2D.normalized;
+        Position2D += direction * (_speed * Time.deltaTime);
         
         Vector3 cameraDirection = (_cameraPosition - (Vector3)Position2D).normalized;
         float attackProximityGradient = Mathf.Clamp((Position2D.magnitude - 0.72f) / _startDistance, 0.0f, 1.0f);

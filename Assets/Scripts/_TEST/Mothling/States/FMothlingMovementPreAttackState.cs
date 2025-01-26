@@ -4,7 +4,7 @@ public class FMothlingMovementPreAttackState: FMothlingMovementStateBase
 {
     // Dependencies
     private readonly Vector3 _cameraPosition = new Vector3(0, 0, -5.88f);
-    private readonly IPosition2DProvider _position2DProvider;
+    private readonly IPositionDirectionProvider _positionDirectionProvider;
 
     // State specific attributes
     private readonly float _duration = .35f;
@@ -15,22 +15,22 @@ public class FMothlingMovementPreAttackState: FMothlingMovementStateBase
 
     public FMothlingMovementPreAttackState(
         Vector3 cameraPosition,
-        IPosition2DProvider position2DProvider
+        IPositionDirectionProvider positionDirectionProvider
         )
     {
         // _cameraPosition = cameraPosition; // TODO: enable later
-        _position2DProvider = position2DProvider;
+        _positionDirectionProvider = positionDirectionProvider;
     }
 
     public override void OnEnter()
     {
         ReadyToSwitch = false;
         _acceleratedSpeed = 1f;
-        _direction = _position2DProvider.Position2D.normalized;
+        _direction = _positionDirectionProvider.Position2D.normalized;
         Quaternion rotation = Quaternion.Euler(0, 0, 60);
         _direction = rotation * _direction;
         
-        Position2D = _position2DProvider.Position2D;
+        Position2D = _positionDirectionProvider.Position2D;
         _localTime = 0;
     }
 

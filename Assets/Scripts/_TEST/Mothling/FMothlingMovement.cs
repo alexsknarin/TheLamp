@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public class FMothlingMovement : FEnemyMovementBase, IPosition2DProvider
+public class FMothlingMovement : FEnemyMovementBase, IPositionDirectionProvider
 {
     [Header("-- Movement States Base Settings --")]
     [SerializeField] private float _speed;
@@ -43,11 +43,13 @@ public class FMothlingMovement : FEnemyMovementBase, IPosition2DProvider
     private FMothlingMovementAttackState _attackState;
     private FMothlingMovementFallState _fallState;
     private FMothlingMovementDeathState _deathState;
+    private FMothlingMovementSpreadState _spreadState;
     
     // State parameters
     private bool _isAttacking = false;
     private bool _isCollided = false;
     private bool _isDead = false;
+    private bool _isSpread = false;
     
     public void Construct(MothlingMovementStateFactory stateFactory)
     {
@@ -55,6 +57,7 @@ public class FMothlingMovement : FEnemyMovementBase, IPosition2DProvider
     }
 
     public Vector2 Position2D { get; private set; } 
+    public Vector3 DepthDirection { get; private set; } 
 
     public override void Initialize()
     {
@@ -66,6 +69,7 @@ public class FMothlingMovement : FEnemyMovementBase, IPosition2DProvider
         _attackState = (FMothlingMovementAttackState)_stateFactory.Create(typeof(FMothlingMovementAttackState));
         _fallState = (FMothlingMovementFallState)_stateFactory.Create(typeof(FMothlingMovementFallState));
         _deathState = (FMothlingMovementDeathState)_stateFactory.Create(typeof(FMothlingMovementDeathState));
+        _spreadState = (FMothlingMovementSpreadState)_stateFactory.Create(typeof(FMothlingMovementSpreadState));
         
         // State transitions
         At(_enterState, _patrolState, () => _enterState.ReadyToSwitch);
@@ -74,6 +78,13 @@ public class FMothlingMovement : FEnemyMovementBase, IPosition2DProvider
         At(_attackState, _fallState, IsCollided());
         At(_fallState, _enterState, IsFallEnded());
         Any(_deathState, () => _isDead);
+        // Spread transitions
+        At(_enterState, _spreadState, () => _isSpread);
+        At(_patrolState, _spreadState, () => _isSpread);
+        At(_preAttackState, _spreadState, () => _isSpread);
+        At(_fallState, _spreadState, () => _isSpread);
+        
+        // TODO: events
         
         // Predicates
         Func<bool> IsAttackStarted() => () =>
@@ -148,6 +159,11 @@ public class FMothlingMovement : FEnemyMovementBase, IPosition2DProvider
         _isDead = true;
     }
 
+    public override void TriggerSpread()
+    {
+        _isSpread = true;
+    }
+
     private void Update()
     {
         // Debug only
@@ -159,6 +175,7 @@ public class FMothlingMovement : FEnemyMovementBase, IPosition2DProvider
         _currentState = (FMothlingMovementStateBase)_stateMachine.CurrentState;
         _stateDebug = _currentState.GetType().Name; // Debug only
         Position2D = _currentState.Position2D;
+        DepthDirection = _currentState.DepthDirection;
         
         // Add Noise
         if (_isNoiseEnabled)
