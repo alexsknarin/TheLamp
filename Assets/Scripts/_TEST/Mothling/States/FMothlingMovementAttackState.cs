@@ -2,27 +2,38 @@ using UnityEngine;
 
 public class FMothlingMovementAttackState: FMothlingMovementStateBase
 {
-    private readonly IPosition2DProvider _positionProvider;
-    private readonly Vector3 _cameraPosition = new Vector3(0, 0, -5.88f); // DI
-    
+    // Dependencies
+    private readonly Vector3 _cameraPosition = new Vector3(0, 0, -5.88f);
+    private readonly IPosition2DProvider _position2DProvider;
+    private ILampPositionProviderService _lampPositionProviderService;  // TODO: enable later
+    private readonly float _speed;
+
     // State specific attributes
     private readonly float _depthDecrement = 0.42f;
     private float _startDistance;
-    private readonly float _speed = 0.81f * 1.1f;
-    
-    public FMothlingMovementAttackState(IPosition2DProvider positionProvider)
+    private readonly float _speedMultiplier =  1.1f;
+
+    public FMothlingMovementAttackState(
+        Vector3 cameraPosition,
+        IPosition2DProvider positionProvider,
+        ILampPositionProviderService lampPositionProviderService,
+        float speed
+        )
     {
-        _positionProvider = positionProvider;
+        // _cameraPosition = cameraPosition; // TODO: enable later
+        _position2DProvider = positionProvider;
+        _lampPositionProviderService = lampPositionProviderService;
+        _speed = speed * _speedMultiplier;
     }
     
     public override void OnEnter()
     {
-        _startDistance = _positionProvider.Position2D.magnitude - 0.65f;
+        _startDistance = _position2DProvider.Position2D.magnitude - 0.65f;
     }
 
     public override void Tick()
     {
-        Vector2 newPosition = _positionProvider.Position2D;
+        Vector2 newPosition = _position2DProvider.Position2D;
         Vector2 direction = -newPosition.normalized;
         newPosition += direction * (_speed * Time.deltaTime);
         Position2D = newPosition;

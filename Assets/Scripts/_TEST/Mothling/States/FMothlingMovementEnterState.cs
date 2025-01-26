@@ -3,26 +3,36 @@ using UnityEngine;
 public class FMothlingMovementEnterState: FMothlingMovementStateBase
 {
     // Dependencies
-    private IPosition2DProvider _position2DProvider;
-    private Vector2 _spawnAreaCenter = new Vector2(3.6f, -2.6f);
-    private float _speed = 0.81f;
-    private float _radius = 1.55f;
-    private float _verticalAmplitude = 0.93f;
-    private float _spawnAreaSize = 0.5f;
-    public FMothlingMovementEnterState(
-        IPosition2DProvider position2DProvider)
-    {
-        _position2DProvider = position2DProvider;
-    }
-    // DI from 
-    private readonly Vector3 _cameraPosition = new Vector3(0, 0, -5.88f); // DI?
-    
+    private readonly Vector3 _cameraPosition = new Vector3(0, 0, -5.88f);
+    private readonly IPosition2DProvider _position2DProvider;
+    private ILampPositionProviderService _lampPositionProviderService; // TODO: enable later
+    private readonly float _speed;
+    private readonly float _radius;
+    private readonly float _verticalAmplitude;
+
     // State specific attributes
-    public static readonly Vector2 InvertX = new Vector2(-1, 1);
-    private Vector2 _endPos = Vector3.zero;
+    private readonly Vector2 _invertX = new Vector2(-1, 1); // DI?
+    private Vector2 _endPos = Vector2.zero;
     private Vector2 _enterDirection;
     private readonly float _depthMultiplier = 2f;
     private float _initialDistance;
+
+    public FMothlingMovementEnterState(
+            Vector3 cameraPosition,
+            IPosition2DProvider position2DProvider,
+            ILampPositionProviderService lampPositionProviderService,
+            float speed,
+            float radius,
+            float verticalAmplitude
+        )
+    {
+        // _cameraPosition = cameraPosition; // TODO: enable later
+        _position2DProvider = position2DProvider;
+        _lampPositionProviderService = lampPositionProviderService;
+        _speed = speed;
+        _radius = radius;
+        _verticalAmplitude = verticalAmplitude;
+    }
 
     public override void OnEnter()
     {
@@ -30,7 +40,7 @@ public class FMothlingMovementEnterState: FMothlingMovementStateBase
         Position2D = _position2DProvider.Position2D;
         if (Position2D.x > 0)
         {
-            Position2D *= InvertX;
+            Position2D *= _invertX;
         }
         
         float xProjectionLength = Mathf.Abs(Position2D.x);

@@ -6,7 +6,26 @@ public class FEnemyManager : MonoBehaviour
     [SerializeField] private LampCollisionDetectionService _lampCollisionDetectionService;
     [SerializeField] private FMothling _mothlingEnemy;
     [SerializeField] private FMothlingRef _mothlingRefEnemy;
+    [SerializeField] private Transform _cameraTransform;
+    [SerializeField] private LampPositionProviderService _lampPositionProviderService;
 
+    private MothlingMovementStateFactory _mothlingMovementStateFactory;
+
+    private void Awake()
+    {
+        _mothlingMovementStateFactory = new MothlingMovementStateFactory(
+            _cameraTransform,
+            _lampPositionProviderService
+            );
+        _mothlingEnemy.GetComponent<FMothlingMovement>().Construct(_mothlingMovementStateFactory);
+        Debug.Log("FEnemyManager Awake - enemy constructed");
+        _mothlingEnemy.Initialize();
+    }
+
+    private void Start()
+    {
+        _mothlingEnemy.Play();
+    }
 
     private void Update()
     {

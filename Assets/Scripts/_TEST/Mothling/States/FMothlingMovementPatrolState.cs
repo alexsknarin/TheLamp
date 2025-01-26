@@ -2,19 +2,15 @@ using UnityEngine;
 
 public class FMothlingMovementPatrolState: FMothlingMovementStateBase
 {
-    // TODO: provided by the factory or even hardcoded
-    // Get from the config via factory DI into all states
-    private readonly Vector3 _cameraPosition = new Vector3(0, 0, -5.88f); // DI?
-    
-    public Vector2 _spawnAreaCenter = new Vector2(3.6f, -2.6f);
-    private float _speed = 0.81f;
-    private float _radius = 1.55f;
-    private float _verticalAmplitude = 0.93f;
-    public float _spawnAreaSize = 0.5f;
-    
     // Dependencies
-    private readonly IPosition2DProvider _positionProvider;
-    
+
+    private readonly Vector3 _cameraPosition = new Vector3(0, 0, -5.88f); // DI?
+    private readonly IPosition2DProvider _position2DProvider;
+    private ILampPositionProviderService _lampPositionProviderService; // TODO: enable later
+    private readonly float _speed;
+    private readonly float _radius;
+    private readonly float _verticalAmplitude;
+
     // Local variables
     private readonly float _verticalAdaptDuration = 2f;
     private readonly float _depthMultiplier = 1f;
@@ -22,15 +18,25 @@ public class FMothlingMovementPatrolState: FMothlingMovementStateBase
     private float _phase;
     private float _localTime;
     
-    public FMothlingMovementPatrolState(IPosition2DProvider positionProvider)
+    public FMothlingMovementPatrolState(
+        Vector3 cameraPosition,
+        IPosition2DProvider position2DProvider,
+        ILampPositionProviderService lampPositionProviderService,
+        float speed,
+        float radius,
+        float verticalAmplitude)
     {
-        _positionProvider = positionProvider;
+        // _cameraPosition = cameraPosition; // TODO: enable later
+        _position2DProvider = position2DProvider;
+        _lampPositionProviderService = lampPositionProviderService;
+        _speed = speed;
+        _radius = radius;
+        _verticalAmplitude = verticalAmplitude;
     }
     
     public override void OnEnter()
     {
-        Debug.Log("FMothlingMovementPatrolStateRIn OnEnter");
-        Position2D = _positionProvider.Position2D;
+        Position2D = _position2DProvider.Position2D;
         Vector3 horizontalVector = Vector2.right;
         _patrolStartOffsetAngle = Mathf.Acos(Vector3.Dot(horizontalVector.normalized, Position2D.normalized));
         _phase = 0;

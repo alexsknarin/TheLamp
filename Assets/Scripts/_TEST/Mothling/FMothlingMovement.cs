@@ -4,7 +4,7 @@ using Random = UnityEngine.Random;
 
 public class FMothlingMovement : FEnemyMovementBase, IPosition2DProvider
 {
-    [Header("-- Movement Settings --")]
+    [Header("-- Movement States Base Settings --")]
     [SerializeField] private float _speed;
     [SerializeField] private float _radius;
     [SerializeField] private float _verticalAmplitude;
@@ -30,6 +30,8 @@ public class FMothlingMovement : FEnemyMovementBase, IPosition2DProvider
 
     // State Machine fields
     private FStateMachine _stateMachine = new();
+    private MothlingMovementStateFactory _stateFactory;
+    
     private FMothlingMovementStateBase _currentState;
     private FMothlingMovementEnterState _enterState;
     private FMothlingMovementPatrolState _patrolState;
@@ -40,17 +42,23 @@ public class FMothlingMovement : FEnemyMovementBase, IPosition2DProvider
     // State parameters
     private bool _isAttacking = false;
     private bool _isCollided = false;
+    
+    public void Construct(MothlingMovementStateFactory stateFactory)
+    {
+        _stateFactory = stateFactory;
+    }
 
     public Vector2 Position2D { get; private set; } 
 
     public override void Initialize()
     {
         Debug.Log("FMothlingMovement Initialize");
-        _enterState = new FMothlingMovementEnterState(this);
-        _patrolState = new FMothlingMovementPatrolState(this);
-        _preAttackState = new FMothlingMovementPreAttackState(this);
-        _attackState = new FMothlingMovementAttackState(this);
-        _fallState = new FMothlingMovementFallState(this);
+        _stateFactory.SetEnemyDependencies(this, _speed, _radius, _verticalAmplitude);
+        _enterState = (FMothlingMovementEnterState)_stateFactory.Create(typeof(FMothlingMovementEnterState));
+        _patrolState = (FMothlingMovementPatrolState)_stateFactory.Create(typeof(FMothlingMovementPatrolState));
+        _preAttackState = (FMothlingMovementPreAttackState)_stateFactory.Create(typeof(FMothlingMovementPreAttackState));
+        _attackState = (FMothlingMovementAttackState)_stateFactory.Create(typeof(FMothlingMovementAttackState));
+        _fallState = (FMothlingMovementFallState)_stateFactory.Create(typeof(FMothlingMovementFallState));
         
         // State transitions
         At(_enterState, _patrolState, () => _enterState.ReadyToSwitch);

@@ -3,16 +3,19 @@ using UnityEngine;
 public class FMothlingMovementFallState: FMothlingMovementStateBase
 {
     private IPosition2DProvider _positionProvider;
-    public FMothlingMovementFallState(IPosition2DProvider positionProvider)
+    private float _radius;
+    private float _verticalAmplitude;
+    
+    public FMothlingMovementFallState(
+        IPosition2DProvider positionProvider,
+        float radius,
+        float verticalAmplitude
+    )
     {
         _positionProvider = positionProvider;
+        _radius = radius;
+        _verticalAmplitude = verticalAmplitude;
     }
-    
-    public Vector2 _spawnAreaCenter = new Vector2(3.6f, -2.6f);
-    private float _speed = 0.81f;
-    private float _radius = 1.55f;
-    private float _verticalAmplitude = 0.93f;
-    public float _spawnAreaSize = 0.5f;
     
     // State specific attributes
     private Vector2 _bounceForce;
@@ -23,8 +26,10 @@ public class FMothlingMovementFallState: FMothlingMovementStateBase
     
     public override void OnEnter()
     {
-        _bounceForce = _positionProvider.Position2D.normalized * _bounceForceMagnitude;
         Position2D = _positionProvider.Position2D;
+        DepthDirection = Vector3.zero;
+        
+        _bounceForce = Position2D.normalized * _bounceForceMagnitude;
         _gravityForce = Vector2.zero;
         ReadyToSwitch = false;
     }

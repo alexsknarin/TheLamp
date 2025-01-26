@@ -1,13 +1,24 @@
 using System;
 using UnityEngine;
 
-public class FMothling: MonoBehaviour, ICollidable
+[RequireComponent(typeof(FMothlingMovement))]
+public class FMothling: MonoBehaviour, ICollidable, IInitializable
 {
     [SerializeField] private float _collisionRadius = 0.075f;
     [SerializeField] private FMothlingMovement _movement;
     
     public float Radius => _collisionRadius;
     public Vector2 Position => transform.position;
+
+    public void Initialize()
+    {
+        _movement.Initialize();
+    }
+
+    public void Play()
+    {
+        _movement.Play();
+    }
 
     public void Attack()
     {
@@ -22,13 +33,5 @@ public class FMothling: MonoBehaviour, ICollidable
         transform.position = newPosition;
         
         _movement.TriggerFall();
-    }
-
-    private void Start()
-    {
-        _movement.Initialize();
-        
-        // TODO: control from enemy manager
-        _movement.Play();
     }
 }
