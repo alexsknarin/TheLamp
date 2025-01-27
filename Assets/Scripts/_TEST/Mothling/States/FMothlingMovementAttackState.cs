@@ -34,7 +34,7 @@ public class FMothlingMovementAttackState: FMothlingMovementStateBase
 
     public override void Tick()
     {
-        Vector2 direction = -Position2D.normalized;
+        Vector2 direction = -(Position2D - (Vector2)_lampPositionProviderService.GetLampPosition()).normalized;
         Position2D += direction * (_speed * Time.deltaTime);
         
         Vector3 cameraDirection = (_cameraPosition - (Vector3)Position2D).normalized;

@@ -49,8 +49,8 @@ public class FMothlingMovement : FEnemyMovementBase, IPositionDirectionProvider
     // State parameters
     private bool _isAttacking = false;
     // private bool _isCollided = false;
-    private bool _isDead = false;
-    private bool _isSpread = false;
+    // private bool _isDead = false;
+    // private bool _isSpread = false;
     
     public void Construct(MothlingMovementStateFactory stateFactory)
     {
@@ -67,7 +67,7 @@ public class FMothlingMovement : FEnemyMovementBase, IPositionDirectionProvider
 
     public override void Initialize()
     {
-        Debug.Log("FMothlingMovement Initialize");
+        // Create Movement States
         _stateFactory.SetEnemyDependencies(this, _speed, _radius, _verticalAmplitude);
         _enterState = (FMothlingMovementEnterState)_stateFactory.Create(typeof(FMothlingMovementEnterState));
         _patrolState = (FMothlingMovementPatrolState)_stateFactory.Create(typeof(FMothlingMovementPatrolState));
@@ -83,21 +83,11 @@ public class FMothlingMovement : FEnemyMovementBase, IPositionDirectionProvider
         _preAttackState.Ended += OnPreAttackStateEnded;
         _deathState.Ended += OnDeathStateEnded;
         
-        // State transitions
+        // Automatic State transitions
         At(_enterState, _patrolState, () => _enterState.IsReadyToSwitch);
         At(_patrolState, _preAttackState, IsAttackStarted());
         At(_preAttackState, _attackState, () => _preAttackState.IsReadyToSwitch);
-        // At(_attackState, _fallState, IsCollided());
         At(_fallState, _enterState, IsFallEnded());
-        Any(_deathState, () => _isDead);
-        // Spread transitions
-        At(_enterState, _spreadState, () => _isSpread);
-        At(_patrolState, _spreadState, () => _isSpread);
-        At(_preAttackState, _spreadState, () => _isSpread);
-        At(_fallState, _spreadState, () => _isSpread);
-        
-        // TODO: events
-        
         // Predicates
         Func<bool> IsAttackStarted() => () =>
         {
@@ -108,16 +98,6 @@ public class FMothlingMovement : FEnemyMovementBase, IPositionDirectionProvider
             }
             return false;
         };
-        
-        // Func<bool> IsCollided() => () =>
-        // {
-        //     if (_isCollided)
-        //     {
-        //         _isCollided = false;
-        //         return true;
-        //     }
-        //     return false;
-        // };
         
         Func<bool> IsFallEnded() => () =>
         {
@@ -130,7 +110,6 @@ public class FMothlingMovement : FEnemyMovementBase, IPositionDirectionProvider
         };
         
         void At(IState from, IState to, Func<bool> condition) => _stateMachine.AddTransition(from, to, condition);
-        void Any(IState to, Func<bool> condition) => _stateMachine.AddAnyTransition(to, condition);
     }
 
     private void OnDestroy()
@@ -153,14 +132,13 @@ public class FMothlingMovement : FEnemyMovementBase, IPositionDirectionProvider
         _stateMachine.SetState(_currentState);
         
         _isAttacking = false;
-        // _isCollided = false;
-        _isDead = false;
     }
 
     public override void TriggerAttack()
     {
         if (_currentState.Equals(_patrolState))
         {
+            ApplyTransformToPosition2D();
             _isAttacking = true;
         }
     }
@@ -169,32 +147,43 @@ public class FMothlingMovement : FEnemyMovementBase, IPositionDirectionProvider
     {
         if (_currentState.Equals(_attackState))
         {
+            ApplyTransformToPosition2D();
             _currentState = _fallState;
             _stateDebug = _currentState.GetType().Name; // Debug only
             _stateMachine.SetState(_currentState);
-            
-            // Apply Position2D and SideDirection
+
+            // Immediately Apply Position2D and SideDirection to transform to avoid visible collision penetration.
             Vector3 newPosition = transform.position;
-            newPosition.x = _currentState.Position2D.x * _sideDirection;
+            newPosition.x = _currentState.Position2D.x;
             newPosition.y = _currentState.Position2D.y;
-            
             transform.position = newPosition;
             
-            // Refresh Smooth Damp
+            // Refresh Smooth Damp velocity (for the sharp bounce).
             _velocity = Vector3.zero;
-            
-            // _isCollided = true;
         }
     }
 
     public override void TriggerDeath()
     {
-        _isDead = true;
+        ApplyTransformToPosition2D();
+        
+        _currentState = _deathState;
+        _stateDebug = _currentState.GetType().Name; // Debug only
+        _stateMachine.SetState(_currentState);
     }
 
     public override void TriggerSpread()
     {
-        _isSpread = true;
+        if (_currentState.Equals(_enterState)||
+            _currentState.Equals(_patrolState)||
+            _currentState.Equals(_preAttackState)||
+            _currentState.Equals(_fallState))
+        {
+            ApplyTransformToPosition2D();
+            _currentState = _spreadState;
+            _stateDebug = _currentState.GetType().Name; // Debug only
+            _stateMachine.SetState(_currentState);
+        }
     }
 
     private void Update()
@@ -232,8 +221,12 @@ public class FMothlingMovement : FEnemyMovementBase, IPositionDirectionProvider
             _position3D += _currentState.DepthDirection * depthDirection;
         }
         
-        // Apply side direction
-        _position3D.x *= _sideDirection;
+        // Apply side direction Only for States that require Left/Right mirroring
+        if (_currentState.Equals(_enterState)||
+            _currentState.Equals(_patrolState))
+        {
+            _position3D.x *= _sideDirection;            
+        }
         
         // Add SmoothDamp
         if (_isSmoothDampEnabled)
@@ -272,6 +265,13 @@ public class FMothlingMovement : FEnemyMovementBase, IPositionDirectionProvider
         Vector2 spawnPosition = Random.insideUnitCircle * _spawnAreaSize + _spawnAreaCenter;
         spawnPosition.x *= direction;
         return spawnPosition;
+    }
+
+    private void ApplyTransformToPosition2D()
+    {
+        Vector2 newPosition2D = Position2D;
+        newPosition2D.x = Mathf.Abs(newPosition2D.x) * Mathf.Sign(transform.position.x);
+        Position2D = newPosition2D;
     }
 
     private void OnPatrolStateStarted()

@@ -8,7 +8,7 @@ public class FMothlingMovementDeathState: FMothlingMovementStateBase
     // State specific attributes
     private Vector2 _bounceForce;
     private Vector2 _gravityForce;
-    private readonly float _bounceForceMagnitude = 4f;
+    private readonly float _bounceForceMagnitude = 3f;
     private readonly float _gravityForceMagnitude = .2f;
     private readonly float _dragAmount = 0.94f;
     private readonly float _speedMultiplier = 0.9f;

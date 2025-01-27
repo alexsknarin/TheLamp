@@ -5,7 +5,6 @@ public class MothlingMovementStateFactory
 {
     private Transform _cameraTransform;
     private ILampPositionProviderService _lampPositionProviderService;
-    
     private IPositionDirectionProvider _positionDirectionProvider;
     private float _speed;
     private float _radius;
@@ -20,7 +19,6 @@ public class MothlingMovementStateFactory
     {
         _cameraTransform = cameraTransform;
         _lampPositionProviderService = lampPositionProviderService;
-
     }
     
     public void SetEnemyDependencies(
@@ -81,6 +79,7 @@ public class MothlingMovementStateFactory
         {
             return new FMothlingMovementFallState(
                 _positionDirectionProvider,
+                _lampPositionProviderService,
                 _radius,
                 _verticalAmplitude
                 );

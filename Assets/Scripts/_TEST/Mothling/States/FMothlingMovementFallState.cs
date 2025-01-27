@@ -3,6 +3,7 @@ using UnityEngine;
 public class FMothlingMovementFallState: FMothlingMovementStateBase
 {
     private IPositionDirectionProvider _positionDirectionProvider;
+    private ILampPositionProviderService _lampPositionProviderService;
     private readonly float _radius;
     private readonly float _verticalAmplitude;
     
@@ -10,11 +11,13 @@ public class FMothlingMovementFallState: FMothlingMovementStateBase
     
     public FMothlingMovementFallState(
         IPositionDirectionProvider positionDirectionProvider,
+        ILampPositionProviderService lampPositionProviderService,
         float radius,
         float verticalAmplitude
     )
     {
         _positionDirectionProvider = positionDirectionProvider;
+        _lampPositionProviderService = lampPositionProviderService;
         _radius = radius;
         _verticalAmplitude = verticalAmplitude;
     }
@@ -28,14 +31,21 @@ public class FMothlingMovementFallState: FMothlingMovementStateBase
     
     public override void OnEnter()
     {
+        // Get it all via constructor
         // Lamp collision radius 0.49 - get from Game config
         // Current radius 0.075 - get from Game Enemy Config
-        // 0.0001f - threshold - get from game config
+        // 0.0001f - threshold - get from game config   
+        Position2D = _positionDirectionProvider.Position2D;
         
-        Position2D = _positionDirectionProvider.Position2D.normalized * (0.49f + 0.075f + 0.0001f);
+        Vector2 position2DNormalized = (Position2D - (Vector2)_lampPositionProviderService.GetLampPosition()).normalized;
+        Position2D = position2DNormalized * (0.49f + 0.075f + 0.0001f) + (Vector2)_lampPositionProviderService.GetLampPosition();
+                     
         DepthDirection = Vector3.zero;
         
-        _bounceForce = Position2D.normalized * _bounceForceMagnitude;
+        _bounceForce = position2DNormalized * _bounceForceMagnitude;
+        
+        Debug.DrawRay(_lampPositionProviderService.GetLampPosition(), position2DNormalized, Color.red, 5f);
+        
         _gravityForce = Vector2.zero;
         IsReadyToSwitch = false;
     }

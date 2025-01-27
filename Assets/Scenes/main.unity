@@ -4603,7 +4603,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae06a63feb3b3d043b5dcdde877b85b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _maxHealth: 1
+  _maxHealth: 6
   _currentHealth: 0
   _collisionRadius: 0.075
   _movement: {fileID: 738002601}
@@ -4635,19 +4635,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d83368f76a2d8c049a89c1f2e1e38bd6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _speed: 5.81
+  _speed: 0.81
   _radius: 1.55
   _verticalAmplitude: 0.93
   _spawnAreaSize: 0.5
   _spawnAreaCenter: {x: 3.6, y: -2.6}
-  _isNoiseEnabled: 0
+  _isNoiseEnabled: 1
   _noise1Frequency: 7.214
   _noise1Amplitude: 0.061
   _noise2Frequency: 2
   _noise2Amplitude: 0.171
-  _isSmoothDampEnabled: 0
+  _isSmoothDampEnabled: 1
   _smoothTime: 0.05
-  _isDepthEnabled: 0
+  _isDepthEnabled: 1
   _stateDebug: 
   _sideDirection: 1
   _depthSideDirection: 0
