@@ -1,6 +1,5 @@
 using System;
 using UnityEngine;
-using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 public class FMothlingMovement : FEnemyMovementBase, IPositionDirectionProvider
@@ -175,7 +174,12 @@ public class FMothlingMovement : FEnemyMovementBase, IPositionDirectionProvider
             newPosition3D.x = newPosition.x;
             newPosition3D.y = newPosition.y;
             transform.position = newPosition3D;
-            Position2D = newPosition;
+            
+            newPosition3D.x *= _sideDirection;
+            Position2D = newPosition3D;
+            
+            // Refresh Smooth Damp
+            _velocity = Vector3.zero;
             
             _isCollided = true;
         }
