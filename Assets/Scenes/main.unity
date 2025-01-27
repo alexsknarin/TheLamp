@@ -2184,7 +2184,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _lampCollisionDetectionService: {fileID: 1934066264}
   _mothlingEnemy: {fileID: 738002599}
-  _mothlingRefEnemy: {fileID: 499554770}
   _cameraTransform: {fileID: 330585546}
   _lampPositionProviderService: {fileID: 1934066263}
 --- !u!1 &330585543
@@ -3084,82 +3083,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1037585458}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &499554765
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 499554769}
-  - component: {fileID: 499554770}
-  - component: {fileID: 499554767}
-  m_Layer: 0
-  m_Name: FMothlingRef
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &499554767
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 499554765}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3a8c97e537ee26642ab876cd7b671418, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _speed: 0.81
-  _radius: 1.55
-  _verticalAmplitude: 0.93
-  _spawnAreaSize: 0.5
-  _spawnAreaCenter: {x: 3.6, y: -2.6, z: 0}
-  _isNoiseEnabled: 0
-  _noise1Frequency: 7.214
-  _noise1Amplitude: 0.061
-  _noise2Frequency: 2
-  _noise2Amplitude: 0.171
-  _isSmoothDampEnabled: 0
-  _smoothTime: 0.05
-  _isDepthEnabled: 1
-  _stateDebug: 0
-  _sideDirection: 0
-  _depthDirection: 0
---- !u!4 &499554769
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 499554765}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.16, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1818118878}
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &499554770
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 499554765}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8907fa9748a8a0e4b89bff48435b559d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _collisionRadius: 0.075
-  _movement: {fileID: 499554767}
 --- !u!1 &505392542
 GameObject:
   m_ObjectHideFlags: 0
@@ -4712,19 +4635,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d83368f76a2d8c049a89c1f2e1e38bd6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _speed: 4.81
+  _speed: 5.81
   _radius: 1.55
   _verticalAmplitude: 0.93
   _spawnAreaSize: 0.5
   _spawnAreaCenter: {x: 3.6, y: -2.6}
-  _isNoiseEnabled: 1
+  _isNoiseEnabled: 0
   _noise1Frequency: 7.214
   _noise1Amplitude: 0.061
   _noise2Frequency: 2
   _noise2Amplitude: 0.171
-  _isSmoothDampEnabled: 1
+  _isSmoothDampEnabled: 0
   _smoothTime: 0.05
-  _isDepthEnabled: 1
+  _isDepthEnabled: 0
   _stateDebug: 
   _sideDirection: 1
   _depthSideDirection: 0
@@ -10751,92 +10674,6 @@ Light:
   m_LightUnit: 1
   m_LuxAtDistance: 1
   m_EnableSpotReflector: 1
---- !u!1 &1818118877
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1818118878}
-  - component: {fileID: 1818118880}
-  - component: {fileID: 1818118879}
-  m_Layer: 0
-  m_Name: Sphere
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1818118878
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1818118877}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.15, y: 0.15, z: 0.15}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 499554769}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!23 &1818118879
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1818118877}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
-  m_RayTracingAccelStructBuildFlagsOverride: 0
-  m_RayTracingAccelStructBuildFlags: 1
-  m_SmallMeshCulling: 1
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 2100000, guid: 1fb43dba9208c6a44bcdc8eca9a25694, type: 2}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_AdditionalVertexStreams: {fileID: 0}
---- !u!33 &1818118880
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1818118877}
-  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!4 &1830749193 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1807186840977798697, guid: 556ccd576c35d634e88ba039c8700cfa,
@@ -11156,7 +10993,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1934066237}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6ad39d71eeab4da4d8e627604891d77c, type: 3}
   m_Name: 
@@ -13350,5 +13187,4 @@ SceneRoots:
   - {fileID: 458789824}
   - {fileID: 1297585004}
   - {fileID: 738002600}
-  - {fileID: 499554769}
   - {fileID: 316911429}

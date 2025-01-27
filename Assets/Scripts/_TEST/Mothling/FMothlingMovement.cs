@@ -48,7 +48,7 @@ public class FMothlingMovement : FEnemyMovementBase, IPositionDirectionProvider
     
     // State parameters
     private bool _isAttacking = false;
-    private bool _isCollided = false;
+    // private bool _isCollided = false;
     private bool _isDead = false;
     private bool _isSpread = false;
     
@@ -87,7 +87,7 @@ public class FMothlingMovement : FEnemyMovementBase, IPositionDirectionProvider
         At(_enterState, _patrolState, () => _enterState.IsReadyToSwitch);
         At(_patrolState, _preAttackState, IsAttackStarted());
         At(_preAttackState, _attackState, () => _preAttackState.IsReadyToSwitch);
-        At(_attackState, _fallState, IsCollided());
+        // At(_attackState, _fallState, IsCollided());
         At(_fallState, _enterState, IsFallEnded());
         Any(_deathState, () => _isDead);
         // Spread transitions
@@ -109,15 +109,15 @@ public class FMothlingMovement : FEnemyMovementBase, IPositionDirectionProvider
             return false;
         };
         
-        Func<bool> IsCollided() => () =>
-        {
-            if (_isCollided)
-            {
-                _isCollided = false;
-                return true;
-            }
-            return false;
-        };
+        // Func<bool> IsCollided() => () =>
+        // {
+        //     if (_isCollided)
+        //     {
+        //         _isCollided = false;
+        //         return true;
+        //     }
+        //     return false;
+        // };
         
         Func<bool> IsFallEnded() => () =>
         {
@@ -153,7 +153,7 @@ public class FMothlingMovement : FEnemyMovementBase, IPositionDirectionProvider
         _stateMachine.SetState(_currentState);
         
         _isAttacking = false;
-        _isCollided = false;
+        // _isCollided = false;
         _isDead = false;
     }
 
@@ -165,23 +165,25 @@ public class FMothlingMovement : FEnemyMovementBase, IPositionDirectionProvider
         }
     }
 
-    public override void TriggerFall(Vector2 newPosition)
+    public override void TriggerFall()
     {
         if (_currentState.Equals(_attackState))
         {
-            // Fix potential collision penetration
-            Vector3 newPosition3D = transform.position;
-            newPosition3D.x = newPosition.x;
-            newPosition3D.y = newPosition.y;
-            transform.position = newPosition3D;
+            _currentState = _fallState;
+            _stateDebug = _currentState.GetType().Name; // Debug only
+            _stateMachine.SetState(_currentState);
             
-            newPosition3D.x *= _sideDirection;
-            Position2D = newPosition3D;
+            // Apply Position2D and SideDirection
+            Vector3 newPosition = transform.position;
+            newPosition.x = _currentState.Position2D.x * _sideDirection;
+            newPosition.y = _currentState.Position2D.y;
+            
+            transform.position = newPosition;
             
             // Refresh Smooth Damp
             _velocity = Vector3.zero;
             
-            _isCollided = true;
+            // _isCollided = true;
         }
     }
 

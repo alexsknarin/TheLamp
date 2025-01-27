@@ -5,7 +5,6 @@ public class FEnemyManager : MonoBehaviour
 {
     [SerializeField] private LampCollisionDetectionService _lampCollisionDetectionService;
     [SerializeField] private FMothling _mothlingEnemy;
-    [SerializeField] private FMothlingRef _mothlingRefEnemy;
     [SerializeField] private Transform _cameraTransform;
     [SerializeField] private LampPositionProviderService _lampPositionProviderService;
 
@@ -32,12 +31,10 @@ public class FEnemyManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.A))
         {
             _lampCollisionDetectionService.AddCollidable(_mothlingEnemy);
-            _lampCollisionDetectionService.AddCollidable(_mothlingRefEnemy);
             if (_mothlingEnemy.IsReadyToAttack)
             {
                 _mothlingEnemy.Attack();
             }
-            _mothlingRefEnemy.Attack();
         }
         
         if (Input.GetKeyDown(KeyCode.D))

@@ -60,9 +60,9 @@ public class FMothling: MonoBehaviour, ICollidable, IInitializable
         _movement.TriggerSpread();
     }
 
-    public void HandleCollision(Vector2 newPosition)
+    public void HandleCollision()
     {
-        _movement.TriggerFall(newPosition);
+        _movement.TriggerFall();
     }
 
     public void HandleDeath()

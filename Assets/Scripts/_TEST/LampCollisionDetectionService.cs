@@ -51,9 +51,7 @@ public class LampCollisionDetectionService : MonoBehaviour
                 {
                     Debug.Log("Collision detected");
                     Debug.Log($"EnemyType: {collidable.GetType()}");
-                    Vector2 newCollidablePosition = 
-                        directionRaw.normalized * (_collisionRadius + collidable.Radius + _collisionThreshold) + _position;
-                    collidable.HandleCollision(newCollidablePosition);
+                    collidable.HandleCollision();
                     _collidablesToRemove.Add(collidable);
                 }
             }    
