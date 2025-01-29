@@ -31,6 +31,7 @@ public class FEnemyManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.A))
         {
             _lampCollisionDetectionService.AddCollidable(_mothlingEnemy);
+            
             if (_mothlingEnemy.IsReadyToAttack)
             {
                 _mothlingEnemy.Attack();
@@ -40,7 +41,7 @@ public class FEnemyManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.D))
         {
             _lampCollisionDetectionService.RemoveCollidable(_mothlingEnemy);
-            _mothlingEnemy.HandleDeath();
+            _mothlingEnemy.DoDeath();
         }
         
         if (Input.GetKeyDown(KeyCode.S))

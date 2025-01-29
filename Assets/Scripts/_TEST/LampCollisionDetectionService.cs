@@ -8,28 +8,28 @@ public class LampCollisionDetectionService : MonoBehaviour
     [SerializeField] private float _attackZoneRadius = 0.62f;
     [SerializeField] private float _attackExitZoneRadius = 0.55f;
     [SerializeField] private int _collidableCount = 0;
-    private List<ICollidable> _collidables = new();
-    private List<ICollidable> _collidablesToRemove = new();
+    private List<ICollidableWithLamp> _collidables = new();
+    private List<ICollidableWithLamp> _collidablesToRemove = new();
+    
     private Vector2 _position;
     private float _collisionThreshold = 0.0001f;
 
-    public void AddCollidable(ICollidable collidable)
+    public void AddCollidable(ICollidableWithLamp collidableWithLamp)
     {
-        // Need to check if the collidable is already in the list
-        if (!_collidables.Contains(collidable))
+        if (!_collidables.Contains(collidableWithLamp))
         {
             enabled = true;
-            _collidables.Add(collidable);
-            _collidableCount++;
+            _collidables.Add(collidableWithLamp);
+            _collidableCount++; // TODO: Debug
         }
     }
-    
-    public void RemoveCollidable(ICollidable collidable)
+
+    public void RemoveCollidable(ICollidableWithLamp collidable)
     {
         if (_collidables.Contains(collidable))
         {
             _collidables.Remove(collidable);
-            _collidableCount--;
+            _collidableCount--; // TODO: Debug 
         }
     }
 
@@ -38,26 +38,10 @@ public class LampCollisionDetectionService : MonoBehaviour
         _position = transform.position;
         if (_collidables.Count != 0)
         {
-            foreach (var collidable in _collidables)
-            {
-                Vector2 targetPosition = collidable.Position;
-                Vector2 directionRaw = targetPosition - _position;
-                float distance = directionRaw.magnitude;
-            
-                // Attack zone Enter detection
-                
-                // Collision detection
-                if (distance < _collisionRadius + collidable.Radius + _collisionThreshold)
-                {
-                    Debug.Log("Collision detected");
-                    Debug.Log($"EnemyType: {collidable.GetType()}");
-                    collidable.HandleCollision();
-                    _collidablesToRemove.Add(collidable);
-                }
-            }    
+            CheckCollidables();
         }
     }
-    
+
     private void LateUpdate()
     {
         if (_collidablesToRemove.Count != 0)
@@ -71,6 +55,60 @@ public class LampCollisionDetectionService : MonoBehaviour
             if (_collidables.Count == 0)
             {
                 enabled = false;
+            }
+        }
+    }
+
+    private void CheckCollidables()
+    {
+        foreach (var collidable in _collidables)
+        {
+            // Get Current distance
+            Vector2 targetPosition = collidable.Position;
+            Vector2 directionRaw = targetPosition - _position;
+            float distance = directionRaw.magnitude;
+            
+            // Collision Measurements
+            float combinedRadius = collidable.Radius + _collisionThreshold;
+            float attackZoneCombinedRadius = _attackZoneRadius + combinedRadius;
+           
+            
+            // Entering Attack Zone
+            if (collidable.CollisionState == CollidableState.Outside &&
+                distance < attackZoneCombinedRadius)
+            {
+                Debug.Log("Attack zone enter Detected");
+                Debug.Log($"EnemyType: {collidable.GetType()}");
+                collidable.HandleEnterAttackZone();
+            }
+            
+            // Exiting Attack Zone Before Collision
+            if (collidable.CollisionState == CollidableState.InAttackZone &&
+                distance > attackZoneCombinedRadius)
+            {
+                Debug.Log("Attack zone exit before collision Detected");
+                Debug.Log($"EnemyType: {collidable.GetType()}");
+                _collidablesToRemove.Add(collidable);
+                collidable.HandleExitAttackZone();
+            }
+            
+            // Collision detection
+            if (collidable.CollisionState == CollidableState.InAttackZone &&
+                distance < _collisionRadius + combinedRadius)
+            {
+                Debug.Log("Collision detected");
+                Debug.Log($"EnemyType: {collidable.GetType()}");
+                collidable.HandleCollision();
+            }
+            
+            // Exiting Attack Zone After Collision
+            if (collidable.CollisionState == CollidableState.AfterCollision &&
+                distance > _attackExitZoneRadius + combinedRadius)
+            {
+                Debug.Log("Attack zone exit after collision Detected");
+                Debug.Log($"EnemyType: {collidable.GetType()}");
+                _collidablesToRemove.Add(collidable);
+                collidable.HandleExitAttackZone();
             }
         }
     }
