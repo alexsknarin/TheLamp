@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -20,6 +21,7 @@ public class FMothlingMovement : FEnemyMovementBase, IPositionDirectionProvider
     [Header("-- Smooth Damp Settings --")]
     [SerializeField] private bool _isSmoothDampEnabled;
     [SerializeField] private float _smoothTime = .3f;
+    private float _smoothTimeAllowed = 0;
     [Header("---- Depth Settings ----")]
     [SerializeField] bool _isDepthEnabled;
     // Debug
@@ -48,9 +50,7 @@ public class FMothlingMovement : FEnemyMovementBase, IPositionDirectionProvider
     
     // State parameters
     private bool _isAttacking = false;
-    // private bool _isCollided = false;
-    // private bool _isDead = false;
-    // private bool _isSpread = false;
+    private WaitForSeconds _waitSmoothDamp = new(0.5f);
     
     public void Construct(MothlingMovementStateFactory stateFactory)
     {
@@ -130,6 +130,13 @@ public class FMothlingMovement : FEnemyMovementBase, IPositionDirectionProvider
         
         _currentState = _enterState;
         _stateMachine.SetState(_currentState);
+        
+        // Disable Smooth Damp at the beginning
+        _smoothTimeAllowed = 0;
+        if (_isSmoothDampEnabled)
+        {
+            StartCoroutine(SmoothDampDelay());
+        }
         
         _isAttacking = false;
     }
@@ -231,7 +238,7 @@ public class FMothlingMovement : FEnemyMovementBase, IPositionDirectionProvider
         // Add SmoothDamp
         if (_isSmoothDampEnabled)
         {
-            transform.position = Vector3.SmoothDamp(transform.position, _position3D, ref _velocity, _smoothTime);
+            transform.position = Vector3.SmoothDamp(transform.position, _position3D, ref _velocity, _smoothTimeAllowed);
         }
         else
         {
@@ -272,6 +279,12 @@ public class FMothlingMovement : FEnemyMovementBase, IPositionDirectionProvider
         Vector2 newPosition2D = Position2D;
         newPosition2D.x = Mathf.Abs(newPosition2D.x) * Mathf.Sign(transform.position.x);
         Position2D = newPosition2D;
+    }
+    
+    private IEnumerator SmoothDampDelay()
+    {
+        yield return _waitSmoothDamp;
+        _smoothTimeAllowed = _smoothTime;
     }
 
     private void OnPatrolStateStarted()

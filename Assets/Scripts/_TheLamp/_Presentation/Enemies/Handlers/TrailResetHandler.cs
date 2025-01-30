@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -18,5 +19,10 @@ public class TrailResetHandler : MonoBehaviour, IInitializable
         yield return _waitTime;
         _trailRenderer.gameObject.SetActive(true);
         _trailRenderer.emitting = true;
+    }
+
+    private void OnDisable()
+    {
+        _trailRenderer.gameObject.SetActive(false);
     }
 }

@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 
 [RequireComponent(typeof(FMothlingMovement), typeof(FMothlingPresentation))]   
-public class FMothling: MonoBehaviour, ICollidableWithLamp, IInitializable
+public class FMothling: MonoBehaviour, ICollidableWithLamp, IInitializable, IDamageable
 {
     [Header("-- Attributes --")]
     [SerializeField] private int _maxHealth = 1;
@@ -13,7 +13,10 @@ public class FMothling: MonoBehaviour, ICollidableWithLamp, IInitializable
     [SerializeField] private FMothlingMovement _movement;
     
     private bool _isInAttackReadyMovementState = false;
-    
+
+    public event Action Started;
+    public event Action Damaged;
+    public event Action Dead;
     public float Radius => _collisionRadius;
     public Vector2 Position => transform.position;
     
@@ -21,7 +24,7 @@ public class FMothling: MonoBehaviour, ICollidableWithLamp, IInitializable
     
     public CollidableState CollisionState { get; private set; }
     public bool IsReadyForDamage { get; private set; }
-    
+    public bool IsReceivedAttack { get;  private set; }
     public bool IsReadyToAttack => CheckIsReadyToAttack();
 
     public void Initialize()
@@ -41,8 +44,30 @@ public class FMothling: MonoBehaviour, ICollidableWithLamp, IInitializable
         _isInAttackReadyMovementState = false;
         IsReadyForDamage = false;
         _isReadyForDamage = false;
+        IsReceivedAttack = false;
         CollisionState = CollidableState.Outside;
+        Started?.Invoke();
         _movement.Play();
+    }
+
+    public void ReceiveDamage(int damageAmount)
+    {
+        IsReceivedAttack = true;
+        IsReadyForDamage = false;
+        _currentHealth -= damageAmount;
+        
+        if (_currentHealth <= 0)
+        {
+            Dead?.Invoke();
+            DoDeath();
+        }
+        else
+        {
+            Debug.Log($"Damage Received: {damageAmount}.");
+            _movement.TriggerFall();
+            Damaged?.Invoke();
+        }
+        
     }
 
     private bool CheckIsReadyToAttack()
@@ -62,6 +87,7 @@ public class FMothling: MonoBehaviour, ICollidableWithLamp, IInitializable
     public void Attack()
     {
         _isInAttackReadyMovementState = false;
+        IsReceivedAttack = false;
         _movement.TriggerAttack();
     }
 
@@ -103,7 +129,12 @@ public class FMothling: MonoBehaviour, ICollidableWithLamp, IInitializable
         IsReadyForDamage = false;
         _isReadyForDamage = false;
     }
-    
+
+    public Vector3 ProvideImpactPoint()
+    {
+        return transform.position;
+    }
+
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.cyan;

@@ -9,4 +9,5 @@ public interface ICollidableWithLamp
     public void HandleEnterAttackZone();
     public void HandleCollision();
     public void HandleExitAttackZone();
+    public Vector3 ProvideImpactPoint();
 }
