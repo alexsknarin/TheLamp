@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 
 [RequireComponent(typeof(FMothlingMovement), typeof(FMothlingPresentation))]   
-public class FMothling: MonoBehaviour, ICollidableWithLamp, IInitializable, IDamageable
+public sealed class FMothling: FEnemy
 {
     [Header("-- Attributes --")]
     [SerializeField] private int _maxHealth = 1;
@@ -17,17 +17,15 @@ public class FMothling: MonoBehaviour, ICollidableWithLamp, IInitializable, IDam
     public event Action Started;
     public event Action Damaged;
     public event Action Dead;
-    public float Radius => _collisionRadius;
-    public Vector2 Position => transform.position;
-    
-    public bool IsCollided { get; private set; } // ????
-    
-    public CollidableState CollisionState { get; private set; }
-    public bool IsReadyForDamage { get; private set; }
-    public bool IsReceivedAttack { get;  private set; }
-    public bool IsReadyToAttack => CheckIsReadyToAttack();
+    public override float Radius => _collisionRadius;
+    public override Vector2 Position => transform.position;
+    // public override bool IsCollided { get; protected set; } // ????
+    // public override CollidableState CollisionState { get; protected set; }
+    // public override bool IsReadyForDamage { get; protected set; }
+    // public override bool IsReceivedAttack { get;  protected set; }
+    public override bool IsReadyToAttack => CheckIsReadyToAttack();
 
-    public void Initialize()
+    public override void Initialize()
     {
         _movement.Initialize();
         _movement.PatrolStarted += OnPatrolStarted;
@@ -38,7 +36,7 @@ public class FMothling: MonoBehaviour, ICollidableWithLamp, IInitializable, IDam
         _movement.PatrolStarted -= OnPatrolStarted;
     }
 
-    public void Play()
+    public override void Play()
     {
         _currentHealth = _maxHealth;
         _isInAttackReadyMovementState = false;
@@ -50,7 +48,7 @@ public class FMothling: MonoBehaviour, ICollidableWithLamp, IInitializable, IDam
         _movement.Play();
     }
 
-    public void ReceiveDamage(int damageAmount)
+    public override void ReceiveDamage(int damageAmount)
     {
         IsReceivedAttack = true;
         IsReadyForDamage = false;
@@ -84,30 +82,26 @@ public class FMothling: MonoBehaviour, ICollidableWithLamp, IInitializable, IDam
         return false;
     }
 
-    public void Attack()
+    public override void Attack()
     {
         _isInAttackReadyMovementState = false;
         IsReceivedAttack = false;
         _movement.TriggerAttack();
     }
 
-    public void Spread()
+    public override void Spread()
     {
         _movement.TriggerSpread();
     }
 
-    public void DoDeath()
+    public override void DoDeath()
     {
         _movement.TriggerDeath();
     }
 
-    private void OnPatrolStarted()
-    {
-        _isInAttackReadyMovementState = true;
-    }
-
     // Handle Collisions
-    public void HandleEnterAttackZone()
+
+    public override void HandleEnterAttackZone()
     {
         IsCollided = false;
         CollisionState = CollidableState.InAttackZone;
@@ -115,14 +109,14 @@ public class FMothling: MonoBehaviour, ICollidableWithLamp, IInitializable, IDam
         _isReadyForDamage = true;
     }
 
-    public void HandleCollision()
+    public override void HandleCollision()
     {
         IsCollided = true;
         CollisionState = CollidableState.AfterCollision;
         _movement.TriggerFall();
     }
 
-    public void HandleExitAttackZone()
+    public override void HandleExitAttackZone()
     {
         CollisionState = CollidableState.Outside;
         IsCollided = false;
@@ -130,9 +124,15 @@ public class FMothling: MonoBehaviour, ICollidableWithLamp, IInitializable, IDam
         _isReadyForDamage = false;
     }
 
-    public Vector3 ProvideImpactPoint()
+    public override Vector3 ProvideImpactPoint()
     {
         return transform.position;
+    }
+    
+    // --- Events ---
+    private void OnPatrolStarted()
+    {
+        _isInAttackReadyMovementState = true;
     }
 
     private void OnDrawGizmos()
