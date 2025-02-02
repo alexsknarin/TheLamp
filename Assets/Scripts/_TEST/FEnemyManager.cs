@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 
 public class FEnemyManager : MonoBehaviour
@@ -15,7 +16,7 @@ public class FEnemyManager : MonoBehaviour
     
     private List<IDamageable> _damageables = new();
 
-    private void Awake()
+    private async void Awake()
     {
         // _mothlingMovementStateFactory = new MothlingMovementStateFactory(
         //     _cameraTransform,
@@ -29,18 +30,33 @@ public class FEnemyManager : MonoBehaviour
             _cameraTransform,
             _lampPositionProviderService
         );
-        _enemyFactory = new FEnemyFactory(_mothlingEnemy, _mothlingMovementStateFactory);
+        _enemyFactory = new FEnemyFactory(_mothlingMovementStateFactory);
         
-        _enemy = _enemyFactory.CreateMothling();
+        
     }
-
-    private void Start()
+    
+    private async void LoadEnemy()
     {
-        _enemy.Play();
+        // await Task.Delay(10000);
+        _enemy = await _enemyFactory.CreateMothling();
+        Debug.Log("Enemy Loaded +++++++++++++++++++");
     }
 
     private void Update()
     {
+        if (Input.GetKeyDown(KeyCode.L))
+        {
+            LoadEnemy();
+        }
+        
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            if (_enemy != null)
+            {
+                _enemy.Play();
+            }
+        }
+
         // Start Enemy Attack
         if (Input.GetKeyDown(KeyCode.A))
         {

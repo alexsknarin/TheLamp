@@ -67,6 +67,7 @@ public class FMothlingMovement : FEnemyMovementBase, IPositionDirectionProvider
 
     public override void Initialize()
     {
+        Debug.Log("FMothlingMovement Initializing");
         // Create Movement States
         _stateFactory.SetEnemyDependencies(this, _speed, _radius, _verticalAmplitude);
         _enterState = (FMothlingMovementEnterState)_stateFactory.Create(typeof(FMothlingMovementEnterState));
@@ -139,6 +140,7 @@ public class FMothlingMovement : FEnemyMovementBase, IPositionDirectionProvider
         }
         
         _isAttacking = false;
+        enabled = true;
     }
 
     public override void TriggerAttack()
@@ -305,5 +307,6 @@ public class FMothlingMovement : FEnemyMovementBase, IPositionDirectionProvider
     private void OnDeathStateEnded()
     {
         DeathStateEnded?.Invoke();
+        enabled = false;
     }
 }

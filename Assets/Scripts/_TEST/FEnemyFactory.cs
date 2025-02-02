@@ -1,22 +1,45 @@
+using System;
+using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement.AsyncOperations;
+using Object = UnityEngine.Object;
 
 public class FEnemyFactory
 {
     private FMothling _mothlingEnemyPrefab;
     private MothlingMovementStateFactory _mothlingMovementStateFactory;
+    AsyncOperationHandle<GameObject> _mothlingEnemyAssetHandle;
     
-    public FEnemyFactory(FMothling mothlingEnemyPrefab, MothlingMovementStateFactory mothlingMovementStateFactory)
+    public FEnemyFactory(MothlingMovementStateFactory mothlingMovementStateFactory)
     {
-        _mothlingEnemyPrefab = mothlingEnemyPrefab; // find a way to load dynamically ???? check if it's possible
         _mothlingMovementStateFactory = mothlingMovementStateFactory;
     }
     
-    public FEnemy CreateMothling()
+    public async Task<FEnemy> CreateMothling()
     {
-        FMothling enemyInstance = Object.Instantiate(_mothlingEnemyPrefab);
+        if (_mothlingEnemyAssetHandle.IsValid())
+        {
+            var prefab = _mothlingEnemyAssetHandle.Result;
+            return CreateEnemyInstance(prefab);    
+        }
+        else
+        {
+            _mothlingEnemyAssetHandle = Addressables.LoadAssetAsync<GameObject>("Enemy/FMothling.prefab");
+            await _mothlingEnemyAssetHandle.Task;
+        
+            var prefab = _mothlingEnemyAssetHandle.Result;
+            return CreateEnemyInstance(prefab);    
+        }
+    }
+    
+    private FEnemy CreateEnemyInstance(GameObject prefab)
+    {
+        GameObject enemyInstance = Object.Instantiate(prefab);
         enemyInstance.GetComponent<FMothlingMovement>().Construct(_mothlingMovementStateFactory);
         enemyInstance.GetComponent<FMothlingPresentation>().Initialize();
-        enemyInstance.Initialize();
-        return enemyInstance;
-    }
+        enemyInstance.GetComponent<FMothling>().Initialize();
+        
+        return enemyInstance.GetComponent<FMothling>();
+    } 
 }
