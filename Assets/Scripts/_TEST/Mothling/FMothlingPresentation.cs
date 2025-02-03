@@ -36,6 +36,7 @@ public class FMothlingPresentation : MonoBehaviour, IInitializable
     private void OnMothlingStarted()
     {
         _trailResetHandler.Initialize();
+        _deathFlash.Initialize();
     }
 
     private void OnPreAttackStarted()
