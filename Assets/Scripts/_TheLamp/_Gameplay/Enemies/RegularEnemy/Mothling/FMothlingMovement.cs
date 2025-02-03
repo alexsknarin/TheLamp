@@ -25,7 +25,7 @@ public class FMothlingMovement : FEnemyMovementBase, IPositionDirectionProvider
     [Header("---- Depth Settings ----")]
     [SerializeField] bool _isDepthEnabled;
     // Debug
-    [SerializeField] private String _stateDebug;
+    [SerializeField] private string _stateDebug;
     [SerializeField] private int _sideDirection = 1;
     [SerializeField] private int _depthSideDirection = 0;
     

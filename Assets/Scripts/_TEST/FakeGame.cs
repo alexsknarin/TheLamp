@@ -12,9 +12,7 @@ public class FakeGame : MonoBehaviour
     private MothlingMovementStateFactory _mothlingMovementStateFactory;
     private FEnemyFactory _enemyFactory;
     private FEnemySpawner _enemySpawner;
-    
-    
-    
+
     private void Awake()
     {
         _gameConfigService = new GameConfigService(_gameConfigProvider);

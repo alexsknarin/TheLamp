@@ -25,6 +25,7 @@ public class FlyMovement : EnemyMovement
     private int _sideDirection;
     private Vector3 _velocity = Vector3.zero;
     private int _depthDirection;
+    
     // Movement States
     private EnemyMovementStateMachine _movementStateMachine;
     private EnemyMovementBaseState _currentState;
