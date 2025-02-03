@@ -49,6 +49,10 @@ public class FEnemySpawner: ITickable, IInitializable, IDisposable
             {
                 _enemyPool.PreloadEnemy(typeof(FMothling));                
             }
+            if (enemyType == EnemyType.Fly)
+            {
+                _enemyPool.PreloadEnemy(typeof(FFly));                
+            }
         }
         
         _enemies = enemies;
@@ -67,13 +71,20 @@ public class FEnemySpawner: ITickable, IInitializable, IDisposable
     {
         if (_isWaveActive && _currentEnemyIndex < _enemyQueue.Count())
         {
-            if (_localTime >= 6f)
+            if (_localTime >= 4f)
             {
                 _localTime = 0;
                 
                 if (_enemyQueue.Get(_currentEnemyIndex) == EnemyType.Mothling)
                 {
                     FEnemy enemy = _enemyPool.Get(typeof(FMothling));
+                    _enemies.Add(enemy);
+                    enemy.Play();
+                    _currentEnemyIndex++;
+                }
+                else if (_enemyQueue.Get(_currentEnemyIndex) == EnemyType.Fly)
+                {
+                    FEnemy enemy = _enemyPool.Get(typeof(FFly));
                     _enemies.Add(enemy);
                     enemy.Play();
                     _currentEnemyIndex++;

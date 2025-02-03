@@ -9,15 +9,23 @@ public class FEnemyFactory
 {
     private FMothling _mothlingEnemyPrefab;
     private MothlingMovementStateFactory _mothlingMovementStateFactory;
-    AsyncOperationHandle<GameObject> _mothlingEnemyAssetHandle;
+    private FlyMovementStateFactory _flyMovementStateFactory;
     
-    public FEnemyFactory(MothlingMovementStateFactory mothlingMovementStateFactory)
+    AsyncOperationHandle<GameObject> _mothlingEnemyAssetHandle;
+    AsyncOperationHandle<GameObject> _flyEnemyAssetHandle;
+    
+    public FEnemyFactory(
+        MothlingMovementStateFactory mothlingMovementStateFactory,
+        FlyMovementStateFactory flyMovementStateFactory
+    )
     {
         _mothlingMovementStateFactory = mothlingMovementStateFactory;
+        _flyMovementStateFactory = flyMovementStateFactory;
         IsMothlingLoaded = false;
     }
     
     public bool IsMothlingLoaded { get; private set; }
+    public bool IsFlyLoaded { get; private set; }
 
     public async void LoadEnemy(Type type)
     {
@@ -25,7 +33,15 @@ public class FEnemyFactory
         {
             _mothlingEnemyAssetHandle = Addressables.LoadAssetAsync<GameObject>("Enemy/FMothling.prefab");
             await _mothlingEnemyAssetHandle.Task;
-            IsMothlingLoaded = true;    
+            IsMothlingLoaded = true;
+            Debug.Log("Mothling Loaded");
+        }
+        if (type == typeof(FFly))
+        {
+            _flyEnemyAssetHandle = Addressables.LoadAssetAsync<GameObject>("Enemy/FFly.prefab");
+            await _flyEnemyAssetHandle.Task;
+            IsFlyLoaded = true;
+            Debug.Log("Fly Loaded");
         }
     }
     
@@ -34,21 +50,38 @@ public class FEnemyFactory
         if (type == typeof(FMothling) && _mothlingEnemyAssetHandle.IsValid())
         {
             var prefab = _mothlingEnemyAssetHandle.Result;
-            return CreateEnemyInstance(prefab);    
+            return CreateMothlingInstance(prefab);    
+        }
+        if (type == typeof(FFly) && _flyEnemyAssetHandle.IsValid())
+        {
+            var prefab = _flyEnemyAssetHandle.Result;
+            return CreateFlyInstance(prefab);    
         }
         else
         {
-            throw new Exception("Mothling prefab is not loaded yet");
+            throw new Exception("Enemy Factory: Enemy type not loaded");
         }
     }
     
-    private FEnemy CreateEnemyInstance(GameObject prefab)
+    private FEnemy CreateMothlingInstance(GameObject prefab)
     {
         GameObject enemyInstance = Object.Instantiate(prefab);
         enemyInstance.GetComponent<FMothlingMovement>().Construct(_mothlingMovementStateFactory);
         enemyInstance.GetComponent<FMothlingPresentation>().Initialize();
-        enemyInstance.GetComponent<FMothling>().Initialize();
+        var enemy = enemyInstance.GetComponent<FMothling>();
+        enemy.Initialize();
         
-        return enemyInstance.GetComponent<FMothling>();
+        return enemy;
     } 
+    
+    private FEnemy CreateFlyInstance(GameObject prefab)
+    {
+        GameObject enemyInstance = Object.Instantiate(prefab);
+        enemyInstance.GetComponent<FFlyMovement>().Construct(_flyMovementStateFactory);
+        enemyInstance.GetComponent<FFlyPresentation>().Initialize();
+        var enemy = enemyInstance.GetComponent<FFly>();
+        enemy.Initialize();
+        
+        return enemy;
+    }
 }

@@ -10,6 +10,7 @@ public class FakeGame : MonoBehaviour
     [SerializeField] private LampCollisionDetectionService _lampCollisionDetectionService;
     private IGameConfigService _gameConfigService;
     private MothlingMovementStateFactory _mothlingMovementStateFactory;
+    private FlyMovementStateFactory _flyMovementStateFactory;
     private FEnemyFactory _enemyFactory;
     private FEnemySpawner _enemySpawner;
 
@@ -17,7 +18,11 @@ public class FakeGame : MonoBehaviour
     {
         _gameConfigService = new GameConfigService(_gameConfigProvider);
         _mothlingMovementStateFactory = new MothlingMovementStateFactory(_cameraTransform, _lampPositionProviderService);
-        _enemyFactory = new FEnemyFactory(_mothlingMovementStateFactory);
+        _flyMovementStateFactory = new FlyMovementStateFactory(_cameraTransform, _lampPositionProviderService);
+        _enemyFactory = new FEnemyFactory(
+            _mothlingMovementStateFactory,
+            _flyMovementStateFactory
+            );
         _enemySpawner = new FEnemySpawner(_enemyFactory);
         _waveEnemyDirector.Construct(_gameConfigService, _lampCollisionDetectionService, _enemySpawner);
         _waveEnemyDirector.Initialize();
@@ -33,12 +38,13 @@ public class FakeGame : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Q))
         {
-            _waveEnemyDirector.PrepareWave(1);
+            _waveEnemyDirector.PrepareWave(6);
         }
         
         if (Input.GetKeyDown(KeyCode.W))
         {
-            _waveEnemyDirector.StartWave(1);
+            Debug.Log("Starting Fake Wave");
+            _waveEnemyDirector.StartWave();
         }
         
     }

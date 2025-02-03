@@ -69,6 +69,7 @@ public class WaveEnemyDirector : MonoBehaviour, IInitializable
         Debug.Log($"Prepare mode for a wave {waveNumber} started");
         Debug.Log($"Wave {waveNumber} generated");
         EnemyQueue enemyQueue = _spawnQueue.Get(waveNumber);
+        
         for (int i = 0; i < enemyQueue.Count(); i++)
         {
             Debug.Log($"Wave: Enemy {enemyQueue.Get(i)} found");
@@ -79,9 +80,8 @@ public class WaveEnemyDirector : MonoBehaviour, IInitializable
         
     }
 
-    public void StartWave(int waveNumber)
+    public void StartWave()
     {
-        Debug.Log($"Wave {waveNumber} started");
         _enemySpawner.StartWave();
         _enemyAttacker.StartWave();
     }

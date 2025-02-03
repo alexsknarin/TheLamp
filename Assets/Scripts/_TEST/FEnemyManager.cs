@@ -13,6 +13,7 @@ public class FEnemyManager : MonoBehaviour
     private FEnemy _enemy;
 
     private MothlingMovementStateFactory _mothlingMovementStateFactory;
+    private FlyMovementStateFactory _flyMovementStateFactory;
     private FEnemyFactory _enemyFactory;
     private FEnemyPool _enemyPool;
     
@@ -24,7 +25,12 @@ public class FEnemyManager : MonoBehaviour
             _cameraTransform,
             _lampPositionProviderService
         );
-        _enemyFactory = new FEnemyFactory(_mothlingMovementStateFactory);
+        _flyMovementStateFactory = new FlyMovementStateFactory(
+            _cameraTransform,
+            _lampPositionProviderService
+        );
+        
+        _enemyFactory = new FEnemyFactory(_mothlingMovementStateFactory, _flyMovementStateFactory);
         _enemyPool = new FEnemyPool(_enemyFactory);
         _enemyPool.Initialize();
         
