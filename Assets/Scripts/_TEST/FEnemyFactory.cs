@@ -14,22 +14,31 @@ public class FEnemyFactory
     public FEnemyFactory(MothlingMovementStateFactory mothlingMovementStateFactory)
     {
         _mothlingMovementStateFactory = mothlingMovementStateFactory;
+        IsMothlingLoaded = false;
     }
     
-    public async Task<FEnemy> CreateMothling()
+    public bool IsMothlingLoaded { get; private set; }
+
+    public async void LoadEnemy(Type type)
     {
-        if (_mothlingEnemyAssetHandle.IsValid())
+        if (type == typeof(FMothling))
+        {
+            _mothlingEnemyAssetHandle = Addressables.LoadAssetAsync<GameObject>("Enemy/FMothling.prefab");
+            await _mothlingEnemyAssetHandle.Task;
+            IsMothlingLoaded = true;    
+        }
+    }
+    
+    public FEnemy CreateEnemy(Type type)
+    {
+        if (type == typeof(FMothling) && _mothlingEnemyAssetHandle.IsValid())
         {
             var prefab = _mothlingEnemyAssetHandle.Result;
             return CreateEnemyInstance(prefab);    
         }
         else
         {
-            _mothlingEnemyAssetHandle = Addressables.LoadAssetAsync<GameObject>("Enemy/FMothling.prefab");
-            await _mothlingEnemyAssetHandle.Task;
-        
-            var prefab = _mothlingEnemyAssetHandle.Result;
-            return CreateEnemyInstance(prefab);    
+            throw new Exception("Mothling prefab is not loaded yet");
         }
     }
     

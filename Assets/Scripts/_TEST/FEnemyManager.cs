@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class FEnemyManager : MonoBehaviour
 {
+    // TODO: move this to the Game Context Root
     [SerializeField] private LampCollisionDetectionService _lampCollisionDetectionService;
     [SerializeField] private FMothling _mothlingEnemy;
     [SerializeField] private Transform _cameraTransform;
@@ -13,48 +14,34 @@ public class FEnemyManager : MonoBehaviour
 
     private MothlingMovementStateFactory _mothlingMovementStateFactory;
     private FEnemyFactory _enemyFactory;
+    private FEnemyPool _enemyPool;
     
     private List<IDamageable> _damageables = new();
 
-    private async void Awake()
+    private void Awake()
     {
-        // _mothlingMovementStateFactory = new MothlingMovementStateFactory(
-        //     _cameraTransform,
-        //     _lampPositionProviderService
-        //     );
-        // _mothlingEnemy.GetComponent<FMothlingMovement>().Construct(_mothlingMovementStateFactory);
-        // _mothlingEnemy.GetComponent<FMothlingPresentation>().Initialize();
-        // _mothlingEnemy.Initialize();
-        
         _mothlingMovementStateFactory = new MothlingMovementStateFactory(
             _cameraTransform,
             _lampPositionProviderService
         );
         _enemyFactory = new FEnemyFactory(_mothlingMovementStateFactory);
-        
+        _enemyPool = new FEnemyPool(_enemyFactory);
+        _enemyPool.Initialize();
         
     }
-    
-    private async void LoadEnemy()
-    {
-        // await Task.Delay(10000);
-        _enemy = await _enemyFactory.CreateMothling();
-        Debug.Log("Enemy Loaded +++++++++++++++++++");
-    }
+
 
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.L))
         {
-            LoadEnemy();
+            _enemyPool.PreloadEnemy(typeof(FMothling));
         }
         
         if (Input.GetKeyDown(KeyCode.P))
         {
-            if (_enemy != null)
-            {
-                _enemy.Play();
-            }
+            _enemy = _enemyPool.Get(typeof(FMothling));
+            _enemy.Play();
         }
 
         // Start Enemy Attack

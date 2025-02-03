@@ -20,6 +20,17 @@ public class FEnemiesLampAttackHandler
         }
     }
     
+    public void FHandleLampAttack(List<IDamageable> damageables, int attackPower)
+    {
+        foreach (var damageable in damageables)
+        {
+            if (attackPower > 0 && damageable.IsReadyForDamage)
+            {
+                damageable.ReceiveDamage(attackPower);
+            }
+        }
+    }
+    
     public void HandleLampBlockedAttack(List<EnemyBase> enemies, int attackPower)
     {
         foreach (var enemy in enemies)

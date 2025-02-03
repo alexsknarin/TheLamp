@@ -36,15 +36,10 @@ public class FMothlingMovementDeathState: FMothlingMovementStateBase
         Position2D += _bounceForce * (Time.deltaTime * _speedMultiplier) + _gravityForce;
         _bounceForce *= _dragAmount;
         _gravityForce += Vector2.down * (_gravityForceMagnitude * Time.deltaTime);
-   
-        if (Position2D.y < -_fallBottomYcoordinate)
+        
+        if (Position2D.y < _fallBottomYcoordinate)
         {
-            IsReadyToSwitch = true;
+            Ended?.Invoke();
         }
-    }
-    
-    public override void OnExit()
-    {
-        Ended?.Invoke();
     }
 }

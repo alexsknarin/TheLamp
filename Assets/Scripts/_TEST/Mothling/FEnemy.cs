@@ -1,7 +1,9 @@
 using UnityEngine;
+using UnityEngine.Pool;
 
-public abstract class FEnemy: MonoBehaviour, ICollidableWithLamp, IInitializable, IDamageable
+public abstract class FEnemy: MonoBehaviour, ICollidableWithLamp, IInitializable, IDamageable, IPoolableFEnemy, IAbleToAttack
 {
+    
     public virtual float Radius { get; }
     public virtual Vector2 Position { get; }
     public virtual bool IsReadyToAttack { get; }
@@ -20,6 +22,5 @@ public abstract class FEnemy: MonoBehaviour, ICollidableWithLamp, IInitializable
     public abstract void Attack();
     public abstract void Spread();
     public abstract void DoDeath();
-
-
+    public abstract void SetObjectPool(ObjectPool<FEnemy> pool);
 }

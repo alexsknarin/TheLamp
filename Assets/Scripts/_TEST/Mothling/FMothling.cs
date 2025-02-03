@@ -1,5 +1,7 @@
 using System;
 using UnityEngine;
+using UnityEngine.Pool;
+using UnityEngine.Rendering;
 
 [RequireComponent(typeof(FMothlingMovement), typeof(FMothlingPresentation))]   
 public sealed class FMothling: FEnemy
@@ -11,29 +13,33 @@ public sealed class FMothling: FEnemy
     [SerializeField] private bool _isReadyForDamage = false;
     [Header("-- Movement --")]
     [SerializeField] private FMothlingMovement _movement;
-    
+    private IObjectPool<FEnemy> _objectPool;
     private bool _isInAttackReadyMovementState = false;
-
+    
     public event Action Started;
     public event Action Damaged;
     public event Action Dead;
     public override float Radius => _collisionRadius;
     public override Vector2 Position => transform.position;
-    // public override bool IsCollided { get; protected set; } // ????
-    // public override CollidableState CollisionState { get; protected set; }
-    // public override bool IsReadyForDamage { get; protected set; }
-    // public override bool IsReceivedAttack { get;  protected set; }
     public override bool IsReadyToAttack => CheckIsReadyToAttack();
 
     public override void Initialize()
     {
         _movement.Initialize();
         _movement.PatrolStarted += OnPatrolStarted;
+        _movement.DeathStateEnded += OnDeathStateEnded;
+        // TODO: release from pool on death state end
     }
 
     private void OnDestroy()
     {
         _movement.PatrolStarted -= OnPatrolStarted;
+        _movement.DeathStateEnded -= OnDeathStateEnded;
+    }
+
+    public override void SetObjectPool(UnityEngine.Pool.ObjectPool<FEnemy> pool)
+    {
+        _objectPool = pool;
     }
 
     public override void Play()
@@ -99,6 +105,7 @@ public sealed class FMothling: FEnemy
         _movement.TriggerDeath();
     }
 
+
     // Handle Collisions
 
     public override void HandleEnterAttackZone()
@@ -128,11 +135,17 @@ public sealed class FMothling: FEnemy
     {
         return transform.position;
     }
-    
+
     // --- Events ---
+
     private void OnPatrolStarted()
     {
         _isInAttackReadyMovementState = true;
+    }
+
+    private void OnDeathStateEnded()
+    {
+        _objectPool.Release(this);
     }
 
     private void OnDrawGizmos()
