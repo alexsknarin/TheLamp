@@ -28,7 +28,6 @@ public class FlyMovementDeathState: EnemyMovementBaseState
     public override void ExecuteState(Vector3 currentPosition)
     {
         Position = currentPosition + _bounceForce * Time.deltaTime + _gravityForce;
-        
         _bounceForce = _bounceForce * _dragAmount;
         _gravityForce = _gravityForce + Vector3.down * (_gravityForceMagnitude * Time.deltaTime);
     }

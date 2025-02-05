@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 public class FlyMovement : EnemyMovement
@@ -22,10 +21,9 @@ public class FlyMovement : EnemyMovement
     [SerializeField] bool _isDepthEnabled;
     // Debug
     [SerializeField] private EnemyState _stateDebug;
-    private int _sideDirection;
     private Vector3 _velocity = Vector3.zero;
     private int _depthDirection;
-    
+    private int _sideDirection;
     // Movement States
     private EnemyMovementStateMachine _movementStateMachine;
     private EnemyMovementBaseState _currentState;

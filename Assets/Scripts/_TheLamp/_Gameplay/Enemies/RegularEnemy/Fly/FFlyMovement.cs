@@ -9,6 +9,8 @@ public class FFlyMovement : FEnemyMovementBase, IPositionDirectionProvider
     [SerializeField] private float _speed;
     [SerializeField] private float _radius;
     [SerializeField] private float _verticalAmplitude;
+    [SerializeField] private float _proximityOffset = 0.11f;
+    [SerializeField] private bool _isDeathByTimer;
     [Header("---- Spawn Settings ----")]
     [SerializeField] private float _spawnAreaSize = 0.5f;
     [SerializeField] private Vector2 _spawnAreaCenter;
@@ -71,7 +73,7 @@ public class FFlyMovement : FEnemyMovementBase, IPositionDirectionProvider
     {
         Debug.Log("FFlyMovement Initializing");
         // Create Movement States
-        _stateFactory.SetEnemyDependencies(this, _speed, _radius, _verticalAmplitude);
+        _stateFactory.SetEnemyDependencies(this, _speed, _radius, _verticalAmplitude, _proximityOffset, _isDeathByTimer);
         _enterState = (FFlyMovementEnterState)_stateFactory.Create(typeof(FFlyMovementEnterState));
         _patrolState = (FFlyMovementPatrolState)_stateFactory.Create(typeof(FFlyMovementPatrolState));
         _preAttackStateR = (FFlyMovementPreAttackStateR)_stateFactory.Create(typeof(FFlyMovementPreAttackStateR));

@@ -40,7 +40,6 @@ public class FlyMovementAttackState: EnemyMovementBaseState
         newPosition += direction * (_speed * _acceleratedSpeed * Time.deltaTime);
         _acceleratedSpeed += _acceleration * Time.deltaTime;
         
-        // Check if lamp was penetrated
         if ((newPosition - _lampPositionProvider.GetLampPosition()).magnitude < _flyRadius + 0.5f)
         {
             newPosition = _lampPositionProvider.GetLampPosition() + newPosition.normalized * (0.5f + _flyRadius);

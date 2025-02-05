@@ -41,7 +41,6 @@ public class FireflyMovement : EnemyMovement
     // State parameters
     private bool _isDead = false;
     private bool _isCollided = false;
-
     // Dependencies
     private ILampPositionProviderService _lampPositionProviderService;
 

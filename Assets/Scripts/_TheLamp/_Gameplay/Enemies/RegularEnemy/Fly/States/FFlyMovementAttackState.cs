@@ -7,6 +7,7 @@ public class FFlyMovementAttackState : FFlyMovementStateBase
     private readonly IPositionDirectionProvider _positionDirectionProvider;
     private ILampPositionProviderService _lampPositionProviderService;  // TODO: enable later
     private readonly float _speed;
+    private readonly float _proximityOffset;
 
     // State specific attributes
     private float _acceleration = 13.5f;
@@ -19,14 +20,15 @@ public class FFlyMovementAttackState : FFlyMovementStateBase
         Vector3 cameraPosition,
         IPositionDirectionProvider positionDirectionProvider,
         ILampPositionProviderService lampPositionProviderService,
-        float speed
+        float speed,
+        float proximityOffset
     )
     {
         // _cameraPosition = cameraPosition; // TODO: enable later
         _positionDirectionProvider = positionDirectionProvider;
         _lampPositionProviderService = lampPositionProviderService;
         _speed = speed * _speedMultiplier;
-        
+        _proximityOffset = proximityOffset;
     }
     
     public override void OnEnter()
@@ -44,7 +46,7 @@ public class FFlyMovementAttackState : FFlyMovementStateBase
         
         Vector3 cameraDirection = (_cameraPosition - (Vector3)Position2D).normalized;
         float attackProximityGradient = Mathf.Clamp((Position2D.magnitude - 0.65f) / _startDistance, 0.0f, 1.0f);
-        attackProximityGradient = Mathf.Pow(attackProximityGradient, 2.0f) + 0.11f;
+        attackProximityGradient = Mathf.Pow(attackProximityGradient, 2.0f) + _proximityOffset;
         DepthDirection = cameraDirection * (2.5f * _depthDecrement * attackProximityGradient);
     }
 }

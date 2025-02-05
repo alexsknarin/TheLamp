@@ -11,6 +11,8 @@ public class FlyMovementStateFactory
     private float _verticalAmplitude;
     private Vector2 _spawnAreaCenter;
     private float _spawnAreaSize;
+    private float _proximityOffset;
+    private bool _isDeathByTimer;
 
     public FlyMovementStateFactory(
         Transform cameraTransform, 
@@ -25,13 +27,17 @@ public class FlyMovementStateFactory
         IPositionDirectionProvider positionDirectionProvider,
         float speed,
         float radius,
-        float verticalAmplitude
+        float verticalAmplitude,
+        float proximityOffset,
+        bool isDeathByTimer
         )
     {
         _positionDirectionProvider = positionDirectionProvider;
         _speed = speed;
         _radius = radius;
         _verticalAmplitude = verticalAmplitude;
+        _proximityOffset = proximityOffset;
+        _isDeathByTimer = isDeathByTimer;
     }
     
     
@@ -81,7 +87,8 @@ public class FlyMovementStateFactory
                 _cameraTransform.position,
                 _positionDirectionProvider,
                 _lampPositionProviderService,
-                _speed
+                _speed,
+                _proximityOffset
                 );
         }
         if (stateType == typeof(FFlyMovementFallState))
@@ -96,7 +103,8 @@ public class FlyMovementStateFactory
         if (stateType == typeof(FFlyMovementDeathState))
         {
             return new FFlyMovementDeathState(
-                _positionDirectionProvider
+                _positionDirectionProvider,
+                _isDeathByTimer
                 );
         }
         if (stateType == typeof(FFlyMovementSpreadState))
