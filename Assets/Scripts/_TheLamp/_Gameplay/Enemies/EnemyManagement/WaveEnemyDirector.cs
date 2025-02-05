@@ -102,7 +102,7 @@ public class WaveEnemyDirector : MonoBehaviour, IInitializable
                 {
                     if (damageable.IsReadyForDamage)
                     {
-                        damageable.ReceiveDamage(3);
+                        damageable.ReceiveDamage(1);
                     }
                 }
                 

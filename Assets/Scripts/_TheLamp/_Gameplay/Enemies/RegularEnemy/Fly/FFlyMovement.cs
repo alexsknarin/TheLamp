@@ -83,8 +83,10 @@ public class FFlyMovement : FEnemyMovementBase, IPositionDirectionProvider
         
         // Subscribe to state events
         _patrolState.Started += OnPatrolStateStarted; 
-        _preAttackStateR.Started += OnPreAttackStateRStarted;
-        _preAttackStateR.Ended += OnPreAttackStateREnded;
+        _preAttackStateR.Started += OnPreAttackStateStarted;
+        _preAttackStateR.Ended += OnPreAttackStateEnded;
+        _preAttackStateL.Started += OnPreAttackStateStarted;
+        _preAttackStateL.Ended += OnPreAttackStateEnded;
         _deathState.Ended += OnDeathStateEnded;
         
         // Automatic State transitions
@@ -132,8 +134,10 @@ public class FFlyMovement : FEnemyMovementBase, IPositionDirectionProvider
     private void OnDestroy()
     {
         _patrolState.Started -= OnPatrolStateStarted; 
-        _preAttackStateR.Started -= OnPreAttackStateRStarted;
-        _preAttackStateR.Ended -= OnPreAttackStateREnded;
+        _preAttackStateR.Started -= OnPreAttackStateStarted;
+        _preAttackStateR.Ended -= OnPreAttackStateEnded;
+        _preAttackStateL.Started -= OnPreAttackStateStarted;
+        _preAttackStateL.Ended -= OnPreAttackStateEnded;
         _deathState.Ended -= OnDeathStateEnded;
     }
     
@@ -301,12 +305,12 @@ public class FFlyMovement : FEnemyMovementBase, IPositionDirectionProvider
         PatrolStarted?.Invoke();
     }
 
-    private void OnPreAttackStateRStarted()
+    private void OnPreAttackStateStarted()
     {
         PreAttackStarted?.Invoke();
     }
 
-    private void OnPreAttackStateREnded()
+    private void OnPreAttackStateEnded()
     {
         PreAttackEnded?.Invoke();
     }

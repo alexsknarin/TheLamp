@@ -7,6 +7,7 @@ public class FFlyPresentation : MonoBehaviour
     [SerializeField] private PreAttackFlash _preAttackFlash;
     [SerializeField] private DamageFlash _damageFlash;
     [SerializeField] private DeathFlash _deathFlash;
+    [SerializeField] private HealthIndication _healthIndication;
     [SerializeField] private TrailResetHandler _trailResetHandler;
     
     public void Initialize()
@@ -14,11 +15,13 @@ public class FFlyPresentation : MonoBehaviour
         _preAttackFlash.Initialize();
         _damageFlash.Initialize();
         _deathFlash.Initialize();
+        _healthIndication.Initialize();
         
         _movement.PreAttackStarted += OnPreAttackStarted;
         _movement.PreAttackEnded += OnPreAttackEnded;
         _fly.Started += OnFlyStarted;
         _fly.Damaged += OnFlyDamaged;
+        _fly.HealthChanged += _healthIndication.Refresh;
         _fly.Dead += OnFlyDead;
         
     }
@@ -29,6 +32,7 @@ public class FFlyPresentation : MonoBehaviour
         _movement.PreAttackEnded -= OnPreAttackEnded;
         _fly.Started -= OnFlyStarted;
         _fly.Damaged -= OnFlyDamaged;
+        _fly.HealthChanged -= _healthIndication.Refresh;
         _fly.Dead -= OnFlyDead;
     }
 

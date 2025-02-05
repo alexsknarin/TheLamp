@@ -102,6 +102,7 @@ GameObject:
   - component: {fileID: 656839404738521421}
   - component: {fileID: 4092502527122645161}
   - component: {fileID: 7930825794062260679}
+  - component: {fileID: 4007905280489669504}
   m_Layer: 0
   m_Name: FFly
   m_TagString: Untagged
@@ -143,7 +144,6 @@ MonoBehaviour:
   _maxHealth: 3
   _currentHealth: 0
   _collisionRadius: 0.1
-  _isReadyForDamage: 0
   _movement: {fileID: 4281207078490050979}
 --- !u!114 &4281207078490050979
 MonoBehaviour:
@@ -188,6 +188,7 @@ MonoBehaviour:
   _preAttackFlash: {fileID: 6012658499516240583}
   _damageFlash: {fileID: 656839404738521421}
   _deathFlash: {fileID: 4092502527122645161}
+  _healthIndication: {fileID: 4007905280489669504}
   _trailResetHandler: {fileID: 7930825794062260679}
 --- !u!114 &6012658499516240583
 MonoBehaviour:
@@ -248,6 +249,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _trailRenderer: {fileID: 2084340180623180054}
+--- !u!114 &4007905280489669504
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1941715361160141917}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c80910c756ff15447bcf47d84e0824bf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _meshRenderer: {fileID: 9134365916117129863}
 --- !u!1 &3878909750923478054
 GameObject:
   m_ObjectHideFlags: 0
