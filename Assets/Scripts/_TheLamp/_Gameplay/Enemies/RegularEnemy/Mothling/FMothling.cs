@@ -10,17 +10,14 @@ public sealed class FMothling: FEnemy
     [SerializeField] private int _maxHealth = 1;
     [SerializeField] private int _currentHealth;
     [SerializeField] private float _collisionRadius = 0.075f;
-    [SerializeField] private bool _isReadyForDamage = false;
     [Header("-- Movement --")]
     [SerializeField] private FMothlingMovement _movement;
-    private IObjectPool<FEnemy> _objectPool;
-    private bool _isInAttackReadyMovementState = false;
     
     public event Action Started;
     public event Action Damaged;
     public event Action Dead;
     public override float Radius => _collisionRadius;
-    public override Vector2 Position => transform.position;
+    public override Vector2 Position => _movement.Position2D;
     public override bool IsReadyToAttack => CheckIsReadyToAttack();
 
     public override void Initialize()
@@ -37,17 +34,11 @@ public sealed class FMothling: FEnemy
         _movement.DeathStateEnded -= OnDeathStateEnded;
     }
 
-    public override void SetObjectPool(UnityEngine.Pool.ObjectPool<FEnemy> pool)
-    {
-        _objectPool = pool;
-    }
-
     public override void Play()
     {
         _currentHealth = _maxHealth;
         _isInAttackReadyMovementState = false;
         IsReadyForDamage = false;
-        _isReadyForDamage = false;
         IsReceivedAttack = false;
         CollisionState = CollidableState.Outside;
         Started?.Invoke();
@@ -105,17 +96,6 @@ public sealed class FMothling: FEnemy
         _movement.TriggerDeath();
     }
 
-
-    // Handle Collisions
-
-    public override void HandleEnterAttackZone()
-    {
-        IsCollided = false;
-        CollisionState = CollidableState.InAttackZone;
-        IsReadyForDamage = true;
-        _isReadyForDamage = true;
-    }
-
     public override void HandleCollision()
     {
         IsCollided = true;
@@ -123,21 +103,7 @@ public sealed class FMothling: FEnemy
         _movement.TriggerFall();
     }
 
-    public override void HandleExitAttackZone()
-    {
-        CollisionState = CollidableState.Outside;
-        IsCollided = false;
-        IsReadyForDamage = false;
-        _isReadyForDamage = false;
-    }
-
-    public override Vector3 ProvideImpactPoint()
-    {
-        return transform.position;
-    }
-
     // --- Events ---
-
     private void OnPatrolStarted()
     {
         _isInAttackReadyMovementState = true;

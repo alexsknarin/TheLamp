@@ -3,6 +3,9 @@ using UnityEngine.Pool;
 
 public abstract class FEnemy: MonoBehaviour, ICollidableWithLamp, IInitializable, IDamageable, IPoolableFEnemy, IAbleToAttack
 {
+    // Common fields
+    protected bool _isInAttackReadyMovementState = false;
+    protected IObjectPool<FEnemy> _objectPool;
     
     public virtual float Radius { get; }
     public virtual Vector2 Position { get; }
@@ -14,13 +17,35 @@ public abstract class FEnemy: MonoBehaviour, ICollidableWithLamp, IInitializable
     
     public abstract void Initialize();
     public abstract void Play();
-    public abstract void HandleEnterAttackZone();
+
+    public virtual void HandleEnterAttackZone()
+    {
+        IsCollided = false;
+        CollisionState = CollidableState.InAttackZone;
+        IsReadyForDamage = true;
+    }
+    
     public abstract void HandleCollision();
-    public abstract void HandleExitAttackZone();
-    public abstract Vector3 ProvideImpactPoint();
+
+    public virtual void HandleExitAttackZone()
+    {
+        CollisionState = CollidableState.Outside;
+        IsCollided = false;
+        IsReadyForDamage = false;
+    }
+
+    public virtual Vector3 ProvideImpactPoint()
+    {
+        return transform.position;
+    }
+
     public abstract void ReceiveDamage(int damageAmount);
     public abstract void Attack();
     public abstract void Spread();
     public abstract void DoDeath();
-    public abstract void SetObjectPool(ObjectPool<FEnemy> pool);
+
+    public virtual void SetObjectPool(ObjectPool<FEnemy> pool)
+    {
+        _objectPool = pool;
+    }
 }
