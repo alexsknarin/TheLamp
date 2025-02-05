@@ -40,7 +40,8 @@ public class FFlyMovement : FEnemyMovementBase, IPositionDirectionProvider
     private FFlyMovementStateBase _currentState;
     private FFlyMovementEnterState _enterState;
     private FFlyMovementPatrolState _patrolState;
-    private FFlyMovementPreAttackState _preAttackState;
+    private FFlyMovementPreAttackStateR _preAttackStateR;
+    private FFlyMovementPreAttackStateL _preAttackStateL;
     private FFlyMovementAttackState _attackState;
     private FFlyMovementFallState _fallState;
     private FFlyMovementDeathState _deathState;
@@ -62,7 +63,9 @@ public class FFlyMovement : FEnemyMovementBase, IPositionDirectionProvider
     public event Action DeathStateEnded;
 
     public Vector2 Position2D { get; private set; } 
-    public Vector3 DepthDirection { get; private set; } 
+    public Vector3 DepthDirection { get; private set; }
+    
+    public override int SideDirection => _sideDirection;
     
     public override void Initialize()
     {
@@ -71,7 +74,8 @@ public class FFlyMovement : FEnemyMovementBase, IPositionDirectionProvider
         _stateFactory.SetEnemyDependencies(this, _speed, _radius, _verticalAmplitude);
         _enterState = (FFlyMovementEnterState)_stateFactory.Create(typeof(FFlyMovementEnterState));
         _patrolState = (FFlyMovementPatrolState)_stateFactory.Create(typeof(FFlyMovementPatrolState));
-        _preAttackState = (FFlyMovementPreAttackState)_stateFactory.Create(typeof(FFlyMovementPreAttackState));
+        _preAttackStateR = (FFlyMovementPreAttackStateR)_stateFactory.Create(typeof(FFlyMovementPreAttackStateR));
+        _preAttackStateL = (FFlyMovementPreAttackStateL)_stateFactory.Create(typeof(FFlyMovementPreAttackStateL));
         _attackState = (FFlyMovementAttackState)_stateFactory.Create(typeof(FFlyMovementAttackState));
         _fallState = (FFlyMovementFallState)_stateFactory.Create(typeof(FFlyMovementFallState));
         _deathState = (FFlyMovementDeathState)_stateFactory.Create(typeof(FFlyMovementDeathState));
@@ -79,25 +83,38 @@ public class FFlyMovement : FEnemyMovementBase, IPositionDirectionProvider
         
         // Subscribe to state events
         _patrolState.Started += OnPatrolStateStarted; 
-        _preAttackState.Started += OnPreAttackStateStarted;
-        _preAttackState.Ended += OnPreAttackStateEnded;
+        _preAttackStateR.Started += OnPreAttackStateRStarted;
+        _preAttackStateR.Ended += OnPreAttackStateREnded;
         _deathState.Ended += OnDeathStateEnded;
         
         // Automatic State transitions
         At(_enterState, _patrolState, () => _enterState.IsReadyToSwitch);
-        At(_patrolState, _preAttackState, IsAttackStarted());
-        At(_preAttackState, _attackState, () => _preAttackState.IsReadyToSwitch);
+        At(_patrolState, _preAttackStateR, IsAttackStartedR());
+        At(_patrolState, _preAttackStateL, IsAttackStartedL());
+        At(_preAttackStateR, _attackState, () => _preAttackStateR.IsReadyToSwitch);
+        At(_preAttackStateL, _attackState, () => _preAttackStateL.IsReadyToSwitch);
         At(_fallState, _enterState, IsFallEnded());
         // Predicates
-        Func<bool> IsAttackStarted() => () =>
+        Func<bool> IsAttackStartedR() => () =>
         {
-            if (_isAttacking)
+            if (_isAttacking && _sideDirection == 1)
             {
                 _isAttacking = false;
                 return true;
             }
             return false;
         };
+        
+        Func<bool> IsAttackStartedL() => () =>
+        {
+            if (_isAttacking && _sideDirection == -1)
+            {
+                _isAttacking = false;
+                return true;
+            }
+            return false;
+        };
+        
         
         Func<bool> IsFallEnded() => () =>
         {
@@ -115,8 +132,8 @@ public class FFlyMovement : FEnemyMovementBase, IPositionDirectionProvider
     private void OnDestroy()
     {
         _patrolState.Started -= OnPatrolStateStarted; 
-        _preAttackState.Started -= OnPreAttackStateStarted;
-        _preAttackState.Ended -= OnPreAttackStateEnded;
+        _preAttackStateR.Started -= OnPreAttackStateRStarted;
+        _preAttackStateR.Ended -= OnPreAttackStateREnded;
         _deathState.Ended -= OnDeathStateEnded;
     }
     
@@ -184,7 +201,7 @@ public class FFlyMovement : FEnemyMovementBase, IPositionDirectionProvider
     {
         if (_currentState.Equals(_enterState)||
             _currentState.Equals(_patrolState)||
-            _currentState.Equals(_preAttackState)||
+            _currentState.Equals(_preAttackStateR)||
             _currentState.Equals(_fallState))
         {
             ApplyTransformToPosition2D();
@@ -208,7 +225,9 @@ public class FFlyMovement : FEnemyMovementBase, IPositionDirectionProvider
         DepthDirection = _currentState.DepthDirection;
         
         // Add Noise
-        if (_isNoiseEnabled && _currentState.Equals(_patrolState))
+        if (_isNoiseEnabled && 
+            (_currentState.Equals(_patrolState) ||
+             _currentState.Equals(_enterState)))
         {
             AddMotionNoise();
         }
@@ -222,7 +241,7 @@ public class FFlyMovement : FEnemyMovementBase, IPositionDirectionProvider
         {
             int depthDirection = _depthSideDirection;
             // Always Jump forward in depth for Attack
-            if (_currentState.Equals(_preAttackState) || _currentState.Equals(_attackState))
+            if (_currentState.Equals(_preAttackStateR) || _currentState.Equals(_attackState))
             {
                 depthDirection = 1;
             }
@@ -231,13 +250,14 @@ public class FFlyMovement : FEnemyMovementBase, IPositionDirectionProvider
         
         // Apply side direction Only for States that require Left/Right mirroring
         if (_currentState.Equals(_enterState)||
-            _currentState.Equals(_patrolState))
+            _currentState.Equals(_patrolState) 
+            )
         {
             _position3D.x *= _sideDirection;            
         }
         
         // Add SmoothDamp
-        if (_isSmoothDampEnabled)
+        if (_isSmoothDampEnabled && !_currentState.Equals(_attackState))
         {
             transform.position = Vector3.SmoothDamp(transform.position, _position3D, ref _velocity, _smoothTimeAllowed);
         }
@@ -281,12 +301,12 @@ public class FFlyMovement : FEnemyMovementBase, IPositionDirectionProvider
         PatrolStarted?.Invoke();
     }
 
-    private void OnPreAttackStateStarted()
+    private void OnPreAttackStateRStarted()
     {
         PreAttackStarted?.Invoke();
     }
 
-    private void OnPreAttackStateEnded()
+    private void OnPreAttackStateREnded()
     {
         PreAttackEnded?.Invoke();
     }

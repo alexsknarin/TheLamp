@@ -59,13 +59,21 @@ public class FlyMovementStateFactory
                 _verticalAmplitude
                 );
         }
-        if (stateType == typeof(FFlyMovementPreAttackState))
+        if (stateType == typeof(FFlyMovementPreAttackStateR))
         {
-            return new FFlyMovementPreAttackState(
+            return new FFlyMovementPreAttackStateR(
                 _cameraTransform.position,
                 _positionDirectionProvider,
                 _speed
                 );
+        }
+        if (stateType == typeof(FFlyMovementPreAttackStateL))
+        {
+            return new FFlyMovementPreAttackStateL(
+                _cameraTransform.position,
+                _positionDirectionProvider,
+                _speed
+            );
         }
         if (stateType == typeof(FFlyMovementAttackState))
         {

@@ -26,10 +26,12 @@ public class FFlyMovementAttackState : FFlyMovementStateBase
         _positionDirectionProvider = positionDirectionProvider;
         _lampPositionProviderService = lampPositionProviderService;
         _speed = speed * _speedMultiplier;
+        
     }
     
     public override void OnEnter()
     {
+        _acceleratedSpeed = 1f;
         _startDistance = _positionDirectionProvider.Position2D.magnitude - 0.65f;
         Position2D = _positionDirectionProvider.Position2D;
     }

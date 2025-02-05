@@ -41,12 +41,12 @@ public class FEnemyManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.L))
         {
-            _enemyPool.PreloadEnemy(typeof(FMothling));
+            _enemyPool.PreloadEnemy(typeof(FFly));
         }
         
         if (Input.GetKeyDown(KeyCode.P))
         {
-            _enemy = _enemyPool.Get(typeof(FMothling));
+            _enemy = _enemyPool.Get(typeof(FFly));
             _enemy.Play();
         }
 

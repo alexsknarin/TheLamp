@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class FFlyMovementPreAttackState: FFlyMovementStateBase
+public class FFlyMovementPreAttackStateR: FFlyMovementStateBase
 {
     // Dependencies
     private readonly Vector3 _cameraPosition = new Vector3(0, 0, -5.88f);
@@ -15,7 +15,7 @@ public class FFlyMovementPreAttackState: FFlyMovementStateBase
     private Vector2 _direction;
     private float _localTime;
 
-    public FFlyMovementPreAttackState(
+    public FFlyMovementPreAttackStateR(
         Vector3 cameraPosition,
         IPositionDirectionProvider positionDirectionProvider,
         float speed

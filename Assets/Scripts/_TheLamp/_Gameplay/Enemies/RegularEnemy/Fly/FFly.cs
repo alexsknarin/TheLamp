@@ -7,7 +7,7 @@ public class FFly : FEnemy
     [Header("-- Attributes --")]
     [SerializeField] private int _maxHealth = 1;
     [SerializeField] private int _currentHealth;
-    [SerializeField] private float _collisionRadius = 0.075f;
+    [SerializeField] private float _collisionRadius = 0.1f;
     [SerializeField] private bool _isReadyForDamage = false;
     [Header("-- Movement --")]
     [SerializeField] private FFlyMovement _movement;
@@ -78,9 +78,19 @@ public class FFly : FEnemy
         {
             float x = _movement.Position2D.x;
             float y = _movement.Position2D.y;
-            if ((y < 0.0f) || (Mathf.Abs(x) > 1.1f && y > 0.0f))
+            if (_movement.SideDirection < 0)
             {
-                return true;
+                if ((x < 0 && y < 0.30f) || (x > 0 && y < 1.65f))
+                {
+                    return true; 
+                }
+            }
+            if (_movement.SideDirection > 0)
+            {
+                if ((x > 0 && y < 0.30f) || (x < 0 && y < 1.65f))
+                {
+                    return true; 
+                }
             }
         }
         return false;
