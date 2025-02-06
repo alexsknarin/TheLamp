@@ -311,8 +311,8 @@ MonoBehaviour:
   _speed: 3
   _radius: 1.45
   _verticalAmplitude: 1.2
-  _proximityOffset: 0.11
-  _isDeathByTimer: 0
+  _proximityOffset: 0.12
+  _isDeathByTimer: 1
   _spawnAreaSize: 0.5
   _spawnAreaCenter: {x: 3.6, y: -2.6}
   _isNoiseEnabled: 1

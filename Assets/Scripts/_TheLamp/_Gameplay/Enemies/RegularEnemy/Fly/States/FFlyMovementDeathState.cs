@@ -48,6 +48,7 @@ public class FFlyMovementDeathState : FFlyMovementStateBase
         {
             if (_localTime >= _duration)
                 Ended?.Invoke();
+            _localTime += Time.deltaTime;
         }
         else 
         {

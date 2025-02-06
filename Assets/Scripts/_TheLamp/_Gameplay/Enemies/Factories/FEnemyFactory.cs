@@ -13,6 +13,7 @@ public class FEnemyFactory
     
     AsyncOperationHandle<GameObject> _mothlingEnemyAssetHandle;
     AsyncOperationHandle<GameObject> _flyEnemyAssetHandle;
+    AsyncOperationHandle<GameObject> _fireFlyEnemyAssetHandle;
     
     public FEnemyFactory(
         MothlingMovementStateFactory mothlingMovementStateFactory,
@@ -26,6 +27,7 @@ public class FEnemyFactory
     
     public bool IsMothlingLoaded { get; private set; }
     public bool IsFlyLoaded { get; private set; }
+    public bool IsFireFlyLoaded { get; private set; }
 
     public async void LoadEnemy(Type type)
     {
@@ -43,6 +45,14 @@ public class FEnemyFactory
             IsFlyLoaded = true;
             Debug.Log("Fly Loaded");
         }
+
+        if (type == typeof(FFireFly))
+        {
+            _fireFlyEnemyAssetHandle = Addressables.LoadAssetAsync<GameObject>("Enemy/FFireFly.prefab");
+            await _fireFlyEnemyAssetHandle.Task;
+            IsFireFlyLoaded = true;
+            Debug.Log("FireFly Loaded");
+        }
     }
     
     public FEnemy CreateEnemy(Type type)
@@ -57,6 +67,12 @@ public class FEnemyFactory
             var prefab = _flyEnemyAssetHandle.Result;
             return CreateFlyInstance(prefab);    
         }
+        if (type == typeof(FFireFly) && _fireFlyEnemyAssetHandle.IsValid())
+        {
+            var prefab = _fireFlyEnemyAssetHandle.Result;
+            return CreateFireFlyInstance(prefab);    
+        }
+        
         else
         {
             throw new Exception("Enemy Factory: Enemy type not loaded");
@@ -80,6 +96,17 @@ public class FEnemyFactory
         enemyInstance.GetComponent<FFlyMovement>().Construct(_flyMovementStateFactory);
         enemyInstance.GetComponent<FFlyPresentation>().Initialize();
         var enemy = enemyInstance.GetComponent<FFly>();
+        enemy.Initialize();
+        
+        return enemy;
+    }
+    
+    private FEnemy CreateFireFlyInstance(GameObject prefab)
+    {
+        GameObject enemyInstance = Object.Instantiate(prefab);
+        enemyInstance.GetComponent<FFlyMovement>().Construct(_flyMovementStateFactory);
+        enemyInstance.GetComponent<FFireFlyPresentation>().Initialize();
+        var enemy = enemyInstance.GetComponent<FFireFly>();
         enemy.Initialize();
         
         return enemy;

@@ -7,10 +7,12 @@ public class FEnemyPool
 {
     private ObjectPool<FEnemy> _mothlingPool;
     private ObjectPool<FEnemy> _flyPool;
+    private ObjectPool<FEnemy> _fireFlyPool;
     private FEnemyFactory _enemyFactory; // TODO: enemy factory per Enemy Type???
     private int _poolSize = 5;
     private int _mothlingCount;
     private int _flyCount;
+    private int _fireFlyCount;
     private List<Type> _preloadedEnemyTypes = new List<Type>();
     
     public event Action<FEnemy> EnemyReleased;
@@ -34,6 +36,15 @@ public class FEnemyPool
             );
         _flyPool = new ObjectPool<FEnemy>(
             CreateFly, 
+            OnGetFromPool, 
+            OnReleaseToPool, 
+            OnDestroyPooledObject,
+            true,
+            _poolSize,
+            _poolSize
+            );
+        _fireFlyPool = new ObjectPool<FEnemy>(
+            CreateFireFly, 
             OnGetFromPool, 
             OnReleaseToPool, 
             OnDestroyPooledObject,
@@ -70,6 +81,15 @@ public class FEnemyPool
             }
             throw new Exception("Fly prefab is not loaded yet");
         }
+        if (type == typeof(FFireFly))
+        {
+            if (_enemyFactory.IsFireFlyLoaded)
+            {
+                return _fireFlyPool.Get();
+            }
+            throw new Exception("FireFly prefab is not loaded yet");
+        }
+        
         else
         {
             throw new Exception("Enemy type not supported");
@@ -91,6 +111,15 @@ public class FEnemyPool
         FEnemy enemyInstance = _enemyFactory.CreateEnemy(typeof(FFly));
         enemyInstance.SetObjectPool(_flyPool);
         enemyInstance.name = "Fly" + _mothlingCount;
+        _flyCount++;
+        return enemyInstance;
+    }
+    
+    private FEnemy CreateFireFly()
+    {
+        FEnemy enemyInstance = _enemyFactory.CreateEnemy(typeof(FFireFly));
+        enemyInstance.SetObjectPool(_flyPool);
+        enemyInstance.name = "FireFly" + _mothlingCount;
         _flyCount++;
         return enemyInstance;
     }
