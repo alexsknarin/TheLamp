@@ -1,5 +1,6 @@
 using UnityEngine;
 
+// TODO: change to Vector2
 public class EnemyMovementPatterns
 {
     public static Vector3 CircleMotion(float offsetAngle, float finalXRadius, float radius, float verticalAmplitude, float phase)

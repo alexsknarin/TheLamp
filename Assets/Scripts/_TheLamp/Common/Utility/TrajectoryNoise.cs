@@ -1,5 +1,6 @@
 using UnityEngine;
 
+// TODO: change to Vector2
 public class TrajectoryNoise
 {
     public static Vector3 Generate(float frequency)

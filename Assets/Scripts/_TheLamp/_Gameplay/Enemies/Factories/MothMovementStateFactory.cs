@@ -44,7 +44,53 @@ public class MothMovementStateFactory
                 _verticalAmplitude
             );
         }
-
+        if (stateType == typeof(FMothMovementHoverState))
+        {
+            return new FMothMovementHoverState(
+                _cameraTransform.position,
+                _positionDirectionProvider,
+                _speed,
+                _radius
+            );
+        }
+        if (stateType == typeof(FMothMovementPatrolState))
+        {
+            return new FMothMovementPatrolState(
+                _cameraTransform.position,
+                _positionDirectionProvider,
+                _speed,
+                _radius,
+                _verticalAmplitude
+            );
+        }
+        if (stateType == typeof(FMothMovementPreAttackState))
+        {
+            return new FMothMovementPreAttackState(
+                _cameraTransform.position,
+                _positionDirectionProvider,
+                _speed
+            );
+        }
+        if (stateType == typeof(FMothMovementAttackState))
+        {
+            return new FMothMovementAttackState(
+                _cameraTransform.position,
+                _positionDirectionProvider,
+                _lampPositionProviderService,
+                _speed
+            );
+        }
+        if (stateType == typeof(FMothMovementFallState))
+        {
+            return new FMothMovementFallState(
+                _cameraTransform.position,
+                _positionDirectionProvider,
+                _lampPositionProviderService,
+                _radius,
+                _verticalAmplitude
+            );
+        }
+        
         return null;
     }
 

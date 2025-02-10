@@ -184,6 +184,7 @@ public class FFlyMovement : FEnemyMovementBase, IPositionDirectionProvider
             _stateMachine.SetState(_currentState);
 
             // Immediately Apply Position2D and SideDirection to transform to avoid visible collision penetration.
+            // TODO: doublecheck this
             Vector3 newPosition = transform.position;
             newPosition.x = _currentState.Position2D.x;
             newPosition.y = _currentState.Position2D.y;
@@ -288,7 +289,8 @@ public class FFlyMovement : FEnemyMovementBase, IPositionDirectionProvider
         spawnPosition.x *= direction;
         return spawnPosition;
     }
-
+    
+    // TODO: use the same in Mothling
     private void ApplyTransformToPosition2D()
     {
         Vector2 newPosition2D = Position2D;

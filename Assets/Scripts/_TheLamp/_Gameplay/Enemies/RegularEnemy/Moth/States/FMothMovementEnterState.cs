@@ -16,6 +16,10 @@ public class FMothMovementEnterState: RegularEnemyMovementStateBase
     private float _initialDistance;
     private float _phase;
     
+    private float _spawnXPos = 3.6f;
+    private float _spawnYPosMax = 1f;
+    private float _spawnYPosMin = 3.1f;
+    
     public FMothMovementEnterState(
             Vector3 cameraPosition,
             IPositionDirectionProvider positionDirectionProvider,
@@ -34,7 +38,7 @@ public class FMothMovementEnterState: RegularEnemyMovementStateBase
     public override void OnEnter()
     {
         IsReadyToSwitch = false;
-        Position2D = _positionDirectionProvider.Position2D;
+        Position2D = GenerateSpawnPosition(_spawnXPos, _spawnYPosMin, _spawnYPosMax);
         
         // Find intersection to the ellipse
         float a = _radius;
@@ -66,6 +70,26 @@ public class FMothMovementEnterState: RegularEnemyMovementStateBase
         if(_phase < 0.02f || Position2D.magnitude < _radius)
         {
             IsReadyToSwitch = true;
+        }
+    }
+    
+    private Vector2 GenerateSpawnPosition(float xPos, float yPosMin, float yPosMax)
+    {
+        Vector2 spawnPositionSide = Vector2.zero;
+        spawnPositionSide.x = xPos;
+        spawnPositionSide.y = Random.Range(yPosMin, yPosMax) * RandomDirection.Generate();
+        
+        Vector2 spawnPositionTopBottom = Vector3.zero;
+        spawnPositionTopBottom.x = Random.Range(-xPos, xPos);
+        spawnPositionTopBottom.y = yPosMax * RandomDirection.Generate();
+        
+        if (Random.Range(0, 2) == 0)
+        {
+            return spawnPositionSide;
+        }
+        else
+        {
+            return spawnPositionTopBottom;
         }
     }
 }

@@ -60,10 +60,10 @@ public class FEnemyManager : MonoBehaviour
             _lampCollisionDetectionService.AddCollidable(_enemy);
             _damageables.Add(_enemy);
            
-            if (_enemy.IsReadyToAttack)
-            {
+            // if (_enemy.IsReadyToAttack)
+            // {
                 _enemy.Attack();
-            }
+            // }
         }
         
         // Emulate enemy Death

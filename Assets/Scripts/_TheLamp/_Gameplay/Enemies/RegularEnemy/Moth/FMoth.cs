@@ -21,16 +21,18 @@ public class FMoth : FEnemy
     public override void Initialize()
     {
         _movement.Initialize();
-        _movement.PatrolStarted += OnPatrolStarted;
+        _movement.ReadyToAttackStateStarted += OnReadyToAttackStateStarted;
+        _movement.ReadyToAttackStateEnded += OnReadyToAttackStateEnded;
         _movement.DeathStateEnded += OnDeathStateEnded;
     }
 
     private void OnDestroy()
     {
-        _movement.PatrolStarted -= OnPatrolStarted;
+        _movement.ReadyToAttackStateStarted -= OnReadyToAttackStateStarted;
+        _movement.ReadyToAttackStateEnded -= OnReadyToAttackStateEnded;
         _movement.DeathStateEnded -= OnDeathStateEnded;
     }
-    
+
     public override void Play()
     {
         _currentHealth = _maxHealth;
@@ -68,28 +70,14 @@ public class FMoth : FEnemy
     {
         if (_isInAttackReadyMovementState)
         {
-            float x = _movement.Position2D.x;
-            float y = _movement.Position2D.y;
-            if (_movement.SideDirection < 0)
-            {
-                if ((x < 0 && y < 0.30f) || (x > 0 && y < 1.65f))
-                {
-                    return true; 
-                }
-            }
-            if (_movement.SideDirection > 0)
-            {
-                if ((x > 0 && y < 0.30f) || (x < 0 && y < 1.65f))
-                {
-                    return true; 
-                }
-            }
+            return true;
         }
         return false;
     }
 
     public override void Attack()
     {
+        Debug.Log("Attack Called.");
         _isInAttackReadyMovementState = false;
         IsReceivedAttack = false;
         _movement.TriggerAttack();
@@ -112,11 +100,16 @@ public class FMoth : FEnemy
         _movement.TriggerFall();
     }
 
-    // --- Events ---
 
-    private void OnPatrolStarted()
+    // --- Events ---
+    private void OnReadyToAttackStateStarted()
     {
         _isInAttackReadyMovementState = true;
+    }
+
+    private void OnReadyToAttackStateEnded()
+    {
+        _isInAttackReadyMovementState = false;
     }
 
     private void OnDeathStateEnded()

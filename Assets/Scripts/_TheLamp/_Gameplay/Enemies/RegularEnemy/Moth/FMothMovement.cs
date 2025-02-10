@@ -21,6 +21,7 @@ public class FMothMovement : FEnemyMovementBase, IPositionDirectionProvider
     // State parameters
     private bool _isAttacking = false;
     // Debug
+    private Vector3 _position3d;
     private Vector3 _prevPosition;
 
     private readonly FStateMachine _stateMachine = new();
@@ -28,6 +29,11 @@ public class FMothMovement : FEnemyMovementBase, IPositionDirectionProvider
     // Movement States
     private RegularEnemyMovementStateBase _currentState;
     private FMothMovementEnterState _enterState;
+    private FMothMovementHoverState _hoverState;
+    private FMothMovementPatrolState _patrolState;
+    private FMothMovementPreAttackState _preAttackState;
+    private FMothMovementAttackState _attackState;
+    private FMothMovementFallState _fallState;
 
 
     public void Construct(MothMovementStateFactory stateFactory)
@@ -35,7 +41,8 @@ public class FMothMovement : FEnemyMovementBase, IPositionDirectionProvider
         _stateFactory = stateFactory;
     }
 
-    public event Action PatrolStarted;
+    public event Action ReadyToAttackStateStarted;
+    public event Action ReadyToAttackStateEnded; // TODO: implement this in other enemies
     public event Action PreAttackStarted;
     public event Action PreAttackEnded;
     public event Action DeathStateEnded;
@@ -49,17 +56,68 @@ public class FMothMovement : FEnemyMovementBase, IPositionDirectionProvider
     {
         _stateFactory.SetEnemyDependencies(this, _speed, _radius, _verticalAmplitude);
         _enterState = (FMothMovementEnterState)_stateFactory.Create(typeof(FMothMovementEnterState));
+        _hoverState = (FMothMovementHoverState)_stateFactory.Create(typeof(FMothMovementHoverState));
+        _patrolState = (FMothMovementPatrolState)_stateFactory.Create(typeof(FMothMovementPatrolState));
+        _preAttackState = (FMothMovementPreAttackState)_stateFactory.Create(typeof(FMothMovementPreAttackState));
+        _attackState = (FMothMovementAttackState)_stateFactory.Create(typeof(FMothMovementAttackState));
+        _fallState = (FMothMovementFallState)_stateFactory.Create(typeof(FMothMovementFallState));
+        
+        
+        _hoverState.Started += OnHoverStateStarted;
+        _hoverState.Ended += OnHoverStateEnded;
+        _preAttackState.Started += OnPreAttackStateStarted;
+        _preAttackState.Ended += OnPreAttackStateEnded;
+        _fallState.Ended += OnFallStateEnded;
+        
+        
+        At(_enterState, _hoverState, () => _enterState.IsReadyToSwitch);
+        At(_hoverState, _patrolState, () => _hoverState.IsReadyToSwitch);
+        At(_hoverState, _preAttackState, IsAttackStarted());
+        At(_patrolState, _hoverState, () => _patrolState.IsReadyToSwitch && Position2D.y < 0.9f);
+        At(_preAttackState, _attackState, () => _preAttackState.IsReadyToSwitch);
+        
+        At(_fallState, _hoverState, () => _fallState.IsReadyToSwitch);
+        
+        
+        
+        // Predicates
+        Func<bool> IsAttackStarted() => () =>
+        {
+            if (_isAttacking)
+            {
+                Debug.Log("Attack started.");
+                _isAttacking = false;
+                return true;
+            }
+            return false;
+        };
+        
+        void At(IState from, IState to, Func<bool> condition) => _stateMachine.AddTransition(from, to, condition);
     }
-    
+
+    private void OnDestroy()
+    {
+        _fallState.Ended -= OnFallStateEnded;
+        _hoverState.Started -= OnHoverStateStarted;
+        _hoverState.Ended -= OnHoverStateEnded;
+        _preAttackState.Started -= OnPreAttackStateStarted;
+        _preAttackState.Ended -= OnPreAttackStateEnded;
+    }
+
     public override void Play()
     {
-        _sideDirection = RandomDirection.Generate();
-        _depthSideDirection = RandomDirection.Generate();
-        Position2D = GenerateSpawnPosition(_sideDirection, _spawnXPos, _spawnYPosMin, _spawnYPosMax);
-        transform.position = Position2D;
+        // _sideDirection = RandomDirection.Generate();
+        // _depthSideDirection = RandomDirection.Generate();
         
+        _sideDirection = -1;
+        _depthSideDirection = 1;
+      
         _currentState = _enterState;
         _stateMachine.SetState(_currentState);
+        _position3d = _enterState.Position2D;
+        _position3d.x *= _sideDirection;
+        
+        transform.position = _position3d;
         
         _isAttacking = false;
         enabled = true;
@@ -67,12 +125,30 @@ public class FMothMovement : FEnemyMovementBase, IPositionDirectionProvider
 
     public override void TriggerAttack()
     {
-        throw new NotImplementedException();
+        Debug.Log("Attack triggered.");
+        if (_currentState.Equals(_hoverState))
+        {
+            ApplyTransformToPosition2D(1);
+            _isAttacking = true;    
+        }
     }
 
     public override void TriggerFall()
     {
-        throw new NotImplementedException();
+        if (_currentState.Equals(_attackState))
+        {
+            // ApplyTransformToPosition2D();
+            _currentState = _fallState;
+            _stateDebug = _currentState.GetType().Name; // Debug only
+            _stateMachine.SetState(_currentState);
+
+            // Immediately Apply Position2D and SideDirection to transform to avoid visible collision penetration.
+            transform.position = _fallState.Position2D;
+            if (_isDepthEnabled)
+            {
+                transform.position += DepthDirection;
+            }
+        }
     }
 
     public override void TriggerDeath()
@@ -95,35 +171,55 @@ public class FMothMovement : FEnemyMovementBase, IPositionDirectionProvider
         Position2D = _currentState.Position2D;
         DepthDirection = _currentState.DepthDirection;
         
+        _position3d = Position2D;
+        
+        if (_currentState.Equals(_patrolState) || _currentState.Equals(_hoverState) || _currentState.Equals(_enterState))
+        {
+            _position3d.x *= _sideDirection;
+        }
+        
         if (_isDepthEnabled)
         {
-            transform.position = (Vector3)Position2D + DepthDirection;
+            transform.position = _position3d + DepthDirection;
         }
         else
         {
-            transform.position = Position2D;
+            transform.position = _position3d;
         }
         
         Debug.DrawLine(_prevPosition, transform.position, Color.cyan, 5f);
     }
 
-    private Vector2 GenerateSpawnPosition(int direction, float xPos, float yPosMin, float yPosMax)
+    private void ApplyTransformToPosition2D(int direction)
     {
-        Vector2 spawnPositionSide = Vector2.zero;
-        spawnPositionSide.x = xPos * direction;
-        spawnPositionSide.y = Random.Range(yPosMin, yPosMax) * RandomDirection.Generate();
-        
-        Vector2 spawnPositionTopBottom = Vector3.zero;
-        spawnPositionTopBottom.x = Random.Range(-xPos, xPos);
-        spawnPositionTopBottom.y = yPosMax * RandomDirection.Generate();
-        
-        if (Random.Range(0, 2) == 0)
-        {
-            return spawnPositionSide;
-        }
-        else
-        {
-            return spawnPositionTopBottom;
-        }
+        Vector2 newPosition2D = Position2D;
+        newPosition2D.x = Mathf.Abs(newPosition2D.x) * Mathf.Sign(transform.position.x) * direction;
+        Position2D = newPosition2D;
+    }
+
+    private void OnHoverStateEnded()
+    {
+        ReadyToAttackStateEnded?.Invoke();
+    }
+
+    private void OnHoverStateStarted()
+    {
+        ReadyToAttackStateStarted?.Invoke();
+    }
+
+    private void OnPreAttackStateStarted()
+    {
+        PreAttackStarted?.Invoke();
+    }
+
+    private void OnPreAttackStateEnded()
+    {
+        PreAttackEnded?.Invoke();
+    }
+
+    private void OnFallStateEnded()
+    {
+        Debug.Log("Fall state ended.");
+        ApplyTransformToPosition2D(_sideDirection);
     }
 }
