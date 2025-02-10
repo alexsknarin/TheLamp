@@ -139,7 +139,7 @@ public class FEnemyFactory
     {
         GameObject enemyInstance = Object.Instantiate(prefab);
         enemyInstance.GetComponent<FMothMovement>().Construct(_mothMovementStateFactory);
-        // enemyInstance.GetComponent<FFireFlyPresentation>().Initialize();
+        enemyInstance.GetComponent<FMothPresentation>().Initialize();
         var enemy = enemyInstance.GetComponent<FMoth>();
         enemy.Initialize();
         

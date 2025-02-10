@@ -43,6 +43,7 @@ public class FMothMovement : FEnemyMovementBase, IPositionDirectionProvider
         _stateFactory = stateFactory;
     }
 
+    public event Action Started;
     public event Action ReadyToAttackStateStarted;
     public event Action ReadyToAttackStateEnded; // TODO: implement this in other enemies
     public event Action PreAttackStarted;
@@ -124,6 +125,8 @@ public class FMothMovement : FEnemyMovementBase, IPositionDirectionProvider
         
         _isAttacking = false;
         enabled = true;
+        
+        Started?.Invoke();
     }
 
     public override void TriggerAttack()
