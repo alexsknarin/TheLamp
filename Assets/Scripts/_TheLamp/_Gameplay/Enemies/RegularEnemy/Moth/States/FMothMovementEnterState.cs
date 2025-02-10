@@ -10,15 +10,18 @@ public class FMothMovementEnterState: RegularEnemyMovementStateBase
     private readonly float _verticalAmplitude;
     
     // State specific attributes
+    private float _deadZoneAngle = 35;
+    private float _minDistance = 2.5f;
+    private float _maxDistance = 4.7f;
+    
     private Vector2 _endPos = Vector2.zero;
     private Vector2 _enterDirection;
     private float _depthMultiplier = 1.6f;
     private float _initialDistance;
     private float _phase;
+    private float _noiseFrequency = 9f;
+    private float _noiseAmplitude = 0.05f;
     
-    private float _spawnXPos = 3.6f;
-    private float _spawnYPosMax = 1f;
-    private float _spawnYPosMin = 3.1f;
     
     public FMothMovementEnterState(
             Vector3 cameraPosition,
@@ -38,7 +41,7 @@ public class FMothMovementEnterState: RegularEnemyMovementStateBase
     public override void OnEnter()
     {
         IsReadyToSwitch = false;
-        Position2D = GenerateSpawnPosition(_spawnXPos, _spawnYPosMin, _spawnYPosMax);
+        Position2D = GenerateSpawnPosition(_deadZoneAngle, _minDistance, _maxDistance);
         
         // Find intersection to the ellipse
         float a = _radius;
@@ -60,6 +63,10 @@ public class FMothMovementEnterState: RegularEnemyMovementStateBase
         
         Position2D += _enterDirection * (_speed * Time.deltaTime * (Mathf.PI/2));
         _phase = (_endPos - Position2D).magnitude / _initialDistance;
+        
+        // Add noise
+        Vector2 trajectoryNoise = TrajectoryNoise.Generate(_noiseFrequency);
+        Position2D += trajectoryNoise * _noiseAmplitude;
 
         // Depth To Camera
         float distancePhase = 1 - (_endPos - Position2D).magnitude / _initialDistance;
@@ -72,24 +79,18 @@ public class FMothMovementEnterState: RegularEnemyMovementStateBase
             IsReadyToSwitch = true;
         }
     }
-    
-    private Vector2 GenerateSpawnPosition(float xPos, float yPosMin, float yPosMax)
+
+    // TODO: make Appear from the top more often
+    private Vector2 GenerateSpawnPosition(float deadZoneAngle, float minDistance, float maxDistance)
     {
-        Vector2 spawnPositionSide = Vector2.zero;
-        spawnPositionSide.x = xPos;
-        spawnPositionSide.y = Random.Range(yPosMin, yPosMax) * RandomDirection.Generate();
+        Vector3 spawnPosition = Vector3.up;
+        float angle = deadZoneAngle + Random.Range(0, 360-deadZoneAngle*2);
         
-        Vector2 spawnPositionTopBottom = Vector3.zero;
-        spawnPositionTopBottom.x = Random.Range(-xPos, xPos);
-        spawnPositionTopBottom.y = yPosMax * RandomDirection.Generate();
+        spawnPosition = Quaternion.AngleAxis(angle, Vector3.forward) * spawnPosition;
         
-        if (Random.Range(0, 2) == 0)
-        {
-            return spawnPositionSide;
-        }
-        else
-        {
-            return spawnPositionTopBottom;
-        }
+        float distance = Mathf.Lerp(minDistance, maxDistance, Mathf.Abs(spawnPosition.y));
+        spawnPosition *= distance;
+            
+        return spawnPosition;
     }
 }
