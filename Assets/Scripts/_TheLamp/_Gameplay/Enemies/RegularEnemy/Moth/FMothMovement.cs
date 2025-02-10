@@ -35,6 +35,7 @@ public class FMothMovement : FEnemyMovementBase, IPositionDirectionProvider
     private FMothMovementAttackState _attackState;
     private FMothMovementFallState _fallState;
     private FMothMovementDeathState _deathState;
+    private FMothMovementSpreadState _spreadState;
 
 
     public void Construct(MothMovementStateFactory stateFactory)
@@ -63,6 +64,7 @@ public class FMothMovement : FEnemyMovementBase, IPositionDirectionProvider
         _attackState = (FMothMovementAttackState)_stateFactory.Create(typeof(FMothMovementAttackState));
         _fallState = (FMothMovementFallState)_stateFactory.Create(typeof(FMothMovementFallState));
         _deathState = (FMothMovementDeathState)_stateFactory.Create(typeof(FMothMovementDeathState));
+        _spreadState = (FMothMovementSpreadState)_stateFactory.Create(typeof(FMothMovementSpreadState));
         
         _hoverState.Started += OnHoverStateStarted;
         _hoverState.Ended += OnHoverStateEnded;
@@ -70,6 +72,7 @@ public class FMothMovement : FEnemyMovementBase, IPositionDirectionProvider
         _preAttackState.Ended += OnPreAttackStateEnded;
         _fallState.Ended += OnFallStateEnded;
         _deathState.Ended += OnDeathStateEnded;
+        _spreadState.Ended += OnSpreadStateEnded;
         
         
         At(_enterState, _hoverState, () => _enterState.IsReadyToSwitch);
@@ -105,16 +108,13 @@ public class FMothMovement : FEnemyMovementBase, IPositionDirectionProvider
         _preAttackState.Started -= OnPreAttackStateStarted;
         _preAttackState.Ended -= OnPreAttackStateEnded;
         _deathState.Ended -= OnDeathStateEnded;
+        _spreadState.Ended -= OnSpreadStateEnded;
     }
 
     public override void Play()
     {
-        // _sideDirection = RandomDirection.Generate();
-        // _depthSideDirection = RandomDirection.Generate();
-        
-        _sideDirection = -1;
-        _depthSideDirection = 1;
-      
+        _sideDirection = RandomDirection.Generate();
+        _depthSideDirection = RandomDirection.Generate();
         _currentState = _enterState;
         _stateMachine.SetState(_currentState);
         _position3d = _enterState.Position2D;
@@ -164,7 +164,13 @@ public class FMothMovement : FEnemyMovementBase, IPositionDirectionProvider
 
     public override void TriggerSpread()
     {
-        throw new NotImplementedException();
+        if (!_currentState.Equals(_attackState))
+        {
+            ApplyTransformToPosition2D(1);
+            _currentState = _spreadState;
+            _stateDebug = _currentState.GetType().Name; // Debug only
+            _stateMachine.SetState(_currentState);
+        }
     }
 
     private void Update()
@@ -232,5 +238,12 @@ public class FMothMovement : FEnemyMovementBase, IPositionDirectionProvider
     private void OnDeathStateEnded()
     {
         DeathStateEnded?.Invoke();
+    }
+
+    private void OnSpreadStateEnded()
+    {
+        // TODO: 
+        // if lamp is not dead or gameover (need to DI this information or let EnemyManager decide)
+        Play();
     }
 }

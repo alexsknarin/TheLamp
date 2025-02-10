@@ -96,6 +96,13 @@ public class MothMovementStateFactory
                 _positionDirectionProvider
             );
         }
+        if (stateType == typeof(FMothMovementSpreadState))
+        {
+            return new FMothMovementSpreadState(
+                _positionDirectionProvider,
+                _speed
+            );
+        }
         return null;
     }
 
