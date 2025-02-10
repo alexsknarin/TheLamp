@@ -90,7 +90,12 @@ public class MothMovementStateFactory
                 _verticalAmplitude
             );
         }
-        
+        if (stateType == typeof(FMothMovementDeathState))
+        {
+            return new FMothMovementDeathState(
+                _positionDirectionProvider
+            );
+        }
         return null;
     }
 

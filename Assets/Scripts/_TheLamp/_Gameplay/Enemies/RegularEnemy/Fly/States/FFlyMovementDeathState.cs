@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class FFlyMovementDeathState : FFlyMovementStateBase
 {
+    // Dependencies
     private IPositionDirectionProvider _positionDirectionProvider;
     private bool _isDeathByTimer;
     

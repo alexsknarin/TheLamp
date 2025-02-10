@@ -34,6 +34,7 @@ public class FMothMovement : FEnemyMovementBase, IPositionDirectionProvider
     private FMothMovementPreAttackState _preAttackState;
     private FMothMovementAttackState _attackState;
     private FMothMovementFallState _fallState;
+    private FMothMovementDeathState _deathState;
 
 
     public void Construct(MothMovementStateFactory stateFactory)
@@ -61,13 +62,14 @@ public class FMothMovement : FEnemyMovementBase, IPositionDirectionProvider
         _preAttackState = (FMothMovementPreAttackState)_stateFactory.Create(typeof(FMothMovementPreAttackState));
         _attackState = (FMothMovementAttackState)_stateFactory.Create(typeof(FMothMovementAttackState));
         _fallState = (FMothMovementFallState)_stateFactory.Create(typeof(FMothMovementFallState));
-        
+        _deathState = (FMothMovementDeathState)_stateFactory.Create(typeof(FMothMovementDeathState));
         
         _hoverState.Started += OnHoverStateStarted;
         _hoverState.Ended += OnHoverStateEnded;
         _preAttackState.Started += OnPreAttackStateStarted;
         _preAttackState.Ended += OnPreAttackStateEnded;
         _fallState.Ended += OnFallStateEnded;
+        _deathState.Ended += OnDeathStateEnded;
         
         
         At(_enterState, _hoverState, () => _enterState.IsReadyToSwitch);
@@ -102,6 +104,7 @@ public class FMothMovement : FEnemyMovementBase, IPositionDirectionProvider
         _hoverState.Ended -= OnHoverStateEnded;
         _preAttackState.Started -= OnPreAttackStateStarted;
         _preAttackState.Ended -= OnPreAttackStateEnded;
+        _deathState.Ended -= OnDeathStateEnded;
     }
 
     public override void Play()
@@ -153,7 +156,10 @@ public class FMothMovement : FEnemyMovementBase, IPositionDirectionProvider
 
     public override void TriggerDeath()
     {
-        throw new NotImplementedException();
+        ApplyTransformToPosition2D(1);
+        _currentState = _deathState;
+        _stateDebug = _currentState.GetType().Name; // Debug only
+        _stateMachine.SetState(_currentState);
     }
 
     public override void TriggerSpread()
@@ -221,5 +227,10 @@ public class FMothMovement : FEnemyMovementBase, IPositionDirectionProvider
     {
         Debug.Log("Fall state ended.");
         ApplyTransformToPosition2D(_sideDirection);
+    }
+
+    private void OnDeathStateEnded()
+    {
+        DeathStateEnded?.Invoke();
     }
 }
