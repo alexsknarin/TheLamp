@@ -9,8 +9,6 @@ public class FlyMovementStateFactory
     private float _speed;
     private float _radius;
     private float _verticalAmplitude;
-    private Vector2 _spawnAreaCenter;
-    private float _spawnAreaSize;
     private float _proximityOffset;
     private bool _isDeathByTimer;
 

@@ -1,15 +1,14 @@
 using System;
 using UnityEngine;
-using UnityEngine.Pool;
 
-public class FFly : FEnemy
+public class FMoth : FEnemy
 {
-    [Header("-- Attributes --")]
-    [SerializeField] private int _maxHealth = 1;
+   [Header("-- Attributes --")]
+    [SerializeField] private int _maxHealth = 2;
     [SerializeField] private int _currentHealth;
     [SerializeField] private float _collisionRadius = 0.1f;
     [Header("-- Movement --")]
-    [SerializeField] private FFlyMovement _movement;
+    [SerializeField] private FMothMovement _movement;
     
     public event Action Started;
     public event Action Damaged;
@@ -22,7 +21,7 @@ public class FFly : FEnemy
     public override void Initialize()
     {
         _movement.Initialize();
-        _movement.PatrolStarted += OnPatrolStarted; // TODO: Rename event
+        _movement.PatrolStarted += OnPatrolStarted;
         _movement.DeathStateEnded += OnDeathStateEnded;
     }
 
@@ -117,7 +116,7 @@ public class FFly : FEnemy
 
     private void OnPatrolStarted()
     {
-        _isInAttackReadyMovementState = true; // Rename Event
+        _isInAttackReadyMovementState = true;
     }
 
     private void OnDeathStateEnded()

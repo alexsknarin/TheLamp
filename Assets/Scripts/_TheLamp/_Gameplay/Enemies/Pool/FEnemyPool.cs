@@ -8,11 +8,13 @@ public class FEnemyPool
     private ObjectPool<FEnemy> _mothlingPool;
     private ObjectPool<FEnemy> _flyPool;
     private ObjectPool<FEnemy> _fireFlyPool;
+    private ObjectPool<FEnemy> _mothPool;
     private FEnemyFactory _enemyFactory; // TODO: enemy factory per Enemy Type???
     private int _poolSize = 5;
     private int _mothlingCount;
     private int _flyCount;
     private int _fireFlyCount;
+    private int _mothCount;
     private List<Type> _preloadedEnemyTypes = new List<Type>();
     
     public event Action<FEnemy> EnemyReleased;
@@ -52,6 +54,15 @@ public class FEnemyPool
             _poolSize,
             _poolSize
             );
+        _mothPool = new ObjectPool<FEnemy>(
+            CreateMoth,
+            OnGetFromPool, 
+            OnReleaseToPool, 
+            OnDestroyPooledObject,
+            true,
+            _poolSize,
+            _poolSize
+        );
     }
 
     public void PreloadEnemy(Type type)
@@ -89,7 +100,14 @@ public class FEnemyPool
             }
             throw new Exception("FireFly prefab is not loaded yet");
         }
-        
+        if(type == typeof(FMoth))
+        {
+            if (_enemyFactory.IsMothLoaded)
+            {
+                return _mothPool.Get();
+            }
+            throw new Exception("Moth prefab is not loaded yet");
+        }
         else
         {
             throw new Exception("Enemy type not supported");
@@ -110,7 +128,7 @@ public class FEnemyPool
     {
         FEnemy enemyInstance = _enemyFactory.CreateEnemy(typeof(FFly));
         enemyInstance.SetObjectPool(_flyPool);
-        enemyInstance.name = "Fly" + _mothlingCount;
+        enemyInstance.name = "Fly" + _flyCount;
         _flyCount++;
         return enemyInstance;
     }
@@ -119,8 +137,17 @@ public class FEnemyPool
     {
         FEnemy enemyInstance = _enemyFactory.CreateEnemy(typeof(FFireFly));
         enemyInstance.SetObjectPool(_flyPool);
-        enemyInstance.name = "FireFly" + _mothlingCount;
+        enemyInstance.name = "FireFly" + _fireFlyCount;
         _flyCount++;
+        return enemyInstance;
+    }
+    
+    private FEnemy CreateMoth()
+    {
+        FEnemy enemyInstance = _enemyFactory.CreateEnemy(typeof(FMoth));
+        enemyInstance.SetObjectPool(_mothPool);
+        enemyInstance.name = "Moth" + _mothCount;
+        _mothCount++;
         return enemyInstance;
     }
     

@@ -11,6 +11,7 @@ public class FakeGame : MonoBehaviour
     private IGameConfigService _gameConfigService;
     private MothlingMovementStateFactory _mothlingMovementStateFactory;
     private FlyMovementStateFactory _flyMovementStateFactory;
+    private MothMovementStateFactory _mothMovementStateFactory;
     private FEnemyFactory _enemyFactory;
     private FEnemySpawner _enemySpawner;
 
@@ -19,9 +20,11 @@ public class FakeGame : MonoBehaviour
         _gameConfigService = new GameConfigService(_gameConfigProvider);
         _mothlingMovementStateFactory = new MothlingMovementStateFactory(_cameraTransform, _lampPositionProviderService);
         _flyMovementStateFactory = new FlyMovementStateFactory(_cameraTransform, _lampPositionProviderService);
+        _mothMovementStateFactory = new MothMovementStateFactory(_cameraTransform, _lampPositionProviderService);
         _enemyFactory = new FEnemyFactory(
             _mothlingMovementStateFactory,
-            _flyMovementStateFactory
+            _flyMovementStateFactory,
+            _mothMovementStateFactory   
             );
         _enemySpawner = new FEnemySpawner(_enemyFactory);
         _waveEnemyDirector.Construct(_gameConfigService, _lampCollisionDetectionService, _enemySpawner);

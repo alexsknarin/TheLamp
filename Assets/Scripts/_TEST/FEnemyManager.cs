@@ -14,6 +14,7 @@ public class FEnemyManager : MonoBehaviour
 
     private MothlingMovementStateFactory _mothlingMovementStateFactory;
     private FlyMovementStateFactory _flyMovementStateFactory;
+    private MothMovementStateFactory _mothMovementStateFactory;
     private FEnemyFactory _enemyFactory;
     private FEnemyPool _enemyPool;
     
@@ -29,11 +30,14 @@ public class FEnemyManager : MonoBehaviour
             _cameraTransform,
             _lampPositionProviderService
         );
+        _mothMovementStateFactory = new MothMovementStateFactory(
+            _cameraTransform,
+            _lampPositionProviderService
+        );
         
-        _enemyFactory = new FEnemyFactory(_mothlingMovementStateFactory, _flyMovementStateFactory);
+        _enemyFactory = new FEnemyFactory(_mothlingMovementStateFactory, _flyMovementStateFactory, _mothMovementStateFactory);
         _enemyPool = new FEnemyPool(_enemyFactory);
         _enemyPool.Initialize();
-        
     }
 
 
@@ -41,12 +45,12 @@ public class FEnemyManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.L))
         {
-            _enemyPool.PreloadEnemy(typeof(FFireFly));
+            _enemyPool.PreloadEnemy(typeof(FMoth));
         }
         
         if (Input.GetKeyDown(KeyCode.P))
         {
-            _enemy = _enemyPool.Get(typeof(FFireFly));
+            _enemy = _enemyPool.Get(typeof(FMoth));
             _enemy.Play();
         }
 
