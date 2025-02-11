@@ -48,4 +48,15 @@ public abstract class FEnemy: MonoBehaviour, ICollidableWithLamp, IInitializable
     {
         _objectPool = pool;
     }
+    
+    // Common methods
+    protected void OnReadyToAttackStateStarted()
+    {
+        _isInAttackReadyMovementState = true;
+    }
+
+    protected void OnReadyToAttackStateEnded()
+    {
+        _isInAttackReadyMovementState = false;
+    }
 }

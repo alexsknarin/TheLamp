@@ -116,16 +116,6 @@ public class FFly : FEnemy
     }
 
     // --- Events ---
-    private void OnReadyToAttackStateStarted()
-    {
-        _isInAttackReadyMovementState = true;
-    }
-
-    private void OnReadyToAttackStateEnded()
-    {
-        _isInAttackReadyMovementState = false;
-    }
-
     private void OnDeathStateEnded()
     {
         _objectPool.Release(this);

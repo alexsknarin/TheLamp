@@ -139,7 +139,6 @@ public class FEnemyManager : MonoBehaviour
                         damageable.ReceiveDamage(3);
                     }
                 }
-                
                 _damageables.Clear();
             }
         }
