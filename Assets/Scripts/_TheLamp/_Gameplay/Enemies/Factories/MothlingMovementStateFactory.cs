@@ -49,9 +49,9 @@ public class MothlingMovementStateFactory
                 _verticalAmplitude
                 );
         }
-        if (stateType == typeof(FMothlingMovementPatrolState))
+        if (stateType == typeof(FFlyGenericMovementPatrolState))
         {
-            return new FMothlingMovementPatrolState(
+            return new FFlyGenericMovementPatrolState(
                 _cameraTransform.position,
                 _positionDirectionProvider,
                 _lampPositionProviderService,
@@ -92,9 +92,9 @@ public class MothlingMovementStateFactory
                 _positionDirectionProvider
                 );
         }
-        if (stateType == typeof(FMothlingMovementSpreadState))
+        if (stateType == typeof(FFlyGenericMovementSpreadState))
         {
-            return new FMothlingMovementSpreadState(
+            return new FFlyGenericMovementSpreadState(
                 _positionDirectionProvider,
                 _speed
                 );

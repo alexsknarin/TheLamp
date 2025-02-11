@@ -41,12 +41,12 @@ public class FMothlingMovement : FEnemyMovementBase, IPositionDirectionProvider
     // States
     private RegularEnemyMovementStateBase _currentState;
     private FFlyGenericMovementEnterState _enterState;
-    private FMothlingMovementPatrolState _patrolState;
+    private FFlyGenericMovementPatrolState _patrolState;
     private FMothlingMovementPreAttackState _preAttackState;
     private FMothlingMovementConstantAttackState _attackState;
     private FFlyGenericMovementFallState _fallState;
     private FMothlingMovementDeathState _deathState;
-    private FMothlingMovementSpreadState _spreadState;
+    private FFlyGenericMovementSpreadState _spreadState;
     
     // State parameters
     private bool _isAttacking = false;
@@ -74,12 +74,12 @@ public class FMothlingMovement : FEnemyMovementBase, IPositionDirectionProvider
         // Create Movement States
         _stateFactory.SetEnemyDependencies(this, _speed, _radius, _verticalAmplitude, 0.075f); // TODO: magic number
         _enterState = (FFlyGenericMovementEnterState)_stateFactory.Create(typeof(FFlyGenericMovementEnterState));
-        _patrolState = (FMothlingMovementPatrolState)_stateFactory.Create(typeof(FMothlingMovementPatrolState));
+        _patrolState = (FFlyGenericMovementPatrolState)_stateFactory.Create(typeof(FFlyGenericMovementPatrolState));
         _preAttackState = (FMothlingMovementPreAttackState)_stateFactory.Create(typeof(FMothlingMovementPreAttackState));
         _attackState = (FMothlingMovementConstantAttackState)_stateFactory.Create(typeof(FMothlingMovementConstantAttackState));
         _fallState = (FFlyGenericMovementFallState)_stateFactory.Create(typeof(FFlyGenericMovementFallState));
         _deathState = (FMothlingMovementDeathState)_stateFactory.Create(typeof(FMothlingMovementDeathState));
-        _spreadState = (FMothlingMovementSpreadState)_stateFactory.Create(typeof(FMothlingMovementSpreadState));
+        _spreadState = (FFlyGenericMovementSpreadState)_stateFactory.Create(typeof(FFlyGenericMovementSpreadState));
         
         // Subscribe to state events
         _patrolState.Started += OnPatrolStateStarted;

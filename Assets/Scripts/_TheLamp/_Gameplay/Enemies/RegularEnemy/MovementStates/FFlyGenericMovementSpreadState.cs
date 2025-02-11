@@ -2,11 +2,11 @@ using System;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public class FMothlingMovementSpreadState: RegularEnemyMovementStateBase
+public class FFlyGenericMovementSpreadState: RegularEnemyMovementStateBase
 {
     private readonly IPositionDirectionProvider _positionDirectionProvider;
     private readonly float _speed;
-
+    
     // State specific attributes
     private readonly float _maxDistance = 6.4f;
     private readonly float _acceleration = 5.5f;
@@ -14,13 +14,13 @@ public class FMothlingMovementSpreadState: RegularEnemyMovementStateBase
     private Vector2 _direction;
     private float _extraDistance;
     
-    public FMothlingMovementSpreadState(IPositionDirectionProvider positionDirectionProvider, float speed)
+    public FFlyGenericMovementSpreadState(IPositionDirectionProvider positionDirectionProvider, float speed)
     {
         _positionDirectionProvider = positionDirectionProvider;
         _speed = speed;
     }
     
-    public event Action Ended;
+    public event Action Ended; 
     
     public override void OnEnter()
     {

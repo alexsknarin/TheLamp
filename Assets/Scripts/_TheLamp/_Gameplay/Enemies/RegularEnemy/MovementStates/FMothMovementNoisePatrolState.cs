@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class FMothMovementPatrolState: RegularEnemyMovementStateBase
+public class FMothMovementNoisePatrolState: RegularEnemyMovementStateBase
 {
     // Dependencies
     private readonly Vector3 _cameraPosition = new Vector3(0, 0, -5.88f);
@@ -21,7 +21,7 @@ public class FMothMovementPatrolState: RegularEnemyMovementStateBase
     private float _noiseAmplitude = 0.05f;
     private float _localTime;
     
-    public FMothMovementPatrolState(
+    public FMothMovementNoisePatrolState(
         Vector3 cameraPosition,
         IPositionDirectionProvider positionDirectionProvider,
         float speed,

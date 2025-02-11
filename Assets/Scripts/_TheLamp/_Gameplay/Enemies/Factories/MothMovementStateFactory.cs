@@ -53,9 +53,9 @@ public class MothMovementStateFactory
                 _radius
             );
         }
-        if (stateType == typeof(FMothMovementPatrolState))
+        if (stateType == typeof(FMothMovementNoisePatrolState))
         {
-            return new FMothMovementPatrolState(
+            return new FMothMovementNoisePatrolState(
                 _cameraTransform.position,
                 _positionDirectionProvider,
                 _speed,
@@ -96,9 +96,9 @@ public class MothMovementStateFactory
                 _positionDirectionProvider
             );
         }
-        if (stateType == typeof(FMothMovementSpreadState))
+        if (stateType == typeof(FMothMovementNoiseSpreadState))
         {
-            return new FMothMovementSpreadState(
+            return new FMothMovementNoiseSpreadState(
                 _positionDirectionProvider,
                 _speed
             );

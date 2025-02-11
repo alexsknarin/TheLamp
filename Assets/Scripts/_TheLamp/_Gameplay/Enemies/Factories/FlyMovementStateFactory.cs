@@ -55,9 +55,9 @@ public class FlyMovementStateFactory
                 _verticalAmplitude
                 );
         }
-        if (stateType == typeof(FFlyMovementPatrolState))
+        if (stateType == typeof(FFlyGenericMovementPatrolState))
         {
-            return new FFlyMovementPatrolState(
+            return new FFlyGenericMovementPatrolState(
                 _cameraTransform.position,
                 _positionDirectionProvider,
                 _lampPositionProviderService,
@@ -109,9 +109,9 @@ public class FlyMovementStateFactory
                 _isDeathByTimer
                 );
         }
-        if (stateType == typeof(FFlyMovementSpreadState))
+        if (stateType == typeof(FFlyGenericMovementSpreadState))
         {
-            return new FFlyMovementSpreadState(
+            return new FFlyGenericMovementSpreadState(
                 _positionDirectionProvider,
                 _speed
                 );

@@ -30,12 +30,12 @@ public class FMothMovement : FEnemyMovementBase, IPositionDirectionProvider
     private RegularEnemyMovementStateBase _currentState;
     private FMothMovementEnterState _enterState;
     private FMothMovementHoverState _hoverState;
-    private FMothMovementPatrolState _patrolState;
+    private FMothMovementNoisePatrolState _patrolState;
     private FMothMovementPreAttackState _preAttackState;
     private FMothMovementNoiseAttackState _attackState;
     private FMothMovementNoiseFallState _fallState;
     private FMothMovementNoiseDeathState _deathState;
-    private FMothMovementSpreadState _spreadState;
+    private FMothMovementNoiseSpreadState _spreadState;
 
 
     public void Construct(MothMovementStateFactory stateFactory)
@@ -60,12 +60,12 @@ public class FMothMovement : FEnemyMovementBase, IPositionDirectionProvider
         _stateFactory.SetEnemyDependencies(this, _speed, _radius, _verticalAmplitude);
         _enterState = (FMothMovementEnterState)_stateFactory.Create(typeof(FMothMovementEnterState));
         _hoverState = (FMothMovementHoverState)_stateFactory.Create(typeof(FMothMovementHoverState));
-        _patrolState = (FMothMovementPatrolState)_stateFactory.Create(typeof(FMothMovementPatrolState));
+        _patrolState = (FMothMovementNoisePatrolState)_stateFactory.Create(typeof(FMothMovementNoisePatrolState));
         _preAttackState = (FMothMovementPreAttackState)_stateFactory.Create(typeof(FMothMovementPreAttackState));
         _attackState = (FMothMovementNoiseAttackState)_stateFactory.Create(typeof(FMothMovementNoiseAttackState));
         _fallState = (FMothMovementNoiseFallState)_stateFactory.Create(typeof(FMothMovementNoiseFallState));
         _deathState = (FMothMovementNoiseDeathState)_stateFactory.Create(typeof(FMothMovementNoiseDeathState));
-        _spreadState = (FMothMovementSpreadState)_stateFactory.Create(typeof(FMothMovementSpreadState));
+        _spreadState = (FMothMovementNoiseSpreadState)_stateFactory.Create(typeof(FMothMovementNoiseSpreadState));
         
         _hoverState.Started += OnHoverStateStarted;
         _hoverState.Ended += OnHoverStateEnded;
