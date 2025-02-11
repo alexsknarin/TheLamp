@@ -20,7 +20,7 @@ public class LampCollisionDetectionService : MonoBehaviour
         {
             enabled = true;
             _collidables.Add(collidableWithLamp);
-            _collidableCount++; // TODO: Debug
+            _collidableCount++;
         }
     }
 
@@ -29,7 +29,7 @@ public class LampCollisionDetectionService : MonoBehaviour
         if (_collidables.Contains(collidable))
         {
             _collidables.Remove(collidable);
-            _collidableCount--; // TODO: Debug 
+            _collidableCount--; 
         }
     }
 

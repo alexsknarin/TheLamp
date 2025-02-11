@@ -138,7 +138,7 @@ public class Enemy : EnemyBase
     {
         ReadyToCollide = false;
         ReadyToLampDamage = true;
-        _enemyMovement.TriggerFall(); // TODO: interface for enemy movement and get implementation back into the  base class
+        _enemyMovement.TriggerFall(); 
     }
 
     public override void HandleCollisionWithStickZone()
@@ -150,7 +150,7 @@ public class Enemy : EnemyBase
     {
         if (_enemyType != EnemyType.Ladybug)
         {
-            ReadyToLampDamage = false; // TODO: better mechanism - separate IStickyDamageable class or somthing
+            ReadyToLampDamage = false;
         }
         
         _currentHealth -= damage;

@@ -9,13 +9,13 @@ public class FEnemyPool
     private ObjectPool<FEnemy> _flyPool;
     private ObjectPool<FEnemy> _fireFlyPool;
     private ObjectPool<FEnemy> _mothPool;
-    private FEnemyFactory _enemyFactory; // TODO: enemy factory per Enemy Type???
-    private int _poolSize = 5;
+    private readonly FEnemyFactory _enemyFactory;
+    private readonly int _poolSize = 5;
     private int _mothlingCount;
     private int _flyCount;
     private int _fireFlyCount;
     private int _mothCount;
-    private List<Type> _preloadedEnemyTypes = new List<Type>();
+    private readonly List<Type> _preloadedEnemyTypes = new List<Type>();
     
     public event Action<FEnemy> EnemyReleased;
     

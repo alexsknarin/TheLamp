@@ -46,7 +46,7 @@ public class MothMovementHoverState: EnemyMovementBaseState
         _phase += Time.deltaTime * _speed * _sideDirection * _speedFactor * speedNoiseCompensation;
         _hoverPhase = _localTime / _hoverDuration;
 
-        Vector3 circlePosition = _hoverCenter + EnemyMovementPatterns.CircleMotion(0, _hoverRadius, _hoverRadius, 1, _phase);
+        Vector3 circlePosition = _hoverCenter + (Vector3)EnemyMovementPatterns.CircleMotion(0, _hoverRadius, _hoverRadius, 1, _phase);
         
         if (radiusAdaptPhase < 1f)
         {

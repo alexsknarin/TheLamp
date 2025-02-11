@@ -63,7 +63,7 @@ public class FMothMovementHoverState: RegularEnemyMovementStateBase
         _phase += Time.deltaTime * _speed * _speedFactor * speedNoiseCompensation;
         _hoverPhase = _localTime / _hoverDuration;
 
-        Vector2 circlePosition = _hoverCenter + (Vector2)EnemyMovementPatterns.CircleMotion(0, _hoverRadius, _hoverRadius, 1, _phase);
+        Vector2 circlePosition = _hoverCenter + EnemyMovementPatterns.CircleMotion(0, _hoverRadius, _hoverRadius, 1, _phase);
         
         if (radiusAdaptPhase < 1f)
         {

@@ -75,6 +75,7 @@ public class FFlyMovement : FEnemyMovementBase, IPositionDirectionProvider
     {
         Debug.Log("FFlyMovement Initializing");
         // Create Movement States
+        // TODO: get collision radius from configs
         _stateFactory.SetEnemyDependencies(this, _speed, _radius, _verticalAmplitude, _proximityOffset, _isDeathByTimer, 0.1f); // TODO: magic numbers
         _enterState = (FFlyGenericMovementEnterState)_stateFactory.Create(typeof(FFlyGenericMovementEnterState));
         _patrolState = (FFlyGenericMovementPatrolState)_stateFactory.Create(typeof(FFlyGenericMovementPatrolState));

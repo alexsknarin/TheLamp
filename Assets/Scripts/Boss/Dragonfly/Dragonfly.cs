@@ -4,7 +4,7 @@ using Random = UnityEngine.Random;
 
 public class Dragonfly : BossBase
 {
-    private readonly DragonflyReturnMode[] RETURN_MODES = new DragonflyReturnMode[]
+    private readonly DragonflyReturnMode[] _returnModes = new DragonflyReturnMode[]
     {
         DragonflyReturnMode.PatrolL,
         DragonflyReturnMode.PatrolR,
@@ -13,7 +13,6 @@ public class Dragonfly : BossBase
         DragonflyReturnMode.Hover,
         DragonflyReturnMode.Hover
     };
-    // TODO: find ot how properly declare constants
     
     [SerializeField] private string _stateDebug;
     [SerializeField] private EnemyType _enemyType;
@@ -471,7 +470,7 @@ public class Dragonfly : BossBase
 
     private void OnAfterAttackExitEnded(IState movementState)
     {
-        _returnMode = RETURN_MODES[Random.Range(0, 6)];
+        _returnMode = _returnModes[Random.Range(0, 6)];
         _movement.ResolveReturnTransition(_returnMode);
         _isReadyToPreAttackWait = true;
     }

@@ -24,7 +24,6 @@ public class EnemyPoolSO : ScriptableObject, IInitializable, IEnemyPool
     private int _fireflyCount;
     private int _spiderCount;
     
-    // TODO: temporary solution - will be replaced with enemy factory
     private ILampPositionProviderService _lampPositionProviderService;
     
     public void Construct(ILampPositionProviderService lampPositionProviderService)

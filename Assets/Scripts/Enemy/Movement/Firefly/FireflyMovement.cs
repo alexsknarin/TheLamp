@@ -234,8 +234,8 @@ public class FireflyMovement : EnemyMovement
         // Add Noise
         if (_isNoiseEnabled && _currentState.State == EnemyState.Patrol)  
         {
-            Vector3 trajectoryNoise = TrajectoryNoise.Generate(_noiseFrequency); 
-            _position2d += trajectoryNoise * _noiseAmplitude;
+            Vector2 trajectoryNoise = TrajectoryNoise.Generate(_noiseFrequency); 
+            _position2d += (Vector3)trajectoryNoise * _noiseAmplitude;
             _position = _position2d;
         }
         

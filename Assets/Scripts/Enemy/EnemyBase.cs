@@ -29,7 +29,7 @@ public abstract class EnemyBase : MonoBehaviour, IInitializable
     public abstract void HandleCollisionWithStickZone();
     public abstract void ReceiveDamage(int damage);
     public abstract void UpdateAttackAvailability();
-    public abstract void ReturnToPool(); // TODO: interafce
+    public abstract void ReturnToPool();
     public abstract Vector3 ProvideImpactPoint();
     
     protected virtual void OnEnemyDeathInvoke(EnemyBase enemy)

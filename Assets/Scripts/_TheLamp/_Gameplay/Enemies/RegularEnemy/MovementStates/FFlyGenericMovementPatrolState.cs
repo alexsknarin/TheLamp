@@ -61,7 +61,7 @@ public class FFlyGenericMovementPatrolState: RegularEnemyMovementStateBase
         // Circle motion
         _phase += Time.deltaTime * _speed;
         
-        Vector3 circlePosition = EnemyMovementPatterns.CircleMotion(
+        Vector2 circlePosition = EnemyMovementPatterns.CircleMotion(
             -_patrolStartOffsetAngle, finalXRadius, _radius, _verticalAmplitude, _phase);
         
         Position2D = circlePosition;

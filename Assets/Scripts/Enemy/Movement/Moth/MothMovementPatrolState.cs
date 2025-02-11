@@ -46,14 +46,14 @@ public class MothMovementPatrolState: EnemyMovementBaseState
         _phase += Time.deltaTime * _speed * _sideDirection;
 
         // Circle motion
-        Vector3 circlePosition = EnemyMovementPatterns.CircleMotion(_patrolStartOffsetAngle, _radius, _radius, _verticalAmplitude, _phase);
+        Vector2 circlePosition = EnemyMovementPatterns.CircleMotion(_patrolStartOffsetAngle, _radius, _radius, _verticalAmplitude, _phase);
         if (trajectoryAdaptPhase < 1)
         {
-            circlePosition = Vector3.Lerp(currentPosition, circlePosition, Mathf.SmoothStep(0, 1, trajectoryAdaptPhase));
+            circlePosition = Vector2.Lerp(currentPosition, circlePosition, Mathf.SmoothStep(0, 1, trajectoryAdaptPhase));
         }
         
         // Add noise
-        Vector3 trajectoryNoise = TrajectoryNoise.Generate(_noiseFrequency);
+        Vector2 trajectoryNoise = TrajectoryNoise.Generate(_noiseFrequency);
         Position = circlePosition + trajectoryNoise * _noiseAmplitude;
         
         _localTime += Time.deltaTime;

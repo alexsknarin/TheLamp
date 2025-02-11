@@ -55,14 +55,14 @@ public class FMothMovementNoisePatrolState: RegularEnemyMovementStateBase
         _phase += Time.deltaTime * _speed;
 
         // Circle motion
-        Vector3 circlePosition = EnemyMovementPatterns.CircleMotion(_patrolStartOffsetAngle, _radius, _radius, _verticalAmplitude, _phase);
+        Vector2 circlePosition = EnemyMovementPatterns.CircleMotion(_patrolStartOffsetAngle, _radius, _radius, _verticalAmplitude, _phase);
         if (trajectoryAdaptPhase < 1)
         {
             circlePosition = Vector2.Lerp(Position2D, circlePosition, Mathf.SmoothStep(0, 1, trajectoryAdaptPhase));
         }
         
         // Add noise
-        Vector3 trajectoryNoise = TrajectoryNoise.Generate(_noiseFrequency);
+        Vector2 trajectoryNoise = TrajectoryNoise.Generate(_noiseFrequency);
         Position2D = circlePosition + trajectoryNoise * _noiseAmplitude;
         
         _localTime += Time.deltaTime;
