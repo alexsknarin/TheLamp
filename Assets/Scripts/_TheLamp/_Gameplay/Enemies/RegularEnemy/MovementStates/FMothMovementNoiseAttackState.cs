@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class FMothMovementAttackState : RegularEnemyMovementStateBase
+public class FMothMovementNoiseAttackState : RegularEnemyMovementStateBase
 {
     // Dependencies
     private readonly Vector3 _cameraPosition = new Vector3(0, 0, -5.88f);
@@ -18,7 +18,7 @@ public class FMothMovementAttackState : RegularEnemyMovementStateBase
     private readonly float _mothRadius = 0.1f;
     
     
-    public FMothMovementAttackState(
+    public FMothMovementNoiseAttackState(
         Vector3 cameraPosition,
         IPositionDirectionProvider positionDirectionProvider,
         ILampPositionProviderService lampPositionProvider,

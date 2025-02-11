@@ -43,8 +43,8 @@ public class FMothlingMovement : FEnemyMovementBase, IPositionDirectionProvider
     private FFlyGenericMovementEnterState _enterState;
     private FMothlingMovementPatrolState _patrolState;
     private FMothlingMovementPreAttackState _preAttackState;
-    private FMothlingMovementAttackState _attackState;
-    private FMothlingMovementFallState _fallState;
+    private FMothlingMovementConstantAttackState _attackState;
+    private FFlyGenericMovementFallState _fallState;
     private FMothlingMovementDeathState _deathState;
     private FMothlingMovementSpreadState _spreadState;
     
@@ -56,7 +56,6 @@ public class FMothlingMovement : FEnemyMovementBase, IPositionDirectionProvider
     {
         _stateFactory = stateFactory;
     }
-
 
     public event Action ReadyToAttackStateStarted;
     public event Action ReadyToAttackStateEnded;
@@ -73,12 +72,12 @@ public class FMothlingMovement : FEnemyMovementBase, IPositionDirectionProvider
     {
         Debug.Log("FMothlingMovement Initializing");
         // Create Movement States
-        _stateFactory.SetEnemyDependencies(this, _speed, _radius, _verticalAmplitude);
+        _stateFactory.SetEnemyDependencies(this, _speed, _radius, _verticalAmplitude, 0.075f); // TODO: magic number
         _enterState = (FFlyGenericMovementEnterState)_stateFactory.Create(typeof(FFlyGenericMovementEnterState));
         _patrolState = (FMothlingMovementPatrolState)_stateFactory.Create(typeof(FMothlingMovementPatrolState));
         _preAttackState = (FMothlingMovementPreAttackState)_stateFactory.Create(typeof(FMothlingMovementPreAttackState));
-        _attackState = (FMothlingMovementAttackState)_stateFactory.Create(typeof(FMothlingMovementAttackState));
-        _fallState = (FMothlingMovementFallState)_stateFactory.Create(typeof(FMothlingMovementFallState));
+        _attackState = (FMothlingMovementConstantAttackState)_stateFactory.Create(typeof(FMothlingMovementConstantAttackState));
+        _fallState = (FFlyGenericMovementFallState)_stateFactory.Create(typeof(FFlyGenericMovementFallState));
         _deathState = (FMothlingMovementDeathState)_stateFactory.Create(typeof(FMothlingMovementDeathState));
         _spreadState = (FMothlingMovementSpreadState)_stateFactory.Create(typeof(FMothlingMovementSpreadState));
         

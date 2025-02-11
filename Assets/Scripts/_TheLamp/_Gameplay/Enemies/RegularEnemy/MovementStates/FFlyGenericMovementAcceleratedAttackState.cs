@@ -1,22 +1,23 @@
 using UnityEngine;
 
-public class FFlyMovementAttackState : RegularEnemyMovementStateBase
+public class FFlyGenericMovementAcceleratedAttackState : RegularEnemyMovementStateBase
 {
     // Dependencies
     private readonly Vector3 _cameraPosition = new Vector3(0, 0, -5.88f);
     private readonly IPositionDirectionProvider _positionDirectionProvider;
-    private ILampPositionProviderService _lampPositionProviderService;  // TODO: enable later
+    private readonly ILampPositionProviderService _lampPositionProviderService;
     private readonly float _speed;
     private readonly float _proximityOffset;
 
     // State specific attributes
     private float _acceleration = 13.5f;
     private float _depthDecrement = 0.4f;
+
     private float _acceleratedSpeed = 1f;
     private float _startDistance;
     private readonly float _speedMultiplier =  1.1f;
 
-    public FFlyMovementAttackState(
+    public FFlyGenericMovementAcceleratedAttackState(
         Vector3 cameraPosition,
         IPositionDirectionProvider positionDirectionProvider,
         ILampPositionProviderService lampPositionProviderService,

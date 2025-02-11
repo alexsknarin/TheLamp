@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class FMothlingMovementAttackState: RegularEnemyMovementStateBase
+public class FMothlingMovementConstantAttackState: RegularEnemyMovementStateBase
 {
     // Dependencies
     private readonly Vector3 _cameraPosition = new Vector3(0, 0, -5.88f);
@@ -13,7 +13,7 @@ public class FMothlingMovementAttackState: RegularEnemyMovementStateBase
     private float _startDistance;
     private readonly float _speedMultiplier =  1.1f;
 
-    public FMothlingMovementAttackState(
+    public FMothlingMovementConstantAttackState(
         Vector3 cameraPosition,
         IPositionDirectionProvider positionDirectionProvider,
         ILampPositionProviderService lampPositionProviderService,

@@ -3,14 +3,15 @@ using UnityEngine;
 
 public class FlyMovementStateFactory
 {
-    private Transform _cameraTransform;
-    private ILampPositionProviderService _lampPositionProviderService;
+    private readonly Transform _cameraTransform;
+    private readonly ILampPositionProviderService _lampPositionProviderService;
     private IPositionDirectionProvider _positionDirectionProvider;
     private float _speed;
     private float _radius;
     private float _verticalAmplitude;
     private float _proximityOffset;
     private bool _isDeathByTimer;
+    private float _collisionRadius;
 
     public FlyMovementStateFactory(
         Transform cameraTransform, 
@@ -27,7 +28,8 @@ public class FlyMovementStateFactory
         float radius,
         float verticalAmplitude,
         float proximityOffset,
-        bool isDeathByTimer
+        bool isDeathByTimer,
+        float collisionRadius
         )
     {
         _positionDirectionProvider = positionDirectionProvider;
@@ -36,6 +38,7 @@ public class FlyMovementStateFactory
         _verticalAmplitude = verticalAmplitude;
         _proximityOffset = proximityOffset;
         _isDeathByTimer = isDeathByTimer;
+        _collisionRadius = collisionRadius;
     }
     
     
@@ -79,9 +82,9 @@ public class FlyMovementStateFactory
                 _speed
             );
         }
-        if (stateType == typeof(FFlyMovementAttackState))
+        if (stateType == typeof(FFlyGenericMovementAcceleratedAttackState))
         {
-            return new FFlyMovementAttackState(
+            return new FFlyGenericMovementAcceleratedAttackState(
                 _cameraTransform.position,
                 _positionDirectionProvider,
                 _lampPositionProviderService,
@@ -89,13 +92,14 @@ public class FlyMovementStateFactory
                 _proximityOffset
                 );
         }
-        if (stateType == typeof(FFlyMovementFallState))
+        if (stateType == typeof(FFlyGenericMovementFallState))
         {
-            return new FFlyMovementFallState(
+            return new FFlyGenericMovementFallState(
                 _positionDirectionProvider,
                 _lampPositionProviderService,
                 _radius,
-                _verticalAmplitude
+                _verticalAmplitude,
+                _collisionRadius
                 );
         }
         if (stateType == typeof(FFlyMovementDeathState))

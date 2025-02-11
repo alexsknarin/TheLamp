@@ -9,8 +9,7 @@ public class MothlingMovementStateFactory
     private float _speed;
     private float _radius;
     private float _verticalAmplitude;
-    private Vector2 _spawnAreaCenter;
-    private float _spawnAreaSize;
+    private float _collisionRadius;
 
     public MothlingMovementStateFactory(
         Transform cameraTransform, 
@@ -25,13 +24,15 @@ public class MothlingMovementStateFactory
         IPositionDirectionProvider positionDirectionProvider,
         float speed,
         float radius,
-        float verticalAmplitude
+        float verticalAmplitude,
+        float collisionRadius
         )
     {
         _positionDirectionProvider = positionDirectionProvider;
         _speed = speed;
         _radius = radius;
         _verticalAmplitude = verticalAmplitude;
+        _collisionRadius = collisionRadius;
     }
     
     
@@ -66,22 +67,23 @@ public class MothlingMovementStateFactory
                 _positionDirectionProvider
                 );
         }
-        if (stateType == typeof(FMothlingMovementAttackState))
+        if (stateType == typeof(FMothlingMovementConstantAttackState))
         {
-            return new FMothlingMovementAttackState(
+            return new FMothlingMovementConstantAttackState(
                 _cameraTransform.position,
                 _positionDirectionProvider,
                 _lampPositionProviderService,
                 _speed
                 );
         }
-        if (stateType == typeof(FMothlingMovementFallState))
+        if (stateType == typeof(FFlyGenericMovementFallState))
         {
-            return new FMothlingMovementFallState(
+            return new FFlyGenericMovementFallState(
                 _positionDirectionProvider,
                 _lampPositionProviderService,
                 _radius,
-                _verticalAmplitude
+                _verticalAmplitude,
+                _collisionRadius
                 );
         }
         if (stateType == typeof(FMothlingMovementDeathState))

@@ -32,9 +32,9 @@ public class FMothMovement : FEnemyMovementBase, IPositionDirectionProvider
     private FMothMovementHoverState _hoverState;
     private FMothMovementPatrolState _patrolState;
     private FMothMovementPreAttackState _preAttackState;
-    private FMothMovementAttackState _attackState;
-    private FMothMovementFallState _fallState;
-    private FMothMovementDeathState _deathState;
+    private FMothMovementNoiseAttackState _attackState;
+    private FMothMovementNoiseFallState _fallState;
+    private FMothMovementNoiseDeathState _deathState;
     private FMothMovementSpreadState _spreadState;
 
 
@@ -62,9 +62,9 @@ public class FMothMovement : FEnemyMovementBase, IPositionDirectionProvider
         _hoverState = (FMothMovementHoverState)_stateFactory.Create(typeof(FMothMovementHoverState));
         _patrolState = (FMothMovementPatrolState)_stateFactory.Create(typeof(FMothMovementPatrolState));
         _preAttackState = (FMothMovementPreAttackState)_stateFactory.Create(typeof(FMothMovementPreAttackState));
-        _attackState = (FMothMovementAttackState)_stateFactory.Create(typeof(FMothMovementAttackState));
-        _fallState = (FMothMovementFallState)_stateFactory.Create(typeof(FMothMovementFallState));
-        _deathState = (FMothMovementDeathState)_stateFactory.Create(typeof(FMothMovementDeathState));
+        _attackState = (FMothMovementNoiseAttackState)_stateFactory.Create(typeof(FMothMovementNoiseAttackState));
+        _fallState = (FMothMovementNoiseFallState)_stateFactory.Create(typeof(FMothMovementNoiseFallState));
+        _deathState = (FMothMovementNoiseDeathState)_stateFactory.Create(typeof(FMothMovementNoiseDeathState));
         _spreadState = (FMothMovementSpreadState)_stateFactory.Create(typeof(FMothMovementSpreadState));
         
         _hoverState.Started += OnHoverStateStarted;

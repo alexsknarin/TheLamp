@@ -18,7 +18,6 @@ public class FFlyMovementDeathState : RegularEnemyMovementStateBase
     private float _duration = 0.32f;
     private float _localTime;
     
-    
     public FFlyMovementDeathState(IPositionDirectionProvider positionDirectionProvider, bool isDeathByTimer)
     {
         _positionDirectionProvider = positionDirectionProvider;

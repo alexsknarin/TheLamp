@@ -44,8 +44,8 @@ public class FFlyMovement : FEnemyMovementBase, IPositionDirectionProvider
     private FFlyMovementPatrolState _patrolState;
     private FFlyMovementPreAttackStateR _preAttackStateR;
     private FFlyMovementPreAttackStateL _preAttackStateL;
-    private FFlyMovementAttackState _attackState;
-    private FFlyMovementFallState _fallState;
+    private FFlyGenericMovementAcceleratedAttackState _attackState;
+    private FFlyGenericMovementFallState _fallState;
     private FFlyMovementDeathState _deathState;
     private FFlyMovementSpreadState _spreadState;
     
@@ -75,13 +75,13 @@ public class FFlyMovement : FEnemyMovementBase, IPositionDirectionProvider
     {
         Debug.Log("FFlyMovement Initializing");
         // Create Movement States
-        _stateFactory.SetEnemyDependencies(this, _speed, _radius, _verticalAmplitude, _proximityOffset, _isDeathByTimer);
+        _stateFactory.SetEnemyDependencies(this, _speed, _radius, _verticalAmplitude, _proximityOffset, _isDeathByTimer, 0.1f); // TODO: magic numbers
         _enterState = (FFlyGenericMovementEnterState)_stateFactory.Create(typeof(FFlyGenericMovementEnterState));
         _patrolState = (FFlyMovementPatrolState)_stateFactory.Create(typeof(FFlyMovementPatrolState));
         _preAttackStateR = (FFlyMovementPreAttackStateR)_stateFactory.Create(typeof(FFlyMovementPreAttackStateR));
         _preAttackStateL = (FFlyMovementPreAttackStateL)_stateFactory.Create(typeof(FFlyMovementPreAttackStateL));
-        _attackState = (FFlyMovementAttackState)_stateFactory.Create(typeof(FFlyMovementAttackState));
-        _fallState = (FFlyMovementFallState)_stateFactory.Create(typeof(FFlyMovementFallState));
+        _attackState = (FFlyGenericMovementAcceleratedAttackState)_stateFactory.Create(typeof(FFlyGenericMovementAcceleratedAttackState));
+        _fallState = (FFlyGenericMovementFallState)_stateFactory.Create(typeof(FFlyGenericMovementFallState));
         _deathState = (FFlyMovementDeathState)_stateFactory.Create(typeof(FFlyMovementDeathState));
         _spreadState = (FFlyMovementSpreadState)_stateFactory.Create(typeof(FFlyMovementSpreadState));
         

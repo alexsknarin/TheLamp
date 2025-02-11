@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class FMothMovementDeathState: RegularEnemyMovementStateBase
+public class FMothMovementNoiseDeathState: RegularEnemyMovementStateBase
 {
     // Dependencies
     private IPositionDirectionProvider _positionDirectionProvider;
@@ -15,7 +15,7 @@ public class FMothMovementDeathState: RegularEnemyMovementStateBase
     private float _noiseFrequency = 7f;
     private float _noiseAmplitude = 0.035f;
     
-    public FMothMovementDeathState(IPositionDirectionProvider positionDirectionProvider)
+    public FMothMovementNoiseDeathState(IPositionDirectionProvider positionDirectionProvider)
     {
         _positionDirectionProvider = positionDirectionProvider;
     }

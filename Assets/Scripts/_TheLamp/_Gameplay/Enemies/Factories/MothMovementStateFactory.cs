@@ -71,18 +71,18 @@ public class MothMovementStateFactory
                 _speed
             );
         }
-        if (stateType == typeof(FMothMovementAttackState))
+        if (stateType == typeof(FMothMovementNoiseAttackState))
         {
-            return new FMothMovementAttackState(
+            return new FMothMovementNoiseAttackState(
                 _cameraTransform.position,
                 _positionDirectionProvider,
                 _lampPositionProviderService,
                 _speed
             );
         }
-        if (stateType == typeof(FMothMovementFallState))
+        if (stateType == typeof(FMothMovementNoiseFallState))
         {
-            return new FMothMovementFallState(
+            return new FMothMovementNoiseFallState(
                 _cameraTransform.position,
                 _positionDirectionProvider,
                 _lampPositionProviderService,
@@ -90,9 +90,9 @@ public class MothMovementStateFactory
                 _verticalAmplitude
             );
         }
-        if (stateType == typeof(FMothMovementDeathState))
+        if (stateType == typeof(FMothMovementNoiseDeathState))
         {
-            return new FMothMovementDeathState(
+            return new FMothMovementNoiseDeathState(
                 _positionDirectionProvider
             );
         }
