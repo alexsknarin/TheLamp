@@ -650,10 +650,11 @@ public class FWaspMovement : MonoBehaviour, IInitializable
         if (ATTACK_STATES.Contains(_stateMachine.CurrentStateType))
         {
             // Check if lamp was penetrated
+            // TODO: remake into Vector2
             Vector3 newPosition = transform.position;
-            if ((newPosition - _lampPositionProvider.GetLampPosition()).magnitude < _colliderRadius + 0.5f)
+            if ((newPosition - (Vector3)_lampPositionProvider.GetLampPosition()).magnitude < _colliderRadius + 0.5f)
             {
-                newPosition = _lampPositionProvider.GetLampPosition() + newPosition.normalized * (0.5f + _colliderRadius);
+                newPosition = (Vector3)_lampPositionProvider.GetLampPosition() + newPosition.normalized * (0.5f + _colliderRadius);
             }
             transform.position = newPosition;
         }

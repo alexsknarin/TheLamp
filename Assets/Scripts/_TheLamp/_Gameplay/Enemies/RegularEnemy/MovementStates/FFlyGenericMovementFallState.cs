@@ -41,10 +41,10 @@ public class FFlyGenericMovementFallState: RegularEnemyMovementStateBase
     {
         Position2D = _positionDirectionProvider.Position2D;
         
-        Vector2 position2DNormalized = (Position2D - (Vector2)_lampPositionProviderService.GetLampPosition()).normalized;
+        Vector2 position2DNormalized = (Position2D - _lampPositionProviderService.GetLampPosition()).normalized;
         Position2D = position2DNormalized 
             * (_fullLampCollisionRadius + _collisionRadius) 
-            + (Vector2)_lampPositionProviderService.GetLampPosition();
+            + _lampPositionProviderService.GetLampPosition();
                      
         DepthDirection = Vector3.zero;
         

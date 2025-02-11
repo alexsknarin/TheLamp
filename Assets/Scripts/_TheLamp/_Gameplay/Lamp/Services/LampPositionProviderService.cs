@@ -2,9 +2,9 @@ using UnityEngine;
 
 public class LampPositionProviderService : MonoBehaviour, ILampPositionProviderService
 {
-    private Vector3 _lampPosition;
+    private Vector2 _lampPosition;
     
-    public Vector3 GetLampPosition()
+    public Vector2 GetLampPosition()
     {
         return _lampPosition;
     }

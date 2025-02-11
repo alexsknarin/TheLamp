@@ -12,7 +12,7 @@ public class FMothlingMovementDeathState: RegularEnemyMovementStateBase
     private readonly float _gravityForceMagnitude = .2f;
     private readonly float _dragAmount = 0.94f;
     private readonly float _speedMultiplier = 0.9f;
-    private readonly float _fallBottomYcoordinate = -6f;
+    private readonly float _fallBottomYCoordinate = -6f;
     
     public FMothlingMovementDeathState(IPositionDirectionProvider positionDirectionProvider)
     {
@@ -37,7 +37,7 @@ public class FMothlingMovementDeathState: RegularEnemyMovementStateBase
         _bounceForce *= _dragAmount;
         _gravityForce += Vector2.down * (_gravityForceMagnitude * Time.deltaTime);
         
-        if (Position2D.y < _fallBottomYcoordinate)
+        if (Position2D.y < _fallBottomYCoordinate)
         {
             Ended?.Invoke();
         }

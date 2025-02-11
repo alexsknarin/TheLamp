@@ -46,8 +46,8 @@ public class FMothMovementNoiseFallState: RegularEnemyMovementStateBase
         IsReadyToSwitch = false;
         Position2D = _positionDirectionProvider.Position2D;
         
-        Vector2 position2DNormalized = (Position2D - (Vector2)_lampPositionProviderService.GetLampPosition()).normalized;
-        Position2D = position2DNormalized * (0.49f + 0.1f + 0.0001f) + (Vector2)_lampPositionProviderService.GetLampPosition(); // TODO: Magic numbers
+        Vector2 position2DNormalized = (Position2D - _lampPositionProviderService.GetLampPosition()).normalized;
+        Position2D = position2DNormalized * (0.49f + 0.1f + 0.0001f) + _lampPositionProviderService.GetLampPosition(); // TODO: Magic numbers
         
         _bounceForce = position2DNormalized * _bounceForceMagnitude;
         

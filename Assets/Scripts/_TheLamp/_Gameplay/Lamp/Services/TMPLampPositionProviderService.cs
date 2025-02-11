@@ -2,8 +2,8 @@ using UnityEngine;
 // TTODO: remove after factory is ready
 public class TMPLampPositionProviderService: ILampPositionProviderService
 {
-    public Vector3 GetLampPosition()
+    public Vector2 GetLampPosition()
     {
-        return Vector3.zero;
+        return Vector2.zero;
     }
 }

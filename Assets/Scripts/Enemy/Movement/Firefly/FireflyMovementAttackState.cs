@@ -40,9 +40,9 @@ public class FireflyMovementAttackState: EnemyMovementBaseState
         newPosition += direction * (_speed * _acceleratedSpeed * Time.deltaTime);
         _acceleratedSpeed += _acceleration * Time.deltaTime;
         
-        if ((newPosition - _lampPositionProvider.GetLampPosition()).magnitude < _fireflyRadius + 0.5f)
+        if ((newPosition - (Vector3)_lampPositionProvider.GetLampPosition()).magnitude < _fireflyRadius + 0.5f)
         {
-            newPosition = _lampPositionProvider.GetLampPosition() + newPosition.normalized * (0.5f + _fireflyRadius);
+            newPosition = (Vector3)_lampPositionProvider.GetLampPosition() + newPosition.normalized * (0.5f + _fireflyRadius);
         }
         
         Position = newPosition;

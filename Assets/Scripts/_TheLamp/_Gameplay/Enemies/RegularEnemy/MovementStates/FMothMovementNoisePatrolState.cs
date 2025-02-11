@@ -47,11 +47,6 @@ public class FMothMovementNoisePatrolState: RegularEnemyMovementStateBase
         
         _patrolStartOffsetAngle = Mathf.Acos(Vector3.Dot(horizontalVector.normalized, Position2D.normalized));
         _patrolStartOffsetAngle *= Mathf.Sign(Position2D.y);
-        
-        // if (_sideDirection < 0)
-        // {
-        //     _patrolStartOffsetAngle = Mathf.PI - _patrolStartOffsetAngle;
-        // }
     }
 
     public override void Tick()

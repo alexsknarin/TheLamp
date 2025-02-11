@@ -41,7 +41,7 @@ public class FMothMovementNoiseAttackState : RegularEnemyMovementStateBase
     public override void Tick()
     {
         Vector2 newPosition = Position2D;
-        Vector2 lampVector = (Vector2)_lampPositionProvider.GetLampPosition() - Position2D;
+        Vector2 lampVector = _lampPositionProvider.GetLampPosition() - Position2D;
         Vector2 direction = lampVector.normalized;
         newPosition += direction * (_speed * _acceleratedSpeed * Time.deltaTime);
         _acceleratedSpeed += _acceleration;

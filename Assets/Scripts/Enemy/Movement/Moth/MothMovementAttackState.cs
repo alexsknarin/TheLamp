@@ -44,9 +44,9 @@ public class MothMovementAttackState: EnemyMovementBaseState
         newPosition += direction * (_speed * _acceleratedSpeed * Time.deltaTime);
         
         // Check if lamp was penetrated
-        if ((newPosition - _lampPositionProvider.GetLampPosition()).magnitude < _mothRadius + 0.5f)
+        if ((newPosition - (Vector3)_lampPositionProvider.GetLampPosition()).magnitude < _mothRadius + 0.5f)
         {
-            newPosition = _lampPositionProvider.GetLampPosition() + newPosition.normalized * (0.5f + _mothRadius);
+            newPosition = (Vector3)_lampPositionProvider.GetLampPosition() + newPosition.normalized * (0.5f + _mothRadius);
         }
         
         _acceleratedSpeed += _acceleration;

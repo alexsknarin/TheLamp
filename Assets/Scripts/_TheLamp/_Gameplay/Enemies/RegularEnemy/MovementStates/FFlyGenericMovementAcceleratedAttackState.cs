@@ -41,7 +41,7 @@ public class FFlyGenericMovementAcceleratedAttackState : RegularEnemyMovementSta
 
     public override void Tick()
     {
-        Vector2 direction = -(Position2D - (Vector2)_lampPositionProviderService.GetLampPosition()).normalized;
+        Vector2 direction = -(Position2D - _lampPositionProviderService.GetLampPosition()).normalized;
         Position2D += direction * (_speed * _acceleratedSpeed * Time.deltaTime);
         _acceleratedSpeed += _acceleration * Time.deltaTime;
         
