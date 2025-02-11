@@ -100,13 +100,6 @@ public class FMoth : FEnemy
         _movement.TriggerFall();
     }
 
-
-    // --- Events ---
-    private void OnDeathStateEnded()
-    {
-        _objectPool.Release(this);
-    }
-
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.cyan;
