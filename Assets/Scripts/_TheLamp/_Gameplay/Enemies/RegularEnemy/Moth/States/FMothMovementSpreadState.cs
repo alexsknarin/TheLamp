@@ -26,7 +26,6 @@ public class FMothMovementSpreadState: RegularEnemyMovementStateBase
 
     public override void OnEnter()
     {
-        IsReadyToSwitch = false;
         Position2D = _positionDirectionProvider.Position2D;
         DepthDirection = _positionDirectionProvider.DepthDirection;
         
@@ -46,7 +45,6 @@ public class FMothMovementSpreadState: RegularEnemyMovementStateBase
         
         if(Position2D.magnitude > _maxDistance + _extraDistance)
         {
-            IsReadyToSwitch = true;
             Ended?.Invoke();
         }
     }

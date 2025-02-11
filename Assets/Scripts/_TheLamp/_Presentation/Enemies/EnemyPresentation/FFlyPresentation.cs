@@ -19,6 +19,7 @@ public class FFlyPresentation : MonoBehaviour
         
         _movement.PreAttackStarted += OnPreAttackStarted;
         _movement.PreAttackEnded += OnPreAttackEnded;
+        _movement.SpreadStateEnded += _trailResetHandler.Initialize;
         _fly.Started += OnFlyStarted;
         _fly.Damaged += OnFlyDamaged;
         _fly.HealthChanged += _healthIndication.Refresh;
@@ -30,6 +31,7 @@ public class FFlyPresentation : MonoBehaviour
     {
         _movement.PreAttackStarted -= OnPreAttackStarted;
         _movement.PreAttackEnded -= OnPreAttackEnded;
+        _movement.SpreadStateEnded -= _trailResetHandler.Initialize;
         _fly.Started -= OnFlyStarted;
         _fly.Damaged -= OnFlyDamaged;
         _fly.HealthChanged -= _healthIndication.Refresh;

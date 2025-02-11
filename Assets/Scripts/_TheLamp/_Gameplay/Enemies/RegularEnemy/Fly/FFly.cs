@@ -22,16 +22,18 @@ public class FFly : FEnemy
     public override void Initialize()
     {
         _movement.Initialize();
-        _movement.PatrolStarted += OnPatrolStarted; // TODO: Rename event
+        _movement.ReadyToAttackStateStarted += OnReadyToAttackStateStarted;
+        _movement.ReadyToAttackStateEnded += OnReadyToAttackStateEnded;
         _movement.DeathStateEnded += OnDeathStateEnded;
     }
 
     private void OnDestroy()
     {
-        _movement.PatrolStarted -= OnPatrolStarted;
+        _movement.ReadyToAttackStateStarted -= OnReadyToAttackStateStarted;
+        _movement.ReadyToAttackStateEnded -= OnReadyToAttackStateEnded;
         _movement.DeathStateEnded -= OnDeathStateEnded;
     }
-    
+
     public override void Play()
     {
         _currentHealth = _maxHealth;
@@ -114,10 +116,14 @@ public class FFly : FEnemy
     }
 
     // --- Events ---
-
-    private void OnPatrolStarted()
+    private void OnReadyToAttackStateStarted()
     {
-        _isInAttackReadyMovementState = true; // Rename Event
+        _isInAttackReadyMovementState = true;
+    }
+
+    private void OnReadyToAttackStateEnded()
+    {
+        _isInAttackReadyMovementState = false;
     }
 
     private void OnDeathStateEnded()

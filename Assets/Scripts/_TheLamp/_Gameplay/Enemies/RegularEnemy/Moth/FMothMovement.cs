@@ -43,12 +43,12 @@ public class FMothMovement : FEnemyMovementBase, IPositionDirectionProvider
         _stateFactory = stateFactory;
     }
 
-    public event Action Started;
     public event Action ReadyToAttackStateStarted;
-    public event Action ReadyToAttackStateEnded; // TODO: implement this in other enemies
+    public event Action ReadyToAttackStateEnded;
     public event Action PreAttackStarted;
     public event Action PreAttackEnded;
     public event Action DeathStateEnded;
+    public event Action SpreadStateEnded;
 
     public Vector2 Position2D { get; private set; }
     public Vector3 DepthDirection { get; private set; }
@@ -125,8 +125,6 @@ public class FMothMovement : FEnemyMovementBase, IPositionDirectionProvider
         
         _isAttacking = false;
         enabled = true;
-        
-        Started?.Invoke();
     }
 
     public override void TriggerAttack()
@@ -247,6 +245,7 @@ public class FMothMovement : FEnemyMovementBase, IPositionDirectionProvider
     {
         // TODO: 
         // if lamp is not dead or gameover (need to DI this information or let EnemyManager decide)
+        SpreadStateEnded?.Invoke();
         Play();
     }
 }

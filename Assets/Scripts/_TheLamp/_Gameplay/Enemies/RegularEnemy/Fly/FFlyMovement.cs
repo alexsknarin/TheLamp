@@ -59,10 +59,12 @@ public class FFlyMovement : FEnemyMovementBase, IPositionDirectionProvider
         _stateFactory = stateFactory;
     }
     
-    public event Action PatrolStarted;
+    public event Action ReadyToAttackStateStarted;
+    public event Action ReadyToAttackStateEnded;
     public event Action PreAttackStarted;
     public event Action PreAttackEnded;
     public event Action DeathStateEnded;
+    public event Action SpreadStateEnded;
 
     public Vector2 Position2D { get; private set; } 
     public Vector3 DepthDirection { get; private set; }
@@ -85,11 +87,13 @@ public class FFlyMovement : FEnemyMovementBase, IPositionDirectionProvider
         
         // Subscribe to state events
         _patrolState.Started += OnPatrolStateStarted; 
+        _patrolState.Ended += OnPatrolStateEnded;
         _preAttackStateR.Started += OnPreAttackStateStarted;
         _preAttackStateR.Ended += OnPreAttackStateEnded;
         _preAttackStateL.Started += OnPreAttackStateStarted;
         _preAttackStateL.Ended += OnPreAttackStateEnded;
         _deathState.Ended += OnDeathStateEnded;
+        _spreadState.Ended += OnSpreadStateEnded;
         
         // Automatic State transitions
         At(_enterState, _patrolState, () => _enterState.IsReadyToSwitch);
@@ -136,13 +140,15 @@ public class FFlyMovement : FEnemyMovementBase, IPositionDirectionProvider
     private void OnDestroy()
     {
         _patrolState.Started -= OnPatrolStateStarted; 
+        _patrolState.Ended -= OnPatrolStateEnded;
         _preAttackStateR.Started -= OnPreAttackStateStarted;
         _preAttackStateR.Ended -= OnPreAttackStateEnded;
         _preAttackStateL.Started -= OnPreAttackStateStarted;
         _preAttackStateL.Ended -= OnPreAttackStateEnded;
         _deathState.Ended -= OnDeathStateEnded;
+        _spreadState.Ended -= OnSpreadStateEnded;
     }
-    
+
     public override void Play()
     {
         _sideDirection = RandomDirection.Generate();
@@ -217,7 +223,7 @@ public class FFlyMovement : FEnemyMovementBase, IPositionDirectionProvider
             _stateMachine.SetState(_currentState);
         }
     }
-    
+
     private void Update()
     {
         // Debug only
@@ -289,15 +295,17 @@ public class FFlyMovement : FEnemyMovementBase, IPositionDirectionProvider
         spawnPosition.x *= direction;
         return spawnPosition;
     }
-    
+
+
     // TODO: use the same in Mothling
+
     private void ApplyTransformToPosition2D()
     {
         Vector2 newPosition2D = Position2D;
         newPosition2D.x = Mathf.Abs(newPosition2D.x) * Mathf.Sign(transform.position.x);
         Position2D = newPosition2D;
     }
-    
+
     private IEnumerator SmoothDampDelay()
     {
         yield return _waitSmoothDamp;
@@ -306,7 +314,12 @@ public class FFlyMovement : FEnemyMovementBase, IPositionDirectionProvider
 
     private void OnPatrolStateStarted()
     {
-        PatrolStarted?.Invoke();
+        ReadyToAttackStateStarted?.Invoke();
+    }
+
+    private void OnPatrolStateEnded()
+    {
+        ReadyToAttackStateEnded?.Invoke();
     }
 
     private void OnPreAttackStateStarted()
@@ -323,5 +336,12 @@ public class FFlyMovement : FEnemyMovementBase, IPositionDirectionProvider
     {
         DeathStateEnded?.Invoke();
         enabled = false;
+    }
+
+    private void OnSpreadStateEnded()
+    {
+        // TODO: external control over it
+        SpreadStateEnded?.Invoke();
+        Play();
     }
 }

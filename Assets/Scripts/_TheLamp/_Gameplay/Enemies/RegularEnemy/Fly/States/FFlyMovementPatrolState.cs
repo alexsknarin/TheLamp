@@ -36,6 +36,7 @@ public class FFlyMovementPatrolState: FFlyMovementStateBase
     }
 
     public event Action Started;
+    public event Action Ended;
     
     public override void OnEnter()
     {
@@ -76,5 +77,6 @@ public class FFlyMovementPatrolState: FFlyMovementStateBase
     {
         _localTime = 0;
         _patrolStartOffsetAngle = 0;
+        Ended?.Invoke();
     }
 }

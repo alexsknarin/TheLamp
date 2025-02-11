@@ -17,9 +17,9 @@ public class FMothPresentation : MonoBehaviour
         _deathFlash.Initialize();
         _healthIndication.Initialize();
         
-        _movement.Started += OnMovementStarted;
         _movement.PreAttackStarted += OnPreAttackStarted;
         _movement.PreAttackEnded += OnPreAttackEnded;
+        _movement.SpreadStateEnded += _trailResetHandler.Initialize;
         _moth.Started += OnFlyStarted;
         _moth.Damaged += OnFlyDamaged;
         _moth.HealthChanged += _healthIndication.Refresh;
@@ -29,18 +29,13 @@ public class FMothPresentation : MonoBehaviour
 
     private void OnDestroy()
     {
-        _movement.Started -= OnMovementStarted;
         _movement.PreAttackStarted -= OnPreAttackStarted;
         _movement.PreAttackEnded -= OnPreAttackEnded;
+        _movement.SpreadStateEnded -= _trailResetHandler.Initialize;
         _moth.Started -= OnFlyStarted;
         _moth.Damaged -= OnFlyDamaged;
         _moth.HealthChanged -= _healthIndication.Refresh;
         _moth.Dead -= OnFlyDead;
-    }
-
-    private void OnMovementStarted()
-    {
-        _trailResetHandler.Initialize();
     }
 
     private void OnFlyStarted()

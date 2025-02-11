@@ -56,11 +56,15 @@ public class FMothlingMovement : FEnemyMovementBase, IPositionDirectionProvider
     {
         _stateFactory = stateFactory;
     }
-    
-    public event Action PatrolStarted;
+
+
+    public event Action ReadyToAttackStateStarted;
+    public event Action ReadyToAttackStateEnded;
     public event Action PreAttackStarted;
     public event Action PreAttackEnded;
     public event Action DeathStateEnded;
+    public event Action SpreadStateEnded;
+    
 
     public Vector2 Position2D { get; private set; } 
     public Vector3 DepthDirection { get; private set; } 
@@ -79,10 +83,12 @@ public class FMothlingMovement : FEnemyMovementBase, IPositionDirectionProvider
         _spreadState = (FMothlingMovementSpreadState)_stateFactory.Create(typeof(FMothlingMovementSpreadState));
         
         // Subscribe to state events
-        _patrolState.Started += OnPatrolStateStarted; 
+        _patrolState.Started += OnPatrolStateStarted;
+        _patrolState.Ended += OnPatrolStateEnded;
         _preAttackState.Started += OnPreAttackStateStarted;
         _preAttackState.Ended += OnPreAttackStateEnded;
         _deathState.Ended += OnDeathStateEnded;
+        _spreadState.Ended += OnSpreadStateEnded;
         
         // Automatic State transitions
         At(_enterState, _patrolState, () => _enterState.IsReadyToSwitch);
@@ -116,9 +122,11 @@ public class FMothlingMovement : FEnemyMovementBase, IPositionDirectionProvider
     private void OnDestroy()
     {
         _patrolState.Started -= OnPatrolStateStarted; 
+        _patrolState.Ended -= OnPatrolStateEnded;
         _preAttackState.Started -= OnPreAttackStateStarted;
         _preAttackState.Ended -= OnPreAttackStateEnded;
         _deathState.Ended -= OnDeathStateEnded;
+        _spreadState.Ended -= OnSpreadStateEnded;
     }
 
     public override void Play()
@@ -282,7 +290,7 @@ public class FMothlingMovement : FEnemyMovementBase, IPositionDirectionProvider
         newPosition2D.x = Mathf.Abs(newPosition2D.x) * Mathf.Sign(transform.position.x);
         Position2D = newPosition2D;
     }
-    
+
     private IEnumerator SmoothDampDelay()
     {
         yield return _waitSmoothDamp;
@@ -291,7 +299,12 @@ public class FMothlingMovement : FEnemyMovementBase, IPositionDirectionProvider
 
     private void OnPatrolStateStarted()
     {
-        PatrolStarted?.Invoke();
+        ReadyToAttackStateStarted?.Invoke();
+    }
+
+    private void OnPatrolStateEnded()
+    {
+        ReadyToAttackStateEnded?.Invoke();
     }
 
     private void OnPreAttackStateStarted()
@@ -308,5 +321,12 @@ public class FMothlingMovement : FEnemyMovementBase, IPositionDirectionProvider
     {
         DeathStateEnded?.Invoke();
         enabled = false;
+    }
+
+    private void OnSpreadStateEnded()
+    {
+        // TODO: should be decided based on gameover state
+        SpreadStateEnded?.Invoke();
+        Play();
     }
 }

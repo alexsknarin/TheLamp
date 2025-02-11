@@ -22,14 +22,15 @@ public class FFireFly : FEnemy
     public override void Initialize()
     {
         _movement.Initialize();
-        _movement.PatrolStarted += OnPatrolStarted;
+        _movement.ReadyToAttackStateStarted += OnReadyToAttackStateStarted;
+        _movement.ReadyToAttackStateEnded += OnReadyToAttackStateEnded;
         _movement.DeathStateEnded += OnDeathStateEnded;
-        // TODO: release from pool on death state end
     }
 
     private void OnDestroy()
     {
-        _movement.PatrolStarted -= OnPatrolStarted;
+        _movement.ReadyToAttackStateStarted -= OnReadyToAttackStateStarted;
+        _movement.ReadyToAttackStateEnded -= OnReadyToAttackStateEnded;
         _movement.DeathStateEnded -= OnDeathStateEnded;
     }
     
@@ -115,12 +116,16 @@ public class FFireFly : FEnemy
     }
 
     // --- Events ---
-
-    private void OnPatrolStarted()
+    private void OnReadyToAttackStateStarted()
     {
         _isInAttackReadyMovementState = true;
     }
 
+    private void OnReadyToAttackStateEnded()
+    {
+        _isInAttackReadyMovementState = false;
+    }
+    
     private void OnDeathStateEnded()
     {
         _objectPool.Release(this);

@@ -10,7 +10,10 @@ public class FEnemyManager : MonoBehaviour
     [SerializeField] private FMothling _mothlingEnemy;
     [SerializeField] private Transform _cameraTransform;
     [SerializeField] private LampPositionProviderService _lampPositionProviderService;
-    private FEnemy _enemy;
+    private FEnemy _enemyMothling;
+    private FEnemy _enemyMoth;
+    private FEnemy _enemyFly;
+    private FEnemy _enemyFireFly;
 
     private MothlingMovementStateFactory _mothlingMovementStateFactory;
     private FlyMovementStateFactory _flyMovementStateFactory;
@@ -46,38 +49,82 @@ public class FEnemyManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.L))
         {
             _enemyPool.PreloadEnemy(typeof(FMoth));
+            _enemyPool.PreloadEnemy(typeof(FMothling));
+            _enemyPool.PreloadEnemy(typeof(FFly));
+            _enemyPool.PreloadEnemy(typeof(FFireFly));
+        }
+        
+        if (Input.GetKeyDown(KeyCode.O))
+        {
+            _enemyMothling = _enemyPool.Get(typeof(FMothling));
+            _enemyMothling.Play();
         }
         
         if (Input.GetKeyDown(KeyCode.P))
         {
-            _enemy = _enemyPool.Get(typeof(FMoth));
-            _enemy.Play();
+            _enemyMoth = _enemyPool.Get(typeof(FMoth));
+            _enemyMoth.Play();
+        }
+        
+        if (Input.GetKeyDown(KeyCode.LeftBracket))
+        {
+            _enemyFly = _enemyPool.Get(typeof(FFly));
+            _enemyFly.Play();
+        }
+        
+        if (Input.GetKeyDown(KeyCode.RightBracket))
+        {
+            _enemyFireFly = _enemyPool.Get(typeof(FFireFly));
+            _enemyFireFly.Play();
         }
 
         // Start Enemy Attack
         if (Input.GetKeyDown(KeyCode.A))
         {
-            _lampCollisionDetectionService.AddCollidable(_enemy);
-            _damageables.Add(_enemy);
-           
-            // if (_enemy.IsReadyToAttack)
-            // {
-                _enemy.Attack();
-            // }
+            if (_enemyMothling.IsReadyToAttack)
+            {
+                _lampCollisionDetectionService.AddCollidable(_enemyMothling);
+                _damageables.Add(_enemyMothling);
+                _enemyMothling.Attack();    
+            }
+            if (_enemyMoth.IsReadyToAttack)
+            {
+                _lampCollisionDetectionService.AddCollidable(_enemyMoth);
+                _damageables.Add(_enemyMoth);
+                _enemyMoth.Attack();    
+            }
+            if (_enemyFly.IsReadyToAttack)
+            {
+                _lampCollisionDetectionService.AddCollidable(_enemyFly);
+                _damageables.Add(_enemyFly);
+                _enemyFly.Attack();    
+            }
+            if (_enemyFireFly.IsReadyToAttack)
+            {
+                _lampCollisionDetectionService.AddCollidable(_enemyFireFly);
+                _damageables.Add(_enemyFireFly);
+                _enemyFireFly.Attack();    
+            }
         }
         
         // Emulate enemy Death
         if (Input.GetKeyDown(KeyCode.D))
         {
-            _lampCollisionDetectionService.RemoveCollidable(_enemy);
-            _enemy.DoDeath();
+            _lampCollisionDetectionService.RemoveCollidable(_enemyMothling);
+            _enemyMothling.DoDeath();
         }
         
         // Emulate enemy Spread
         if (Input.GetKeyDown(KeyCode.S))
         {
-            _lampCollisionDetectionService.RemoveCollidable(_enemy);
-            _enemy.Spread();
+            _lampCollisionDetectionService.RemoveCollidable(_enemyMothling);
+            _lampCollisionDetectionService.RemoveCollidable(_enemyMoth);
+            _lampCollisionDetectionService.RemoveCollidable(_enemyFly);
+            _lampCollisionDetectionService.RemoveCollidable(_enemyFireFly);
+            _enemyMothling.Spread();
+            _enemyMoth.Spread();
+            _enemyFly.Spread();
+            _enemyFireFly.Spread();
         }
         
         // Do Lamp Attack

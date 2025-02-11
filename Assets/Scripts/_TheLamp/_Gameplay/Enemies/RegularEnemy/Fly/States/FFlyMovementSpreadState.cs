@@ -1,4 +1,6 @@
+using System;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class FFlyMovementSpreadState: FFlyMovementStateBase
 {
@@ -18,9 +20,10 @@ public class FFlyMovementSpreadState: FFlyMovementStateBase
         _speed = speed;
     }
     
+    public event Action Ended; 
+    
     public override void OnEnter()
     {
-        IsReadyToSwitch = false;
         Position2D = _positionDirectionProvider.Position2D;
         // DepthDirection = _positionDirectionProvider.DepthDirection - (Vector3)Position2D;
         DepthDirection = _positionDirectionProvider.DepthDirection;
@@ -37,7 +40,7 @@ public class FFlyMovementSpreadState: FFlyMovementStateBase
         
         if(Position2D.magnitude > _maxDistance + _extraDistance)
         {
-            IsReadyToSwitch = true;
+            Ended?.Invoke();
         }
     }
 }

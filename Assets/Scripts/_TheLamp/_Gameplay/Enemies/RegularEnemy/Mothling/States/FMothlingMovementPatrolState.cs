@@ -36,6 +36,7 @@ public class FMothlingMovementPatrolState: FMothlingMovementStateBase
     }
 
     public event Action Started;
+    public event Action Ended;
     
     public override void OnEnter()
     {
@@ -76,5 +77,6 @@ public class FMothlingMovementPatrolState: FMothlingMovementStateBase
     {
         _localTime = 0;
         _patrolStartOffsetAngle = 0;
+        Ended?.Invoke();
     }
 }

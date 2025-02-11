@@ -19,6 +19,7 @@ public class FFireFlyPresentation : MonoBehaviour
         
         _movement.PreAttackStarted += OnPreAttackStarted;
         _movement.PreAttackEnded += OnPreAttackEnded;
+        _movement.SpreadStateEnded += _trailResetHandler.Initialize;
         _firefly.Started += OnFlyStarted;
         _firefly.Damaged += OnFlyDamaged;
         _firefly.HealthChanged += _healthIndication.Refresh;
@@ -30,6 +31,7 @@ public class FFireFlyPresentation : MonoBehaviour
     {
         _movement.PreAttackStarted -= OnPreAttackStarted;
         _movement.PreAttackEnded -= OnPreAttackEnded;
+        _movement.SpreadStateEnded -= _trailResetHandler.Initialize;
         _firefly.Started -= OnFlyStarted;
         _firefly.Damaged -= OnFlyDamaged;
         _firefly.HealthChanged -= _healthIndication.Refresh;

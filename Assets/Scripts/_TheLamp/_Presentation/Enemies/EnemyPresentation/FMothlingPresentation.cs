@@ -18,6 +18,7 @@ public class FMothlingPresentation : MonoBehaviour, IInitializable
         
         _movement.PreAttackStarted += OnPreAttackStarted;
         _movement.PreAttackEnded += OnPreAttackEnded;
+        _movement.SpreadStateEnded += _trailResetHandler.Initialize;
         _mothling.Started += OnMothlingStarted;
         _mothling.Damaged += OnMothlingDamaged;
         _mothling.Dead += OnMothlingDead;
@@ -28,6 +29,7 @@ public class FMothlingPresentation : MonoBehaviour, IInitializable
     {
         _movement.PreAttackStarted -= OnPreAttackStarted;
         _movement.PreAttackEnded -= OnPreAttackEnded;
+        _movement.SpreadStateEnded -= _trailResetHandler.Initialize;
         _mothling.Started -= OnMothlingStarted;
         _mothling.Damaged -= OnMothlingDamaged;
         _mothling.Dead -= OnMothlingDead;
