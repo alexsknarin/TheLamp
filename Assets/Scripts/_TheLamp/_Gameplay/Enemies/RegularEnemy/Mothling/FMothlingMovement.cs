@@ -39,8 +39,8 @@ public class FMothlingMovement : FEnemyMovementBase, IPositionDirectionProvider
     private readonly FStateMachine _stateMachine = new();
     private MothlingMovementStateFactory _stateFactory;
     // States
-    private FMothlingMovementStateBase _currentState;
-    private FMothlingMovementEnterState _enterState;
+    private RegularEnemyMovementStateBase _currentState;
+    private FFlyGenericMovementEnterState _enterState;
     private FMothlingMovementPatrolState _patrolState;
     private FMothlingMovementPreAttackState _preAttackState;
     private FMothlingMovementAttackState _attackState;
@@ -74,7 +74,7 @@ public class FMothlingMovement : FEnemyMovementBase, IPositionDirectionProvider
         Debug.Log("FMothlingMovement Initializing");
         // Create Movement States
         _stateFactory.SetEnemyDependencies(this, _speed, _radius, _verticalAmplitude);
-        _enterState = (FMothlingMovementEnterState)_stateFactory.Create(typeof(FMothlingMovementEnterState));
+        _enterState = (FFlyGenericMovementEnterState)_stateFactory.Create(typeof(FFlyGenericMovementEnterState));
         _patrolState = (FMothlingMovementPatrolState)_stateFactory.Create(typeof(FMothlingMovementPatrolState));
         _preAttackState = (FMothlingMovementPreAttackState)_stateFactory.Create(typeof(FMothlingMovementPreAttackState));
         _attackState = (FMothlingMovementAttackState)_stateFactory.Create(typeof(FMothlingMovementAttackState));
@@ -211,7 +211,7 @@ public class FMothlingMovement : FEnemyMovementBase, IPositionDirectionProvider
 
         
         _stateMachine.Tick();
-        _currentState = (FMothlingMovementStateBase)_stateMachine.CurrentState;
+        _currentState = (RegularEnemyMovementStateBase)_stateMachine.CurrentState;
         _stateDebug = _currentState.GetType().Name; // Debug only
         Position2D = _currentState.Position2D;
         DepthDirection = _currentState.DepthDirection;

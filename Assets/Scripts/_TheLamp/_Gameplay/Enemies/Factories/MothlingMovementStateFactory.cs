@@ -35,11 +35,11 @@ public class MothlingMovementStateFactory
     }
     
     
-    public FMothlingMovementStateBase Create(Type stateType)
+    public RegularEnemyMovementStateBase Create(Type stateType)
     {
-        if (stateType == typeof(FMothlingMovementEnterState))
+        if (stateType == typeof(FFlyGenericMovementEnterState))
         {
-            return new FMothlingMovementEnterState(
+            return new FFlyGenericMovementEnterState(
                 _cameraTransform.position,
                 _positionDirectionProvider,
                 _lampPositionProviderService,

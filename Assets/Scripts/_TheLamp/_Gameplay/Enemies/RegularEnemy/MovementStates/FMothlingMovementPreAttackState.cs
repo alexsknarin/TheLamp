@@ -1,29 +1,26 @@
 using System;
 using UnityEngine;
 
-public class FFlyMovementPreAttackStateR: FFlyMovementStateBase
+public class FMothlingMovementPreAttackState: RegularEnemyMovementStateBase
 {
     // Dependencies
     private readonly Vector3 _cameraPosition = new Vector3(0, 0, -5.88f);
     private readonly IPositionDirectionProvider _positionDirectionProvider;
-    private float _speed;
 
     // State specific attributes
     private readonly float _duration = .35f;
-    private readonly float _acceleration = 0.93f;
-    private float _acceleratedSpeed;
+    private readonly float _acceleration = 0.93f; //TODO: remove
+    private float _acceleratedSpeed; //TODO: remove
     private Vector2 _direction;
     private float _localTime;
 
-    public FFlyMovementPreAttackStateR(
+    public FMothlingMovementPreAttackState(
         Vector3 cameraPosition,
-        IPositionDirectionProvider positionDirectionProvider,
-        float speed
-    )
+        IPositionDirectionProvider positionDirectionProvider
+        )
     {
         // _cameraPosition = cameraPosition; // TODO: enable later
         _positionDirectionProvider = positionDirectionProvider;
-        _speed = speed;
     }
 
     public event Action Started;
@@ -33,9 +30,9 @@ public class FFlyMovementPreAttackStateR: FFlyMovementStateBase
     {
         IsReadyToSwitch = false;
         _acceleratedSpeed = 1f;
-        _direction = _positionDirectionProvider.Position2D.normalized;
-        Quaternion rotation = Quaternion.Euler(0, 0, 60);
-        _direction = rotation * _direction;
+        _direction = _positionDirectionProvider.Position2D.normalized; // TODO: remove
+        Quaternion rotation = Quaternion.Euler(0, 0, 60); // TODO: remove
+        _direction = rotation * _direction; // TODO: remove
         
         Position2D = _positionDirectionProvider.Position2D;
         DepthDirection = (_cameraPosition - (Vector3)Position2D).normalized;
@@ -46,9 +43,8 @@ public class FFlyMovementPreAttackStateR: FFlyMovementStateBase
 
     public override void Tick()
     {
-        Position2D += _direction * (_speed * Time.deltaTime * (Mathf.PI/2) * _acceleratedSpeed);
         DepthDirection = (_cameraPosition - (Vector3)Position2D).normalized;
-        _acceleratedSpeed *= _acceleration;
+        _acceleratedSpeed *= _acceleration; // TODO: remove
         _localTime += Time.deltaTime;
         
         if (_localTime > _duration)

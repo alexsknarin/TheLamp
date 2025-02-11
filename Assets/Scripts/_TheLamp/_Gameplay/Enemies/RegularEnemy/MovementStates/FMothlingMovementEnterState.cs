@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class FFlyMovementEnterState: FFlyMovementStateBase
+public class FMothlingMovementEnterState: RegularEnemyMovementStateBase
 {
     // Dependencies
     private readonly Vector3 _cameraPosition = new Vector3(0, 0, -5.88f);
@@ -17,7 +17,7 @@ public class FFlyMovementEnterState: FFlyMovementStateBase
     private readonly float _depthMultiplier = 2f;
     private float _initialDistance;
 
-    public FFlyMovementEnterState(
+    public FMothlingMovementEnterState(
             Vector3 cameraPosition,
             IPositionDirectionProvider positionDirectionProvider,
             ILampPositionProviderService lampPositionProviderService,
@@ -76,4 +76,7 @@ public class FFlyMovementEnterState: FFlyMovementStateBase
             IsReadyToSwitch = true;
         }
     }
+
+
+
 }

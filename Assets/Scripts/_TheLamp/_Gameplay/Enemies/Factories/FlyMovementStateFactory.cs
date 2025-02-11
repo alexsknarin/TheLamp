@@ -39,11 +39,11 @@ public class FlyMovementStateFactory
     }
     
     
-    public FFlyMovementStateBase Create(Type stateType)
+    public RegularEnemyMovementStateBase Create(Type stateType)
     {
-        if (stateType == typeof(FFlyMovementEnterState))
+        if (stateType == typeof(FFlyGenericMovementEnterState))
         {
-            return new FFlyMovementEnterState(
+            return new FFlyGenericMovementEnterState(
                 _cameraTransform.position,
                 _positionDirectionProvider,
                 _lampPositionProviderService,

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class FMothlingMovementFallState: FMothlingMovementStateBase
+public class FFlyMovementFallState: RegularEnemyMovementStateBase
 {
     private IPositionDirectionProvider _positionDirectionProvider;
     private ILampPositionProviderService _lampPositionProviderService;
@@ -9,7 +9,7 @@ public class FMothlingMovementFallState: FMothlingMovementStateBase
     
     // add Lamp position provider 
     
-    public FMothlingMovementFallState(
+    public FFlyMovementFallState(
         IPositionDirectionProvider positionDirectionProvider,
         ILampPositionProviderService lampPositionProviderService,
         float radius,
@@ -38,7 +38,7 @@ public class FMothlingMovementFallState: FMothlingMovementStateBase
         Position2D = _positionDirectionProvider.Position2D;
         
         Vector2 position2DNormalized = (Position2D - (Vector2)_lampPositionProviderService.GetLampPosition()).normalized;
-        Position2D = position2DNormalized * (0.49f + 0.075f + 0.0001f) + (Vector2)_lampPositionProviderService.GetLampPosition();
+        Position2D = position2DNormalized * (0.49f + 0.1f + 0.0001f) + (Vector2)_lampPositionProviderService.GetLampPosition(); // TODO: Magic numbers
                      
         DepthDirection = Vector3.zero;
         
@@ -56,7 +56,7 @@ public class FMothlingMovementFallState: FMothlingMovementStateBase
         _bounceForce *= _dragAmount;
         _gravityForce += Vector2.down * (_gravityForceMagnitude * Time.deltaTime);
    
-        if (Position2D.y < -_radius * _verticalAmplitude * 1.1)
+        if (Position2D.y < -_radius * _verticalAmplitude * 1.1) // TODO: cache value
         {
             IsReadyToSwitch = true;
         }

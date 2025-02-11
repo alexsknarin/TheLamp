@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class FFlyMovementPatrolState: FFlyMovementStateBase
+public class FMothlingMovementPatrolState: RegularEnemyMovementStateBase
 {
     // Dependencies
 
@@ -19,7 +19,7 @@ public class FFlyMovementPatrolState: FFlyMovementStateBase
     private float _phase;
     private float _localTime;
     
-    public FFlyMovementPatrolState(
+    public FMothlingMovementPatrolState(
         Vector3 cameraPosition,
         IPositionDirectionProvider positionDirectionProvider,
         ILampPositionProviderService lampPositionProviderService,

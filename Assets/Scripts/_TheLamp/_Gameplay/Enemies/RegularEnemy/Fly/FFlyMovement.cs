@@ -39,8 +39,8 @@ public class FFlyMovement : FEnemyMovementBase, IPositionDirectionProvider
     private readonly FStateMachine _stateMachine = new();
     private FlyMovementStateFactory _stateFactory;
     // States
-    private FFlyMovementStateBase _currentState;
-    private FFlyMovementEnterState _enterState;
+    private RegularEnemyMovementStateBase _currentState;
+    private FFlyGenericMovementEnterState _enterState;
     private FFlyMovementPatrolState _patrolState;
     private FFlyMovementPreAttackStateR _preAttackStateR;
     private FFlyMovementPreAttackStateL _preAttackStateL;
@@ -76,7 +76,7 @@ public class FFlyMovement : FEnemyMovementBase, IPositionDirectionProvider
         Debug.Log("FFlyMovement Initializing");
         // Create Movement States
         _stateFactory.SetEnemyDependencies(this, _speed, _radius, _verticalAmplitude, _proximityOffset, _isDeathByTimer);
-        _enterState = (FFlyMovementEnterState)_stateFactory.Create(typeof(FFlyMovementEnterState));
+        _enterState = (FFlyGenericMovementEnterState)_stateFactory.Create(typeof(FFlyGenericMovementEnterState));
         _patrolState = (FFlyMovementPatrolState)_stateFactory.Create(typeof(FFlyMovementPatrolState));
         _preAttackStateR = (FFlyMovementPreAttackStateR)_stateFactory.Create(typeof(FFlyMovementPreAttackStateR));
         _preAttackStateL = (FFlyMovementPreAttackStateL)_stateFactory.Create(typeof(FFlyMovementPreAttackStateL));
@@ -232,7 +232,7 @@ public class FFlyMovement : FEnemyMovementBase, IPositionDirectionProvider
 
         
         _stateMachine.Tick();
-        _currentState = (FFlyMovementStateBase)_stateMachine.CurrentState;
+        _currentState = (RegularEnemyMovementStateBase)_stateMachine.CurrentState;
         _stateDebug = _currentState.GetType().Name; // Debug only
         Position2D = _currentState.Position2D;
         DepthDirection = _currentState.DepthDirection;

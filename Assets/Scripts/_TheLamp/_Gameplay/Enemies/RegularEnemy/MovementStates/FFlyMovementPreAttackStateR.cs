@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class FFlyMovementPreAttackStateL: FFlyMovementStateBase
+public class FFlyMovementPreAttackStateR: RegularEnemyMovementStateBase
 {
     // Dependencies
     private readonly Vector3 _cameraPosition = new Vector3(0, 0, -5.88f);
@@ -15,7 +15,7 @@ public class FFlyMovementPreAttackStateL: FFlyMovementStateBase
     private Vector2 _direction;
     private float _localTime;
 
-    public FFlyMovementPreAttackStateL(
+    public FFlyMovementPreAttackStateR(
         Vector3 cameraPosition,
         IPositionDirectionProvider positionDirectionProvider,
         float speed
@@ -34,7 +34,7 @@ public class FFlyMovementPreAttackStateL: FFlyMovementStateBase
         IsReadyToSwitch = false;
         _acceleratedSpeed = 1f;
         _direction = _positionDirectionProvider.Position2D.normalized;
-        Quaternion rotation = Quaternion.Euler(0, 0, -60);
+        Quaternion rotation = Quaternion.Euler(0, 0, 60);
         _direction = rotation * _direction;
         
         Position2D = _positionDirectionProvider.Position2D;
