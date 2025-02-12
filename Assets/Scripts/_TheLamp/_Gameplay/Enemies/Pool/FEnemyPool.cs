@@ -9,12 +9,14 @@ public class FEnemyPool
     private ObjectPool<FEnemy> _flyPool;
     private ObjectPool<FEnemy> _fireFlyPool;
     private ObjectPool<FEnemy> _mothPool;
+    private ObjectPool<FEnemy> _spiderPool;
     private readonly FEnemyFactory _enemyFactory;
     private readonly int _poolSize = 5;
     private int _mothlingCount;
     private int _flyCount;
     private int _fireFlyCount;
     private int _mothCount;
+    private int _spiderCount;
     private readonly List<Type> _preloadedEnemyTypes = new List<Type>();
     
     public event Action<FEnemy> EnemyReleased;
@@ -56,6 +58,15 @@ public class FEnemyPool
             );
         _mothPool = new ObjectPool<FEnemy>(
             CreateMoth,
+            OnGetFromPool, 
+            OnReleaseToPool, 
+            OnDestroyPooledObject,
+            true,
+            _poolSize,
+            _poolSize
+        );
+        _spiderPool = new ObjectPool<FEnemy>(
+            CreateSpider,
             OnGetFromPool, 
             OnReleaseToPool, 
             OnDestroyPooledObject,
@@ -108,6 +119,14 @@ public class FEnemyPool
             }
             throw new Exception("Moth prefab is not loaded yet");
         }
+        if(type == typeof(FSpider))
+        {
+            if (_enemyFactory.IsSpiderLoaded)
+            {
+                return _spiderPool.Get();
+            }
+            throw new Exception("Spider prefab is not loaded yet");
+        }
         else
         {
             throw new Exception("Enemy type not supported");
@@ -148,6 +167,15 @@ public class FEnemyPool
         enemyInstance.SetObjectPool(_mothPool);
         enemyInstance.name = "Moth" + _mothCount;
         _mothCount++;
+        return enemyInstance;
+    }
+    
+    private FEnemy CreateSpider()
+    {
+        FEnemy enemyInstance = _enemyFactory.CreateEnemy(typeof(FSpider));
+        enemyInstance.SetObjectPool(_spiderPool);
+        enemyInstance.name = "Spider" + _spiderCount;
+        _spiderCount++;
         return enemyInstance;
     }
     

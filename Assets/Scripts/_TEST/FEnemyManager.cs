@@ -14,10 +14,13 @@ public class FEnemyManager : MonoBehaviour
     private FEnemy _enemyMoth;
     private FEnemy _enemyFly;
     private FEnemy _enemyFireFly;
+    private FEnemy _enemySpider;
 
     private MothlingMovementStateFactory _mothlingMovementStateFactory;
     private FlyMovementStateFactory _flyMovementStateFactory;
     private MothMovementStateFactory _mothMovementStateFactory;
+    private SpiderMovementStateFactory _spiderMovementStateFactory;
+    
     private FEnemyFactory _enemyFactory;
     private FEnemyPool _enemyPool;
     
@@ -37,8 +40,16 @@ public class FEnemyManager : MonoBehaviour
             _cameraTransform,
             _lampPositionProviderService
         );
+        _spiderMovementStateFactory = new SpiderMovementStateFactory(
+            _lampPositionProviderService
+        );
         
-        _enemyFactory = new FEnemyFactory(_mothlingMovementStateFactory, _flyMovementStateFactory, _mothMovementStateFactory);
+        _enemyFactory = new FEnemyFactory(
+            _mothlingMovementStateFactory, 
+            _flyMovementStateFactory, 
+            _mothMovementStateFactory, 
+            _spiderMovementStateFactory);
+        
         _enemyPool = new FEnemyPool(_enemyFactory);
         _enemyPool.Initialize();
     }
@@ -52,6 +63,7 @@ public class FEnemyManager : MonoBehaviour
             _enemyPool.PreloadEnemy(typeof(FMothling));
             _enemyPool.PreloadEnemy(typeof(FFly));
             _enemyPool.PreloadEnemy(typeof(FFireFly));
+            _enemyPool.PreloadEnemy(typeof(FSpider));
         }
         
         if (Input.GetKeyDown(KeyCode.O))
@@ -76,6 +88,12 @@ public class FEnemyManager : MonoBehaviour
         {
             _enemyFireFly = _enemyPool.Get(typeof(FFireFly));
             _enemyFireFly.Play();
+        }
+        
+        if (Input.GetKeyDown(KeyCode.I))
+        {
+            _enemySpider = _enemyPool.Get(typeof(FSpider));
+            _enemySpider.Play();
         }
 
         // Start Enemy Attack

@@ -49,9 +49,6 @@ public class FFlyMovement : FEnemyMovementBase, IPositionDirectionProvider
     private FFlyMovementDeathState _deathState;
     private FFlyGenericMovementSpreadState _spreadState;
     
-    
-    // State parameters
-    private bool _isAttacking = false;
     private WaitForSeconds _waitSmoothDamp = new(0.5f);
     
     public void Construct(FlyMovementStateFactory stateFactory)

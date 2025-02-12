@@ -18,8 +18,6 @@ public class FMothMovement : FEnemyMovementBase, IPositionDirectionProvider
     [SerializeField] private string _stateDebug;
     [SerializeField] private int _sideDirection = 1;
     [SerializeField] private int _depthSideDirection = 0;
-    // State parameters
-    private bool _isAttacking = false;
     // Debug
     private Vector3 _position3d;
     private Vector3 _prevPosition;

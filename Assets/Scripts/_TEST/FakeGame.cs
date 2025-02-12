@@ -12,6 +12,7 @@ public class FakeGame : MonoBehaviour
     private MothlingMovementStateFactory _mothlingMovementStateFactory;
     private FlyMovementStateFactory _flyMovementStateFactory;
     private MothMovementStateFactory _mothMovementStateFactory;
+    private SpiderMovementStateFactory _spiderMovementStateFactory;
     private FEnemyFactory _enemyFactory;
     private FEnemySpawner _enemySpawner;
 
@@ -21,10 +22,13 @@ public class FakeGame : MonoBehaviour
         _mothlingMovementStateFactory = new MothlingMovementStateFactory(_cameraTransform, _lampPositionProviderService);
         _flyMovementStateFactory = new FlyMovementStateFactory(_cameraTransform, _lampPositionProviderService);
         _mothMovementStateFactory = new MothMovementStateFactory(_cameraTransform, _lampPositionProviderService);
+        _spiderMovementStateFactory = new SpiderMovementStateFactory(_lampPositionProviderService);
+        
         _enemyFactory = new FEnemyFactory(
             _mothlingMovementStateFactory,
             _flyMovementStateFactory,
-            _mothMovementStateFactory   
+            _mothMovementStateFactory,
+            _spiderMovementStateFactory
             );
         _enemySpawner = new FEnemySpawner(_enemyFactory);
         _waveEnemyDirector.Construct(_gameConfigService, _lampCollisionDetectionService, _enemySpawner);

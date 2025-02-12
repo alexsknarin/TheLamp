@@ -2,6 +2,7 @@ using UnityEngine;
 
 public abstract class FEnemyMovementBase : MonoBehaviour, IInitializable, IEnemyMovable, ISpreadable
 {
+    protected bool _isAttacking = false;
     public virtual int SideDirection { get; protected set; }
     public abstract void Initialize();
     public abstract void Play();

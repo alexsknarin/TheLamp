@@ -11,33 +11,39 @@ public class FEnemyFactory
     private MothlingMovementStateFactory _mothlingMovementStateFactory;
     private FlyMovementStateFactory _flyMovementStateFactory;
     private MothMovementStateFactory _mothMovementStateFactory;
+    private SpiderMovementStateFactory _spiderMovementStateFactory;
     
     AsyncOperationHandle<GameObject> _mothlingEnemyAssetHandle;
     AsyncOperationHandle<GameObject> _flyEnemyAssetHandle;
     AsyncOperationHandle<GameObject> _fireFlyEnemyAssetHandle;
     AsyncOperationHandle<GameObject> _mothEnemyAssetHandle;
+    AsyncOperationHandle<GameObject> _spiderEnemyAssetHandle;
     
     
     public FEnemyFactory(
         MothlingMovementStateFactory mothlingMovementStateFactory,
         FlyMovementStateFactory flyMovementStateFactory,
-        MothMovementStateFactory mothMovementStateFactory
+        MothMovementStateFactory mothMovementStateFactory,
+        SpiderMovementStateFactory spiderMovementStateFactory
     )
     {
         _mothlingMovementStateFactory = mothlingMovementStateFactory;
         _flyMovementStateFactory = flyMovementStateFactory;
         _mothMovementStateFactory = mothMovementStateFactory;
+        _spiderMovementStateFactory = spiderMovementStateFactory;
         
         IsMothlingLoaded = false;
         IsFlyLoaded = false;
         IsFireFlyLoaded = false;
         IsMothLoaded = false;
+        IsSpiderLoaded = false;
     }
     
     public bool IsMothlingLoaded { get; private set; }
     public bool IsFlyLoaded { get; private set; }
     public bool IsFireFlyLoaded { get; private set; }
     public bool IsMothLoaded { get; private set; }
+    public bool IsSpiderLoaded { get; private set; }
 
     public async void LoadEnemy(Type type)
     {
@@ -72,6 +78,14 @@ public class FEnemyFactory
             Debug.Log("Moth Loaded");
         }
         
+        if (type == typeof(FSpider))
+        {
+            _spiderEnemyAssetHandle = Addressables.LoadAssetAsync<GameObject>("Enemy/FSpider.prefab");
+            await _spiderEnemyAssetHandle.Task;
+            IsSpiderLoaded = true;
+            Debug.Log("Spider Loaded");
+        }
+        
     }
     
     public FEnemy CreateEnemy(Type type)
@@ -95,6 +109,11 @@ public class FEnemyFactory
         {
             var prefab = _mothEnemyAssetHandle.Result;
             return CreateMothInstance(prefab);    
+        }
+        if (type == typeof(FSpider) && _spiderEnemyAssetHandle.IsValid())
+        {
+            var prefab = _spiderEnemyAssetHandle.Result;
+            return CreateSpiderInstance(prefab);    
         }
         else
         {
@@ -141,6 +160,17 @@ public class FEnemyFactory
         enemyInstance.GetComponent<FMothMovement>().Construct(_mothMovementStateFactory);
         enemyInstance.GetComponent<FMothPresentation>().Initialize();
         var enemy = enemyInstance.GetComponent<FMoth>();
+        enemy.Initialize();
+        
+        return enemy;
+    }
+    
+    private FEnemy CreateSpiderInstance(GameObject prefab)
+    {
+        GameObject enemyInstance = Object.Instantiate(prefab);
+        enemyInstance.GetComponent<FSpiderMovement>().Construct(_spiderMovementStateFactory);
+        // enemyInstance.GetComponent<FSpiderPresentation>().Initialize();
+        var enemy = enemyInstance.GetComponent<FSpider>();
         enemy.Initialize();
         
         return enemy;
