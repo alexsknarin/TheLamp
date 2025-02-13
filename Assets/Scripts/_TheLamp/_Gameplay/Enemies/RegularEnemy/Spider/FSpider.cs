@@ -68,26 +68,7 @@ public class FSpider : FEnemy
 
     private bool CheckIsReadyToAttack()
     {
-        if (_isInAttackReadyMovementState)
-        {
-            float x = _movement.Position2D.x;
-            float y = _movement.Position2D.y;
-            if (_movement.SideDirection < 0)
-            {
-                if ((x < 0 && y < 0.30f) || (x > 0 && y < 1.65f))
-                {
-                    return true; 
-                }
-            }
-            if (_movement.SideDirection > 0)
-            {
-                if ((x > 0 && y < 0.30f) || (x < 0 && y < 1.65f))
-                {
-                    return true; 
-                }
-            }
-        }
-        return false;
+        return true;
     }
 
     public override void Attack()

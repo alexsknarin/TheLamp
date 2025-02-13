@@ -46,6 +46,23 @@ public class SpiderMovementStateFactory
                 _height
             );
         }
+        if (stateType == typeof(FSpiderMovementPreAttackState))
+        {
+            return new FSpiderMovementPreAttackState(
+                _positionDirectionProvider,
+                _xCenter,
+                _height
+            );
+        }
+        if (stateType == typeof(FSpiderMovementAttackState))
+        {
+            return new FSpiderMovementAttackState(
+                _positionDirectionProvider,
+                _speed,
+                _xCenter,
+                _height
+            );
+        }
         return null;
     }
 }

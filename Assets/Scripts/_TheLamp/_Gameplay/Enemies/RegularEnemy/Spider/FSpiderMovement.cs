@@ -25,6 +25,9 @@ public class FSpiderMovement : FEnemyMovementBase, IPositionDirectionProvider
     
     private FSpiderMovementEnterState _enterState;
     private FSpiderMovementPatrolState _patrolState;
+    private FSpiderMovementPreAttackState _preAttackState;
+    private FSpiderMovementAttackState _attackState;
+    
     
     public void Construct(SpiderMovementStateFactory stateFactory)
     {
@@ -51,6 +54,8 @@ public class FSpiderMovement : FEnemyMovementBase, IPositionDirectionProvider
         _stateFactory.SetEnemyDependencies(this, _speed, _xCenter, _height);
         _enterState = (FSpiderMovementEnterState)_stateFactory.Create(typeof(FSpiderMovementEnterState));
         _patrolState = (FSpiderMovementPatrolState)_stateFactory.Create(typeof(FSpiderMovementPatrolState));
+        _preAttackState = (FSpiderMovementPreAttackState)_stateFactory.Create(typeof(FSpiderMovementPreAttackState));
+        _attackState = (FSpiderMovementAttackState)_stateFactory.Create(typeof(FSpiderMovementAttackState));
         
         // _patrolState = (FFlyGenericMovementPatrolState)_stateFactory.Create(typeof(FFlyGenericMovementPatrolState));
         // _preAttackStateR = (FFlyMovementPreAttackStateR)_stateFactory.Create(typeof(FFlyMovementPreAttackStateR));
@@ -78,7 +83,19 @@ public class FSpiderMovement : FEnemyMovementBase, IPositionDirectionProvider
         // At(_preAttackStateL, _attackState, () => _preAttackStateL.IsReadyToSwitch);
         // At(_fallState, _enterState, IsFallEnded());
         At(_enterState, _patrolState, () => _enterState.IsReadyToSwitch);
+        At(_patrolState, _preAttackState, IsAttackStarted());
+        At(_preAttackState, _attackState, () => _preAttackState.IsReadyToSwitch);
         
+        // Predicates
+        Func<bool> IsAttackStarted() => () =>
+        {
+            if (_isAttacking)
+            {
+                _isAttacking = false;
+                return true;
+            }
+            return false;
+        };
         
         
         void At(IState from, IState to, Func<bool> condition) => _stateMachine.AddTransition(from, to, condition);
@@ -99,7 +116,7 @@ public class FSpiderMovement : FEnemyMovementBase, IPositionDirectionProvider
 
     public override void TriggerAttack()
     {
-        throw new NotImplementedException();
+        _isAttacking = true;
     }
 
     public override void TriggerFall()

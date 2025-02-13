@@ -99,30 +99,37 @@ public class FEnemyManager : MonoBehaviour
         // Start Enemy Attack
         if (Input.GetKeyDown(KeyCode.A))
         {
-            if (_enemyMothling.IsReadyToAttack)
+            // if (_enemyMothling.IsReadyToAttack)
+            // {
+            //     _lampCollisionDetectionService.AddCollidable(_enemyMothling);
+            //     _damageables.Add(_enemyMothling);
+            //     _enemyMothling.Attack();    
+            // }
+            // if (_enemyMoth.IsReadyToAttack)
+            // {
+            //     _lampCollisionDetectionService.AddCollidable(_enemyMoth);
+            //     _damageables.Add(_enemyMoth);
+            //     _enemyMoth.Attack();    
+            // }
+            // if (_enemyFly.IsReadyToAttack)
+            // {
+            //     _lampCollisionDetectionService.AddCollidable(_enemyFly);
+            //     _damageables.Add(_enemyFly);
+            //     _enemyFly.Attack();    
+            // }
+            // if (_enemyFireFly.IsReadyToAttack)
+            // {
+            //     _lampCollisionDetectionService.AddCollidable(_enemyFireFly);
+            //     _damageables.Add(_enemyFireFly);
+            //     _enemyFireFly.Attack();    
+            // }
+            if (_enemySpider.IsReadyToAttack)
             {
-                _lampCollisionDetectionService.AddCollidable(_enemyMothling);
-                _damageables.Add(_enemyMothling);
-                _enemyMothling.Attack();    
+                _lampCollisionDetectionService.AddCollidable(_enemySpider);
+                _damageables.Add(_enemySpider);
+                _enemySpider.Attack();    
             }
-            if (_enemyMoth.IsReadyToAttack)
-            {
-                _lampCollisionDetectionService.AddCollidable(_enemyMoth);
-                _damageables.Add(_enemyMoth);
-                _enemyMoth.Attack();    
-            }
-            if (_enemyFly.IsReadyToAttack)
-            {
-                _lampCollisionDetectionService.AddCollidable(_enemyFly);
-                _damageables.Add(_enemyFly);
-                _enemyFly.Attack();    
-            }
-            if (_enemyFireFly.IsReadyToAttack)
-            {
-                _lampCollisionDetectionService.AddCollidable(_enemyFireFly);
-                _damageables.Add(_enemyFireFly);
-                _enemyFireFly.Attack();    
-            }
+            
         }
         
         // Emulate enemy Death
