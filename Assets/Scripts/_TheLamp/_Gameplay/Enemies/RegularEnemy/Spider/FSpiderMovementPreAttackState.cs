@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class FSpiderMovementPreAttackState: RegularEnemyMovementStateBase
@@ -19,6 +20,8 @@ public class FSpiderMovementPreAttackState: RegularEnemyMovementStateBase
         _hangingPoint.x = xCenter;
         _hangingPoint.y = height;
     }
+    public event Action Started;
+    public event Action Ended;
     
     public override void OnEnter()
     {
@@ -30,6 +33,7 @@ public class FSpiderMovementPreAttackState: RegularEnemyMovementStateBase
         _acceleratedSpeed = 1f;
         _swingPhase = 0;
         IsReadyToSwitch = false;
+        Started?.Invoke();
     }
 
     public override void Tick()
@@ -53,5 +57,10 @@ public class FSpiderMovementPreAttackState: RegularEnemyMovementStateBase
         {
             IsReadyToSwitch = true;
         }
+    }
+    
+    public override void OnExit()
+    {
+        Ended?.Invoke();
     }
 }

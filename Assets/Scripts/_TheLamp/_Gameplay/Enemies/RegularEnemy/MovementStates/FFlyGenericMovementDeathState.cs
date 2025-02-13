@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class FFlyMovementDeathState : RegularEnemyMovementStateBase
+public class FFlyGenericMovementDeathState : RegularEnemyMovementStateBase
 {
     // Dependencies
     private IPositionDirectionProvider _positionDirectionProvider;
@@ -18,7 +18,7 @@ public class FFlyMovementDeathState : RegularEnemyMovementStateBase
     private float _duration = 0.32f;
     private float _localTime;
     
-    public FFlyMovementDeathState(IPositionDirectionProvider positionDirectionProvider, bool isDeathByTimer)
+    public FFlyGenericMovementDeathState(IPositionDirectionProvider positionDirectionProvider, bool isDeathByTimer)
     {
         _positionDirectionProvider = positionDirectionProvider;
         _isDeathByTimer = isDeathByTimer;

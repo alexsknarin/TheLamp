@@ -102,9 +102,9 @@ public class FlyMovementStateFactory
                 _collisionRadius
                 );
         }
-        if (stateType == typeof(FFlyMovementDeathState))
+        if (stateType == typeof(FFlyGenericMovementDeathState))
         {
-            return new FFlyMovementDeathState(
+            return new FFlyGenericMovementDeathState(
                 _positionDirectionProvider,
                 _isDeathByTimer
                 );

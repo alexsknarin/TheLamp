@@ -169,7 +169,7 @@ public class FEnemyFactory
     {
         GameObject enemyInstance = Object.Instantiate(prefab);
         enemyInstance.GetComponent<FSpiderMovement>().Construct(_spiderMovementStateFactory);
-        // enemyInstance.GetComponent<FSpiderPresentation>().Initialize();
+        enemyInstance.GetComponent<FSpiderPresentation>().Initialize();
         var enemy = enemyInstance.GetComponent<FSpider>();
         enemy.Initialize();
         

@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class FSpiderMovementPatrolState: RegularEnemyMovementStateBase
@@ -12,12 +13,16 @@ public class FSpiderMovementPatrolState: RegularEnemyMovementStateBase
         _hangingPoint.x = xCenter;
         _hangingPoint.y = height;
     }
+    
+    public event Action Started;
+    public event Action Ended;
    
     public override void OnEnter()
     {
         _hangingPoint.x = Mathf.Abs(_hangingPoint.x);
         Position2D = _positionDirectionProvider.Position2D;
         _localTime = 0;
+        Started?.Invoke();
     }
 
     public override void Tick()
@@ -30,5 +35,10 @@ public class FSpiderMovementPatrolState: RegularEnemyMovementStateBase
         
         Position2D = newPosition;
         _localTime += Time.deltaTime;
+    }
+    
+    public override void OnExit()
+    {
+        Ended?.Invoke();
     }
 }

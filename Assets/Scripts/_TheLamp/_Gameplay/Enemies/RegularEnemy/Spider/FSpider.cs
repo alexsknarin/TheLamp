@@ -40,9 +40,9 @@ public class FSpider : FEnemy
         IsReadyForDamage = false;
         IsReceivedAttack = false;
         CollisionState = CollidableState.Outside;
-        Started?.Invoke();
         HealthChanged?.Invoke(_currentHealth, _maxHealth);
         _movement.Play();
+        Started?.Invoke();
     }
 
     public override void ReceiveDamage(int damageAmount)
@@ -63,12 +63,15 @@ public class FSpider : FEnemy
             Damaged?.Invoke();
             HealthChanged?.Invoke(_currentHealth, _maxHealth);
         }
-        
     }
 
     private bool CheckIsReadyToAttack()
     {
-        return true;
+        if (_isInAttackReadyMovementState)
+        {
+            return true;
+        }
+        return false;
     }
 
     public override void Attack()

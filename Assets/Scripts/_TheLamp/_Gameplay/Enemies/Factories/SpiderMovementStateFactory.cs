@@ -63,6 +63,22 @@ public class SpiderMovementStateFactory
                 _height
             );
         }
+        if (stateType == typeof(FSpiderMovementReturnState))
+        {
+            return new FSpiderMovementReturnState(
+                _positionDirectionProvider,
+                _speed,
+                _xCenter,
+                _height
+            );
+        }
+        if (stateType == typeof(FFlyGenericMovementDeathState))
+        {
+            return new FFlyGenericMovementDeathState(
+                _positionDirectionProvider,
+                false
+            );
+        }
         return null;
     }
 }

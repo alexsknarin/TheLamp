@@ -27,7 +27,8 @@ public class FSpiderMovement : FEnemyMovementBase, IPositionDirectionProvider
     private FSpiderMovementPatrolState _patrolState;
     private FSpiderMovementPreAttackState _preAttackState;
     private FSpiderMovementAttackState _attackState;
-    
+    private FSpiderMovementReturnState _returnState;
+    private FFlyGenericMovementDeathState _deathState;
     
     public void Construct(SpiderMovementStateFactory stateFactory)
     {
@@ -56,6 +57,8 @@ public class FSpiderMovement : FEnemyMovementBase, IPositionDirectionProvider
         _patrolState = (FSpiderMovementPatrolState)_stateFactory.Create(typeof(FSpiderMovementPatrolState));
         _preAttackState = (FSpiderMovementPreAttackState)_stateFactory.Create(typeof(FSpiderMovementPreAttackState));
         _attackState = (FSpiderMovementAttackState)_stateFactory.Create(typeof(FSpiderMovementAttackState));
+        _returnState = (FSpiderMovementReturnState)_stateFactory.Create(typeof(FSpiderMovementReturnState));
+        _deathState = (FFlyGenericMovementDeathState)_stateFactory.Create(typeof(FFlyGenericMovementDeathState));
         
         // _patrolState = (FFlyGenericMovementPatrolState)_stateFactory.Create(typeof(FFlyGenericMovementPatrolState));
         // _preAttackStateR = (FFlyMovementPreAttackStateR)_stateFactory.Create(typeof(FFlyMovementPreAttackStateR));
@@ -66,13 +69,11 @@ public class FSpiderMovement : FEnemyMovementBase, IPositionDirectionProvider
         // _spreadState = (FFlyGenericMovementSpreadState)_stateFactory.Create(typeof(FFlyGenericMovementSpreadState));
         
         // Subscribe to state events
-        // _patrolState.Started += OnPatrolStateStarted; 
-        // _patrolState.Ended += OnPatrolStateEnded;
-        // _preAttackStateR.Started += OnPreAttackStateStarted;
-        // _preAttackStateR.Ended += OnPreAttackStateEnded;
-        // _preAttackStateL.Started += OnPreAttackStateStarted;
-        // _preAttackStateL.Ended += OnPreAttackStateEnded;
-        // _deathState.Ended += OnDeathStateEnded;
+        _patrolState.Started += OnPatrolStateStarted; 
+        _patrolState.Ended += OnPatrolStateEnded;
+        _preAttackState.Started += OnPreAttackStateStarted;
+        _preAttackState.Ended += OnPreAttackStateEnded;
+        _deathState.Ended += OnDeathStateEnded;
         // _spreadState.Ended += OnSpreadStateEnded;
         
         // Automatic State transitions
@@ -85,6 +86,7 @@ public class FSpiderMovement : FEnemyMovementBase, IPositionDirectionProvider
         At(_enterState, _patrolState, () => _enterState.IsReadyToSwitch);
         At(_patrolState, _preAttackState, IsAttackStarted());
         At(_preAttackState, _attackState, () => _preAttackState.IsReadyToSwitch);
+        At(_returnState, _patrolState, () => _returnState.IsReadyToSwitch);
         
         // Predicates
         Func<bool> IsAttackStarted() => () =>
@@ -100,7 +102,16 @@ public class FSpiderMovement : FEnemyMovementBase, IPositionDirectionProvider
         
         void At(IState from, IState to, Func<bool> condition) => _stateMachine.AddTransition(from, to, condition);
     }
-    
+
+    private void OnDestroy()
+    {
+        _patrolState.Started += OnPatrolStateStarted; 
+        _patrolState.Ended += OnPatrolStateEnded;
+        _preAttackState.Started -= OnPreAttackStateStarted;
+        _preAttackState.Ended -= OnPreAttackStateEnded;
+        _deathState.Ended -= OnDeathStateEnded;
+    }
+
     public override void Play()
     {
         _currentState = _enterState;
@@ -121,12 +132,20 @@ public class FSpiderMovement : FEnemyMovementBase, IPositionDirectionProvider
 
     public override void TriggerFall()
     {
-        throw new NotImplementedException();
+        _currentState = _returnState;
+        _stateMachine.SetState(_currentState);
+        Position2D = _currentState.Position2D;
+        transform.position = Position2D;
+        _stateDebug = _currentState.GetType().Name; // Debug only
     }
 
     public override void TriggerDeath()
     {
-        throw new NotImplementedException();
+        _currentState = _deathState;
+        _stateMachine.SetState(_currentState);
+        Position2D = _currentState.Position2D;
+        transform.position = Position2D;
+        _stateDebug = _currentState.GetType().Name; // Debug only
     }
 
     public override void TriggerSpread()
@@ -142,5 +161,30 @@ public class FSpiderMovement : FEnemyMovementBase, IPositionDirectionProvider
         Position2D = _currentState.Position2D;
         
         transform.position = Position2D;
+    }
+
+    private void OnPatrolStateStarted()
+    {
+        ReadyToAttackStateStarted?.Invoke();
+    }
+
+    private void OnPatrolStateEnded()
+    {
+        ReadyToAttackStateEnded?.Invoke();
+    }
+
+    private void OnPreAttackStateStarted()
+    {
+        PreAttackStarted?.Invoke();        
+    }
+
+    private void OnPreAttackStateEnded()
+    {
+        PreAttackEnded?.Invoke();
+    }
+
+    private void OnDeathStateEnded()
+    {
+        DeathStateEnded?.Invoke();
     }
 }

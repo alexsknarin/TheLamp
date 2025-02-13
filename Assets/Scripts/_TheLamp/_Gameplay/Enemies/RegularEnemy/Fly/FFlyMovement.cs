@@ -46,7 +46,7 @@ public class FFlyMovement : FEnemyMovementBase, IPositionDirectionProvider
     private FFlyMovementPreAttackStateL _preAttackStateL;
     private FFlyGenericMovementAcceleratedAttackState _attackState;
     private FFlyGenericMovementFallState _fallState;
-    private FFlyMovementDeathState _deathState;
+    private FFlyGenericMovementDeathState _deathState;
     private FFlyGenericMovementSpreadState _spreadState;
     
     private WaitForSeconds _waitSmoothDamp = new(0.5f);
@@ -80,7 +80,7 @@ public class FFlyMovement : FEnemyMovementBase, IPositionDirectionProvider
         _preAttackStateL = (FFlyMovementPreAttackStateL)_stateFactory.Create(typeof(FFlyMovementPreAttackStateL));
         _attackState = (FFlyGenericMovementAcceleratedAttackState)_stateFactory.Create(typeof(FFlyGenericMovementAcceleratedAttackState));
         _fallState = (FFlyGenericMovementFallState)_stateFactory.Create(typeof(FFlyGenericMovementFallState));
-        _deathState = (FFlyMovementDeathState)_stateFactory.Create(typeof(FFlyMovementDeathState));
+        _deathState = (FFlyGenericMovementDeathState)_stateFactory.Create(typeof(FFlyGenericMovementDeathState));
         _spreadState = (FFlyGenericMovementSpreadState)_stateFactory.Create(typeof(FFlyGenericMovementSpreadState));
         
         // Subscribe to state events
