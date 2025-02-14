@@ -2,18 +2,10 @@ using System;
 
 public class SpiderMovementStateFactory
 {
-    private ILampPositionProviderService _lampPositionProviderService;
     private IPositionDirectionProvider _positionDirectionProvider;
     private float _speed;
     private float _xCenter;
     private float _height;
-    
-    public SpiderMovementStateFactory(
-        ILampPositionProviderService lampPositionProviderService
-        )
-    {
-        _lampPositionProviderService = lampPositionProviderService;
-    }
     
     public void SetEnemyDependencies(
         IPositionDirectionProvider positionDirectionProvider,

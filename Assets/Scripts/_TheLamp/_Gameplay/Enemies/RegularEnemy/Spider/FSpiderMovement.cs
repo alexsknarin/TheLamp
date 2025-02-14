@@ -11,13 +11,10 @@ public class FSpiderMovement : FEnemyMovementBase, IPositionDirectionProvider
     [SerializeField] private int _depthSideDirection = 0;
     [SerializeField] private float _height = 5f;
     [SerializeField] private float _xCenter = 1.12f;
-    
+    private ILampPositionProviderService _lampPositionProviderService;
+
     private Vector3 _position3D;
-    // Debug only
-    private Vector3 _prevPosition;
-    private Vector3 _prevPosSmooth;
-    private Vector3 _velocity = Vector3.zero;
-    
+
     // State Machine
     private readonly FStateMachine _stateMachine = new();
     private SpiderMovementStateFactory _stateFactory;
@@ -31,9 +28,12 @@ public class FSpiderMovement : FEnemyMovementBase, IPositionDirectionProvider
     private FFlyGenericMovementDeathState _deathState;
     private FSpiderMovementClimbUpState _climbUpState;
     
-    public void Construct(SpiderMovementStateFactory stateFactory)
+    public void Construct(
+        SpiderMovementStateFactory stateFactory, 
+        ILampPositionProviderService lampPositionProviderService)
     {
         _stateFactory = stateFactory;
+        _lampPositionProviderService = lampPositionProviderService;
     }
     
     public event Action ReadyToAttackStateStarted;
@@ -78,13 +78,6 @@ public class FSpiderMovement : FEnemyMovementBase, IPositionDirectionProvider
         _deathState.Ended += OnDeathStateEnded;
         // _spreadState.Ended += OnSpreadStateEnded;
         
-        // Automatic State transitions
-        // At(_enterState, _patrolState, () => _enterState.IsReadyToSwitch);
-        // At(_patrolState, _preAttackStateR, IsAttackStartedR());
-        // At(_patrolState, _preAttackStateL, IsAttackStartedL());
-        // At(_preAttackStateR, _attackState, () => _preAttackStateR.IsReadyToSwitch);
-        // At(_preAttackStateL, _attackState, () => _preAttackStateL.IsReadyToSwitch);
-        // At(_fallState, _enterState, IsFallEnded());
         At(_enterState, _patrolState, () => _enterState.IsReadyToSwitch);
         At(_patrolState, _preAttackState, IsAttackStarted());
         At(_preAttackState, _attackState, () => _preAttackState.IsReadyToSwitch);
@@ -117,12 +110,9 @@ public class FSpiderMovement : FEnemyMovementBase, IPositionDirectionProvider
 
     public override void Play()
     {
-        _currentState = _enterState;
-        _stateMachine.SetState(_currentState);
+        _sideDirection = RandomDirection.Generate();;
         
-        Position2D = _currentState.Position2D;
-        _position3D = Position2D; // TODO: do we need it
-        transform.position = _position3D;
+        SwitchToStateAndApply(_enterState);
         
         _isAttacking = false;
         enabled = true;
@@ -135,29 +125,19 @@ public class FSpiderMovement : FEnemyMovementBase, IPositionDirectionProvider
 
     public override void TriggerFall()
     {
-        _currentState = _returnState;
-        _stateMachine.SetState(_currentState);
-        Position2D = _currentState.Position2D;
-        transform.position = Position2D;
-        _stateDebug = _currentState.GetType().Name; // Debug only
+        HandleLampCollision();
+        SwitchToStateAndApply(_returnState);
     }
 
     public override void TriggerDeath()
     {
-        _currentState = _deathState;
-        _stateMachine.SetState(_currentState);
-        Position2D = _currentState.Position2D;
-        transform.position = Position2D;
-        _stateDebug = _currentState.GetType().Name; // Debug only
+        HandleLampCollision();
+        SwitchToStateAndApply(_deathState);
     }
 
     public override void TriggerSpread()
     {
-        _currentState = _climbUpState;
-        _stateMachine.SetState(_currentState);
-        Position2D = _currentState.Position2D;
-        transform.position = Position2D;
-        _stateDebug = _currentState.GetType().Name; // Debug only TODO: extract method for state set
+        SwitchToStateAndApply(_climbUpState);
     }
 
     private void Update()
@@ -167,7 +147,32 @@ public class FSpiderMovement : FEnemyMovementBase, IPositionDirectionProvider
         _stateDebug = _currentState.GetType().Name; // Debug only
         Position2D = _currentState.Position2D;
         
-        transform.position = Position2D;
+        Vector2 newPosition = Position2D;
+        newPosition.x *= _sideDirection;
+        
+        transform.position = newPosition;
+    }
+
+    private void SwitchToStateAndApply(RegularEnemyMovementStateBase state)
+    {
+        _currentState = state;
+        _stateMachine.SetState(_currentState);
+        Position2D = _currentState.Position2D;
+        Vector2 newPosition = Position2D;
+        
+        // Apply side direction
+        newPosition.x *= _sideDirection;
+        
+        transform.position = newPosition;
+        _stateDebug = _currentState.GetType().Name;
+    }
+
+    private void HandleLampCollision()
+    {
+        Vector2 lampPosition = _lampPositionProviderService.GetLampPosition();
+        lampPosition.x *= _sideDirection;
+        Vector2 collisionDirection = (Position2D - lampPosition).normalized;
+        Position2D = lampPosition + collisionDirection * (0.49f + 0.15f + 0.0001f); // TODO: magic numbers
     }
 
     private void OnPatrolStateStarted()

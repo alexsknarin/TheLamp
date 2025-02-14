@@ -40,15 +40,15 @@ public class FEnemyManager : MonoBehaviour
             _cameraTransform,
             _lampPositionProviderService
         );
-        _spiderMovementStateFactory = new SpiderMovementStateFactory(
-            _lampPositionProviderService
-        );
+        _spiderMovementStateFactory = new SpiderMovementStateFactory();
         
         _enemyFactory = new FEnemyFactory(
             _mothlingMovementStateFactory, 
             _flyMovementStateFactory, 
             _mothMovementStateFactory, 
-            _spiderMovementStateFactory);
+            _spiderMovementStateFactory,
+            _lampPositionProviderService
+            );
         
         _enemyPool = new FEnemyPool(_enemyFactory);
         _enemyPool.Initialize();

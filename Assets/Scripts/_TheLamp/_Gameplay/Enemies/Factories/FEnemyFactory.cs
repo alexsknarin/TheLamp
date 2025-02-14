@@ -7,6 +7,7 @@ using Object = UnityEngine.Object;
 
 public class FEnemyFactory
 {
+    private ILampPositionProviderService _lampPositionProviderService;
     private FMothling _mothlingEnemyPrefab;
     private MothlingMovementStateFactory _mothlingMovementStateFactory;
     private FlyMovementStateFactory _flyMovementStateFactory;
@@ -24,13 +25,15 @@ public class FEnemyFactory
         MothlingMovementStateFactory mothlingMovementStateFactory,
         FlyMovementStateFactory flyMovementStateFactory,
         MothMovementStateFactory mothMovementStateFactory,
-        SpiderMovementStateFactory spiderMovementStateFactory
+        SpiderMovementStateFactory spiderMovementStateFactory,
+        ILampPositionProviderService lampPositionProviderService
     )
     {
         _mothlingMovementStateFactory = mothlingMovementStateFactory;
         _flyMovementStateFactory = flyMovementStateFactory;
         _mothMovementStateFactory = mothMovementStateFactory;
         _spiderMovementStateFactory = spiderMovementStateFactory;
+        _lampPositionProviderService = lampPositionProviderService;
         
         IsMothlingLoaded = false;
         IsFlyLoaded = false;
@@ -168,7 +171,9 @@ public class FEnemyFactory
     private FEnemy CreateSpiderInstance(GameObject prefab)
     {
         GameObject enemyInstance = Object.Instantiate(prefab);
-        enemyInstance.GetComponent<FSpiderMovement>().Construct(_spiderMovementStateFactory);
+        enemyInstance.GetComponent<FSpiderMovement>().Construct(
+            _spiderMovementStateFactory,
+            _lampPositionProviderService);
         enemyInstance.GetComponent<FSpiderPresentation>().Initialize();
         var enemy = enemyInstance.GetComponent<FSpider>();
         enemy.Initialize();

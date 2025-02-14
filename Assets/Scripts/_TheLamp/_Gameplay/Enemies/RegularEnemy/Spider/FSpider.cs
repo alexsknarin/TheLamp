@@ -15,7 +15,7 @@ public class FSpider : FEnemy
     public event Action<int, int> HealthChanged; 
     public event Action Dead;
     public override float Radius => _collisionRadius;
-    public override Vector2 Position => _movement.Position2D;
+    public override Vector2 Position => transform.position;
     public override bool IsReadyToAttack => CheckIsReadyToAttack();
     
     public override void Initialize()
