@@ -142,14 +142,17 @@ public class FEnemyManager : MonoBehaviour
         // Emulate enemy Spread
         if (Input.GetKeyDown(KeyCode.S))
         {
-            _lampCollisionDetectionService.RemoveCollidable(_enemyMothling);
-            _lampCollisionDetectionService.RemoveCollidable(_enemyMoth);
-            _lampCollisionDetectionService.RemoveCollidable(_enemyFly);
-            _lampCollisionDetectionService.RemoveCollidable(_enemyFireFly);
-            _enemyMothling.Spread();
-            _enemyMoth.Spread();
-            _enemyFly.Spread();
-            _enemyFireFly.Spread();
+            // _lampCollisionDetectionService.RemoveCollidable(_enemyMothling);
+            // _lampCollisionDetectionService.RemoveCollidable(_enemyMoth);
+            // _lampCollisionDetectionService.RemoveCollidable(_enemyFly);
+            // _lampCollisionDetectionService.RemoveCollidable(_enemyFireFly);
+            // _enemyMothling.Spread();
+            // _enemyMoth.Spread();
+            // _enemyFly.Spread();
+            // _enemyFireFly.Spread();
+            
+            _lampCollisionDetectionService.RemoveCollidable(_enemySpider);
+            _enemySpider.Spread();
         }
         
         // Do Lamp Attack

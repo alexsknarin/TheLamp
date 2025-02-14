@@ -79,6 +79,15 @@ public class SpiderMovementStateFactory
                 false
             );
         }
+        if (stateType == typeof(FSpiderMovementClimbUpState))
+        {
+            return new FSpiderMovementClimbUpState(
+                _positionDirectionProvider,
+                _speed,
+                _height
+            );
+        }
+        
         return null;
     }
 }

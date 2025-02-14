@@ -29,6 +29,7 @@ public class FSpiderMovement : FEnemyMovementBase, IPositionDirectionProvider
     private FSpiderMovementAttackState _attackState;
     private FSpiderMovementReturnState _returnState;
     private FFlyGenericMovementDeathState _deathState;
+    private FSpiderMovementClimbUpState _climbUpState;
     
     public void Construct(SpiderMovementStateFactory stateFactory)
     {
@@ -59,6 +60,7 @@ public class FSpiderMovement : FEnemyMovementBase, IPositionDirectionProvider
         _attackState = (FSpiderMovementAttackState)_stateFactory.Create(typeof(FSpiderMovementAttackState));
         _returnState = (FSpiderMovementReturnState)_stateFactory.Create(typeof(FSpiderMovementReturnState));
         _deathState = (FFlyGenericMovementDeathState)_stateFactory.Create(typeof(FFlyGenericMovementDeathState));
+        _climbUpState = (FSpiderMovementClimbUpState)_stateFactory.Create(typeof(FSpiderMovementClimbUpState));
         
         // _patrolState = (FFlyGenericMovementPatrolState)_stateFactory.Create(typeof(FFlyGenericMovementPatrolState));
         // _preAttackStateR = (FFlyMovementPreAttackStateR)_stateFactory.Create(typeof(FFlyMovementPreAttackStateR));
@@ -87,6 +89,7 @@ public class FSpiderMovement : FEnemyMovementBase, IPositionDirectionProvider
         At(_patrolState, _preAttackState, IsAttackStarted());
         At(_preAttackState, _attackState, () => _preAttackState.IsReadyToSwitch);
         At(_returnState, _patrolState, () => _returnState.IsReadyToSwitch);
+        At(_climbUpState, _enterState, () => _climbUpState.IsReadyToSwitch);
         
         // Predicates
         Func<bool> IsAttackStarted() => () =>
@@ -150,7 +153,11 @@ public class FSpiderMovement : FEnemyMovementBase, IPositionDirectionProvider
 
     public override void TriggerSpread()
     {
-        throw new NotImplementedException();
+        _currentState = _climbUpState;
+        _stateMachine.SetState(_currentState);
+        Position2D = _currentState.Position2D;
+        transform.position = Position2D;
+        _stateDebug = _currentState.GetType().Name; // Debug only TODO: extract method for state set
     }
 
     private void Update()
