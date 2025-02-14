@@ -12,7 +12,7 @@ public class FSpiderMovementReturnState: RegularEnemyMovementStateBase
     private float _initialXpos;
     private int _returnPhase;
     private Vector2 _initialDirection;
-    private float _decceleration = 0.05f;
+    private float _decceleration = 0.07f;
     
     public FSpiderMovementReturnState(
         IPositionDirectionProvider positionDirectionProvider, float speed, float xCenter, float height)
@@ -46,7 +46,7 @@ public class FSpiderMovementReturnState: RegularEnemyMovementStateBase
             float phase = 1 - Mathf.Abs(Position2D.x - _initialXpos) / (_initialAmplitude * 2);
             phase = Mathf.Pow(phase, 0.5f);
             
-            newPosition += _initialDirection * (_speed * phase * Time.deltaTime);
+            newPosition += _initialDirection * (_speed * 2 * phase * Time.deltaTime);
             newPosition = (newPosition - _hangingPoint).normalized * 5f + _hangingPoint;
             Position2D = newPosition;
             
