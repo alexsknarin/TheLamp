@@ -13,6 +13,7 @@ public class FakeGame : MonoBehaviour
     private FlyMovementStateFactory _flyMovementStateFactory;
     private MothMovementStateFactory _mothMovementStateFactory;
     private SpiderMovementStateFactory _spiderMovementStateFactory;
+    private LadybugMovementStateFactory _ladybugMovementStateFactory;
     private FEnemyFactory _enemyFactory;
     private FEnemySpawner _enemySpawner;
 
@@ -23,12 +24,14 @@ public class FakeGame : MonoBehaviour
         _flyMovementStateFactory = new FlyMovementStateFactory(_cameraTransform, _lampPositionProviderService);
         _mothMovementStateFactory = new MothMovementStateFactory(_cameraTransform, _lampPositionProviderService);
         _spiderMovementStateFactory = new SpiderMovementStateFactory();
+        _ladybugMovementStateFactory = new LadybugMovementStateFactory(_cameraTransform, _lampPositionProviderService);
         
         _enemyFactory = new FEnemyFactory(
             _mothlingMovementStateFactory,
             _flyMovementStateFactory,
             _mothMovementStateFactory,
             _spiderMovementStateFactory,
+            _ladybugMovementStateFactory,
             _lampPositionProviderService
             );
         _enemySpawner = new FEnemySpawner(_enemyFactory);

@@ -7,7 +7,6 @@ public class FEnemyManager : MonoBehaviour
 {
     // TODO: move this to the Game Context Root
     [SerializeField] private LampCollisionDetectionService _lampCollisionDetectionService;
-    [SerializeField] private FMothling _mothlingEnemy;
     [SerializeField] private Transform _cameraTransform;
     [SerializeField] private LampPositionProviderService _lampPositionProviderService;
     private FEnemy _enemyMothling;
@@ -15,11 +14,14 @@ public class FEnemyManager : MonoBehaviour
     private FEnemy _enemyFly;
     private FEnemy _enemyFireFly;
     private FEnemy _enemySpider;
+    private FEnemy _enemyLadybug;
+        
 
     private MothlingMovementStateFactory _mothlingMovementStateFactory;
     private FlyMovementStateFactory _flyMovementStateFactory;
     private MothMovementStateFactory _mothMovementStateFactory;
     private SpiderMovementStateFactory _spiderMovementStateFactory;
+    private LadybugMovementStateFactory _ladybugMovementStateFactory;
     
     private FEnemyFactory _enemyFactory;
     private FEnemyPool _enemyPool;
@@ -41,12 +43,17 @@ public class FEnemyManager : MonoBehaviour
             _lampPositionProviderService
         );
         _spiderMovementStateFactory = new SpiderMovementStateFactory();
+        _ladybugMovementStateFactory = new LadybugMovementStateFactory(
+            _cameraTransform,
+            _lampPositionProviderService
+        );
         
         _enemyFactory = new FEnemyFactory(
             _mothlingMovementStateFactory, 
             _flyMovementStateFactory, 
             _mothMovementStateFactory, 
             _spiderMovementStateFactory,
+            _ladybugMovementStateFactory,
             _lampPositionProviderService
             );
         
@@ -64,6 +71,7 @@ public class FEnemyManager : MonoBehaviour
             _enemyPool.PreloadEnemy(typeof(FFly));
             _enemyPool.PreloadEnemy(typeof(FFireFly));
             _enemyPool.PreloadEnemy(typeof(FSpider));
+            _enemyPool.PreloadEnemy(typeof(FLadybug));
         }
         
         if (Input.GetKeyDown(KeyCode.O))
@@ -94,6 +102,12 @@ public class FEnemyManager : MonoBehaviour
         {
             _enemySpider = _enemyPool.Get(typeof(FSpider));
             _enemySpider.Play();
+        }
+        
+        if (Input.GetKeyDown(KeyCode.U))
+        {
+            _enemyLadybug = _enemyPool.Get(typeof(FLadybug));
+            _enemyLadybug.Play();
         }
 
         // Start Enemy Attack

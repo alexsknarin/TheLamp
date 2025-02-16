@@ -10,6 +10,7 @@ public class FEnemyPool
     private ObjectPool<FEnemy> _fireFlyPool;
     private ObjectPool<FEnemy> _mothPool;
     private ObjectPool<FEnemy> _spiderPool;
+    private ObjectPool<FEnemy> _ladybugPool;
     private readonly FEnemyFactory _enemyFactory;
     private readonly int _poolSize = 5;
     private int _mothlingCount;
@@ -17,6 +18,8 @@ public class FEnemyPool
     private int _fireFlyCount;
     private int _mothCount;
     private int _spiderCount;
+    private int _ladybugCount;
+    
     private readonly List<Type> _preloadedEnemyTypes = new List<Type>();
     
     public event Action<FEnemy> EnemyReleased;
@@ -74,6 +77,15 @@ public class FEnemyPool
             _poolSize,
             _poolSize
         );
+        _ladybugPool = new ObjectPool<FEnemy>(
+            CreateLadybug,
+            OnGetFromPool, 
+            OnReleaseToPool, 
+            OnDestroyPooledObject,
+            true,
+            _poolSize,
+            _poolSize
+        );
     }
 
     public void PreloadEnemy(Type type)
@@ -111,7 +123,7 @@ public class FEnemyPool
             }
             throw new Exception("FireFly prefab is not loaded yet");
         }
-        if(type == typeof(FMoth))
+        if (type == typeof(FMoth))
         {
             if (_enemyFactory.IsMothLoaded)
             {
@@ -119,13 +131,21 @@ public class FEnemyPool
             }
             throw new Exception("Moth prefab is not loaded yet");
         }
-        if(type == typeof(FSpider))
+        if (type == typeof(FSpider))
         {
             if (_enemyFactory.IsSpiderLoaded)
             {
                 return _spiderPool.Get();
             }
             throw new Exception("Spider prefab is not loaded yet");
+        }
+        if (type == typeof(FLadybug))
+        {
+            if (_enemyFactory.IsLadybugLoaded)
+            {
+                return _ladybugPool.Get();
+            }
+            throw new Exception("Ladybug prefab is not loaded yet");
         }
         else
         {
@@ -176,6 +196,15 @@ public class FEnemyPool
         enemyInstance.SetObjectPool(_spiderPool);
         enemyInstance.name = "Spider" + _spiderCount;
         _spiderCount++;
+        return enemyInstance;
+    }
+    
+    private FEnemy CreateLadybug()
+    {
+        FEnemy enemyInstance = _enemyFactory.CreateEnemy(typeof(FLadybug));
+        enemyInstance.SetObjectPool(_ladybugPool);
+        enemyInstance.name = "Ladybug" + _ladybugCount;
+        _ladybugCount++;
         return enemyInstance;
     }
     
