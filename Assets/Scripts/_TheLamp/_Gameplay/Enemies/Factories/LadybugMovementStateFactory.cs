@@ -83,7 +83,13 @@ public class LadybugMovementStateFactory
                 _lampPositionProviderService
             );
         }
-        
+        if (stateType == typeof(FFlyGenericMovementSpreadState))
+        {
+            return new FFlyGenericMovementSpreadState(
+                _positionDirectionProvider,
+                _speed
+            );
+        }
         return null;
     }
     

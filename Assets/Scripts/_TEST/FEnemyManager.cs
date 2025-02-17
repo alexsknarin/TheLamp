@@ -172,8 +172,10 @@ public class FEnemyManager : MonoBehaviour
             // _enemyFly.Spread();
             // _enemyFireFly.Spread();
             
-            _lampCollisionDetectionService.RemoveCollidable(_enemySpider);
-            _enemySpider.Spread();
+            // _lampCollisionDetectionService.RemoveCollidable(_enemySpider);
+            // _enemySpider.Spread();
+            
+            _enemyLadybug.Spread();
         }
         
         // Do Lamp Attack

@@ -24,15 +24,11 @@ public class FLadybug : FEnemy, IStickableWithLamp
     public override void Initialize()
     {
         _movement.Initialize();
-        // _movement.ReadyToAttackStateStarted += OnReadyToAttackStateStarted;
-        // _movement.ReadyToAttackStateEnded += OnReadyToAttackStateEnded;
         _movement.DeathStateEnded += OnDeathStateEnded;
     }
 
     private void OnDestroy()
     {
-        // _movement.ReadyToAttackStateStarted -= OnReadyToAttackStateStarted;
-        // _movement.ReadyToAttackStateEnded -= OnReadyToAttackStateEnded;
         _movement.DeathStateEnded -= OnDeathStateEnded;
     }
 
