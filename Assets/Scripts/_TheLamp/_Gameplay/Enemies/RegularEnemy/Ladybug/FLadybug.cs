@@ -17,6 +17,7 @@ public class FLadybug : FEnemy, IStickableWithLamp
     public override bool IsReadyToAttack => CheckIsReadyToAttack();
 
     public bool IsSticked { get; private set; }
+    public AttackBlockerState AttackBlockState { get; private set; }
     public Vector2 Position => _movement.Position2D;
     public float Radius => _collisionRadius;
     public StickableState StickState { get; private set; }
@@ -34,14 +35,13 @@ public class FLadybug : FEnemy, IStickableWithLamp
 
     public override void Play()
     {
-        Debug.Log("******** Ladybug Play Called.");
-        
         IsDead = false;
         _currentHealth = _maxHealth;
         _isInAttackReadyMovementState = false;
         IsReadyForDamage = false;
         IsReceivedAttack = false;
         StickState = StickableState.Outside;
+        AttackBlockState = AttackBlockerState.Outisde;
         HealthChanged?.Invoke(_currentHealth, _maxHealth);
         _movement.Play();
         Started?.Invoke();
@@ -58,6 +58,8 @@ public class FLadybug : FEnemy, IStickableWithLamp
             DoDeath();
             IsDead = true;
             IsReadyForDamage = false;
+            StickState = StickableState.InAttackZoneDamaged;
+            AttackBlockState = AttackBlockerState.Damaged;
         }
         else
         {
@@ -104,7 +106,6 @@ public class FLadybug : FEnemy, IStickableWithLamp
     // Handle sticky stuff
     public void HandleEnterAttackZone()
     {
-        Debug.Log("+++Ladybug is in attack zone.");
         IsSticked = false;
         StickState = StickableState.InAttackZone;
         IsReadyForDamage = true;
@@ -112,9 +113,9 @@ public class FLadybug : FEnemy, IStickableWithLamp
 
     public void HandleStick(Transform lampTransform)
     {
-        Debug.Log("+++Ladybug is sticked.");
         IsSticked = true;
         StickState = StickableState.Sticked;
+        AttackBlockState = AttackBlockerState.Sticked;
         IsReadyForDamage = true;
         // Play event
         
@@ -124,10 +125,14 @@ public class FLadybug : FEnemy, IStickableWithLamp
 
     public void HandleExitAttackZone()
     {
-        Debug.Log("+++Ladybug is out of attack zone.");
         IsSticked = false;
         StickState = StickableState.Outside;
         IsReadyForDamage = false;
         // Most likely dead at this moment
+    }
+
+    public void HandleEnterAttackBlockerZone()
+    {
+        AttackBlockState = AttackBlockerState.Inside;
     }
 }

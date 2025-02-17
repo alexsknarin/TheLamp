@@ -79,39 +79,27 @@ public class LampCollisionDetectionService : MonoBehaviour, IInitializable
            
             
             // Entering Attack Zone
-            if (collidable.CollisionState == CollidableState.Outside &&
-                distance < attackZoneCombinedRadius)
+            if (collidable.CollisionState == CollidableState.Outside && distance < attackZoneCombinedRadius)
             {
-                Debug.Log("Attack zone enter Detected");
-                Debug.Log($"EnemyType: {collidable.GetType()}");
                 collidable.HandleEnterAttackZone();
             }
             
             // Exiting Attack Zone Before Collision
-            if (collidable.CollisionState == CollidableState.InAttackZone &&
-                distance > attackZoneCombinedRadius)
+            if (collidable.CollisionState == CollidableState.InAttackZone && distance > attackZoneCombinedRadius)
             {
-                Debug.Log("Attack zone exit before collision Detected");
-                Debug.Log($"EnemyType: {collidable.GetType()}");
                 _collidablesToRemove.Add(collidable);
                 collidable.HandleExitAttackZone();
             }
             
             // Collision detection
-            if (collidable.CollisionState == CollidableState.InAttackZone &&
-                distance < _combinedCollisionRadius + collidable.Radius)
+            if (collidable.CollisionState == CollidableState.InAttackZone &&  distance < _combinedCollisionRadius + collidable.Radius)
             {
-                Debug.Log("Collision detected");
-                Debug.Log($"EnemyType: {collidable.GetType()}");
                 collidable.HandleCollision();
             }
             
             // Exiting Attack Zone After Collision
-            if (collidable.CollisionState == CollidableState.AfterCollision &&
-                distance > _attackExitZoneRadius + collidable.Radius)
+            if (collidable.CollisionState == CollidableState.AfterCollision && distance > _attackExitZoneRadius + collidable.Radius)
             {
-                Debug.Log("Attack zone exit after collision Detected");
-                Debug.Log($"EnemyType: {collidable.GetType()}");
                 _collidablesToRemove.Add(collidable);
                 collidable.HandleExitAttackZone();
             }

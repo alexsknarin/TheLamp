@@ -13,7 +13,6 @@ public class FLadybugPresentation : MonoBehaviour, IInitializable
 
     public void Initialize()
     {
-        Debug.Log("******** Ladybug Presentation Initialized.");
         _preAttackFlash.Initialize();
         _damageFlash.Initialize();
         _deathFlash.Initialize();
@@ -40,7 +39,6 @@ public class FLadybugPresentation : MonoBehaviour, IInitializable
 
     private void OnLadybugStarted()
     {
-        Debug.Log(" *********** Ladybug presentation started");
         _trailResetHandler.Initialize();
         _deathFlash.Initialize();
     }
