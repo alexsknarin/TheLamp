@@ -31,6 +31,7 @@ public class FLadybugMovement : FEnemyMovementBase, IPositionDirectionProvider
     private FLadybugMovementPreAttackState _preAttackState;
     private FLadybugMovementAttackState _attackState;
     private FLadybugMovementStickState _stickState;
+    private FLadybugMovementDeathState _deathState;
     
     public void Construct(
         LadybugMovementStateFactory stateFactory) 
@@ -53,21 +54,26 @@ public class FLadybugMovement : FEnemyMovementBase, IPositionDirectionProvider
         _preAttackState = (FLadybugMovementPreAttackState)_stateFactory.Create(typeof(FLadybugMovementPreAttackState));
         _attackState = (FLadybugMovementAttackState)_stateFactory.Create(typeof(FLadybugMovementAttackState));
         _stickState = (FLadybugMovementStickState)_stateFactory.Create(typeof(FLadybugMovementStickState));
+        _deathState = (FLadybugMovementDeathState)_stateFactory.Create(typeof(FLadybugMovementDeathState));
         
         _preAttackState.Started += OnPreAttackStateStarted;
         _preAttackState.Ended += OnPreAttackStateEnded;
+        _deathState.Ended += OnDeathStateEnded;
         
         At(_patrolState, _preAttackState, () => _patrolState.IsReadyToSwitch);
         At(_preAttackState, _attackState, () => _preAttackState.IsReadyToSwitch);
         
         
         void At(IState from, IState to, Func<bool> condition) => _stateMachine.AddTransition(from, to, condition);
+        
+        enabled = false;
     }
 
     private void OnDestroy()
     {
         _preAttackState.Started -= OnPreAttackStateStarted;
         _preAttackState.Ended -= OnPreAttackStateEnded;
+        _deathState.Ended -= OnDeathStateEnded;
     }
 
     public override void Play()
@@ -87,8 +93,8 @@ public class FLadybugMovement : FEnemyMovementBase, IPositionDirectionProvider
         _position3D = _currentState.Position2D;
         transform.position = _position3D;
         
-        
-        
+        enabled = true;
+
     }
 
     public override void TriggerAttack()
@@ -103,7 +109,9 @@ public class FLadybugMovement : FEnemyMovementBase, IPositionDirectionProvider
 
     public override void TriggerDeath()
     {
-        throw new System.NotImplementedException();
+        transform.parent = null;
+        SwitchToStateAndApply(_deathState);
+        enabled = true;
     }
 
     public override void TriggerSpread()
@@ -151,6 +159,20 @@ public class FLadybugMovement : FEnemyMovementBase, IPositionDirectionProvider
         return spawnPosition;
     }
 
+    private void SwitchToStateAndApply(RegularEnemyMovementStateBase state) // TODO: implement this in all enemies
+    {
+        _currentState = state;
+        _stateMachine.SetState(_currentState);
+        Position2D = _currentState.Position2D;
+        Vector2 newPosition = Position2D;
+        
+        // // Apply side direction
+        // newPosition.x *= _sideDirection;
+        
+        transform.position = newPosition;
+        _stateDebug = _currentState.GetType().Name;
+    }
+
 
     // Sticky specific stuff
 
@@ -183,5 +205,10 @@ public class FLadybugMovement : FEnemyMovementBase, IPositionDirectionProvider
     private void OnPreAttackStateEnded()
     {
         PreAttackEnded?.Invoke();
+    }
+
+    private void OnDeathStateEnded()
+    {
+        DeathStateEnded?.Invoke();
     }
 }

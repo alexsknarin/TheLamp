@@ -153,7 +153,7 @@ public class FSpiderMovement : FEnemyMovementBase, IPositionDirectionProvider
         transform.position = newPosition;
     }
 
-    private void SwitchToStateAndApply(RegularEnemyMovementStateBase state)
+    private void SwitchToStateAndApply(RegularEnemyMovementStateBase state) // TODO: implement this in all enemies
     {
         _currentState = state;
         _stateMachine.SetState(_currentState);

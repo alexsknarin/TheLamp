@@ -20,24 +20,27 @@ public class FLadybug : FEnemy, IStickableWithLamp
     public Vector2 Position => _movement.Position2D;
     public float Radius => _collisionRadius;
     public StickableState StickState { get; private set; }
-    
+
     public override void Initialize()
     {
         _movement.Initialize();
         // _movement.ReadyToAttackStateStarted += OnReadyToAttackStateStarted;
         // _movement.ReadyToAttackStateEnded += OnReadyToAttackStateEnded;
-        // _movement.DeathStateEnded += OnDeathStateEnded;
+        _movement.DeathStateEnded += OnDeathStateEnded;
     }
 
     private void OnDestroy()
     {
         // _movement.ReadyToAttackStateStarted -= OnReadyToAttackStateStarted;
         // _movement.ReadyToAttackStateEnded -= OnReadyToAttackStateEnded;
-        // _movement.DeathStateEnded -= OnDeathStateEnded;
+        _movement.DeathStateEnded -= OnDeathStateEnded;
     }
 
     public override void Play()
     {
+        Debug.Log("******** Ladybug Play Called.");
+        
+        IsDead = false;
         _currentHealth = _maxHealth;
         _isInAttackReadyMovementState = false;
         IsReadyForDamage = false;
@@ -51,18 +54,18 @@ public class FLadybug : FEnemy, IStickableWithLamp
     public override void ReceiveDamage(int damageAmount)
     {
         IsReceivedAttack = true;
-        IsReadyForDamage = false;
         _currentHealth -= damageAmount;
         
         if (_currentHealth <= 0)
         {
             Dead?.Invoke();
             DoDeath();
+            IsDead = true;
+            IsReadyForDamage = false;
         }
         else
         {
             Debug.Log($"Damage Received: {damageAmount}.");
-            _movement.TriggerFall();
             Damaged?.Invoke();
             HealthChanged?.Invoke(_currentHealth, _maxHealth);
         }
@@ -91,6 +94,7 @@ public class FLadybug : FEnemy, IStickableWithLamp
 
     public override void DoDeath()
     {
+        Debug.Log("Ladybug is dead.");
         _movement.TriggerDeath();
     }
 

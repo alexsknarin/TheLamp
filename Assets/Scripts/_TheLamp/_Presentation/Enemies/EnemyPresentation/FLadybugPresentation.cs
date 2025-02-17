@@ -11,9 +11,9 @@ public class FLadybugPresentation : MonoBehaviour, IInitializable
     [SerializeField] private HealthIndication _healthIndication;
     [SerializeField] private TrailResetHandler _trailResetHandler;
 
-
     public void Initialize()
     {
+        Debug.Log("******** Ladybug Presentation Initialized.");
         _preAttackFlash.Initialize();
         _damageFlash.Initialize();
         _deathFlash.Initialize();
@@ -28,7 +28,7 @@ public class FLadybugPresentation : MonoBehaviour, IInitializable
         _ladybug.Dead += OnLadybugDead;
     }
 
-    private void OnDisable()
+    private void OnDestroy()
     {
         _movement.PreAttackStarted -= OnPreAttackStarted;
         _movement.PreAttackEnded -= OnPreAttackEnded;
@@ -40,8 +40,9 @@ public class FLadybugPresentation : MonoBehaviour, IInitializable
 
     private void OnLadybugStarted()
     {
+        Debug.Log(" *********** Ladybug presentation started");
         _trailResetHandler.Initialize();
-        _healthIndication.Initialize();
+        _deathFlash.Initialize();
     }
 
     private void OnLadybugDamaged()

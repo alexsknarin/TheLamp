@@ -75,6 +75,15 @@ public class LadybugMovementStateFactory
                 _collisionRadius
             );
         }
+        if (stateType == typeof(FLadybugMovementDeathState))
+        {
+            return new FLadybugMovementDeathState(
+                _cameraTransform.position,
+                _positionDirectionProvider,
+                _lampPositionProviderService
+            );
+        }
+        
         return null;
     }
     

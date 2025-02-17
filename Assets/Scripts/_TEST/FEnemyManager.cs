@@ -28,6 +28,7 @@ public class FEnemyManager : MonoBehaviour
     private FEnemyPool _enemyPool;
     
     private List<IDamageable> _damageables = new();
+    private List<IDamageable> _damageablesToRemove = new();
 
     private void Awake()
     {
@@ -180,15 +181,35 @@ public class FEnemyManager : MonoBehaviour
         {
             if (_damageables.Count != 0)
             {
+                _damageablesToRemove.Clear();
+                
                 foreach (var damageable in _damageables)
                 {
                     if (damageable.IsReadyForDamage)
                     {
                         damageable.ReceiveDamage(3);
+                        
+                        if (!(damageable is FLadybug))
+                        {
+                            Debug.Log("Non ladybug marked for removal");
+                            _damageablesToRemove.Add(damageable);
+                        }
+                        if ((damageable is FLadybug) && damageable.IsDead)
+                        {
+                            Debug.Log("Ladybug marked for removal because it is dead");
+                            _damageablesToRemove.Add(damageable);
+                        }
                     }
                 }
-                _damageables.Clear();
+                
+                foreach (var damageable in _damageablesToRemove)
+                {
+                    Debug.Log("Removing damageables");
+                    _damageables.Remove(damageable);
+                }
             }
+            
+            Debug.Log("Damageables count: " + _damageables.Count);
         }
         
     }

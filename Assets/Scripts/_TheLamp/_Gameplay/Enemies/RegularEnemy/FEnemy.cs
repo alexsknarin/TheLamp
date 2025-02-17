@@ -9,11 +9,9 @@ public abstract class FEnemy: MonoBehaviour, IInitializable, IDamageable, IPoola
     public virtual bool IsReadyToAttack { get; }
     public  bool IsReadyForDamage { get; protected set; }
     public  bool IsReceivedAttack { get; protected set; }
+    public bool IsDead { get; protected set; }
     public abstract void Initialize();
     public abstract void Play();
-
-    
-    
 
     public abstract void ReceiveDamage(int damageAmount);
     public abstract void Attack();
