@@ -50,7 +50,7 @@ public class WaveEnemyDirector : MonoBehaviour, IInitializable
         }
     }
 
-    private void OnEnemyAttackStarted(FEnemy enemy)
+    private void OnEnemyAttackStarted(CollidableEnemy enemy)
     {
         _lampCollisionDetectionService.AddCollidable(enemy);
         _damageables.Add(enemy);

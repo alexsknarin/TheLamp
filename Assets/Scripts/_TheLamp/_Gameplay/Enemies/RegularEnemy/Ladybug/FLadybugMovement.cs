@@ -30,7 +30,7 @@ public class FLadybugMovement : FEnemyMovementBase, IPositionDirectionProvider
     private FLadybugMovementPatrolState _patrolState;
     private FLadybugMovementPreAttackState _preAttackState;
     private FLadybugMovementAttackState _attackState;
-    
+    private FLadybugMovementStickState _stickState;
     
     public void Construct(
         LadybugMovementStateFactory stateFactory) 
@@ -38,9 +38,13 @@ public class FLadybugMovement : FEnemyMovementBase, IPositionDirectionProvider
         _stateFactory = stateFactory;
     }
     
+    public event Action PreAttackStarted;
+    public event Action PreAttackEnded;
+    public event Action DeathStateEnded;
+    public event Action SpreadStateEnded;
+    
     public Vector2 Position2D { get; private set; }
     public Vector3 DepthDirection { get; private set; }
-    
     
     public override void Initialize()
     {
@@ -48,12 +52,22 @@ public class FLadybugMovement : FEnemyMovementBase, IPositionDirectionProvider
         _patrolState = (FLadybugMovementPatrolState)_stateFactory.Create(typeof(FLadybugMovementPatrolState));
         _preAttackState = (FLadybugMovementPreAttackState)_stateFactory.Create(typeof(FLadybugMovementPreAttackState));
         _attackState = (FLadybugMovementAttackState)_stateFactory.Create(typeof(FLadybugMovementAttackState));
+        _stickState = (FLadybugMovementStickState)_stateFactory.Create(typeof(FLadybugMovementStickState));
+        
+        _preAttackState.Started += OnPreAttackStateStarted;
+        _preAttackState.Ended += OnPreAttackStateEnded;
         
         At(_patrolState, _preAttackState, () => _patrolState.IsReadyToSwitch);
         At(_preAttackState, _attackState, () => _preAttackState.IsReadyToSwitch);
         
         
         void At(IState from, IState to, Func<bool> condition) => _stateMachine.AddTransition(from, to, condition);
+    }
+
+    private void OnDestroy()
+    {
+        _preAttackState.Started -= OnPreAttackStateStarted;
+        _preAttackState.Ended -= OnPreAttackStateEnded;
     }
 
     public override void Play()
@@ -106,13 +120,24 @@ public class FLadybugMovement : FEnemyMovementBase, IPositionDirectionProvider
         _stateDebug = _currentState.GetType().Name; // Debug only
         Position2D = _currentState.Position2D;
         
+        
         // Add Depth later
+        if (_isDepthEnabled)
+        {
+            DepthDirection = _currentState.DepthDirection;
+            transform.position = (Vector3)Position2D + DepthDirection;
+        }
+        else
+        {
+            transform.position = Position2D;
+        }
+        
         // Add Smooth?
         
-        Vector2 newPosition = Position2D;
-        newPosition.x *= _sideDirection;
+        // Vector2 newPosition = Position2D;
+        // newPosition.x *= _sideDirection;
         
-        transform.position = newPosition;
+        
         
         Debug.DrawLine(_prevPosition, transform.position, Color.cyan, 10f);
     }
@@ -124,5 +149,39 @@ public class FLadybugMovement : FEnemyMovementBase, IPositionDirectionProvider
         Quaternion rotation = Quaternion.Euler(0, 0, Random.Range(0, 360));
         spawnPosition = rotation * spawnPosition;
         return spawnPosition;
+    }
+
+
+    // Sticky specific stuff
+
+    public void TriggerStick(Transform target)
+    {
+        _currentState = _stickState;
+        _stateMachine.SetState(_currentState); // Correct sticky position on enter
+
+        if (_isDepthEnabled)
+        {
+            DepthDirection = _currentState.DepthDirection;
+            transform.position = (Vector3)Position2D + DepthDirection;
+        }
+        else
+        {
+            transform.position = _currentState.Position2D;
+        }
+        
+        transform.parent = target;
+        enabled = false;
+        
+        // TODO: unparent on disable
+    }
+
+    private void OnPreAttackStateStarted()
+    {
+        PreAttackStarted?.Invoke();
+    }
+
+    private void OnPreAttackStateEnded()
+    {
+        PreAttackEnded?.Invoke();
     }
 }

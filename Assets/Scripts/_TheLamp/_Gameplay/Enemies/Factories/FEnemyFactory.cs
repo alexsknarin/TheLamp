@@ -206,7 +206,7 @@ public class FEnemyFactory
         GameObject enemyInstance = Object.Instantiate(prefab);
         enemyInstance.GetComponent<FLadybugMovement>().Construct(
             _ladybugMovementStateFactory);
-        // enemyInstance.GetComponent<FLadybugPresentation>().Initialize();
+        enemyInstance.GetComponent<FLadybugPresentation>().Initialize();
         var enemy = enemyInstance.GetComponent<FLadybug>();
         enemy.Initialize();
         

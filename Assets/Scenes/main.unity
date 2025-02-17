@@ -2185,8 +2185,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _lampCollisionDetectionService: {fileID: 1934066264}
-  _mothlingEnemy: {fileID: 4626990669027690167, guid: f337a2a073071724aa88aa33f1abfd76,
-    type: 3}
+  _lampStickyDetectionService: {fileID: 1934066265}
   _cameraTransform: {fileID: 330585546}
   _lampPositionProviderService: {fileID: 1934066263}
 --- !u!114 &316911431
@@ -10794,6 +10793,7 @@ GameObject:
   - component: {fileID: 1934066251}
   - component: {fileID: 1934066263}
   - component: {fileID: 1934066264}
+  - component: {fileID: 1934066265}
   m_Layer: 0
   m_Name: LampObject
   m_TagString: Lamp
@@ -11513,6 +11513,22 @@ MonoBehaviour:
   _attackZoneRadius: 0.62
   _attackExitZoneRadius: 0.55
   _collidableCount: 0
+--- !u!114 &1934066265
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1934066237}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9ef0157de7af17f48b3219a56db38479, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _stickyRadius: 0.35
+  _stickyExitRadius: 0.5
+  _attackZoneRadius: 0.62
+  _stickableCount: 0
 --- !u!1 &1944166815
 GameObject:
   m_ObjectHideFlags: 0

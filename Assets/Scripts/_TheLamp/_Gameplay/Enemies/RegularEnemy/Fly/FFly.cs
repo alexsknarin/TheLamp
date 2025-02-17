@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.Pool;
 
-public class FFly : FEnemy
+public class FFly : CollidableEnemy
 {
     [Header("-- Attributes --")]
     [SerializeField] private int _maxHealth = 1;

@@ -4,7 +4,7 @@ using UnityEngine.Pool;
 using UnityEngine.Rendering;
 
 [RequireComponent(typeof(FMothlingMovement), typeof(FMothlingPresentation))]   
-public sealed class FMothling: FEnemy
+public sealed class FMothling: CollidableEnemy
 {
     [Header("-- Attributes --")]
     [SerializeField] private int _maxHealth = 1;

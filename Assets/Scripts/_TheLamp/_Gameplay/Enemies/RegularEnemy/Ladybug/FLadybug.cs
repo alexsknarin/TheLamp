@@ -1,9 +1,9 @@
 using System;
 using UnityEngine;
 
-public class FLadybug : FEnemy
+public class FLadybug : FEnemy, IStickableWithLamp
 {
-[SerializeField] private int _maxHealth = 7;
+    [SerializeField] private int _maxHealth = 7;
     [SerializeField] private int _currentHealth;
     [SerializeField] private float _collisionRadius = 0.125f;
     [Header("-- Movement --")]
@@ -13,9 +13,13 @@ public class FLadybug : FEnemy
     public event Action Damaged;
     public event Action<int, int> HealthChanged; 
     public event Action Dead;
-    public override float Radius => _collisionRadius;
-    public override Vector2 Position => transform.position;
+    
     public override bool IsReadyToAttack => CheckIsReadyToAttack();
+
+    public bool IsSticked { get; private set; }
+    public Vector2 Position => _movement.Position2D;
+    public float Radius => _collisionRadius;
+    public StickableState StickState { get; private set; }
     
     public override void Initialize()
     {
@@ -38,7 +42,7 @@ public class FLadybug : FEnemy
         _isInAttackReadyMovementState = false;
         IsReadyForDamage = false;
         IsReceivedAttack = false;
-        CollisionState = CollidableState.Outside;
+        StickState = StickableState.Outside;
         HealthChanged?.Invoke(_currentHealth, _maxHealth);
         _movement.Play();
         Started?.Invoke();
@@ -90,16 +94,40 @@ public class FLadybug : FEnemy
         _movement.TriggerDeath();
     }
 
-    public override void HandleCollision()
-    {
-        IsCollided = true;
-        CollisionState = CollidableState.AfterCollision;
-        _movement.TriggerFall();
-    }
-
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.cyan;
         Gizmos.DrawWireSphere(transform.position, _collisionRadius);
+    }
+
+    
+    // Handle sticky stuff
+    public void HandleEnterAttackZone()
+    {
+        Debug.Log("+++Ladybug is in attack zone.");
+        IsSticked = false;
+        StickState = StickableState.InAttackZone;
+        IsReadyForDamage = true;
+    }
+
+    public void HandleStick(Transform lampTransform)
+    {
+        Debug.Log("+++Ladybug is sticked.");
+        IsSticked = true;
+        StickState = StickableState.Sticked;
+        IsReadyForDamage = true;
+        // Play event
+        
+        _movement.TriggerStick(lampTransform);
+        
+    }
+
+    public void HandleExitAttackZone()
+    {
+        Debug.Log("+++Ladybug is out of attack zone.");
+        IsSticked = false;
+        StickState = StickableState.Outside;
+        IsReadyForDamage = false;
+        // Most likely dead at this moment
     }
 }

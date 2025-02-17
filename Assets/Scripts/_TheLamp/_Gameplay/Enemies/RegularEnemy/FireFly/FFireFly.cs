@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class FFireFly : FEnemy
+public class FFireFly : CollidableEnemy
 {
     [Header("-- Attributes --")]
     [SerializeField] private int _maxHealth = 1;

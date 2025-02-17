@@ -2,17 +2,23 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LampCollisionDetectionService : MonoBehaviour
+public class LampCollisionDetectionService : MonoBehaviour, IInitializable
 {
     [SerializeField] private float _collisionRadius = 0.5f;
-    [SerializeField] private float _attackZoneRadius = 0.62f;
+    [SerializeField] private float _attackZoneRadius = 0.62f; // TODO: control from the single source
     [SerializeField] private float _attackExitZoneRadius = 0.55f;
     [SerializeField] private int _collidableCount = 0;
     private List<ICollidableWithLamp> _collidables = new();
     private List<ICollidableWithLamp> _collidablesToRemove = new();
-    
     private Vector2 _position;
-    private float _collisionThreshold = 0.0001f;
+    private float _collisionThreshold = 0.0001f; // TODO: control from the config
+    private float _combinedCollisionRadius;
+
+    public void Initialize()
+    {
+        _combinedCollisionRadius = _collisionRadius + _collisionThreshold;
+        enabled = false;
+    }
 
     public void AddCollidable(ICollidableWithLamp collidableWithLamp)
     {
@@ -69,8 +75,7 @@ public class LampCollisionDetectionService : MonoBehaviour
             float distance = directionRaw.magnitude;
             
             // Collision Measurements
-            float combinedRadius = collidable.Radius + _collisionThreshold;
-            float attackZoneCombinedRadius = _attackZoneRadius + combinedRadius;
+            float attackZoneCombinedRadius = _attackZoneRadius + collidable.Radius;
            
             
             // Entering Attack Zone
@@ -94,7 +99,7 @@ public class LampCollisionDetectionService : MonoBehaviour
             
             // Collision detection
             if (collidable.CollisionState == CollidableState.InAttackZone &&
-                distance < _collisionRadius + combinedRadius)
+                distance < _combinedCollisionRadius + collidable.Radius)
             {
                 Debug.Log("Collision detected");
                 Debug.Log($"EnemyType: {collidable.GetType()}");
@@ -103,7 +108,7 @@ public class LampCollisionDetectionService : MonoBehaviour
             
             // Exiting Attack Zone After Collision
             if (collidable.CollisionState == CollidableState.AfterCollision &&
-                distance > _attackExitZoneRadius + combinedRadius)
+                distance > _attackExitZoneRadius + collidable.Radius)
             {
                 Debug.Log("Attack zone exit after collision Detected");
                 Debug.Log($"EnemyType: {collidable.GetType()}");

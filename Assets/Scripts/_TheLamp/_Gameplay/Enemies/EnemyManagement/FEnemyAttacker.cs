@@ -14,7 +14,7 @@ public class FEnemyAttacker: ITickable
     private List<FEnemy> _enemies;
     private List<FEnemy> _enemiesReadyToAttack;
     
-    public event Action<FEnemy> EnemyAttackStarted;
+    public event Action<CollidableEnemy> EnemyAttackStarted;
     
     
     public void PrepareWave(int aggressionLevel, List<FEnemy> enemies)
@@ -79,7 +79,7 @@ public class FEnemyAttacker: ITickable
         
         var attackingEnemy = _enemiesReadyToAttack[enemyIndex];
         attackingEnemy.Attack();
-        EnemyAttackStarted?.Invoke(attackingEnemy);
+        EnemyAttackStarted?.Invoke((CollidableEnemy)attackingEnemy);
         _localTime = 0;
     }
 

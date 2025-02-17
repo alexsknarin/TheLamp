@@ -66,6 +66,15 @@ public class LadybugMovementStateFactory
                 _speed
             );
         }
+        if (stateType == typeof(FLadybugMovementStickState))
+        {
+            return new FLadybugMovementStickState(
+                _cameraTransform.position,
+                _positionDirectionProvider,
+                _lampPositionProviderService,
+                _collisionRadius
+            );
+        }
         return null;
     }
     

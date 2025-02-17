@@ -28,8 +28,8 @@ public class FLadybugMovementPatrolState: RegularEnemyMovementStateBase
         float radius,
         float verticalAmplitude
         )
-    {
-        _cameraPosition = cameraPosition;
+    { 
+        // _cameraPosition = cameraPosition; TODO: enable later
         _positionDirectionProvider = positionDirectionProvider;
         _lampPositionProviderService = lampPositionProviderService;
         _speed = speed;
