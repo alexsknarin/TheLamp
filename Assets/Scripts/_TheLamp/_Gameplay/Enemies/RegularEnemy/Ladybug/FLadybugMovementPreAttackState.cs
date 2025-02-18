@@ -1,7 +1,8 @@
 using System;
+using Unity.IntegerTime;
 using UnityEngine;
 
-public class FLadybugMovementPreAttackState : RegularEnemyMovementStateBase
+public abstract class FLadybugMovementPreAttackState : RegularEnemyMovementStateBase
 {
     private readonly Vector3 _cameraPosition = new Vector3(0, 0, -5.88f);
     private readonly IPositionDirectionProvider _positionDirectionProvider;
@@ -31,7 +32,7 @@ public class FLadybugMovementPreAttackState : RegularEnemyMovementStateBase
         _speed = speed;
     }
     
-    public override void OnEnter()
+    protected void HandleEnter(int sideDirection)
     {
         IsReadyToSwitch = false;
         _localTime = 0;
@@ -39,7 +40,7 @@ public class FLadybugMovementPreAttackState : RegularEnemyMovementStateBase
         Position2D = _positionDirectionProvider.Position2D;
         
         Vector3 direction = (Position2D - _lampPositionProviderService.GetLampPosition()).normalized; 
-        Quaternion rotation = Quaternion.Euler(0, 0, 90);
+        Quaternion rotation = Quaternion.Euler(0, 0, 90 * sideDirection);
         _tangentDirection = rotation * direction;
         _direction = direction;
         Started?.Invoke();
@@ -72,7 +73,7 @@ public class FLadybugMovementPreAttackState : RegularEnemyMovementStateBase
         
         _localTime += Time.deltaTime;
     }
-    
+
     public override void OnExit()
     {
         Ended?.Invoke();

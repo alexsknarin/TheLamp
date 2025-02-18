@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class FLadybugMovementPatrolState: RegularEnemyMovementStateBase
+public abstract class FLadybugMovementPatrolState: RegularEnemyMovementStateBase
 {
     private readonly Vector3 _cameraPosition = new Vector3(0, 0, -5.88f);
     private readonly IPositionDirectionProvider _positionDirectionProvider;
@@ -37,25 +37,29 @@ public class FLadybugMovementPatrolState: RegularEnemyMovementStateBase
         _verticalAmplitude = verticalAmplitude;
     }
     
-    
-    public override void OnEnter()
+    protected void HandleEnter(int sideDirection)
     {
         _phase = 0;
         _spiralPhase = 1f;
         Position2D = _positionDirectionProvider.Position2D;
         
         Vector2 horizontalVector = Vector2.right;
+        horizontalVector.x *= sideDirection;
         _patrolStartOffsetAngle = Mathf.Acos(Vector2.Dot(horizontalVector.normalized, Position2D.normalized));
         _patrolStartOffsetAngle *= Mathf.Sign(Position2D.y);
         
+        if (sideDirection < 0)
+        {
+            _patrolStartOffsetAngle = Mathf.PI - _patrolStartOffsetAngle;
+        }
         IsReadyToSwitch = false;
     }
 
-    public override void Tick()
+    protected void HandleTick(int sideDirection)
     {
         float speedCompenstation = (1 - Position2D.magnitude/_radius) + 1;
        
-        _phase += Time.deltaTime * _speed * speedCompenstation;
+        _phase += Time.deltaTime * _speed * speedCompenstation * sideDirection;
         Vector2 ellipsePosition = EnemyMovementPatterns.CircleMotion(_patrolStartOffsetAngle, _radius, _radius, _verticalAmplitude, _phase);
         ellipsePosition *= _spiralPhase;
 

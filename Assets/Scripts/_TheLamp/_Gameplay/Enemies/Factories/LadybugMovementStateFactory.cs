@@ -37,9 +37,9 @@ public class LadybugMovementStateFactory
 
     public RegularEnemyMovementStateBase Create(Type stateType)
     {
-        if (stateType == typeof(FLadybugMovementPatrolState))
+        if (stateType == typeof(FLadybugMovementPatrolStateR))
         {
-            return new FLadybugMovementPatrolState(
+            return new FLadybugMovementPatrolStateR(
                 _cameraTransform.position,
                 _positionDirectionProvider,
                 _lampPositionProviderService,
@@ -48,9 +48,29 @@ public class LadybugMovementStateFactory
                 _verticalAmplitude
             );
         }
-        if (stateType == typeof(FLadybugMovementPreAttackState))
+        if (stateType == typeof(FLadybugMovementPatrolStateL))
         {
-            return new FLadybugMovementPreAttackState(
+            return new FLadybugMovementPatrolStateL(
+                _cameraTransform.position,
+                _positionDirectionProvider,
+                _lampPositionProviderService,
+                _speed,
+                _radius,
+                _verticalAmplitude
+            );
+        }
+        if (stateType == typeof(FLadybugMovementPreAttackStateR))
+        {
+            return new FLadybugMovementPreAttackStateR(
+                _cameraTransform.position,
+                _positionDirectionProvider,
+                _lampPositionProviderService,
+                _speed
+            );
+        }
+        if (stateType == typeof(FLadybugMovementPreAttackStateL))
+        {
+            return new FLadybugMovementPreAttackStateL(
                 _cameraTransform.position,
                 _positionDirectionProvider,
                 _lampPositionProviderService,

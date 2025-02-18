@@ -13,7 +13,6 @@ public class FLadybugMovement : FEnemyMovementBase, IPositionDirectionProvider
     // Debug
     [SerializeField] private string _stateDebug;
     [SerializeField] private int _sideDirection = 1;
-    [SerializeField] private int _depthSideDirection = 0;
     
     private Vector3 _position3D;
     // Debug only
@@ -27,8 +26,10 @@ public class FLadybugMovement : FEnemyMovementBase, IPositionDirectionProvider
     private LadybugMovementStateFactory _stateFactory;
     private RegularEnemyMovementStateBase _currentState;
     
-    private FLadybugMovementPatrolState _patrolState;
-    private FLadybugMovementPreAttackState _preAttackState;
+    private FLadybugMovementPatrolStateR _patrolStateR;
+    private FLadybugMovementPatrolStateL _patrolStateL;
+    private FLadybugMovementPreAttackStateR _preAttackStateR;
+    private FLadybugMovementPreAttackStateL _preAttackStateL;
     private FLadybugMovementAttackState _attackState;
     private FLadybugMovementStickState _stickState;
     private FLadybugMovementDeathState _deathState;
@@ -51,20 +52,26 @@ public class FLadybugMovement : FEnemyMovementBase, IPositionDirectionProvider
     public override void Initialize()
     {
         _stateFactory.SetEnemyDependencies(this, _speed, _radius, _verticalAmplitude, 0.125f);
-        _patrolState = (FLadybugMovementPatrolState)_stateFactory.Create(typeof(FLadybugMovementPatrolState));
-        _preAttackState = (FLadybugMovementPreAttackState)_stateFactory.Create(typeof(FLadybugMovementPreAttackState));
+        _patrolStateR = (FLadybugMovementPatrolStateR)_stateFactory.Create(typeof(FLadybugMovementPatrolStateR));
+        _patrolStateL = (FLadybugMovementPatrolStateL)_stateFactory.Create(typeof(FLadybugMovementPatrolStateL));
+        _preAttackStateR = (FLadybugMovementPreAttackStateR)_stateFactory.Create(typeof(FLadybugMovementPreAttackStateR));
+        _preAttackStateL = (FLadybugMovementPreAttackStateL)_stateFactory.Create(typeof(FLadybugMovementPreAttackStateL));
         _attackState = (FLadybugMovementAttackState)_stateFactory.Create(typeof(FLadybugMovementAttackState));
         _stickState = (FLadybugMovementStickState)_stateFactory.Create(typeof(FLadybugMovementStickState));
         _deathState = (FLadybugMovementDeathState)_stateFactory.Create(typeof(FLadybugMovementDeathState));
         _spreadState = (FFlyGenericMovementSpreadState)_stateFactory.Create(typeof(FFlyGenericMovementSpreadState));
         
-        _preAttackState.Started += OnPreAttackStateStarted;
-        _preAttackState.Ended += OnPreAttackStateEnded;
+        _preAttackStateR.Started += OnPreAttackStateStarted;
+        _preAttackStateR.Ended += OnPreAttackStateEnded;
+        _preAttackStateL.Started += OnPreAttackStateStarted;
+        _preAttackStateL.Ended += OnPreAttackStateEnded;
         _deathState.Ended += OnDeathStateEnded;
         _spreadState.Ended += OnSpreadStateEnded;
         
-        At(_patrolState, _preAttackState, () => _patrolState.IsReadyToSwitch);
-        At(_preAttackState, _attackState, () => _preAttackState.IsReadyToSwitch);
+        At(_patrolStateR, _preAttackStateR, () => _patrolStateR.IsReadyToSwitch);
+        At(_preAttackStateR, _attackState, () => _preAttackStateR.IsReadyToSwitch);
+        At(_patrolStateL, _preAttackStateL, () => _patrolStateL.IsReadyToSwitch);
+        At(_preAttackStateL, _attackState, () => _preAttackStateL.IsReadyToSwitch);
         
         
         void At(IState from, IState to, Func<bool> condition) => _stateMachine.AddTransition(from, to, condition);
@@ -74,24 +81,31 @@ public class FLadybugMovement : FEnemyMovementBase, IPositionDirectionProvider
 
     private void OnDestroy()
     {
-        _preAttackState.Started -= OnPreAttackStateStarted;
-        _preAttackState.Ended -= OnPreAttackStateEnded;
+        _preAttackStateR.Started -= OnPreAttackStateStarted;
+        _preAttackStateR.Ended -= OnPreAttackStateEnded;
+        _preAttackStateL.Started -= OnPreAttackStateStarted;
+        _preAttackStateL.Ended -= OnPreAttackStateEnded;
         _deathState.Ended -= OnDeathStateEnded;
         _spreadState.Ended -= OnSpreadStateEnded;
+        transform.parent = null;
     }
 
     public override void Play()
     {
-        
         // Spawn position
-
-        _sideDirection = 1;//RandomDirection.Generate();
+        _sideDirection = RandomDirection.Generate();
         SideDirection = _sideDirection;
-        _depthSideDirection = 1;//RandomDirection.Generate();
         Position2D = GenerateSpawnPosition(_radius);
         
+        if (_sideDirection > 0)
+        {
+            _currentState = _patrolStateR;
+        }
+        else
+        {
+            _currentState = _patrolStateL;
+        }
         
-        _currentState = _patrolState;
         _stateMachine.SetState(_currentState);
         
         _position3D = _currentState.Position2D;
@@ -120,7 +134,7 @@ public class FLadybugMovement : FEnemyMovementBase, IPositionDirectionProvider
 
     public override void TriggerSpread()
     {
-        if (!_currentState.Equals(_preAttackState) 
+        if ((!_currentState.Equals(_preAttackStateR)|| !_currentState.Equals(_preAttackStateL)) 
             &&!_currentState.Equals(_attackState))
         {
             SwitchToStateAndApply(_spreadState);
@@ -151,11 +165,6 @@ public class FLadybugMovement : FEnemyMovementBase, IPositionDirectionProvider
         
         // Add Smooth?
         
-        // Vector2 newPosition = Position2D;
-        // newPosition.x *= _sideDirection;
-        
-        
-        
         Debug.DrawLine(_prevPosition, transform.position, Color.cyan, 10f);
     }
 
@@ -175,16 +184,12 @@ public class FLadybugMovement : FEnemyMovementBase, IPositionDirectionProvider
         Position2D = _currentState.Position2D;
         Vector2 newPosition = Position2D;
         
-        // // Apply side direction
-        // newPosition.x *= _sideDirection;
-        
         transform.position = newPosition;
         _stateDebug = _currentState.GetType().Name;
     }
 
 
     // Sticky specific stuff
-
     public void TriggerStick(Transform target)
     {
         _currentState = _stickState;
@@ -202,8 +207,6 @@ public class FLadybugMovement : FEnemyMovementBase, IPositionDirectionProvider
         
         transform.parent = target;
         enabled = false;
-        
-        // TODO: unparent on disable
     }
 
     private void OnPreAttackStateStarted()
