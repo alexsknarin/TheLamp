@@ -68,7 +68,6 @@ public class FMothlingMovement : FEnemyMovementBase, IPositionDirectionProvider
 
     public override void Initialize()
     {
-        Debug.Log("FMothlingMovement Initializing");
         // Create Movement States
         _stateFactory.SetEnemyDependencies(this, _speed, _radius, _verticalAmplitude, 0.075f); // TODO: magic number
         _enterState = (FFlyGenericMovementEnterState)_stateFactory.Create(typeof(FFlyGenericMovementEnterState));

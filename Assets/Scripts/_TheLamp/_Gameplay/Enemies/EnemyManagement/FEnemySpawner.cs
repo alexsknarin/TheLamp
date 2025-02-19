@@ -3,97 +3,51 @@ using UnityEngine;
 
 public class FEnemySpawner: ITickable, IInitializable, IDisposable
 {
-    // Dependencies
-    private FEnemyFactory _enemyFactory;
-    
     private EnemyQueue _enemyQueue;
-    private FEnemyPool _enemyPool;
-    private List<FEnemy> _enemies;
     
-    private float _localTime;
-    private bool _isWaveActive = false;
-    private int _currentEnemyIndex;
-
-
-    public FEnemySpawner(FEnemyFactory enemyFactory)
+    // Dependencies
+    private readonly FEnemyPool _enemyPool;
+    
+    public FEnemySpawner(FEnemyPool enemyPool)
     {
-        _enemyFactory = enemyFactory;
+        _enemyPool = enemyPool;
     }
 
     public void Initialize()
     {
-        _enemyPool = new FEnemyPool(_enemyFactory);
-        _enemyPool.Initialize();
-        _enemyPool.EnemyReleased += OnEnemyReleased;
     }
 
     public void Dispose()
     {
-        _enemyPool.EnemyReleased -= OnEnemyReleased;
     }
 
     private void OnEnemyReleased(FEnemy enemy)
     {
-        _enemies.Remove(enemy);
     }
 
-    public void PrepareWave(EnemyQueue enemyQueue, List<FEnemy> enemies)
+    public void PrepareWave(EnemyQueue enemyQueue)
     {
         _enemyQueue = enemyQueue;
+        string waveData = "";
         
-        // TODO: redo this to use types and dictionary ?
         for (int i = 0; i < _enemyQueue.Count(); i++)
         {
-            EnemyType enemyType = _enemyQueue.Get(i);
-            if (enemyType == EnemyType.Mothling)
-            {
-                _enemyPool.PreloadEnemy(typeof(FMothling));                
-            }
-            if (enemyType == EnemyType.Fly)
-            {
-                _enemyPool.PreloadEnemy(typeof(FFly));                
-            }
+            _enemyPool.PreloadEnemy(EnemyTypeLibrary.EnemyTypeDictionary[_enemyQueue.Get(i)]);
+            waveData = waveData + " - " + _enemyQueue.Get(i).ToString();    
         }
-        
-        _enemies = enemies;
-        _enemies.Clear();
+        Debug.Log(waveData);
     }
 
     public void StartWave()
     {
-        _localTime = 0;
-        _isWaveActive = true;
-        _currentEnemyIndex = 0;
+        for (int i = 0; i < _enemyQueue.Count(); i++)
+        {
+            var enemy = _enemyPool.Get(EnemyTypeLibrary.EnemyTypeDictionary[_enemyQueue.Get(i)]);
+            enemy.Play();
+        }
     }
-
 
     public void Tick(float deltaTime)
     {
-        if (_isWaveActive && _currentEnemyIndex < _enemyQueue.Count())
-        {
-            if (_localTime >= 4f)
-            {
-                _localTime = 0;
-                
-                if (_enemyQueue.Get(_currentEnemyIndex) == EnemyType.Mothling)
-                {
-                    FEnemy enemy = _enemyPool.Get(typeof(FMothling));
-                    _enemies.Add(enemy);
-                    enemy.Play();
-                    _currentEnemyIndex++;
-                }
-                else if (_enemyQueue.Get(_currentEnemyIndex) == EnemyType.Fly)
-                {
-                    FEnemy enemy = _enemyPool.Get(typeof(FFly));
-                    _enemies.Add(enemy);
-                    enemy.Play();
-                    _currentEnemyIndex++;
-                }
-            }
-            
-            _localTime += deltaTime;
-        }
-        
-        
     }
 }

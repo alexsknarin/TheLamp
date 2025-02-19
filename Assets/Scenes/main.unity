@@ -2148,15 +2148,13 @@ GameObject:
   m_Component:
   - component: {fileID: 316911429}
   - component: {fileID: 316911430}
-  - component: {fileID: 316911431}
-  - component: {fileID: 316911432}
   m_Layer: 0
   m_Name: FEnemyManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &316911429
 Transform:
   m_ObjectHideFlags: 0
@@ -2179,7 +2177,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 316911428}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1dc0b3f8682a13b4b87049b99d51c07d, type: 3}
   m_Name: 
@@ -2188,37 +2186,6 @@ MonoBehaviour:
   _lampStickyDetectionService: {fileID: 1934066265}
   _cameraTransform: {fileID: 330585546}
   _lampPositionProviderService: {fileID: 1934066263}
---- !u!114 &316911431
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 316911428}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 98b925ec0dc263041b474089ee7f5a20, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _waveEnemyDirector: {fileID: 316911432}
-  _gameConfigProvider: {fileID: 11400000, guid: 3f3efefe08686ca42805053945790993,
-    type: 2}
-  _cameraTransform: {fileID: 330585546}
-  _lampPositionProviderService: {fileID: 1934066263}
-  _lampCollisionDetectionService: {fileID: 1934066264}
---- !u!114 &316911432
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 316911428}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cdb0dd54eee801449a41dbf5d8ba5aac, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _enemies: []
 --- !u!1 &330585543
 GameObject:
   m_ObjectHideFlags: 0
@@ -6072,8 +6039,7 @@ MonoBehaviour:
   _lampPositionProviderService: {fileID: 1934066263}
   _lampHealthBarController: {fileID: 969163320}
   _enemyController: {fileID: 2110688078}
-  _playerCollidersPropertyController: {fileID: 1934066258}
-  _playerEnemyInteractionHandler: {fileID: 1934066260}
+  _waveEnemyDirector: {fileID: 2110688079}
   _lampEmissionController: {fileID: 23663153}
   _lampMovementController: {fileID: 1934066248}
   _lightningFlashController: {fileID: 104459}
@@ -6084,6 +6050,7 @@ MonoBehaviour:
   _megabeetle: {fileID: 1180215397}
   _megabeetleMovement: {fileID: 1657476345}
   _dragonfly: {fileID: 1536401419}
+  _cameraTransform: {fileID: 330585546}
 --- !u!4 &1037269785
 Transform:
   m_ObjectHideFlags: 0
@@ -9014,37 +8981,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1037585458}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1595482319
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1595482320}
-  m_Layer: 0
-  m_Name: GameServices
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1595482320
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1595482319}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1602371410
 GameObject:
   m_ObjectHideFlags: 0
@@ -11526,10 +11462,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _stickyRadius: 0.35
-  _stickyExitRadius: 0.5
   _blockAttackRadius: 0.87
   _attackZoneRadius: 0.62
   _stickableCount: 0
+  _blockedAttacks: 0
 --- !u!1 &1944166815
 GameObject:
   m_ObjectHideFlags: 0
@@ -12648,6 +12584,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2110688077}
   - component: {fileID: 2110688078}
+  - component: {fileID: 2110688079}
   m_Layer: 0
   m_Name: GameControllers
   m_TagString: Untagged
@@ -12693,6 +12630,18 @@ MonoBehaviour:
   _maxAggressionLevel: 6
   _firstEnemySpawnDelay: 0.5
   _isWaveInitialized: 0
+--- !u!114 &2110688079
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2110688076}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdb0dd54eee801449a41dbf5d8ba5aac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &455450631368144086
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -13017,7 +12966,6 @@ SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 1037269785}
-  - {fileID: 1595482320}
   - {fileID: 1736170225}
   - {fileID: 646836955}
   - {fileID: 2110688077}

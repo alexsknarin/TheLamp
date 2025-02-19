@@ -11,56 +11,59 @@ public class GameModel : IDisposable, ILampDeadEventProviderService
     private bool _isAttacking = false;
 
     // Dependencies
-    private IGameStateProviderService _gameStateProviderService;
-    private IGameConfigService _gameConfigService;
-    private EnemyController _enemyController;
-    private PlayerAttackHandler _playerAttackHandler;
-    private PlayerCollidersPropertyController _playerCollidersPropertyController;
-    private PlayerEnemyInteractionHandler _playerEnemyInteractionHandler;
-    private LampDamageDataHandler _lampDamageDataHandler = new LampDamageDataHandler();
-    private LampMovementController _lampMovementController;
-    private ScoresCollectionHandler _scoresCollectionHandler;
-    private UpgradeHandler _upgradeHandler = new UpgradeHandler();
+    private readonly IGameStateProviderService _gameStateProviderService;
+    private readonly IGameConfigService _gameConfigService;
+    private readonly WaveEnemyDirector _waveEnemyDirector;
+    // private EnemyController _enemyController;
+    // private PlayerAttackHandler _playerAttackHandler;
+    // private PlayerCollidersPropertyController _playerCollidersPropertyController;
+    // private PlayerEnemyInteractionHandler _playerEnemyInteractionHandler;
+    private readonly LampMovementController _lampMovementController;
+    private readonly ScoresCollectionHandler _scoresCollectionHandler;
+    private readonly LampDamageDataHandler _lampDamageDataHandler = new LampDamageDataHandler();
+    private readonly UpgradeHandler _upgradeHandler = new UpgradeHandler();
 
     public GameModel(
         IGameStateProviderService gameStateProviderService, 
-        EnemyController enemyController, 
         IGameConfigService gameConfigService,
-        PlayerAttackHandler playerAttackHandler,
-        PlayerCollidersPropertyController playerCollidersPropertyController,
-        PlayerEnemyInteractionHandler playerEnemyInteractionHandler,
+        WaveEnemyDirector waveEnemyDirector,
+        // EnemyController enemyController, 
+        // PlayerAttackHandler playerAttackHandler,
+        // PlayerCollidersPropertyController playerCollidersPropertyController,
+        // PlayerEnemyInteractionHandler playerEnemyInteractionHandler,
         LampMovementController lampMovementController,
         ScoresCollectionHandler scoresCollectionHandler)
     {
         Debug.Log(" +++ GameModel: Creating GameModel +++");
         _gameStateProviderService = gameStateProviderService;
         _currentGameState = gameStateProviderService.Get();
-        _enemyController = enemyController;
+        _waveEnemyDirector = waveEnemyDirector;
+        // _enemyController = enemyController;
         _gameConfigService = gameConfigService;
-        _playerAttackHandler = playerAttackHandler;
-        _playerCollidersPropertyController = playerCollidersPropertyController;
-        _playerEnemyInteractionHandler = playerEnemyInteractionHandler;
+        // _playerAttackHandler = playerAttackHandler;
+        // _playerCollidersPropertyController = playerCollidersPropertyController;
+        // _playerEnemyInteractionHandler = playerEnemyInteractionHandler;
         _lampMovementController = lampMovementController;
         _scoresCollectionHandler = scoresCollectionHandler;
         
         // Subscriptions
-        _enemyController.WaveEnded += OnWaveEnded;
-        _playerAttackHandler.PlayerAttackEnded += OnPlayerAttackEnded;
-        _playerAttackHandler.PowerChanged += OnPowerChanged;
-        _playerEnemyInteractionHandler.LampBlockedStarted += OnLampBlockedStarted;
-        _playerEnemyInteractionHandler.LampBlockedEnded += OnLampBlockedEnded;
-        _playerEnemyInteractionHandler.EnemyAttackBounced += OnEnemyAttackBounced;
+        // _enemyController.WaveEnded += OnWaveEnded;
+        // _playerAttackHandler.PlayerAttackEnded += OnPlayerAttackEnded;
+        // _playerAttackHandler.PowerChanged += OnPowerChanged;
+        // _playerEnemyInteractionHandler.LampBlockedStarted += OnLampBlockedStarted;
+        // _playerEnemyInteractionHandler.LampBlockedEnded += OnLampBlockedEnded;
+        // _playerEnemyInteractionHandler.EnemyAttackBounced += OnEnemyAttackBounced;
         _scoresCollectionHandler.ScoreChanged += OnScoreChanged;
     }
     
     public void Dispose()
     {
-        _enemyController.WaveEnded -= OnWaveEnded;
-        _playerAttackHandler.PlayerAttackEnded -= OnPlayerAttackEnded;
-        _playerAttackHandler.PowerChanged -= OnPowerChanged;
-        _playerEnemyInteractionHandler.LampBlockedStarted -= OnLampBlockedStarted;
-        _playerEnemyInteractionHandler.LampBlockedEnded -= OnLampBlockedEnded;
-        _playerEnemyInteractionHandler.EnemyAttackBounced -= OnEnemyAttackBounced;
+        // _enemyController.WaveEnded -= OnWaveEnded;
+        // _playerAttackHandler.PlayerAttackEnded -= OnPlayerAttackEnded;
+        // _playerAttackHandler.PowerChanged -= OnPowerChanged;
+        // _playerEnemyInteractionHandler.LampBlockedStarted -= OnLampBlockedStarted;
+        // _playerEnemyInteractionHandler.LampBlockedEnded -= OnLampBlockedEnded;
+        // _playerEnemyInteractionHandler.EnemyAttackBounced -= OnEnemyAttackBounced;
         _scoresCollectionHandler.ScoreChanged -= OnScoreChanged;
     }
     
@@ -205,13 +208,13 @@ public class GameModel : IDisposable, ILampDeadEventProviderService
             _currentGameState.Wave = _gameConfigService.GameConfig.TestStartWave;
         }
         CurrentGameStageState = GameStageState.Intro;
-        _playerAttackHandler.SetAttackDuration(_gameConfigService.PlayerConfig.AttackDuration); // Attack Duration
-        _playerAttackHandler.SetCooldownDuration(_currentGameState.LampCooldownTime); // Cooldown Duration
-        _playerCollidersPropertyController.SetAttackZoneRadius(_currentGameState.LampAttackDistance); // Attack Distance
+        // _playerAttackHandler.SetAttackDuration(_gameConfigService.PlayerConfig.AttackDuration); // Attack Duration
+        // _playerAttackHandler.SetCooldownDuration(_currentGameState.LampCooldownTime); // Cooldown Duration
+        // _playerCollidersPropertyController.SetAttackZoneRadius(_currentGameState.LampAttackDistance); // Attack Distance
         _currentPower = 1.0f;
         LampGlassDamage = _currentGameState.GlassDamageData;
         _lampDamageDataHandler.MaxHealth = _currentGameState.LampMaxHealth;
-        _enemyController.StartGame();
+        // _enemyController.StartGame();
         GameStarted?.Invoke();
     }
     
@@ -223,6 +226,8 @@ public class GameModel : IDisposable, ILampDeadEventProviderService
     private void StartPrepare()
     {
         CurrentGameStageState = GameStageState.Prepare;
+        Debug.Log("Prepare Started for wave " + _currentGameState.Wave);
+        _waveEnemyDirector.PrepareWave(_currentGameState.Wave);
     }
 
     private void StartPrepareOut()
@@ -233,8 +238,8 @@ public class GameModel : IDisposable, ILampDeadEventProviderService
     private void StartGameOver()
     {
         CurrentGameStageState = GameStageState.GameOverIn;
-        _playerAttackHandler.StopCooldown();
-        _enemyController.HandleGameOver();
+        // _playerAttackHandler.StopCooldown();
+        // _enemyController.HandleGameOver();
     }
 
     // Game State change Passive methods
@@ -277,7 +282,7 @@ public class GameModel : IDisposable, ILampDeadEventProviderService
             if (!_isAttacking)
             {
                 _isAttacking = true;
-                _playerAttackHandler.PlayAttack();
+                // _playerAttackHandler.PlayAttack(); TODO:
                 LampAttackStarted?.Invoke(CurrentPower); // Attack Power
             }
         }
@@ -286,17 +291,17 @@ public class GameModel : IDisposable, ILampDeadEventProviderService
             if (!_isAttacking)
             {
                 _isAttacking = true;
-                _playerAttackHandler.PlayAttack();
+                // _playerAttackHandler.PlayAttack(); TODO:
                 LampAttackStarted?.Invoke(CurrentPower); // Attack Power
-                _playerEnemyInteractionHandler.LampAttack();
-                _enemyController.HandleAttackButtonClicked(CurrentPower);
+                // _playerEnemyInteractionHandler.LampAttack(); TODO:
+                // _enemyController.HandleAttackButtonClicked(CurrentPower); TODO:
             }
         }
     }
 
     public void HandleDamageStateEnded()
     {
-        _playerAttackHandler.PlayCooldown();
+        // _playerAttackHandler.PlayCooldown();
     }
 
     public void HandleHealthUpgrade()
@@ -345,8 +350,8 @@ public class GameModel : IDisposable, ILampDeadEventProviderService
             LampCooldownTime = _gameConfigService.PlayerConfig.CooldownTimeCap;
         }
         
-        _playerAttackHandler.SetCooldownDuration(LampCooldownTime); // TODO: maybe combine it with PlayCooldown
-        _playerAttackHandler.PlayCooldown();
+        // _playerAttackHandler.SetCooldownDuration(LampCooldownTime); // TODO: maybe combine it with PlayCooldown
+        // _playerAttackHandler.PlayCooldown();
         CoolDownUpgraded?.Invoke();
     }
 
@@ -370,7 +375,7 @@ public class GameModel : IDisposable, ILampDeadEventProviderService
             return;
         }
         
-        _playerCollidersPropertyController.SetAttackZoneRadius(LampAttackDistance);
+        // _playerCollidersPropertyController.SetAttackZoneRadius(LampAttackDistance); TODO:
         AttackDistanceUpgraded?.Invoke();
     }
 
@@ -422,8 +427,8 @@ public class GameModel : IDisposable, ILampDeadEventProviderService
         CurrentGameState = _gameStateProviderService.Get();
         Debug.Log("New GameState Generated");
         Debug.Log($"Wave: {CurrentGameState.Wave}");
-        _playerEnemyInteractionHandler.Reset();
-        _enemyController.Restart();
+        // _playerEnemyInteractionHandler.Reset();
+        // _enemyController.Restart();
         _lampMovementController.Reset();
         StartGame();
     }
@@ -432,7 +437,8 @@ public class GameModel : IDisposable, ILampDeadEventProviderService
     {
         CurrentGameStageState = GameStageState.Wave;
         Debug.Log("Starting Wave: " +_currentGameState.Wave);
-        _enemyController.StartWave(_currentGameState.Wave);
+        // _enemyController.StartWave(_currentGameState.Wave);
+        _waveEnemyDirector.StartWave();
         WaveStarted?.Invoke(_currentGameState.Wave);
     }
 
@@ -446,29 +452,29 @@ public class GameModel : IDisposable, ILampDeadEventProviderService
         WaveEnded?.Invoke(_currentGameState.Wave);
     }
 
-    private void OnPlayerAttackEnded()
-    {
-        _isAttacking = false;
-    }
+    // private void OnPlayerAttackEnded()
+    // {
+    //     _isAttacking = false;
+    // }
 
-    private void OnPowerChanged(float power)
-    {
-        CurrentPower = power;
-    }
+    // private void OnPowerChanged(float power)
+    // {
+    //     CurrentPower = power;
+    // }
 
-    private void OnLampBlockedStarted(Vector3 impactPoint)
-    {
-        IsLampBlocked = true;
-        _enemyController.SetBlockedMode(IsLampBlocked);
-        _lampMovementController.AddForce(-impactPoint.normalized.x * 2);
-    }
+    // private void OnLampBlockedStarted(Vector3 impactPoint)
+    // {
+    //     IsLampBlocked = true;
+    //     _enemyController.SetBlockedMode(IsLampBlocked);
+    //     _lampMovementController.AddForce(-impactPoint.normalized.x * 2);
+    // }
     
-    private void OnLampBlockedEnded(Vector3 impactPoint)
-    {
-        IsLampBlocked = false;
-        _enemyController.SetBlockedMode(IsLampBlocked);
-        _lampMovementController.AddForce(-impactPoint.normalized.x * 2);
-    }
+    // private void OnLampBlockedEnded(Vector3 impactPoint)
+    // {
+    //     IsLampBlocked = false;
+    //     _enemyController.SetBlockedMode(IsLampBlocked);
+    //     _lampMovementController.AddForce(-impactPoint.normalized.x * 2);
+    // }
     
     private void OnEnemyAttackBounced(bool isDeflected, EnemyBase enemy)
     {
@@ -481,7 +487,7 @@ public class GameModel : IDisposable, ILampDeadEventProviderService
             {
                 LastEnemyPosition = enemy.ProvideImpactPoint();
                 _lampMovementController.AddForce(-LastEnemyPosition.normalized.x * 2);
-                _enemyController.HandleLampDestroyed();
+                // _enemyController.HandleLampDestroyed();                      // TODO: reimplement with WaveEnemyDirector
                 LampDeathHappened?.Invoke(enemy.ProvideImpactPoint());
                 LampDied?.Invoke(enemy);
                 StartGameOver();

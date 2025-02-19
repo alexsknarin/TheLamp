@@ -27,9 +27,10 @@ public class GameRootContext : MonoBehaviour
     [SerializeField] private LampPositionProviderService _lampPositionProviderService;
     [Header("Controllers")]
     [SerializeField] private LampHealthBarController _lampHealthBarController;
-    [SerializeField] private EnemyController _enemyController;
-    [SerializeField] private PlayerCollidersPropertyController _playerCollidersPropertyController;
-    [SerializeField] private PlayerEnemyInteractionHandler _playerEnemyInteractionHandler;
+    [SerializeField] private EnemyController _enemyController;                          // TODO: remove
+    [SerializeField] private WaveEnemyDirector _waveEnemyDirector;
+    // [SerializeField] private PlayerCollidersPropertyController _playerCollidersPropertyController;
+    // [SerializeField] private PlayerEnemyInteractionHandler _playerEnemyInteractionHandler;
     [SerializeField] private LampEmissionController _lampEmissionController;
     [SerializeField] private LampMovementController _lampMovementController;
     [SerializeField] private LightningFlashController _lightningFlashController;
@@ -41,6 +42,8 @@ public class GameRootContext : MonoBehaviour
     [SerializeField] private Megabeetle _megabeetle;
     [SerializeField] private MegabeetleMovement _megabeetleMovement;
     [SerializeField] private Dragonfly _dragonfly;
+    [Header("Scene References")]
+    [SerializeField] private Transform _cameraTransform;
 
     private CoroutineHost _coroutineHost;
     
@@ -69,9 +72,19 @@ public class GameRootContext : MonoBehaviour
     private LightningFlashEventsListener _lightningFlashEventsListener;
     private AnalyticsEventListener _analyticsEventListener;
     private AdvertisementEventListener _advertisementEventListener;
-    // Factories
+    // +++ Factories
     private BossCameraShakeFactory _bossCameraShakeFactory;
-
+    // Enemy Factories
+    private MothlingMovementStateFactory _mothlingMovementStateFactory;
+    private FlyMovementStateFactory _flyMovementStateFactory;
+    private MothMovementStateFactory _mothMovementStateFactory;
+    private SpiderMovementStateFactory _spiderMovementStateFactory;
+    private LadybugMovementStateFactory _ladybugMovementStateFactory;
+    private FEnemyFactory _enemyFactory;
+    
+    private FEnemyPool _enemyPool;
+    private FEnemySpawner _enemySpawner;
+    
     private List<IDisposable> _disposables = new();
     private List<ITickable> _tickables = new();
     
@@ -87,12 +100,12 @@ public class GameRootContext : MonoBehaviour
         ServicesSetup();
         Debug.Log("------ Handlers ------");
         HandlersSetup();
+        Debug.Log("------ Factories ------");
+        FactoriesSetup();
         Debug.Log("------ Controllers ------");
         ControllersSetup();
         Debug.Log("------ Game Model ------");
         GameModelSetup();
-        Debug.Log("------ Factories ------");
-        FactoriesSetup();
         Debug.Log("------ View Models ------");
         ViewModelsSetup();
         Debug.Log("------ Binding Views ------");
@@ -158,17 +171,55 @@ public class GameRootContext : MonoBehaviour
 
     private void HandlersSetup()
     {
-        _playerAttackHandler = new PlayerAttackHandler(_coroutineHost);
+        _playerAttackHandler = new PlayerAttackHandler(_coroutineHost); // TODO: redo
         _tickables.Add(_playerAttackHandler);
         _scoresCollectionHandler = new ScoresCollectionHandler(_gameConfigService);
         _scoresCollectionHandler.Initialize();
         _disposables.Add(_scoresCollectionHandler);
-        _playerEnemyInteractionHandler.Initialize();
+        // _playerEnemyInteractionHandler.Initialize();
+    }
+
+    private void FactoriesSetup()
+    {
+        // Camera Shake Factories
+        _bossCameraShakeFactory = new BossCameraShakeFactory();
+        
+        // Enemy Factories
+        _mothlingMovementStateFactory = new MothlingMovementStateFactory(
+            _cameraTransform,
+            _lampPositionProviderService
+        );
+        _flyMovementStateFactory = new FlyMovementStateFactory(
+            _cameraTransform,
+            _lampPositionProviderService
+        );
+        _mothMovementStateFactory = new MothMovementStateFactory(
+            _cameraTransform,
+            _lampPositionProviderService
+        );
+        _spiderMovementStateFactory = new SpiderMovementStateFactory();
+        _ladybugMovementStateFactory = new LadybugMovementStateFactory(
+            _cameraTransform,
+            _lampPositionProviderService
+        );
+        
+        _enemyFactory = new FEnemyFactory(
+            _mothlingMovementStateFactory, 
+            _flyMovementStateFactory, 
+            _mothMovementStateFactory, 
+            _spiderMovementStateFactory,
+            _ladybugMovementStateFactory,
+            _lampPositionProviderService
+        );
+        _enemyPool = new FEnemyPool(_enemyFactory);
+        _enemyPool.Initialize();
     }
 
     private void ControllersSetup()
     {
-        _enemyController.Construct(_gameConfigService, _lampPositionProviderService);
+        // _enemyController.Construct(_gameConfigService, _lampPositionProviderService);
+        _enemySpawner = new FEnemySpawner(_enemyPool);
+        _waveEnemyDirector.Construct(_gameConfigService, _enemySpawner);
         _lampMovementController.Initialize();
         _lampHealthBarController.Initialize();
         _lampEmissionController.Initialize();
@@ -179,19 +230,10 @@ public class GameRootContext : MonoBehaviour
     {
         _gameModel = new GameModel(
             _gameStateProviderService, 
-            _enemyController, 
             _gameConfigService, 
-            _playerAttackHandler, 
-            _playerCollidersPropertyController,
-            _playerEnemyInteractionHandler,
+            _waveEnemyDirector,
             _lampMovementController,
             _scoresCollectionHandler);
-    }
-
-    private void FactoriesSetup()
-    {
-        // Camera Shake Factories
-        _bossCameraShakeFactory = new BossCameraShakeFactory();
     }
 
     private void ViewModelsSetup()
@@ -289,7 +331,8 @@ public class GameRootContext : MonoBehaviour
     {
         // Start Game
         Debug.Log("-+---- Game Config Loaded ----+-");
-        _enemyController.Initialize();
+        // _enemyController.Initialize();
+        _waveEnemyDirector.Initialize();
         _gameModel.StartGame();
     }
 }

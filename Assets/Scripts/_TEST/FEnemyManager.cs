@@ -23,7 +23,6 @@ public class FEnemyManager : MonoBehaviour
     private MothMovementStateFactory _mothMovementStateFactory;
     private SpiderMovementStateFactory _spiderMovementStateFactory;
     private LadybugMovementStateFactory _ladybugMovementStateFactory;
-    
     private FEnemyFactory _enemyFactory;
     private FEnemyPool _enemyPool;
     

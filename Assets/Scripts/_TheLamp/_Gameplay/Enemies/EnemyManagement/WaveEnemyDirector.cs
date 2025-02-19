@@ -4,110 +4,51 @@ using UnityEngine;
 
 public class WaveEnemyDirector : MonoBehaviour, IInitializable
 {
-    // Dependencies
-    private IGameConfigService _gameConfigService;
-    private LampCollisionDetectionService _lampCollisionDetectionService;
-    private FEnemySpawner _enemySpawner;
-    
-    private FEnemyAttacker _enemyAttacker;
     private SpawnQueueGenerator _spawnQueueGenerator;
     private SpawnQueue _spawnQueue;
+    private EnemyQueue _currentWaveEnemyQueue;
     
-    private List<ITickable> _tickables = new();
-    private List<IDisposable> _disposables = new ();
-    [SerializeField] private List<FEnemy> _enemies = new ();
-    private List<IDamageable> _damageables = new();
+    // Dependencies
+    private IGameConfigService _gameConfigService;
+    private FEnemySpawner _enemySpawner;
     
-    
-    public void Construct(
-        IGameConfigService gameConfigService,
-        LampCollisionDetectionService lampCollisionDetectionService,
-        FEnemySpawner enemySpawner)
+    public void Construct(IGameConfigService gameConfigService, FEnemySpawner enemySpawner)
     {
         _gameConfigService = gameConfigService;
-        _lampCollisionDetectionService = lampCollisionDetectionService;
         _enemySpawner = enemySpawner;
     }
-
+    
     public void Initialize()
     {
+        Debug.Log("WaveEnemyDirector: Initializing");
         _spawnQueueGenerator = new SpawnQueueGenerator(_gameConfigService.SpawnQueueConfig.Data);
-        _enemySpawner.Initialize();
-        _disposables.Add(_enemySpawner);
-        _tickables.Add(_enemySpawner);
-        _enemyAttacker = new FEnemyAttacker();
-        _tickables.Add(_enemyAttacker);
-        _enemyAttacker.EnemyAttackStarted += OnEnemyAttackStarted;
-    }
-
-    private void OnDestroy()
-    {
-        _enemyAttacker.EnemyAttackStarted -= OnEnemyAttackStarted;
-        
-        foreach (var disposable in _disposables)
-        {
-            disposable.Dispose();
-        }
-    }
-
-    private void OnEnemyAttackStarted(CollidableEnemy enemy)
-    {
-        _lampCollisionDetectionService.AddCollidable(enemy);
-        _damageables.Add(enemy);
-    }
-
-    public void HandleStartGame()
-    {
-        Debug.Log("Prepare mode for a game started");
         _spawnQueue = _spawnQueueGenerator.Generate();
+        
+        // Debug Spawn Queue
+        // Debug.Log("++++ ----- Spawn Queue Generated:");
+        // for(int i=0; i<_spawnQueue.Count(); i++)
+        // {
+        //     Debug.Log($"Wave : {i} --- Count: {_spawnQueue.Get(i).Count()}");
+        //     string waveData = "";
+        //     for(int j=0; j<_spawnQueue.Get(i).Count(); j++)
+        //     {
+        //         waveData = waveData + " - " + _spawnQueue.Get(i).Get(j).ToString();
+        //     }
+        //     Debug.Log(waveData);
+        // }
     }
-
-    public void PrepareWave(int waveNumber)
+    
+    public void PrepareWave(int waveIndex)
     {
-        // Generate wave
-        // preload enemy prefabs
-        Debug.Log($"Prepare mode for a wave {waveNumber} started");
-        Debug.Log($"Wave {waveNumber} generated");
-        EnemyQueue enemyQueue = _spawnQueue.Get(waveNumber);
-        
-        for (int i = 0; i < enemyQueue.Count(); i++)
-        {
-            Debug.Log($"Wave: Enemy {enemyQueue.Get(i)} found");
-        }
-        
-        _enemySpawner.PrepareWave(enemyQueue, _enemies);
-        _enemyAttacker.PrepareWave(enemyQueue.AggressionLevel, _enemies);
+        _currentWaveEnemyQueue = _spawnQueue.Get(waveIndex);
+        Debug.Log($"WaveEnemyDirector: Preparing Wave {waveIndex}");
+        _enemySpawner.PrepareWave(_currentWaveEnemyQueue);
         
     }
-
+    
     public void StartWave()
     {
         _enemySpawner.StartWave();
-        _enemyAttacker.StartWave();
     }
-    
-    private void Update()
-    {
-        foreach (var tickable in _tickables)
-        {
-            tickable.Tick(Time.deltaTime);
-        }
-        
-        // Do Lamp Attack TODO: replace with external call
-        if (Input.GetMouseButtonDown(0))
-        {
-            if (_damageables.Count != 0)
-            {
-                foreach (var damageable in _damageables)
-                {
-                    if (damageable.IsReadyForDamage)
-                    {
-                        damageable.ReceiveDamage(1);
-                    }
-                }
-                
-                _damageables.Clear();
-            }
-        }
-    }
+   
 }

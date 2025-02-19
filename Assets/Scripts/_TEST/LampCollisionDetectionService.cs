@@ -13,7 +13,9 @@ public class LampCollisionDetectionService : MonoBehaviour, IInitializable
     private Vector2 _position;
     private float _collisionThreshold = 0.0001f; // TODO: control from the config
     private float _combinedCollisionRadius;
-
+    
+    // TODO: add event for enemy collision
+    
     public void Initialize()
     {
         _combinedCollisionRadius = _collisionRadius + _collisionThreshold;
