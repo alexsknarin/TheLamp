@@ -219,6 +219,8 @@ public class GameRootContext : MonoBehaviour
     {
         // _enemyController.Construct(_gameConfigService, _lampPositionProviderService);
         _enemySpawner = new FEnemySpawner(_enemyPool);
+        _enemySpawner.Initialize();
+        _disposables.Add(_enemySpawner);
         _waveEnemyDirector.Construct(_gameConfigService, _enemySpawner);
         _lampMovementController.Initialize();
         _lampHealthBarController.Initialize();

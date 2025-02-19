@@ -7,6 +7,8 @@ public class WaveEnemyDirector : MonoBehaviour, IInitializable
     private SpawnQueueGenerator _spawnQueueGenerator;
     private SpawnQueue _spawnQueue;
     private EnemyQueue _currentWaveEnemyQueue;
+    private List<ITickable> _tickables = new();
+    private List<FEnemy> _enemies = new ();
     
     // Dependencies
     private IGameConfigService _gameConfigService;
@@ -23,6 +25,8 @@ public class WaveEnemyDirector : MonoBehaviour, IInitializable
         Debug.Log("WaveEnemyDirector: Initializing");
         _spawnQueueGenerator = new SpawnQueueGenerator(_gameConfigService.SpawnQueueConfig.Data);
         _spawnQueue = _spawnQueueGenerator.Generate();
+        
+        _tickables.Add(_enemySpawner);
         
         // Debug Spawn Queue
         // Debug.Log("++++ ----- Spawn Queue Generated:");
@@ -42,13 +46,23 @@ public class WaveEnemyDirector : MonoBehaviour, IInitializable
     {
         _currentWaveEnemyQueue = _spawnQueue.Get(waveIndex);
         Debug.Log($"WaveEnemyDirector: Preparing Wave {waveIndex}");
-        _enemySpawner.PrepareWave(_currentWaveEnemyQueue);
+        _enemySpawner.PrepareWave(_currentWaveEnemyQueue, _enemies);
+        
+        // TODO: wave prepared switch on ????
         
     }
     
     public void StartWave()
     {
         _enemySpawner.StartWave();
+        enabled = true; // TODO: disable when on the wave end
     }
-   
+
+    private void Update()
+    {
+        foreach (var tickable in _tickables)
+        {
+            tickable.Tick(Time.deltaTime);
+        }
+    }
 }
