@@ -16,6 +16,7 @@ public class FEnemyAttacker: ITickable
     private bool _isWaveActive = false;
     private float _localTime;
     private bool _isCooldownActive = false;
+    
 
     private List<FEnemy> _enemies;
     private List<CollidableEnemy> _enemiesReadyToAttack = new ();
@@ -62,6 +63,8 @@ public class FEnemyAttacker: ITickable
         Debug.Log("Cooldown unblocked");
         _isCooldownActive = true;
     }
+    
+
     
     public void Tick(float deltaTime)
     {

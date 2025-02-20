@@ -19,6 +19,8 @@ public class LampStickyDetectionService : MonoBehaviour, IInitializable
     
     public event Action AttackBlocked;
     public event Action AttackUnblocked;
+    public event Action<IStickableWithLamp> EnemySticked;
+    public event Action<IStickableWithLamp> EnemyUnSticked;
     
     public void Initialize()
     {
@@ -61,6 +63,7 @@ public class LampStickyDetectionService : MonoBehaviour, IInitializable
             foreach (var stickable in _stickablesToRemove)
             {
                 RemoveStickable(stickable);
+                EnemyUnSticked?.Invoke(stickable);
             }
             _stickablesToRemove.Clear();
             
@@ -101,6 +104,7 @@ public class LampStickyDetectionService : MonoBehaviour, IInitializable
             if (stickable.StickState == StickableState.InAttackZone &&  distance < _combinedStickRadius + stickable.Radius)
             {
                 stickable.HandleStick(transform);
+                EnemySticked?.Invoke(stickable);
             }
             
             // Exiting Stick Zone

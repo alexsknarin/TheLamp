@@ -8,8 +8,10 @@ public class WaveEnemyDirector : MonoBehaviour, IInitializable
     private SpawnQueue _spawnQueue;
     private EnemyQueue _currentWaveEnemyQueue;
     private List<FEnemy> _enemies = new ();
+    private List<IStickableWithLamp> _stickedEnemies = new ();
     private int _enemiesKilledCount = 0;
     private FLampAttacker _lampAttacker;
+    [SerializeField] private bool _lampBlocked = false;
     
     
     // Dependencies
@@ -42,8 +44,11 @@ public class WaveEnemyDirector : MonoBehaviour, IInitializable
         
         _lampStickyDetectionService.AttackBlocked += _enemyAttacker.BlockAttackCooldown;
         _lampStickyDetectionService.AttackUnblocked += _enemyAttacker.UnblockAttackCooldown;
+        _lampStickyDetectionService.EnemySticked += OnEnemySticked;
+        _lampStickyDetectionService.EnemyUnSticked += OnEnemyUnSticked;
         _enemySpawner.EnemySpawned += OnEnemySpawned;
         _enemySpawner.EnemyReleased += OnEnemyDead;
+        
         
         // Debug Spawn Queue
         // Debug.Log("++++ ----- Spawn Queue Generated:");
@@ -63,8 +68,36 @@ public class WaveEnemyDirector : MonoBehaviour, IInitializable
     {
         _lampStickyDetectionService.AttackBlocked -= _enemyAttacker.BlockAttackCooldown;
         _lampStickyDetectionService.AttackUnblocked -= _enemyAttacker.UnblockAttackCooldown;
+        _lampStickyDetectionService.EnemySticked -= OnEnemySticked;
+        _lampStickyDetectionService.EnemyUnSticked -= OnEnemyUnSticked;
         _enemySpawner.EnemySpawned -= OnEnemySpawned;
         _enemySpawner.EnemyReleased -= OnEnemyDead;
+    }
+
+    private void OnEnemySticked(IStickableWithLamp enemy)
+    {
+        if (!_stickedEnemies.Contains(enemy))
+        {
+            _stickedEnemies.Add(enemy);
+            if (!_lampBlocked)
+            {
+                _lampBlocked = true;
+                _lampAttacker.SetBlockedMode();
+            }
+        }
+    }
+
+    private void OnEnemyUnSticked(IStickableWithLamp enemy)
+    {
+        if (_stickedEnemies.Contains(enemy))
+        {
+            _stickedEnemies.Remove(enemy);
+        }
+        if (_stickedEnemies.Count == 0)
+        {
+            _lampBlocked = false;
+            _lampAttacker.SetUnBlockedMode();
+        }
     }
 
     public void PrepareWave(int waveIndex)
@@ -73,6 +106,8 @@ public class WaveEnemyDirector : MonoBehaviour, IInitializable
         Debug.Log($"WaveEnemyDirector: Preparing Wave {waveIndex}");
         _enemySpawner.PrepareWave(_currentWaveEnemyQueue, _enemies);
         _enemyAttacker.PrepareWave(_currentWaveEnemyQueue.AggressionLevel, _enemies);
+        _stickedEnemies.Clear();
+        _lampAttacker.SetUnBlockedMode();
         
         // TODO: wave prepared switch on ????
         
@@ -80,6 +115,7 @@ public class WaveEnemyDirector : MonoBehaviour, IInitializable
 
     public void StartWave()
     {
+        _lampBlocked = false;
         _enemiesKilledCount = 0;
         _enemySpawner.StartWave();
         _enemyAttacker.StartWave();
