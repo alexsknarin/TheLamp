@@ -171,7 +171,7 @@ public class GameRootContext : MonoBehaviour
 
     private void HandlersSetup()
     {
-        _playerAttackHandler = new PlayerAttackHandler(_coroutineHost); // TODO: redo
+        _playerAttackHandler = new PlayerAttackHandler(_coroutineHost);
         _tickables.Add(_playerAttackHandler);
         _scoresCollectionHandler = new ScoresCollectionHandler(_gameConfigService);
         _scoresCollectionHandler.Initialize();
@@ -234,6 +234,7 @@ public class GameRootContext : MonoBehaviour
             _gameStateProviderService, 
             _gameConfigService, 
             _waveEnemyDirector,
+            _playerAttackHandler,
             _lampMovementController,
             _scoresCollectionHandler);
     }
