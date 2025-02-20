@@ -90,6 +90,7 @@ public class FEnemySpawner: ITickable, IDisposable
                 var enemy = SpawnRegularEnemy(_enemyQueue.Get(_currentEnemyIndex));
                 _activeEnemies.Add(enemy);
                 EnemySpawned?.Invoke(enemy);
+                // TODO: perhaps need to update enemies count from the outside and remove the reference to _enemies list
                 
                 _currentEnemyIndex++;
             }

@@ -8,6 +8,7 @@ public class WaveEnemyDirector : MonoBehaviour, IInitializable
     private SpawnQueue _spawnQueue;
     private EnemyQueue _currentWaveEnemyQueue;
     private List<FEnemy> _enemies = new ();
+    private FLampAttacker _lampAttacker;
     
     // Dependencies
     private IGameConfigService _gameConfigService;
@@ -33,6 +34,7 @@ public class WaveEnemyDirector : MonoBehaviour, IInitializable
         Debug.Log("WaveEnemyDirector: Initializing");
         _spawnQueueGenerator = new SpawnQueueGenerator(_gameConfigService.SpawnQueueConfig.Data);
         _spawnQueue = _spawnQueueGenerator.Generate();
+        _lampAttacker = new FLampAttacker();
         
         _lampStickyDetectionService.AttackBlocked += _enemyAttacker.BlockAttackCooldown;
         _lampStickyDetectionService.AttackUnblocked += _enemyAttacker.UnblockAttackCooldown;
@@ -59,14 +61,6 @@ public class WaveEnemyDirector : MonoBehaviour, IInitializable
         _enemySpawner.EnemySpawned -= OnEnemySpawned;
     }
 
-    private void OnEnemySpawned(FEnemy enemy)
-    {
-        if (enemy is IStickableWithLamp)
-        {
-            _lampStickyDetectionService.AddStickable((IStickableWithLamp)enemy);
-        }
-    }
-
     public void PrepareWave(int waveIndex)
     {
         _currentWaveEnemyQueue = _spawnQueue.Get(waveIndex);
@@ -77,15 +71,28 @@ public class WaveEnemyDirector : MonoBehaviour, IInitializable
         // TODO: wave prepared switch on ????
         
     }
-    
+
     public void StartWave()
     {
         _enemySpawner.StartWave();
         _enemyAttacker.StartWave();
     }
-    
+
     public void StopWave()
     {
         _enemyAttacker.StopWave();
+    }
+
+    public void HandleAttackButtonClicked(float power)
+    {
+        _lampAttacker.Attack(power, _enemies);
+    }
+
+    private void OnEnemySpawned(FEnemy enemy)
+    {
+        if (enemy is IStickableWithLamp)
+        {
+            _lampStickyDetectionService.AddStickable((IStickableWithLamp)enemy);
+        }
     }
 }

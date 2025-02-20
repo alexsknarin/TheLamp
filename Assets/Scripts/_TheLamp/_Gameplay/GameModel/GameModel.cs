@@ -294,7 +294,7 @@ public class GameModel : IDisposable, ILampDeadEventProviderService
                 _playerAttackHandler.PlayAttack();
                 LampAttackStarted?.Invoke(CurrentPower);
                 // _playerEnemyInteractionHandler.LampAttack(); TODO:
-                // _enemyController.HandleAttackButtonClicked(CurrentPower); TODO:
+                _waveEnemyDirector.HandleAttackButtonClicked(CurrentPower);
             }
         }
     }
