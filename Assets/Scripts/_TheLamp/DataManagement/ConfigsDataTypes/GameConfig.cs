@@ -11,6 +11,8 @@ public class GameConfig : ScriptableObject
     [field:Header("Firefly Explosion Settings")]
     [field:SerializeField] public float FireflyExplosionRadius { get; private set; } = 0.8f;
     [field:SerializeField] public float FireflyExplosionDuration { get; private set; } = 0.22f;
+    [field:Header("Enemy Wave Settings")]
+    [field:SerializeField] public float MaxAggressionLevel { get; private set; } = 6f;
     [field:Header("Game Stages Settings")]
     [field:SerializeField] public bool IntroStageSkip { get; private set; } = false;
     [field:SerializeField] public float IntroStageDuration { get; private set; } = 2f;

@@ -7,17 +7,25 @@ public class WaveEnemyDirector : MonoBehaviour, IInitializable
     private SpawnQueueGenerator _spawnQueueGenerator;
     private SpawnQueue _spawnQueue;
     private EnemyQueue _currentWaveEnemyQueue;
-    private List<ITickable> _tickables = new();
     private List<FEnemy> _enemies = new ();
     
     // Dependencies
     private IGameConfigService _gameConfigService;
     private FEnemySpawner _enemySpawner;
+    private FEnemyAttacker _enemyAttacker;
+    private LampStickyDetectionService _lampStickyDetectionService;
     
-    public void Construct(IGameConfigService gameConfigService, FEnemySpawner enemySpawner)
+    public void Construct(
+        IGameConfigService gameConfigService, 
+        FEnemySpawner enemySpawner,
+        FEnemyAttacker enemyAttacker,
+        LampStickyDetectionService lampStickyDetectionService
+        )
     {
         _gameConfigService = gameConfigService;
         _enemySpawner = enemySpawner;
+        _enemyAttacker = enemyAttacker;
+        _lampStickyDetectionService = lampStickyDetectionService;
     }
     
     public void Initialize()
@@ -26,7 +34,9 @@ public class WaveEnemyDirector : MonoBehaviour, IInitializable
         _spawnQueueGenerator = new SpawnQueueGenerator(_gameConfigService.SpawnQueueConfig.Data);
         _spawnQueue = _spawnQueueGenerator.Generate();
         
-        _tickables.Add(_enemySpawner);
+        _lampStickyDetectionService.AttackBlocked += _enemyAttacker.BlockAttackCooldown;
+        _lampStickyDetectionService.AttackUnblocked += _enemyAttacker.UnblockAttackCooldown;
+        _enemySpawner.EnemySpawned += OnEnemySpawned;
         
         // Debug Spawn Queue
         // Debug.Log("++++ ----- Spawn Queue Generated:");
@@ -41,12 +51,28 @@ public class WaveEnemyDirector : MonoBehaviour, IInitializable
         //     Debug.Log(waveData);
         // }
     }
-    
+
+    private void OnDestroy()
+    {
+        _lampStickyDetectionService.AttackBlocked -= _enemyAttacker.BlockAttackCooldown;
+        _lampStickyDetectionService.AttackUnblocked -= _enemyAttacker.UnblockAttackCooldown;
+        _enemySpawner.EnemySpawned -= OnEnemySpawned;
+    }
+
+    private void OnEnemySpawned(FEnemy enemy)
+    {
+        if (enemy is IStickableWithLamp)
+        {
+            _lampStickyDetectionService.AddStickable((IStickableWithLamp)enemy);
+        }
+    }
+
     public void PrepareWave(int waveIndex)
     {
         _currentWaveEnemyQueue = _spawnQueue.Get(waveIndex);
         Debug.Log($"WaveEnemyDirector: Preparing Wave {waveIndex}");
         _enemySpawner.PrepareWave(_currentWaveEnemyQueue, _enemies);
+        _enemyAttacker.PrepareWave(_currentWaveEnemyQueue.AggressionLevel, _enemies);
         
         // TODO: wave prepared switch on ????
         
@@ -55,14 +81,11 @@ public class WaveEnemyDirector : MonoBehaviour, IInitializable
     public void StartWave()
     {
         _enemySpawner.StartWave();
-        enabled = true; // TODO: disable when on the wave end
+        _enemyAttacker.StartWave();
     }
-
-    private void Update()
+    
+    public void StopWave()
     {
-        foreach (var tickable in _tickables)
-        {
-            tickable.Tick(Time.deltaTime);
-        }
+        _enemyAttacker.StopWave();
     }
 }

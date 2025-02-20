@@ -25,6 +25,8 @@ public class GameRootContext : MonoBehaviour
     [Header("Services")]
     [SerializeField] private CameraShakeService _cameraShakeService;
     [SerializeField] private LampPositionProviderService _lampPositionProviderService;
+    [SerializeField] private LampCollisionDetectionService _lampCollisionDetectionService;
+    [SerializeField] private LampStickyDetectionService _lampStickyDetectionService;
     [Header("Controllers")]
     [SerializeField] private LampHealthBarController _lampHealthBarController;
     [SerializeField] private EnemyController _enemyController;                          // TODO: remove
@@ -84,6 +86,7 @@ public class GameRootContext : MonoBehaviour
     
     private FEnemyPool _enemyPool;
     private FEnemySpawner _enemySpawner;
+    private FEnemyAttacker _enemyAttacker;
     
     private List<IDisposable> _disposables = new();
     private List<ITickable> _tickables = new();
@@ -167,6 +170,9 @@ public class GameRootContext : MonoBehaviour
         // Advertisement
         _advertisementService = new FakeAdService(_fakeAd);
         _advertisementService.Initialize();
+        
+        // Lamp 
+        _lampCollisionDetectionService.Initialize();
     }
 
     private void HandlersSetup()
@@ -220,8 +226,17 @@ public class GameRootContext : MonoBehaviour
         // _enemyController.Construct(_gameConfigService, _lampPositionProviderService);
         _enemySpawner = new FEnemySpawner(_enemyPool);
         _enemySpawner.Initialize();
+        _tickables.Add(_enemySpawner);
         _disposables.Add(_enemySpawner);
-        _waveEnemyDirector.Construct(_gameConfigService, _enemySpawner);
+        
+        _enemyAttacker = new FEnemyAttacker(
+            _gameConfigProvider.GameConfig.MaxAggressionLevel, 
+            _lampCollisionDetectionService
+            );
+        _tickables.Add(_enemyAttacker);
+        _lampStickyDetectionService.Initialize();
+        
+        _waveEnemyDirector.Construct(_gameConfigService, _enemySpawner, _enemyAttacker, _lampStickyDetectionService);
         _lampMovementController.Initialize();
         _lampHealthBarController.Initialize();
         _lampEmissionController.Initialize();

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -19,6 +20,8 @@ public class FEnemySpawner: ITickable, IDisposable
     {
         _enemyPool = enemyPool;
     }
+    
+    public event Action<FEnemy> EnemySpawned;
 
     public void Initialize()
     {
@@ -86,6 +89,7 @@ public class FEnemySpawner: ITickable, IDisposable
                 // Potential boss spawn here
                 var enemy = SpawnRegularEnemy(_enemyQueue.Get(_currentEnemyIndex));
                 _activeEnemies.Add(enemy);
+                EnemySpawned?.Invoke(enemy);
                 
                 _currentEnemyIndex++;
             }

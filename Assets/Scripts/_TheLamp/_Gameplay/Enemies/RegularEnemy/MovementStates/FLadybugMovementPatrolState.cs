@@ -87,7 +87,6 @@ public abstract class FLadybugMovementPatrolState: RegularEnemyMovementStateBase
         if((Position2D - _lampPositionProviderService.GetLampPosition()).magnitude < _preAttackTriggerDistance 
            && Position2D.y < _preAttackTriggerYThreshold)
         {
-            Debug.Log("PreAttack Ready");
             IsReadyToSwitch = true;
         }
     }

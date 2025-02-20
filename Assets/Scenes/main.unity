@@ -6037,6 +6037,8 @@ MonoBehaviour:
   _playerGameplayViewUI: {fileID: 1291610362}
   _cameraShakeService: {fileID: 330585549}
   _lampPositionProviderService: {fileID: 1934066263}
+  _lampCollisionDetectionService: {fileID: 1934066264}
+  _lampStickyDetectionService: {fileID: 1934066265}
   _lampHealthBarController: {fileID: 969163320}
   _enemyController: {fileID: 2110688078}
   _waveEnemyDirector: {fileID: 2110688079}

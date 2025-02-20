@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -16,8 +17,9 @@ public class LampStickyDetectionService : MonoBehaviour, IInitializable
     private float _combinedStickRadius;
     private int _attackBlockerCount = 0;
     
-    public bool BlockedAttacks => _blockedAttacks;
-
+    public event Action AttackBlocked;
+    public event Action AttackUnblocked;
+    
     public void Initialize()
     {
         _combinedStickRadius = _stickyRadius + _collisionThreshold;
@@ -122,10 +124,21 @@ public class LampStickyDetectionService : MonoBehaviour, IInitializable
         }
         
         // Block Attacks
-        _blockedAttacks = false;
         if (_attackBlockerCount > 0)
         {
-            _blockedAttacks = true;
+            if (!_blockedAttacks)
+            {
+                _blockedAttacks = true;
+                AttackBlocked?.Invoke();
+            }
+        }
+        else
+        {
+            if (_blockedAttacks)
+            {
+                _blockedAttacks = false;
+                AttackUnblocked?.Invoke();
+            }
         }
     }
     
