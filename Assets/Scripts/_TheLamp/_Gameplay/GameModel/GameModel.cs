@@ -47,7 +47,7 @@ public class GameModel : IDisposable, ILampDeadEventProviderService
         _scoresCollectionHandler = scoresCollectionHandler;
         
         // Subscriptions
-        // _enemyController.WaveEnded += OnWaveEnded;
+        _waveEnemyDirector.WaveEnded += OnWaveEnded;
         _playerAttackHandler.PlayerAttackEnded += OnPlayerAttackEnded;
         _playerAttackHandler.PowerChanged += OnPowerChanged;
         // _playerEnemyInteractionHandler.LampBlockedStarted += OnLampBlockedStarted;
@@ -58,7 +58,7 @@ public class GameModel : IDisposable, ILampDeadEventProviderService
     
     public void Dispose()
     {
-        // _enemyController.WaveEnded -= OnWaveEnded;
+        _waveEnemyDirector.WaveEnded -= OnWaveEnded;
         _playerAttackHandler.PlayerAttackEnded -= OnPlayerAttackEnded;
         _playerAttackHandler.PowerChanged -= OnPowerChanged;
         // _playerEnemyInteractionHandler.LampBlockedStarted -= OnLampBlockedStarted;

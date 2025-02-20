@@ -22,17 +22,21 @@ public class FEnemySpawner: ITickable, IDisposable
     }
     
     public event Action<FEnemy> EnemySpawned;
+    public event Action<FEnemy> EnemyReleased;
 
     public void Initialize()
     {
+        _enemyPool.EnemyReleased += OnEnemyReleased;
     }
 
     public void Dispose()
     {
+        _enemyPool.EnemyReleased -= OnEnemyReleased;
     }
 
     private void OnEnemyReleased(FEnemy enemy)
     {
+        EnemyReleased?.Invoke(enemy);
     }
 
     public void PrepareWave(EnemyQueue enemyQueue, List<FEnemy> enemies)

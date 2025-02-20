@@ -8,7 +8,9 @@ public class WaveEnemyDirector : MonoBehaviour, IInitializable
     private SpawnQueue _spawnQueue;
     private EnemyQueue _currentWaveEnemyQueue;
     private List<FEnemy> _enemies = new ();
+    private int _enemiesKilledCount = 0;
     private FLampAttacker _lampAttacker;
+    
     
     // Dependencies
     private IGameConfigService _gameConfigService;
@@ -29,6 +31,8 @@ public class WaveEnemyDirector : MonoBehaviour, IInitializable
         _lampStickyDetectionService = lampStickyDetectionService;
     }
     
+    public event Action WaveEnded;
+    
     public void Initialize()
     {
         Debug.Log("WaveEnemyDirector: Initializing");
@@ -39,6 +43,7 @@ public class WaveEnemyDirector : MonoBehaviour, IInitializable
         _lampStickyDetectionService.AttackBlocked += _enemyAttacker.BlockAttackCooldown;
         _lampStickyDetectionService.AttackUnblocked += _enemyAttacker.UnblockAttackCooldown;
         _enemySpawner.EnemySpawned += OnEnemySpawned;
+        _enemySpawner.EnemyReleased += OnEnemyDead;
         
         // Debug Spawn Queue
         // Debug.Log("++++ ----- Spawn Queue Generated:");
@@ -59,6 +64,7 @@ public class WaveEnemyDirector : MonoBehaviour, IInitializable
         _lampStickyDetectionService.AttackBlocked -= _enemyAttacker.BlockAttackCooldown;
         _lampStickyDetectionService.AttackUnblocked -= _enemyAttacker.UnblockAttackCooldown;
         _enemySpawner.EnemySpawned -= OnEnemySpawned;
+        _enemySpawner.EnemyReleased -= OnEnemyDead;
     }
 
     public void PrepareWave(int waveIndex)
@@ -74,6 +80,7 @@ public class WaveEnemyDirector : MonoBehaviour, IInitializable
 
     public void StartWave()
     {
+        _enemiesKilledCount = 0;
         _enemySpawner.StartWave();
         _enemyAttacker.StartWave();
     }
@@ -81,11 +88,30 @@ public class WaveEnemyDirector : MonoBehaviour, IInitializable
     public void StopWave()
     {
         _enemyAttacker.StopWave();
+        WaveEnded?.Invoke();
     }
 
     public void HandleAttackButtonClicked(float power)
     {
         _lampAttacker.Attack(power, _enemies);
+    }
+
+    private void OnEnemyDead(FEnemy enemy)
+    {
+        if (_enemies.Contains(enemy))
+        {
+            _enemies.Remove(enemy);
+            _enemiesKilledCount++;
+
+            if (_enemiesKilledCount == _currentWaveEnemyQueue.Count())
+            {
+                StopWave();
+            }
+        }
+        else
+        {
+            Debug.LogError("WaveEnemyDirector: Enemy not found in list");
+        }    
     }
 
     private void OnEnemySpawned(FEnemy enemy)
