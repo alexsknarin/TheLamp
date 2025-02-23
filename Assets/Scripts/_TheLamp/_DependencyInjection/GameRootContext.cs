@@ -59,7 +59,7 @@ public class GameRootContext : MonoBehaviour
     private UnityAnalyticsService _unityAnalyticsService;
     
     private CameraShakeEventListener _cameraShakeEventListener;
-    private PlayerAttackHandler _playerAttackHandler;
+    private PlayerAttackCooldownHandler _playerAttackCooldownHandler;
     private ScoresCollectionHandler _scoresCollectionHandler;
     private GameModel _gameModel;
     private GameSettingsModel _gameSettingsModel;
@@ -177,8 +177,8 @@ public class GameRootContext : MonoBehaviour
 
     private void HandlersSetup()
     {
-        _playerAttackHandler = new PlayerAttackHandler(_coroutineHost);
-        _tickables.Add(_playerAttackHandler);
+        _playerAttackCooldownHandler = new PlayerAttackCooldownHandler(_coroutineHost);
+        _tickables.Add(_playerAttackCooldownHandler);
         _scoresCollectionHandler = new ScoresCollectionHandler(_gameConfigService);
         _scoresCollectionHandler.Initialize();
         _disposables.Add(_scoresCollectionHandler);
@@ -249,7 +249,7 @@ public class GameRootContext : MonoBehaviour
             _gameStateProviderService, 
             _gameConfigService, 
             _waveEnemyDirector,
-            _playerAttackHandler,
+            _playerAttackCooldownHandler,
             _lampMovementController,
             _scoresCollectionHandler);
     }

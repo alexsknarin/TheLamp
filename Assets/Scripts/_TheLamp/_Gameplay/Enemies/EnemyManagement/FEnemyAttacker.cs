@@ -18,7 +18,7 @@ public class FEnemyAttacker: ITickable
     private bool _isCooldownActive = false;
     
 
-    private List<FEnemy> _enemies;
+    private List<FEnemy> _enemies; // TODO: find a way to remove this dependency and to not keep the list of enemies
     private List<CollidableEnemy> _enemiesReadyToAttack = new ();
 
     public FEnemyAttacker(float maxAggressionLevel, LampCollisionDetectionService lampCollisionDetectionService)
@@ -77,6 +77,9 @@ public class FEnemyAttacker: ITickable
     
     private void UpdateEnemiesReadyToAttack()
     {
+        // TODO: this method is the only reason to keep the list of enemies
+        // Need to find out how to update ready to attack without keeping the list ????
+        
         _enemiesReadyToAttack.Clear();
        
         foreach (var enemy in _enemies)
@@ -136,7 +139,7 @@ public class FEnemyAttacker: ITickable
         // }
        
         // TODO: add tp damageables
-        _lampCollisionDetectionService.AddCollidable(attackingEnemy);
+        _lampCollisionDetectionService.AddCollidable(attackingEnemy); // Replace with event and remove dependency on LampCollisionDetectionService
         attackingEnemy.Attack();
         
         _localTime = 0;

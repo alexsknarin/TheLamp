@@ -6,7 +6,9 @@ public class FEnemySpawner: ITickable, IDisposable
 {
     private EnemyQueue _enemyQueue;
     private float _firstEnemySpawnDelay = 0.5f; // TODO: move to config
-    private List<FEnemy> _activeEnemies;
+    // TODO: find a way to make it work without a need to keep the enemy list
+    // spawner should spawn enemies and raise event with enemy 
+    private List<FEnemy> _activeEnemies; 
 
     private int _currentEnemyIndex;
     private float _spawnCooldown;
@@ -14,7 +16,7 @@ public class FEnemySpawner: ITickable, IDisposable
     private bool _isWaveActive = false;
     
     // Dependencies
-    private readonly FEnemyPool _enemyPool;
+    private readonly FEnemyPool _enemyPool; 
     
     public FEnemySpawner(FEnemyPool enemyPool)
     {

@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-public class PlayerAttackHandler : ITickable
+public class PlayerAttackCooldownHandler : ITickable
 {
     private float _power;
     private WaitForSeconds _attackEndWaitDuraiton;
@@ -12,7 +12,7 @@ public class PlayerAttackHandler : ITickable
     // Dependencies
     private MonoBehaviour _coroutineHost; 
     
-    public PlayerAttackHandler(MonoBehaviour monoBehaviour)
+    public PlayerAttackCooldownHandler(MonoBehaviour monoBehaviour)
     {
         _coroutineHost = monoBehaviour;
     }
