@@ -31,7 +31,6 @@ public class GameModel : IDisposable, ILampDeadEventProviderService
         // EnemyController enemyController, 
         PlayerAttackCooldownHandler playerAttackCooldownHandler,
         PlayerEnemyInteractionMediator playerEnemyInteractionMediator,
-        // PlayerCollidersPropertyController playerCollidersPropertyController,
         // PlayerEnemyInteractionHandler playerEnemyInteractionHandler,
         LampMovementController lampMovementController,
         ScoresCollectionHandler scoresCollectionHandler)
@@ -50,35 +49,33 @@ public class GameModel : IDisposable, ILampDeadEventProviderService
         
         // Subscriptions
         _waveEnemyDirector.WaveEnded += OnWaveEnded;
-        _waveEnemyDirector.AttackBlocked += OnAttackBlocked;
-        _waveEnemyDirector.AttackUnblocked += OnAttackUnblocked;
         _playerAttackCooldownHandler.PlayerAttackEnded += OnPlayerAttackCooldownEnded;
         _playerAttackCooldownHandler.PowerChanged += OnPowerChanged;
         
         _playerEnemyInteractionMediator.EnemyAttackEnded += OnEnemyAttackEnded;
         _playerEnemyInteractionMediator.EnemySticked += OnEnemySticked;
         _playerEnemyInteractionMediator.EnemyUnSticked += OnEnemyUnSticked;
+        _waveEnemyDirector.LampBlocked += OnLampBlocked;
+        _waveEnemyDirector.LampUnblocked += OnLampUnblocked;
         
         _scoresCollectionHandler.ScoreChanged += OnScoreChanged;
     }
 
-    
-
     public void Dispose()
     {
         _waveEnemyDirector.WaveEnded -= OnWaveEnded;
-        _waveEnemyDirector.AttackBlocked -= OnAttackBlocked;
-        _waveEnemyDirector.AttackUnblocked -= OnAttackUnblocked;
         _playerAttackCooldownHandler.PlayerAttackEnded -= OnPlayerAttackCooldownEnded;
         _playerAttackCooldownHandler.PowerChanged -= OnPowerChanged;
         
         _playerEnemyInteractionMediator.EnemyAttackEnded -= OnEnemyAttackEnded;
         _playerEnemyInteractionMediator.EnemySticked -= OnEnemySticked;
         _playerEnemyInteractionMediator.EnemyUnSticked -= OnEnemyUnSticked;
+        _waveEnemyDirector.LampBlocked -= OnLampBlocked;
+        _waveEnemyDirector.LampUnblocked -= OnLampUnblocked;
 
         _scoresCollectionHandler.ScoreChanged -= OnScoreChanged;
     }
-    
+
     // Events
     public event Action GameStarted;
     public event Action<GameState> GameStateChanged;
@@ -248,9 +245,10 @@ public class GameModel : IDisposable, ILampDeadEventProviderService
 
     private void StartGameOver()
     {
+        _waveEnemyDirector.HandleLampDestroyed();
+        
         CurrentGameStageState = GameStageState.GameOverIn;
-        // _playerAttackHandler.StopCooldown();
-        // _enemyController.HandleGameOver();
+        _playerAttackCooldownHandler.StopCooldown();
     }
 
     // Game State change Passive methods
@@ -472,16 +470,6 @@ public class GameModel : IDisposable, ILampDeadEventProviderService
         CurrentPower = power;
     }
     
-    private void OnAttackBlocked()
-    {
-        IsLampBlocked = true;
-    }
-    
-    private void OnAttackUnblocked()
-    {
-        IsLampBlocked = false;
-    }
-    
     private void OnEnemySticked(IStickableWithLamp stickable)
     {
         _lampMovementController.AddForce(-stickable.ProvideImpactPoint().normalized.x * 2);
@@ -489,8 +477,17 @@ public class GameModel : IDisposable, ILampDeadEventProviderService
     
     private void OnEnemyUnSticked(IStickableWithLamp stickable)
     {
-        // TODO: checj if it is the the last stickable - Maybe a coroutine to wait 1 frame
         _lampMovementController.AddForce(-stickable.ProvideImpactPoint().normalized.x * 2);
+    }
+    
+    private void OnLampBlocked()
+    {
+        IsLampBlocked = true;
+    }
+    
+    private void OnLampUnblocked()
+    {
+        IsLampBlocked = false;
     }
 
     private void OnEnemyAttackEnded(Vector3 impactPoint, bool isEnemyDamaged, string enemyTypeName)
@@ -504,7 +501,6 @@ public class GameModel : IDisposable, ILampDeadEventProviderService
             {
                 LastEnemyPosition = impactPoint;
                 _lampMovementController.AddForce(-LastEnemyPosition.normalized.x * 2);
-                // _enemyController.HandleLampDestroyed();                      // TODO: reimplement with WaveEnemyDirector - Make All Stickables fall
                 LampDestroyed?.Invoke();
                 StartGameOver();
                 Debug.Log("++++++++++ Game Over ++++++++++");

@@ -32,7 +32,7 @@ public class FLadybugMovement : FEnemyMovementBase, IPositionDirectionProvider
     private FLadybugMovementPreAttackStateL _preAttackStateL;
     private FLadybugMovementAttackState _attackState;
     private FLadybugMovementStickState _stickState;
-    private FLadybugMovementDeathState _deathState;
+    private FLadybugMovementDeathFallState _deathFallState;
     private FFlyGenericMovementSpreadState _spreadState;
     
     public void Construct(
@@ -58,14 +58,14 @@ public class FLadybugMovement : FEnemyMovementBase, IPositionDirectionProvider
         _preAttackStateL = (FLadybugMovementPreAttackStateL)_stateFactory.Create(typeof(FLadybugMovementPreAttackStateL));
         _attackState = (FLadybugMovementAttackState)_stateFactory.Create(typeof(FLadybugMovementAttackState));
         _stickState = (FLadybugMovementStickState)_stateFactory.Create(typeof(FLadybugMovementStickState));
-        _deathState = (FLadybugMovementDeathState)_stateFactory.Create(typeof(FLadybugMovementDeathState));
+        _deathFallState = (FLadybugMovementDeathFallState)_stateFactory.Create(typeof(FLadybugMovementDeathFallState));
         _spreadState = (FFlyGenericMovementSpreadState)_stateFactory.Create(typeof(FFlyGenericMovementSpreadState));
         
         _preAttackStateR.Started += OnPreAttackStateStarted;
         _preAttackStateR.Ended += OnPreAttackStateEnded;
         _preAttackStateL.Started += OnPreAttackStateStarted;
         _preAttackStateL.Ended += OnPreAttackStateEnded;
-        _deathState.Ended += OnDeathStateEnded;
+        _deathFallState.Ended += OnDeathFallStateEnded;
         _spreadState.Ended += OnSpreadStateEnded;
         
         At(_patrolStateR, _preAttackStateR, () => _patrolStateR.IsReadyToSwitch);
@@ -85,7 +85,7 @@ public class FLadybugMovement : FEnemyMovementBase, IPositionDirectionProvider
         _preAttackStateR.Ended -= OnPreAttackStateEnded;
         _preAttackStateL.Started -= OnPreAttackStateStarted;
         _preAttackStateL.Ended -= OnPreAttackStateEnded;
-        _deathState.Ended -= OnDeathStateEnded;
+        _deathFallState.Ended -= OnDeathFallStateEnded;
         _spreadState.Ended -= OnSpreadStateEnded;
         transform.parent = null;
     }
@@ -122,24 +122,21 @@ public class FLadybugMovement : FEnemyMovementBase, IPositionDirectionProvider
 
     public override void TriggerFall()
     {
-        throw new System.NotImplementedException();
+        transform.parent = null;
+        SwitchToStateAndApply(_deathFallState);
+        enabled = true;
     }
 
     public override void TriggerDeath()
     {
         transform.parent = null;
-        SwitchToStateAndApply(_deathState);
+        SwitchToStateAndApply(_deathFallState);
         enabled = true;
     }
 
     public override void TriggerSpread()
     {
-        if ((!_currentState.Equals(_preAttackStateR)|| !_currentState.Equals(_preAttackStateL)) 
-            &&!_currentState.Equals(_attackState))
-        {
-            SwitchToStateAndApply(_spreadState);
-        }
-        
+        SwitchToStateAndApply(_spreadState);
     }
 
     private void Update()
@@ -219,7 +216,7 @@ public class FLadybugMovement : FEnemyMovementBase, IPositionDirectionProvider
         PreAttackEnded?.Invoke();
     }
 
-    private void OnDeathStateEnded()
+    private void OnDeathFallStateEnded()
     {
         DeathStateEnded?.Invoke();
     }
@@ -227,7 +224,6 @@ public class FLadybugMovement : FEnemyMovementBase, IPositionDirectionProvider
     private void OnSpreadStateEnded()
     {
         SpreadStateEnded?.Invoke();
-        // TODO: temporary just start again
         Play();
     }
 }

@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class FLadybugMovementDeathState: RegularEnemyMovementStateBase
+public class FLadybugMovementDeathFallState: RegularEnemyMovementStateBase
 {
     private readonly Vector3 _cameraPosition = new Vector3(0, 0, -5.88f);
     IPositionDirectionProvider _positionDirectionProvider;
@@ -16,7 +16,7 @@ public class FLadybugMovementDeathState: RegularEnemyMovementStateBase
     private float _gravityForceMagnitude = .17f;
     private float _dragAmount = 0.9f;
     
-    public FLadybugMovementDeathState(
+    public FLadybugMovementDeathFallState(
         Vector3 cameraPosition,
         IPositionDirectionProvider positionDirectionProvider,
         ILampPositionProviderService lampPositionProviderService

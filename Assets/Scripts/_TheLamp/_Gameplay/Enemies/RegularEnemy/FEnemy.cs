@@ -22,8 +22,9 @@ public abstract class FEnemy: MonoBehaviour, IInitializable, IDamageable, IPoola
     {
         _objectPool = pool;
     }
-    
+
     // Common event handlers 
+
     protected void OnReadyToAttackStateStarted()
     {
         _isInAttackReadyMovementState = true;
@@ -33,8 +34,13 @@ public abstract class FEnemy: MonoBehaviour, IInitializable, IDamageable, IPoola
     {
         _isInAttackReadyMovementState = false;
     }
-    
+
     protected void OnDeathStateEnded()
+    {
+        _objectPool.Release(this);
+    }
+
+    public void ReturnToPool()
     {
         _objectPool.Release(this);
     }

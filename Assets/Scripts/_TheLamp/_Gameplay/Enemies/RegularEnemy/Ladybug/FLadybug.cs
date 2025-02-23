@@ -102,7 +102,7 @@ public class FLadybug : FEnemy, IStickableWithLamp
         Gizmos.DrawWireSphere(transform.position, _collisionRadius);
     }
 
-    
+
     // Handle sticky stuff
     public void HandleEnterAttackZone()
     {
@@ -134,6 +134,18 @@ public class FLadybug : FEnemy, IStickableWithLamp
     public void HandleEnterAttackBlockerZone()
     {
         AttackBlockState = AttackBlockerState.Inside;
+    }
+
+    public void HandleLampDestroyed()
+    {
+        if (IsSticked)
+        {
+            _movement.TriggerFall();    
+        }
+        else
+        {
+            _movement.TriggerSpread();
+        }
     }
 
     public Vector3 ProvideImpactPoint()

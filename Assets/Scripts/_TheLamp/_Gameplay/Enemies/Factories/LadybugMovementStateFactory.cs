@@ -95,9 +95,9 @@ public class LadybugMovementStateFactory
                 _collisionRadius
             );
         }
-        if (stateType == typeof(FLadybugMovementDeathState))
+        if (stateType == typeof(FLadybugMovementDeathFallState))
         {
-            return new FLadybugMovementDeathState(
+            return new FLadybugMovementDeathFallState(
                 _cameraTransform.position,
                 _positionDirectionProvider,
                 _lampPositionProviderService

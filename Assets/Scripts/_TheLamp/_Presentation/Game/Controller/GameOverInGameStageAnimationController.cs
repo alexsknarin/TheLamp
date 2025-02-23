@@ -104,7 +104,7 @@ public class GameOverInGameStageAnimationController : MonoBehaviour
         Vector3 cameraPosition = _cameraTransform.position;
         cameraPosition.z = Mathf.Lerp(_cameraStartZPosition, _cameraEndZPosition, _cameraAnimationCurve.Evaluate(phase));
         _cameraTransform.position = cameraPosition;
-        _colorAdjustments.postExposure.Override(Mathf.Lerp(_startExposure, _endExposure, phase));
+        _colorAdjustments.postExposure.Override(Mathf.Lerp(_startExposure, _endExposure, _cameraAnimationCurve.Evaluate(phase)));
         
         _gameOverText.SetVisibilityLevel(_gameOverTextAnimationCurve.Evaluate(phase));
         

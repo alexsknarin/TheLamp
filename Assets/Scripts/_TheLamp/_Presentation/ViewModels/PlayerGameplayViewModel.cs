@@ -100,6 +100,7 @@ public class PlayerGameplayViewModel : IDisposable
 
     private void OnIsLampBlockedChanged(bool isBlocked)
     {
+        Debug.Log($"Gameplay Viewmodel: IsBlocked Changed: {isBlocked}");
         IsBlocked.Value = isBlocked;
     }
 

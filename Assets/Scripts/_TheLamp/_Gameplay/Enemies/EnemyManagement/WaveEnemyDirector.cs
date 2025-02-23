@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -13,6 +14,8 @@ public class WaveEnemyDirector : MonoBehaviour, IInitializable
     private FLampAttacker _lampAttacker;
     [SerializeField] private bool _lampBlocked = false;
     private FEnemyAttacker _enemyAttacker;
+    private WaitForSeconds _waitAfterGameOver = new (1f);
+    private WaitForSeconds _waitToDeactivateEnemies;
 
     // Dependencies
     private IGameConfigService _gameConfigService;
@@ -30,8 +33,8 @@ public class WaveEnemyDirector : MonoBehaviour, IInitializable
     public event Action WaveEnded;
     public event Action<CollidableEnemy> EnemyAttackStarted;
     public event Action<IStickableWithLamp> StickyEnemySpawned;
-    public event Action AttackBlocked;
-    public event Action AttackUnblocked;
+    public event Action LampBlocked;
+    public event Action LampUnblocked;
     
     public void Initialize()
     {
@@ -40,6 +43,8 @@ public class WaveEnemyDirector : MonoBehaviour, IInitializable
         _spawnQueue = _spawnQueueGenerator.Generate();
         _lampAttacker = new FLampAttacker();
         _enemyAttacker = new FEnemyAttacker(_gameConfigService.GameConfig.MaxAggressionLevel);
+        
+        _waitToDeactivateEnemies = new WaitForSeconds(_gameConfigService.GameConfig.GameoverInStageDuration);
         
         _enemySpawner.EnemySpawned += OnEnemySpawned;
         _enemySpawner.EnemyReturnedToPool += OnEnemyDead;
@@ -101,6 +106,22 @@ public class WaveEnemyDirector : MonoBehaviour, IInitializable
     {
         _lampAttacker.Attack(power, _enemies);
     }
+    
+    public void HandleLampDestroyed()
+    {
+        foreach (var enemy in _enemies)
+        {
+            if (enemy is IStickableWithLamp)
+            {
+                ((IStickableWithLamp)enemy).HandleLampDestroyed();
+            }
+        }
+        _enemyAttacker.StopWave();
+        StartCoroutine(SpreadEnemiesAfterGameOver());
+        StartCoroutine(DeactivateEnemiesAfterGameOver());
+        
+        enabled = false;
+    }
 
     // Calls from PlayerEnemyInteractionMediator
     public void BlockAttackCooldown()
@@ -121,6 +142,7 @@ public class WaveEnemyDirector : MonoBehaviour, IInitializable
             if (!_lampBlocked)
             {
                 _lampBlocked = true;
+                LampBlocked?.Invoke();
                 _lampAttacker.SetBlockedMode();
             }
         }
@@ -136,26 +158,71 @@ public class WaveEnemyDirector : MonoBehaviour, IInitializable
         {
             _lampBlocked = false;
             _lampAttacker.SetUnBlockedMode();
+            LampUnblocked?.Invoke();
         }
     }
     //
 
+
+    private IEnumerator SpreadEnemiesAfterGameOver()
+    {
+        yield return _waitAfterGameOver;
+        SpreadEnemies();
+    }
+    
+    private void SpreadEnemies()
+    {
+        foreach (var enemy in _enemies)
+        {
+            enemy.Spread();
+        }
+    }
+    
+    private IEnumerator DeactivateEnemiesAfterGameOver()
+    {
+        yield return _waitToDeactivateEnemies;
+        ReturnAllActiveEnemiesToPool();
+    }
+    
+    private void ReturnAllActiveEnemiesToPool()
+    {
+        Debug.Log("Return all enemies to pool CALLED");
+        // Enemies
+        if (_enemies.Count > 0)
+        {
+            foreach (var enemy in _enemies)
+            {
+                enemy.ReturnToPool();
+            }            
+        }
+        
+        // Bosses
+        // if (_enemyAttacker.IsBossActive)
+        // {
+        //     _enemySpawner.Boss.Reset();
+        // }
+    }
+
     private void OnEnemyDead(FEnemy enemy)
     {
-        if (_enemies.Contains(enemy))
+        // TODO: find better way to return enemies to pool that will work better with gameover one
+        if (enabled)
         {
-            _enemies.Remove(enemy);
-            _enemiesKilledCount++;
-
-            if (_enemiesKilledCount == _currentWaveEnemyQueue.Count())
+            if (_enemies.Contains(enemy))
             {
-                StopWave();
+                _enemies.Remove(enemy);
+                _enemiesKilledCount++;
+
+                if (_enemiesKilledCount == _currentWaveEnemyQueue.Count())
+                {
+                    StopWave();
+                }
+            }
+            else
+            {
+                Debug.LogError("WaveEnemyDirector: Enemy not found in list");
             }
         }
-        else
-        {
-            Debug.LogError("WaveEnemyDirector: Enemy not found in list");
-        }    
     }
 
     private void OnEnemySpawned(FEnemy enemy)
