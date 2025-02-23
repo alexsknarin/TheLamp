@@ -74,12 +74,12 @@ public class UnityAnalyticsService : IAnalyticsService, IInitializable, IDisposa
         }
     }
 
-    public void SubmitLampDamageEvent(EnemyBase enemy)
+    public void SubmitLampDamageEvent(string enemyTypeName)
     {
         if (_isEnabled)
         {
             _lampDamageEvent.Reset();
-            _lampDamageEvent.Add("enemyType", enemy.EnemyType.ToString());
+            _lampDamageEvent.Add("enemyType", enemyTypeName);
             AnalyticsService.Instance.RecordEvent(_lampDamageEvent);
         }
     }

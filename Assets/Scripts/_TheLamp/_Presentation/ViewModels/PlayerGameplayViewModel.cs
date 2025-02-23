@@ -18,7 +18,7 @@ public class PlayerGameplayViewModel : IDisposable
         _gameModel.PowerChanged += OnPowerChanged;
         _gameModel.LampHealthChanged += OnLampHealthChanged;
         _gameModel.LampMaxHealthChanged += OnLampMaxHealthChanged;
-        _gameModel.LampBlockedModeSet += OnLampBlockedModeSet;
+        _gameModel.IsLampBlockedChanged += OnIsLampBlockedChanged;
         _gameModel.LampDamageStarted += OnLampDamageStarted;
         _gameModel.LampGlassDamageChanged += OnLampGlassDamageChanged;
         _gameModel.LampAttackDistanceChanged += OnLampAttackDistanceChanged;
@@ -30,7 +30,7 @@ public class PlayerGameplayViewModel : IDisposable
         _gameModel.PowerChanged -= OnPowerChanged;
         _gameModel.LampHealthChanged -= OnLampHealthChanged;
         _gameModel.LampMaxHealthChanged -= OnLampMaxHealthChanged;
-        _gameModel.LampBlockedModeSet -= OnLampBlockedModeSet;
+        _gameModel.IsLampBlockedChanged -= OnIsLampBlockedChanged;
         _gameModel.LampDamageStarted -= OnLampDamageStarted;
         _gameModel.LampGlassDamageChanged -= OnLampGlassDamageChanged;
         _gameModel.LampAttackDistanceChanged -= OnLampAttackDistanceChanged;
@@ -41,7 +41,7 @@ public class PlayerGameplayViewModel : IDisposable
     public event Action LastHealthPointEnded;
     public event Action<float, bool> AttackStart;
     public event Action<float> LampDamaged;
-    public event Action LampDied;
+    public event Action LampDied; // TODO: make it work or remove
     public event Action HealthUpgraded;
 
 
@@ -98,12 +98,12 @@ public class PlayerGameplayViewModel : IDisposable
         HealthUpgraded?.Invoke();
     }
 
-    private void OnLampBlockedModeSet(bool isBlocked)
+    private void OnIsLampBlockedChanged(bool isBlocked)
     {
         IsBlocked.Value = isBlocked;
     }
 
-    private void OnLampDamageStarted(float duration, EnemyBase enemy)
+    private void OnLampDamageStarted(float duration, string enemyTypeName)
     {
         LampDamaged?.Invoke(duration);
     }

@@ -9,7 +9,6 @@ public class FEnemyAttacker: ITickable
 {
     // Dependencies
     private readonly float _maxAggressionLevel;
-    private readonly LampCollisionDetectionService _lampCollisionDetectionService;
     
     private float _attackCooldown;
     private float _aggressionLevelNormalized;
@@ -21,15 +20,12 @@ public class FEnemyAttacker: ITickable
     private List<FEnemy> _enemies; // TODO: find a way to remove this dependency and to not keep the list of enemies
     private List<CollidableEnemy> _enemiesReadyToAttack = new ();
 
-    public FEnemyAttacker(float maxAggressionLevel, LampCollisionDetectionService lampCollisionDetectionService)
+    public FEnemyAttacker(float maxAggressionLevel)
     {
         _maxAggressionLevel = maxAggressionLevel;
-        _lampCollisionDetectionService = lampCollisionDetectionService;
     }
     
-    
-    
-    // public event Action<CollidableEnemy> EnemyAttackStarted; // Provide the enemy that started the attack
+    public event Action<CollidableEnemy> EnemyAttackStarted;
     
     public void PrepareWave(int aggressionLevel, List<FEnemy> enemies)
     {
@@ -138,9 +134,9 @@ public class FEnemyAttacker: ITickable
         //     }
         // }
        
-        // TODO: add tp damageables
-        _lampCollisionDetectionService.AddCollidable(attackingEnemy); // Replace with event and remove dependency on LampCollisionDetectionService
         attackingEnemy.Attack();
+        EnemyAttackStarted?.Invoke(attackingEnemy);
+        
         
         _localTime = 0;
         // TODO: fix magic numbers

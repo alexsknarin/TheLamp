@@ -12,28 +12,26 @@ public class WaveEnemyDirector : MonoBehaviour, IInitializable
     private int _enemiesKilledCount = 0;
     private FLampAttacker _lampAttacker;
     [SerializeField] private bool _lampBlocked = false;
-    
-    
+    private FEnemyAttacker _enemyAttacker;
+
     // Dependencies
     private IGameConfigService _gameConfigService;
     private FEnemySpawner _enemySpawner;
-    private FEnemyAttacker _enemyAttacker;
-    private LampStickyDetectionService _lampStickyDetectionService;
     
     public void Construct(
         IGameConfigService gameConfigService, 
-        FEnemySpawner enemySpawner,
-        FEnemyAttacker enemyAttacker,
-        LampStickyDetectionService lampStickyDetectionService
+        FEnemySpawner enemySpawner
         )
     {
         _gameConfigService = gameConfigService;
         _enemySpawner = enemySpawner;
-        _enemyAttacker = enemyAttacker;
-        _lampStickyDetectionService = lampStickyDetectionService;
     }
     
     public event Action WaveEnded;
+    public event Action<CollidableEnemy> EnemyAttackStarted;
+    public event Action<IStickableWithLamp> StickyEnemySpawned;
+    public event Action AttackBlocked;
+    public event Action AttackUnblocked;
     
     public void Initialize()
     {
@@ -41,14 +39,13 @@ public class WaveEnemyDirector : MonoBehaviour, IInitializable
         _spawnQueueGenerator = new SpawnQueueGenerator(_gameConfigService.SpawnQueueConfig.Data);
         _spawnQueue = _spawnQueueGenerator.Generate();
         _lampAttacker = new FLampAttacker();
+        _enemyAttacker = new FEnemyAttacker(_gameConfigService.GameConfig.MaxAggressionLevel);
         
-        _lampStickyDetectionService.AttackBlocked += _enemyAttacker.BlockAttackCooldown;
-        _lampStickyDetectionService.AttackUnblocked += _enemyAttacker.UnblockAttackCooldown;
-        _lampStickyDetectionService.EnemySticked += OnEnemySticked;
-        _lampStickyDetectionService.EnemyUnSticked += OnEnemyUnSticked;
         _enemySpawner.EnemySpawned += OnEnemySpawned;
-        _enemySpawner.EnemyReleased += OnEnemyDead;
+        _enemySpawner.EnemyReturnedToPool += OnEnemyDead;
+        _enemyAttacker.EnemyAttackStarted += OnEnemyAttackStarted;
         
+        enabled = false;
         
         // Debug Spawn Queue
         // Debug.Log("++++ ----- Spawn Queue Generated:");
@@ -66,38 +63,9 @@ public class WaveEnemyDirector : MonoBehaviour, IInitializable
 
     private void OnDestroy()
     {
-        _lampStickyDetectionService.AttackBlocked -= _enemyAttacker.BlockAttackCooldown;
-        _lampStickyDetectionService.AttackUnblocked -= _enemyAttacker.UnblockAttackCooldown;
-        _lampStickyDetectionService.EnemySticked -= OnEnemySticked;
-        _lampStickyDetectionService.EnemyUnSticked -= OnEnemyUnSticked;
         _enemySpawner.EnemySpawned -= OnEnemySpawned;
-        _enemySpawner.EnemyReleased -= OnEnemyDead;
-    }
-
-    private void OnEnemySticked(IStickableWithLamp enemy)
-    {
-        if (!_stickedEnemies.Contains(enemy))
-        {
-            _stickedEnemies.Add(enemy);
-            if (!_lampBlocked)
-            {
-                _lampBlocked = true;
-                _lampAttacker.SetBlockedMode();
-            }
-        }
-    }
-
-    private void OnEnemyUnSticked(IStickableWithLamp enemy)
-    {
-        if (_stickedEnemies.Contains(enemy))
-        {
-            _stickedEnemies.Remove(enemy);
-        }
-        if (_stickedEnemies.Count == 0)
-        {
-            _lampBlocked = false;
-            _lampAttacker.SetUnBlockedMode();
-        }
+        _enemySpawner.EnemyReturnedToPool -= OnEnemyDead;
+        _enemyAttacker.EnemyAttackStarted -= OnEnemyAttackStarted;
     }
 
     public void PrepareWave(int waveIndex)
@@ -119,11 +87,13 @@ public class WaveEnemyDirector : MonoBehaviour, IInitializable
         _enemiesKilledCount = 0;
         _enemySpawner.StartWave();
         _enemyAttacker.StartWave();
+        enabled = true;
     }
 
-    public void StopWave()
+    private void StopWave()
     {
         _enemyAttacker.StopWave();
+        enabled = false;
         WaveEnded?.Invoke();
     }
 
@@ -131,6 +101,44 @@ public class WaveEnemyDirector : MonoBehaviour, IInitializable
     {
         _lampAttacker.Attack(power, _enemies);
     }
+
+    // Calls from PlayerEnemyInteractionMediator
+    public void BlockAttackCooldown()
+    {
+        _enemyAttacker.BlockAttackCooldown();
+    }
+
+    public void UnblockAttackCooldown()
+    {
+        _enemyAttacker.UnblockAttackCooldown();
+    }
+
+    public void AddStickyEnemy(IStickableWithLamp enemy)
+    {
+        if (!_stickedEnemies.Contains(enemy))
+        {
+            _stickedEnemies.Add(enemy);
+            if (!_lampBlocked)
+            {
+                _lampBlocked = true;
+                _lampAttacker.SetBlockedMode();
+            }
+        }
+    }
+
+    public void RemoveStickyEnemy(IStickableWithLamp enemy)
+    {
+        if (_stickedEnemies.Contains(enemy))
+        {
+            _stickedEnemies.Remove(enemy);
+        }
+        if (_stickedEnemies.Count == 0)
+        {
+            _lampBlocked = false;
+            _lampAttacker.SetUnBlockedMode();
+        }
+    }
+    //
 
     private void OnEnemyDead(FEnemy enemy)
     {
@@ -154,7 +162,19 @@ public class WaveEnemyDirector : MonoBehaviour, IInitializable
     {
         if (enemy is IStickableWithLamp)
         {
-            _lampStickyDetectionService.AddStickable((IStickableWithLamp)enemy);
+            StickyEnemySpawned?.Invoke((IStickableWithLamp)enemy);
         }
+    }
+
+    private void OnEnemyAttackStarted(CollidableEnemy enemy)
+    {
+        // TODO: add to damageables
+        EnemyAttackStarted?.Invoke(enemy);
+    }
+
+    private void Update()
+    {
+        // TODO: enable -disable when not needed (between waves)
+        _enemyAttacker.Tick(Time.deltaTime);
     }
 }

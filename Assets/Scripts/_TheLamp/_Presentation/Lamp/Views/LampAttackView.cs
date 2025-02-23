@@ -70,6 +70,8 @@ public class LampAttackView : MonoBehaviour, IInitializable
     {
         _attackDistanceUpgradeAnimationController.enabled = true;
         _attackDistanceUpgradeAnimationController.Play(_gameConfigService.PlayerConfig.AttackDistanceUpgradeAnimationTime);
+        Vector3 newScale = Vector3.one * (e.NewValue * 2);
+        _lampAttackZoneObject.transform.localScale = newScale;
     }
 
     private void Update()

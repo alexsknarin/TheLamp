@@ -38,7 +38,7 @@ public class FSpider : CollidableEnemy
         _currentHealth = _maxHealth;
         _isInAttackReadyMovementState = false;
         IsReadyForDamage = false;
-        IsReceivedAttack = false;
+        IsReceivedLampAttackDamage = false;
         CollisionState = CollidableState.Outside;
         HealthChanged?.Invoke(_currentHealth, _maxHealth);
         _movement.Play();
@@ -47,7 +47,7 @@ public class FSpider : CollidableEnemy
 
     public override void ReceiveDamage(int damageAmount)
     {
-        IsReceivedAttack = true;
+        IsReceivedLampAttackDamage = true;
         IsReadyForDamage = false;
         _currentHealth -= damageAmount;
         
@@ -77,7 +77,7 @@ public class FSpider : CollidableEnemy
     public override void Attack()
     {
         _isInAttackReadyMovementState = false;
-        IsReceivedAttack = false;
+        IsReceivedLampAttackDamage = false;
         _movement.TriggerAttack();
     }
 

@@ -36,14 +36,14 @@ public class Wasp : BossBase
         
         _fWaspMovement.BossAttackStarted += OnBossAttackStarted;
         _fWaspMovement.DeathStateEnded += OnDeathStateEnded;
-        _lampDeadEventProvider.LampDied += OnLampDied;
+        _lampDeadEventProvider.LampDestroyed += OnLampDied;
     }
 
     private void OnDestroy()
     {
         _fWaspMovement.BossAttackStarted -= OnBossAttackStarted;
         _fWaspMovement.DeathStateEnded -= OnDeathStateEnded;
-        _lampDeadEventProvider.LampDied -= OnLampDied;
+        _lampDeadEventProvider.LampDestroyed -= OnLampDied;
     }
 
     public override void Reset()
@@ -171,7 +171,7 @@ public class Wasp : BossBase
         StartCoroutine(DeactivateOnDeath());
     }
 
-    private void OnLampDied(EnemyBase enemy)
+    private void OnLampDied()
     {
         _fWaspMovement.SetLampDestroyed();
     }

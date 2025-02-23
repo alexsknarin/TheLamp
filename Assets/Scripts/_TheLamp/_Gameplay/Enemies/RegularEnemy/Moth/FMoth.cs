@@ -38,7 +38,7 @@ public class FMoth : CollidableEnemy
         _currentHealth = _maxHealth;
         _isInAttackReadyMovementState = false;
         IsReadyForDamage = false;
-        IsReceivedAttack = false;
+        IsReceivedLampAttackDamage = false;
         CollisionState = CollidableState.Outside;
         Started?.Invoke();
         HealthChanged?.Invoke(_currentHealth, _maxHealth);
@@ -47,7 +47,7 @@ public class FMoth : CollidableEnemy
 
     public override void ReceiveDamage(int damageAmount)
     {
-        IsReceivedAttack = true;
+        IsReceivedLampAttackDamage = true;
         IsReadyForDamage = false;
         _currentHealth -= damageAmount;
         
@@ -79,7 +79,7 @@ public class FMoth : CollidableEnemy
     {
         Debug.Log("Attack Called.");
         _isInAttackReadyMovementState = false;
-        IsReceivedAttack = false;
+        IsReceivedLampAttackDamage = false;
         _movement.TriggerAttack();
     }
 

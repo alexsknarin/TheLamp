@@ -39,7 +39,7 @@ public class FLadybug : FEnemy, IStickableWithLamp
         _currentHealth = _maxHealth;
         _isInAttackReadyMovementState = false;
         IsReadyForDamage = false;
-        IsReceivedAttack = false;
+        IsReceivedLampAttackDamage = false;
         StickState = StickableState.Outside;
         AttackBlockState = AttackBlockerState.Outisde;
         HealthChanged?.Invoke(_currentHealth, _maxHealth);
@@ -49,7 +49,7 @@ public class FLadybug : FEnemy, IStickableWithLamp
 
     public override void ReceiveDamage(int damageAmount)
     {
-        IsReceivedAttack = true;
+        IsReceivedLampAttackDamage = true;
         _currentHealth -= damageAmount;
         
         if (_currentHealth <= 0)
@@ -81,7 +81,7 @@ public class FLadybug : FEnemy, IStickableWithLamp
     public override void Attack()
     {
         _isInAttackReadyMovementState = false;
-        IsReceivedAttack = false;
+        IsReceivedLampAttackDamage = false;
         _movement.TriggerAttack();
     }
 
@@ -134,5 +134,10 @@ public class FLadybug : FEnemy, IStickableWithLamp
     public void HandleEnterAttackBlockerZone()
     {
         AttackBlockState = AttackBlockerState.Inside;
+    }
+
+    public Vector3 ProvideImpactPoint()
+    {
+        return transform.position;
     }
 }

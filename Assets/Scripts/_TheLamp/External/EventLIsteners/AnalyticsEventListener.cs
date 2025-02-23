@@ -40,9 +40,9 @@ public class AnalyticsEventListener: IDisposable
         _analyticsService.SubmitWaveEndEvent(wave);
     }
 
-    private void OnLampDamageStarted(float amount, EnemyBase enemy)
+    private void OnLampDamageStarted(float amount, string enemyTypeName)
     {
-        _analyticsService.SubmitLampDamageEvent(enemy);
+        _analyticsService.SubmitLampDamageEvent(enemyTypeName);
     }
 
     private void OnHealthUpgraded()

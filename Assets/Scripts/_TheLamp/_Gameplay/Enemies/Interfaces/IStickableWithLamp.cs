@@ -11,4 +11,5 @@ public interface IStickableWithLamp
     public void HandleStick(Transform lampTransform);
     public void HandleExitAttackZone();
     public void HandleEnterAttackBlockerZone();
+    public Vector3 ProvideImpactPoint();
 }

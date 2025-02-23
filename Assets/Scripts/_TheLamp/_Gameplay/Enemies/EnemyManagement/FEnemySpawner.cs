@@ -24,7 +24,7 @@ public class FEnemySpawner: ITickable, IDisposable
     }
     
     public event Action<FEnemy> EnemySpawned;
-    public event Action<FEnemy> EnemyReleased;
+    public event Action<FEnemy> EnemyReturnedToPool;
 
     public void Initialize()
     {
@@ -38,7 +38,7 @@ public class FEnemySpawner: ITickable, IDisposable
 
     private void OnEnemyReleased(FEnemy enemy)
     {
-        EnemyReleased?.Invoke(enemy);
+        EnemyReturnedToPool?.Invoke(enemy);
     }
 
     public void PrepareWave(EnemyQueue enemyQueue, List<FEnemy> enemies)

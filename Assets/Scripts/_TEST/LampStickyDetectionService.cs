@@ -21,7 +21,7 @@ public class LampStickyDetectionService : MonoBehaviour, IInitializable
     public event Action AttackUnblocked;
     public event Action<IStickableWithLamp> EnemySticked;
     public event Action<IStickableWithLamp> EnemyUnSticked;
-    
+
     public void Initialize()
     {
         _combinedStickRadius = _stickyRadius + _collisionThreshold;
@@ -38,7 +38,12 @@ public class LampStickyDetectionService : MonoBehaviour, IInitializable
         }
     }
 
-    public void RemoveStickable(IStickableWithLamp stickable)
+    public void SetAttackZoneRadius(float attackZoneRadius)
+    {
+        _attackZoneRadius = attackZoneRadius;
+    }
+
+    private void RemoveStickable(IStickableWithLamp stickable)
     {
         if (_stickables.Contains(stickable))
         {
@@ -49,9 +54,9 @@ public class LampStickyDetectionService : MonoBehaviour, IInitializable
 
     private void Update()
     {
-        _position = transform.position;
         if (_stickables.Count != 0)
         {
+            _position = transform.position;
             CheckStickables();
         }
     }

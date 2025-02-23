@@ -8,7 +8,7 @@ public abstract class FEnemy: MonoBehaviour, IInitializable, IDamageable, IPoola
     protected IObjectPool<FEnemy> _objectPool;
     public virtual bool IsReadyToAttack { get; }
     public  bool IsReadyForDamage { get; protected set; }
-    public  bool IsReceivedAttack { get; protected set; }
+    public  bool IsReceivedLampAttackDamage { get; protected set; }
     public bool IsDead { get; protected set; }
     public abstract void Initialize();
     public abstract void Play();

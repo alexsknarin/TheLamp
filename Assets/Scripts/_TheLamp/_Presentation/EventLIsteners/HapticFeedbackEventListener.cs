@@ -17,9 +17,9 @@ public class HapticFeedbackEventListener: IDisposable
         _enemyController.FireflyExplosionStarted += OnFireflyExplosionStarted;
         _gameModel.LampAttackStarted += OnAttackClicked;
         _gameModel.LampDamageStarted += OnLampDamaged;
-        _gameModel.LampDied += OnLampLampDied;
+        _gameModel.LampDestroyed += OnLampDestroyed;
         _gameModel.UpgradeClicked += OnUpgradeClicked;
-        _gameModel.LampBlockedModeSet += OnLampBlockedModeSet;
+        _gameModel.IsLampBlockedChanged += OnIsLampBlockedChanged;
     }
 
     public void Dispose()
@@ -27,9 +27,9 @@ public class HapticFeedbackEventListener: IDisposable
         _enemyController.FireflyExplosionStarted -= OnFireflyExplosionStarted;
         _gameModel.LampAttackStarted -= OnAttackClicked;
         _gameModel.LampDamageStarted -= OnLampDamaged;
-        _gameModel.LampDied -= OnLampLampDied;
+        _gameModel.LampDestroyed -= OnLampDestroyed;
         _gameModel.UpgradeClicked -= OnUpgradeClicked;
-        _gameModel.LampBlockedModeSet -= OnLampBlockedModeSet;
+        _gameModel.IsLampBlockedChanged -= OnIsLampBlockedChanged;
     }
 
     private void OnAttackClicked(float power)
@@ -42,7 +42,7 @@ public class HapticFeedbackEventListener: IDisposable
         _hapticFeedbackService.DoExplosionVibration();
     }
 
-    private void OnLampDamaged(float obj, EnemyBase enemy)
+    private void OnLampDamaged(float obj, string enemyTypeName)
     {
         _hapticFeedbackService.DoDamageVibration();
     }
@@ -52,12 +52,12 @@ public class HapticFeedbackEventListener: IDisposable
         _hapticFeedbackService.DoTouchHaptic();
     }
 
-    private void OnLampBlockedModeSet(bool obj)
+    private void OnIsLampBlockedChanged(bool obj)
     {
         _hapticFeedbackService.DoDamageVibration();
     }
 
-    private void OnLampLampDied(EnemyBase obj)
+    private void OnLampDestroyed()
     {
         _hapticFeedbackService.DoDamageVibration();
     }

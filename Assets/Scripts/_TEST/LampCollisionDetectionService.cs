@@ -15,11 +15,17 @@ public class LampCollisionDetectionService : MonoBehaviour, IInitializable
     private float _combinedCollisionRadius;
     
     // TODO: add event for enemy collision
+    public event Action<Vector3, bool, string> EnemyAttackEnded;
     
     public void Initialize()
     {
         _combinedCollisionRadius = _collisionRadius + _collisionThreshold;
         enabled = false;
+    }
+    
+    public void SetAttackZoneRadius(float attackZoneRadius)
+    {
+        _attackZoneRadius = attackZoneRadius;
     }
 
     public void AddCollidable(ICollidableWithLamp collidableWithLamp)
@@ -104,6 +110,8 @@ public class LampCollisionDetectionService : MonoBehaviour, IInitializable
             {
                 _collidablesToRemove.Add(collidable);
                 collidable.HandleExitAttackZone();
+                EnemyAttackEnded?.Invoke(collidable.ProvideImpactPoint(), collidable.IsReceivedLampAttackDamage, collidable.GetType().ToString());
+                Debug.Log($"Enemy {collidable.GetType().ToString()} has just attacked.");
             }
         }
     }

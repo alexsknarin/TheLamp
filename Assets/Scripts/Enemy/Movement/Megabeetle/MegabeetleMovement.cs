@@ -69,12 +69,12 @@ public class MegabeetleMovement : EnemyMovement
         _deathState = new MegabeetleMovementDeathState(this, _speed, _radius, _verticalAmplitude);
         _spreadState = new LadybugMovementSpreadState(this, _speed, _radius, _verticalAmplitude);
         
-        _lampDeadEventProvider.LampDied += OnLampDied;
+        _lampDeadEventProvider.LampDestroyed += OnLampDied;
     }
 
     private void OnDestroy()
     {
-        _lampDeadEventProvider.LampDied -= OnLampDied;
+        _lampDeadEventProvider.LampDestroyed -= OnLampDied;
     }
 
     public void Play()
@@ -397,7 +397,7 @@ public class MegabeetleMovement : EnemyMovement
     }
 
     // Event Handler Methods
-    private void OnLampDied(EnemyBase enemy)
+    private void OnLampDied()
     {
         if (enabled)
         {

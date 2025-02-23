@@ -61,8 +61,11 @@ public class GameRootContext : MonoBehaviour
     private CameraShakeEventListener _cameraShakeEventListener;
     private PlayerAttackCooldownHandler _playerAttackCooldownHandler;
     private ScoresCollectionHandler _scoresCollectionHandler;
+    private PlayerEnemyInteractionMediator _playerEnemyInteractionMediator;
+    
     private GameModel _gameModel;
     private GameSettingsModel _gameSettingsModel;
+    
     private GameSettingsViewModel _gameSettingsViewModel;
     private GameStageViewModel _gameStageViewModel;
     private GameStateViewModel _gameStateViewModel;
@@ -86,7 +89,6 @@ public class GameRootContext : MonoBehaviour
     
     private FEnemyPool _enemyPool;
     private FEnemySpawner _enemySpawner;
-    private FEnemyAttacker _enemyAttacker;
     
     private List<IDisposable> _disposables = new();
     private List<ITickable> _tickables = new();
@@ -229,18 +231,22 @@ public class GameRootContext : MonoBehaviour
         _tickables.Add(_enemySpawner);
         _disposables.Add(_enemySpawner);
         
-        _enemyAttacker = new FEnemyAttacker(
-            _gameConfigProvider.GameConfig.MaxAggressionLevel, 
-            _lampCollisionDetectionService
-            );
-        _tickables.Add(_enemyAttacker);
         _lampStickyDetectionService.Initialize();
         
-        _waveEnemyDirector.Construct(_gameConfigService, _enemySpawner, _enemyAttacker, _lampStickyDetectionService);
+        _waveEnemyDirector.Construct(_gameConfigService, _enemySpawner);
+
         _lampMovementController.Initialize();
         _lampHealthBarController.Initialize();
         _lampEmissionController.Initialize();
         _lightningFlashController.Initialize();
+        
+        _playerEnemyInteractionMediator = new PlayerEnemyInteractionMediator(
+            _waveEnemyDirector, 
+            _lampCollisionDetectionService, 
+            _lampStickyDetectionService
+            );
+        _playerEnemyInteractionMediator.Initialize();
+        _disposables.Add(_playerEnemyInteractionMediator);
     }
 
     private void GameModelSetup()
@@ -250,6 +256,7 @@ public class GameRootContext : MonoBehaviour
             _gameConfigService, 
             _waveEnemyDirector,
             _playerAttackCooldownHandler,
+            _playerEnemyInteractionMediator,
             _lampMovementController,
             _scoresCollectionHandler);
     }

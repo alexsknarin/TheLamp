@@ -15,7 +15,8 @@ public class GameModel : IDisposable, ILampDeadEventProviderService
     private readonly IGameConfigService _gameConfigService;
     private readonly WaveEnemyDirector _waveEnemyDirector;
     // private EnemyController _enemyController;
-    private PlayerAttackCooldownHandler _playerAttackCooldownHandler;
+    private readonly PlayerAttackCooldownHandler _playerAttackCooldownHandler;
+    private readonly PlayerEnemyInteractionMediator _playerEnemyInteractionMediator;
     // private PlayerCollidersPropertyController _playerCollidersPropertyController;
     // private PlayerEnemyInteractionHandler _playerEnemyInteractionHandler;
     private readonly LampMovementController _lampMovementController;
@@ -29,6 +30,7 @@ public class GameModel : IDisposable, ILampDeadEventProviderService
         WaveEnemyDirector waveEnemyDirector,
         // EnemyController enemyController, 
         PlayerAttackCooldownHandler playerAttackCooldownHandler,
+        PlayerEnemyInteractionMediator playerEnemyInteractionMediator,
         // PlayerCollidersPropertyController playerCollidersPropertyController,
         // PlayerEnemyInteractionHandler playerEnemyInteractionHandler,
         LampMovementController lampMovementController,
@@ -38,9 +40,9 @@ public class GameModel : IDisposable, ILampDeadEventProviderService
         _gameStateProviderService = gameStateProviderService;
         _currentGameState = gameStateProviderService.Get();
         _waveEnemyDirector = waveEnemyDirector;
-        // _enemyController = enemyController;
         _gameConfigService = gameConfigService;
         _playerAttackCooldownHandler = playerAttackCooldownHandler;
+        _playerEnemyInteractionMediator = playerEnemyInteractionMediator;
         // _playerCollidersPropertyController = playerCollidersPropertyController;
         // _playerEnemyInteractionHandler = playerEnemyInteractionHandler;
         _lampMovementController = lampMovementController;
@@ -48,22 +50,32 @@ public class GameModel : IDisposable, ILampDeadEventProviderService
         
         // Subscriptions
         _waveEnemyDirector.WaveEnded += OnWaveEnded;
+        _waveEnemyDirector.AttackBlocked += OnAttackBlocked;
+        _waveEnemyDirector.AttackUnblocked += OnAttackUnblocked;
         _playerAttackCooldownHandler.PlayerAttackEnded += OnPlayerAttackCooldownEnded;
         _playerAttackCooldownHandler.PowerChanged += OnPowerChanged;
-        // _playerEnemyInteractionHandler.LampBlockedStarted += OnLampBlockedStarted;
-        // _playerEnemyInteractionHandler.LampBlockedEnded += OnLampBlockedEnded;
-        // _playerEnemyInteractionHandler.EnemyAttackBounced += OnEnemyAttackBounced;
+        
+        _playerEnemyInteractionMediator.EnemyAttackEnded += OnEnemyAttackEnded;
+        _playerEnemyInteractionMediator.EnemySticked += OnEnemySticked;
+        _playerEnemyInteractionMediator.EnemyUnSticked += OnEnemyUnSticked;
+        
         _scoresCollectionHandler.ScoreChanged += OnScoreChanged;
     }
+
     
+
     public void Dispose()
     {
         _waveEnemyDirector.WaveEnded -= OnWaveEnded;
+        _waveEnemyDirector.AttackBlocked -= OnAttackBlocked;
+        _waveEnemyDirector.AttackUnblocked -= OnAttackUnblocked;
         _playerAttackCooldownHandler.PlayerAttackEnded -= OnPlayerAttackCooldownEnded;
         _playerAttackCooldownHandler.PowerChanged -= OnPowerChanged;
-        // _playerEnemyInteractionHandler.LampBlockedStarted -= OnLampBlockedStarted;
-        // _playerEnemyInteractionHandler.LampBlockedEnded -= OnLampBlockedEnded;
-        // _playerEnemyInteractionHandler.EnemyAttackBounced -= OnEnemyAttackBounced;
+        
+        _playerEnemyInteractionMediator.EnemyAttackEnded -= OnEnemyAttackEnded;
+        _playerEnemyInteractionMediator.EnemySticked -= OnEnemySticked;
+        _playerEnemyInteractionMediator.EnemyUnSticked -= OnEnemyUnSticked;
+
         _scoresCollectionHandler.ScoreChanged -= OnScoreChanged;
     }
     
@@ -77,14 +89,13 @@ public class GameModel : IDisposable, ILampDeadEventProviderService
     public event Action<int> LampHealthChanged;
     public event Action<int> LampMaxHealthChanged;
     public event Action<GlassDamageData> LampGlassDamageChanged;
-    public event Action<bool> LampBlockedModeSet;
+    public event Action<bool> IsLampBlockedChanged;
     public event Action<int> UpgradePointsChanged;
     public event Action<float> LampAttackDistanceChanged;
     public event Action<float> LampCooldownTimeChanged;
     public event Action<float> LampAttackStarted;
-    public event Action<float, EnemyBase> LampDamageStarted;
-    public event Action<Vector3> LampDeathHappened; // TODO: make single event for all lamp death events
-    public event Action<EnemyBase> LampDied;
+    public event Action<float, string> LampDamageStarted;
+    public event Action LampDestroyed;
     public event Action<int> WaveStarted;
     public event Action<int> WaveEnded;
     public event Action HealthUpgraded;
@@ -167,7 +178,7 @@ public class GameModel : IDisposable, ILampDeadEventProviderService
         private set
         {
             _isLampBlocked = value;
-            LampBlockedModeSet?.Invoke(value);
+            IsLampBlockedChanged?.Invoke(value);
         }
     }
     public int UpgradePoints
@@ -208,13 +219,13 @@ public class GameModel : IDisposable, ILampDeadEventProviderService
             _currentGameState.Wave = _gameConfigService.GameConfig.TestStartWave;
         }
         CurrentGameStageState = GameStageState.Intro;
-        _playerAttackCooldownHandler.SetAttackDuration(_gameConfigService.PlayerConfig.AttackDuration); // Attack Duration
-        _playerAttackCooldownHandler.SetCooldownDuration(_currentGameState.LampCooldownTime); // Cooldown Duration
-        // _playerCollidersPropertyController.SetAttackZoneRadius(_currentGameState.LampAttackDistance); // Attack Distance
+        _playerAttackCooldownHandler.SetAttackDuration(_gameConfigService.PlayerConfig.AttackDuration);
+        _playerAttackCooldownHandler.SetCooldownDuration(_currentGameState.LampCooldownTime); 
+        _playerEnemyInteractionMediator.SetAttackZoneRadius(_currentGameState.LampAttackDistance);
+        LampAttackDistanceChanged?.Invoke(_currentGameState.LampAttackDistance);
         _currentPower = 1.0f;
         LampGlassDamage = _currentGameState.GlassDamageData;
         _lampDamageDataHandler.MaxHealth = _currentGameState.LampMaxHealth;
-        // _enemyController.StartGame();
         GameStarted?.Invoke();
     }
     
@@ -437,7 +448,6 @@ public class GameModel : IDisposable, ILampDeadEventProviderService
     {
         CurrentGameStageState = GameStageState.Wave;
         Debug.Log("Starting Wave: " +_currentGameState.Wave);
-        // _enemyController.StartWave(_currentGameState.Wave);
         _waveEnemyDirector.StartWave();
         WaveStarted?.Invoke(_currentGameState.Wave);
     }
@@ -461,50 +471,53 @@ public class GameModel : IDisposable, ILampDeadEventProviderService
     {
         CurrentPower = power;
     }
-
-    // private void OnLampBlockedStarted(Vector3 impactPoint)
-    // {
-    //     IsLampBlocked = true;
-    //     _enemyController.SetBlockedMode(IsLampBlocked);
-    //     _lampMovementController.AddForce(-impactPoint.normalized.x * 2);
-    // }
     
-    // private void OnLampBlockedEnded(Vector3 impactPoint)
-    // {
-    //     IsLampBlocked = false;
-    //     _enemyController.SetBlockedMode(IsLampBlocked);
-    //     _lampMovementController.AddForce(-impactPoint.normalized.x * 2);
-    // }
-    
-    private void OnEnemyAttackBounced(bool isDeflected, EnemyBase enemy)
+    private void OnAttackBlocked()
     {
-        if (!isDeflected || IsLampBlocked)
+        IsLampBlocked = true;
+    }
+    
+    private void OnAttackUnblocked()
+    {
+        IsLampBlocked = false;
+    }
+    
+    private void OnEnemySticked(IStickableWithLamp stickable)
+    {
+        _lampMovementController.AddForce(-stickable.ProvideImpactPoint().normalized.x * 2);
+    }
+    
+    private void OnEnemyUnSticked(IStickableWithLamp stickable)
+    {
+        // TODO: checj if it is the the last stickable - Maybe a coroutine to wait 1 frame
+        _lampMovementController.AddForce(-stickable.ProvideImpactPoint().normalized.x * 2);
+    }
+
+    private void OnEnemyAttackEnded(Vector3 impactPoint, bool isEnemyDamaged, string enemyTypeName)
+    {
+        if (!isEnemyDamaged)
         {
             if(_gameConfigService.PlayerConfig.IsDamageable)
                 LampHealth -= 1;
-
+            
             if (LampHealth <= 0)
             {
-                LastEnemyPosition = enemy.ProvideImpactPoint();
+                LastEnemyPosition = impactPoint;
                 _lampMovementController.AddForce(-LastEnemyPosition.normalized.x * 2);
-                // _enemyController.HandleLampDestroyed();                      // TODO: reimplement with WaveEnemyDirector
-                LampDeathHappened?.Invoke(enemy.ProvideImpactPoint());
-                LampDied?.Invoke(enemy);
+                // _enemyController.HandleLampDestroyed();                      // TODO: reimplement with WaveEnemyDirector - Make All Stickables fall
+                LampDestroyed?.Invoke();
                 StartGameOver();
                 Debug.Log("++++++++++ Game Over ++++++++++");
                 return;
             }
             
-            LampGlassDamage = _lampDamageDataHandler.UpdateGlassDamageDataDamage(LampGlassDamage, enemy.ProvideImpactPoint().normalized);
+            LampGlassDamage = _lampDamageDataHandler.UpdateGlassDamageDataDamage(LampGlassDamage, impactPoint.normalized);
             
-            // TODO: take lamp position into consideration
-            // Or calculate it in the LampMovementController because it knows about lamp position
-            
-            _lampMovementController.AddForce(-enemy.ProvideImpactPoint().normalized.x * 2); 
-            LampDamageStarted?.Invoke(_gameConfigService.PlayerConfig.DamageDuration, enemy);
+            _lampMovementController.AddForce(-impactPoint.normalized.x * 2); 
+            LampDamageStarted?.Invoke(_gameConfigService.PlayerConfig.DamageDuration, enemyTypeName);
         }
     }
-
+    
     private void OnScoreChanged(int newScore)
     {
         _currentGameState.UpgradeData.Score += newScore;
