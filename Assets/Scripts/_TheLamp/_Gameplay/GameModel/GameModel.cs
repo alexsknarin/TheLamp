@@ -42,7 +42,6 @@ public class GameModel : IDisposable, ILampDeadEventProviderService
         _gameConfigService = gameConfigService;
         _playerAttackCooldownHandler = playerAttackCooldownHandler;
         _playerEnemyInteractionMediator = playerEnemyInteractionMediator;
-        // _playerCollidersPropertyController = playerCollidersPropertyController;
         // _playerEnemyInteractionHandler = playerEnemyInteractionHandler;
         _lampMovementController = lampMovementController;
         _scoresCollectionHandler = scoresCollectionHandler;
@@ -383,8 +382,6 @@ public class GameModel : IDisposable, ILampDeadEventProviderService
             LampAttackDistance = _gameConfigService.PlayerConfig.AttackDistanceCap;
             return;
         }
-        
-        // _playerCollidersPropertyController.SetAttackZoneRadius(LampAttackDistance); TODO:
         AttackDistanceUpgraded?.Invoke();
     }
 

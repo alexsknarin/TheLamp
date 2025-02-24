@@ -29,10 +29,7 @@ public class GameRootContext : MonoBehaviour
     [SerializeField] private LampStickyDetectionService _lampStickyDetectionService;
     [Header("Controllers")]
     [SerializeField] private LampHealthBarController _lampHealthBarController;
-    [SerializeField] private EnemyController _enemyController;                          // TODO: remove
     [SerializeField] private WaveEnemyDirector _waveEnemyDirector;
-    // [SerializeField] private PlayerCollidersPropertyController _playerCollidersPropertyController;
-    // [SerializeField] private PlayerEnemyInteractionHandler _playerEnemyInteractionHandler;
     [SerializeField] private LampEmissionController _lampEmissionController;
     [SerializeField] private LampMovementController _lampMovementController;
     [SerializeField] private LightningFlashController _lightningFlashController;
@@ -184,7 +181,6 @@ public class GameRootContext : MonoBehaviour
         _scoresCollectionHandler = new ScoresCollectionHandler(_gameConfigService);
         _scoresCollectionHandler.Initialize();
         _disposables.Add(_scoresCollectionHandler);
-        // _playerEnemyInteractionHandler.Initialize();
     }
 
     private void FactoriesSetup()
@@ -315,16 +311,22 @@ public class GameRootContext : MonoBehaviour
     {
         _hapticFeedbackEventListener = new HapticFeedbackEventListener(
             _hapticFeedbackService,
-            _enemyController,
+            // _enemyController,
             _gameModel
         );
         _disposables.Add(_hapticFeedbackEventListener);
         
         // Camera Shake Test
-        _cameraShakeEventListener = new CameraShakeEventListener(_gameModel, _enemyController, _cameraShakeService, _bossCameraShakeFactory);
+        _cameraShakeEventListener = new CameraShakeEventListener(
+            _gameModel, 
+            // _enemyController, 
+            _cameraShakeService, 
+            _bossCameraShakeFactory);
         _disposables.Add(_cameraShakeEventListener);
         
-        _lightningFlashEventsListener = new LightningFlashEventsListener(_enemyController, _lightningFlashController);
+        _lightningFlashEventsListener = new LightningFlashEventsListener(
+            // _enemyController,
+            _lightningFlashController);
         _disposables.Add(_lightningFlashEventsListener);
         
         _analyticsEventListener = new AnalyticsEventListener(_unityAnalyticsService, _gameModel);
@@ -356,7 +358,6 @@ public class GameRootContext : MonoBehaviour
     {
         // Start Game
         Debug.Log("-+---- Game Config Loaded ----+-");
-        // _enemyController.Initialize();
         _waveEnemyDirector.Initialize();
         _gameModel.StartGame();
     }

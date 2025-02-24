@@ -1,36 +1,36 @@
 public class CameraShakeEventListener: IDisposable
 {
     private GameModel _gameModel;
-    private EnemyController _enemyController;
+    // private EnemyController _enemyController;
     private CameraShakeService _cameraShakeService;
     private BossCameraShakeFactory _bossCameraShakeFactory;
 
 
     public CameraShakeEventListener(
         GameModel gameModel,
-        EnemyController enemyController,
+        // EnemyController enemyController,
         CameraShakeService cameraShakeService,
         BossCameraShakeFactory bossCameraShakeFactory
         )
     {
         _gameModel = gameModel;
-        _enemyController = enemyController;
+        // _enemyController = enemyController;
         _cameraShakeService = cameraShakeService;
         _bossCameraShakeFactory = bossCameraShakeFactory;
         
         _gameModel.LampDamageStarted += OnLampDamageStarted;
         _gameModel.LampDestroyed += OnLampDestroyed;
-        _enemyController.FireflyExplosionStarted += OnFireflyExplosionStarted;
-        _enemyController.BossSpawned += OnBossSpawned;
-        _enemyController.BossDied += OnBossDied;
+        // _enemyController.FireflyExplosionStarted += OnFireflyExplosionStarted;
+        // _enemyController.BossSpawned += OnBossSpawned;
+        // _enemyController.BossDied += OnBossDied;
     }
 
     public void Dispose()
     {
         _gameModel.LampDamageStarted -= OnLampDamageStarted;
         _gameModel.LampDestroyed -= OnLampDestroyed;
-        _enemyController.FireflyExplosionStarted -= OnFireflyExplosionStarted;
-        _enemyController.BossSpawned -= OnBossSpawned;
+        // _enemyController.FireflyExplosionStarted -= OnFireflyExplosionStarted;
+        // _enemyController.BossSpawned -= OnBossSpawned;
     }
 
     private void OnFireflyExplosionStarted()

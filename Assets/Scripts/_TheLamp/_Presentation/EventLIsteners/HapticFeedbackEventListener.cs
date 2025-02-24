@@ -1,20 +1,20 @@
 public class HapticFeedbackEventListener: IDisposable
 {
     private HapticFeedbackService _hapticFeedbackService;
-    private EnemyController _enemyController;
+    // private EnemyController _enemyController;
     private GameModel _gameModel;
     
     public HapticFeedbackEventListener(
         HapticFeedbackService hapticFeedbackService,
-        EnemyController enemyController,
+        // EnemyController enemyController,
         GameModel gameModel
         )
     {
         _hapticFeedbackService = hapticFeedbackService;
-        _enemyController = enemyController;
+        // _enemyController = enemyController;
         _gameModel = gameModel;
 
-        _enemyController.FireflyExplosionStarted += OnFireflyExplosionStarted;
+        // _enemyController.FireflyExplosionStarted += OnFireflyExplosionStarted;
         _gameModel.LampAttackStarted += OnAttackClicked;
         _gameModel.LampDamageStarted += OnLampDamaged;
         _gameModel.LampDestroyed += OnLampDestroyed;
@@ -24,7 +24,7 @@ public class HapticFeedbackEventListener: IDisposable
 
     public void Dispose()
     {
-        _enemyController.FireflyExplosionStarted -= OnFireflyExplosionStarted;
+        // _enemyController.FireflyExplosionStarted -= OnFireflyExplosionStarted;
         _gameModel.LampAttackStarted -= OnAttackClicked;
         _gameModel.LampDamageStarted -= OnLampDamaged;
         _gameModel.LampDestroyed -= OnLampDestroyed;
