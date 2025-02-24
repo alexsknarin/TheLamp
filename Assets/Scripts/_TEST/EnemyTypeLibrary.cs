@@ -12,4 +12,14 @@ public class EnemyTypeLibrary
         { EnemyType.Spider, typeof(FSpider) },
         { EnemyType.Mothling, typeof(FMothling) }
     };
+    
+    public static Dictionary<Type, EnemyType> TypeEnemyDictionary = new Dictionary<Type, EnemyType>
+    {
+        { typeof(FFly), EnemyType.Fly },
+        { typeof(FMoth), EnemyType.Moth },
+        { typeof(FFireFly), EnemyType.Firefly },
+        { typeof(FLadybug), EnemyType.Ladybug },
+        { typeof(FSpider), EnemyType.Spider },
+        { typeof(FMothling), EnemyType.Mothling }
+    };
 }

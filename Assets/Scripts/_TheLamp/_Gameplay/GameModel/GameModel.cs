@@ -20,7 +20,7 @@ public class GameModel : IDisposable, ILampDeadEventProviderService
     // private PlayerCollidersPropertyController _playerCollidersPropertyController;
     // private PlayerEnemyInteractionHandler _playerEnemyInteractionHandler;
     private readonly LampMovementController _lampMovementController;
-    private readonly ScoresCollectionHandler _scoresCollectionHandler;
+    private readonly ScoresCollectionController _scoresCollectionController;
     private readonly LampDamageDataHandler _lampDamageDataHandler = new LampDamageDataHandler();
     private readonly UpgradeHandler _upgradeHandler = new UpgradeHandler();
 
@@ -33,7 +33,7 @@ public class GameModel : IDisposable, ILampDeadEventProviderService
         PlayerEnemyInteractionMediator playerEnemyInteractionMediator,
         // PlayerEnemyInteractionHandler playerEnemyInteractionHandler,
         LampMovementController lampMovementController,
-        ScoresCollectionHandler scoresCollectionHandler)
+        ScoresCollectionController scoresCollectionController)
     {
         Debug.Log(" +++ GameModel: Creating GameModel +++");
         _gameStateProviderService = gameStateProviderService;
@@ -44,7 +44,7 @@ public class GameModel : IDisposable, ILampDeadEventProviderService
         _playerEnemyInteractionMediator = playerEnemyInteractionMediator;
         // _playerEnemyInteractionHandler = playerEnemyInteractionHandler;
         _lampMovementController = lampMovementController;
-        _scoresCollectionHandler = scoresCollectionHandler;
+        _scoresCollectionController = scoresCollectionController;
         
         // Subscriptions
         _waveEnemyDirector.WaveEnded += OnWaveEnded;
@@ -57,7 +57,7 @@ public class GameModel : IDisposable, ILampDeadEventProviderService
         _waveEnemyDirector.LampBlocked += OnLampBlocked;
         _waveEnemyDirector.LampUnblocked += OnLampUnblocked;
         
-        _scoresCollectionHandler.ScoreChanged += OnScoreChanged;
+        _scoresCollectionController.ScoreChanged += OnScoreChanged;
     }
 
     public void Dispose()
@@ -72,7 +72,7 @@ public class GameModel : IDisposable, ILampDeadEventProviderService
         _waveEnemyDirector.LampBlocked -= OnLampBlocked;
         _waveEnemyDirector.LampUnblocked -= OnLampUnblocked;
 
-        _scoresCollectionHandler.ScoreChanged -= OnScoreChanged;
+        _scoresCollectionController.ScoreChanged -= OnScoreChanged;
     }
 
     // Events

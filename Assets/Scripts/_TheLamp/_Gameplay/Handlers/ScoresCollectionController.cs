@@ -1,32 +1,39 @@
 using System;
 
-public class ScoresCollectionHandler: IInitializable, IDisposable
+public class ScoresCollectionController: IInitializable, IDisposable
 {
     private IGameConfigService _gameConfigService;
+    private IEnemyDeactivatedProvider _enemyDeactivatedProvider;
     
-    public ScoresCollectionHandler(IGameConfigService gameConfigService)
+    public ScoresCollectionController(
+        IGameConfigService gameConfigService,
+        IEnemyDeactivatedProvider enemyDeactivatedProvider
+        )
     {
         _gameConfigService = gameConfigService;
+        _enemyDeactivatedProvider = enemyDeactivatedProvider;
     }
     
     public event Action<int> ScoreChanged;
     
     public void Initialize()
     {
-        EnemyBase.EnemyDied += OnEnemyDied; // TODO: remove static - Use Interface???
+        _enemyDeactivatedProvider.EnemyReleasedToPool += OnEnemyDeactivated; // TODO: Probably IDeactivatable interface 
     }
 
     public void Dispose()
     {
-        EnemyBase.EnemyDied += OnEnemyDied;
+        _enemyDeactivatedProvider.EnemyReleasedToPool -= OnEnemyDeactivated;
     }
     
     // Event Handle Methods
-    private void OnEnemyDied(EnemyBase enemy)
+    private void OnEnemyDeactivated(FEnemy enemy)
     {
         int score = 0;
+        
+        var enemyType = EnemyTypeLibrary.TypeEnemyDictionary[enemy.GetType()]; 
 
-        switch (enemy.EnemyType)
+        switch (enemyType)
         {
             case EnemyType.Mothling:
                 score = _gameConfigService.ScoreConfig.MothlingScorePrice;

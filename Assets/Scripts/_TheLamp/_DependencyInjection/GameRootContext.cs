@@ -57,7 +57,7 @@ public class GameRootContext : MonoBehaviour
     
     private CameraShakeEventListener _cameraShakeEventListener;
     private PlayerAttackCooldownHandler _playerAttackCooldownHandler;
-    private ScoresCollectionHandler _scoresCollectionHandler;
+    private ScoresCollectionController _scoresCollectionController;
     private PlayerEnemyInteractionMediator _playerEnemyInteractionMediator;
     
     private GameModel _gameModel;
@@ -178,9 +178,6 @@ public class GameRootContext : MonoBehaviour
     {
         _playerAttackCooldownHandler = new PlayerAttackCooldownHandler(_coroutineHost);
         _tickables.Add(_playerAttackCooldownHandler);
-        _scoresCollectionHandler = new ScoresCollectionHandler(_gameConfigService);
-        _scoresCollectionHandler.Initialize();
-        _disposables.Add(_scoresCollectionHandler);
     }
 
     private void FactoriesSetup()
@@ -221,6 +218,10 @@ public class GameRootContext : MonoBehaviour
 
     private void ControllersSetup()
     {
+        _scoresCollectionController = new ScoresCollectionController(_gameConfigService, _enemyPool);
+        _scoresCollectionController.Initialize();
+        _disposables.Add(_scoresCollectionController);
+        
         // _enemyController.Construct(_gameConfigService, _lampPositionProviderService);
         _enemySpawner = new FEnemySpawner(_enemyPool);
         _enemySpawner.Initialize();
@@ -254,7 +255,7 @@ public class GameRootContext : MonoBehaviour
             _playerAttackCooldownHandler,
             _playerEnemyInteractionMediator,
             _lampMovementController,
-            _scoresCollectionHandler);
+            _scoresCollectionController);
     }
 
     private void ViewModelsSetup()

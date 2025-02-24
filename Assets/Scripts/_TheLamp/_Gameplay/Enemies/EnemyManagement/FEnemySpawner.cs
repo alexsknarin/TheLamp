@@ -28,15 +28,15 @@ public class FEnemySpawner: ITickable, IDisposable
 
     public void Initialize()
     {
-        _enemyPool.EnemyReleased += OnEnemyReleased;
+        _enemyPool.EnemyReleasedToPool += OnEnemyReleasedToPool;
     }
 
     public void Dispose()
     {
-        _enemyPool.EnemyReleased -= OnEnemyReleased;
+        _enemyPool.EnemyReleasedToPool -= OnEnemyReleasedToPool;
     }
 
-    private void OnEnemyReleased(FEnemy enemy)
+    private void OnEnemyReleasedToPool(FEnemy enemy)
     {
         EnemyReturnedToPool?.Invoke(enemy);
     }

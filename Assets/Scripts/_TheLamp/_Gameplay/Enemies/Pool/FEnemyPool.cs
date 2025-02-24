@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Pool;
 
-public class FEnemyPool
+public class FEnemyPool : IEnemyDeactivatedProvider
 {
     private ObjectPool<FEnemy> _mothlingPool;
     private ObjectPool<FEnemy> _flyPool;
@@ -22,7 +22,7 @@ public class FEnemyPool
     
     private readonly List<Type> _preloadedEnemyTypes = new List<Type>();
     
-    public event Action<FEnemy> EnemyReleased;
+    public event Action<FEnemy> EnemyReleasedToPool;
     
     public FEnemyPool(FEnemyFactory enemyFactory)
     {
@@ -216,7 +216,7 @@ public class FEnemyPool
     private void OnReleaseToPool(FEnemy enemy)
     {
         enemy.gameObject.SetActive(false);
-        EnemyReleased?.Invoke(enemy);
+        EnemyReleasedToPool?.Invoke(enemy);
     }
     
     private void OnDestroyPooledObject(FEnemy enemy)
