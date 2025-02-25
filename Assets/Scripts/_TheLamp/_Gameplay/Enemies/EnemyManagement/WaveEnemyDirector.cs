@@ -38,6 +38,8 @@ public class WaveEnemyDirector : MonoBehaviour, IInitializable
     public event Action ExplodableEnemySpawned;
     public event Action<FEnemy> ExplodableEnemyDeactivated;
     
+    public event Action FireflyExplosionStarted;
+    
     
     public void Initialize()
     {
@@ -231,6 +233,7 @@ public class WaveEnemyDirector : MonoBehaviour, IInitializable
                 Debug.Log("Enemy is explodable");
                 Debug.Log("BOOOOOOOOOOOOOOMMMMMM!!!!!");
                 ExplodableEnemyDeactivated?.Invoke(enemy);
+                FireflyExplosionStarted?.Invoke();
             }
         }
     }

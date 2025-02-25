@@ -1,26 +1,29 @@
+using UnityEngine;
+
 public class CameraShakeEventListener: IDisposable
 {
     private GameModel _gameModel;
-    // private EnemyController _enemyController;
+    private WaveEnemyDirector _waveEnemyDirector;
     private CameraShakeService _cameraShakeService;
     private BossCameraShakeFactory _bossCameraShakeFactory;
 
 
     public CameraShakeEventListener(
         GameModel gameModel,
-        // EnemyController enemyController,
+        WaveEnemyDirector waveEnemyDirector,
         CameraShakeService cameraShakeService,
         BossCameraShakeFactory bossCameraShakeFactory
         )
     {
         _gameModel = gameModel;
-        // _enemyController = enemyController;
+        _waveEnemyDirector = waveEnemyDirector;
         _cameraShakeService = cameraShakeService;
         _bossCameraShakeFactory = bossCameraShakeFactory;
         
         _gameModel.LampDamageStarted += OnLampDamageStarted;
         _gameModel.LampDestroyed += OnLampDestroyed;
-        // _enemyController.FireflyExplosionStarted += OnFireflyExplosionStarted;
+        _waveEnemyDirector.FireflyExplosionStarted += OnFireflyExplosionStarted;
+        
         // _enemyController.BossSpawned += OnBossSpawned;
         // _enemyController.BossDied += OnBossDied;
     }
@@ -29,8 +32,10 @@ public class CameraShakeEventListener: IDisposable
     {
         _gameModel.LampDamageStarted -= OnLampDamageStarted;
         _gameModel.LampDestroyed -= OnLampDestroyed;
-        // _enemyController.FireflyExplosionStarted -= OnFireflyExplosionStarted;
+        _waveEnemyDirector.FireflyExplosionStarted -= OnFireflyExplosionStarted;
+        
         // _enemyController.BossSpawned -= OnBossSpawned;
+        // _enemyController.BossDied -= OnBossDied;
     }
 
     private void OnFireflyExplosionStarted()

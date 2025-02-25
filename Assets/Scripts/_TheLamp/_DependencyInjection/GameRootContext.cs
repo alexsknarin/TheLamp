@@ -336,7 +336,7 @@ public class GameRootContext : MonoBehaviour
         // Camera Shake Test
         _cameraShakeEventListener = new CameraShakeEventListener(
             _gameModel, 
-            // _enemyController, 
+            _waveEnemyDirector, 
             _cameraShakeService, 
             _bossCameraShakeFactory);
         _disposables.Add(_cameraShakeEventListener);
