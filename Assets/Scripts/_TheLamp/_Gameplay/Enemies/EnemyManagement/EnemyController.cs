@@ -37,7 +37,7 @@ public class EnemyController : MonoBehaviour, IInitializable
     private FEnemiesLampAttackHandler _enemiesLampAttackHandler;
     private EnemySpawner _enemySpawner;
     private EnemyAttacker _enemyAttacker;
-    private EnemiesFireflyExploder _enemiesFireflyExploder;
+    private FireflyEnemiesExploder _fireflyEnemiesExploder;
     private List<ITickable> _tickables;
     private bool _isGameActive = false;
     private int _enemiesKilled;
@@ -128,13 +128,13 @@ public class EnemyController : MonoBehaviour, IInitializable
         );
         _tickables.Add(_enemyAttacker);
         
-        _enemiesFireflyExploder = new EnemiesFireflyExploder(
+        _fireflyEnemiesExploder = new FireflyEnemiesExploder(
             _enemies, 
             _fireflyExplosion,
             _gameConfigService.GameConfig.FireflyExplosionRadius,
             _gameConfigService.GameConfig.FireflyExplosionDuration
         );
-        _tickables.Add(_enemiesFireflyExploder);
+        _tickables.Add(_fireflyEnemiesExploder);
         
         _isWaveInitialized = false;
         
@@ -300,7 +300,7 @@ public class EnemyController : MonoBehaviour, IInitializable
         {
             return;
         }
-        _enemiesFireflyExploder.StartExplosion(enemy);
+        _fireflyEnemiesExploder.StartExplosion(enemy);
         FireflyExplosionStarted?.Invoke();
     }
 

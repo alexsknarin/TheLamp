@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemiesFireflyExploder : ITickable
+public class FireflyEnemiesExploder : ITickable
 {
     private EnemyBase _explosionSource;
     private Vector3 _explosionPosition;
@@ -13,7 +13,7 @@ public class EnemiesFireflyExploder : ITickable
     private float _fireflyExplosionRadius;
     private float _duration;
 
-    public EnemiesFireflyExploder(List<EnemyBase> enemies, FireflyExplosion fireflyExplosion, float fireflyExplosionRadius, float duration)
+    public FireflyEnemiesExploder(List<EnemyBase> enemies, FireflyExplosion fireflyExplosion, float fireflyExplosionRadius, float duration)
     {
         _enemies = enemies;
         _fireflyExplosion = fireflyExplosion;
@@ -25,7 +25,6 @@ public class EnemiesFireflyExploder : ITickable
     {
         _explosionSource = explosionSource;
         _explosionPosition = explosionSource.transform.position;
-        // _fireflyExplosion.Play(_explosionPosition, _fireflyExplosionRadius * 2, _duration); 
         _isExploding = true;
         _localTime = 0;
     }

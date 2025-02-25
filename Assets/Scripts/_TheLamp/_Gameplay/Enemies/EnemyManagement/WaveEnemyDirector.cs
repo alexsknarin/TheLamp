@@ -12,6 +12,7 @@ public class WaveEnemyDirector : MonoBehaviour, IInitializable
     private List<IStickableWithLamp> _stickedEnemies = new ();
     private int _enemiesKilledCount = 0;
     private FLampAttacker _lampAttacker;
+    private FireflyExplosionEnemyDamager _fireflyExplosionEnemyDamager;
     [SerializeField] private bool _lampBlocked = false;
     private FEnemyAttacker _enemyAttacker;
     private WaitForSeconds _waitAfterGameOver = new (1f);
@@ -48,6 +49,8 @@ public class WaveEnemyDirector : MonoBehaviour, IInitializable
         _spawnQueue = _spawnQueueGenerator.Generate();
         _lampAttacker = new FLampAttacker();
         _enemyAttacker = new FEnemyAttacker(_gameConfigService.GameConfig.MaxAggressionLevel);
+        _fireflyExplosionEnemyDamager = new FireflyExplosionEnemyDamager(_gameConfigService);
+        _fireflyExplosionEnemyDamager.Initialize();
         
         _waitToDeactivateEnemies = new WaitForSeconds(_gameConfigService.GameConfig.GameoverInStageDuration);
         
@@ -234,6 +237,7 @@ public class WaveEnemyDirector : MonoBehaviour, IInitializable
                 Debug.Log("BOOOOOOOOOOOOOOMMMMMM!!!!!");
                 ExplodableEnemyDeactivated?.Invoke(enemy);
                 FireflyExplosionStarted?.Invoke();
+                _fireflyExplosionEnemyDamager.StartExplosion(enemy.transform.position, _enemies);
             }
         }
     }
@@ -252,13 +256,12 @@ public class WaveEnemyDirector : MonoBehaviour, IInitializable
 
     private void OnEnemyAttackStarted(CollidableEnemy enemy)
     {
-        // TODO: add to damageables
         EnemyAttackStarted?.Invoke(enemy);
     }
 
     private void Update()
     {
-        // TODO: enable -disable when not needed (between waves)
         _enemyAttacker.Tick(Time.deltaTime);
+        _fireflyExplosionEnemyDamager.Tick(Time.deltaTime);
     }
 }
