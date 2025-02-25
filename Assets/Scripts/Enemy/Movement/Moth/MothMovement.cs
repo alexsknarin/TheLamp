@@ -47,7 +47,7 @@ public class MothMovement : EnemyMovement
 
     public override void Initialize()
     {
-        Construct(new TMPLampPositionProviderService());
+        // Construct(new TMPLampPositionProviderService());
         
         _isDead = false;
         _isCollided = false;

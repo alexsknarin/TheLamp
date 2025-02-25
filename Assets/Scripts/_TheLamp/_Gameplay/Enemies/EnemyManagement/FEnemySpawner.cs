@@ -7,7 +7,7 @@ public class FEnemySpawner: ITickable, IDisposable
     private EnemyQueue _enemyQueue;
     private float _firstEnemySpawnDelay = 0.5f; // TODO: move to config
     // TODO: find a way to make it work without a need to keep the enemy list
-    // spawner should spawn enemies and raise event with enemy 
+    // spawner should spawn enemies and raise event with enemy only
     private List<FEnemy> _activeEnemies; 
 
     private int _currentEnemyIndex;

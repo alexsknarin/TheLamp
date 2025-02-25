@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-// TODO: find out how to stop the wave
-// TODO: implement WaveEnded event
 public class FEnemyAttacker: ITickable
 {
     // Dependencies

@@ -10,7 +10,7 @@ using UnityEngine.Serialization;
 public class EnemyController : MonoBehaviour, IInitializable
 {
     [Header("------ Enemy Prefabs -------")]
-    [SerializeField] private EnemyPoolSO _enemyPool;
+    // [SerializeField] private EnemyPoolSO _enemyPool;
     [Header("------ Boss Prefabs -------")]
     [SerializeField] private BossBase _waspBoss;
     [SerializeField] private BossBase _megamothlingBoss;
@@ -35,9 +35,9 @@ public class EnemyController : MonoBehaviour, IInitializable
     // in this case all other enemies should stop attacking - TODO: refactor this
     private List<EnemyBase> _ladybugsPatrolling;
     private FEnemiesLampAttackHandler _enemiesLampAttackHandler;
-    private EnemySpawner _enemySpawner;
-    private EnemyAttacker _enemyAttacker;
-    private FireflyEnemiesExploder _fireflyEnemiesExploder;
+    // private EnemySpawner _enemySpawner;
+    // private EnemyAttacker _enemyAttacker;
+    // private FireflyEnemiesExploder _fireflyEnemiesExploder;
     private List<ITickable> _tickables;
     private bool _isGameActive = false;
     private int _enemiesKilled;
@@ -77,7 +77,7 @@ public class EnemyController : MonoBehaviour, IInitializable
         Enemy.EnemyDeactivated -= OnEnemyDeactivated;
         Enemy.EnemyDeactivated -= CheckForFireflyExplosion;
         LampStickZoneCollisionHandler.CollidedWithStickyEnemyStatic -= UpdateLadybugsOnScreen;
-        _enemySpawner.BossSpawned -= OnBossSpawned;
+        // _enemySpawner.BossSpawned -= OnBossSpawned;
         BossBase.SpreadTriggering -= OnSpreadTriggering;
         BossBase.BossDied -= OnBossDied;
     }
@@ -89,8 +89,8 @@ public class EnemyController : MonoBehaviour, IInitializable
         _spawnQueue = _spawnQueueGenerator.Generate();
         
         // TODO: use interfaces to build these lists
-        _enemyPool.Construct(_lampPositionProviderService);
-        _enemyPool.Initialize();
+        // _enemyPool.Construct(_lampPositionProviderService);
+        // _enemyPool.Initialize();
         _enemies = new List<EnemyBase>();
         _ladybugsPatrolling = new List<EnemyBase>();
         _enemiesReadyToAttack = new List<EnemyBase>();
@@ -104,37 +104,37 @@ public class EnemyController : MonoBehaviour, IInitializable
 
         _tickables = new List<ITickable>();
         // Create enemy spawner
-        _enemySpawner = new EnemySpawner(
-            _spawnQueue, 
-            _enemies, 
-            _enemyPool,
-            _waspBoss,
-            _megamothlingBoss,
-            _megabeetleBoss,
-            _dragonflyBoss,
-            _firstEnemySpawnDelay
-        );
-        _tickables.Add(_enemySpawner);
+        // _enemySpawner = new EnemySpawner(
+            // _spawnQueue, 
+            // _enemies, 
+            // _enemyPool,
+            // _waspBoss,
+            // _megamothlingBoss,
+            // _megabeetleBoss,
+            // _dragonflyBoss,
+            // _firstEnemySpawnDelay
+        // );
+        // _tickables.Add(_enemySpawner);
         
         // And subcribe to its events
-        _enemySpawner.BossSpawned += OnBossSpawned;
+        // _enemySpawner.BossSpawned += OnBossSpawned;
         
-        _enemyAttacker = new EnemyAttacker(
-            _spawnQueue, 
-            _enemies, 
-            _enemiesReadyToAttack, 
-            _ladybugsPatrolling,
-            _maxAggressionLevel
-        );
-        _tickables.Add(_enemyAttacker);
+        // _enemyAttacker = new EnemyAttacker(
+            // _spawnQueue, 
+            // _enemies, 
+            // _enemiesReadyToAttack, 
+            // _ladybugsPatrolling,
+            // _maxAggressionLevel
+        // );
+        // _tickables.Add(_enemyAttacker);
         
-        _fireflyEnemiesExploder = new FireflyEnemiesExploder(
-            _enemies, 
-            _fireflyExplosion,
-            _gameConfigService.GameConfig.FireflyExplosionRadius,
-            _gameConfigService.GameConfig.FireflyExplosionDuration
-        );
-        _tickables.Add(_fireflyEnemiesExploder);
+        // _fireflyEnemiesExploder = new FireflyEnemiesExploder(
+            // _enemies, 
+            // _fireflyExplosion,
+            // _gameConfigService.GameConfig.FireflyExplosionRadius,
+            // _gameConfigService.GameConfig.FireflyExplosionDuration
+        // );
+        // _tickables.Add(_fireflyEnemiesExploder);
         
         _isWaveInitialized = false;
         
@@ -181,10 +181,10 @@ public class EnemyController : MonoBehaviour, IInitializable
         // Wait for 5 seconds, call enemies to spread and the return them all to the pool
         StartCoroutine(SpreadEnemiesAfterGameOver());
         // Disable boss
-        if (_enemyAttacker.IsBossActive)
-        {
-            _enemySpawner.Boss.SetGameOver();
-        }
+        // if (_enemyAttacker.IsBossActive)
+        // {
+            // _enemySpawner.Boss.SetGameOver();
+        // }
     }
 
     public void Restart()
@@ -236,8 +236,8 @@ public class EnemyController : MonoBehaviour, IInitializable
 
     private void SetupWave(int waveNum)
     {
-        _enemySpawner.StartWave(waveNum);
-        _enemyAttacker.StartWave(waveNum);
+        // _enemySpawner.StartWave(waveNum);
+        // _enemyAttacker.StartWave(waveNum);
         _enemiesKilled = 0;
         _isWaveInitialized = true;
     }
@@ -255,10 +255,10 @@ public class EnemyController : MonoBehaviour, IInitializable
         }
         
         // Bosses
-        if (_enemyAttacker.IsBossActive)
-        {
-            _enemySpawner.Boss.Reset();
-        }
+        // if (_enemyAttacker.IsBossActive)
+        // {
+            // _enemySpawner.Boss.Reset();
+        // }
     }
 
     private void Update()
@@ -270,11 +270,11 @@ public class EnemyController : MonoBehaviour, IInitializable
                 tickable.Tick(Time.deltaTime);
             }
             
-            if (_enemiesKilled == _enemySpawner.EnemiesWaveCount)
-            {
-                _isWaveInitialized = false;
-                WaveEnded?.Invoke();
-            }
+            // if (_enemiesKilled == _enemySpawner.EnemiesWaveCount)
+            // {
+                // _isWaveInitialized = false;
+                // WaveEnded?.Invoke();
+            // }
         }
     }
     
@@ -300,7 +300,7 @@ public class EnemyController : MonoBehaviour, IInitializable
         {
             return;
         }
-        _fireflyEnemiesExploder.StartExplosion(enemy);
+        // _fireflyEnemiesExploder.StartExplosion(enemy);
         FireflyExplosionStarted?.Invoke();
     }
 
@@ -316,7 +316,7 @@ public class EnemyController : MonoBehaviour, IInitializable
     private void OnBossSpawned(BossBase boss)
     {
         boss.Play();
-        _enemyAttacker.ActivateBoss(boss); // Boss appearance should stop any ongoing attack
+        // _enemyAttacker.ActivateBoss(boss); // Boss appearance should stop any ongoing attack
         BossSpawned?.Invoke(boss);
     }
 
@@ -330,9 +330,9 @@ public class EnemyController : MonoBehaviour, IInitializable
 
     private void OnBossDied()
     {
-        BossDied?.Invoke(_enemySpawner.Boss);
-        _enemyAttacker.DeactivateBoss();
-        _enemies.Remove(_enemySpawner.Boss);
+        // BossDied?.Invoke(_enemySpawner.Boss);
+        // _enemyAttacker.DeactivateBoss();
+        // _enemies.Remove(_enemySpawner.Boss);
         _enemiesKilled++;
     }
 }
