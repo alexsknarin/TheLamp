@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 // TODO: Remeake without MONOBHEAVIOR ??? SO + Tickable - after bosses are made into prefabs
 // Settings to configs
@@ -15,6 +16,7 @@ public class EnemyController : MonoBehaviour, IInitializable
     [SerializeField] private BossBase _megamothlingBoss;
     [SerializeField] private BossBase _megabeetleBoss;
     [SerializeField] private BossBase _dragonflyBoss;
+    [FormerlySerializedAs("_fireflyExplosionView")]
     [Header("------ Explosions -------")]
     [SerializeField] private FireflyExplosion _fireflyExplosion;
     [Header("---- Waves Generation ------")]

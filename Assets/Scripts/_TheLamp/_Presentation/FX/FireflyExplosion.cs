@@ -1,8 +1,7 @@
 using UnityEngine;
 
-public class FireflyExplosion : MonoBehaviour
+public class FireflyExplosion : MonoBehaviour, IInitializable
 {
-    // TODO: redesign as Gameplay VIEW
     [SerializeField] private AnimationCurve _explosionCurve;
     [SerializeField] private AnimationCurve _explosionMaterialCurve;
     [SerializeField] private MeshRenderer _meshRenderer;
@@ -11,22 +10,26 @@ public class FireflyExplosion : MonoBehaviour
     private float _baseScale = 1;
     private float _localTime;
     private float _duration;
+    
+    public void Counstruct(float explosionRadius, float duration)
+    {
+        _baseScale = explosionRadius * 2;
+        _duration = duration;
+    }
 
-    public void Play(Vector3 position, float radius, float duration)
+    public void Initialize()
+    {
+        _material = _meshRenderer.material; // TODO: move to Initialize
+        enabled = false;
+    }
+
+    public void Play(Vector2 position)
     {
         transform.position = position;
         gameObject.SetActive(true);
         _material.SetFloat("_ExplosionPhase", 0);
-        _baseScale = radius;
-        _duration = duration;
         _localTime = 0;
         enabled = true;
-    }
-
-    private void Awake()
-    {
-        _material = _meshRenderer.material; // TODO: move to Initialize
-        enabled = false;
     }
 
     private void Update()

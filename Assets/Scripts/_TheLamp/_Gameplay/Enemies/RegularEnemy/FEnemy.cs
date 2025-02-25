@@ -12,34 +12,27 @@ public abstract class FEnemy: MonoBehaviour, IInitializable, IDamageable, IPoola
     public bool IsDead { get; protected set; }
     public abstract void Initialize();
     public abstract void Play();
-
     public abstract void ReceiveDamage(int damageAmount);
     public abstract void Attack();
     public abstract void Spread();
     public abstract void DoDeath();
-
     public virtual void SetObjectPool(ObjectPool<FEnemy> pool)
     {
         _objectPool = pool;
     }
-
     // Common event handlers 
-
     protected void OnReadyToAttackStateStarted()
     {
         _isInAttackReadyMovementState = true;
     }
-
     protected void OnReadyToAttackStateEnded()
     {
         _isInAttackReadyMovementState = false;
     }
-
     protected void OnDeathStateEnded()
     {
         _objectPool.Release(this);
     }
-
     public void ReturnToPool()
     {
         _objectPool.Release(this);

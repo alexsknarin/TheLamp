@@ -70,6 +70,8 @@ public class GameRootContext : MonoBehaviour
     private PlayerAttackViewModel _playerAttackViewModel;
     private PlayerUpgradeViewModel _playerUpgradeViewModel;
     private GameOverViewModel _gameOverViewModel;
+    private FIreflyExplosionViewModel _fireflyExplosionViewModel;
+    
     private HapticFeedbackEventListener _hapticFeedbackEventListener;
     private LightningFlashEventsListener _lightningFlashEventsListener;
     private AnalyticsEventListener _analyticsEventListener;
@@ -83,9 +85,12 @@ public class GameRootContext : MonoBehaviour
     private SpiderMovementStateFactory _spiderMovementStateFactory;
     private LadybugMovementStateFactory _ladybugMovementStateFactory;
     private FEnemyFactory _enemyFactory;
+    private FXFactory _fxFactory;   
     
     private FEnemyPool _enemyPool;
     private FEnemySpawner _enemySpawner;
+    
+    private FireflyExplosionView _fireflyExplosionView;
     
     private List<IDisposable> _disposables = new();
     private List<ITickable> _tickables = new();
@@ -214,6 +219,8 @@ public class GameRootContext : MonoBehaviour
         );
         _enemyPool = new FEnemyPool(_enemyFactory);
         _enemyPool.Initialize();
+        
+        _fxFactory = new FXFactory(_gameConfigService);
     }
 
     private void ControllersSetup()
@@ -271,6 +278,11 @@ public class GameRootContext : MonoBehaviour
         _disposables.Add(_playerGameplayViewModel);
         _playerUpgradeViewModel = new PlayerUpgradeViewModel(_gameModel, _gameConfigService);
         _gameOverViewModel = new GameOverViewModel(_gameModel);
+       
+        _fireflyExplosionViewModel = new FIreflyExplosionViewModel(_waveEnemyDirector);
+        _fireflyExplosionViewModel.Initialize();
+        _disposables.Add(_fireflyExplosionViewModel);
+        
     }
 
     private void BindViews()
@@ -306,6 +318,10 @@ public class GameRootContext : MonoBehaviour
         
         _gameOverViewUI.Bind(_gameOverViewModel);
         _gameOverViewUI.Initialize();
+        
+        _fireflyExplosionView = new FireflyExplosionView(_fxFactory, _fireflyExplosionViewModel);
+        _fireflyExplosionView.Initialize();
+        _disposables.Add(_fireflyExplosionView);
     }
 
     private void EventListenersSetup()

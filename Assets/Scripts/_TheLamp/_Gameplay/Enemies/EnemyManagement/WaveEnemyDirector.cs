@@ -35,6 +35,9 @@ public class WaveEnemyDirector : MonoBehaviour, IInitializable
     public event Action<IStickableWithLamp> StickyEnemySpawned;
     public event Action LampBlocked;
     public event Action LampUnblocked;
+    public event Action ExplodableEnemySpawned;
+    public event Action<FEnemy> ExplodableEnemyDeactivated;
+    
     
     public void Initialize()
     {
@@ -222,6 +225,13 @@ public class WaveEnemyDirector : MonoBehaviour, IInitializable
             {
                 Debug.LogError("WaveEnemyDirector: Enemy not found in list");
             }
+
+            if (enemy is IExplodable)
+            {
+                Debug.Log("Enemy is explodable");
+                Debug.Log("BOOOOOOOOOOOOOOMMMMMM!!!!!");
+                ExplodableEnemyDeactivated?.Invoke(enemy);
+            }
         }
     }
 
@@ -230,6 +240,10 @@ public class WaveEnemyDirector : MonoBehaviour, IInitializable
         if (enemy is IStickableWithLamp)
         {
             StickyEnemySpawned?.Invoke((IStickableWithLamp)enemy);
+        }
+        if (enemy is IExplodable)
+        {
+            ExplodableEnemySpawned?.Invoke();
         }
     }
 

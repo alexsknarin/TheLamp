@@ -2,8 +2,8 @@ using UnityEngine;
 
 public abstract class CollidableEnemy: FEnemy, ICollidableWithLamp
 {
-    public virtual  Vector2 Position { get; }
-    public virtual float Radius { get; }
+    public virtual  Vector2 Position { get; protected set; }
+    public virtual float Radius { get; protected set; }
     public bool IsCollided { get; protected set; }
     public CollidableState CollisionState { get; protected set; }
     
