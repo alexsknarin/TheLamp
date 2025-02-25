@@ -328,7 +328,7 @@ public class GameRootContext : MonoBehaviour
     {
         _hapticFeedbackEventListener = new HapticFeedbackEventListener(
             _hapticFeedbackService,
-            // _enemyController,
+            _waveEnemyDirector,
             _gameModel
         );
         _disposables.Add(_hapticFeedbackEventListener);
