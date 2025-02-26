@@ -63,6 +63,11 @@ public class FEnemySpawner: ITickable, IDisposable
         _spawnCooldown = _firstEnemySpawnDelay;
         _isWaveActive = true;
     }
+    
+    public void StopWave()
+    {
+        _isWaveActive = false;
+    }
 
     public void Tick(float deltaTime)
     {

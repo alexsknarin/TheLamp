@@ -27,6 +27,15 @@ public class LampStickyDetectionService : MonoBehaviour, IInitializable
         _combinedStickRadius = _stickyRadius + _collisionThreshold;
         _blockedAttacks = false;
     }
+    
+    public void Reset()
+    {
+        _stickables.Clear();
+        _stickablesToRemove.Clear();
+        _stickableCount = 0;
+        _blockedAttacks = false;
+        enabled = false;
+    }
 
     public void AddStickable(IStickableWithLamp stickableWithLamp)
     {

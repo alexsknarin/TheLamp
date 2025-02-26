@@ -18,7 +18,6 @@ public class GameModel : IDisposable, ILampDeadEventProviderService
     private readonly PlayerAttackCooldownHandler _playerAttackCooldownHandler;
     private readonly PlayerEnemyInteractionMediator _playerEnemyInteractionMediator;
     // private PlayerCollidersPropertyController _playerCollidersPropertyController;
-    // private PlayerEnemyInteractionHandler _playerEnemyInteractionHandler;
     private readonly LampMovementController _lampMovementController;
     private readonly ScoresCollectionController _scoresCollectionController;
     private readonly LampDamageDataHandler _lampDamageDataHandler = new LampDamageDataHandler();
@@ -31,7 +30,6 @@ public class GameModel : IDisposable, ILampDeadEventProviderService
         // EnemyController enemyController, 
         PlayerAttackCooldownHandler playerAttackCooldownHandler,
         PlayerEnemyInteractionMediator playerEnemyInteractionMediator,
-        // PlayerEnemyInteractionHandler playerEnemyInteractionHandler,
         LampMovementController lampMovementController,
         ScoresCollectionController scoresCollectionController)
     {
@@ -222,6 +220,7 @@ public class GameModel : IDisposable, ILampDeadEventProviderService
         _currentPower = 1.0f;
         LampGlassDamage = _currentGameState.GlassDamageData;
         _lampDamageDataHandler.MaxHealth = _currentGameState.LampMaxHealth;
+        _scoresCollectionController.StartCollecting();
         GameStarted?.Invoke();
     }
     
@@ -245,7 +244,7 @@ public class GameModel : IDisposable, ILampDeadEventProviderService
     private void StartGameOver()
     {
         _waveEnemyDirector.HandleLampDestroyed();
-        
+        _scoresCollectionController.StopCollecting();
         CurrentGameStageState = GameStageState.GameOverIn;
         _playerAttackCooldownHandler.StopCooldown();
     }
@@ -301,7 +300,6 @@ public class GameModel : IDisposable, ILampDeadEventProviderService
                 _isAttacking = true;
                 _playerAttackCooldownHandler.PlayAttack();
                 LampAttackStarted?.Invoke(CurrentPower);
-                // _playerEnemyInteractionHandler.LampAttack(); TODO:
                 _waveEnemyDirector.HandleAttackButtonClicked(CurrentPower);
             }
         }
@@ -433,8 +431,9 @@ public class GameModel : IDisposable, ILampDeadEventProviderService
         CurrentGameState = _gameStateProviderService.Get();
         Debug.Log("New GameState Generated");
         Debug.Log($"Wave: {CurrentGameState.Wave}");
-        // _playerEnemyInteractionHandler.Reset();
-        // _enemyController.Restart();
+        _scoresCollectionController.StopCollecting();
+        _playerEnemyInteractionMediator.Reset();
+        _waveEnemyDirector.Reset();
         _lampMovementController.Reset();
         StartGame();
     }

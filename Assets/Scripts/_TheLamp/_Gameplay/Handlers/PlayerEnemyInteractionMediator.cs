@@ -47,11 +47,17 @@ public class PlayerEnemyInteractionMediator: IInitializable, IDisposable
         _lampStickyDetectionService.EnemySticked -= OnEnemySticked;
         _lampStickyDetectionService.EnemyUnSticked -= OnEnemyUnSticked;
     }
-
+    
     public void SetAttackZoneRadius(float radius)
     {
         _lampCollisionDetectionService.SetAttackZoneRadius(radius);
         _lampStickyDetectionService.SetAttackZoneRadius(radius);
+    }
+    
+    public void Reset()
+    {
+        _lampCollisionDetectionService.Reset();
+        _lampStickyDetectionService.Reset();
     }
 
     private void OnEnemyAttackStarted(CollidableEnemy enemy)

@@ -23,6 +23,14 @@ public class LampCollisionDetectionService : MonoBehaviour, IInitializable
         enabled = false;
     }
     
+    public void Reset()
+    {
+        _collidables.Clear();
+        _collidablesToRemove.Clear();
+        _collidableCount = 0;
+        enabled = false;
+    }
+    
     public void SetAttackZoneRadius(float attackZoneRadius)
     {
         _attackZoneRadius = attackZoneRadius;

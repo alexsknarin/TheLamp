@@ -103,6 +103,17 @@ public class WaveEnemyDirector : MonoBehaviour, IInitializable
         enabled = true;
     }
 
+    public void Reset()
+    {
+        ReturnAllActiveEnemiesToPool();
+        _enemies.Clear();
+        _stickedEnemies.Clear();
+        _enemySpawner.StopWave();
+        _spawnQueue = _spawnQueueGenerator.Generate();
+        _enemyAttacker.StopWave();
+        
+    }
+
     private void StopWave()
     {
         _enemyAttacker.StopWave();
@@ -194,15 +205,18 @@ public class WaveEnemyDirector : MonoBehaviour, IInitializable
     
     private void ReturnAllActiveEnemiesToPool()
     {
+        enabled = false;
         Debug.Log("Return all enemies to pool CALLED");
         // Enemies
         if (_enemies.Count > 0)
         {
             foreach (var enemy in _enemies)
             {
+                Debug.Log("Return enemy to pool:" + enemy.gameObject.name);
                 enemy.ReturnToPool();
             }            
         }
+        _enemies.Clear();
         
         // Bosses
         // if (_enemyAttacker.IsBossActive)

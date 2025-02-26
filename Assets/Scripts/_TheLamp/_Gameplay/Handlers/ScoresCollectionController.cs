@@ -2,6 +2,8 @@ using System;
 
 public class ScoresCollectionController: IInitializable, IDisposable
 {
+    public bool _isActive = false;
+    
     private IGameConfigService _gameConfigService;
     private IEnemyDeactivatedProvider _enemyDeactivatedProvider;
     
@@ -12,6 +14,16 @@ public class ScoresCollectionController: IInitializable, IDisposable
     {
         _gameConfigService = gameConfigService;
         _enemyDeactivatedProvider = enemyDeactivatedProvider;
+    }
+    
+    public void StartCollecting()
+    {
+        _isActive = true;
+    }
+    
+    public void StopCollecting()
+    {
+        _isActive = false;
     }
     
     public event Action<int> ScoreChanged;
@@ -29,6 +41,11 @@ public class ScoresCollectionController: IInitializable, IDisposable
     // Event Handle Methods
     private void OnEnemyDeactivated(FEnemy enemy)
     {
+        if (!_isActive)
+        {
+            return;
+        }
+        
         int score = 0;
         
         var enemyType = EnemyTypeLibrary.TypeEnemyDictionary[enemy.GetType()]; 
