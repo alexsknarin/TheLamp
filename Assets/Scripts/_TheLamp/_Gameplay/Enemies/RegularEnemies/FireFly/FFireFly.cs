@@ -72,20 +72,19 @@ public class FFireFly : CollidableEnemy, IExplodable
         {
             float x = _movement.Position2D.x;
             float y = _movement.Position2D.y;
-            if (_movement.SideDirection < 0)
+            if (y < 0)
             {
-                if ((x < 0 && y < 0.30f) || (x > 0 && y < 1.65f))
-                {
-                    return true; 
-                }
+                return true;
             }
-            if (_movement.SideDirection > 0)
-            {
-                if ((x > 0 && y < 0.30f) || (x < 0 && y < 1.65f))
-                {
-                    return true; 
-                }
-            }
+            
+            // if ((_movement.SideDirection < 0) && (x > 0))
+            // { 
+            //     return true; 
+            // }
+            // if ((_movement.SideDirection > 0) && (x < 0))
+            // {
+            //     return true; 
+            // }
         }
         return false;
     }
