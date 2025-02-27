@@ -117,6 +117,7 @@ public class WaveEnemyDirector : MonoBehaviour, IInitializable
     private void StopWave()
     {
         _enemyAttacker.StopWave();
+        _enemySpawner.StopWave();
         enabled = false;
         WaveEnded?.Invoke();
     }
@@ -128,6 +129,9 @@ public class WaveEnemyDirector : MonoBehaviour, IInitializable
     
     public void HandleLampDestroyed()
     {
+        _enemyAttacker.StopWave();
+        _enemySpawner.StopWave();
+
         foreach (var enemy in _enemies)
         {
             if (enemy is IStickableWithLamp)
@@ -135,10 +139,8 @@ public class WaveEnemyDirector : MonoBehaviour, IInitializable
                 ((IStickableWithLamp)enemy).HandleLampDestroyed();
             }
         }
-        _enemyAttacker.StopWave();
         StartCoroutine(SpreadEnemiesAfterGameOver());
         StartCoroutine(DeactivateEnemiesAfterGameOver());
-        
         enabled = false;
     }
 
