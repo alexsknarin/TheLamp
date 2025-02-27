@@ -79,11 +79,11 @@ public class FFly : CollidableEnemy
                 return true;
             }
             
-            if ((_movement.SideDirection < 0) && (x > 0.2f))
+            if ((_movement.SideDirection < 0) && (x > 0.3f))
             { 
                 return true; 
             }
-            if ((_movement.SideDirection > 0) && (x < -0.2f))
+            if ((_movement.SideDirection > 0) && (x < -0.3f))
             {
                 return true; 
             }
