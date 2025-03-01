@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class FSpider : CollidableEnemy
+public class FSpider : CollidableEnemy, ISpreadable
 {
 [Header("-- Attributes --")]
     [SerializeField] private int _maxHealth = 1;
@@ -81,7 +81,7 @@ public class FSpider : CollidableEnemy
         _movement.TriggerAttack();
     }
 
-    public override void Spread()
+    public void Spread()
     {
         _movement.TriggerSpread();
     }

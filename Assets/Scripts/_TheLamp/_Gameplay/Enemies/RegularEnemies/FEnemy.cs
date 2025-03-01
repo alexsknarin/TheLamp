@@ -14,7 +14,6 @@ public abstract class FEnemy: MonoBehaviour, IInitializable, IDamageable, IPoola
     public abstract void Play();
     public abstract void ReceiveDamage(int damageAmount);
     public abstract void Attack();
-    public abstract void Spread();
     public abstract void DoDeath();
     public virtual void SetObjectPool(ObjectPool<FEnemy> pool)
     {

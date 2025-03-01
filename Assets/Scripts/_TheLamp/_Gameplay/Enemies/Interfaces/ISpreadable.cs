@@ -1,4 +1,4 @@
 public interface ISpreadable
 {
-    public void TriggerSpread();
+    public void Spread();
 }

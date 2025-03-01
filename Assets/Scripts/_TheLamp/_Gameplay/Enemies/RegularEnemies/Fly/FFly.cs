@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.Pool;
 
-public class FFly : CollidableEnemy
+public class FFly : CollidableEnemy, ISpreadable
 {
     [Header("-- Attributes --")]
     [SerializeField] private int _maxHealth = 1;
@@ -98,7 +98,7 @@ public class FFly : CollidableEnemy
         _movement.TriggerAttack();
     }
 
-    public override void Spread()
+    public void Spread()
     {
         _movement.TriggerSpread();
     }

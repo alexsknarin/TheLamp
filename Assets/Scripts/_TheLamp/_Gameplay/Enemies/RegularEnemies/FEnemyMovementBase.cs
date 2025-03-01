@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public abstract class FEnemyMovementBase : MonoBehaviour, IInitializable, IEnemyMovable, ISpreadable
+public abstract class FEnemyMovementBase : MonoBehaviour, IInitializable, IEnemyMovable, ISpreadableMovement
 {
     protected bool _isAttacking = false;
     public virtual int SideDirection { get; protected set; }

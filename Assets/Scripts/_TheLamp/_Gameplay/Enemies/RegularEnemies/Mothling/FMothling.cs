@@ -4,7 +4,7 @@ using UnityEngine.Pool;
 using UnityEngine.Rendering;
 
 [RequireComponent(typeof(FMothlingMovement), typeof(FMothlingPresentation))]   
-public sealed class FMothling: CollidableEnemy
+public sealed class FMothling: CollidableEnemy, ISpreadable
 {
     [Header("-- Attributes --")]
     [SerializeField] private int _maxHealth = 1;
@@ -87,7 +87,7 @@ public sealed class FMothling: CollidableEnemy
         _movement.TriggerAttack();
     }
 
-    public override void Spread()
+    public void Spread()
     {
         _movement.TriggerSpread();
     }

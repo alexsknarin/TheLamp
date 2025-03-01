@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class FMoth : CollidableEnemy
+public class FMoth : CollidableEnemy, ISpreadable
 {
    [Header("-- Attributes --")]
     [SerializeField] private int _maxHealth = 2;
@@ -83,7 +83,7 @@ public class FMoth : CollidableEnemy
         _movement.TriggerAttack();
     }
 
-    public override void Spread()
+    public void Spread()
     {
         _movement.TriggerSpread();
     }

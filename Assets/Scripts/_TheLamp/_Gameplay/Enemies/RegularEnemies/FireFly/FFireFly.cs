@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class FFireFly : CollidableEnemy, IExplodable
+public class FFireFly : CollidableEnemy, IExplodable, ISpreadable
 {
     [Header("-- Attributes --")]
     [SerializeField] private int _maxHealth = 1;
@@ -96,7 +96,7 @@ public class FFireFly : CollidableEnemy, IExplodable
         _movement.TriggerAttack();
     }
 
-    public override void Spread()
+    public void Spread()
     {
         _movement.TriggerSpread();
     }

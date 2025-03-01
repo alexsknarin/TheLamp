@@ -195,7 +195,10 @@ public class WaveEnemyDirector : MonoBehaviour, IInitializable
     {
         foreach (var enemy in _enemies)
         {
-            enemy.Spread();
+            if (enemy is ISpreadable)
+            {
+                ((ISpreadable)enemy).Spread();
+            }
         }
     }
     

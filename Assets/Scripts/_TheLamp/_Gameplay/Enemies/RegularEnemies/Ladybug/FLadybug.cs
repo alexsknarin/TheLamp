@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class FLadybug : FEnemy, IStickableWithLamp
+public class FLadybug : FEnemy, IStickableWithLamp, ISpreadable
 {
     [SerializeField] private int _maxHealth = 7;
     [SerializeField] private int _currentHealth;
@@ -85,7 +85,7 @@ public class FLadybug : FEnemy, IStickableWithLamp
         _movement.TriggerAttack();
     }
 
-    public override void Spread()
+    public void Spread()
     {
         _movement.TriggerSpread();
     }
