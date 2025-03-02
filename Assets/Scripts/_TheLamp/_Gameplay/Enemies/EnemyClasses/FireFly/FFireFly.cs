@@ -77,14 +77,15 @@ public class FFireFly : CollidableEnemy, IExplodable, ISpreadable
                 return true;
             }
             
-            if ((_movement.SideDirection < 0) && (x > 0.25f))
+            if ((_movement.SideDirection < 0) && (x > 0.05f))
             { 
                 return true; 
             }
-            if ((_movement.SideDirection > 0) && (x < 0.25f))
+            if ((_movement.SideDirection > 0) && (x < 0.05f))
             {
                 return true; 
             }
+            return false;
         }
         return false;
     }

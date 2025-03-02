@@ -142,10 +142,9 @@ public class FMegamothlingMovement : FEnemyMovementBase, IPositionDirectionProvi
 
     public override void Play()
     {
-        Debug.Log(" ---------------- FMegamothlingMovement: Play");
-        _sideDirection = RandomDirection.Generate();
+        _sideDirection = 1; //RandomDirection.Generate();
         _depthSideDirection = RandomDirection.Generate();
-        Position2D = GenerateSpawnPosition(_sideDirection); // TODO: check
+        Position2D = GenerateSpawnPosition(-1); // TODO: check
         
         _position3D = Position2D;
         transform.position = _position3D;
@@ -208,7 +207,6 @@ public class FMegamothlingMovement : FEnemyMovementBase, IPositionDirectionProvi
         // Debug only
         _prevPosition = _position3D;
         _prevPosSmooth = transform.position;
-
         
         _stateMachine.Tick();
         _currentState = (RegularEnemyMovementStateBase)_stateMachine.CurrentState;
@@ -289,7 +287,6 @@ public class FMegamothlingMovement : FEnemyMovementBase, IPositionDirectionProvi
     private Vector2 GenerateSpawnPosition(int direction)
     {
         Vector2 spawnPosition = (Random.insideUnitCircle * _spawnAreaSize) + _spawnAreaCenter;
-        spawnPosition = _spawnAreaCenter;
         spawnPosition.x *= direction;
         return spawnPosition;
     }

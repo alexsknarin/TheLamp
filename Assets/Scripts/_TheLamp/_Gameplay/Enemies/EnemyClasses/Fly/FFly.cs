@@ -87,6 +87,7 @@ public class FFly : CollidableEnemy, ISpreadable
             {
                 return true; 
             }
+            return false;
         }
         return false;
     }

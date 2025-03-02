@@ -11,7 +11,7 @@ public class FFlyGenericMovementEnterState: RegularEnemyMovementStateBase
     private readonly float _verticalAmplitude;
 
     // State specific attributes
-    private readonly Vector2 _invertX = new Vector2(-1, 1); // DI?
+    private readonly Vector2 _invertX = new Vector2(-1, 1); // TODO: DI?
     private Vector2 _endPos = Vector2.zero;
     private Vector2 _enterDirection;
     private readonly float _depthMultiplier = 2f;

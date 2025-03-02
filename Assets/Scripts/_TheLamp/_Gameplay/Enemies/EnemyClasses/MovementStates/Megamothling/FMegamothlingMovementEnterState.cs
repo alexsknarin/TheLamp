@@ -9,6 +9,7 @@ public class FMegamothlingMovementEnterState : RegularEnemyMovementStateBase
     private readonly float _radius;
     private readonly float _verticalAmplitude;
     
+    private readonly Vector2 _invertX = new Vector2(-1, 1);
     private Vector2 _endPos = Vector2.zero;
     private Vector2 _enterDirection;
     private float _depthMultiplier = 2f;
@@ -38,6 +39,10 @@ public class FMegamothlingMovementEnterState : RegularEnemyMovementStateBase
         IsReadyToSwitch = false;
         
         Position2D = _positionDirectionProvider.Position2D;
+        if (Position2D.x > 0)
+        {
+            Position2D *= _invertX;
+        }
         
         float xProjectionLength = Mathf.Abs(Position2D.x);
         float enterDirectionLength = Position2D.magnitude;

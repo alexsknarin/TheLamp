@@ -547,12 +547,12 @@ MonoBehaviour:
   _verticalAmplitude: 0.93
   _spawnAreaSize: 0.5
   _spawnAreaCenter: {x: 3.6, y: -2.6}
-  _isNoiseEnabled: 1
+  _isNoiseEnabled: 0
   _noise1Frequency: 3
   _noise1Amplitude: 0.05
   _noise2Frequency: 1.33
   _noise2Amplitude: 0.22
-  _isSmoothDampEnabled: 1
+  _isSmoothDampEnabled: 0
   _smoothTime: 0.05
   _isDepthEnabled: 1
   _stateDebug: 
