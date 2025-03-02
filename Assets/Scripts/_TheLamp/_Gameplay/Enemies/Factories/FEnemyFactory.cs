@@ -233,7 +233,7 @@ public class FEnemyFactory
     {
         GameObject enemyInstance = Object.Instantiate(prefab);
         enemyInstance.GetComponent<FMegamothlingMovement>().Construct(_megamothlingMovementStateFactory);
-        // enemyInstance.GetComponent<FMothlingPresentation>().Initialize();
+        enemyInstance.GetComponent<FMegamothlingPresentation>().Initialize();
         var enemy = enemyInstance.GetComponent<FMegamothling>();
         enemy.Initialize();
         

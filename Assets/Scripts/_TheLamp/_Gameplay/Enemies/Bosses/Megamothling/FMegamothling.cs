@@ -12,6 +12,7 @@ public class FMegamothling : CollidableEnemy
     
     public event Action Started;
     public event Action Damaged;
+    public event Action<int, int> HealthChanged;
     public event Action Dead;
     public override float Radius => _collisionRadius;
     public override Vector2 Position => _movement.Position2D;
@@ -60,6 +61,7 @@ public class FMegamothling : CollidableEnemy
             Debug.Log($"Damage Received: {damageAmount}.");
             _movement.TriggerFall();
             Damaged?.Invoke();
+            HealthChanged?.Invoke(_currentHealth, _maxHealth);
         }
     }
 
