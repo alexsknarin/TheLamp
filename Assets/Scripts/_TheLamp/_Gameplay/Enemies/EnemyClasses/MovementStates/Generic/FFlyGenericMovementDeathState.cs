@@ -18,7 +18,10 @@ public class FFlyGenericMovementDeathState : RegularEnemyMovementStateBase
     private float _duration = 0.32f;
     private float _localTime;
     
-    public FFlyGenericMovementDeathState(IPositionDirectionProvider positionDirectionProvider, bool isDeathByTimer)
+    public FFlyGenericMovementDeathState(
+        IPositionDirectionProvider positionDirectionProvider, 
+        bool isDeathByTimer
+        )
     {
         _positionDirectionProvider = positionDirectionProvider;
         _isDeathByTimer = isDeathByTimer;

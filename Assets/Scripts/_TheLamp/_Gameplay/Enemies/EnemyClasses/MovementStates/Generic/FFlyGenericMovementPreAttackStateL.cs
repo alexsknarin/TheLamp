@@ -9,7 +9,7 @@ public class FFlyGenericMovementPreAttackStateL: RegularEnemyMovementStateBase
     private float _speed;
 
     // State specific attributes
-    private readonly float _duration = .35f;
+    private readonly float _duration;
     private readonly float _acceleration = 0.93f;
     private float _acceleratedSpeed;
     private Vector2 _direction;
@@ -18,12 +18,14 @@ public class FFlyGenericMovementPreAttackStateL: RegularEnemyMovementStateBase
     public FFlyGenericMovementPreAttackStateL(
         Vector3 cameraPosition,
         IPositionDirectionProvider positionDirectionProvider,
-        float speed
+        float speed,
+        float duration
     )
     {
         // _cameraPosition = cameraPosition; // TODO: enable later
         _positionDirectionProvider = positionDirectionProvider;
         _speed = speed;
+        _duration = duration;
     }
 
     public event Action Started;

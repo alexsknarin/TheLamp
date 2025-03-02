@@ -25,7 +25,9 @@ public class FFlyGenericMovementFallState: RegularEnemyMovementStateBase
         ILampPositionProviderService lampPositionProviderService,
         float radius,
         float verticalAmplitude,
-        float collisionRadius
+        float collisionRadius,
+        float bounceForceMagnitude,
+        float gravityForceMagnitude
     )
     {
         _positionDirectionProvider = positionDirectionProvider;
@@ -33,6 +35,9 @@ public class FFlyGenericMovementFallState: RegularEnemyMovementStateBase
         _radius = radius;
         _verticalAmplitude = verticalAmplitude;
         _collisionRadius = collisionRadius;
+        
+        _bounceForceMagnitude = bounceForceMagnitude;
+        _gravityForceMagnitude = gravityForceMagnitude;
         
         _ySwitchDistance = -_radius * _verticalAmplitude * 1.1f;
     }

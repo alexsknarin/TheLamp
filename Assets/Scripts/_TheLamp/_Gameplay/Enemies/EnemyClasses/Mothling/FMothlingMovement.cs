@@ -6,6 +6,7 @@ using Random = UnityEngine.Random;
 public class FMothlingMovement : FEnemyMovementBase, IPositionDirectionProvider, ISpreadableMovement
 {
     [Header("-- Movement States Base Settings --")]
+    [SerializeField] private float _collisionRadius = 0.075f; // TODO: DI?
     [SerializeField] private float _speed;
     [SerializeField] private float _radius;
     [SerializeField] private float _verticalAmplitude;
@@ -24,6 +25,9 @@ public class FMothlingMovement : FEnemyMovementBase, IPositionDirectionProvider,
     private float _smoothTimeAllowed = 0;
     [Header("---- Depth Settings ----")]
     [SerializeField] bool _isDepthEnabled;
+    [Header("---- States Settings ----")]
+    [SerializeField] private float _fallBounceForce = 4f;
+    [SerializeField] private float _fallGravityForce = .2f;
     // Debug
     [SerializeField] private string _stateDebug;
     [SerializeField] private int _sideDirection = 1;
@@ -69,7 +73,15 @@ public class FMothlingMovement : FEnemyMovementBase, IPositionDirectionProvider,
     public override void Initialize()
     {
         // Create Movement States
-        _stateFactory.SetEnemyDependencies(this, _speed, _radius, _verticalAmplitude, 0.075f); // TODO: magic number
+        _stateFactory.SetEnemyDependencies(
+            this,
+            _speed,
+            _radius,
+            _verticalAmplitude,
+            _collisionRadius,
+            _fallBounceForce,
+            _fallGravityForce
+            ); // TODO: magic number
         _enterState = (FFlyGenericMovementEnterState)_stateFactory.Create(typeof(FFlyGenericMovementEnterState));
         _patrolState = (FFlyGenericMovementPatrolState)_stateFactory.Create(typeof(FFlyGenericMovementPatrolState));
         _preAttackState = (FMothlingMovementPreAttackState)_stateFactory.Create(typeof(FMothlingMovementPreAttackState));

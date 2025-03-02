@@ -10,6 +10,9 @@ public class MegamothlingMovementStateFactory
     private float _radius;
     private float _verticalAmplitude;
     private float _collisionRadius;
+    private float _preAttackDuration;
+    private float _fallBounceForce;
+    private float _fallGravityForce;
     
     public MegamothlingMovementStateFactory(
         Transform cameraTransform, 
@@ -25,7 +28,10 @@ public class MegamothlingMovementStateFactory
         float speed,
         float radius,
         float verticalAmplitude,
-        float collisionRadius
+        float collisionRadius,
+        float preAttackDuration,
+        float fallBounceForce,
+        float fallGravityForce
     )
     {
         _positionDirectionProvider = positionDirectionProvider;
@@ -33,6 +39,9 @@ public class MegamothlingMovementStateFactory
         _radius = radius;
         _verticalAmplitude = verticalAmplitude;
         _collisionRadius = collisionRadius;
+        _preAttackDuration = preAttackDuration;
+        _fallBounceForce = fallBounceForce;
+        _fallGravityForce = fallGravityForce;
     }
 
     public RegularEnemyMovementStateBase Create(Type stateType)
@@ -63,7 +72,8 @@ public class MegamothlingMovementStateFactory
             return new FFlyGenericMovementPreAttackStateL(
                 _cameraTransform.position,
                 _positionDirectionProvider,
-                _speed
+                _speed,
+                _preAttackDuration
             );
         }
         if (stateType == typeof(FFlyGenericMovementPreAttackStateR))
@@ -71,7 +81,8 @@ public class MegamothlingMovementStateFactory
             return new FFlyGenericMovementPreAttackStateR(
                 _cameraTransform.position,
                 _positionDirectionProvider,
-                _speed
+                _speed,
+                _preAttackDuration
             );
         }
         if (stateType == typeof(FMegamothlingMovementAttackState))
@@ -89,7 +100,9 @@ public class MegamothlingMovementStateFactory
                 _lampPositionProviderService,
                 _radius,
                 _verticalAmplitude,
-                _collisionRadius
+                _collisionRadius,
+                _fallBounceForce,
+                _fallGravityForce
             );
         }
         if (stateType == typeof(FMegamothlingMovementDeathState))

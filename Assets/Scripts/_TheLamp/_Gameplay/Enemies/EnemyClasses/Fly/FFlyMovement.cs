@@ -6,6 +6,7 @@ using Random = UnityEngine.Random;
 public class FFlyMovement : FEnemyMovementBase, IPositionDirectionProvider, ISpreadableMovement
 {
     [Header("-- Movement States Base Settings --")]
+    [SerializeField] private float _collisionRadius = 0.1f; // TODO: DI?
     [SerializeField] private float _speed;
     [SerializeField] private float _radius;
     [SerializeField] private float _verticalAmplitude;
@@ -28,6 +29,11 @@ public class FFlyMovement : FEnemyMovementBase, IPositionDirectionProvider, ISpr
     [SerializeField] private string _stateDebug;
     [SerializeField] private int _sideDirection = 1;
     [SerializeField] private int _depthSideDirection = 0;
+    [Header("---- States Settings ----")]
+    [SerializeField] private float _preAttackDuration = .35f;
+    [SerializeField] private float _fallBounceForce = 4f;
+    [SerializeField] private float _fallGravityForce = .2f;
+    
     
     private Vector3 _position3D;
     // Debug only
@@ -73,7 +79,18 @@ public class FFlyMovement : FEnemyMovementBase, IPositionDirectionProvider, ISpr
         Debug.Log("FFlyMovement Initializing");
         // Create Movement States
         // TODO: get collision radius from configs
-        _stateFactory.SetEnemyDependencies(this, _speed, _radius, _verticalAmplitude, _proximityOffset, _isDeathByTimer, 0.1f); // TODO: magic numbers
+        _stateFactory.SetEnemyDependencies(
+            this, 
+            _speed, 
+            _radius,
+            _verticalAmplitude,
+            _proximityOffset,
+            _isDeathByTimer,
+            _collisionRadius,
+            _preAttackDuration,
+            _fallBounceForce,
+            _fallGravityForce
+            );
         _enterState = (FFlyGenericMovementEnterState)_stateFactory.Create(typeof(FFlyGenericMovementEnterState));
         _patrolState = (FFlyGenericMovementPatrolState)_stateFactory.Create(typeof(FFlyGenericMovementPatrolState));
         _preAttackStateR = (FFlyGenericMovementPreAttackStateR)_stateFactory.Create(typeof(FFlyGenericMovementPreAttackStateR));

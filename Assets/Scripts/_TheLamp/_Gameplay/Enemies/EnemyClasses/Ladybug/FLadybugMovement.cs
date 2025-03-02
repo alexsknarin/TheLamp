@@ -5,6 +5,7 @@ using Random = UnityEngine.Random;
 public class FLadybugMovement : FEnemyMovementBase, IPositionDirectionProvider, ISpreadableMovement
 {
     [Header("-- Movement Settings --")]
+    [SerializeField] private float _collisionRadius = 0.125f; // TODO: DI?
     [SerializeField] private float _speed;
     [SerializeField] private float _radius;
     [SerializeField] private float _verticalAmplitude;
@@ -51,7 +52,7 @@ public class FLadybugMovement : FEnemyMovementBase, IPositionDirectionProvider, 
     
     public override void Initialize()
     {
-        _stateFactory.SetEnemyDependencies(this, _speed, _radius, _verticalAmplitude, 0.125f);
+        _stateFactory.SetEnemyDependencies(this, _speed, _radius, _verticalAmplitude, _collisionRadius);
         _patrolStateR = (FLadybugMovementPatrolStateR)_stateFactory.Create(typeof(FLadybugMovementPatrolStateR));
         _patrolStateL = (FLadybugMovementPatrolStateL)_stateFactory.Create(typeof(FLadybugMovementPatrolStateL));
         _preAttackStateR = (FLadybugMovementPreAttackStateR)_stateFactory.Create(typeof(FLadybugMovementPreAttackStateR));

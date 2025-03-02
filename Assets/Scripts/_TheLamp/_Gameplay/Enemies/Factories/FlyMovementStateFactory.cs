@@ -12,6 +12,9 @@ public class FlyMovementStateFactory
     private float _proximityOffset;
     private bool _isDeathByTimer;
     private float _collisionRadius;
+    private float _preAttackDuration;
+    private float _fallBounceForce;
+    private float _fallGravityForce;
 
     public FlyMovementStateFactory(
         Transform cameraTransform, 
@@ -29,7 +32,10 @@ public class FlyMovementStateFactory
         float verticalAmplitude,
         float proximityOffset,
         bool isDeathByTimer,
-        float collisionRadius
+        float collisionRadius,
+        float preAttackDuration,
+        float fallBounceForce,
+        float fallGravityForce
         )
     {
         _positionDirectionProvider = positionDirectionProvider;
@@ -39,6 +45,9 @@ public class FlyMovementStateFactory
         _proximityOffset = proximityOffset;
         _isDeathByTimer = isDeathByTimer;
         _collisionRadius = collisionRadius;
+        _preAttackDuration = preAttackDuration;
+        _fallBounceForce = fallBounceForce;
+        _fallGravityForce = fallGravityForce;
     }
     
     
@@ -71,7 +80,8 @@ public class FlyMovementStateFactory
             return new FFlyGenericMovementPreAttackStateR(
                 _cameraTransform.position,
                 _positionDirectionProvider,
-                _speed
+                _speed,
+                _preAttackDuration
                 );
         }
         if (stateType == typeof(FFlyGenericMovementPreAttackStateL))
@@ -79,8 +89,9 @@ public class FlyMovementStateFactory
             return new FFlyGenericMovementPreAttackStateL(
                 _cameraTransform.position,
                 _positionDirectionProvider,
-                _speed
-            );
+                _speed,
+                _preAttackDuration
+                );
         }
         if (stateType == typeof(FFlyGenericMovementAcceleratedAttackState))
         {
@@ -99,7 +110,9 @@ public class FlyMovementStateFactory
                 _lampPositionProviderService,
                 _radius,
                 _verticalAmplitude,
-                _collisionRadius
+                _collisionRadius,
+                _fallBounceForce,
+                _fallGravityForce
                 );
         }
         if (stateType == typeof(FFlyGenericMovementDeathState))

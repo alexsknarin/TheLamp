@@ -6,6 +6,7 @@ using Random = UnityEngine.Random;
 public class FMegamothlingMovement : FEnemyMovementBase, IPositionDirectionProvider
 {
     [Header("-- Movement States Base Settings --")]
+    [SerializeField] private float _collisionRadius = 0.175f;   // TODO: DI?
     [SerializeField] private float _speed;
     [SerializeField] private float _radius;
     [SerializeField] private float _verticalAmplitude;
@@ -27,6 +28,13 @@ public class FMegamothlingMovement : FEnemyMovementBase, IPositionDirectionProvi
     [SerializeField] private string _stateDebug;
     [SerializeField] private int _sideDirection = 1;
     [SerializeField] private int _depthSideDirection = 0;
+    [Header("---- States Settings ----")]
+    [SerializeField] private float _preAttackDuration = .45f;
+    [SerializeField] private float _fallBounceForce = 2f;
+    [SerializeField] private float _fallGravityForce = .1f;
+    [SerializeField] private float _deathBounceForce = 2f;
+    [SerializeField] private float _deathGravityForce = 0.1f;
+    
     private float _smoothTimeAllowed = 0;
     
     private Vector3 _position3D;
@@ -69,7 +77,16 @@ public class FMegamothlingMovement : FEnemyMovementBase, IPositionDirectionProvi
     public override void Initialize()
     {
         // Create Movement States
-        _stateFactory.SetEnemyDependencies(this, _speed, _radius, _verticalAmplitude, 0.175f); // TODO: magic number
+        _stateFactory.SetEnemyDependencies(
+            this,
+            _speed,
+            _radius,
+            _verticalAmplitude,
+            _collisionRadius,
+            _preAttackDuration,
+            _fallBounceForce,
+            _fallGravityForce
+            );
         _enterState = (FMegamothlingMovementEnterState)_stateFactory.Create(typeof(FMegamothlingMovementEnterState));
         _patrolState = (FFlyGenericMovementPatrolState)_stateFactory.Create(typeof(FFlyGenericMovementPatrolState));
         _preAttackStateL = (FFlyGenericMovementPreAttackStateL)_stateFactory.Create(typeof(FFlyGenericMovementPreAttackStateL));

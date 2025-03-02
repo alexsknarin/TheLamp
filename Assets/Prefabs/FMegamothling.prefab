@@ -542,22 +542,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1a4591e51bff214ab6432e5c1d12b05, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _collisionRadius: 0.175
   _speed: 0.77
   _radius: 1.55
   _verticalAmplitude: 0.93
   _spawnAreaSize: 0.5
   _spawnAreaCenter: {x: 3.6, y: -2.6}
-  _isNoiseEnabled: 0
+  _isNoiseEnabled: 1
   _noise1Frequency: 3
   _noise1Amplitude: 0.05
   _noise2Frequency: 1.33
   _noise2Amplitude: 0.22
-  _isSmoothDampEnabled: 0
+  _isSmoothDampEnabled: 1
   _smoothTime: 0.05
   _isDepthEnabled: 1
   _stateDebug: 
   _sideDirection: 1
   _depthSideDirection: 0
+  _preAttackDuration: 0.45
+  _fallBounceForce: 2
+  _fallGravityForce: 0.1
+  _deathBounceForce: 2
+  _deathGravityForce: 0.1
 --- !u!114 &8101830322762018708
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -10,6 +10,8 @@ public class MothlingMovementStateFactory
     private float _radius;
     private float _verticalAmplitude;
     private float _collisionRadius;
+    private float _fallBounceForce;
+    private float _fallGravityForce;
 
     public MothlingMovementStateFactory(
         Transform cameraTransform, 
@@ -25,7 +27,9 @@ public class MothlingMovementStateFactory
         float speed,
         float radius,
         float verticalAmplitude,
-        float collisionRadius
+        float collisionRadius,
+        float fallBounceForce,
+        float fallGravityForce
         )
     {
         _positionDirectionProvider = positionDirectionProvider;
@@ -33,6 +37,8 @@ public class MothlingMovementStateFactory
         _radius = radius;
         _verticalAmplitude = verticalAmplitude;
         _collisionRadius = collisionRadius;
+        _fallBounceForce = fallBounceForce;
+        _fallGravityForce = fallGravityForce;
     }
     
     
@@ -83,7 +89,9 @@ public class MothlingMovementStateFactory
                 _lampPositionProviderService,
                 _radius,
                 _verticalAmplitude,
-                _collisionRadius
+                _collisionRadius,
+                _fallBounceForce,
+                _fallGravityForce
                 );
         }
         if (stateType == typeof(FMothlingMovementDeathState))

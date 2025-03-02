@@ -11,6 +11,10 @@ public class FSpiderMovement : FEnemyMovementBase, IPositionDirectionProvider, I
     [SerializeField] private int _depthSideDirection = 0;
     [SerializeField] private float _height = 5f;
     [SerializeField] private float _xCenter = 1.12f;
+    [Header("---- States Settings ----")]
+    [SerializeField] private float _fallBounceForce = 4f;
+    [SerializeField] private float _fallGravityForce = .2f;
+    
     private ILampPositionProviderService _lampPositionProviderService;
 
     private Vector3 _position3D;
