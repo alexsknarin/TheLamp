@@ -33,11 +33,10 @@ public class FFlyGenericMovementDeathState : RegularEnemyMovementStateBase
     {
         Position2D = _positionDirectionProvider.Position2D;
         DepthDirection = Vector3.zero;
-        
         _bounceForce = Position2D.normalized * _bounceForceMagnitude;
         _gravityForce = Vector2.zero;
-        IsReadyToSwitch = false;
         
+        IsReadyToSwitch = false;
         _localTime = 0;
     }
 

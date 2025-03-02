@@ -24,8 +24,10 @@ public class FMegamothlingMovementDeathState: RegularEnemyMovementStateBase
     
     public override void OnEnter()
     {        
-
-        _bounceForce = _positionDirectionProvider.Position2D.normalized * _bounceForceMagnitude;
+        Position2D = _positionDirectionProvider.Position2D;
+        DepthDirection = Vector3.zero;
+        
+        _bounceForce = Position2D.normalized * _bounceForceMagnitude;
         _gravityForce = Vector2.zero;
         _dragAmount = 0.94f;
         _localTime = 0;
