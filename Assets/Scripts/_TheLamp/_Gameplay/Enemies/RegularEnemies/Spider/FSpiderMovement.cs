@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class FSpiderMovement : FEnemyMovementBase, IPositionDirectionProvider
+public class FSpiderMovement : FEnemyMovementBase, IPositionDirectionProvider, ISpreadableMovement
 {
     [Header("-- Movement Settings --")]
     [SerializeField] private float _speed;
@@ -135,7 +135,7 @@ public class FSpiderMovement : FEnemyMovementBase, IPositionDirectionProvider
         SwitchToStateAndApply(_deathState);
     }
 
-    public override void TriggerSpread()
+    public void TriggerSpread()
     {
         SwitchToStateAndApply(_climbUpState);
     }

@@ -8,12 +8,12 @@ using Object = UnityEngine.Object;
 public class FEnemyFactory
 {
     private ILampPositionProviderService _lampPositionProviderService;
-    private FMothling _mothlingEnemyPrefab;
     private MothlingMovementStateFactory _mothlingMovementStateFactory;
     private FlyMovementStateFactory _flyMovementStateFactory;
     private MothMovementStateFactory _mothMovementStateFactory;
     private SpiderMovementStateFactory _spiderMovementStateFactory;
     private LadybugMovementStateFactory _ladybugMovementStateFactory;
+    private MegamothlingMovementStateFactory _megamothlingMovementStateFactory;
     
     AsyncOperationHandle<GameObject> _mothlingEnemyAssetHandle;
     AsyncOperationHandle<GameObject> _flyEnemyAssetHandle;
@@ -21,6 +21,7 @@ public class FEnemyFactory
     AsyncOperationHandle<GameObject> _mothEnemyAssetHandle;
     AsyncOperationHandle<GameObject> _spiderEnemyAssetHandle;
     AsyncOperationHandle<GameObject> _ladybugEnemyAssetHandle;
+    AsyncOperationHandle<GameObject> _megamothlingEnemyAssetHandle;
     
     
     public FEnemyFactory(
@@ -29,6 +30,7 @@ public class FEnemyFactory
         MothMovementStateFactory mothMovementStateFactory,
         SpiderMovementStateFactory spiderMovementStateFactory,
         LadybugMovementStateFactory ladybugMovementStateFactory,
+        MegamothlingMovementStateFactory megamothlingMovementStateFactory,
         ILampPositionProviderService lampPositionProviderService
     )
     {
@@ -37,6 +39,7 @@ public class FEnemyFactory
         _mothMovementStateFactory = mothMovementStateFactory;
         _spiderMovementStateFactory = spiderMovementStateFactory;
         _ladybugMovementStateFactory = ladybugMovementStateFactory;
+        _megamothlingMovementStateFactory = megamothlingMovementStateFactory;
         _lampPositionProviderService = lampPositionProviderService;
         
         IsMothlingLoaded = false;
@@ -52,7 +55,7 @@ public class FEnemyFactory
     public bool IsMothLoaded { get; private set; }
     public bool IsSpiderLoaded { get; private set; }
     public bool IsLadybugLoaded { get; private set; }
-    
+    public bool IsMegamothlingLoaded { get; private set; }
     
 
     public async void LoadEnemy(Type type)
@@ -104,6 +107,14 @@ public class FEnemyFactory
             Debug.Log("Ladybug Loaded");
         }
         
+        if (type == typeof(FMegamothling))
+        {
+            _megamothlingEnemyAssetHandle = Addressables.LoadAssetAsync<GameObject>("Boss/FMegamothling.prefab");
+            await _megamothlingEnemyAssetHandle.Task;
+            IsMegamothlingLoaded = true;
+            Debug.Log("Megamothling Loaded");
+        }
+        
     }
     
     public FEnemy CreateEnemy(Type type)
@@ -137,6 +148,11 @@ public class FEnemyFactory
         {
             var prefab = _ladybugEnemyAssetHandle.Result;
             return CreateLadybugInstance(prefab);    
+        }
+        if (type == typeof(FMegamothling) && _megamothlingEnemyAssetHandle.IsValid())
+        {
+            var prefab = _megamothlingEnemyAssetHandle.Result;
+            return CreateMegamothlingInstance(prefab);    
         }
         else
         {
@@ -213,4 +229,14 @@ public class FEnemyFactory
         return enemy;
     }
     
+    private FEnemy CreateMegamothlingInstance(GameObject prefab)
+    {
+        GameObject enemyInstance = Object.Instantiate(prefab);
+        enemyInstance.GetComponent<FMegamothlingMovement>().Construct(_megamothlingMovementStateFactory);
+        // enemyInstance.GetComponent<FMothlingPresentation>().Initialize();
+        var enemy = enemyInstance.GetComponent<FMegamothling>();
+        enemy.Initialize();
+        
+        return enemy;
+    } 
 }

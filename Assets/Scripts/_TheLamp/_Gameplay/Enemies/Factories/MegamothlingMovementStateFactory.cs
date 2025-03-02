@@ -1,19 +1,17 @@
 using System;
 using UnityEngine;
 
-public class FlyMovementStateFactory
+public class MegamothlingMovementStateFactory
 {
-    private readonly Transform _cameraTransform;
-    private readonly ILampPositionProviderService _lampPositionProviderService;
+    private Transform _cameraTransform;
+    private ILampPositionProviderService _lampPositionProviderService;
     private IPositionDirectionProvider _positionDirectionProvider;
     private float _speed;
     private float _radius;
     private float _verticalAmplitude;
-    private float _proximityOffset;
-    private bool _isDeathByTimer;
     private float _collisionRadius;
-
-    public FlyMovementStateFactory(
+    
+    public MegamothlingMovementStateFactory(
         Transform cameraTransform, 
         ILampPositionProviderService lampPositionProviderService
         )
@@ -27,33 +25,27 @@ public class FlyMovementStateFactory
         float speed,
         float radius,
         float verticalAmplitude,
-        float proximityOffset,
-        bool isDeathByTimer,
         float collisionRadius
-        )
+    )
     {
         _positionDirectionProvider = positionDirectionProvider;
         _speed = speed;
         _radius = radius;
         _verticalAmplitude = verticalAmplitude;
-        _proximityOffset = proximityOffset;
-        _isDeathByTimer = isDeathByTimer;
         _collisionRadius = collisionRadius;
     }
-    
-    
+
     public RegularEnemyMovementStateBase Create(Type stateType)
     {
-        if (stateType == typeof(FFlyGenericMovementEnterState))
+        if (stateType == typeof(FMegamothlingMovementEnterState))
         {
-            return new FFlyGenericMovementEnterState(
+            return new FMegamothlingMovementEnterState(
                 _cameraTransform.position,
                 _positionDirectionProvider,
-                _lampPositionProviderService,
                 _speed,
                 _radius,
                 _verticalAmplitude
-                );
+            );
         }
         if (stateType == typeof(FFlyGenericMovementPatrolState))
         {
@@ -64,15 +56,7 @@ public class FlyMovementStateFactory
                 _speed,
                 _radius,
                 _verticalAmplitude
-                );
-        }
-        if (stateType == typeof(FFlyGenericMovementPreAttackStateR))
-        {
-            return new FFlyGenericMovementPreAttackStateR(
-                _cameraTransform.position,
-                _positionDirectionProvider,
-                _speed
-                );
+            );
         }
         if (stateType == typeof(FFlyGenericMovementPreAttackStateL))
         {
@@ -82,15 +66,21 @@ public class FlyMovementStateFactory
                 _speed
             );
         }
-        if (stateType == typeof(FFlyGenericMovementAcceleratedAttackState))
+        if (stateType == typeof(FFlyGenericMovementPreAttackStateR))
         {
-            return new FFlyGenericMovementAcceleratedAttackState(
+            return new FFlyGenericMovementPreAttackStateR(
                 _cameraTransform.position,
                 _positionDirectionProvider,
-                _lampPositionProviderService,
-                _speed,
-                _proximityOffset
-                );
+                _speed
+            );
+        }
+        if (stateType == typeof(FMegamothlingMovementAttackState))
+        {
+            return new FMegamothlingMovementAttackState(
+                _cameraTransform.position,
+                _positionDirectionProvider,
+                _speed
+            );
         }
         if (stateType == typeof(FFlyGenericMovementFallState))
         {
@@ -100,21 +90,13 @@ public class FlyMovementStateFactory
                 _radius,
                 _verticalAmplitude,
                 _collisionRadius
-                );
+            );
         }
-        if (stateType == typeof(FFlyGenericMovementDeathState))
+        if (stateType == typeof(FMegamothlingMovementDeathState))
         {
-            return new FFlyGenericMovementDeathState(
-                _positionDirectionProvider,
-                _isDeathByTimer
-                );
-        }
-        if (stateType == typeof(FFlyGenericMovementSpreadState))
-        {
-            return new FFlyGenericMovementSpreadState(
-                _positionDirectionProvider,
-                _speed
-                );
+            return new FMegamothlingMovementDeathState(
+                _positionDirectionProvider
+            );
         }
         return null;
     }

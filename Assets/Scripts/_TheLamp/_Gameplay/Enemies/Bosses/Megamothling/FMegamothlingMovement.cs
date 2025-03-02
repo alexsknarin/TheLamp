@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public class FMothlingMovement : FEnemyMovementBase, IPositionDirectionProvider, ISpreadableMovement
+public class FMegamothlingMovement : FEnemyMovementBase, IPositionDirectionProvider
 {
     [Header("-- Movement States Base Settings --")]
     [SerializeField] private float _speed;
@@ -21,40 +21,41 @@ public class FMothlingMovement : FEnemyMovementBase, IPositionDirectionProvider,
     [Header("-- Smooth Damp Settings --")]
     [SerializeField] private bool _isSmoothDampEnabled;
     [SerializeField] private float _smoothTime = .3f;
-    private float _smoothTimeAllowed = 0;
     [Header("---- Depth Settings ----")]
     [SerializeField] bool _isDepthEnabled;
     // Debug
     [SerializeField] private string _stateDebug;
     [SerializeField] private int _sideDirection = 1;
     [SerializeField] private int _depthSideDirection = 0;
+    private float _smoothTimeAllowed = 0;
     
     private Vector3 _position3D;
     // Debug only
     private Vector3 _prevPosition;
     private Vector3 _prevPosSmooth;
     private Vector3 _velocity = Vector3.zero;
-
+    
     // State Machine
     private readonly FStateMachine _stateMachine = new();
-    private MothlingMovementStateFactory _stateFactory;
+    private MegamothlingMovementStateFactory _stateFactory;
     // States
     private RegularEnemyMovementStateBase _currentState;
-    private FFlyGenericMovementEnterState _enterState;
-    private FFlyGenericMovementPatrolState _patrolState;
-    private FMothlingMovementPreAttackState _preAttackState;
-    private FMothlingMovementConstantAttackState _attackState;
-    private FFlyGenericMovementFallState _fallState;
-    private FMothlingMovementDeathState _deathState;
-    private FFlyGenericMovementSpreadState _spreadState;
+    private FMegamothlingMovementEnterState _enterState;
+    private FFlyGenericMovementPatrolState  _patrolState;
+    private FFlyGenericMovementPreAttackStateL _preAttackStateL; // TODO: change duration to 0.45f and depth to 1.0f
+    private FFlyGenericMovementPreAttackStateR _preAttackStateR; // the same
+    private FMegamothlingMovementAttackState _attackState;
+    private FFlyGenericMovementFallState _fallState; // TODO: bounce force to 0.2 gravity force to 0.1
+    private FMegamothlingMovementDeathState _deathState; // TODO: bounce force to 2.0 gravity force to 0.2 duration 1.7
     
     private WaitForSeconds _waitSmoothDamp = new(0.5f);
     
-    public void Construct(MothlingMovementStateFactory stateFactory)
+    
+    public void Construct(MegamothlingMovementStateFactory stateFactory)
     {
         _stateFactory = stateFactory;
     }
-
+    
     public event Action ReadyToAttackStateStarted;
     public event Action ReadyToAttackStateEnded;
     public event Action PreAttackStarted;
@@ -62,45 +63,59 @@ public class FMothlingMovement : FEnemyMovementBase, IPositionDirectionProvider,
     public event Action DeathStateEnded;
     public event Action SpreadStateEnded;
     
-
     public Vector2 Position2D { get; private set; } 
     public Vector3 DepthDirection { get; private set; } 
-
+    
     public override void Initialize()
     {
         // Create Movement States
-        _stateFactory.SetEnemyDependencies(this, _speed, _radius, _verticalAmplitude, 0.075f); // TODO: magic number
-        _enterState = (FFlyGenericMovementEnterState)_stateFactory.Create(typeof(FFlyGenericMovementEnterState));
+        _stateFactory.SetEnemyDependencies(this, _speed, _radius, _verticalAmplitude, 0.175f); // TODO: magic number
+        _enterState = (FMegamothlingMovementEnterState)_stateFactory.Create(typeof(FMegamothlingMovementEnterState));
         _patrolState = (FFlyGenericMovementPatrolState)_stateFactory.Create(typeof(FFlyGenericMovementPatrolState));
-        _preAttackState = (FMothlingMovementPreAttackState)_stateFactory.Create(typeof(FMothlingMovementPreAttackState));
-        _attackState = (FMothlingMovementConstantAttackState)_stateFactory.Create(typeof(FMothlingMovementConstantAttackState));
+        _preAttackStateL = (FFlyGenericMovementPreAttackStateL)_stateFactory.Create(typeof(FFlyGenericMovementPreAttackStateL));
+        _preAttackStateR = (FFlyGenericMovementPreAttackStateR)_stateFactory.Create(typeof(FFlyGenericMovementPreAttackStateR));
+        _attackState = (FMegamothlingMovementAttackState)_stateFactory.Create(typeof(FMegamothlingMovementAttackState));
         _fallState = (FFlyGenericMovementFallState)_stateFactory.Create(typeof(FFlyGenericMovementFallState));
-        _deathState = (FMothlingMovementDeathState)_stateFactory.Create(typeof(FMothlingMovementDeathState));
-        _spreadState = (FFlyGenericMovementSpreadState)_stateFactory.Create(typeof(FFlyGenericMovementSpreadState));
+        _deathState = (FMegamothlingMovementDeathState)_stateFactory.Create(typeof(FMegamothlingMovementDeathState));
         
         // Subscribe to state events
         _patrolState.Started += OnPatrolStateStarted;
         _patrolState.Ended += OnPatrolStateEnded;
-        _preAttackState.Started += OnPreAttackStateStarted;
-        _preAttackState.Ended += OnPreAttackStateEnded;
+        _preAttackStateL.Started += OnPreAttackStateStarted;
+        _preAttackStateR.Started += OnPreAttackStateStarted;
+        _preAttackStateL.Ended += OnPreAttackStateEnded;
+        _preAttackStateR.Ended += OnPreAttackStateEnded;
         _deathState.Ended += OnDeathStateEnded;
-        _spreadState.Ended += OnSpreadStateEnded;
         
         // Automatic State transitions
         At(_enterState, _patrolState, () => _enterState.IsReadyToSwitch);
-        At(_patrolState, _preAttackState, IsAttackStarted());
-        At(_preAttackState, _attackState, () => _preAttackState.IsReadyToSwitch);
+        At(_patrolState, _preAttackStateR, IsAttackStartedR());
+        At(_patrolState, _preAttackStateL, IsAttackStartedL());
+        At(_preAttackStateR, _attackState, () => _preAttackStateR.IsReadyToSwitch);
+        At(_preAttackStateL, _attackState, () => _preAttackStateL.IsReadyToSwitch);
         At(_fallState, _enterState, IsFallEnded());
+        
         // Predicates
-        Func<bool> IsAttackStarted() => () =>
+        Func<bool> IsAttackStartedR() => () =>
         {
-            if (_isAttacking)
+            if (_isAttacking && _sideDirection == 1)
             {
                 _isAttacking = false;
                 return true;
             }
             return false;
         };
+        
+        Func<bool> IsAttackStartedL() => () =>
+        {
+            if (_isAttacking && _sideDirection == -1)
+            {
+                _isAttacking = false;
+                return true;
+            }
+            return false;
+        };
+        
         
         Func<bool> IsFallEnded() => () =>
         {
@@ -111,25 +126,27 @@ public class FMothlingMovement : FEnemyMovementBase, IPositionDirectionProvider,
             }
             return false;
         };
-        
         void At(IState from, IState to, Func<bool> condition) => _stateMachine.AddTransition(from, to, condition);
     }
-
+    
     private void OnDestroy()
     {
-        _patrolState.Started -= OnPatrolStateStarted; 
+        _patrolState.Started -= OnPatrolStateStarted;
         _patrolState.Ended -= OnPatrolStateEnded;
-        _preAttackState.Started -= OnPreAttackStateStarted;
-        _preAttackState.Ended -= OnPreAttackStateEnded;
+        _preAttackStateL.Started -= OnPreAttackStateStarted;
+        _preAttackStateR.Started -= OnPreAttackStateStarted;
+        _preAttackStateL.Ended -= OnPreAttackStateEnded;
+        _preAttackStateR.Ended -= OnPreAttackStateEnded;
         _deathState.Ended -= OnDeathStateEnded;
-        _spreadState.Ended -= OnSpreadStateEnded;
     }
 
     public override void Play()
     {
+        Debug.Log(" ---------------- FMegamothlingMovement: Play");
         _sideDirection = RandomDirection.Generate();
         _depthSideDirection = RandomDirection.Generate();
-        Position2D = GenerateSpawnPosition(-1);
+        Position2D = GenerateSpawnPosition(_sideDirection); // TODO: check
+        
         _position3D = Position2D;
         transform.position = _position3D;
         
@@ -166,6 +183,7 @@ public class FMothlingMovement : FEnemyMovementBase, IPositionDirectionProvider,
             _stateMachine.SetState(_currentState);
 
             // Immediately Apply Position2D and SideDirection to transform to avoid visible collision penetration.
+            // TODO: doublecheck this
             Vector3 newPosition = transform.position;
             newPosition.x = _currentState.Position2D.x;
             newPosition.y = _currentState.Position2D.y;
@@ -184,21 +202,7 @@ public class FMothlingMovement : FEnemyMovementBase, IPositionDirectionProvider,
         _stateDebug = _currentState.GetType().Name; // Debug only
         _stateMachine.SetState(_currentState);
     }
-
-    public void TriggerSpread()
-    {
-        if (_currentState.Equals(_enterState)||
-            _currentState.Equals(_patrolState)||
-            _currentState.Equals(_preAttackState)||
-            _currentState.Equals(_fallState))
-        {
-            ApplyTransformToPosition2D();
-            _currentState = _spreadState;
-            _stateDebug = _currentState.GetType().Name; // Debug only
-            _stateMachine.SetState(_currentState);
-        }
-    }
-
+    
     private void Update()
     {
         // Debug only
@@ -227,7 +231,9 @@ public class FMothlingMovement : FEnemyMovementBase, IPositionDirectionProvider,
         {
             int depthDirection = _depthSideDirection;
             // Always Jump forward in depth for Attack
-            if (_currentState.Equals(_preAttackState) || _currentState.Equals(_attackState))
+            if (_currentState.Equals(_preAttackStateL) 
+                || _currentState.Equals(_preAttackStateR) 
+                || _currentState.Equals(_attackState))
             {
                 depthDirection = 1;
             }
@@ -254,7 +260,7 @@ public class FMothlingMovement : FEnemyMovementBase, IPositionDirectionProvider,
         Debug.DrawLine(_prevPosition, _prevPosition + (_position3D-_prevPosition).normalized*0.02f, Color.cyan, 5f);
         Debug.DrawLine(_prevPosSmooth, _prevPosSmooth + (transform.position-_prevPosSmooth).normalized*0.02f, Color.yellow, 5f);
     }
-
+    
     private void AddMotionNoise()
     {
         Vector3 trajectoryNoise1 = TrajectoryNoise.Generate(_noise1Frequency);
@@ -263,30 +269,38 @@ public class FMothlingMovement : FEnemyMovementBase, IPositionDirectionProvider,
         if (_currentState.Equals(_attackState))
         {
             float noiseMultiplier = 0.5f;
-            if (Position2D.magnitude < 0.86f)
+            if (Position2D.magnitude < 0.8f)
             {
                 noiseMultiplier = 0.001f;
             }   
             trajectoryNoise1 *= noiseMultiplier;
             trajectoryNoise2 *= noiseMultiplier;
         }
+        
+        if (_currentState.Equals(_deathState))
+        {
+            trajectoryNoise1 *= 0.1f;
+            trajectoryNoise2 *= 0.25f;
+        }
         _position3D = (Vector3)Position2D + trajectoryNoise1 * _noise1Amplitude + trajectoryNoise2 * _noise2Amplitude;
     }
-
+    
+    
     private Vector2 GenerateSpawnPosition(int direction)
     {
-        Vector2 spawnPosition = Random.insideUnitCircle * _spawnAreaSize + _spawnAreaCenter;
+        Vector2 spawnPosition = (Random.insideUnitCircle * _spawnAreaSize) + _spawnAreaCenter;
+        spawnPosition = _spawnAreaCenter;
         spawnPosition.x *= direction;
         return spawnPosition;
     }
-
+    
     private void ApplyTransformToPosition2D()
     {
         Vector2 newPosition2D = Position2D;
         newPosition2D.x = Mathf.Abs(newPosition2D.x) * Mathf.Sign(transform.position.x);
         Position2D = newPosition2D;
     }
-
+    
     private IEnumerator SmoothDampDelay()
     {
         yield return _waitSmoothDamp;
@@ -317,12 +331,5 @@ public class FMothlingMovement : FEnemyMovementBase, IPositionDirectionProvider,
     {
         DeathStateEnded?.Invoke();
         enabled = false;
-    }
-
-    private void OnSpreadStateEnded()
-    {
-        // TODO: should be decided based on gameover state
-        SpreadStateEnded?.Invoke();
-        Play();
     }
 }

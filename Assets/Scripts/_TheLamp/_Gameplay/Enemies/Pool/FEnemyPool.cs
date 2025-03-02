@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Pool;
+using Object = System.Object;
 
 public class FEnemyPool : IEnemyDeactivatedProvider
 {
@@ -11,6 +12,7 @@ public class FEnemyPool : IEnemyDeactivatedProvider
     private ObjectPool<FEnemy> _mothPool;
     private ObjectPool<FEnemy> _spiderPool;
     private ObjectPool<FEnemy> _ladybugPool;
+    private ObjectPool<FEnemy> _megamothlingPool;
     private readonly FEnemyFactory _enemyFactory;
     private readonly int _poolSize = 5;
     private int _mothlingCount;
@@ -19,6 +21,7 @@ public class FEnemyPool : IEnemyDeactivatedProvider
     private int _mothCount;
     private int _spiderCount;
     private int _ladybugCount;
+    private int _megamothlingCount;
     
     private readonly List<Type> _preloadedEnemyTypes = new List<Type>();
     
@@ -79,6 +82,15 @@ public class FEnemyPool : IEnemyDeactivatedProvider
         );
         _ladybugPool = new ObjectPool<FEnemy>(
             CreateLadybug,
+            OnGetFromPool, 
+            OnReleaseToPool, 
+            OnDestroyPooledObject,
+            true,
+            _poolSize,
+            _poolSize
+        );
+        _megamothlingPool = new ObjectPool<FEnemy>(
+            CreateMegamothling,
             OnGetFromPool, 
             OnReleaseToPool, 
             OnDestroyPooledObject,
@@ -147,6 +159,14 @@ public class FEnemyPool : IEnemyDeactivatedProvider
             }
             throw new Exception("Ladybug prefab is not loaded yet");
         }
+        if (type == typeof(FMegamothling))
+        {
+            if (_enemyFactory.IsMegamothlingLoaded)
+            {
+                return _megamothlingPool.Get();
+            }
+            throw new Exception("Ladybug prefab is not loaded yet");
+        }
         else
         {
             throw new Exception("Enemy type not supported");
@@ -205,6 +225,15 @@ public class FEnemyPool : IEnemyDeactivatedProvider
         enemyInstance.SetObjectPool(_ladybugPool);
         enemyInstance.name = "Ladybug" + _ladybugCount;
         _ladybugCount++;
+        return enemyInstance;
+    }
+    
+    private FEnemy CreateMegamothling()
+    {
+        FEnemy enemyInstance = _enemyFactory.CreateEnemy(typeof(FMegamothling));
+        enemyInstance.SetObjectPool(_megamothlingPool);
+        enemyInstance.name = "Megamothling" + _megamothlingCount;
+        _megamothlingCount++;
         return enemyInstance;
     }
     

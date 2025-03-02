@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public abstract class FEnemyMovementBase : MonoBehaviour, IInitializable, IEnemyMovable, ISpreadableMovement
+public abstract class FEnemyMovementBase : MonoBehaviour, IInitializable, IEnemyMovable
 {
     protected bool _isAttacking = false;
     public virtual int SideDirection { get; protected set; }
@@ -9,5 +9,4 @@ public abstract class FEnemyMovementBase : MonoBehaviour, IInitializable, IEnemy
     public abstract void TriggerAttack();
     public abstract void TriggerFall(); 
     public abstract void TriggerDeath(); 
-    public abstract void TriggerSpread();
 }

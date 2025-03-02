@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public class FFlyMovement : FEnemyMovementBase, IPositionDirectionProvider
+public class FFlyMovement : FEnemyMovementBase, IPositionDirectionProvider, ISpreadableMovement
 {
     [Header("-- Movement States Base Settings --")]
     [SerializeField] private float _speed;
@@ -42,8 +42,8 @@ public class FFlyMovement : FEnemyMovementBase, IPositionDirectionProvider
     private RegularEnemyMovementStateBase _currentState;
     private FFlyGenericMovementEnterState _enterState;
     private FFlyGenericMovementPatrolState _patrolState;
-    private FFlyMovementPreAttackStateR _preAttackStateR;
-    private FFlyMovementPreAttackStateL _preAttackStateL;
+    private FFlyGenericMovementPreAttackStateR _preAttackStateR;
+    private FFlyGenericMovementPreAttackStateL _preAttackStateL;
     private FFlyGenericMovementAcceleratedAttackState _attackState;
     private FFlyGenericMovementFallState _fallState;
     private FFlyGenericMovementDeathState _deathState;
@@ -76,8 +76,8 @@ public class FFlyMovement : FEnemyMovementBase, IPositionDirectionProvider
         _stateFactory.SetEnemyDependencies(this, _speed, _radius, _verticalAmplitude, _proximityOffset, _isDeathByTimer, 0.1f); // TODO: magic numbers
         _enterState = (FFlyGenericMovementEnterState)_stateFactory.Create(typeof(FFlyGenericMovementEnterState));
         _patrolState = (FFlyGenericMovementPatrolState)_stateFactory.Create(typeof(FFlyGenericMovementPatrolState));
-        _preAttackStateR = (FFlyMovementPreAttackStateR)_stateFactory.Create(typeof(FFlyMovementPreAttackStateR));
-        _preAttackStateL = (FFlyMovementPreAttackStateL)_stateFactory.Create(typeof(FFlyMovementPreAttackStateL));
+        _preAttackStateR = (FFlyGenericMovementPreAttackStateR)_stateFactory.Create(typeof(FFlyGenericMovementPreAttackStateR));
+        _preAttackStateL = (FFlyGenericMovementPreAttackStateL)_stateFactory.Create(typeof(FFlyGenericMovementPreAttackStateL));
         _attackState = (FFlyGenericMovementAcceleratedAttackState)_stateFactory.Create(typeof(FFlyGenericMovementAcceleratedAttackState));
         _fallState = (FFlyGenericMovementFallState)_stateFactory.Create(typeof(FFlyGenericMovementFallState));
         _deathState = (FFlyGenericMovementDeathState)_stateFactory.Create(typeof(FFlyGenericMovementDeathState));
@@ -208,7 +208,7 @@ public class FFlyMovement : FEnemyMovementBase, IPositionDirectionProvider
         _stateMachine.SetState(_currentState);
     }
 
-    public override void TriggerSpread()
+    public void TriggerSpread()
     {
         if (_currentState.Equals(_enterState)||
             _currentState.Equals(_patrolState)||
@@ -294,8 +294,6 @@ public class FFlyMovement : FEnemyMovementBase, IPositionDirectionProvider
         return spawnPosition;
     }
 
-
-    // TODO: use the same in Mothling
 
     private void ApplyTransformToPosition2D()
     {

@@ -84,6 +84,7 @@ public class GameRootContext : MonoBehaviour
     private MothMovementStateFactory _mothMovementStateFactory;
     private SpiderMovementStateFactory _spiderMovementStateFactory;
     private LadybugMovementStateFactory _ladybugMovementStateFactory;
+    private MegamothlingMovementStateFactory _megamothlingMovementStateFactory;
     private FEnemyFactory _enemyFactory;
     private FXFactory _fxFactory;   
     
@@ -208,6 +209,10 @@ public class GameRootContext : MonoBehaviour
             _cameraTransform,
             _lampPositionProviderService
         );
+        _megamothlingMovementStateFactory = new MegamothlingMovementStateFactory(
+            _cameraTransform,
+            _lampPositionProviderService
+        );
         
         _enemyFactory = new FEnemyFactory(
             _mothlingMovementStateFactory, 
@@ -215,6 +220,7 @@ public class GameRootContext : MonoBehaviour
             _mothMovementStateFactory, 
             _spiderMovementStateFactory,
             _ladybugMovementStateFactory,
+            _megamothlingMovementStateFactory,
             _lampPositionProviderService
         );
         _enemyPool = new FEnemyPool(_enemyFactory);

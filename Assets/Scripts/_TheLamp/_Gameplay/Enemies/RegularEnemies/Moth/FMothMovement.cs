@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public class FMothMovement : FEnemyMovementBase, IPositionDirectionProvider
+public class FMothMovement : FEnemyMovementBase, IPositionDirectionProvider, ISpreadableMovement
 {
     [Header("-- Movement Settings --")]
     [SerializeField] private float _speed;
@@ -161,7 +161,7 @@ public class FMothMovement : FEnemyMovementBase, IPositionDirectionProvider
         _stateMachine.SetState(_currentState);
     }
 
-    public override void TriggerSpread()
+    public void TriggerSpread()
     {
         if (!_currentState.Equals(_attackState))
         {

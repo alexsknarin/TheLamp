@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public class FLadybugMovement : FEnemyMovementBase, IPositionDirectionProvider
+public class FLadybugMovement : FEnemyMovementBase, IPositionDirectionProvider, ISpreadableMovement
 {
     [Header("-- Movement Settings --")]
     [SerializeField] private float _speed;
@@ -134,7 +134,7 @@ public class FLadybugMovement : FEnemyMovementBase, IPositionDirectionProvider
         enabled = true;
     }
 
-    public override void TriggerSpread()
+    public void TriggerSpread()
     {
         SwitchToStateAndApply(_spreadState);
     }

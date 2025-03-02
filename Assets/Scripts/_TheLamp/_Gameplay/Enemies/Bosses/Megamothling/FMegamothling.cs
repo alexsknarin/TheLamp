@@ -1,34 +1,104 @@
+using System;
 using UnityEngine;
 
 public class FMegamothling : CollidableEnemy
 {
+    [Header("-- Attributes --")]
+    [SerializeField] private int _maxHealth = 10;
+    [SerializeField] private int _currentHealth;
+    [SerializeField] private float _collisionRadius = 0.175f;
+    [Header("-- Movement --")]
+    [SerializeField] private FMegamothlingMovement _movement;
+    
+    public event Action Started;
+    public event Action Damaged;
+    public event Action Dead;
+    public override float Radius => _collisionRadius;
+    public override Vector2 Position => _movement.Position2D;
+    public override bool IsReadyToAttack => CheckIsReadyToAttack();
+    
     public override void Initialize()
     {
-        throw new System.NotImplementedException();
+        _movement.Initialize();
+        _movement.ReadyToAttackStateStarted += OnReadyToAttackStateStarted;
+        _movement.ReadyToAttackStateEnded += OnReadyToAttackStateEnded;
+        _movement.DeathStateEnded += OnDeathStateEnded;
+    }
+    
+    private void OnDestroy()
+    {
+        _movement.ReadyToAttackStateStarted -= OnReadyToAttackStateStarted;
+        _movement.ReadyToAttackStateEnded -= OnReadyToAttackStateEnded;
+        _movement.DeathStateEnded -= OnDeathStateEnded;
     }
 
     public override void Play()
     {
-        throw new System.NotImplementedException();
+        Debug.Log(" ---------------- FMegamothling: Play");
+        _currentHealth = _maxHealth;
+        _isInAttackReadyMovementState = false;
+        IsReadyForDamage = false;
+        IsReceivedLampAttackDamage = false;
+        CollisionState = CollidableState.Outside;
+        Started?.Invoke();
+        _movement.Play();
     }
 
     public override void ReceiveDamage(int damageAmount)
     {
-        throw new System.NotImplementedException();
+        IsReceivedLampAttackDamage = true;
+        IsReadyForDamage = false;
+        _currentHealth -= damageAmount;
+        
+        if (_currentHealth <= 0)
+        {
+            Dead?.Invoke();
+            DoDeath();
+        }
+        else
+        {
+            Debug.Log($"Damage Received: {damageAmount}.");
+            _movement.TriggerFall();
+            Damaged?.Invoke();
+        }
     }
 
     public override void Attack()
     {
-        throw new System.NotImplementedException();
+        _isInAttackReadyMovementState = false;
+        IsReceivedLampAttackDamage = false;
+        _movement.TriggerAttack();
     }
 
     public override void DoDeath()
     {
-        throw new System.NotImplementedException();
+        _movement.TriggerDeath();
     }
 
     public override void HandleCollision()
     {
-        throw new System.NotImplementedException();
+        IsCollided = true;
+        CollisionState = CollidableState.AfterCollision;
+        _movement.TriggerFall();
+    }
+    
+    private bool CheckIsReadyToAttack()
+    {
+        if (_isInAttackReadyMovementState)
+        {
+            float x = _movement.Position2D.x;
+            float y = _movement.Position2D.y;
+            if ((y < 0.0f) || (Mathf.Abs(x) > 1.1f && y > 0.0f))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.cyan;
+        Gizmos.DrawWireSphere(transform.position, _collisionRadius);
     }
 }
