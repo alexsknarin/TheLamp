@@ -38,8 +38,9 @@ public class WaveEnemyDirector : MonoBehaviour, IInitializable
     public event Action LampUnblocked;
     public event Action ExplodableEnemySpawned;
     public event Action<FEnemy> ExplodableEnemyDeactivated;
-    
     public event Action FireflyExplosionStarted;
+    public event Action BossSpawned;
+    public event Action BossDied;
     
     
     public void Initialize()
@@ -222,12 +223,6 @@ public class WaveEnemyDirector : MonoBehaviour, IInitializable
             }            
         }
         _enemies.Clear();
-        
-        // Bosses
-        // if (_enemyAttacker.IsBossActive)
-        // {
-        //     _enemySpawner.Boss.Reset();
-        // }
     }
 
     private void OnEnemyDead(FEnemy enemy)
@@ -252,11 +247,13 @@ public class WaveEnemyDirector : MonoBehaviour, IInitializable
 
             if (enemy is IExplodable)
             {
-                Debug.Log("Enemy is explodable");
-                Debug.Log("BOOOOOOOOOOOOOOMMMMMM!!!!!");
                 ExplodableEnemyDeactivated?.Invoke(enemy);
                 FireflyExplosionStarted?.Invoke();
                 _fireflyExplosionEnemyDamager.StartExplosion(enemy.transform.position, _enemies);
+            }
+            if (enemy is IBoss)
+            {
+                BossDied?.Invoke();
             }
         }
     }
@@ -266,10 +263,17 @@ public class WaveEnemyDirector : MonoBehaviour, IInitializable
         if (enemy is IStickableWithLamp)
         {
             StickyEnemySpawned?.Invoke((IStickableWithLamp)enemy);
+            return;
         }
         if (enemy is IExplodable)
         {
             ExplodableEnemySpawned?.Invoke();
+            return;
+        }
+        if (enemy is IBoss)
+        {
+            BossSpawned?.Invoke();
+            return;
         }
     }
 

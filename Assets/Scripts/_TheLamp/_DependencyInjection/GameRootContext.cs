@@ -348,7 +348,7 @@ public class GameRootContext : MonoBehaviour
         _disposables.Add(_cameraShakeEventListener);
         
         _lightningFlashEventsListener = new LightningFlashEventsListener(
-            // _enemyController,
+            _waveEnemyDirector,
             _lightningFlashController);
         _disposables.Add(_lightningFlashEventsListener);
         

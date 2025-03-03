@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class FMegamothling : CollidableEnemy
+public class FMegamothling : CollidableEnemy, IBoss
 {
     [Header("-- Attributes --")]
     [SerializeField] private int _maxHealth = 10;

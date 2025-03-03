@@ -15,6 +15,8 @@ public class HapticFeedbackEventListener: IDisposable
         _gameModel = gameModel;
 
         _waveEnemyDirector.FireflyExplosionStarted += OnFireflyExplosionStarted;
+        _waveEnemyDirector.BossSpawned += OnLampDestroyed;
+        _waveEnemyDirector.BossDied += OnLampDestroyed;
         _gameModel.LampAttackStarted += OnAttackClicked;
         _gameModel.LampDamageStarted += OnLampDamaged;
         _gameModel.LampDestroyed += OnLampDestroyed;
@@ -25,6 +27,8 @@ public class HapticFeedbackEventListener: IDisposable
     public void Dispose()
     {
         _waveEnemyDirector.FireflyExplosionStarted -= OnFireflyExplosionStarted;
+        _waveEnemyDirector.BossSpawned -= OnLampDestroyed;
+        _waveEnemyDirector.BossDied -= OnLampDestroyed;
         _gameModel.LampAttackStarted -= OnAttackClicked;
         _gameModel.LampDamageStarted -= OnLampDamaged;
         _gameModel.LampDestroyed -= OnLampDestroyed;

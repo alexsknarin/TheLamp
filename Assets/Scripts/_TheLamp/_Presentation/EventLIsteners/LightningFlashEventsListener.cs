@@ -1,32 +1,32 @@
 public class LightningFlashEventsListener: IDisposable
 {
-    // private EnemyController _enemyController;
+    private WaveEnemyDirector _waveEnemyDirector;
     private LightningFlashController _lightningFlashController;
 
     public LightningFlashEventsListener(
-        // EnemyController enemyController,
+        WaveEnemyDirector waveEnemyDirector,
         LightningFlashController lightningFlashController
         )
     {
-        // _enemyController = enemyController;
+        _waveEnemyDirector = waveEnemyDirector;
         _lightningFlashController = lightningFlashController;
         
-        // _enemyController.BossSpawned += OnBossSpawned;
-        // _enemyController.BossDied += OnBossDied;
+        _waveEnemyDirector.BossSpawned += OnBossSpawned;
+        _waveEnemyDirector.BossDied += OnBossDied;
     }
 
     public void Dispose()
     {
-        // _enemyController.BossSpawned -= OnBossSpawned;
-        // _enemyController.BossDied -= OnBossDied;
+        _waveEnemyDirector.BossSpawned -= OnBossSpawned;
+        _waveEnemyDirector.BossDied -= OnBossDied;
     }
 
-    private void OnBossSpawned(BossBase obj)
+    private void OnBossSpawned()
     {
         _lightningFlashController.Play();
     }
 
-    private void OnBossDied(EnemyBase obj)
+    private void OnBossDied()
     {
         _lightningFlashController.Play();
     }
