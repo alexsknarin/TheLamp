@@ -14,6 +14,7 @@ public class FMegamothling : CollidableEnemy, IBoss
     public event Action Damaged;
     public event Action<int, int> HealthChanged;
     public event Action Dead;
+    public event Action SpreadRequested;
     public override float Radius => _collisionRadius;
     public override Vector2 Position => _movement.Position2D;
     public override bool IsReadyToAttack => CheckIsReadyToAttack();
@@ -24,6 +25,7 @@ public class FMegamothling : CollidableEnemy, IBoss
         _movement.ReadyToAttackStateStarted += OnReadyToAttackStateStarted;
         _movement.ReadyToAttackStateEnded += OnReadyToAttackStateEnded;
         _movement.DeathStateEnded += OnDeathStateEnded;
+        _movement.PreAttackStarted += OnPreAttackStarted;
     }
     
     private void OnDestroy()
@@ -31,6 +33,7 @@ public class FMegamothling : CollidableEnemy, IBoss
         _movement.ReadyToAttackStateStarted -= OnReadyToAttackStateStarted;
         _movement.ReadyToAttackStateEnded -= OnReadyToAttackStateEnded;
         _movement.DeathStateEnded -= OnDeathStateEnded;
+        _movement.PreAttackStarted -= OnPreAttackStarted;
     }
 
     public override void Play()
@@ -83,7 +86,7 @@ public class FMegamothling : CollidableEnemy, IBoss
         CollisionState = CollidableState.AfterCollision;
         _movement.TriggerFall();
     }
-    
+
     private bool CheckIsReadyToAttack()
     {
         if (_isInAttackReadyMovementState)
@@ -97,10 +100,15 @@ public class FMegamothling : CollidableEnemy, IBoss
         }
         return false;
     }
-    
+
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.cyan;
         Gizmos.DrawWireSphere(transform.position, _collisionRadius);
+    }
+
+    private void OnPreAttackStarted()
+    {
+        SpreadRequested?.Invoke();
     }
 }

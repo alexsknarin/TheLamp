@@ -254,6 +254,7 @@ public class WaveEnemyDirector : MonoBehaviour, IInitializable
             if (enemy is IBoss)
             {
                 BossDied?.Invoke();
+                ((IBoss)enemy).SpreadRequested -= OnBossRequestedSpread;
             }
         }
     }
@@ -273,8 +274,14 @@ public class WaveEnemyDirector : MonoBehaviour, IInitializable
         if (enemy is IBoss)
         {
             BossSpawned?.Invoke();
+            ((IBoss)enemy).SpreadRequested += OnBossRequestedSpread;
             return;
         }
+    }
+    
+    private void OnBossRequestedSpread()
+    {
+        SpreadEnemies();
     }
 
     private void OnEnemyAttackStarted(CollidableEnemy enemy)

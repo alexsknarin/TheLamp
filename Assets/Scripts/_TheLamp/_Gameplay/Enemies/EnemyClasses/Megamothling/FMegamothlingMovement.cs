@@ -69,7 +69,6 @@ public class FMegamothlingMovement : FEnemyMovementBase, IPositionDirectionProvi
     public event Action PreAttackStarted;
     public event Action PreAttackEnded;
     public event Action DeathStateEnded;
-    public event Action SpreadStateEnded;
     
     public Vector2 Position2D { get; private set; } 
     public Vector3 DepthDirection { get; private set; } 
