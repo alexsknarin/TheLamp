@@ -47,6 +47,7 @@ public class FWaspMovement : MonoBehaviour, IInitializable
     };
     
     [SerializeField] private string _currentStateType;
+    [SerializeField] private float _collisionRadius = 0.24f;
     [SerializeField] private Animator _animator;
     [SerializeField] private Transform _baseTransform;
     private ILampPositionProviderService _lampPositionProvider;
@@ -57,8 +58,8 @@ public class FWaspMovement : MonoBehaviour, IInitializable
     // State parameters
     private Side _side = Side.Left;
     private bool _isAnimClipEnded = false;
-    private int _twoOptiosSplit = 0;
-    private int _threeOptiosSplit = 0;
+    private int _twoOptionsSplit = 0;
+    private int _threeOptionsSplit = 0;
     private bool _isDamaged = false;
     private bool _isDead = false;
     private bool _isLampDestroyed = false; // TODO: replace all this with enum? sucess, damaged, dead, lampDestroyed
@@ -145,9 +146,11 @@ public class FWaspMovement : MonoBehaviour, IInitializable
         _lampPositionProvider = lampPositionProvider;
     }
 
-    public event Action BossAttackStarted;
+    public event Action AttackStateStarted; // TODO: maybe remove this
     public event Action DeathStateEnded;
-
+    
+    public Vector3 Position => transform.position; // TODO: camera projection - calculate in FWasp??
+    
     public void Initialize()
     {
         CreateMovementStates();
@@ -234,12 +237,12 @@ public class FWaspMovement : MonoBehaviour, IInitializable
         
         if (TWO_OPTION_OUTCOME.Contains(_stateMachine.CurrentStateType))
         {
-            _twoOptiosSplit = Random.Range(0, 2);
+            _twoOptionsSplit = Random.Range(0, 2);
         }
         
         if (THREE_OPTION_OUTCOME.Contains(_stateMachine.CurrentStateType))
         {
-            _threeOptiosSplit = Random.Range(0, 3);
+            _threeOptionsSplit = Random.Range(0, 3);
         }
     }
 
@@ -539,7 +542,7 @@ public class FWaspMovement : MonoBehaviour, IInitializable
         
         Func<bool> IsAnimationEndedTwoOption01() => () =>
         {
-            if (_isAnimClipEnded && _twoOptiosSplit == 0 && !_isLampDestroyed )
+            if (_isAnimClipEnded && _twoOptionsSplit == 0 && !_isLampDestroyed )
             {
                 _isAnimClipEnded = false;
                 return true;
@@ -549,7 +552,7 @@ public class FWaspMovement : MonoBehaviour, IInitializable
         
         Func<bool> IsAnimationEndedTwoOption02() => () =>
         {
-            if (_isAnimClipEnded && _twoOptiosSplit == 1 && !_isLampDestroyed )
+            if (_isAnimClipEnded && _twoOptionsSplit == 1 && !_isLampDestroyed )
             {
                 _isAnimClipEnded = false;
                 return true;
@@ -559,7 +562,7 @@ public class FWaspMovement : MonoBehaviour, IInitializable
         
         Func<bool> IsAnimationEndedTwoOptionFail01() => () =>
         {
-            if (_isAnimClipEnded && _twoOptiosSplit == 0 && _isDamaged && !_isDead)
+            if (_isAnimClipEnded && _twoOptionsSplit == 0 && _isDamaged && !_isDead)
             {
                 _isAnimClipEnded = false;
                 return true;
@@ -569,7 +572,7 @@ public class FWaspMovement : MonoBehaviour, IInitializable
         
         Func<bool> IsAnimationEndedTwoOptionFail02() => () =>
         {
-            if (_isAnimClipEnded && _twoOptiosSplit == 1 && _isDamaged && !_isDead)
+            if (_isAnimClipEnded && _twoOptionsSplit == 1 && _isDamaged && !_isDead)
             {
                 _isAnimClipEnded = false;
                 return true;
@@ -579,7 +582,7 @@ public class FWaspMovement : MonoBehaviour, IInitializable
         
         Func<bool> IsAnimationEndedThreeOption01() => () =>
         {
-            if (_isAnimClipEnded && _threeOptiosSplit == 0 && !_isLampDestroyed)
+            if (_isAnimClipEnded && _threeOptionsSplit == 0 && !_isLampDestroyed)
             {
                 _isAnimClipEnded = false;
                 return true;
@@ -589,7 +592,7 @@ public class FWaspMovement : MonoBehaviour, IInitializable
         
         Func<bool> IsAnimationEndedThreeOption02() => () =>
         {
-            if (_isAnimClipEnded && _threeOptiosSplit == 1 && !_isLampDestroyed)
+            if (_isAnimClipEnded && _threeOptionsSplit == 1 && !_isLampDestroyed)
             {
                 _isAnimClipEnded = false;
                 return true;
@@ -599,7 +602,7 @@ public class FWaspMovement : MonoBehaviour, IInitializable
         
         Func<bool> IsAnimationEndedThreeOption03() => () =>
         {
-            if (_isAnimClipEnded && _threeOptiosSplit == 2 && !_isLampDestroyed)
+            if (_isAnimClipEnded && _threeOptionsSplit == 2 && !_isLampDestroyed)
             {
                 _isAnimClipEnded = false;
                 return true;
@@ -609,7 +612,7 @@ public class FWaspMovement : MonoBehaviour, IInitializable
         
         Func<bool> IsAnimationEndedThreeOptionSuccess01() => () =>
         {
-            if (_isAnimClipEnded && _threeOptiosSplit == 0  && !_isDamaged && !_isDead)
+            if (_isAnimClipEnded && _threeOptionsSplit == 0  && !_isDamaged && !_isDead)
             {
                 _isAnimClipEnded = false;
                 return true;
@@ -619,7 +622,7 @@ public class FWaspMovement : MonoBehaviour, IInitializable
         
         Func<bool> IsAnimationEndedThreeOptionSuccess02() => () =>
         {
-            if (_isAnimClipEnded && _threeOptiosSplit == 1 && !_isDamaged && !_isDead)
+            if (_isAnimClipEnded && _threeOptionsSplit == 1 && !_isDamaged && !_isDead)
             {
                 _isAnimClipEnded = false;
                 return true;
@@ -629,7 +632,7 @@ public class FWaspMovement : MonoBehaviour, IInitializable
         
         Func<bool> IsAnimationEndedThreeOptionSuccess03() => () =>
         {
-            if (_isAnimClipEnded && _threeOptiosSplit == 2 && !_isDamaged && !_isDead)
+            if (_isAnimClipEnded && _threeOptionsSplit == 2 && !_isDamaged && !_isDead)
             {
                 _isAnimClipEnded = false;
                 return true;
@@ -660,7 +663,6 @@ public class FWaspMovement : MonoBehaviour, IInitializable
         }
     }
     
-    
     // Event Handle Methods
     private void OnDeathStateEnded()
     {
@@ -670,7 +672,6 @@ public class FWaspMovement : MonoBehaviour, IInitializable
 
     private void OnBossAttackStarted()
     {
-        Debug.Log("Boss Attack Started");
-        BossAttackStarted?.Invoke();
+        AttackStateStarted?.Invoke();
     }
 }

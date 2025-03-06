@@ -111,7 +111,6 @@ public class FFly : CollidableEnemy, ISpreadable
 
     public override void HandleCollision()
     {
-        IsCollided = true;
         CollisionState = CollidableState.AfterCollision;
         _movement.TriggerFall();
     }

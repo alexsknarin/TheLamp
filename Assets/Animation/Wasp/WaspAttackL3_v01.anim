@@ -672,14 +672,14 @@ AnimationClip:
     intParameter: 0
     messageOptions: 0
   - time: 1.2333333
-    functionName: EnableCollider
+    functionName: StartAttack
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
   - time: 1.5166667
-    functionName: ClipEnded
+    functionName: AnimationClipEnded
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0

@@ -8,6 +8,7 @@ public class LampCollisionDetectionService : MonoBehaviour, IInitializable
     [SerializeField] private float _attackZoneRadius = 0.62f; // TODO: control from the single source
     [SerializeField] private float _attackExitZoneRadius = 0.55f;
     [SerializeField] private int _collidableCount = 0;
+    [SerializeField] private string _collidableItems;
     private List<ICollidableWithLamp> _collidables = new();
     private List<ICollidableWithLamp> _collidablesToRemove = new();
     private Vector2 _position;
@@ -62,6 +63,13 @@ public class LampCollisionDetectionService : MonoBehaviour, IInitializable
         {
             CheckCollidables();
         }
+        
+        // Debug
+        _collidableItems = "";
+        foreach (var collidable in _collidables)
+        {
+            _collidableItems = _collidableItems + ", " + collidable.GetType().ToString();
+        }
     }
 
     private void LateUpdate()
@@ -92,7 +100,6 @@ public class LampCollisionDetectionService : MonoBehaviour, IInitializable
             
             // Collision Measurements
             float attackZoneCombinedRadius = _attackZoneRadius + collidable.Radius;
-           
             
             // Entering Attack Zone
             if (collidable.CollisionState == CollidableState.Outside && distance < attackZoneCombinedRadius)

@@ -34,14 +34,14 @@ public class Wasp : BossBase
         _fWaspMovement.Initialize();
         gameObject.SetActive(false);
         
-        _fWaspMovement.BossAttackStarted += OnBossAttackStarted;
+        _fWaspMovement.AttackStateStarted += OnAttackStateStarted;
         _fWaspMovement.DeathStateEnded += OnDeathStateEnded;
         _lampDeadEventProvider.LampDestroyed += OnLampDied;
     }
 
     private void OnDestroy()
     {
-        _fWaspMovement.BossAttackStarted -= OnBossAttackStarted;
+        _fWaspMovement.AttackStateStarted -= OnAttackStateStarted;
         _fWaspMovement.DeathStateEnded -= OnDeathStateEnded;
         _lampDeadEventProvider.LampDestroyed -= OnLampDied;
     }
@@ -156,7 +156,7 @@ public class Wasp : BossBase
     /// <summary>
     /// Update Received Lamp Attack Status
     /// </summary>
-    private void OnBossAttackStarted()
+    private void OnAttackStateStarted()
     {
         if (ReceivedLampAttack)
         {

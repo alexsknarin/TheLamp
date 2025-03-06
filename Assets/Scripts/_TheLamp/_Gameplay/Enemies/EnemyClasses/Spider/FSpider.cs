@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class FSpider : CollidableEnemy, ISpreadable
 {
-[Header("-- Attributes --")]
+    [Header("-- Attributes --")]
     [SerializeField] private int _maxHealth = 1;
     [SerializeField] private int _currentHealth;
     [SerializeField] private float _collisionRadius = 0.1f;
@@ -93,7 +93,6 @@ public class FSpider : CollidableEnemy, ISpreadable
 
     public override void HandleCollision()
     {
-        IsCollided = true;
         CollisionState = CollidableState.AfterCollision;
         _movement.TriggerFall();
     }

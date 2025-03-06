@@ -22,6 +22,7 @@ public class FEnemyFactory
     AsyncOperationHandle<GameObject> _spiderEnemyAssetHandle;
     AsyncOperationHandle<GameObject> _ladybugEnemyAssetHandle;
     AsyncOperationHandle<GameObject> _megamothlingEnemyAssetHandle;
+    AsyncOperationHandle<GameObject> _waspEnemyAssetHandle;
     
     
     public FEnemyFactory(
@@ -47,6 +48,8 @@ public class FEnemyFactory
         IsFireFlyLoaded = false;
         IsMothLoaded = false;
         IsSpiderLoaded = false;
+        IsMegamothlingLoaded = false;
+        IsWaspLoaded = false;
     }
     
     public bool IsMothlingLoaded { get; private set; }
@@ -56,6 +59,7 @@ public class FEnemyFactory
     public bool IsSpiderLoaded { get; private set; }
     public bool IsLadybugLoaded { get; private set; }
     public bool IsMegamothlingLoaded { get; private set; }
+    public bool IsWaspLoaded { get; private set; }
     
 
     public async void LoadEnemy(Type type)
@@ -115,6 +119,14 @@ public class FEnemyFactory
             Debug.Log("Megamothling Loaded");
         }
         
+        if (type == typeof(FWasp))
+        {
+            _waspEnemyAssetHandle = Addressables.LoadAssetAsync<GameObject>("Boss/FWasp.prefab");
+            await _waspEnemyAssetHandle.Task;
+            IsWaspLoaded = true;
+            Debug.Log("Wasp Loaded");
+        }
+        
     }
     
     public FEnemy CreateEnemy(Type type)
@@ -153,6 +165,11 @@ public class FEnemyFactory
         {
             var prefab = _megamothlingEnemyAssetHandle.Result;
             return CreateMegamothlingInstance(prefab);    
+        }
+        if (type == typeof(FWasp) && _waspEnemyAssetHandle.IsValid())
+        {
+            var prefab = _waspEnemyAssetHandle.Result;
+            return CreateWaspsInstance(prefab);    
         }
         else
         {
@@ -239,4 +256,15 @@ public class FEnemyFactory
         
         return enemy;
     } 
+    
+    private FEnemy CreateWaspsInstance(GameObject prefab)
+    {
+        GameObject enemyInstance = Object.Instantiate(prefab);
+        enemyInstance.transform.GetChild(0).GetComponent<FWaspMovement>().Construct(_lampPositionProviderService);
+        // enemyInstance.GetComponent<FWaspPresentation>().Initialize();
+        var enemy = enemyInstance.GetComponent<FWasp>();
+        enemy.Initialize();
+        
+        return enemy;
+    }
 }

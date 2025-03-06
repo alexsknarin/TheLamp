@@ -124,10 +124,6 @@ public class GameRootContext : MonoBehaviour
 
         // Bosses TMP
         Debug.Log("------ Bosses Listeners ------");
-        _megamothling.Initialize();                                          // TODO: factory should do initialization AND construct
-        _wasp.Construct(_gameModel);
-        _wasp.Initialize();                                                // TODO: need to spawn bosses - load them later - this is TMP
-        _waspMovement.Construct(_lampPositionProviderService);
         _megabeetleMovement.Construct(_gameModel);
         _megabeetle.Initialize();
         _dragonfly.Initialize();

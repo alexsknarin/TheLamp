@@ -486,7 +486,7 @@ AnimationClip:
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 1.7333333
+  - time: 1.65
     functionName: ResetTrail
     data: 
     objectReferenceParameter: {fileID: 0}
@@ -494,7 +494,7 @@ AnimationClip:
     intParameter: 0
     messageOptions: 0
   - time: 1.8166667
-    functionName: ClipEnded
+    functionName: AnimationClipEnded
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0

@@ -13,6 +13,7 @@ public class FEnemyPool : IEnemyDeactivatedProvider
     private ObjectPool<FEnemy> _spiderPool;
     private ObjectPool<FEnemy> _ladybugPool;
     private ObjectPool<FEnemy> _megamothlingPool;
+    private ObjectPool<FEnemy> _waspPool;
     private readonly FEnemyFactory _enemyFactory;
     private readonly int _poolSize = 5;
     private int _mothlingCount;
@@ -22,6 +23,7 @@ public class FEnemyPool : IEnemyDeactivatedProvider
     private int _spiderCount;
     private int _ladybugCount;
     private int _megamothlingCount;
+    private int _waspCount;
     
     private readonly List<Type> _preloadedEnemyTypes = new List<Type>();
     
@@ -98,6 +100,16 @@ public class FEnemyPool : IEnemyDeactivatedProvider
             _poolSize,
             _poolSize
         );
+        
+        _waspPool = new ObjectPool<FEnemy>(
+            CreateWasp,
+            OnGetFromPool, 
+            OnReleaseToPool, 
+            OnDestroyPooledObject,
+            true,
+            _poolSize,
+            _poolSize
+        );
     }
 
     public void PreloadEnemy(Type type)
@@ -165,7 +177,15 @@ public class FEnemyPool : IEnemyDeactivatedProvider
             {
                 return _megamothlingPool.Get();
             }
-            throw new Exception("Ladybug prefab is not loaded yet");
+            throw new Exception("Megamothling prefab is not loaded yet");
+        }
+        if (type == typeof(FWasp))
+        {
+            if (_enemyFactory.IsWaspLoaded)
+            {
+                return _waspPool.Get();
+            }
+            throw new Exception("Wasp prefab is not loaded yet");
         }
         else
         {
@@ -234,6 +254,15 @@ public class FEnemyPool : IEnemyDeactivatedProvider
         enemyInstance.SetObjectPool(_megamothlingPool);
         enemyInstance.name = "Megamothling" + _megamothlingCount;
         _megamothlingCount++;
+        return enemyInstance;
+    }
+    
+    private FEnemy CreateWasp()
+    {
+        FEnemy enemyInstance = _enemyFactory.CreateEnemy(typeof(FWasp));
+        enemyInstance.SetObjectPool(_waspPool);
+        enemyInstance.name = "Wasp" + _waspCount;
+        _waspCount++;
         return enemyInstance;
     }
     

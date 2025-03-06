@@ -256,6 +256,10 @@ public class WaveEnemyDirector : MonoBehaviour, IInitializable
                 BossDied?.Invoke();
                 ((IBoss)enemy).SpreadRequested -= OnBossRequestedSpread;
             }
+            if (enemy is IAnimatedEnemy)
+            {
+                ((IAnimatedEnemy)enemy).AnimatedAttackStarted -= OnEnemyAttackStarted;
+            }
         }
     }
 
@@ -275,7 +279,10 @@ public class WaveEnemyDirector : MonoBehaviour, IInitializable
         {
             BossSpawned?.Invoke();
             ((IBoss)enemy).SpreadRequested += OnBossRequestedSpread;
-            return;
+        }
+        if (enemy is IAnimatedEnemy)
+        {
+            ((IAnimatedEnemy)enemy).AnimatedAttackStarted += OnEnemyAttackStarted;
         }
     }
     
