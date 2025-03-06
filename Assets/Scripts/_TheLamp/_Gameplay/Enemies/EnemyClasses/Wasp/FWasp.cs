@@ -21,8 +21,6 @@ public class FWasp: CollidableEnemy, IBoss, IAnimatedEnemy
         _movement.Initialize();
         _animationEventsListener.ClipEnded += OnClipEnded;
         _animationEventsListener.SpreadTgiggered += OnSpreadTriggered;
-        _animationEventsListener.ColliderEnabled += OnColliderEnabled;
-        _animationEventsListener.ColliderDisabled += OnColliderDisabled;
         _animationEventsListener.AttackStarted += OnAttackStateStarted;
 
     }
@@ -31,8 +29,6 @@ public class FWasp: CollidableEnemy, IBoss, IAnimatedEnemy
     {
         _animationEventsListener.ClipEnded -= OnClipEnded;
         _animationEventsListener.SpreadTgiggered -= OnSpreadTriggered;
-        _animationEventsListener.ColliderEnabled -= OnColliderEnabled;
-        _animationEventsListener.ColliderDisabled -= OnColliderDisabled;
         _animationEventsListener.AttackStarted -= OnAttackStateStarted;
     }
 
@@ -74,16 +70,6 @@ public class FWasp: CollidableEnemy, IBoss, IAnimatedEnemy
         SpreadRequested?.Invoke();
     }
     
-    private void OnColliderEnabled()
-    {
-        // TODO: remove???
-    }
-
-    private void OnColliderDisabled()
-    {
-        // TODO: remove???
-    }
-
     private void OnAttackStateStarted()
     {
         AnimatedAttackStarted?.Invoke(this);

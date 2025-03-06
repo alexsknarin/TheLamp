@@ -92,11 +92,20 @@ AnimationClip:
         time: 1.1666666
         value: {x: 2.6881478, y: -1.2931108, z: -0.88}
         inSlope: {x: 7.2831783, y: 2.6964154, z: 0}
-        outSlope: {x: 7.2831783, y: 2.6964154, z: 0}
+        outSlope: {x: 7.2831783, y: 0, z: 0}
         tangentMode: 0
         weightedMode: 0
         inWeight: {x: 0.33333334, y: 0.33333334, z: 0.33333334}
         outWeight: {x: 0.33333334, y: 0.33333334, z: 0.33333334}
+      - serializedVersion: 3
+        time: 1.3666667
+        value: {x: 4.0137143, y: -1.2931108, z: -0.88}
+        inSlope: {x: 3.3768423, y: 0, z: 0}
+        outSlope: {x: 3.3768423, y: 0, z: 0}
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: {x: 1, y: 0.33333334, z: 0.33333334}
+        outWeight: {x: 0, y: 0.33333334, z: 0.33333334}
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
@@ -191,6 +200,15 @@ AnimationClip:
         weightedMode: 0
         inWeight: 0.33333334
         outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 1.3666667
+        value: 4.0137143
+        inSlope: 3.3768423
+        outSlope: 3.3768423
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 1
+        outWeight: 0
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
@@ -479,13 +497,6 @@ AnimationClip:
   m_HasGenericRootTransform: 1
   m_HasMotionFloatCurves: 0
   m_Events:
-  - time: 0
-    functionName: DisableCollider
-    data: 
-    objectReferenceParameter: {fileID: 0}
-    floatParameter: 0
-    intParameter: 0
-    messageOptions: 0
   - time: 1.65
     functionName: ResetTrail
     data: 
