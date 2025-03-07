@@ -261,7 +261,7 @@ public class FEnemyFactory
     {
         GameObject enemyInstance = Object.Instantiate(prefab);
         enemyInstance.transform.GetChild(0).GetComponent<FWaspMovement>().Construct(_lampPositionProviderService);
-        // enemyInstance.GetComponent<FWaspPresentation>().Initialize();
+        enemyInstance.GetComponent<FWaspPresentation>().Initialize();
         var enemy = enemyInstance.GetComponent<FWasp>();
         enemy.Initialize();
         
