@@ -35,9 +35,6 @@ public class GameRootContext : MonoBehaviour
     [SerializeField] private LightningFlashController _lightningFlashController;
     [SerializeField] private FakeAd _fakeAd;
     [Header("Bosses")]
-    [SerializeField] private Megamothling _megamothling;
-    [SerializeField] private Wasp _wasp;
-    [SerializeField] private FWaspMovement _waspMovement;
     [SerializeField] private Megabeetle _megabeetle;
     [SerializeField] private MegabeetleMovement _megabeetleMovement;
     [SerializeField] private Dragonfly _dragonfly;
