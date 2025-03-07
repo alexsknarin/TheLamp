@@ -19,6 +19,7 @@ public class FWasp: CollidableEnemy, IBoss, IAnimatedEnemy
     
     public override Vector2 Position => _movement.Position;
     public override float Radius => _collisionRadius;
+    public Transform MovementTransform => _movement.transform;
     public override void Initialize()
     {
         _movement.Initialize();
@@ -72,6 +73,13 @@ public class FWasp: CollidableEnemy, IBoss, IAnimatedEnemy
     {
         _movement.SetDead();
     }
+    
+    public override Vector3 ProvideImpactPoint()
+    {
+        Vector3 position = _movement.Position;
+        position.z = 0;
+        return position;
+    }
 
     public override void HandleCollision()
     {
@@ -95,6 +103,8 @@ public class FWasp: CollidableEnemy, IBoss, IAnimatedEnemy
         IsReceivedLampAttackDamage = false;
         AnimatedAttackStarted?.Invoke(this);
     }
+    
+    
     
     private void OnDrawGizmos()
     {

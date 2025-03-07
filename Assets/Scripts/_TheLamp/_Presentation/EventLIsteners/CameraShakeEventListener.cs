@@ -23,9 +23,8 @@ public class CameraShakeEventListener: IDisposable
         _gameModel.LampDamageStarted += OnLampDamageStarted;
         _gameModel.LampDestroyed += OnLampDestroyed;
         _waveEnemyDirector.FireflyExplosionStarted += OnFireflyExplosionStarted;
-        
-        // _enemyController.BossSpawned += OnBossSpawned;
-        // _enemyController.BossDied += OnBossDied;
+        _waveEnemyDirector.BossSpawned += OnBossSpawned;
+        _waveEnemyDirector.BossDied -= OnBossDied;
     }
 
     public void Dispose()
@@ -33,9 +32,8 @@ public class CameraShakeEventListener: IDisposable
         _gameModel.LampDamageStarted -= OnLampDamageStarted;
         _gameModel.LampDestroyed -= OnLampDestroyed;
         _waveEnemyDirector.FireflyExplosionStarted -= OnFireflyExplosionStarted;
-        
-        // _enemyController.BossSpawned -= OnBossSpawned;
-        // _enemyController.BossDied -= OnBossDied;
+        _waveEnemyDirector.BossSpawned -= OnBossSpawned;
+        _waveEnemyDirector.BossDied -= OnBossDied;
     }
 
     private void OnFireflyExplosionStarted()
@@ -54,12 +52,12 @@ public class CameraShakeEventListener: IDisposable
         _cameraShakeService.StartDamageShake();
     }
 
-    private void OnBossSpawned(BossBase boss)
+    private void OnBossSpawned(FEnemy boss)
     {
         _cameraShakeService.EnableBossShake(_bossCameraShakeFactory.Create(boss)); 
     }
 
-    private void OnBossDied(EnemyBase obj)
+    private void OnBossDied()
     {
         _cameraShakeService.DisableBossShake();
     }

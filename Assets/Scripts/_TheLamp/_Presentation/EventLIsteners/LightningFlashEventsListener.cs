@@ -21,7 +21,7 @@ public class LightningFlashEventsListener: IDisposable
         _waveEnemyDirector.BossDied -= OnBossDied;
     }
 
-    private void OnBossSpawned()
+    private void OnBossSpawned(FEnemy boss)
     {
         _lightningFlashController.Play();
     }

@@ -39,7 +39,7 @@ public class WaveEnemyDirector : MonoBehaviour, IInitializable
     public event Action ExplodableEnemySpawned;
     public event Action<FEnemy> ExplodableEnemyDeactivated;
     public event Action FireflyExplosionStarted;
-    public event Action BossSpawned;
+    public event Action<FEnemy> BossSpawned;
     public event Action BossDied;
     
     
@@ -277,7 +277,7 @@ public class WaveEnemyDirector : MonoBehaviour, IInitializable
         }
         if (enemy is IBoss)
         {
-            BossSpawned?.Invoke();
+            BossSpawned?.Invoke(enemy);
             ((IBoss)enemy).SpreadRequested += OnBossRequestedSpread;
         }
         if (enemy is IAnimatedEnemy)

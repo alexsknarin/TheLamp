@@ -8,44 +8,58 @@ public class BossCameraShakeFactory
     private MegabeetleCameraShakeStrategy _megabeetleCameraShakeStrategy;
     private DragonflyCameraShakeStrategy _dragonflyCameraShakeStrategy;
     
-    public ICameraShakeStrategy Create(BossBase boss)
+    public ICameraShakeStrategy Create(FEnemy boss)
     {
-        if (boss is Wasp)
+        if (boss is FWasp)
         {
-            LoadStrategy(
-                ref _waspCameraShakeStrategy, 
-                "Behaviors/WaspCameraShakeStrategy",
-                boss.transform
+            if (_waspCameraShakeStrategy is null)
+            {
+                LoadStrategy(
+                    ref _waspCameraShakeStrategy, 
+                    "Behaviors/WaspCameraShakeStrategy",
+                    ((FWasp)boss).MovementTransform
                 );
+            }
+            else
+            {
+                _waspCameraShakeStrategy.Construct(((FWasp)boss).MovementTransform);
+            }
             return _waspCameraShakeStrategy;
         }
-        if (boss is Megamothling)
+        if (boss is FMegamothling)
         {
-            LoadStrategy(
-                ref _megamothlingCameraShakeStrategy,
-                "Behaviors/MegamothlingCameraShakeStrategy",
-                boss.transform
+            if (_megamothlingCameraShakeStrategy is null)
+            {
+                LoadStrategy(
+                    ref _megamothlingCameraShakeStrategy,
+                    "Behaviors/MegamothlingCameraShakeStrategy",
+                    boss.transform
                 );
-            return _megamothlingCameraShakeStrategy;
+            }
+            else
+            {
+                _megamothlingCameraShakeStrategy.Construct(boss.transform);
+            }
+            return _megamothlingCameraShakeStrategy;    
         }
-        if (boss is Megabeetle)
-        {
-            LoadStrategy(
-                ref _megabeetleCameraShakeStrategy,
-                "Behaviors/MegabeetleCameraShakeStrategy",
-                boss.transform
-                );
-            return _megabeetleCameraShakeStrategy;
-        }
-        if (boss is Dragonfly)
-        {
-            LoadStrategy(
-                ref _dragonflyCameraShakeStrategy,
-                "Behaviors/DragonflyCameraShakeStrategy",
-                boss.transform
-                );
-            return _dragonflyCameraShakeStrategy;
-        }
+        // if (boss is FMegabeetle)
+        // {
+        //     LoadStrategy(
+        //         ref _megabeetleCameraShakeStrategy,
+        //         "Behaviors/MegabeetleCameraShakeStrategy",
+        //         boss.transform
+        //         );
+        //     return _megabeetleCameraShakeStrategy;
+        // }
+        // if (boss is Dragonfly)
+        // {
+        //     LoadStrategy(
+        //         ref _dragonflyCameraShakeStrategy,
+        //         "Behaviors/DragonflyCameraShakeStrategy",
+        //         boss.transform
+        //         );
+        //     return _dragonflyCameraShakeStrategy;
+        // }
         return null;
     }
     
