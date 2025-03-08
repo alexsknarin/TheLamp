@@ -19,6 +19,7 @@ public class MegabeetleMovement : EnemyMovement
     // Movement States
     private EnemyMovementStateMachine _movementStateMachine;
     private EnemyMovementBaseState _currentState;
+    
     private MegabeetleMovementEnterState _enterState;
     private MegabeetleMovementPatrolState _patrolState;
     private LadybugMovementPreAttackState _preAttackState;
@@ -30,7 +31,10 @@ public class MegabeetleMovement : EnemyMovement
     private MegabeetleMovementStickLandingState _stickLandingState;
     private MegabeetleMovementFallState _fallState;
     private MegabeetleMovementDeathState _deathState;
+    
     private LadybugMovementSpreadState _spreadState;
+    
+    
     private int _depthDirection;
     private Vector3 _position2d;
     private Vector3 _prevPosition2d;

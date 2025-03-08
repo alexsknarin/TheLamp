@@ -14,6 +14,7 @@ public class FEnemyFactory
     private SpiderMovementStateFactory _spiderMovementStateFactory;
     private LadybugMovementStateFactory _ladybugMovementStateFactory;
     private MegamothlingMovementStateFactory _megamothlingMovementStateFactory;
+    private MegabeetleMovementStateFactory _megabeetleMovementStateFactory;
     
     AsyncOperationHandle<GameObject> _mothlingEnemyAssetHandle;
     AsyncOperationHandle<GameObject> _flyEnemyAssetHandle;
@@ -23,6 +24,7 @@ public class FEnemyFactory
     AsyncOperationHandle<GameObject> _ladybugEnemyAssetHandle;
     AsyncOperationHandle<GameObject> _megamothlingEnemyAssetHandle;
     AsyncOperationHandle<GameObject> _waspEnemyAssetHandle;
+    AsyncOperationHandle<GameObject> _megabeetleEnemyAssetHandle;
     
     
     public FEnemyFactory(
@@ -32,6 +34,7 @@ public class FEnemyFactory
         SpiderMovementStateFactory spiderMovementStateFactory,
         LadybugMovementStateFactory ladybugMovementStateFactory,
         MegamothlingMovementStateFactory megamothlingMovementStateFactory,
+        MegabeetleMovementStateFactory megabeetleMovementStateFactory,
         ILampPositionProviderService lampPositionProviderService
     )
     {
@@ -42,6 +45,7 @@ public class FEnemyFactory
         _ladybugMovementStateFactory = ladybugMovementStateFactory;
         _megamothlingMovementStateFactory = megamothlingMovementStateFactory;
         _lampPositionProviderService = lampPositionProviderService;
+        _megabeetleMovementStateFactory = megabeetleMovementStateFactory;
         
         IsMothlingLoaded = false;
         IsFlyLoaded = false;
@@ -50,6 +54,7 @@ public class FEnemyFactory
         IsSpiderLoaded = false;
         IsMegamothlingLoaded = false;
         IsWaspLoaded = false;
+        IsMegabeetleLoaded = false;
     }
     
     public bool IsMothlingLoaded { get; private set; }
@@ -60,6 +65,7 @@ public class FEnemyFactory
     public bool IsLadybugLoaded { get; private set; }
     public bool IsMegamothlingLoaded { get; private set; }
     public bool IsWaspLoaded { get; private set; }
+    public bool IsMegabeetleLoaded { get; private set; }
     
 
     public async void LoadEnemy(Type type)
@@ -127,6 +133,13 @@ public class FEnemyFactory
             Debug.Log("Wasp Loaded");
         }
         
+        if (type == typeof(FMegabeetle))
+        {
+            _megabeetleEnemyAssetHandle = Addressables.LoadAssetAsync<GameObject>("Boss/FMegabeetle.prefab");
+            await _megabeetleEnemyAssetHandle.Task;
+            IsMegabeetleLoaded = true;
+            Debug.Log("Megabeetle Loaded");
+        }
     }
     
     public FEnemy CreateEnemy(Type type)
@@ -170,6 +183,11 @@ public class FEnemyFactory
         {
             var prefab = _waspEnemyAssetHandle.Result;
             return CreateWaspsInstance(prefab);    
+        }
+        if (type == typeof(FMegabeetle) && _megabeetleEnemyAssetHandle.IsValid())
+        {
+            var prefab = _megabeetleEnemyAssetHandle.Result;
+            return CreateMegabeetleInstance(prefab);    
         }
         else
         {
@@ -263,6 +281,17 @@ public class FEnemyFactory
         enemyInstance.transform.GetChild(0).GetComponent<FWaspMovement>().Construct(_lampPositionProviderService);
         enemyInstance.GetComponent<FWaspPresentation>().Initialize();
         var enemy = enemyInstance.GetComponent<FWasp>();
+        enemy.Initialize();
+        
+        return enemy;
+    }
+    
+    private FEnemy CreateMegabeetleInstance(GameObject prefab)
+    {
+        GameObject enemyInstance = Object.Instantiate(prefab);
+        enemyInstance.GetComponent<FMegabeetleMovement>().Construct(_megabeetleMovementStateFactory);
+        // enemyInstance.GetComponent<FMegabeetlePresentation>().Initialize();
+        var enemy = enemyInstance.GetComponent<FMegabeetle>();
         enemy.Initialize();
         
         return enemy;

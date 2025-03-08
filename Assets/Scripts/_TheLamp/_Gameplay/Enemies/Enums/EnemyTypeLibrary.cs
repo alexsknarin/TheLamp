@@ -12,7 +12,8 @@ public class EnemyTypeLibrary
         { EnemyType.Spider, typeof(FSpider) },
         { EnemyType.Mothling, typeof(FMothling) },
         { EnemyType.Megamothling , typeof(FMegamothling) },
-        { EnemyType.Wasp , typeof(FWasp) }
+        { EnemyType.Wasp , typeof(FWasp) },
+        { EnemyType.Megabeetle , typeof(FMegabeetle) }
     };
     
     public static Dictionary<Type, EnemyType> TypeEnemyDictionary = new Dictionary<Type, EnemyType>
@@ -24,6 +25,7 @@ public class EnemyTypeLibrary
         { typeof(FSpider), EnemyType.Spider },
         { typeof(FMothling), EnemyType.Mothling },
         { typeof(FMegamothling), EnemyType.Megamothling },
-        { typeof(FWasp), EnemyType.Wasp }
+        { typeof(FWasp), EnemyType.Wasp },
+        { typeof(FMegabeetle), EnemyType.Megabeetle }
     };
 }

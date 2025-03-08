@@ -1,5 +1,5 @@
 using UnityEngine;
-
+// TODO: rename to EnemyMovementStateBase
 public abstract class RegularEnemyMovementStateBase: IState
 {
     public Vector2 Position2D { get; protected set; }

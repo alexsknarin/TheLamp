@@ -14,6 +14,7 @@ public class FEnemyPool : IEnemyDeactivatedProvider
     private ObjectPool<FEnemy> _ladybugPool;
     private ObjectPool<FEnemy> _megamothlingPool;
     private ObjectPool<FEnemy> _waspPool;
+    private ObjectPool<FEnemy> _megabeetlePool;
     private readonly FEnemyFactory _enemyFactory;
     private readonly int _poolSize = 5;
     private int _mothlingCount;
@@ -24,6 +25,7 @@ public class FEnemyPool : IEnemyDeactivatedProvider
     private int _ladybugCount;
     private int _megamothlingCount;
     private int _waspCount;
+    private int _megabeetleCount;
     
     private readonly List<Type> _preloadedEnemyTypes = new List<Type>();
     
@@ -36,6 +38,8 @@ public class FEnemyPool : IEnemyDeactivatedProvider
 
     public void Initialize()
     {
+        // TODO: create pool objects on demand
+        
         _mothlingCount= 0;
         _mothlingPool = new ObjectPool<FEnemy>(
             CreateMothling, 
@@ -103,6 +107,16 @@ public class FEnemyPool : IEnemyDeactivatedProvider
         
         _waspPool = new ObjectPool<FEnemy>(
             CreateWasp,
+            OnGetFromPool, 
+            OnReleaseToPool, 
+            OnDestroyPooledObject,
+            true,
+            _poolSize,
+            _poolSize
+        );
+        
+        _megabeetlePool = new ObjectPool<FEnemy>(
+            CreateMegabeetle,
             OnGetFromPool, 
             OnReleaseToPool, 
             OnDestroyPooledObject,
@@ -187,6 +201,14 @@ public class FEnemyPool : IEnemyDeactivatedProvider
             }
             throw new Exception("Wasp prefab is not loaded yet");
         }
+        if (type == typeof(FMegabeetle))
+        {
+            if (_enemyFactory.IsMegabeetleLoaded)
+            {
+                return _megabeetlePool.Get();
+            }
+            throw new Exception("Megabeetle prefab is not loaded yet");
+        }
         else
         {
             throw new Exception("Enemy type not supported");
@@ -263,6 +285,15 @@ public class FEnemyPool : IEnemyDeactivatedProvider
         enemyInstance.SetObjectPool(_waspPool);
         enemyInstance.name = "Wasp" + _waspCount;
         _waspCount++;
+        return enemyInstance;
+    }
+    
+    private FEnemy CreateMegabeetle()
+    {
+        FEnemy enemyInstance = _enemyFactory.CreateEnemy(typeof(FMegabeetle));
+        enemyInstance.SetObjectPool(_megabeetlePool);
+        enemyInstance.name = "Megameetle" + _waspCount;
+        _megabeetleCount++;
         return enemyInstance;
     }
     

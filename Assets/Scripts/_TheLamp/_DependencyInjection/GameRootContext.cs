@@ -35,8 +35,6 @@ public class GameRootContext : MonoBehaviour
     [SerializeField] private LightningFlashController _lightningFlashController;
     [SerializeField] private FakeAd _fakeAd;
     [Header("Bosses")]
-    [SerializeField] private Megabeetle _megabeetle;
-    [SerializeField] private MegabeetleMovement _megabeetleMovement;
     [SerializeField] private Dragonfly _dragonfly;
     [Header("Scene References")]
     [SerializeField] private Transform _cameraTransform;
@@ -82,6 +80,7 @@ public class GameRootContext : MonoBehaviour
     private SpiderMovementStateFactory _spiderMovementStateFactory;
     private LadybugMovementStateFactory _ladybugMovementStateFactory;
     private MegamothlingMovementStateFactory _megamothlingMovementStateFactory;
+    private MegabeetleMovementStateFactory _megabeetleMovementStateFactory;
     private FEnemyFactory _enemyFactory;
     private FXFactory _fxFactory;   
     
@@ -121,8 +120,6 @@ public class GameRootContext : MonoBehaviour
 
         // Bosses TMP
         Debug.Log("------ Bosses Listeners ------");
-        _megabeetleMovement.Construct(_gameModel);
-        _megabeetle.Initialize();
         _dragonfly.Initialize();
 
         Debug.Log("------ Loading Gameconfig ------");
@@ -207,6 +204,11 @@ public class GameRootContext : MonoBehaviour
             _lampPositionProviderService
         );
         
+        _megabeetleMovementStateFactory = new MegabeetleMovementStateFactory(
+            _cameraTransform,
+            _lampPositionProviderService
+        );
+        
         _enemyFactory = new FEnemyFactory(
             _mothlingMovementStateFactory, 
             _flyMovementStateFactory, 
@@ -214,6 +216,7 @@ public class GameRootContext : MonoBehaviour
             _spiderMovementStateFactory,
             _ladybugMovementStateFactory,
             _megamothlingMovementStateFactory,
+            _megabeetleMovementStateFactory,
             _lampPositionProviderService
         );
         _enemyPool = new FEnemyPool(_enemyFactory);
