@@ -17,7 +17,8 @@ public class FMegabeetleMovementStickState : RegularEnemyMovementStateBase
     {
         
         IsReadyToSwitch = false;
-        Position2D = _positionDirectionProvider.Position2D.normalized * 0.44f; // TODO: set normalized local position
+        Position2D = _positionDirectionProvider.Position2D.normalized * 0.44f; // TODO: set normalized local position, magic number
+        // TODO: read depth as well
         _localTime = 0;
         _phase = 0;
     }

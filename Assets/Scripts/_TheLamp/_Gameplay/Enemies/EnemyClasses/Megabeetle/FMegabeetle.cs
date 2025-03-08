@@ -18,6 +18,7 @@ public class FMegabeetle : FEnemy, IStickableWithLamp
     {
         IsDead = false;
         _currentHealth = _maxHealth;
+        _currentHealthToFall = _healthToFallThreshold;
         _isInAttackReadyMovementState = false;
         IsReadyForDamage = false;
         IsReceivedLampAttackDamage = false;
@@ -30,7 +31,31 @@ public class FMegabeetle : FEnemy, IStickableWithLamp
 
     public override void ReceiveDamage(int damageAmount)
     {
-        throw new System.NotImplementedException();
+        IsReceivedLampAttackDamage = true;
+        _currentHealth -= damageAmount;
+        
+        if (_currentHealth <= 0)
+        {
+            // Dead?.Invoke();
+            DoDeath();
+            IsDead = true;
+            IsReadyForDamage = false;
+            StickState = StickableState.InAttackZoneDamaged;
+            AttackBlockState = AttackBlockerState.Damaged;
+        }
+        else
+        {
+            Debug.Log($"Damage Received: {damageAmount}.");
+            // Damaged?.Invoke();
+            // HealthChanged?.Invoke(_currentHealth, _maxHealth);
+            
+            _currentHealthToFall -= damageAmount;
+            if (_currentHealthToFall <= 0)
+            {
+                _currentHealthToFall = _healthToFallThreshold;
+                _movement.TriggerFall();
+            }
+        }
     }
 
     public override void Attack()
@@ -44,7 +69,7 @@ public class FMegabeetle : FEnemy, IStickableWithLamp
     }
 
     public Vector2 Position => _movement.Position2D;
-    public float Radius { get; private set; }
+    public float Radius => _collisionRadius;
     public bool IsSticked { get; private set; }
     public AttackBlockerState AttackBlockState { get; private set; }
     public StickableState StickState { get; private set; }
@@ -65,6 +90,7 @@ public class FMegabeetle : FEnemy, IStickableWithLamp
         // Play event
         
         _movement.TriggerStick(lampTransform);
+        Debug.Log(Position);
     }
 
     public void HandleExitAttackZone()
@@ -87,5 +113,11 @@ public class FMegabeetle : FEnemy, IStickableWithLamp
     public Vector3 ProvideImpactPoint()
     {
         return transform.localPosition;
+    }
+    
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.cyan;
+        Gizmos.DrawWireSphere(transform.position, _collisionRadius);
     }
 }

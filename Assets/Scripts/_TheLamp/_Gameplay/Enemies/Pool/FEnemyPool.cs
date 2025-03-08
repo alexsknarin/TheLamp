@@ -292,7 +292,7 @@ public class FEnemyPool : IEnemyDeactivatedProvider
     {
         FEnemy enemyInstance = _enemyFactory.CreateEnemy(typeof(FMegabeetle));
         enemyInstance.SetObjectPool(_megabeetlePool);
-        enemyInstance.name = "Megameetle" + _waspCount;
+        enemyInstance.name = "Megabeetle" + _waspCount;
         _megabeetleCount++;
         return enemyInstance;
     }

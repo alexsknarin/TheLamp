@@ -71,9 +71,16 @@ public class FMegabeetleMovement : FEnemyMovementBase, IPositionDirectionProvide
         
         
         At(_enterState, _preAttackStateR, () => _enterState.IsReadyToSwitch);
+        At(_patrolState, _preAttackStateR, () => _patrolState.IsReadyToSwitch);
         At(_preAttackStateR, _attackState, () => _preAttackStateR.IsReadyToSwitch);
         
-        // At(_stickState);
+        At(_stickLandingState, _stickState, () => _stickLandingState.IsReadyToSwitch);
+        At(_stickState, _stickPreAttackState, () => _stickState.IsReadyToSwitch);
+        At(_stickPreAttackState, _stickPreAttackPauseState, () => _stickPreAttackState.IsReadyToSwitch);
+        At(_stickPreAttackPauseState, _stickAttackState, () => _stickPreAttackPauseState.IsReadyToSwitch);
+        At(_stickAttackState, _stickState, () => _stickAttackState.IsReadyToSwitch);
+        
+        At(_fallState, _patrolState, () => _fallState.IsReadyToSwitch);
         
         
         
@@ -107,7 +114,8 @@ public class FMegabeetleMovement : FEnemyMovementBase, IPositionDirectionProvide
 
     public override void TriggerFall()
     {
-        throw new System.NotImplementedException();
+        transform.parent = null;
+        SwitchToStateAndApply(_fallState);
     }
 
     public override void TriggerDeath()
@@ -133,9 +141,7 @@ public class FMegabeetleMovement : FEnemyMovementBase, IPositionDirectionProvide
         //     transform.position = _currentState.Position2D;
         // }
         
-        
         transform.localPosition = _currentState.Position2D;
-        enabled = false;
     }
 
     private void Update()
@@ -160,5 +166,16 @@ public class FMegabeetleMovement : FEnemyMovementBase, IPositionDirectionProvide
         spawnPosition = rotation * spawnPosition;
         spawnPosition.x *= -direction;
         return spawnPosition;
+    }
+    
+    private void SwitchToStateAndApply(RegularEnemyMovementStateBase state) // TODO: implement this in all enemies
+    {
+        _currentState = state;
+        _stateMachine.SetState(_currentState);
+        Position2D = _currentState.Position2D;
+        Vector2 newPosition = Position2D;
+        
+        transform.position = newPosition;
+        _stateDebug = _currentState.GetType().Name;
     }
 }

@@ -47,9 +47,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _collisionRadius: 0.3
-  _maxHealth: 0
+  _maxHealth: 30
   _currentHealth: 0
-  _healthToFallThreshold: 0
+  _healthToFallThreshold: 7
   _movement: {fileID: 2976665749094176296}
 --- !u!114 &2976665749094176296
 MonoBehaviour:
@@ -71,6 +71,7 @@ MonoBehaviour:
   _isDepthEnabled: 1
   IDLE_POSITION: {x: 0, y: 0, z: 0}
   _sideDirection: 0
+  _stateDebug: 
 --- !u!1 &2267613916398504097
 GameObject:
   m_ObjectHideFlags: 0
