@@ -51,7 +51,8 @@ public class FLadybugMovement : FEnemyMovementBase, IPositionDirectionProvider, 
     public Vector3 DepthDirection { get; private set; }
     
     public override void Initialize()
-    {
+    {        
+        enabled = false;
         _stateFactory.SetEnemyDependencies(this, _speed, _radius, _verticalAmplitude, _collisionRadius);
         _patrolStateR = (FLadybugMovementPatrolStateR)_stateFactory.Create(typeof(FLadybugMovementPatrolStateR));
         _patrolStateL = (FLadybugMovementPatrolStateL)_stateFactory.Create(typeof(FLadybugMovementPatrolStateL));
@@ -76,8 +77,6 @@ public class FLadybugMovement : FEnemyMovementBase, IPositionDirectionProvider, 
         
         
         void At(IState from, IState to, Func<bool> condition) => _stateMachine.AddTransition(from, to, condition);
-        
-        enabled = false;
     }
 
     private void OnDestroy()
