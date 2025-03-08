@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class FMegabeetle : FEnemy, IStickableWithLamp
@@ -68,6 +69,7 @@ public class FMegabeetle : FEnemy, IStickableWithLamp
         throw new System.NotImplementedException();
     }
 
+    public event Action<IStickableWithLamp> StickReadyStarted;
     public Vector2 Position => _movement.Position2D;
     public float Radius => _collisionRadius;
     public bool IsSticked { get; private set; }

@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public abstract class FLadybugMovementPatrolState: RegularEnemyMovementStateBase
@@ -9,6 +10,8 @@ public abstract class FLadybugMovementPatrolState: RegularEnemyMovementStateBase
     private readonly float _radius;
     private readonly float _verticalAmplitude;
     
+    private float _attackRange = 1.5f;
+    private bool _outsideAttackRange;
     private float _patrolStartOffsetAngle;
     private float _enterTimeOffset;
     private float _phase;
@@ -19,6 +22,8 @@ public abstract class FLadybugMovementPatrolState: RegularEnemyMovementStateBase
     private float _preAttackTriggerYThreshold = 0.3f;
     private float _depthMultiplierMax = 3f;
     private float _depthMultiplierMin = 0f;
+    
+    public event Action EnteredAttackRange;
     
     public FLadybugMovementPatrolState(
         Vector3 cameraPosition,
@@ -52,6 +57,7 @@ public abstract class FLadybugMovementPatrolState: RegularEnemyMovementStateBase
         {
             _patrolStartOffsetAngle = Mathf.PI - _patrolStartOffsetAngle;
         }
+        _outsideAttackRange = true;
         IsReadyToSwitch = false;
     }
 
@@ -83,8 +89,15 @@ public abstract class FLadybugMovementPatrolState: RegularEnemyMovementStateBase
         float depthValue = Mathf.Lerp(_depthMultiplierMin, _depthMultiplierMax, depthPhase);
         DepthDirection = cameraDirection * depthValue;
         
+        float distanceToLamp = (Position2D - _lampPositionProviderService.GetLampPosition()).magnitude;
         
-        if((Position2D - _lampPositionProviderService.GetLampPosition()).magnitude < _preAttackTriggerDistance 
+        if (_outsideAttackRange && distanceToLamp < _attackRange)
+        {
+            _outsideAttackRange = false;
+            EnteredAttackRange?.Invoke();
+        }
+        
+        if(distanceToLamp < _preAttackTriggerDistance 
            && Position2D.y < _preAttackTriggerYThreshold)
         {
             IsReadyToSwitch = true;

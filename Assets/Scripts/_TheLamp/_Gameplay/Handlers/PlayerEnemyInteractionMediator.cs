@@ -25,7 +25,7 @@ public class PlayerEnemyInteractionMediator: IInitializable, IDisposable
     public void Initialize()
     {
         _waveEnemyDirector.EnemyAttackStarted += OnEnemyAttackStarted;
-        _waveEnemyDirector.StickyEnemySpawned += OnStickyEnemySpawned;
+        _waveEnemyDirector.StickyEnemyRedyToStick += OnStickyEnemyRedyToStick;
         
         _lampCollisionDetectionService.EnemyAttackEnded += OnEnemyAttackEnded;
 
@@ -38,7 +38,7 @@ public class PlayerEnemyInteractionMediator: IInitializable, IDisposable
     public void Dispose()
     {
         _waveEnemyDirector.EnemyAttackStarted -= OnEnemyAttackStarted;
-        _waveEnemyDirector.StickyEnemySpawned -= OnStickyEnemySpawned;
+        _waveEnemyDirector.StickyEnemyRedyToStick -= OnStickyEnemyRedyToStick;
         
         _lampCollisionDetectionService.EnemyAttackEnded -= OnEnemyAttackEnded;
         
@@ -65,7 +65,7 @@ public class PlayerEnemyInteractionMediator: IInitializable, IDisposable
         _lampCollisionDetectionService.AddCollidable(enemy);
     }
 
-    private void OnStickyEnemySpawned(IStickableWithLamp enemy)
+    private void OnStickyEnemyRedyToStick(IStickableWithLamp enemy)
     {
         _lampStickyDetectionService.AddStickable(enemy);
     }

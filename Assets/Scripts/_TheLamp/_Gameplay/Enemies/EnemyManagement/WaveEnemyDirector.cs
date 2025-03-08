@@ -33,7 +33,7 @@ public class WaveEnemyDirector : MonoBehaviour, IInitializable
     
     public event Action WaveEnded;
     public event Action<CollidableEnemy> EnemyAttackStarted;
-    public event Action<IStickableWithLamp> StickyEnemySpawned;
+    public event Action<IStickableWithLamp> StickyEnemyRedyToStick;
     public event Action LampBlocked;
     public event Action LampUnblocked;
     public event Action ExplodableEnemySpawned;
@@ -260,6 +260,10 @@ public class WaveEnemyDirector : MonoBehaviour, IInitializable
             {
                 ((IAnimatedEnemy)enemy).AnimatedAttackStarted -= OnEnemyAttackStarted;
             }
+            if (enemy is IStickableWithLamp)
+            {
+                ((IStickableWithLamp)enemy).StickReadyStarted -= OnStickReadyStarted;
+            }
         }
     }
 
@@ -267,7 +271,8 @@ public class WaveEnemyDirector : MonoBehaviour, IInitializable
     {
         if (enemy is IStickableWithLamp)
         {
-            StickyEnemySpawned?.Invoke((IStickableWithLamp)enemy);
+            ((IStickableWithLamp)enemy).StickReadyStarted += OnStickReadyStarted;
+            
             return;
         }
         if (enemy is IExplodable)
@@ -285,7 +290,12 @@ public class WaveEnemyDirector : MonoBehaviour, IInitializable
             ((IAnimatedEnemy)enemy).AnimatedAttackStarted += OnEnemyAttackStarted;
         }
     }
-    
+
+    private void OnStickReadyStarted(IStickableWithLamp stickable)
+    {
+        StickyEnemyRedyToStick?.Invoke(stickable);
+    }
+
     private void OnBossRequestedSpread()
     {
         SpreadEnemies();

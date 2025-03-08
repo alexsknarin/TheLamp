@@ -18,6 +18,7 @@ public class FLadybug : FEnemy, IStickableWithLamp, ISpreadable
 
     public bool IsSticked { get; private set; }
     public AttackBlockerState AttackBlockState { get; private set; }
+    public event Action<IStickableWithLamp> StickReadyStarted;
     public Vector2 Position => _movement.Position2D;
     public float Radius => _collisionRadius;
     public StickableState StickState { get; private set; }
@@ -25,11 +26,14 @@ public class FLadybug : FEnemy, IStickableWithLamp, ISpreadable
     public override void Initialize()
     {
         _movement.Initialize();
+        _movement.EnteredAttackRange += OnEnteredAttackRange;
         _movement.DeathStateEnded += OnDeathStateEnded;
+        
     }
-
+    
     private void OnDestroy()
     {
+        _movement.EnteredAttackRange -= OnEnteredAttackRange;
         _movement.DeathStateEnded -= OnDeathStateEnded;
     }
 
@@ -151,5 +155,10 @@ public class FLadybug : FEnemy, IStickableWithLamp, ISpreadable
     public Vector3 ProvideImpactPoint()
     {
         return transform.position;
+    }
+    
+    private void OnEnteredAttackRange()
+    {
+        StickReadyStarted?.Invoke(this);
     }
 }

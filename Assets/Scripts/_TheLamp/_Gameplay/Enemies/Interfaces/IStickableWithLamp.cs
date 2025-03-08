@@ -1,7 +1,9 @@
+using System;
 using UnityEngine;
 
 public interface IStickableWithLamp
 {
+    public event Action<IStickableWithLamp> StickReadyStarted;
     public Vector2 Position { get; }
     public float Radius { get; }
     public bool IsSticked { get; }

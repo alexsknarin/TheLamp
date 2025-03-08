@@ -46,6 +46,7 @@ public class FLadybugMovement : FEnemyMovementBase, IPositionDirectionProvider, 
     public event Action PreAttackEnded;
     public event Action DeathStateEnded;
     public event Action SpreadStateEnded;
+    public event Action EnteredAttackRange;
     
     public Vector2 Position2D { get; private set; }
     public Vector3 DepthDirection { get; private set; }
@@ -69,6 +70,7 @@ public class FLadybugMovement : FEnemyMovementBase, IPositionDirectionProvider, 
         _preAttackStateL.Ended += OnPreAttackStateEnded;
         _deathFallState.Ended += OnDeathFallStateEnded;
         _spreadState.Ended += OnSpreadStateEnded;
+        _patrolStateR.EnteredAttackRange += OnEnteredAttackRange;
         
         At(_patrolStateR, _preAttackStateR, () => _patrolStateR.IsReadyToSwitch);
         At(_preAttackStateR, _attackState, () => _preAttackStateR.IsReadyToSwitch);
@@ -87,7 +89,13 @@ public class FLadybugMovement : FEnemyMovementBase, IPositionDirectionProvider, 
         _preAttackStateL.Ended -= OnPreAttackStateEnded;
         _deathFallState.Ended -= OnDeathFallStateEnded;
         _spreadState.Ended -= OnSpreadStateEnded;
+        _patrolStateR.EnteredAttackRange -= OnEnteredAttackRange;
         transform.parent = null;
+    }
+
+    private void OnEnteredAttackRange()
+    {
+        EnteredAttackRange?.Invoke();
     }
 
     public override void Play()
