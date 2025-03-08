@@ -1,4 +1,6 @@
+using System;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class FMegabeetleMovement : FEnemyMovementBase, IPositionDirectionProvider
 {
@@ -11,6 +13,7 @@ public class FMegabeetleMovement : FEnemyMovementBase, IPositionDirectionProvide
     [SerializeField] private bool _isDepthEnabled;
     [SerializeField] private Vector3 IDLE_POSITION; // For Debug
     [SerializeField] private int _sideDirection; // For Debug
+    [SerializeField] private string _stateDebug; // For Debug
     
     // State Machine
     private readonly FStateMachine _stateMachine = new();
@@ -29,6 +32,11 @@ public class FMegabeetleMovement : FEnemyMovementBase, IPositionDirectionProvide
     private FMegabeetleMovementFallState _fallState;
     private FMegabeetleMovementDeathState _deathState;
     
+    
+    // Debug only
+    private Vector3 _prevPosition;
+    private Vector3 _prevPosSmooth;
+    private Vector3 _velocity = Vector3.zero;
     
     public void Construct(
         MegabeetleMovementStateFactory stateFactory) 
@@ -62,12 +70,35 @@ public class FMegabeetleMovement : FEnemyMovementBase, IPositionDirectionProvide
         _deathState = (FMegabeetleMovementDeathState)_stateFactory.Create(typeof(FMegabeetleMovementDeathState));
         
         
+        At(_enterState, _preAttackStateR, () => _enterState.IsReadyToSwitch);
+        At(_preAttackStateR, _attackState, () => _preAttackStateR.IsReadyToSwitch);
+        
+        // At(_stickState);
+        
+        
+        
+        
+        void At(IState from, IState to, Func<bool> condition) => _stateMachine.AddTransition(from, to, condition);
     }
 
     public override void Play()
     {
-        throw new System.NotImplementedException();
+        _sideDirection = 1; //RandomDirection.Generate();
+        SideDirection = _sideDirection;
+        // _depthDirection = 1; //RandomDirection.Generate();
+        Position2D = GenerateSpawnPosition(_radius, _sideDirection);
+        
+        // TODO: probably we will need L R enter as Ladybug has
+        _currentState = _enterState;
+        _stateMachine.SetState(_currentState);
+        
+        Position2D = _currentState.Position2D;
+        transform.position = Position2D; // TODO: include distance to camera
+        
+        enabled = true;
     }
+    
+    
 
     public override void TriggerAttack()
     {
@@ -83,6 +114,51 @@ public class FMegabeetleMovement : FEnemyMovementBase, IPositionDirectionProvide
     {
         throw new System.NotImplementedException();
     }
+    
+    public void TriggerStick(Transform target)
+    {
+        transform.parent = target;
+        
+        _currentState = _stickLandingState;
+        _stateMachine.SetState(_currentState); // Correct sticky position on enter
+    
+        // TODO: Later
+        // if (_isDepthEnabled)
+        // {
+        //     DepthDirection = _currentState.DepthDirection;
+        //     transform.position = (Vector3)Position2D + DepthDirection;
+        // }
+        // else
+        // {
+        //     transform.position = _currentState.Position2D;
+        // }
+        
+        
+        transform.localPosition = _currentState.Position2D;
+        enabled = false;
+    }
 
+    private void Update()
+    {
+        _prevPosition = transform.position;
+        
+        _stateMachine.Tick();
+        _currentState = (RegularEnemyMovementStateBase)_stateMachine.CurrentState;
+        _stateDebug = _currentState.GetType().Name; // Debug only
+        Position2D = _currentState.Position2D;
+        
+        transform.localPosition = Position2D;
+        
+        Debug.DrawLine(_prevPosition, transform.position, Color.cyan, 10f);
+    }
 
+    private Vector2 GenerateSpawnPosition(float distance, int direction)
+    {
+        Vector3 spawnPosition = Vector3.zero;
+        spawnPosition.x = distance;
+        Quaternion rotation = Quaternion.Euler(0, 0, -Random.Range(22, 49));
+        spawnPosition = rotation * spawnPosition;
+        spawnPosition.x *= -direction;
+        return spawnPosition;
+    }
 }

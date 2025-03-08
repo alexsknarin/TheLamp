@@ -16,7 +16,16 @@ public class FMegabeetle : FEnemy, IStickableWithLamp
 
     public override void Play()
     {
-        Debug.Log("Megabeetle Play");
+        IsDead = false;
+        _currentHealth = _maxHealth;
+        _isInAttackReadyMovementState = false;
+        IsReadyForDamage = false;
+        IsReceivedLampAttackDamage = false;
+        StickState = StickableState.Outside;
+        AttackBlockState = AttackBlockerState.Outisde;
+        // HealthChanged?.Invoke(_currentHealth, _maxHealth);
+        _movement.Play();
+        // Started?.Invoke();
     }
 
     public override void ReceiveDamage(int damageAmount)
@@ -34,29 +43,40 @@ public class FMegabeetle : FEnemy, IStickableWithLamp
         throw new System.NotImplementedException();
     }
 
-    public Vector2 Position { get; }
-    public float Radius { get; }
-    public bool IsSticked { get; }
-    public AttackBlockerState AttackBlockState { get; }
-    public StickableState StickState { get; }
+    public Vector2 Position => _movement.Position2D;
+    public float Radius { get; private set; }
+    public bool IsSticked { get; private set; }
+    public AttackBlockerState AttackBlockState { get; private set; }
+    public StickableState StickState { get; private set; }
+    
     public void HandleEnterAttackZone()
     {
-        throw new System.NotImplementedException();
+        IsSticked = false;
+        StickState = StickableState.InAttackZone;
+        IsReadyForDamage = true;
     }
 
     public void HandleStick(Transform lampTransform)
     {
-        throw new System.NotImplementedException();
+        IsSticked = true;
+        StickState = StickableState.Sticked;
+        AttackBlockState = AttackBlockerState.Sticked;
+        IsReadyForDamage = true;
+        // Play event
+        
+        _movement.TriggerStick(lampTransform);
     }
 
     public void HandleExitAttackZone()
     {
-        throw new System.NotImplementedException();
+        IsSticked = false;
+        StickState = StickableState.Outside;
+        IsReadyForDamage = false;
     }
 
     public void HandleEnterAttackBlockerZone()
     {
-        throw new System.NotImplementedException();
+        AttackBlockState = AttackBlockerState.Inside;
     }
 
     public void HandleLampDestroyed()
@@ -66,6 +86,6 @@ public class FMegabeetle : FEnemy, IStickableWithLamp
 
     public Vector3 ProvideImpactPoint()
     {
-        throw new System.NotImplementedException();
+        return transform.localPosition;
     }
 }

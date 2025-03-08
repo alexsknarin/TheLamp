@@ -75,7 +75,8 @@ public class FMegabeetleMovementEnterState: RegularEnemyMovementStateBase
             _spiralPhase -= Mathf.Lerp(_spiralSpeedStart, _spiralSpeedEnd, 1 - (circlePosition.magnitude/_radius)) * Time.deltaTime;
         }
         
-        Position2D = ellipsePosition;
+        Position2D = ellipsePosition + _lampPositionProviderService.GetLampPosition();
+        
        
         // Depth To Camera
         Vector3 cameraDirection = (_cameraPosition - (Vector3)Position2D).normalized;
