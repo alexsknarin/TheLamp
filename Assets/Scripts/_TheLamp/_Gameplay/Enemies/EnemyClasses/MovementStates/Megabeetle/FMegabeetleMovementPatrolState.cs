@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class FMegabeetleMovementPatrolState : RegularEnemyMovementStateBase
@@ -9,7 +10,8 @@ public class FMegabeetleMovementPatrolState : RegularEnemyMovementStateBase
     private readonly float _radius;
     private readonly float _verticalAmplitude;
     
-    
+    private float _attackRange = 1.5f;
+    private bool _outsideAttackRange;
     private float _patrolStartOffsetAngle;
     private float _enterTimeOffset;
     private float _phase;
@@ -38,9 +40,12 @@ public class FMegabeetleMovementPatrolState : RegularEnemyMovementStateBase
         _verticalAmplitude = verticalAmplitude;
     }
     
+    public event Action EnteredAttackRange;
+    
     public override void OnEnter()
     {
         IsReadyToSwitch = false;
+        _outsideAttackRange = true;
 
         Position2D = _positionDirectionProvider.Position2D;
         _phase = 0;
@@ -78,7 +83,15 @@ public class FMegabeetleMovementPatrolState : RegularEnemyMovementStateBase
         float depthValue = Mathf.Lerp(_depthMultiplierMin, _depthMultiplierMax, depthPhase);
         DepthDirection = cameraDirection * depthValue;
         
-        if(Position2D.magnitude < _preAttackTriggerDistance && Position2D.y < _preAttackTriggerYThreshold)
+        float distanceToLamp = Position2D.magnitude;
+        
+        if (_outsideAttackRange && distanceToLamp < _attackRange)
+        {
+            _outsideAttackRange = false;
+            EnteredAttackRange?.Invoke();
+        }
+        
+        if(distanceToLamp < _preAttackTriggerDistance && Position2D.y < _preAttackTriggerYThreshold)
         {
             IsReadyToSwitch = true;
         }

@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class FMegabeetleMovementStickPreAttackPauseState : RegularEnemyMovementStateBase
@@ -13,12 +14,16 @@ public class FMegabeetleMovementStickPreAttackPauseState : RegularEnemyMovementS
         _positionDirectionProvider = positionDirectionProvider;
     }
     
+    public event Action Started;
+    public event Action Ended;
+    
     public override void OnEnter()
     {
         IsReadyToSwitch = false;
         Position2D = _positionDirectionProvider.Position2D;
         _localTime = 0;
         _phase = 0;
+        Started?.Invoke();
     }
 
     public override void Tick()
@@ -30,5 +35,10 @@ public class FMegabeetleMovementStickPreAttackPauseState : RegularEnemyMovementS
             IsReadyToSwitch = true;
         }
         
+    }
+    
+    public override void OnExit()
+    {
+        Ended?.Invoke();
     }
 }

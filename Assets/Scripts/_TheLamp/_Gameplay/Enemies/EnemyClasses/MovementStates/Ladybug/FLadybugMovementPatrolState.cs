@@ -89,7 +89,7 @@ public abstract class FLadybugMovementPatrolState: RegularEnemyMovementStateBase
         float depthValue = Mathf.Lerp(_depthMultiplierMin, _depthMultiplierMax, depthPhase);
         DepthDirection = cameraDirection * depthValue;
         
-        float distanceToLamp = (Position2D - _lampPositionProviderService.GetLampPosition()).magnitude;
+        float distanceToLamp = Position2D.magnitude;
         
         if (_outsideAttackRange && distanceToLamp < _attackRange)
         {

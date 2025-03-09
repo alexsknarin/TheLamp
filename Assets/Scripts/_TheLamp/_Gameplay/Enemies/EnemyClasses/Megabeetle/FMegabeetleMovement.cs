@@ -44,6 +44,12 @@ public class FMegabeetleMovement : FEnemyMovementBase, IPositionDirectionProvide
         _stateFactory = stateFactory;
     }
     
+    public event Action EnteredAttackRange;
+    public event Action PreAttackStarted;
+    public event Action PreAttackEnded;
+    public event Action DeathStateEnded;
+    
+    
     public Vector2 Position2D { get; private set; }
     public Vector3 DepthDirection { get; private set; }
     
@@ -69,7 +75,15 @@ public class FMegabeetleMovement : FEnemyMovementBase, IPositionDirectionProvide
         _fallState = (FMegabeetleMovementFallState)_stateFactory.Create(typeof(FMegabeetleMovementFallState));
         _deathState = (FMegabeetleMovementDeathState)_stateFactory.Create(typeof(FMegabeetleMovementDeathState));
         
-        
+        _enterState.EnteredAttackRange += OnEnteredAttackRange;
+        _patrolState.EnteredAttackRange += OnEnteredAttackRange;
+        _preAttackStateR.Started += OnPreAttackStarted;
+        _preAttackStateR.Ended += OnPreAttackEnded;
+        _stickPreAttackPauseState.Started += OnPreAttackStarted;
+        _stickPreAttackPauseState.Ended += OnPreAttackEnded;
+        _deathState.Ended += OnDeathStateEnded;
+            
+            
         At(_enterState, _preAttackStateR, () => _enterState.IsReadyToSwitch);
         At(_patrolState, _preAttackStateR, () => _patrolState.IsReadyToSwitch);
         At(_preAttackStateR, _attackState, () => _preAttackStateR.IsReadyToSwitch);
@@ -83,9 +97,18 @@ public class FMegabeetleMovement : FEnemyMovementBase, IPositionDirectionProvide
         At(_fallState, _patrolState, () => _fallState.IsReadyToSwitch);
         
         
-        
-        
         void At(IState from, IState to, Func<bool> condition) => _stateMachine.AddTransition(from, to, condition);
+    }
+
+    private void OnDisable()
+    {
+        _enterState.EnteredAttackRange -= OnEnteredAttackRange;
+        _patrolState.EnteredAttackRange -= OnEnteredAttackRange;
+        _preAttackStateR.Started -= OnPreAttackStarted;
+        _preAttackStateR.Ended -= OnPreAttackEnded;
+        _stickPreAttackPauseState.Started -= OnPreAttackStarted;
+        _stickPreAttackPauseState.Ended -= OnPreAttackEnded;
+        _deathState.Ended -= OnDeathStateEnded;
     }
 
     public override void Play()
@@ -105,8 +128,6 @@ public class FMegabeetleMovement : FEnemyMovementBase, IPositionDirectionProvide
         enabled = true;
     }
     
-    
-
     public override void TriggerAttack()
     {
         throw new System.NotImplementedException();
@@ -120,7 +141,8 @@ public class FMegabeetleMovement : FEnemyMovementBase, IPositionDirectionProvide
 
     public override void TriggerDeath()
     {
-        throw new System.NotImplementedException();
+        transform.parent = null;
+        SwitchToStateAndApply(_deathState);
     }
     
     public void TriggerStick(Transform target)
@@ -177,5 +199,25 @@ public class FMegabeetleMovement : FEnemyMovementBase, IPositionDirectionProvide
         
         transform.position = newPosition;
         _stateDebug = _currentState.GetType().Name;
+    }
+    
+    private void OnEnteredAttackRange()
+    {
+        EnteredAttackRange?.Invoke();
+    }
+    
+    private void OnPreAttackStarted()
+    {
+        PreAttackStarted?.Invoke();
+    }
+
+    private void OnPreAttackEnded()
+    {
+        PreAttackEnded?.Invoke();
+    }
+    
+    private void OnDeathStateEnded()
+    {
+        DeathStateEnded?.Invoke();
     }
 }

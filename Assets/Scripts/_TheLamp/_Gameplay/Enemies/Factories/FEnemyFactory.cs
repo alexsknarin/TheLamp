@@ -290,7 +290,7 @@ public class FEnemyFactory
     {
         GameObject enemyInstance = Object.Instantiate(prefab);
         enemyInstance.GetComponent<FMegabeetleMovement>().Construct(_megabeetleMovementStateFactory);
-        // enemyInstance.GetComponent<FMegabeetlePresentation>().Initialize();
+        enemyInstance.GetComponent<FMegabeetlePresentation>().Initialize();
         var enemy = enemyInstance.GetComponent<FMegabeetle>();
         enemy.Initialize();
         

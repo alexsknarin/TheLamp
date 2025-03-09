@@ -10,9 +10,29 @@ public class FMegabeetle : FEnemy, IStickableWithLamp
     [SerializeField] private FMegabeetleMovement _movement;
     private int _currentHealthToFall;
     
+    public event Action<IStickableWithLamp> StickReadyStarted;
+    public event Action Started;
+    public event Action Damaged;
+    public event Action<int, int> HealthChanged; 
+    public event Action Dead;
+    
+    public Vector2 Position => _movement.Position2D;
+    public float Radius => _collisionRadius;
+    public bool IsSticked { get; private set; }
+    public AttackBlockerState AttackBlockState { get; private set; }
+    public StickableState StickState { get; private set; }
+    
     public override void Initialize()
     {
         _movement.Initialize();
+        _movement.EnteredAttackRange += OnEnteredAttackRange;
+        _movement.DeathStateEnded += OnDeathStateEnded;
+    }
+
+    private void OnDestroy()
+    {
+        _movement.EnteredAttackRange -= OnEnteredAttackRange;
+        _movement.DeathStateEnded += OnDeathStateEnded;
     }
 
     public override void Play()
@@ -25,9 +45,9 @@ public class FMegabeetle : FEnemy, IStickableWithLamp
         IsReceivedLampAttackDamage = false;
         StickState = StickableState.Outside;
         AttackBlockState = AttackBlockerState.Outisde;
-        // HealthChanged?.Invoke(_currentHealth, _maxHealth);
+        HealthChanged?.Invoke(_currentHealth, _maxHealth);
         _movement.Play();
-        // Started?.Invoke();
+        Started?.Invoke();
     }
 
     public override void ReceiveDamage(int damageAmount)
@@ -37,7 +57,7 @@ public class FMegabeetle : FEnemy, IStickableWithLamp
         
         if (_currentHealth <= 0)
         {
-            // Dead?.Invoke();
+            Dead?.Invoke();
             DoDeath();
             IsDead = true;
             IsReadyForDamage = false;
@@ -47,8 +67,8 @@ public class FMegabeetle : FEnemy, IStickableWithLamp
         else
         {
             Debug.Log($"Damage Received: {damageAmount}.");
-            // Damaged?.Invoke();
-            // HealthChanged?.Invoke(_currentHealth, _maxHealth);
+            Damaged?.Invoke();
+            HealthChanged?.Invoke(_currentHealth, _maxHealth);
             
             _currentHealthToFall -= damageAmount;
             if (_currentHealthToFall <= 0)
@@ -66,15 +86,9 @@ public class FMegabeetle : FEnemy, IStickableWithLamp
 
     public override void DoDeath()
     {
-        throw new System.NotImplementedException();
+        Debug.Log("Megabeetle is dead.");
+        _movement.TriggerDeath();
     }
-
-    public event Action<IStickableWithLamp> StickReadyStarted;
-    public Vector2 Position => _movement.Position2D;
-    public float Radius => _collisionRadius;
-    public bool IsSticked { get; private set; }
-    public AttackBlockerState AttackBlockState { get; private set; }
-    public StickableState StickState { get; private set; }
     
     public void HandleEnterAttackZone()
     {
@@ -115,6 +129,11 @@ public class FMegabeetle : FEnemy, IStickableWithLamp
     public Vector3 ProvideImpactPoint()
     {
         return transform.localPosition;
+    }
+    
+    private void OnEnteredAttackRange()
+    {
+        StickReadyStarted?.Invoke(this);
     }
     
     private void OnDrawGizmos()

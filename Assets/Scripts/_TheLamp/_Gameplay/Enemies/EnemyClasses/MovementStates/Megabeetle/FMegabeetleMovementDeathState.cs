@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class FMegabeetleMovementDeathState : RegularEnemyMovementStateBase
@@ -19,6 +20,8 @@ public class FMegabeetleMovementDeathState : RegularEnemyMovementStateBase
     {
         _positionDirectionProvider = positionDirectionProvider;
     }
+
+    public event Action Ended;
     
     public override void OnEnter()
     {
@@ -43,6 +46,7 @@ public class FMegabeetleMovementDeathState : RegularEnemyMovementStateBase
         {
             Position2D = IDLE_POSITION;
             IsReadyToSwitch = true;
+            Ended?.Invoke();
         }
     }
 }
