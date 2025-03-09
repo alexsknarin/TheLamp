@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class FMegabeetleMovementEnterState: RegularEnemyMovementStateBase
+public abstract class FMegabeetleMovementEnterState: RegularEnemyMovementStateBase
 {
     // Dependencies
     private readonly Vector3 _cameraPosition = new Vector3(0, 0, -5.88f);
@@ -43,7 +43,7 @@ public class FMegabeetleMovementEnterState: RegularEnemyMovementStateBase
 
     public event Action EnteredAttackRange;
     
-    public override void OnEnter()
+    protected void HandleEnter(int sideDirection)
     {
         IsReadyToSwitch = false;
         _outsideAttackRange = true;
@@ -53,22 +53,22 @@ public class FMegabeetleMovementEnterState: RegularEnemyMovementStateBase
         Position2D = _positionDirectionProvider.Position2D;
         Vector2 horizontalVector = Vector2.right;
 
-        // horizontalVector.x *= _sideDirection;
+        horizontalVector.x *= sideDirection;
         
         _patrolStartOffsetAngle = Mathf.Acos(Vector2.Dot(horizontalVector.normalized, Position2D.normalized));
         _patrolStartOffsetAngle *= Mathf.Sign(Position2D.y);
         
-        // if (_sideDirection < 0)
-        // {
-        //     _patrolStartOffsetAngle = Mathf.PI - _patrolStartOffsetAngle;
-        // }
+        if (sideDirection < 0)
+        {
+            _patrolStartOffsetAngle = Mathf.PI - _patrolStartOffsetAngle;
+        }
     }
 
-    public override void Tick()
+    protected void HandleTick(int sideDirection)
     {
         float speedCompenstation = (1 - Position2D.magnitude/_radius) + 1;
        
-        _phase += Time.deltaTime * _speed * speedCompenstation;
+        _phase += Time.deltaTime * _speed * speedCompenstation * sideDirection;
        
         Vector2 ellipsePosition = EnemyMovementPatterns.CircleMotion(_patrolStartOffsetAngle, _radius, _radius, _verticalAmplitude, _phase);
         ellipsePosition *= _spiralPhase;

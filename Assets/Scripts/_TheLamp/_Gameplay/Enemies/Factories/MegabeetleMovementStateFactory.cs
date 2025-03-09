@@ -37,9 +37,9 @@ public class MegabeetleMovementStateFactory
 
     public RegularEnemyMovementStateBase Create(Type stateType)
     {
-        if (stateType == typeof(FMegabeetleMovementEnterState))
+        if (stateType == typeof(FMegabeetleMovementEnterStateR))
         {
-            return new FMegabeetleMovementEnterState(
+            return new FMegabeetleMovementEnterStateR(
                 _cameraTransform.position,
                 _positionDirectionProvider,
                 _lampPositionProviderService,
@@ -48,9 +48,9 @@ public class MegabeetleMovementStateFactory
                 _verticalAmplitude
             );
         }
-        if (stateType == typeof(FMegabeetleMovementPatrolState))
+        if (stateType == typeof(FMegabeetleMovementEnterStateL))
         {
-            return new FMegabeetleMovementPatrolState(
+            return new FMegabeetleMovementEnterStateL(
                 _cameraTransform.position,
                 _positionDirectionProvider,
                 _lampPositionProviderService,
@@ -59,9 +59,40 @@ public class MegabeetleMovementStateFactory
                 _verticalAmplitude
             );
         }
-        if (stateType == typeof(FLadybugMovementPreAttackState))
+        if (stateType == typeof(FMegabeetleMovementPatrolStateR))
+        {
+            return new FMegabeetleMovementPatrolStateR(
+                _cameraTransform.position,
+                _positionDirectionProvider,
+                _lampPositionProviderService,
+                _speed,
+                _radius,
+                _verticalAmplitude
+            );
+        }
+        if (stateType == typeof(FMegabeetleMovementPatrolStateL))
+        {
+            return new FMegabeetleMovementPatrolStateL(
+                _cameraTransform.position,
+                _positionDirectionProvider,
+                _lampPositionProviderService,
+                _speed,
+                _radius,
+                _verticalAmplitude
+            );
+        }
+        if (stateType == typeof(FLadybugMovementPreAttackStateR))
         {
             return new FLadybugMovementPreAttackStateR(
+                _cameraTransform.position,
+                _positionDirectionProvider,
+                _lampPositionProviderService,
+                _speed
+            );
+        }
+        if (stateType == typeof(FLadybugMovementPreAttackStateL))
+        {
+            return new FLadybugMovementPreAttackStateL(
                 _cameraTransform.position,
                 _positionDirectionProvider,
                 _lampPositionProviderService,

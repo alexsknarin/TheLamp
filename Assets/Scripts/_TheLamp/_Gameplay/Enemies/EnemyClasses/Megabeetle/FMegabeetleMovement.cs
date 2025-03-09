@@ -20,9 +20,12 @@ public class FMegabeetleMovement : FEnemyMovementBase, IPositionDirectionProvide
     private MegabeetleMovementStateFactory _stateFactory;
     private RegularEnemyMovementStateBase _currentState;
     
-    private FMegabeetleMovementEnterState _enterState;
-    private FMegabeetleMovementPatrolState _patrolState;
-    private FLadybugMovementPreAttackState _preAttackStateR;
+    private FMegabeetleMovementEnterStateR _enterStateR;
+    private FMegabeetleMovementEnterStateL _enterStateL;
+    private FMegabeetleMovementPatrolStateR _patrolStateR;
+    private FMegabeetleMovementPatrolStateL _patrolStateL;
+    private FLadybugMovementPreAttackStateR _preAttackStateR;
+    private FLadybugMovementPreAttackStateL _preAttackStateL;
     private FLadybugMovementAttackState _attackState;
     private FMegabeetleMovementStickState _stickState;
     private FMegabeetleMovementStickPreAttackState _stickPreAttackState;
@@ -63,9 +66,12 @@ public class FMegabeetleMovement : FEnemyMovementBase, IPositionDirectionProvide
             _verticalAmplitude,
             _collisionRadius);
         
-        _enterState = (FMegabeetleMovementEnterState)_stateFactory.Create(typeof(FMegabeetleMovementEnterState));
-        _patrolState = (FMegabeetleMovementPatrolState)_stateFactory.Create(typeof(FMegabeetleMovementPatrolState));
-        _preAttackStateR = (FLadybugMovementPreAttackState)_stateFactory.Create(typeof(FLadybugMovementPreAttackState));
+        _enterStateR = (FMegabeetleMovementEnterStateR)_stateFactory.Create(typeof(FMegabeetleMovementEnterStateR));
+        _enterStateL = (FMegabeetleMovementEnterStateL)_stateFactory.Create(typeof(FMegabeetleMovementEnterStateL));
+        _patrolStateR = (FMegabeetleMovementPatrolStateR)_stateFactory.Create(typeof(FMegabeetleMovementPatrolStateR));
+        _patrolStateL = (FMegabeetleMovementPatrolStateL)_stateFactory.Create(typeof(FMegabeetleMovementPatrolStateL));
+        _preAttackStateR = (FLadybugMovementPreAttackStateR)_stateFactory.Create(typeof(FLadybugMovementPreAttackStateR));
+        _preAttackStateL = (FLadybugMovementPreAttackStateL)_stateFactory.Create(typeof(FLadybugMovementPreAttackStateL));
         _attackState = (FLadybugMovementAttackState)_stateFactory.Create(typeof(FLadybugMovementAttackState));
         _stickState = (FMegabeetleMovementStickState)_stateFactory.Create(typeof(FMegabeetleMovementStickState));
         _stickPreAttackState = (FMegabeetleMovementStickPreAttackState)_stateFactory.Create(typeof(FMegabeetleMovementStickPreAttackState));
@@ -75,8 +81,10 @@ public class FMegabeetleMovement : FEnemyMovementBase, IPositionDirectionProvide
         _fallState = (FMegabeetleMovementFallState)_stateFactory.Create(typeof(FMegabeetleMovementFallState));
         _deathState = (FMegabeetleMovementDeathState)_stateFactory.Create(typeof(FMegabeetleMovementDeathState));
         
-        _enterState.EnteredAttackRange += OnEnteredAttackRange;
-        _patrolState.EnteredAttackRange += OnEnteredAttackRange;
+        _enterStateR.EnteredAttackRange += OnEnteredAttackRange;
+        _enterStateL.EnteredAttackRange += OnEnteredAttackRange;
+        _patrolStateR.EnteredAttackRange += OnEnteredAttackRange;
+        _patrolStateL.EnteredAttackRange += OnEnteredAttackRange;
         _preAttackStateR.Started += OnPreAttackStarted;
         _preAttackStateR.Ended += OnPreAttackEnded;
         _stickPreAttackPauseState.Started += OnPreAttackStarted;
@@ -84,18 +92,21 @@ public class FMegabeetleMovement : FEnemyMovementBase, IPositionDirectionProvide
         _attackState.Started += OnAttackStarted;
         _deathState.Ended += OnDeathStateEnded;
         _stickAttackState.Ended += OnStickAttackEnded;
+        _fallState.Ended += OnFallStateEnded;
             
-        At(_enterState, _preAttackStateR, () => _enterState.IsReadyToSwitch);
-        At(_patrolState, _preAttackStateR, () => _patrolState.IsReadyToSwitch);
+        At(_enterStateR, _preAttackStateR, () => _enterStateR.IsReadyToSwitch);
+        At(_enterStateL, _preAttackStateL, () => _enterStateL.IsReadyToSwitch);
+        At(_patrolStateR, _preAttackStateR, () => _patrolStateR.IsReadyToSwitch);
+        At(_patrolStateL, _preAttackStateL, () => _patrolStateL.IsReadyToSwitch);
+        
         At(_preAttackStateR, _attackState, () => _preAttackStateR.IsReadyToSwitch);
+        At(_preAttackStateL, _attackState, () => _preAttackStateL.IsReadyToSwitch);
         
         At(_stickLandingState, _stickState, () => _stickLandingState.IsReadyToSwitch);
         At(_stickState, _stickPreAttackState, () => _stickState.IsReadyToSwitch);
         At(_stickPreAttackState, _stickPreAttackPauseState, () => _stickPreAttackState.IsReadyToSwitch);
         At(_stickPreAttackPauseState, _stickAttackState, () => _stickPreAttackPauseState.IsReadyToSwitch);
         At(_stickAttackState, _stickState, () => _stickAttackState.IsReadyToSwitch);
-        
-        At(_fallState, _patrolState, () => _fallState.IsReadyToSwitch);
         
         
         void At(IState from, IState to, Func<bool> condition) => _stateMachine.AddTransition(from, to, condition);
@@ -105,8 +116,10 @@ public class FMegabeetleMovement : FEnemyMovementBase, IPositionDirectionProvide
 
     private void OnDisable()
     {
-        _enterState.EnteredAttackRange -= OnEnteredAttackRange;
-        _patrolState.EnteredAttackRange -= OnEnteredAttackRange;
+        _enterStateR.EnteredAttackRange -= OnEnteredAttackRange;
+        _enterStateL.EnteredAttackRange -= OnEnteredAttackRange;
+        _patrolStateR.EnteredAttackRange -= OnEnteredAttackRange;
+        _patrolStateL.EnteredAttackRange -= OnEnteredAttackRange;
         _preAttackStateR.Started -= OnPreAttackStarted;
         _preAttackStateR.Ended -= OnPreAttackEnded;
         _stickPreAttackPauseState.Started -= OnPreAttackStarted;
@@ -114,17 +127,23 @@ public class FMegabeetleMovement : FEnemyMovementBase, IPositionDirectionProvide
         _attackState.Started -= OnAttackStarted;
         _deathState.Ended -= OnDeathStateEnded;
         _stickAttackState.Ended += OnStickAttackEnded;
+        _fallState.Ended -= OnFallStateEnded;
     }
 
     public override void Play()
     {
-        _sideDirection = 1; //RandomDirection.Generate();
+        _sideDirection = RandomDirection.Generate();
         SideDirection = _sideDirection;
-        // _depthDirection = 1; //RandomDirection.Generate();
         Position2D = GenerateSpawnPosition(_radius, _sideDirection);
         
-        // TODO: probably we will need L R enter as Ladybug has
-        _currentState = _enterState;
+        if (_sideDirection > 0)
+        {
+            _currentState = _enterStateR;
+        }
+        else
+        {
+            _currentState = _enterStateL;
+        }
         _stateMachine.SetState(_currentState);
         
         Position2D = _currentState.Position2D;
@@ -156,8 +175,7 @@ public class FMegabeetleMovement : FEnemyMovementBase, IPositionDirectionProvide
         
         _currentState = _stickLandingState;
         _stateMachine.SetState(_currentState); // Correct sticky position on enter
-    
-        // TODO: Later
+
         // if (_isDepthEnabled)
         // {
         //     DepthDirection = _currentState.DepthDirection;
@@ -184,6 +202,8 @@ public class FMegabeetleMovement : FEnemyMovementBase, IPositionDirectionProvide
         
         Debug.DrawLine(_prevPosition, transform.position, Color.cyan, 10f);
     }
+    
+    
 
     private Vector2 GenerateSpawnPosition(float distance, int direction)
     {
@@ -204,6 +224,11 @@ public class FMegabeetleMovement : FEnemyMovementBase, IPositionDirectionProvide
         
         transform.position = newPosition;
         _stateDebug = _currentState.GetType().Name;
+    }
+    
+    private void OnFallStateEnded()
+    {
+        Play();
     }
 
     private void OnEnteredAttackRange()
