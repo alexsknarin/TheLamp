@@ -41,7 +41,7 @@ public class WaveEnemyDirector : MonoBehaviour, IInitializable
     public event Action FireflyExplosionStarted;
     public event Action<FEnemy> BossSpawned;
     public event Action BossDied;
-    
+    public event Action<Vector3, bool, string> StickyAttackEnded;
     
     public void Initialize()
     {
@@ -244,6 +244,10 @@ public class WaveEnemyDirector : MonoBehaviour, IInitializable
         {
             ((IAnimatedEnemy)enemy).AnimatedAttackStarted += OnEnemyAttackStarted;
         }
+        if (enemy is IStickyAttacker)
+        {
+            ((IStickyAttacker)enemy).StickyAttackEnded += OnStickyAttackEnded;
+        }
     }
 
     private void OnEnemyDead(FEnemy enemy)
@@ -285,8 +289,13 @@ public class WaveEnemyDirector : MonoBehaviour, IInitializable
             {
                 ((IStickableWithLamp)enemy).StickReadyStarted -= OnStickReadyStarted;
             }
+            if (enemy is IStickyAttacker)
+            {
+                ((IStickyAttacker)enemy).StickyAttackEnded -= OnStickyAttackEnded;
+            }
         }
     }
+
 
     private void OnStickReadyStarted(IStickableWithLamp stickable)
     {
@@ -302,6 +311,12 @@ public class WaveEnemyDirector : MonoBehaviour, IInitializable
     {
         EnemyAttackStarted?.Invoke(enemy);
     }
+
+    private void OnStickyAttackEnded(Vector3 impactPoint, bool isEnemyDamaged, string enemyTypeName)
+    {
+        StickyAttackEnded?.Invoke(transform.position, false, "Megabeetle");
+    }
+
 
     private void Update()
     {

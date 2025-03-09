@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class FMegabeetleMovementStickAttackState : RegularEnemyMovementStateBase
@@ -15,6 +16,8 @@ public class FMegabeetleMovementStickAttackState : RegularEnemyMovementStateBase
     {
         _positionDirectionProvider = positionDirectionProvider;
     }
+    
+    public event Action Ended;
     
     public override void OnEnter()
     {
@@ -37,5 +40,10 @@ public class FMegabeetleMovementStickAttackState : RegularEnemyMovementStateBase
         {
             IsReadyToSwitch = true;
         }
+    }
+    
+    public override void OnExit()
+    {
+        Ended?.Invoke();
     }
 }

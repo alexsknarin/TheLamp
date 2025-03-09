@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class FMegabeetle : FEnemy, IStickableWithLamp, IBoss
+public class FMegabeetle : FEnemy, IStickableWithLamp, IBoss, IStickyAttacker
 {
     [SerializeField] private float _collisionRadius = 0.3f;
     [SerializeField] private int _maxHealth;
@@ -16,7 +16,7 @@ public class FMegabeetle : FEnemy, IStickableWithLamp, IBoss
     public event Action Damaged;
     public event Action<int, int> HealthChanged; 
     public event Action Dead;
-    
+    public event Action<Vector3, bool, string> StickyAttackEnded;
     
     public Vector2 Position => _movement.Position2D;
     public float Radius => _collisionRadius;
@@ -30,6 +30,7 @@ public class FMegabeetle : FEnemy, IStickableWithLamp, IBoss
         _movement.EnteredAttackRange += OnEnteredAttackRange;
         _movement.DeathStateEnded += OnDeathStateEnded;
         _movement.AttackStarted += OnAttackStarted;
+        _movement.StickyAttackEnded += OnStickyAttackEnded;
     }
 
     private void OnDestroy()
@@ -37,8 +38,9 @@ public class FMegabeetle : FEnemy, IStickableWithLamp, IBoss
         _movement.EnteredAttackRange -= OnEnteredAttackRange;
         _movement.DeathStateEnded -= OnDeathStateEnded;
         _movement.AttackStarted -= OnAttackStarted;
+        _movement.StickyAttackEnded -= OnStickyAttackEnded;
     }
-    
+
     public override void Play()
     {
         IsDead = false;
@@ -143,6 +145,11 @@ public class FMegabeetle : FEnemy, IStickableWithLamp, IBoss
     private void OnAttackStarted()
     {
         SpreadRequested?.Invoke();
+    }
+    
+    private void OnStickyAttackEnded()
+    {
+        StickyAttackEnded?.Invoke(transform.position, false, "Megabeetle");
     }
     
     private void OnDrawGizmos()

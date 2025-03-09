@@ -49,8 +49,7 @@ public class FMegabeetleMovement : FEnemyMovementBase, IPositionDirectionProvide
     public event Action PreAttackEnded;
     public event Action DeathStateEnded;
     public event Action AttackStarted;
-    
-    
+    public event Action StickyAttackEnded;
     public Vector2 Position2D { get; private set; }
     public Vector3 DepthDirection { get; private set; }
     
@@ -84,7 +83,7 @@ public class FMegabeetleMovement : FEnemyMovementBase, IPositionDirectionProvide
         _stickPreAttackPauseState.Ended += OnPreAttackEnded;
         _attackState.Started += OnAttackStarted;
         _deathState.Ended += OnDeathStateEnded;
-            
+        _stickAttackState.Ended += OnStickAttackEnded;
             
         At(_enterState, _preAttackStateR, () => _enterState.IsReadyToSwitch);
         At(_patrolState, _preAttackStateR, () => _patrolState.IsReadyToSwitch);
@@ -102,6 +101,8 @@ public class FMegabeetleMovement : FEnemyMovementBase, IPositionDirectionProvide
         void At(IState from, IState to, Func<bool> condition) => _stateMachine.AddTransition(from, to, condition);
     }
 
+
+
     private void OnDisable()
     {
         _enterState.EnteredAttackRange -= OnEnteredAttackRange;
@@ -112,6 +113,7 @@ public class FMegabeetleMovement : FEnemyMovementBase, IPositionDirectionProvide
         _stickPreAttackPauseState.Ended -= OnPreAttackEnded;
         _attackState.Started -= OnAttackStarted;
         _deathState.Ended -= OnDeathStateEnded;
+        _stickAttackState.Ended += OnStickAttackEnded;
     }
 
     public override void Play()
@@ -227,5 +229,10 @@ public class FMegabeetleMovement : FEnemyMovementBase, IPositionDirectionProvide
     private void OnAttackStarted()
     {
         AttackStarted?.Invoke();
+    }
+    
+    private void OnStickAttackEnded()
+    {
+        StickyAttackEnded?.Invoke();
     }
 }

@@ -54,6 +54,7 @@ public class GameModel : IDisposable, ILampDeadEventProviderService
         _playerEnemyInteractionMediator.EnemyUnSticked += OnEnemyUnSticked;
         _waveEnemyDirector.LampBlocked += OnLampBlocked;
         _waveEnemyDirector.LampUnblocked += OnLampUnblocked;
+        _waveEnemyDirector.StickyAttackEnded += OnEnemyAttackEnded;
         
         _scoresCollectionController.ScoreChanged += OnScoreChanged;
     }
@@ -69,6 +70,7 @@ public class GameModel : IDisposable, ILampDeadEventProviderService
         _playerEnemyInteractionMediator.EnemyUnSticked -= OnEnemyUnSticked;
         _waveEnemyDirector.LampBlocked -= OnLampBlocked;
         _waveEnemyDirector.LampUnblocked -= OnLampUnblocked;
+        _waveEnemyDirector.StickyAttackEnded += OnEnemyAttackEnded;
 
         _scoresCollectionController.ScoreChanged -= OnScoreChanged;
     }
