@@ -33,7 +33,7 @@ public class WaveEnemyDirector : MonoBehaviour, IInitializable
     
     public event Action WaveEnded;
     public event Action<CollidableEnemy> EnemyAttackStarted;
-    public event Action<IStickableWithLamp> StickyEnemyRedyToStick;
+    public event Action<IStickableWithLamp> StickyEnemyReadyToStick;
     public event Action LampBlocked;
     public event Action LampUnblocked;
     public event Action ExplodableEnemySpawned;
@@ -146,12 +146,12 @@ public class WaveEnemyDirector : MonoBehaviour, IInitializable
     }
 
     // Calls from PlayerEnemyInteractionMediator
-    public void BlockAttackCooldown()
+    public void BlockEnemyAttackCooldown()
     {
         _enemyAttacker.BlockAttackCooldown();
     }
 
-    public void UnblockAttackCooldown()
+    public void UnblockEnemyAttackCooldown()
     {
         _enemyAttacker.UnblockAttackCooldown();
     }
@@ -225,6 +225,27 @@ public class WaveEnemyDirector : MonoBehaviour, IInitializable
         _enemies.Clear();
     }
 
+    private void OnEnemySpawned(FEnemy enemy)
+    {
+        if (enemy is IStickableWithLamp)
+        {
+            ((IStickableWithLamp)enemy).StickReadyStarted += OnStickReadyStarted;
+        }
+        if (enemy is IExplodable)
+        {
+            ExplodableEnemySpawned?.Invoke();
+        }
+        if (enemy is IBoss)
+        {
+            BossSpawned?.Invoke(enemy);
+            ((IBoss)enemy).SpreadRequested += OnBossRequestedSpread;
+        }
+        if (enemy is IAnimatedEnemy)
+        {
+            ((IAnimatedEnemy)enemy).AnimatedAttackStarted += OnEnemyAttackStarted;
+        }
+    }
+
     private void OnEnemyDead(FEnemy enemy)
     {
         // TODO: find better way to return enemies to pool that will work better with gameover one
@@ -267,33 +288,9 @@ public class WaveEnemyDirector : MonoBehaviour, IInitializable
         }
     }
 
-    private void OnEnemySpawned(FEnemy enemy)
-    {
-        if (enemy is IStickableWithLamp)
-        {
-            ((IStickableWithLamp)enemy).StickReadyStarted += OnStickReadyStarted;
-            
-            return;
-        }
-        if (enemy is IExplodable)
-        {
-            ExplodableEnemySpawned?.Invoke();
-            return;
-        }
-        if (enemy is IBoss)
-        {
-            BossSpawned?.Invoke(enemy);
-            ((IBoss)enemy).SpreadRequested += OnBossRequestedSpread;
-        }
-        if (enemy is IAnimatedEnemy)
-        {
-            ((IAnimatedEnemy)enemy).AnimatedAttackStarted += OnEnemyAttackStarted;
-        }
-    }
-
     private void OnStickReadyStarted(IStickableWithLamp stickable)
     {
-        StickyEnemyRedyToStick?.Invoke(stickable);
+        StickyEnemyReadyToStick?.Invoke(stickable);
     }
 
     private void OnBossRequestedSpread()

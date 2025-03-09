@@ -48,6 +48,7 @@ public class FMegabeetleMovement : FEnemyMovementBase, IPositionDirectionProvide
     public event Action PreAttackStarted;
     public event Action PreAttackEnded;
     public event Action DeathStateEnded;
+    public event Action AttackStarted;
     
     
     public Vector2 Position2D { get; private set; }
@@ -81,6 +82,7 @@ public class FMegabeetleMovement : FEnemyMovementBase, IPositionDirectionProvide
         _preAttackStateR.Ended += OnPreAttackEnded;
         _stickPreAttackPauseState.Started += OnPreAttackStarted;
         _stickPreAttackPauseState.Ended += OnPreAttackEnded;
+        _attackState.Started += OnAttackStarted;
         _deathState.Ended += OnDeathStateEnded;
             
             
@@ -108,6 +110,7 @@ public class FMegabeetleMovement : FEnemyMovementBase, IPositionDirectionProvide
         _preAttackStateR.Ended -= OnPreAttackEnded;
         _stickPreAttackPauseState.Started -= OnPreAttackStarted;
         _stickPreAttackPauseState.Ended -= OnPreAttackEnded;
+        _attackState.Started -= OnAttackStarted;
         _deathState.Ended -= OnDeathStateEnded;
     }
 
@@ -127,7 +130,7 @@ public class FMegabeetleMovement : FEnemyMovementBase, IPositionDirectionProvide
         
         enabled = true;
     }
-    
+
     public override void TriggerAttack()
     {
         throw new System.NotImplementedException();
@@ -144,7 +147,7 @@ public class FMegabeetleMovement : FEnemyMovementBase, IPositionDirectionProvide
         transform.parent = null;
         SwitchToStateAndApply(_deathState);
     }
-    
+
     public void TriggerStick(Transform target)
     {
         transform.parent = target;
@@ -189,7 +192,7 @@ public class FMegabeetleMovement : FEnemyMovementBase, IPositionDirectionProvide
         spawnPosition.x *= -direction;
         return spawnPosition;
     }
-    
+
     private void SwitchToStateAndApply(RegularEnemyMovementStateBase state) // TODO: implement this in all enemies
     {
         _currentState = state;
@@ -200,12 +203,12 @@ public class FMegabeetleMovement : FEnemyMovementBase, IPositionDirectionProvide
         transform.position = newPosition;
         _stateDebug = _currentState.GetType().Name;
     }
-    
+
     private void OnEnteredAttackRange()
     {
         EnteredAttackRange?.Invoke();
     }
-    
+
     private void OnPreAttackStarted()
     {
         PreAttackStarted?.Invoke();
@@ -215,9 +218,14 @@ public class FMegabeetleMovement : FEnemyMovementBase, IPositionDirectionProvide
     {
         PreAttackEnded?.Invoke();
     }
-    
+
     private void OnDeathStateEnded()
     {
         DeathStateEnded?.Invoke();
+    }
+
+    private void OnAttackStarted()
+    {
+        AttackStarted?.Invoke();
     }
 }

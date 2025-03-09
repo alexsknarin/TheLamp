@@ -14,7 +14,6 @@ public class FEnemyAttacker: ITickable
     private float _localTime;
     private bool _isCooldownActive = false;
     
-
     private List<FEnemy> _enemies; // TODO: find a way to remove this dependency and to not keep the list of enemies
     private List<CollidableEnemy> _enemiesReadyToAttack = new ();
 

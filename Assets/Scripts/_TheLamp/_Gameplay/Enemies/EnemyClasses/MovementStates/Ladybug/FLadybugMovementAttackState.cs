@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class FLadybugMovementAttackState : RegularEnemyMovementStateBase
@@ -21,9 +22,12 @@ public class FLadybugMovementAttackState : RegularEnemyMovementStateBase
         _lampPositionProviderService = lampPositionProviderService;
         _speed = speed;
     }
+
+    public event Action Started;
     
     public override void OnEnter()
     {
+        Started?.Invoke();
     }
     
     public override void Tick()

@@ -17,8 +17,8 @@ public class LampStickyDetectionService : MonoBehaviour, IInitializable
     private float _combinedStickRadius;
     private int _attackBlockerCount = 0;
     
-    public event Action AttackBlocked;
-    public event Action AttackUnblocked;
+    public event Action EnemyAttackBlocked;
+    public event Action EnemyAttackUnblocked;
     public event Action<IStickableWithLamp> EnemySticked;
     public event Action<IStickableWithLamp> EnemyUnSticked;
 
@@ -147,7 +147,7 @@ public class LampStickyDetectionService : MonoBehaviour, IInitializable
             if (!_blockedAttacks)
             {
                 _blockedAttacks = true;
-                AttackBlocked?.Invoke();
+                EnemyAttackBlocked?.Invoke();
             }
         }
         else
@@ -155,7 +155,7 @@ public class LampStickyDetectionService : MonoBehaviour, IInitializable
             if (_blockedAttacks)
             {
                 _blockedAttacks = false;
-                AttackUnblocked?.Invoke();
+                EnemyAttackUnblocked?.Invoke();
             }
         }
     }

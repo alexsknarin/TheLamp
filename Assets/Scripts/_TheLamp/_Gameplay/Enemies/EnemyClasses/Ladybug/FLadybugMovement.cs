@@ -71,6 +71,7 @@ public class FLadybugMovement : FEnemyMovementBase, IPositionDirectionProvider, 
         _deathFallState.Ended += OnDeathFallStateEnded;
         _spreadState.Ended += OnSpreadStateEnded;
         _patrolStateR.EnteredAttackRange += OnEnteredAttackRange;
+        _patrolStateL.EnteredAttackRange += OnEnteredAttackRange;
         
         At(_patrolStateR, _preAttackStateR, () => _patrolStateR.IsReadyToSwitch);
         At(_preAttackStateR, _attackState, () => _preAttackStateR.IsReadyToSwitch);

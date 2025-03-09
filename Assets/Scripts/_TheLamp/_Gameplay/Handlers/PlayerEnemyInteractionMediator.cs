@@ -25,12 +25,12 @@ public class PlayerEnemyInteractionMediator: IInitializable, IDisposable
     public void Initialize()
     {
         _waveEnemyDirector.EnemyAttackStarted += OnEnemyAttackStarted;
-        _waveEnemyDirector.StickyEnemyRedyToStick += OnStickyEnemyRedyToStick;
+        _waveEnemyDirector.StickyEnemyReadyToStick += OnStickyEnemyReadyToStick;
         
         _lampCollisionDetectionService.EnemyAttackEnded += OnEnemyAttackEnded;
 
-        _lampStickyDetectionService.AttackBlocked += _waveEnemyDirector.BlockAttackCooldown;
-        _lampStickyDetectionService.AttackUnblocked += _waveEnemyDirector.UnblockAttackCooldown;
+        _lampStickyDetectionService.EnemyAttackBlocked += _waveEnemyDirector.BlockEnemyAttackCooldown;
+        _lampStickyDetectionService.EnemyAttackUnblocked += _waveEnemyDirector.UnblockEnemyAttackCooldown;
         _lampStickyDetectionService.EnemySticked += OnEnemySticked;
         _lampStickyDetectionService.EnemyUnSticked += OnEnemyUnSticked;
     }
@@ -38,12 +38,12 @@ public class PlayerEnemyInteractionMediator: IInitializable, IDisposable
     public void Dispose()
     {
         _waveEnemyDirector.EnemyAttackStarted -= OnEnemyAttackStarted;
-        _waveEnemyDirector.StickyEnemyRedyToStick -= OnStickyEnemyRedyToStick;
+        _waveEnemyDirector.StickyEnemyReadyToStick -= OnStickyEnemyReadyToStick;
         
         _lampCollisionDetectionService.EnemyAttackEnded -= OnEnemyAttackEnded;
         
-        _lampStickyDetectionService.AttackBlocked -= _waveEnemyDirector.BlockAttackCooldown;
-        _lampStickyDetectionService.AttackUnblocked -= _waveEnemyDirector.UnblockAttackCooldown;
+        _lampStickyDetectionService.EnemyAttackBlocked -= _waveEnemyDirector.BlockEnemyAttackCooldown;
+        _lampStickyDetectionService.EnemyAttackUnblocked -= _waveEnemyDirector.UnblockEnemyAttackCooldown;
         _lampStickyDetectionService.EnemySticked -= OnEnemySticked;
         _lampStickyDetectionService.EnemyUnSticked -= OnEnemyUnSticked;
     }
@@ -65,7 +65,7 @@ public class PlayerEnemyInteractionMediator: IInitializable, IDisposable
         _lampCollisionDetectionService.AddCollidable(enemy);
     }
 
-    private void OnStickyEnemyRedyToStick(IStickableWithLamp enemy)
+    private void OnStickyEnemyReadyToStick(IStickableWithLamp enemy)
     {
         _lampStickyDetectionService.AddStickable(enemy);
     }

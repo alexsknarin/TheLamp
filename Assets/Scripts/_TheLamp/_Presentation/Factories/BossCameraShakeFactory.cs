@@ -42,15 +42,15 @@ public class BossCameraShakeFactory
             }
             return _megamothlingCameraShakeStrategy;    
         }
-        // if (boss is FMegabeetle)
-        // {
-        //     LoadStrategy(
-        //         ref _megabeetleCameraShakeStrategy,
-        //         "Behaviors/MegabeetleCameraShakeStrategy",
-        //         boss.transform
-        //         );
-        //     return _megabeetleCameraShakeStrategy;
-        // }
+        if (boss is FMegabeetle)
+        {
+            LoadStrategy(
+                ref _megabeetleCameraShakeStrategy,
+                "Behaviors/MegabeetleCameraShakeStrategy",
+                boss.transform
+                );
+            return _megabeetleCameraShakeStrategy;
+        }
         // if (boss is Dragonfly)
         // {
         //     LoadStrategy(

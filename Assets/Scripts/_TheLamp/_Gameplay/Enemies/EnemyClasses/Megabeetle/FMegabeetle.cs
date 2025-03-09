@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class FMegabeetle : FEnemy, IStickableWithLamp
+public class FMegabeetle : FEnemy, IStickableWithLamp, IBoss
 {
     [SerializeField] private float _collisionRadius = 0.3f;
     [SerializeField] private int _maxHealth;
@@ -10,11 +10,13 @@ public class FMegabeetle : FEnemy, IStickableWithLamp
     [SerializeField] private FMegabeetleMovement _movement;
     private int _currentHealthToFall;
     
+    public event Action SpreadRequested;
     public event Action<IStickableWithLamp> StickReadyStarted;
     public event Action Started;
     public event Action Damaged;
     public event Action<int, int> HealthChanged; 
     public event Action Dead;
+    
     
     public Vector2 Position => _movement.Position2D;
     public float Radius => _collisionRadius;
@@ -27,14 +29,16 @@ public class FMegabeetle : FEnemy, IStickableWithLamp
         _movement.Initialize();
         _movement.EnteredAttackRange += OnEnteredAttackRange;
         _movement.DeathStateEnded += OnDeathStateEnded;
+        _movement.AttackStarted += OnAttackStarted;
     }
 
     private void OnDestroy()
     {
         _movement.EnteredAttackRange -= OnEnteredAttackRange;
-        _movement.DeathStateEnded += OnDeathStateEnded;
+        _movement.DeathStateEnded -= OnDeathStateEnded;
+        _movement.AttackStarted -= OnAttackStarted;
     }
-
+    
     public override void Play()
     {
         IsDead = false;
@@ -123,7 +127,7 @@ public class FMegabeetle : FEnemy, IStickableWithLamp
 
     public void HandleLampDestroyed()
     {
-        throw new System.NotImplementedException();
+        _movement.TriggerFall();
     }
 
     public Vector3 ProvideImpactPoint()
@@ -134,6 +138,11 @@ public class FMegabeetle : FEnemy, IStickableWithLamp
     private void OnEnteredAttackRange()
     {
         StickReadyStarted?.Invoke(this);
+    }
+    
+    private void OnAttackStarted()
+    {
+        SpreadRequested?.Invoke();
     }
     
     private void OnDrawGizmos()
