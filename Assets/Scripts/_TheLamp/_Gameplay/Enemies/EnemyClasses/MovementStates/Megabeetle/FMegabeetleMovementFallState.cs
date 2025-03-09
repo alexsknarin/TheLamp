@@ -32,7 +32,7 @@ public class FMegabeetleMovementFallState : RegularEnemyMovementStateBase
         _bounceForce *= _dragAmount;
         _gravityForce += Vector2.down * (_gravityForceMagnitude * Time.deltaTime);
         
-        if (Position2D.y < -4.8f)
+        if (Position2D.y < -7.3f)
         {
             Ended?.Invoke();
             IsReadyToSwitch = true;

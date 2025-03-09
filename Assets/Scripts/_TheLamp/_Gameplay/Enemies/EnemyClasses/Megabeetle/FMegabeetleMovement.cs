@@ -132,17 +132,22 @@ public class FMegabeetleMovement : FEnemyMovementBase, IPositionDirectionProvide
 
     public override void Play()
     {
+        StartMovement(_enterStateR, _enterStateL);
+    }
+
+    private void StartMovement(RegularEnemyMovementStateBase newStateR, RegularEnemyMovementStateBase newtStateL)
+    {
         _sideDirection = RandomDirection.Generate();
         SideDirection = _sideDirection;
         Position2D = GenerateSpawnPosition(_radius, _sideDirection);
         
         if (_sideDirection > 0)
         {
-            _currentState = _enterStateR;
+            _currentState = newStateR;
         }
         else
         {
-            _currentState = _enterStateL;
+            _currentState = newtStateL;
         }
         _stateMachine.SetState(_currentState);
         
@@ -179,11 +184,11 @@ public class FMegabeetleMovement : FEnemyMovementBase, IPositionDirectionProvide
         // if (_isDepthEnabled)
         // {
         //     DepthDirection = _currentState.DepthDirection;
-        //     transform.position = (Vector3)Position2D + DepthDirection;
+        //     transform.localPosition = (Vector3)Position2D + DepthDirection;
         // }
         // else
         // {
-        //     transform.position = _currentState.Position2D;
+        //     transform.localPosition = _currentState.Position2D;
         // }
         
         transform.localPosition = _currentState.Position2D;
@@ -198,7 +203,15 @@ public class FMegabeetleMovement : FEnemyMovementBase, IPositionDirectionProvide
         _stateDebug = _currentState.GetType().Name; // Debug only
         Position2D = _currentState.Position2D;
         
-        transform.localPosition = Position2D;
+        if (_isDepthEnabled)
+        {
+            DepthDirection = _currentState.DepthDirection;
+            transform.localPosition = (Vector3)Position2D + DepthDirection;
+        }
+        else
+        {
+            transform.localPosition = _currentState.Position2D;
+        }
         
         Debug.DrawLine(_prevPosition, transform.position, Color.cyan, 10f);
     }
@@ -228,7 +241,7 @@ public class FMegabeetleMovement : FEnemyMovementBase, IPositionDirectionProvide
     
     private void OnFallStateEnded()
     {
-        Play();
+        StartMovement(_patrolStateR, _patrolStateL);
     }
 
     private void OnEnteredAttackRange()

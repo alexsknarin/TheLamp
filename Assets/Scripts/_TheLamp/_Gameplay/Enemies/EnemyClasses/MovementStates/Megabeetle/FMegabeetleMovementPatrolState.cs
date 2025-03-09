@@ -20,7 +20,7 @@ public abstract class FMegabeetleMovementPatrolState : RegularEnemyMovementState
     private float _spiralPhase = 1f;
     private float _preAttackTriggerDistance = 1.0f;
     private float _preAttackTriggerYThreshold = 0.3f;
-    private float _depthMultiplierMax = 3.5f;
+    private float _depthMultiplierMax = 1.8f;
     private float _depthMultiplierMin = 0f;
     
     public FMegabeetleMovementPatrolState(
