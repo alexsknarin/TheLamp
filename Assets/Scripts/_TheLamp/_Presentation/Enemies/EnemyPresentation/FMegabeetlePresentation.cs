@@ -20,6 +20,7 @@ public class FMegabeetlePresentation : MonoBehaviour
         
         _movement.PreAttackStarted += OnPreAttackStarted;
         _movement.PreAttackEnded += OnPreAttackEnded;
+        _movement.FallEnded += OnFallEnded;
         _megabeetle.Started += OnLadybugStarted;
         _megabeetle.Damaged += OnLadybugDamaged;
         _megabeetle.HealthChanged += _healthIndication.Refresh;
@@ -30,6 +31,7 @@ public class FMegabeetlePresentation : MonoBehaviour
     {
         _movement.PreAttackStarted -= OnPreAttackStarted;
         _movement.PreAttackEnded -= OnPreAttackEnded;
+        _movement.FallEnded -= OnFallEnded;
         _megabeetle.Started -= OnLadybugStarted;
         _megabeetle.Damaged -= OnLadybugDamaged;
         _megabeetle.HealthChanged -= _healthIndication.Refresh;
@@ -61,5 +63,10 @@ public class FMegabeetlePresentation : MonoBehaviour
     private void OnLadybugDead()
     {
         _deathFlash.Play();
+    }
+
+    private void OnFallEnded()
+    {
+        _trailResetHandler.Initialize();
     }
 }

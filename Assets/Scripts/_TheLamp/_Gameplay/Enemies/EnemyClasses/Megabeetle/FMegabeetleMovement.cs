@@ -53,6 +53,8 @@ public class FMegabeetleMovement : FEnemyMovementBase, IPositionDirectionProvide
     public event Action DeathStateEnded;
     public event Action AttackStarted;
     public event Action StickyAttackEnded;
+    public event Action FallEnded;
+    
     public Vector2 Position2D { get; private set; }
     public Vector3 DepthDirection { get; private set; }
     
@@ -242,6 +244,7 @@ public class FMegabeetleMovement : FEnemyMovementBase, IPositionDirectionProvide
     private void OnFallStateEnded()
     {
         StartMovement(_patrolStateR, _patrolStateL);
+        FallEnded?.Invoke();
     }
 
     private void OnEnteredAttackRange()
