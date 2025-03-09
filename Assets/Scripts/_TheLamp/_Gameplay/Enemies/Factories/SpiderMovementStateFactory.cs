@@ -22,58 +22,58 @@ public class SpiderMovementStateFactory
 
     public RegularEnemyMovementStateBase Create(Type stateType)
     {
-        if (stateType == typeof(FSpiderMovementEnterState))
+        if (stateType == typeof(SpiderMovementEnterState))
         {
-            return new FSpiderMovementEnterState(
+            return new SpiderMovementEnterState(
                 _speed,
                 _xCenter,
                 _height
             );
         }
-        if (stateType == typeof(FSpiderMovementPatrolState))
+        if (stateType == typeof(SpiderMovementPatrolState))
         {
-            return new FSpiderMovementPatrolState(
+            return new SpiderMovementPatrolState(
                 _positionDirectionProvider,
                 _xCenter,
                 _height
             );
         }
-        if (stateType == typeof(FSpiderMovementPreAttackState))
+        if (stateType == typeof(SpiderMovementPreAttackState))
         {
-            return new FSpiderMovementPreAttackState(
+            return new SpiderMovementPreAttackState(
                 _positionDirectionProvider,
                 _xCenter,
                 _height
             );
         }
-        if (stateType == typeof(FSpiderMovementAttackState))
+        if (stateType == typeof(SpiderMovementAttackState))
         {
-            return new FSpiderMovementAttackState(
-                _positionDirectionProvider,
-                _speed,
-                _xCenter,
-                _height
-            );
-        }
-        if (stateType == typeof(FSpiderMovementReturnState))
-        {
-            return new FSpiderMovementReturnState(
+            return new SpiderMovementAttackState(
                 _positionDirectionProvider,
                 _speed,
                 _xCenter,
                 _height
             );
         }
-        if (stateType == typeof(FFlyGenericMovementDeathState))
+        if (stateType == typeof(SpiderMovementReturnState))
         {
-            return new FFlyGenericMovementDeathState(
+            return new SpiderMovementReturnState(
+                _positionDirectionProvider,
+                _speed,
+                _xCenter,
+                _height
+            );
+        }
+        if (stateType == typeof(FlyGenericMovementDeathState))
+        {
+            return new FlyGenericMovementDeathState(
                 _positionDirectionProvider,
                 false
             );
         }
-        if (stateType == typeof(FSpiderMovementClimbUpState))
+        if (stateType == typeof(SpiderMovementClimbUpState))
         {
-            return new FSpiderMovementClimbUpState(
+            return new SpiderMovementClimbUpState(
                 _positionDirectionProvider,
                 _speed,
                 _height

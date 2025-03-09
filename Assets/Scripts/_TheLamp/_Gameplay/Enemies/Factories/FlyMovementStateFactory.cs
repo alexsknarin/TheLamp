@@ -53,9 +53,9 @@ public class FlyMovementStateFactory
     
     public RegularEnemyMovementStateBase Create(Type stateType)
     {
-        if (stateType == typeof(FFlyGenericMovementEnterState))
+        if (stateType == typeof(FlyGenericMovementEnterState))
         {
-            return new FFlyGenericMovementEnterState(
+            return new FlyGenericMovementEnterState(
                 _cameraTransform.position,
                 _positionDirectionProvider,
                 _lampPositionProviderService,
@@ -64,9 +64,9 @@ public class FlyMovementStateFactory
                 _verticalAmplitude
                 );
         }
-        if (stateType == typeof(FFlyGenericMovementPatrolState))
+        if (stateType == typeof(FlyGenericMovementPatrolState))
         {
-            return new FFlyGenericMovementPatrolState(
+            return new FlyGenericMovementPatrolState(
                 _cameraTransform.position,
                 _positionDirectionProvider,
                 _lampPositionProviderService,
@@ -75,27 +75,27 @@ public class FlyMovementStateFactory
                 _verticalAmplitude
                 );
         }
-        if (stateType == typeof(FFlyGenericMovementPreAttackStateR))
+        if (stateType == typeof(FlyGenericMovementPreAttackStateR))
         {
-            return new FFlyGenericMovementPreAttackStateR(
+            return new FlyGenericMovementPreAttackStateR(
                 _cameraTransform.position,
                 _positionDirectionProvider,
                 _speed,
                 _preAttackDuration
                 );
         }
-        if (stateType == typeof(FFlyGenericMovementPreAttackStateL))
+        if (stateType == typeof(FlyGenericMovementPreAttackStateL))
         {
-            return new FFlyGenericMovementPreAttackStateL(
+            return new FlyGenericMovementPreAttackStateL(
                 _cameraTransform.position,
                 _positionDirectionProvider,
                 _speed,
                 _preAttackDuration
                 );
         }
-        if (stateType == typeof(FFlyGenericMovementAcceleratedAttackState))
+        if (stateType == typeof(FlyGenericMovementAcceleratedAttackState))
         {
-            return new FFlyGenericMovementAcceleratedAttackState(
+            return new FlyGenericMovementAcceleratedAttackState(
                 _cameraTransform.position,
                 _positionDirectionProvider,
                 _lampPositionProviderService,
@@ -103,9 +103,9 @@ public class FlyMovementStateFactory
                 _proximityOffset
                 );
         }
-        if (stateType == typeof(FFlyGenericMovementFallState))
+        if (stateType == typeof(FlyGenericMovementFallState))
         {
-            return new FFlyGenericMovementFallState(
+            return new FlyGenericMovementFallState(
                 _positionDirectionProvider,
                 _lampPositionProviderService,
                 _radius,
@@ -115,16 +115,16 @@ public class FlyMovementStateFactory
                 _fallGravityForce
                 );
         }
-        if (stateType == typeof(FFlyGenericMovementDeathState))
+        if (stateType == typeof(FlyGenericMovementDeathState))
         {
-            return new FFlyGenericMovementDeathState(
+            return new FlyGenericMovementDeathState(
                 _positionDirectionProvider,
                 _isDeathByTimer
                 );
         }
-        if (stateType == typeof(FFlyGenericMovementSpreadState))
+        if (stateType == typeof(FlyGenericMovementSpreadState))
         {
-            return new FFlyGenericMovementSpreadState(
+            return new FlyGenericMovementSpreadState(
                 _positionDirectionProvider,
                 _speed
                 );

@@ -10,23 +10,23 @@ public class BossCameraShakeFactory
     
     public ICameraShakeStrategy Create(FEnemy boss)
     {
-        if (boss is FWasp)
+        if (boss is Wasp)
         {
             if (_waspCameraShakeStrategy is null)
             {
                 LoadStrategy(
                     ref _waspCameraShakeStrategy, 
                     "Behaviors/WaspCameraShakeStrategy",
-                    ((FWasp)boss).MovementTransform
+                    ((Wasp)boss).MovementTransform
                 );
             }
             else
             {
-                _waspCameraShakeStrategy.Construct(((FWasp)boss).MovementTransform);
+                _waspCameraShakeStrategy.Construct(((Wasp)boss).MovementTransform);
             }
             return _waspCameraShakeStrategy;
         }
-        if (boss is FMegamothling)
+        if (boss is Megamothling)
         {
             if (_megamothlingCameraShakeStrategy is null)
             {
@@ -42,7 +42,7 @@ public class BossCameraShakeFactory
             }
             return _megamothlingCameraShakeStrategy;    
         }
-        if (boss is FMegabeetle)
+        if (boss is Megabeetle)
         {
             LoadStrategy(
                 ref _megabeetleCameraShakeStrategy,

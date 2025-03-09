@@ -34,9 +34,9 @@ public class MothMovementStateFactory
 
     public RegularEnemyMovementStateBase Create(Type stateType)
     {
-        if (stateType == typeof(FMothMovementEnterState))
+        if (stateType == typeof(MothMovementEnterState))
         {
-            return new FMothMovementEnterState(
+            return new MothMovementEnterState(
                 _cameraTransform.position,
                 _positionDirectionProvider,
                 _speed,
@@ -44,18 +44,18 @@ public class MothMovementStateFactory
                 _verticalAmplitude
             );
         }
-        if (stateType == typeof(FMothMovementHoverState))
+        if (stateType == typeof(MothMovementHoverState))
         {
-            return new FMothMovementHoverState(
+            return new MothMovementHoverState(
                 _cameraTransform.position,
                 _positionDirectionProvider,
                 _speed,
                 _radius
             );
         }
-        if (stateType == typeof(FMothMovementNoisePatrolState))
+        if (stateType == typeof(MothMovementNoisePatrolState))
         {
-            return new FMothMovementNoisePatrolState(
+            return new MothMovementNoisePatrolState(
                 _cameraTransform.position,
                 _positionDirectionProvider,
                 _speed,
@@ -63,26 +63,26 @@ public class MothMovementStateFactory
                 _verticalAmplitude
             );
         }
-        if (stateType == typeof(FMothMovementPreAttackState))
+        if (stateType == typeof(MothMovementPreAttackState))
         {
-            return new FMothMovementPreAttackState(
+            return new MothMovementPreAttackState(
                 _cameraTransform.position,
                 _positionDirectionProvider,
                 _speed
             );
         }
-        if (stateType == typeof(FMothMovementNoiseAttackState))
+        if (stateType == typeof(MothMovementNoiseAttackState))
         {
-            return new FMothMovementNoiseAttackState(
+            return new MothMovementNoiseAttackState(
                 _cameraTransform.position,
                 _positionDirectionProvider,
                 _lampPositionProviderService,
                 _speed
             );
         }
-        if (stateType == typeof(FMothMovementNoiseFallState))
+        if (stateType == typeof(MothMovementNoiseFallState))
         {
-            return new FMothMovementNoiseFallState(
+            return new MothMovementNoiseFallState(
                 _cameraTransform.position,
                 _positionDirectionProvider,
                 _lampPositionProviderService,
@@ -90,15 +90,15 @@ public class MothMovementStateFactory
                 _verticalAmplitude
             );
         }
-        if (stateType == typeof(FMothMovementNoiseDeathState))
+        if (stateType == typeof(MothMovementNoiseDeathState))
         {
-            return new FMothMovementNoiseDeathState(
+            return new MothMovementNoiseDeathState(
                 _positionDirectionProvider
             );
         }
-        if (stateType == typeof(FMothMovementNoiseSpreadState))
+        if (stateType == typeof(MothMovementNoiseSpreadState))
         {
-            return new FMothMovementNoiseSpreadState(
+            return new MothMovementNoiseSpreadState(
                 _positionDirectionProvider,
                 _speed
             );

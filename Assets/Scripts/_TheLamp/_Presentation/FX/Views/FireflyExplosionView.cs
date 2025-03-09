@@ -3,10 +3,10 @@ using UnityEngine;
 public class FireflyExplosionView: IInitializable, IDisposable
 {
     private FXFactory _fxFactory;
-    private FIreflyExplosionViewModel _fireflyExplosionViewModel;
+    private FireflyExplosionViewModel _fireflyExplosionViewModel;
     private FireflyExplosion _fireflyExplosion = null;
     
-    public FireflyExplosionView(FXFactory fxFactory, FIreflyExplosionViewModel fireflyExplosionViewModel)
+    public FireflyExplosionView(FXFactory fxFactory, FireflyExplosionViewModel fireflyExplosionViewModel)
     {
         _fxFactory = fxFactory;
         _fireflyExplosionViewModel = fireflyExplosionViewModel;

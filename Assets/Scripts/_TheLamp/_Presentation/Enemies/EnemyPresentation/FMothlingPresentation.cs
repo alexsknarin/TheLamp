@@ -3,8 +3,8 @@ using UnityEngine;
 
 public class FMothlingPresentation : MonoBehaviour, IInitializable
 {
-    [SerializeField] private FMothling _mothling;
-    [SerializeField] private FMothlingMovement _movement;
+    [SerializeField] private Mothling _mothling;
+    [SerializeField] private MothlingMovement _movement;
     [SerializeField] private PreAttackFlash _preAttackFlash;
     [SerializeField] private DamageFlash _damageFlash;
     [SerializeField] private DeathFlash _deathFlash;

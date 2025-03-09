@@ -81,27 +81,27 @@ public class MegabeetleMovementStateFactory
                 _verticalAmplitude
             );
         }
-        if (stateType == typeof(FLadybugMovementPreAttackStateR))
+        if (stateType == typeof(LadybugMovementPreAttackStateR))
         {
-            return new FLadybugMovementPreAttackStateR(
+            return new LadybugMovementPreAttackStateR(
                 _cameraTransform.position,
                 _positionDirectionProvider,
                 _lampPositionProviderService,
                 _speed
             );
         }
-        if (stateType == typeof(FLadybugMovementPreAttackStateL))
+        if (stateType == typeof(LadybugMovementPreAttackStateL))
         {
-            return new FLadybugMovementPreAttackStateL(
+            return new LadybugMovementPreAttackStateL(
                 _cameraTransform.position,
                 _positionDirectionProvider,
                 _lampPositionProviderService,
                 _speed
             );
         }
-        if (stateType == typeof(FLadybugMovementAttackState))
+        if (stateType == typeof(LadybugMovementAttackState))
         {
-            return new FLadybugMovementAttackState(
+            return new LadybugMovementAttackState(
                 _cameraTransform.position,
                 _positionDirectionProvider,
                 _lampPositionProviderService,

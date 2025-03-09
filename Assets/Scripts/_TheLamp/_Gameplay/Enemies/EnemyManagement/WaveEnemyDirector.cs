@@ -14,17 +14,17 @@ public class WaveEnemyDirector : MonoBehaviour, IInitializable
     private FLampAttacker _lampAttacker;
     private FireflyExplosionEnemyDamager _fireflyExplosionEnemyDamager;
     [SerializeField] private bool _lampBlocked = false;
-    private FEnemyAttacker _enemyAttacker;
+    private EnemyAttacker _enemyAttacker;
     private WaitForSeconds _waitAfterGameOver = new (1f);
     private WaitForSeconds _waitToDeactivateEnemies;
 
     // Dependencies
     private IGameConfigService _gameConfigService;
-    private FEnemySpawner _enemySpawner;
+    private EnemySpawner _enemySpawner;
     
     public void Construct(
         IGameConfigService gameConfigService, 
-        FEnemySpawner enemySpawner
+        EnemySpawner enemySpawner
         )
     {
         _gameConfigService = gameConfigService;
@@ -49,7 +49,7 @@ public class WaveEnemyDirector : MonoBehaviour, IInitializable
         _spawnQueueGenerator = new SpawnQueueGenerator(_gameConfigService.SpawnQueueConfig.Data);
         _spawnQueue = _spawnQueueGenerator.Generate();
         _lampAttacker = new FLampAttacker();
-        _enemyAttacker = new FEnemyAttacker(_gameConfigService.GameConfig.MaxAggressionLevel);
+        _enemyAttacker = new EnemyAttacker(_gameConfigService.GameConfig.MaxAggressionLevel);
         _fireflyExplosionEnemyDamager = new FireflyExplosionEnemyDamager(_gameConfigService);
         _fireflyExplosionEnemyDamager.Initialize();
         

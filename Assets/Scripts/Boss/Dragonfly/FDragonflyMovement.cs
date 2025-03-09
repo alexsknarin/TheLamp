@@ -61,7 +61,7 @@ public class FDragonflyMovement : MonoBehaviour
     [SerializeField] private FDragonflySpiderPreattackHeadTransitionStateR _spiderPreAttackHeadTransitionStateR;
     [SerializeField] private FDragonflySpiderPushStateL _spiderPushStateL;
     [SerializeField] private FDragonflySpiderPushStateR _spiderPushStateR;
-    private FStateMachine _stateMachine = new();
+    private StateMachine _stateMachine = new();
     // Animation 
     private readonly int _idleHash = Animator.StringToHash("Idle");
     private readonly int _enterToPatrolLHash = Animator.StringToHash("EnterToPatrolL");

@@ -50,7 +50,7 @@ public class Dragonfly : BossBase
     private Vector3 _patrolAttackPosition;
     private Vector3 _patrolSpiderAttackPosition;
     // STATE MACHINE 
-    private readonly FStateMachine _stateMachine = new FStateMachine();
+    private readonly StateMachine _stateMachine = new StateMachine();
     private DragonflyInactiveState _inactiveState;
     private DragonflyPassiveState _passiveState;
     private DragonflyPatrolState _patrolState;

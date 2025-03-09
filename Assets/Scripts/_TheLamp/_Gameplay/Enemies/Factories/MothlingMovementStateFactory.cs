@@ -44,9 +44,9 @@ public class MothlingMovementStateFactory
     
     public RegularEnemyMovementStateBase Create(Type stateType)
     {
-        if (stateType == typeof(FFlyGenericMovementEnterState))
+        if (stateType == typeof(FlyGenericMovementEnterState))
         {
-            return new FFlyGenericMovementEnterState(
+            return new FlyGenericMovementEnterState(
                 _cameraTransform.position,
                 _positionDirectionProvider,
                 _lampPositionProviderService,
@@ -55,9 +55,9 @@ public class MothlingMovementStateFactory
                 _verticalAmplitude
                 );
         }
-        if (stateType == typeof(FFlyGenericMovementPatrolState))
+        if (stateType == typeof(FlyGenericMovementPatrolState))
         {
-            return new FFlyGenericMovementPatrolState(
+            return new FlyGenericMovementPatrolState(
                 _cameraTransform.position,
                 _positionDirectionProvider,
                 _lampPositionProviderService,
@@ -82,9 +82,9 @@ public class MothlingMovementStateFactory
                 _speed
                 );
         }
-        if (stateType == typeof(FFlyGenericMovementFallState))
+        if (stateType == typeof(FlyGenericMovementFallState))
         {
-            return new FFlyGenericMovementFallState(
+            return new FlyGenericMovementFallState(
                 _positionDirectionProvider,
                 _lampPositionProviderService,
                 _radius,
@@ -100,9 +100,9 @@ public class MothlingMovementStateFactory
                 _positionDirectionProvider
                 );
         }
-        if (stateType == typeof(FFlyGenericMovementSpreadState))
+        if (stateType == typeof(FlyGenericMovementSpreadState))
         {
-            return new FFlyGenericMovementSpreadState(
+            return new FlyGenericMovementSpreadState(
                 _positionDirectionProvider,
                 _speed
                 );

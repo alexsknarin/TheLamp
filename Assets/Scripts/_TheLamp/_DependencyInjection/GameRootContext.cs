@@ -65,7 +65,7 @@ public class GameRootContext : MonoBehaviour
     private PlayerAttackViewModel _playerAttackViewModel;
     private PlayerUpgradeViewModel _playerUpgradeViewModel;
     private GameOverViewModel _gameOverViewModel;
-    private FIreflyExplosionViewModel _fireflyExplosionViewModel;
+    private FireflyExplosionViewModel _fireflyExplosionViewModel;
     
     private HapticFeedbackEventListener _hapticFeedbackEventListener;
     private LightningFlashEventsListener _lightningFlashEventsListener;
@@ -81,11 +81,11 @@ public class GameRootContext : MonoBehaviour
     private LadybugMovementStateFactory _ladybugMovementStateFactory;
     private MegamothlingMovementStateFactory _megamothlingMovementStateFactory;
     private MegabeetleMovementStateFactory _megabeetleMovementStateFactory;
-    private FEnemyFactory _enemyFactory;
+    private EnemyFactory _enemyFactory;
     private FXFactory _fxFactory;   
     
-    private FEnemyPool _enemyPool;
-    private FEnemySpawner _enemySpawner;
+    private EnemyPool _enemyPool;
+    private EnemySpawner _enemySpawner;
     
     private FireflyExplosionView _fireflyExplosionView;
     
@@ -209,7 +209,7 @@ public class GameRootContext : MonoBehaviour
             _lampPositionProviderService
         );
         
-        _enemyFactory = new FEnemyFactory(
+        _enemyFactory = new EnemyFactory(
             _mothlingMovementStateFactory, 
             _flyMovementStateFactory, 
             _mothMovementStateFactory, 
@@ -219,7 +219,7 @@ public class GameRootContext : MonoBehaviour
             _megabeetleMovementStateFactory,
             _lampPositionProviderService
         );
-        _enemyPool = new FEnemyPool(_enemyFactory);
+        _enemyPool = new EnemyPool(_enemyFactory);
         _enemyPool.Initialize();
         
         _fxFactory = new FXFactory(_gameConfigService);
@@ -232,7 +232,7 @@ public class GameRootContext : MonoBehaviour
         _disposables.Add(_scoresCollectionController);
         
         // _enemyController.Construct(_gameConfigService, _lampPositionProviderService);
-        _enemySpawner = new FEnemySpawner(_enemyPool);
+        _enemySpawner = new EnemySpawner(_enemyPool);
         _enemySpawner.Initialize();
         _tickables.Add(_enemySpawner);
         _disposables.Add(_enemySpawner);
@@ -281,7 +281,7 @@ public class GameRootContext : MonoBehaviour
         _playerUpgradeViewModel = new PlayerUpgradeViewModel(_gameModel, _gameConfigService);
         _gameOverViewModel = new GameOverViewModel(_gameModel);
        
-        _fireflyExplosionViewModel = new FIreflyExplosionViewModel(_waveEnemyDirector);
+        _fireflyExplosionViewModel = new FireflyExplosionViewModel(_waveEnemyDirector);
         _fireflyExplosionViewModel.Initialize();
         _disposables.Add(_fireflyExplosionViewModel);
         

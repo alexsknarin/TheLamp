@@ -56,9 +56,9 @@ public class MegamothlingMovementStateFactory
                 _verticalAmplitude
             );
         }
-        if (stateType == typeof(FFlyGenericMovementPatrolState))
+        if (stateType == typeof(FlyGenericMovementPatrolState))
         {
-            return new FFlyGenericMovementPatrolState(
+            return new FlyGenericMovementPatrolState(
                 _cameraTransform.position,
                 _positionDirectionProvider,
                 _lampPositionProviderService,
@@ -67,18 +67,18 @@ public class MegamothlingMovementStateFactory
                 _verticalAmplitude
             );
         }
-        if (stateType == typeof(FFlyGenericMovementPreAttackStateL))
+        if (stateType == typeof(FlyGenericMovementPreAttackStateL))
         {
-            return new FFlyGenericMovementPreAttackStateL(
+            return new FlyGenericMovementPreAttackStateL(
                 _cameraTransform.position,
                 _positionDirectionProvider,
                 _speed,
                 _preAttackDuration
             );
         }
-        if (stateType == typeof(FFlyGenericMovementPreAttackStateR))
+        if (stateType == typeof(FlyGenericMovementPreAttackStateR))
         {
-            return new FFlyGenericMovementPreAttackStateR(
+            return new FlyGenericMovementPreAttackStateR(
                 _cameraTransform.position,
                 _positionDirectionProvider,
                 _speed,
@@ -93,9 +93,9 @@ public class MegamothlingMovementStateFactory
                 _speed
             );
         }
-        if (stateType == typeof(FFlyGenericMovementFallState))
+        if (stateType == typeof(FlyGenericMovementFallState))
         {
-            return new FFlyGenericMovementFallState(
+            return new FlyGenericMovementFallState(
                 _positionDirectionProvider,
                 _lampPositionProviderService,
                 _radius,
