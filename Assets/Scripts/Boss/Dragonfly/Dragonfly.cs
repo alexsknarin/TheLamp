@@ -99,52 +99,52 @@ public class Dragonfly : BossBase
         _movement.Initialize();
         gameObject.SetActive(false);
         
-        _patrolHeadState.Ended += GenerateAttackPosition;
-        _patrolTailState.Ended += GenerateAttackPosition;
-        _patrolSpiderState.Ended += GenerateAttackPosition;
-        _waitHeadAttackState.Ended += StartAttack;
-        _waitTailAttackState.Ended += StartAttack;
-        _waitHoverAttackState.Ended += StartAttack;
-        _waitSpiderAttackState.GotReadyToPreAttack += StartSpiderPreAttack;
-        _waitSpiderAttackState.Ended += StartSpiderAttack;
-        
-        _movement.ReadyToAttackStateEntered += OnReadyToAttackStateEntered;
-        _movement.ReadyToSwarmAttackStateEntered += OnReadyToSwarmAttackStateEntered;
-        _movement.PreAttackStarted += OnPreAttackStarted;
-        _movement.AttackStarted += OnAttackStarted;
-        _movement.AttackEnded += OnAttackEnded;
-        _movement.SwarmCalled += OnSwarmCalled;
-        _waitForBounceState.Ended += OnWaitForBounceStateEnded;
-        _movement.AfterAttackExitEnded += OnAfterAttackExitEnded;
-        _movement.ReadyToSpiderAttackStateStarted += OnReadyToSpiderAttackStateStarted;
-        _movement.CatchSpiderStarted += OnCatchSpiderStarted;
-        _spider.EnterAnimationEnded += OnSpiderEnterAnimationEnded;
-        _movement.DeathAnimationEnded += OnDeathAnimationEnded;
+        // _patrolHeadState.Ended += GenerateAttackPosition;
+        // _patrolTailState.Ended += GenerateAttackPosition;
+        // _patrolSpiderState.Ended += GenerateAttackPosition;
+        // _waitHeadAttackState.Ended += StartAttack;
+        // _waitTailAttackState.Ended += StartAttack;
+        // _waitHoverAttackState.Ended += StartAttack;
+        // _waitSpiderAttackState.GotReadyToPreAttack += StartSpiderPreAttack;
+        // _waitSpiderAttackState.Ended += StartSpiderAttack;
+        //
+        // _movement.ReadyToAttackStateEntered += OnReadyToAttackStateEntered;
+        // _movement.ReadyToSwarmAttackStateEntered += OnReadyToSwarmAttackStateEntered;
+        // _movement.PreAttackStarted += OnPreAttackStarted;
+        // _movement.AttackStarted += OnAttackStarted;
+        // _movement.AttackEnded += OnAttackEnded;
+        // _movement.SwarmCalled += OnSwarmCalled;
+        // _waitForBounceState.Ended += OnWaitForBounceStateEnded;
+        // _movement.AfterAttackExitEnded += OnAfterAttackExitEnded;
+        // _movement.ReadyToSpiderAttackStateStarted += OnReadyToSpiderAttackStateStarted;
+        // _movement.CatchSpiderStarted += OnCatchSpiderStarted;
+        // _spider.EnterAnimationEnded += OnSpiderEnterAnimationEnded;
+        // _movement.DeathAnimationEnded += OnDeathAnimationEnded;
     }
 
     private void OnDestroy()
     {
-        _patrolHeadState.Ended -= GenerateAttackPosition;
-        _patrolTailState.Ended -= GenerateAttackPosition;
-        _patrolSpiderState.Ended -= GenerateAttackPosition;
-        _waitHeadAttackState.Ended -= StartAttack;
-        _waitTailAttackState.Ended -= StartAttack;
-        _waitHoverAttackState.Ended -= StartAttack;
-        _waitSpiderAttackState.GotReadyToPreAttack -= StartSpiderPreAttack;
-        _waitSpiderAttackState.Ended -= StartSpiderAttack;
-        
-        _movement.ReadyToAttackStateEntered -= OnReadyToAttackStateEntered;
-        _movement.ReadyToSwarmAttackStateEntered -= OnReadyToSwarmAttackStateEntered;
-        _movement.PreAttackStarted -= OnPreAttackStarted;
-        _movement.AttackStarted -= OnAttackStarted;
-        _movement.AttackEnded -= OnAttackEnded;
-        _movement.SwarmCalled -= OnSwarmCalled;
-        _waitForBounceState.Ended -= OnWaitForBounceStateEnded;
-        _movement.AfterAttackExitEnded -= OnAfterAttackExitEnded;
-        _movement.ReadyToSpiderAttackStateStarted -= OnReadyToSpiderAttackStateStarted;
-        _movement.CatchSpiderStarted -= OnCatchSpiderStarted;
-        _spider.EnterAnimationEnded -= OnSpiderEnterAnimationEnded;
-        _movement.DeathAnimationEnded -= OnDeathAnimationEnded;
+        // _patrolHeadState.Ended -= GenerateAttackPosition;
+        // _patrolTailState.Ended -= GenerateAttackPosition;
+        // _patrolSpiderState.Ended -= GenerateAttackPosition;
+        // _waitHeadAttackState.Ended -= StartAttack;
+        // _waitTailAttackState.Ended -= StartAttack;
+        // _waitHoverAttackState.Ended -= StartAttack;
+        // _waitSpiderAttackState.GotReadyToPreAttack -= StartSpiderPreAttack;
+        // _waitSpiderAttackState.Ended -= StartSpiderAttack;
+        //
+        // _movement.ReadyToAttackStateEntered -= OnReadyToAttackStateEntered;
+        // _movement.ReadyToSwarmAttackStateEntered -= OnReadyToSwarmAttackStateEntered;
+        // _movement.PreAttackStarted -= OnPreAttackStarted;
+        // _movement.AttackStarted -= OnAttackStarted;
+        // _movement.AttackEnded -= OnAttackEnded;
+        // _movement.SwarmCalled -= OnSwarmCalled;
+        // _waitForBounceState.Ended -= OnWaitForBounceStateEnded;
+        // _movement.AfterAttackExitEnded -= OnAfterAttackExitEnded;
+        // _movement.ReadyToSpiderAttackStateStarted -= OnReadyToSpiderAttackStateStarted;
+        // _movement.CatchSpiderStarted -= OnCatchSpiderStarted;
+        // _spider.EnterAnimationEnded -= OnSpiderEnterAnimationEnded;
+        // _movement.DeathAnimationEnded -= OnDeathAnimationEnded;
     }
 
     public override void Play()

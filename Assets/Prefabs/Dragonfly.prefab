@@ -1881,9 +1881,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2374259367477230807}
-  - component: {fileID: 8674691101252547959}
   m_Layer: 0
-  m_Name: ColliderTail_4
+  m_Name: ColliderTail_3
   m_TagString: Dragonfly
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1898,48 +1897,12 @@ Transform:
   m_GameObject: {fileID: 1484750302623587790}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.029, z: -0.901}
+  m_LocalPosition: {x: 0, y: 0.029, z: -0.863}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3390148051565547369}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!58 &8674691101252547959
-CircleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1484750302623587790}
-  m_Enabled: 0
-  serializedVersion: 3
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_CompositeOperation: 0
-  m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
-  m_Radius: 0.12
 --- !u!1 &1489340059461961505
 GameObject:
   m_ObjectHideFlags: 0
@@ -1961,6 +1924,7 @@ GameObject:
   - component: {fileID: 9185911319585977721}
   - component: {fileID: 6112219141313886415}
   - component: {fileID: 7317761736038300975}
+  - component: {fileID: 2373099942957532617}
   m_Layer: 0
   m_Name: Dragonfly
   m_TagString: Untagged
@@ -2186,12 +2150,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _colliders:
-  - {fileID: 7183542128289326974}
-  - {fileID: 1599850589422322955}
-  - {fileID: 430521491413195653}
-  - {fileID: 7622058122974515293}
-  - {fileID: 5956655084414304214}
-  - {fileID: 8674691101252547959}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
 --- !u!114 &2549383682762519659
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2343,10 +2307,54 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d73755303a39af41badf538077b5fc2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _stateDebug: 
   _maxHealth: 24
   _currentHealth: 0
-  _collisionRadius: 0.22
   _movement: {fileID: 8953583610499858097}
+  _visibleBodyTransform: {fileID: 7331037268719211253}
+  _collisionProvider: {fileID: 2373099942957532617}
+  _hoverWaitMin: 0
+  _hoverWaitMax: 0
+  _swarmAttackDuration: 0
+  _patrolWaitMin: 0
+  _patrolWaitMax: 0
+  _patrolAttackZonesL: {fileID: 11400000, guid: 7e96f2076b5edb84ab43969652ed065f,
+    type: 2}
+  _patrolAttackZonesR: {fileID: 11400000, guid: ab3e3f64eabbf794aad6fbb0033308d3,
+    type: 2}
+  _tailAttackPositionBase: {x: 0, y: 0, z: 0}
+  _patrolTailWaitMin: 0
+  _patrolTailWaitMax: 0
+  _spiderAttackPositionBase: {x: 0, y: 0, z: 0}
+  _spiderPatrolWaitMin: 0
+  _spiderPatrolWaitMax: 0
+  _spider: {fileID: 3221089541326229784}
+  _isInAttackExitZone: 0
+  _isCollidedWithLamp: 0
+--- !u!114 &2373099942957532617
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1489340059461961505}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7b9f4549ce8e6c41948b585201d1146, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _collisionTransforms:
+  - {fileID: 465046876321652043}
+  - {fileID: 4813889927740659346}
+  - {fileID: 2182724777521011073}
+  - {fileID: 336478886118853664}
+  - {fileID: 2374259367477230807}
+  _collisionRadii:
+  - 0.155
+  - 0.155
+  - 0.07
+  - 0.1
+  - 0.1
 --- !u!1 &1576206371050249575
 GameObject:
   m_ObjectHideFlags: 0
@@ -2611,7 +2619,6 @@ Transform:
   - {fileID: 4813889927740659346}
   - {fileID: 2182724777521011073}
   - {fileID: 336478886118853664}
-  - {fileID: 6450045398903741768}
   - {fileID: 2374259367477230807}
   m_Father: {fileID: 7331037268719211253}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -5143,7 +5150,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 336478886118853664}
-  - component: {fileID: 7622058122974515293}
   m_Layer: 0
   m_Name: ColliderTail_2
   m_TagString: Dragonfly
@@ -5160,48 +5166,12 @@ Transform:
   m_GameObject: {fileID: 4115765630172609787}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.061, z: -1.266}
+  m_LocalPosition: {x: 0, y: 0.061, z: -1.141}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3390148051565547369}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!58 &7622058122974515293
-CircleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4115765630172609787}
-  m_Enabled: 0
-  serializedVersion: 3
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_CompositeOperation: 0
-  m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
-  m_Radius: 0.12
 --- !u!1 &4162482191862127745
 GameObject:
   m_ObjectHideFlags: 0
@@ -6399,7 +6369,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2182724777521011073}
-  - component: {fileID: 430521491413195653}
   m_Layer: 0
   m_Name: ColliderTail_1
   m_TagString: Dragonfly
@@ -6416,48 +6385,12 @@ Transform:
   m_GameObject: {fileID: 5526744263092341538}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.073, z: -1.464}
+  m_LocalPosition: {x: 0, y: 0.073, z: -1.383}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3390148051565547369}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!58 &430521491413195653
-CircleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5526744263092341538}
-  m_Enabled: 0
-  serializedVersion: 3
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_CompositeOperation: 0
-  m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
-  m_Radius: 0.12
 --- !u!1 &5639846358605843629
 GameObject:
   m_ObjectHideFlags: 0
@@ -6467,7 +6400,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 465046876321652043}
-  - component: {fileID: 7183542128289326974}
   m_Layer: 0
   m_Name: ColliderHead_1
   m_TagString: Dragonfly
@@ -6490,42 +6422,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 3390148051565547369}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!58 &7183542128289326974
-CircleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5639846358605843629}
-  m_Enabled: 0
-  serializedVersion: 3
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_CompositeOperation: 0
-  m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
-  m_Radius: 0.15
 --- !u!1 &5660351821688822321
 GameObject:
   m_ObjectHideFlags: 0
@@ -6825,7 +6721,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4813889927740659346}
-  - component: {fileID: 1599850589422322955}
   m_Layer: 0
   m_Name: ColliderHead_2
   m_TagString: Dragonfly
@@ -6848,42 +6743,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 3390148051565547369}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!58 &1599850589422322955
-CircleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6197874027723783897}
-  m_Enabled: 0
-  serializedVersion: 3
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_CompositeOperation: 0
-  m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
-  m_Radius: 0.15
 --- !u!1 &6199996986775483776
 GameObject:
   m_ObjectHideFlags: 0
@@ -7793,74 +7652,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!1 &7096638679509121700
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 6450045398903741768}
-  - component: {fileID: 5956655084414304214}
-  m_Layer: 0
-  m_Name: ColliderTail_3
-  m_TagString: Dragonfly
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &6450045398903741768
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7096638679509121700}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.051, z: -1.067}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 3390148051565547369}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!58 &5956655084414304214
-CircleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7096638679509121700}
-  m_Enabled: 0
-  serializedVersion: 3
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_CompositeOperation: 0
-  m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
-  m_Radius: 0.12
 --- !u!1 &7154522342626592376
 GameObject:
   m_ObjectHideFlags: 0
