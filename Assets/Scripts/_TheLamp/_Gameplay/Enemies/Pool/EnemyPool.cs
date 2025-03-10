@@ -15,6 +15,8 @@ public class EnemyPool : IEnemyDeactivatedProvider
     private ObjectPool<FEnemy> _megamothlingPool;
     private ObjectPool<FEnemy> _waspPool;
     private ObjectPool<FEnemy> _megabeetlePool;
+    private ObjectPool<FEnemy> _dragonflyPool;
+    
     private readonly EnemyFactory _enemyFactory;
     private readonly int _poolSize = 5;
     private int _mothlingCount;
@@ -26,6 +28,7 @@ public class EnemyPool : IEnemyDeactivatedProvider
     private int _megamothlingCount;
     private int _waspCount;
     private int _megabeetleCount;
+    private int _dragonflyCount;
     
     private readonly List<Type> _preloadedEnemyTypes = new List<Type>();
     
@@ -124,6 +127,16 @@ public class EnemyPool : IEnemyDeactivatedProvider
             _poolSize,
             _poolSize
         );
+        
+        _dragonflyPool = new ObjectPool<FEnemy>(
+            CreateDragonfly,
+            OnGetFromPool, 
+            OnReleaseToPool, 
+            OnDestroyPooledObject,
+            true,
+            _poolSize,
+            _poolSize
+        );
     }
 
     public void PreloadEnemy(Type type)
@@ -209,6 +222,14 @@ public class EnemyPool : IEnemyDeactivatedProvider
             }
             throw new Exception("Megabeetle prefab is not loaded yet");
         }
+        if (type == typeof(FDragonfly))
+        {
+            if (_enemyFactory.IsDragonflyLoaded)
+            {
+                return _dragonflyPool.Get();
+            }
+            throw new Exception("Dragonfly prefab is not loaded yet");
+        }
         else
         {
             throw new Exception("Enemy type not supported");
@@ -292,8 +313,17 @@ public class EnemyPool : IEnemyDeactivatedProvider
     {
         FEnemy enemyInstance = _enemyFactory.CreateEnemy(typeof(Megabeetle));
         enemyInstance.SetObjectPool(_megabeetlePool);
-        enemyInstance.name = "Megabeetle" + _waspCount;
+        enemyInstance.name = "Megabeetle" + _megabeetleCount;
         _megabeetleCount++;
+        return enemyInstance;
+    }
+    
+    private FEnemy CreateDragonfly()
+    {
+        FEnemy enemyInstance = _enemyFactory.CreateEnemy(typeof(FDragonfly));
+        enemyInstance.SetObjectPool(_dragonflyPool);
+        enemyInstance.name = "Dragonfly" + _dragonflyCount;
+        _dragonflyCount++;
         return enemyInstance;
     }
     

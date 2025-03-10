@@ -3,21 +3,45 @@ using System.Collections;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public class FDragonfly : MonoBehaviour
+public class FDragonfly : CollidableEnemy
 {
+    [Header("-- Attributes --")]
+    [SerializeField] private int _maxHealth = 24;
+    [SerializeField] private int _currentHealth;
+    [SerializeField] private float _collisionRadius = 0.22f;
+    [Header("-- Movement --")]
     [SerializeField] private FDragonflyMovement _movement;
 
-    private void Start()
+    public override void Initialize()
     {
         _movement.Initialize();
-        StartCoroutine(StartMovement());
     }
-    
-    private IEnumerator StartMovement()
+
+    public override void Play()
     {
-        yield return new WaitForSeconds(1f);
+        _currentHealth = _maxHealth;
         var enterType = (DragonflyEnterType)Random.Range(0, 2);
         int sideDirection = RandomDirection.Generate();
         _movement.Play(enterType, sideDirection);
+    }
+
+    public override void ReceiveDamage(int damageAmount)
+    {
+        throw new NotImplementedException();
+    }
+
+    public override void Attack()
+    {
+        throw new NotImplementedException();
+    }
+
+    public override void DoDeath()
+    {
+        throw new NotImplementedException();
+    }
+
+    public override void HandleCollision()
+    {
+        throw new NotImplementedException();
     }
 }

@@ -13,7 +13,8 @@ public class EnemyTypeLibrary
         { EnemyType.Mothling, typeof(Mothling) },
         { EnemyType.Megamothling , typeof(Megamothling) },
         { EnemyType.Wasp , typeof(Wasp) },
-        { EnemyType.Megabeetle , typeof(Megabeetle) }
+        { EnemyType.Megabeetle , typeof(Megabeetle) },
+        { EnemyType.Dragonfly , typeof(FDragonfly) }
     };
     
     public static Dictionary<Type, EnemyType> TypeEnemyDictionary = new Dictionary<Type, EnemyType>
@@ -26,6 +27,7 @@ public class EnemyTypeLibrary
         { typeof(Mothling), EnemyType.Mothling },
         { typeof(Megamothling), EnemyType.Megamothling },
         { typeof(Wasp), EnemyType.Wasp },
-        { typeof(Megabeetle), EnemyType.Megabeetle }
+        { typeof(Megabeetle), EnemyType.Megabeetle },
+        { typeof(FDragonfly), EnemyType.Dragonfly }
     };
 }

@@ -25,6 +25,7 @@ public class EnemyFactory
     AsyncOperationHandle<GameObject> _megamothlingEnemyAssetHandle;
     AsyncOperationHandle<GameObject> _waspEnemyAssetHandle;
     AsyncOperationHandle<GameObject> _megabeetleEnemyAssetHandle;
+    AsyncOperationHandle<GameObject> _dragonflyEnemyAssetHandle;
     
     
     public EnemyFactory(
@@ -66,6 +67,8 @@ public class EnemyFactory
     public bool IsMegamothlingLoaded { get; private set; }
     public bool IsWaspLoaded { get; private set; }
     public bool IsMegabeetleLoaded { get; private set; }
+    public bool IsDragonflyLoaded { get; private set; }
+    
     
 
     public async void LoadEnemy(Type type)
@@ -140,6 +143,14 @@ public class EnemyFactory
             IsMegabeetleLoaded = true;
             Debug.Log("Megabeetle Loaded");
         }
+        
+        if (type == typeof(FDragonfly))
+        {
+            _dragonflyEnemyAssetHandle = Addressables.LoadAssetAsync<GameObject>("Boss/Dragonfly.prefab");
+            await _dragonflyEnemyAssetHandle.Task;
+            IsDragonflyLoaded = true;
+            Debug.Log("Dragonfly Loaded");
+        }
     }
     
     public FEnemy CreateEnemy(Type type)
@@ -188,6 +199,11 @@ public class EnemyFactory
         {
             var prefab = _megabeetleEnemyAssetHandle.Result;
             return CreateMegabeetleInstance(prefab);    
+        }
+        if (type == typeof(FDragonfly) && _dragonflyEnemyAssetHandle.IsValid())
+        {
+            var prefab = _dragonflyEnemyAssetHandle.Result;
+            return CreateDragonflyInstance(prefab);    
         }
         else
         {
@@ -292,6 +308,17 @@ public class EnemyFactory
         enemyInstance.GetComponent<MegabeetleMovement>().Construct(_megabeetleMovementStateFactory);
         enemyInstance.GetComponent<MegabeetlePresentation>().Initialize();
         var enemy = enemyInstance.GetComponent<Megabeetle>();
+        enemy.Initialize();
+        
+        return enemy;
+    }
+    
+    private FEnemy CreateDragonflyInstance(GameObject prefab)
+    {
+        GameObject enemyInstance = Object.Instantiate(prefab);
+        // enemyInstance.GetComponent<MegabeetleMovement>().Construct(_megabeetleMovementStateFactory);
+        // enemyInstance.GetComponent<MegabeetlePresentation>().Initialize();
+        var enemy = enemyInstance.GetComponent<FDragonfly>();
         enemy.Initialize();
         
         return enemy;
