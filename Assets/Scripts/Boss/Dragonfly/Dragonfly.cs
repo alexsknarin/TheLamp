@@ -381,8 +381,8 @@ public class Dragonfly : BossBase
 
     private void Update()
     {
-        _stateMachine.Tick();
-        _stateDebug = _stateMachine.CurrentState.ToString();
+        // _stateMachine.Tick();
+        // _stateDebug = _stateMachine.CurrentState.ToString();
     }
 
 

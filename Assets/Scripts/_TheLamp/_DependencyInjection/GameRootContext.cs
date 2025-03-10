@@ -34,8 +34,6 @@ public class GameRootContext : MonoBehaviour
     [SerializeField] private LampMovementController _lampMovementController;
     [SerializeField] private LightningFlashController _lightningFlashController;
     [SerializeField] private FakeAd _fakeAd;
-    [Header("Bosses")]
-    [SerializeField] private Dragonfly _dragonfly;
     [Header("Scene References")]
     [SerializeField] private Transform _cameraTransform;
 
@@ -120,7 +118,6 @@ public class GameRootContext : MonoBehaviour
 
         // Bosses TMP
         Debug.Log("------ Bosses Listeners ------");
-        _dragonfly.Initialize();
 
         Debug.Log("------ Loading Gameconfig ------");
         // Load Game Config

@@ -41,7 +41,6 @@ public class PlayerGameplayViewModel : IDisposable
     public event Action LastHealthPointEnded;
     public event Action<float, bool> AttackStart;
     public event Action<float> LampDamaged;
-    public event Action LampDied; // TODO: make it work or remove
     public event Action HealthUpgraded;
 
 

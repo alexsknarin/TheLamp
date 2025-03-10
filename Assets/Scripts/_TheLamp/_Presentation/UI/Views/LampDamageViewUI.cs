@@ -10,13 +10,11 @@ public class LampDamageViewUI : MonoBehaviour
         _playerGameplayViewModel = playerGameplayViewModel;
         
         _playerGameplayViewModel.LampDamaged += OnLampDamaged;
-        _playerGameplayViewModel.LampDied += OnLampDied;
     }
 
     private void OnDestroy()
     {
         _playerGameplayViewModel.LampDamaged -= OnLampDamaged;
-        _playerGameplayViewModel.LampDied -= OnLampDied;
     }
     
     // Event Handle Methods

@@ -50,8 +50,7 @@ public class MothMovement : EnemyMovementBase, IPositionDirectionProvider, ISpre
 
     public Vector2 Position2D { get; private set; }
     public Vector3 DepthDirection { get; private set; }
-    
-    public int SideDirection => _sideDirection;
+    public override int SideDirection => _sideDirection;
 
     public override void Initialize()
     {

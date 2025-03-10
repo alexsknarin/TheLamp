@@ -33,7 +33,6 @@ public class MegamothlingMovement : EnemyMovementBase, IPositionDirectionProvide
     [SerializeField] private float _fallBounceForce = 2f;
     [SerializeField] private float _fallGravityForce = .1f;
     [SerializeField] private float _deathBounceForce = 2f;
-    [SerializeField] private float _deathGravityForce = 0.1f;
     
     private float _smoothTimeAllowed = 0;
     

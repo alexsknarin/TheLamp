@@ -13,7 +13,6 @@ public class SpiderMovement : EnemyMovementBase, IPositionDirectionProvider, ISp
     [SerializeField] private float _xCenter = 1.12f;
     [Header("---- States Settings ----")]
     [SerializeField] private float _fallBounceForce = 4f;
-    [SerializeField] private float _fallGravityForce = .2f;
     
     private ILampPositionProviderService _lampPositionProviderService;
 
@@ -45,7 +44,6 @@ public class SpiderMovement : EnemyMovementBase, IPositionDirectionProvider, ISp
     public event Action PreAttackStarted;
     public event Action PreAttackEnded;
     public event Action DeathStateEnded;
-    public event Action SpreadStateEnded;
 
     public Vector2 Position2D { get; private set; } 
     public Vector3 DepthDirection { get; private set; }

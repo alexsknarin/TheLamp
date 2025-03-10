@@ -12,7 +12,7 @@ public class LampDamageView : MonoBehaviour, IInitializable
         _playerGameplayViewModel = playerGameplayViewModel;
         
         _playerGameplayViewModel.LampDamaged += OnLampDamaged;
-        _playerGameplayViewModel.LampDied += OnLampDied;
+        // _playerGameplayViewModel.LampDied += OnLampDied;
         _playerGameplayViewModel.LampGlassDamageChanged += OnLampGlassDamageChanged;
         _lampDamageAnimation.Finished += _playerGameplayViewModel.OnDamageStateEnded;
     }
@@ -20,7 +20,7 @@ public class LampDamageView : MonoBehaviour, IInitializable
     private void OnDestroy()
     {
         _playerGameplayViewModel.LampDamaged -= OnLampDamaged;
-        _playerGameplayViewModel.LampDied -= OnLampDied;
+        // _playerGameplayViewModel.LampDied -= OnLampDied;
         _playerGameplayViewModel.LampGlassDamageChanged -= OnLampGlassDamageChanged;
         _lampDamageAnimation.Finished -= _playerGameplayViewModel.OnDamageStateEnded;
     }

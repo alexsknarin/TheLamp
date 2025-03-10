@@ -15,8 +15,6 @@ public class MothMovementNoiseAttackState : RegularEnemyMovementStateBase
     private float _noiseFrequency = 13f;
     private float _noiseAmplitude = 0.08f;
     private float _maxDistance = 0.5f;
-    private readonly float _mothRadius = 0.1f;
-    
     
     public MothMovementNoiseAttackState(
         Vector3 cameraPosition,
