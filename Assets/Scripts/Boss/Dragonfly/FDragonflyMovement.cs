@@ -104,6 +104,8 @@ public class FDragonflyMovement : MonoBehaviour
     public event Action ReadyToSpiderAttackStateStarted;
     public event Action DeathAnimationEnded;
     public event Action SwarmCalled;
+    public event Action CollisionPhaseReached;
+    
     
     public IState MovementState => _stateMachine.CurrentState;
 
@@ -162,6 +164,13 @@ public class FDragonflyMovement : MonoBehaviour
         _deathHeadState.Ended += OnDeathAnimationEnded;
         _deathTailStateL.Ended += OnDeathAnimationEnded;
         _deathTailStateR.Ended += OnDeathAnimationEnded;
+        
+        // _Collision Refresh events:
+        _attackTailStateL.CollisionPhaseReached += OnCollisionPhaseReached;
+        _attackTailStateR.CollisionPhaseReached += OnCollisionPhaseReached;
+        _attackHeadState.CollisionPhaseReached += OnCollisionPhaseReached;
+        _attackHoverState.CollisionPhaseReached += OnCollisionPhaseReached;
+        Debug.Log("Subscrided to Dragonfly Events");
     }
 
     private void OnDisable()
@@ -219,7 +228,15 @@ public class FDragonflyMovement : MonoBehaviour
         _deathHeadState.Ended -= OnDeathAnimationEnded;
         _deathTailStateL.Ended -= OnDeathAnimationEnded;
         _deathTailStateR.Ended -= OnDeathAnimationEnded;
+        
+        // _Collision Refresh events:
+        _attackTailStateL.CollisionPhaseReached -= OnCollisionPhaseReached;
+        _attackTailStateR.CollisionPhaseReached -= OnCollisionPhaseReached;
+        _attackHeadState.CollisionPhaseReached -= OnCollisionPhaseReached;
+        _attackHoverState.CollisionPhaseReached -= OnCollisionPhaseReached;
     }
+
+    
 
     public void Initialize()
     {
@@ -750,5 +767,11 @@ public class FDragonflyMovement : MonoBehaviour
     private void OnDeathAnimationEnded()
     {
         DeathAnimationEnded?.Invoke();
+    }
+    
+    private void OnCollisionPhaseReached()
+    {
+        Debug.Log("Collision Phase Reached!!!"); // DEBUG
+        CollisionPhaseReached?.Invoke();
     }
 }

@@ -10,6 +10,8 @@ public class FDragonflyAttackTailStateR : ScriptableObject, IState
     [SerializeField] private AnimationCurve _rxCurve;
     [SerializeField] private AnimationCurve _ryCurve;
     [SerializeField] private AnimationCurve _rzCurve;
+    [SerializeField] private float _collisionReadyTime = 0.3f;
+    private bool _isCollisionPhaseReached = false;
     private float _localTime = 0f;
     private float _phase = 0f;
     private float _startZPos = 0f;
@@ -20,7 +22,8 @@ public class FDragonflyAttackTailStateR : ScriptableObject, IState
     private DragonflyPatrolRotator _patrolRotator;
 
     public event Action Started;
-
+    public event Action CollisionPhaseReached;
+    
     public void SetDependencies(Transform visibleBodyTransform, Transform patrolTransform, 
         DragonflyPatrolRotator patrolRotator)
     {
@@ -31,6 +34,7 @@ public class FDragonflyAttackTailStateR : ScriptableObject, IState
     
     public void OnEnter()
     {
+        _isCollisionPhaseReached = false;
         _patrolRotator.SetRotationPhase(_visibleBodyTransform.position + _visibleBodyTransform.right * 0.2f); // Smooth transition
         _patrolRotator.Play(_sideDirection);
         
@@ -60,6 +64,13 @@ public class FDragonflyAttackTailStateR : ScriptableObject, IState
         if (_phase > 1f)
         {
             _phase = 1f;
+        }
+        Debug.Log(_localTime);
+        if (!_isCollisionPhaseReached && _localTime >= _collisionReadyTime)
+        {
+            Debug.Log(" -- Collision phase reached - state: " + this);
+            _isCollisionPhaseReached = true;
+            CollisionPhaseReached?.Invoke();
         }
     }
 

@@ -17,7 +17,7 @@ public class DragonflyCollisionProvider : MonoBehaviour
         int minIndex = -1;
         for (int i = 0; i < _collisionTransforms.Count; i++)
         {
-            float distance = Vector3.Distance(transform.position, _collisionTransforms[i].position);
+            float distance = ((Vector2)_collisionTransforms[i].position).magnitude;
             if (distance < minDistance)
             {
                 minDistance = distance;
@@ -25,6 +25,8 @@ public class DragonflyCollisionProvider : MonoBehaviour
             }
         }
         _currentIndex = minIndex;
+        
+        Debug.Log(" ++++ Closest point index: " + _currentIndex);
     }
     
     private void OnDrawGizmos()

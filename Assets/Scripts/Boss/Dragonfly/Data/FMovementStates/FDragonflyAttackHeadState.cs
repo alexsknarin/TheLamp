@@ -6,13 +6,17 @@ public class FDragonflyAttackHeadState : ScriptableObject, IState
 {
     [SerializeField] private float _speed = 4f;
     [SerializeField] private float _acceleration = 0.75f;
+    [SerializeField] private float _collisionReadyTime = 0.3f;
+    private bool _isCollisionPhaseReached = false;
     private float _attackAccelerationValue = 0;
     private Vector3 _attackDirection;
     // Dependencies
     private Transform _visibleBodyTransform;
     private Transform _baseTransform;
+    private float _localTime = 0f;
     
     public event Action Started;
+    public event Action CollisionPhaseReached;
 
     public void SetDependencies(Transform visibleBodyTransform, Transform baseTransform)
     {
@@ -22,6 +26,8 @@ public class FDragonflyAttackHeadState : ScriptableObject, IState
 
     public void OnEnter()
     {
+        _localTime = 0;
+        _isCollisionPhaseReached = false;
         Vector3 currentPosition = _visibleBodyTransform.position;
         _visibleBodyTransform.SetParent(_baseTransform);
         _attackAccelerationValue = 0;
@@ -48,6 +54,13 @@ public class FDragonflyAttackHeadState : ScriptableObject, IState
     {
         _visibleBodyTransform.position += _attackDirection * (_speed * Time.deltaTime + _attackAccelerationValue);
         _attackAccelerationValue += _acceleration * Time.deltaTime;
+        _localTime += Time.deltaTime; 
+        if (!_isCollisionPhaseReached &&  _localTime >= _collisionReadyTime)
+        {
+            Debug.Log(" -- Collision phase reached - state: " + this);
+            _isCollisionPhaseReached = true;
+            CollisionPhaseReached?.Invoke();
+        }
     }
 
     public void OnExit() { }

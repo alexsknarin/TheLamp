@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public class FDragonfly : CollidableEnemy
+public class FDragonfly : CollidableEnemy, IAnimatedEnemy
 {
     private readonly DragonflyReturnMode[] _returnModes = new DragonflyReturnMode[] //TODO: capital letter R
     {
@@ -78,11 +78,13 @@ public class FDragonfly : CollidableEnemy
     
     // public override Vector2 Position => Vector2.one; // TODO: Get current collider position
     // public override float Radius { get; protected set; } // TODO: Get current collider radius
-
+    
+    public event Action<CollidableEnemy> AnimatedAttackStarted;
+    
+    public override Vector2 Position => _collisionProvider.CurrentCollisionPoint;
+    
     public override void Initialize()
     {
-        enabled = false;
-        
         _patrolAttackPositionProvider = new DragonflyPatrolAttackPositionProvider(
             _patrolAttackZonesL, 
             _patrolAttackZonesR, 
@@ -124,6 +126,8 @@ public class FDragonfly : CollidableEnemy
         _movement.CatchSpiderStarted += OnCatchSpiderStarted;
         _spider.EnterAnimationEnded += OnSpiderEnterAnimationEnded;
         _movement.DeathAnimationEnded += OnDeathAnimationEnded;
+
+        _movement.CollisionPhaseReached += OnCollisionPhaseReached;
     }
     
     private void OnDestroy()
@@ -149,10 +153,13 @@ public class FDragonfly : CollidableEnemy
         _movement.CatchSpiderStarted -= OnCatchSpiderStarted;
         _spider.EnterAnimationEnded -= OnSpiderEnterAnimationEnded;
         _movement.DeathAnimationEnded -= OnDeathAnimationEnded;
+        
+        _movement.CollisionPhaseReached -= OnCollisionPhaseReached;
     }
 
     public override void Play()
     {
+        enabled = true;
         _currentHealth = _maxHealth;
         
         _enterType = (DragonflyEnterType)Random.Range(0, 2);
@@ -163,7 +170,30 @@ public class FDragonfly : CollidableEnemy
 
     public override void ReceiveDamage(int damageAmount)
     {
-        throw new NotImplementedException();
+        IsReadyForDamage = false;
+        _currentHealth -= damageAmount;
+
+        if (_currentHealth > 0)
+        {
+            // ReceivedLampAttack = true;
+            
+            // _presentation.HealthUpdate(_currentHealth, _maxHealth);
+            // _presentation.SetActiveColliderTransform(_collisionController.GetFirstActiveColliderTransform());
+            // _presentation.DamageFlash();
+            _movement.TriggerFall(true);
+        }
+        else
+        {
+            if (!_isDead)
+            {
+                // ReceivedLampAttack = true;
+                _currentHealth = 0; 
+                _movement.TriggerDeath(); 
+                // _presentation.DeathFlash();
+                // OnEnemyDeathInvoke(this);
+                _isDead = true;
+            }
+        }
     }
 
     public override void Attack()
@@ -178,12 +208,33 @@ public class FDragonfly : CollidableEnemy
 
     public override void HandleCollision()
     {
-        throw new NotImplementedException();
+        _movement.TriggerBounce();
+        _isCollidedWithLamp = true;
     }
     
     public override Vector3 ProvideImpactPoint()
     {
         return Vector3.zero;
+    }
+    
+    public override void HandleEnterAttackZone()
+    {
+        CollisionState = CollidableState.InAttackZone;
+        IsReadyForDamage = true;
+        _isInAttackExitZone = true;
+    }
+    
+    public override void HandleExitAttackZone()
+    {
+        _isInAttackExitZone = false;
+        
+        CollisionState = CollidableState.Outside;
+        IsReadyForDamage = false;
+        _isCollidedWithLamp = false;
+        
+        // TODO: account for damage
+        
+        _movement.TriggerFall(false);
     }
     
     private void Update()
@@ -359,6 +410,13 @@ public class FDragonfly : CollidableEnemy
     }
     
     // Event Handle Methods
+    
+    private void OnCollisionPhaseReached()
+    {
+        _collisionProvider.FindClosestPointIndex();
+        Radius = _collisionProvider.CurrentCollisionRadius;
+    }
+    
     private void OnReadyToAttackStateEntered(IState movementState)
     {
         _patrolAttackMode = (DragonflyPatrolAttackMode)Random.Range(0, 2);
@@ -387,9 +445,11 @@ public class FDragonfly : CollidableEnemy
 
     private void OnAttackStarted()
     {
+        AnimatedAttackStarted?.Invoke(this);
         // TODO:
         // _collisionController.EnableColliders();
         // _presentation.PreAttackEnd();
+
     }
 
     private void OnAttackEnded()
@@ -442,4 +502,6 @@ public class FDragonfly : CollidableEnemy
         gameObject.SetActive(false); // TODO: fix naming to be consistent
         enabled = false;
     }
+
+    
 }
