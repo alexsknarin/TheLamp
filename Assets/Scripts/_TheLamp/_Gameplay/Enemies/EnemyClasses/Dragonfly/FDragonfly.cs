@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public class FDragonfly : CollidableEnemy, IAnimatedEnemy
+public class FDragonfly : CollidableEnemy, IAnimatedEnemy, IProjectileShooter
 {
     private readonly DragonflyReturnMode[] _returnModes = new DragonflyReturnMode[] //TODO: capital letter R
     {
@@ -80,6 +80,7 @@ public class FDragonfly : CollidableEnemy, IAnimatedEnemy
     // public override float Radius { get; protected set; } // TODO: Get current collider radius
     
     public event Action<CollidableEnemy> AnimatedAttackStarted;
+    public event Action<CollidableEnemy> ProjectileShot;
     
     public override Vector2 Position => _collisionProvider.CurrentCollisionPoint;
     
@@ -101,7 +102,7 @@ public class FDragonfly : CollidableEnemy, IAnimatedEnemy
         _isReadyToAttackWait = false;
         _isAttacked = false;
         // _presentation.Initialize();
-        // _spider.Initialize();
+        _spider.Initialize();
         _movement.Initialize();
         // gameObject.SetActive(false);
         
@@ -404,7 +405,8 @@ public class FDragonfly : CollidableEnemy, IAnimatedEnemy
     private void StartSpiderAttack()
     {
         _spider.gameObject.transform.SetParent(this.transform);
-        _spider.StartAttack();
+        _spider.Attack();
+        ProjectileShot?.Invoke(_spider);
         _movement.StartAttack(DragonflyPatrolAttackMode.Spider);
         _isAttacked = true;
     }
@@ -484,7 +486,8 @@ public class FDragonfly : CollidableEnemy, IAnimatedEnemy
     private void OnCatchSpiderStarted(int direction)
     {
         _spider.gameObject.SetActive(true);
-        _spider.Play(direction);
+        _spider.SetDirection(direction);
+        _spider.Play();
     }
 
     private void OnSpiderEnterAnimationEnded()
@@ -502,6 +505,7 @@ public class FDragonfly : CollidableEnemy, IAnimatedEnemy
         gameObject.SetActive(false); // TODO: fix naming to be consistent
         enabled = false;
     }
+
 
     
 }

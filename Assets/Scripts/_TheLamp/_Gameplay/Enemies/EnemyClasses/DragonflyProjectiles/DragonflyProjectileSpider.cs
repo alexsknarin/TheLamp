@@ -1,16 +1,17 @@
 using System;
 using UnityEngine;
-using UnityEngine.Serialization;
 
-public class DragonflyProjectileSpider : EnemyBase
+public class DragonflyProjectileSpider : CollidableEnemy
 {
+    [SerializeField] private float _collisionRadius = 0.15f;
     [SerializeField] private EnemyType _enemyType = EnemyType.DragonflyProjectile;
     [SerializeField] private DragonflyProjectileMovementSpider _movement;
-    [SerializeField] private DragonflySpiderPresentation _presentation;
-    [SerializeField] private Collider2D _collider;
+    // [SerializeField] private DragonflySpiderPresentation _presentation;
     [SerializeField] private TrailRenderer _trailRenderer;
+    private int _direction;
+    public override Vector2 Position => transform.position;
     public event Action EnterAnimationEnded;
-    public override EnemyType EnemyType => _enemyType;
+
 
     private void OnEnable()
     {
@@ -28,92 +29,68 @@ public class DragonflyProjectileSpider : EnemyBase
 
     public override void Initialize()
     {
-        _presentation.Initialize();
+        // _presentation.Initialize();
+        Radius = _collisionRadius;
+    }
+    
+    public void SetDirection(int direction)
+    {
+        _direction = direction;
     }
 
-    public void Play(int direction)
+    public override void Play()
     {
         _trailRenderer.Clear();
         _trailRenderer.emitting = false;
-        _movement.Play(direction);
-        _presentation.Play();
-        ReadyToLampDamage = false;
-        _collider.enabled = false;
-        
-        // Presentation setup
+        _movement.Play(_direction);
+        // _presentation.Play();
+        IsReadyForDamage = false;
     }
 
     public void StartPreAttack()
     {
-        _presentation.PreAttackStart();
+        // _presentation.PreAttackStart();
     }
 
-    public override void StartAttack()
+    public override void Attack()
     {
-        ReadyToCollide = true;
-        ReceivedLampAttack = false;
+        // ReceivedLampAttack = false;
         _movement.TriggerAttack();
-        _presentation.PreAttackEnd();
-        _collider.enabled = true;
+        // _presentation.PreAttackEnd();
         _trailRenderer.emitting = true;
     }
 
-    public override void HandleCollisionWithLamp()
+    public override void HandleCollision()
     {
-        ReadyToCollide = false;
-        ReadyToLampDamage = true;
+        // ReadyToCollide = false;
+        IsReadyForDamage = true;
         _movement.TriggerFall();
-    }
-
-    public override void HandleCollisionWithStickZone()
-    {
-        Debug.LogWarning("Spider Projectile: Lamp collision penetrated incorrectly.");
     }
 
     public override void ReceiveDamage(int damage)
     {
         if (damage < 1f) return;
         
-        ReceivedLampAttack = true;
-        _collider.enabled = false;
-        OnEnemyDeathInvoke(this);
+        // ReceivedLampAttack = true;
         _movement.TriggerFall();
-        _presentation.DeathFlash();
+        // _presentation.DeathFlash();
         // Presentation - show damage effect    
     }
 
-    public override void UpdateAttackAvailability()
+    public override void DoDeath()
     {
-        throw new System.NotImplementedException();
-    }
-
-    public override void ReturnToPool()
-    {
-        throw new System.NotImplementedException();
+        throw new NotImplementedException();
     }
 
     public override Vector3 ProvideImpactPoint()
     {
         return transform.position;
     }
-
-    public override void SpreadStart()
-    {
-        throw new System.NotImplementedException();
-    }
-
-    private void TMPHandleLampAttack(int arg1, float arg2, float arg3, float arg4)
-    {
-        if (ReadyToLampDamage)
-        {
-            ReceiveDamage(arg1);
-        }
-    }
-    
+   
     // Event Handlers
     private void OnEnterAnimationEndHandle()
     {
-        _presentation.SwitchToCaughtState();
+        // _presentation.SwitchToCaughtState();
         EnterAnimationEnded?.Invoke();
     }
 

@@ -248,7 +248,13 @@ public class WaveEnemyDirector : MonoBehaviour, IInitializable
         {
             ((IStickyAttacker)enemy).StickyAttackEnded += OnStickyAttackEnded;
         }
+        if (enemy is IProjectileShooter)
+        {
+            ((IProjectileShooter)enemy).ProjectileShot += OnProjectileShot;
+        }
     }
+
+    
 
     private void OnEnemyDead(FEnemy enemy)
     {
@@ -293,6 +299,11 @@ public class WaveEnemyDirector : MonoBehaviour, IInitializable
             {
                 ((IStickyAttacker)enemy).StickyAttackEnded -= OnStickyAttackEnded;
             }
+
+            if (enemy is IProjectileShooter)
+            {
+                ((IProjectileShooter)enemy).ProjectileShot -= OnProjectileShot;
+            }
         }
     }
 
@@ -315,6 +326,11 @@ public class WaveEnemyDirector : MonoBehaviour, IInitializable
     private void OnStickyAttackEnded(Vector3 impactPoint, bool isEnemyDamaged, string enemyTypeName)
     {
         StickyAttackEnded?.Invoke(transform.position, false, "Megabeetle");
+    }
+    
+    private void OnProjectileShot(CollidableEnemy enemy)
+    {
+        EnemyAttackStarted?.Invoke(enemy);
     }
 
 

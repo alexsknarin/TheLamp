@@ -34,6 +34,7 @@ public abstract class FEnemy: MonoBehaviour, IInitializable, IDamageable, IPoola
     }
     public void ReturnToPool()
     {
-        _objectPool.Release(this);
+        if (_objectPool != null)
+            _objectPool.Release(this);
     }
 }

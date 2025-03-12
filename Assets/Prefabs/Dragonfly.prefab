@@ -2912,14 +2912,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7533821856420692044}
-  - component: {fileID: 7938540108492580308}
-  - component: {fileID: 2735294639925708521}
   - component: {fileID: 2851623849337529958}
   - component: {fileID: 3221089541326229784}
   - component: {fileID: 2610945407772197219}
-  - component: {fileID: 7416888835675388365}
-  - component: {fileID: 9202459017291734324}
-  - component: {fileID: 2175788602178859259}
   m_Layer: 0
   m_Name: Spider
   m_TagString: Enemy
@@ -2945,69 +2940,6 @@ Transform:
   - {fileID: 3596614125983987703}
   m_Father: {fileID: 2800351027539773626}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!58 &7938540108492580308
-CircleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2394190249659110494}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_CompositeOperation: 0
-  m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
-  m_Radius: 0.15
---- !u!50 &2735294639925708521
-Rigidbody2D:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2394190249659110494}
-  m_BodyType: 1
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDamping: 0
-  m_AngularDamping: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!96 &2851623849337529958
 TrailRenderer:
   serializedVersion: 3
@@ -3136,10 +3068,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1261f682e73ba9429839b4dbce95d37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _collisionRadius: 0.15
   _enemyType: 10
   _movement: {fileID: 2610945407772197219}
-  _presentation: {fileID: 7416888835675388365}
-  _collider: {fileID: 7938540108492580308}
+  _presentation: {fileID: 0}
   _trailRenderer: {fileID: 2851623849337529958}
 --- !u!114 &2610945407772197219
 MonoBehaviour:
@@ -3206,52 +3138,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &7416888835675388365
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2394190249659110494}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8f601f4d8a5a6e54994136ad4242a0d2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _deathFlash: {fileID: 2175788602178859259}
-  _preAttackFlash: {fileID: 9202459017291734324}
-  _spiderWeb: {fileID: 6308962616030569209}
---- !u!114 &9202459017291734324
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2394190249659110494}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d2e420a26cc356d4ba375c424a8b4a47, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _meshRenderer: {fileID: 8793422785118890465}
-  _enableTrailRenderer: 0
-  _trailRenderer: {fileID: 2851623849337529958}
---- !u!114 &2175788602178859259
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2394190249659110494}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9e8cdd3d044552e4f816511262c284c2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _meshRenderer: {fileID: 8793422785118890465}
-  _duration: 1.7
-  _deathParticles: {fileID: 4669361875091420575}
-  _damageParticles: {fileID: 7776313656372616071}
 --- !u!1 &2417566312084347735
 GameObject:
   m_ObjectHideFlags: 0

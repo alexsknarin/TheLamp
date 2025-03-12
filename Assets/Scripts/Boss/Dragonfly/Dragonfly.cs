@@ -417,7 +417,7 @@ public class Dragonfly : BossBase
     private void StartSpiderAttack()
     {
         _spider.gameObject.transform.SetParent(this.transform);
-        _spider.StartAttack();
+        _spider.Attack();
         _movement.StartAttack(DragonflyPatrolAttackMode.Spider);
         _isAttacked = true;
     }
@@ -483,7 +483,8 @@ public class Dragonfly : BossBase
     private void OnCatchSpiderStarted(int direction)
     {
         _spider.gameObject.SetActive(true);
-        _spider.Play(direction);
+        _spider.SetDirection(direction);
+        _spider.Play();
     }
 
     private void OnSpiderEnterAnimationEnded()
