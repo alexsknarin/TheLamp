@@ -2915,6 +2915,10 @@ GameObject:
   - component: {fileID: 2851623849337529958}
   - component: {fileID: 3221089541326229784}
   - component: {fileID: 2610945407772197219}
+  - component: {fileID: 7986865431848604099}
+  - component: {fileID: 7481717269910597594}
+  - component: {fileID: 4626014441385924243}
+  - component: {fileID: 3748036601195776459}
   m_Layer: 0
   m_Name: Spider
   m_TagString: Enemy
@@ -3071,7 +3075,7 @@ MonoBehaviour:
   _collisionRadius: 0.15
   _enemyType: 10
   _movement: {fileID: 2610945407772197219}
-  _presentation: {fileID: 0}
+  _presentation: {fileID: 7986865431848604099}
   _trailRenderer: {fileID: 2851623849337529958}
 --- !u!114 &2610945407772197219
 MonoBehaviour:
@@ -3138,6 +3142,66 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &7986865431848604099
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2394190249659110494}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8f601f4d8a5a6e54994136ad4242a0d2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _deathFlash: {fileID: 7481717269910597594}
+  _preAttackFlash: {fileID: 4626014441385924243}
+  _spiderWeb: {fileID: 3748036601195776459}
+--- !u!114 &7481717269910597594
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2394190249659110494}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e8cdd3d044552e4f816511262c284c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _meshRenderer: {fileID: 8793422785118890465}
+  _duration: 1.7
+  _deathParticles: {fileID: 4669361875091420575}
+  _damageParticles: {fileID: 7776313656372616071}
+--- !u!114 &4626014441385924243
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2394190249659110494}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d2e420a26cc356d4ba375c424a8b4a47, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _meshRenderer: {fileID: 8793422785118890465}
+  _enableTrailRenderer: 0
+  _trailRenderer: {fileID: 0}
+--- !u!114 &3748036601195776459
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2394190249659110494}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a1b32f6dd4b4ffd4491e6c4c212c1a99, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _spiderWebLineRenderer: {fileID: 8333143164639872600}
+  _shrinkDuration: 0.55
 --- !u!1 &2417566312084347735
 GameObject:
   m_ObjectHideFlags: 0

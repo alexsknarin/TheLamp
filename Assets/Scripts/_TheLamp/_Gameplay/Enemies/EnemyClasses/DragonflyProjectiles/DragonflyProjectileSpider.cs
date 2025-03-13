@@ -6,7 +6,7 @@ public class DragonflyProjectileSpider : CollidableEnemy
     [SerializeField] private float _collisionRadius = 0.15f;
     [SerializeField] private EnemyType _enemyType = EnemyType.DragonflyProjectile;
     [SerializeField] private DragonflyProjectileMovementSpider _movement;
-    // [SerializeField] private DragonflySpiderPresentation _presentation;
+    [SerializeField] private DragonflySpiderPresentation _presentation;
     [SerializeField] private TrailRenderer _trailRenderer;
     private int _direction;
     public override Vector2 Position => transform.position;
@@ -15,22 +15,21 @@ public class DragonflyProjectileSpider : CollidableEnemy
 
     private void OnEnable()
     {
-        // LampAttackModel.OnLampAttackEvent += TMPHandleLampAttack; // TODO: fix this
         _movement.EnterAnimationEnded += OnEnterAnimationEndHandle;
         _movement.FallEnded += OnFallEndedHandle;
         
     }
     private void OnDisable()
     {
-        // LampAttackModel.OnLampAttackEvent -= TMPHandleLampAttack;
         _movement.EnterAnimationEnded -= OnEnterAnimationEndHandle;
         _movement.FallEnded -= OnFallEndedHandle;
     }
 
     public override void Initialize()
     {
-        // _presentation.Initialize();
+        _presentation.Initialize();
         Radius = _collisionRadius;
+        gameObject.SetActive(false);
     }
     
     public void SetDirection(int direction)
@@ -40,23 +39,24 @@ public class DragonflyProjectileSpider : CollidableEnemy
 
     public override void Play()
     {
+        gameObject.SetActive(true);
         _trailRenderer.Clear();
         _trailRenderer.emitting = false;
         _movement.Play(_direction);
-        // _presentation.Play();
+        _presentation.Play();
         IsReadyForDamage = false;
     }
 
     public void StartPreAttack()
     {
-        // _presentation.PreAttackStart();
+        _presentation.PreAttackStart();
     }
 
     public override void Attack()
     {
         // ReceivedLampAttack = false;
         _movement.TriggerAttack();
-        // _presentation.PreAttackEnd();
+        _presentation.PreAttackEnd();
         _trailRenderer.emitting = true;
     }
 
@@ -73,8 +73,7 @@ public class DragonflyProjectileSpider : CollidableEnemy
         
         // ReceivedLampAttack = true;
         _movement.TriggerFall();
-        // _presentation.DeathFlash();
-        // Presentation - show damage effect    
+        _presentation.DeathFlash();
     }
 
     public override void DoDeath()
@@ -90,7 +89,7 @@ public class DragonflyProjectileSpider : CollidableEnemy
     // Event Handlers
     private void OnEnterAnimationEndHandle()
     {
-        // _presentation.SwitchToCaughtState();
+        _presentation.SwitchToCaughtState();
         EnterAnimationEnded?.Invoke();
     }
 
