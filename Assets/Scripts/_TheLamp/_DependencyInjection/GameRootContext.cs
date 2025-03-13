@@ -224,11 +224,6 @@ public class GameRootContext : MonoBehaviour
 
     private void ControllersSetup()
     {
-        _scoresCollectionController = new ScoresCollectionController(_gameConfigService, _enemyPool);
-        _scoresCollectionController.Initialize();
-        _disposables.Add(_scoresCollectionController);
-        
-        // _enemyController.Construct(_gameConfigService, _lampPositionProviderService);
         _enemySpawner = new EnemySpawner(_enemyPool);
         _enemySpawner.Initialize();
         _tickables.Add(_enemySpawner);
@@ -237,6 +232,11 @@ public class GameRootContext : MonoBehaviour
         _lampStickyDetectionService.Initialize();
         
         _waveEnemyDirector.Construct(_gameConfigService, _enemySpawner);
+        
+        _scoresCollectionController = new ScoresCollectionController(_gameConfigService, _enemyPool, _waveEnemyDirector);
+        _scoresCollectionController.Initialize();
+        _disposables.Add(_scoresCollectionController);
+
 
         _lampMovementController.Initialize();
         _lampHealthBarController.Initialize();

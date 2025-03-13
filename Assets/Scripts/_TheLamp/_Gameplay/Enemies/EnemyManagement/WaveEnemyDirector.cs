@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WaveEnemyDirector : MonoBehaviour, IInitializable
+public class WaveEnemyDirector : MonoBehaviour, IInitializable, IProjectileDeactivatedProvider
 {
     private SpawnQueueGenerator _spawnQueueGenerator;
     private SpawnQueue _spawnQueue;
@@ -42,6 +42,7 @@ public class WaveEnemyDirector : MonoBehaviour, IInitializable
     public event Action<FEnemy> BossSpawned;
     public event Action BossDied;
     public event Action<Vector3, bool, string> StickyAttackEnded;
+    public event Action<FEnemy> ProjectileDestroyed;
     
     public void Initialize()
     {
@@ -251,10 +252,9 @@ public class WaveEnemyDirector : MonoBehaviour, IInitializable
         if (enemy is IProjectileShooter)
         {
             ((IProjectileShooter)enemy).ProjectileShot += OnProjectileShot;
+            ((IProjectileShooter)enemy).ProjectileDeactivated += OnProjectileDeactivated;
         }
     }
-
-    
 
     private void OnEnemyDead(FEnemy enemy)
     {
@@ -303,6 +303,7 @@ public class WaveEnemyDirector : MonoBehaviour, IInitializable
             if (enemy is IProjectileShooter)
             {
                 ((IProjectileShooter)enemy).ProjectileShot -= OnProjectileShot;
+                ((IProjectileShooter)enemy).ProjectileDeactivated -= OnProjectileDeactivated;
             }
         }
     }
@@ -331,12 +332,28 @@ public class WaveEnemyDirector : MonoBehaviour, IInitializable
     private void OnProjectileShot(CollidableEnemy enemy)
     {
         EnemyAttackStarted?.Invoke(enemy);
+        _enemies.Add(enemy);
     }
-
+    
+    private void OnProjectileDeactivated(FEnemy enemy, bool damaged)
+    {
+        if (damaged)
+        {
+            ProjectileDestroyed?.Invoke(enemy);
+        }
+        
+        if (_enemies.Contains(enemy))
+        {
+            _enemies.Remove(enemy);
+        }
+    }
 
     private void Update()
     {
         _enemyAttacker.Tick(Time.deltaTime);
         _fireflyExplosionEnemyDamager.Tick(Time.deltaTime);
     }
+
+
+    
 }

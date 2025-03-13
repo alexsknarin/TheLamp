@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class DragonflyProjectileMoth : EnemyBase
 {
-    [SerializeField] private EnemyType _enemyType = EnemyType.DragonflyProjectile;
+    [SerializeField] private EnemyType _enemyType = EnemyType.DragonflyProjectileMoth;
     [SerializeField] private DragonflyProjectileMovementMoth _movement;
     [SerializeField] private DragonflyMothPresentation _presentation;
     public override EnemyType EnemyType => _enemyType;

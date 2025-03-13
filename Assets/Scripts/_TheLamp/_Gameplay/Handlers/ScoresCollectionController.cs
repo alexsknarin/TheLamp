@@ -1,19 +1,23 @@
 using System;
 
+// TODO: rename to service
 public class ScoresCollectionController: IInitializable, IDisposable
 {
     public bool _isActive = false;
     
     private IGameConfigService _gameConfigService;
     private IEnemyDeactivatedProvider _enemyDeactivatedProvider;
+    private IProjectileDeactivatedProvider _projectileDeactivatedProvider;
     
     public ScoresCollectionController(
         IGameConfigService gameConfigService,
-        IEnemyDeactivatedProvider enemyDeactivatedProvider
+        IEnemyDeactivatedProvider enemyDeactivatedProvider,
+        IProjectileDeactivatedProvider projectileDeactivatedProvider
         )
     {
         _gameConfigService = gameConfigService;
         _enemyDeactivatedProvider = enemyDeactivatedProvider;
+        _projectileDeactivatedProvider = projectileDeactivatedProvider;
     }
     
     public void StartCollecting()
@@ -31,11 +35,13 @@ public class ScoresCollectionController: IInitializable, IDisposable
     public void Initialize()
     {
         _enemyDeactivatedProvider.EnemyReleasedToPool += OnEnemyDeactivated; // TODO: Probably IDeactivatable interface 
+        _projectileDeactivatedProvider.ProjectileDestroyed += OnEnemyDeactivated;
     }
 
     public void Dispose()
     {
         _enemyDeactivatedProvider.EnemyReleasedToPool -= OnEnemyDeactivated;
+        _projectileDeactivatedProvider.ProjectileDestroyed -= OnEnemyDeactivated;
     }
     
     // Event Handle Methods
@@ -79,8 +85,8 @@ public class ScoresCollectionController: IInitializable, IDisposable
             case EnemyType.Megabeetle:
                 score = _gameConfigService.ScoreConfig.MegabeetleScorePrice;
                 break;
-            case EnemyType.DragonflyProjectile:
-                score = _gameConfigService.ScoreConfig.DragonflyProjectileScorePrice;
+            case EnemyType.DragonflyProjectileSpider:
+                score = _gameConfigService.ScoreConfig.DragonflyProjectileSpiderScorePrice;
                 break;
             case EnemyType.Dragonfly:
                 score = _gameConfigService.ScoreConfig.Dragonfly;

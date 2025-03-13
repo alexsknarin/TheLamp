@@ -81,7 +81,8 @@ public class FDragonfly : CollidableEnemy, IAnimatedEnemy, IProjectileShooter
     
     public event Action<CollidableEnemy> AnimatedAttackStarted;
     public event Action<CollidableEnemy> ProjectileShot;
-    
+    public event Action<FEnemy, bool> ProjectileDeactivated;
+
     public override Vector2 Position => _collisionProvider.CurrentCollisionPoint;
     
     public override void Initialize()
@@ -129,6 +130,8 @@ public class FDragonfly : CollidableEnemy, IAnimatedEnemy, IProjectileShooter
         _movement.DeathAnimationEnded += OnDeathAnimationEnded;
 
         _movement.CollisionPhaseReached += OnCollisionPhaseReached;
+        
+        _spider.Deactivated += OnSpiderDeactivated;
     }
     
     private void OnDestroy()
@@ -156,7 +159,11 @@ public class FDragonfly : CollidableEnemy, IAnimatedEnemy, IProjectileShooter
         _movement.DeathAnimationEnded -= OnDeathAnimationEnded;
         
         _movement.CollisionPhaseReached -= OnCollisionPhaseReached;
+        
+        _spider.Deactivated -= OnSpiderDeactivated;
     }
+
+    
 
     public override void Play()
     {
@@ -488,6 +495,11 @@ public class FDragonfly : CollidableEnemy, IAnimatedEnemy, IProjectileShooter
         _spider.gameObject.SetActive(true);
         _spider.SetDirection(direction);
         _spider.Play();
+    }
+    
+    private void OnSpiderDeactivated(FEnemy spider, bool damaged)
+    {
+        ProjectileDeactivated?.Invoke(spider, damaged);
     }
 
     private void OnSpiderEnterAnimationEnded()
