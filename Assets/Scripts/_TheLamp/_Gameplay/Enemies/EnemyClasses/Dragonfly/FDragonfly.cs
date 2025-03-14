@@ -29,6 +29,7 @@ public class FDragonfly : CollidableEnemy, IAnimatedEnemy, IProjectileShooter
     [SerializeField] private float _hoverWaitMax;
     [Header("Patrol")]
     [Header("Head")]
+    [SerializeField] private DragonflySwarm _swarm;
     [SerializeField] private float _swarmAttackDuration; // TODO: control swarm duration itself from here as well
     [SerializeField] private float _patrolWaitMin;
     [SerializeField] private float _patrolWaitMax;
@@ -104,6 +105,7 @@ public class FDragonfly : CollidableEnemy, IAnimatedEnemy, IProjectileShooter
         _isAttacked = false;
         // _presentation.Initialize();
         _spider.Initialize();
+        _swarm.Initialize();
         _movement.Initialize();
         // gameObject.SetActive(false);
         
@@ -434,15 +436,14 @@ public class FDragonfly : CollidableEnemy, IAnimatedEnemy, IProjectileShooter
 
     private void OnReadyToSwarmAttackStateEntered(IState movementState)
     {
-        // TODO:
-        // if (movementState.GetType() == typeof(FDragonflyPatrolStateL))
-        // {
-        //     _swarm.PlayAttack(1);
-        // }
-        // else if (movementState.GetType() == typeof(FDragonflyPatrolStateR))
-        // {
-        //     _swarm.PlayAttack(-1);
-        // }
+        if (movementState.GetType() == typeof(FDragonflyPatrolStateL))
+        {
+            _swarm.PlayAttack(1);
+        }
+        else if (movementState.GetType() == typeof(FDragonflyPatrolStateR))
+        {
+            _swarm.PlayAttack(-1);
+        }
     }
 
     private void OnPreAttackStarted()

@@ -2315,6 +2315,7 @@ MonoBehaviour:
   _collisionProvider: {fileID: 2373099942957532617}
   _hoverWaitMin: 0.5
   _hoverWaitMax: 2
+  _swarm: {fileID: 4085273778962474757}
   _swarmAttackDuration: 3
   _patrolWaitMin: 0
   _patrolWaitMax: 0.5
@@ -3073,7 +3074,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _collisionRadius: 0.15
-  _enemyType: 10
   _movement: {fileID: 2610945407772197219}
   _presentation: {fileID: 7986865431848604099}
   _trailRenderer: {fileID: 2851623849337529958}
