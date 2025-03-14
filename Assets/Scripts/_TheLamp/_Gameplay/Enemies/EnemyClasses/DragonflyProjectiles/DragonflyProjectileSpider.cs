@@ -12,25 +12,22 @@ public class DragonflyProjectileSpider : CollidableEnemy
     public event Action EnterAnimationEnded;
     public event Action<FEnemy, bool> Deactivated;
     
-    private void OnEnable()
-    {
-        _movement.EnterAnimationEnded += OnEnterAnimationEndHandle;
-        _movement.FallEnded += OnFallEndedHandle;
-        
-    }
-    private void OnDisable()
-    {
-        _movement.EnterAnimationEnded -= OnEnterAnimationEndHandle;
-        _movement.FallEnded -= OnFallEndedHandle;
-    }
-
     public override void Initialize()
     {
         _presentation.Initialize();
         Radius = _collisionRadius;
         gameObject.SetActive(false);
+
+        _movement.EnterAnimationEnded += OnEnterAnimationEndHandle;
+        _movement.FallEnded += OnFallEndedHandle;
     }
-    
+
+    private void OnDestroy()
+    {
+        _movement.EnterAnimationEnded -= OnEnterAnimationEndHandle;
+        _movement.FallEnded -= OnFallEndedHandle;
+    }
+
     public void SetDirection(int direction)
     {
         _direction = direction;
@@ -71,7 +68,6 @@ public class DragonflyProjectileSpider : CollidableEnemy
     public override void ReceiveDamage(int damage)
     {
         if (damage < 1f) return;
-        // ReceivedLampAttack = true;
         _movement.TriggerFall();
         _presentation.DeathFlash();
         IsReceivedLampAttackDamage = true;
@@ -98,5 +94,11 @@ public class DragonflyProjectileSpider : CollidableEnemy
     {
         gameObject.SetActive(false);
         Deactivated?.Invoke(this, IsReceivedLampAttackDamage);
+    }
+    
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.cyan;
+        Gizmos.DrawWireSphere(transform.position, _collisionRadius);
     }
 }

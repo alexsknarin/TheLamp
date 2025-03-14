@@ -133,7 +133,10 @@ public class FDragonfly : CollidableEnemy, IAnimatedEnemy, IProjectileShooter
 
         _movement.CollisionPhaseReached += OnCollisionPhaseReached;
         
-        _spider.Deactivated += OnSpiderDeactivated;
+        _swarm.MothAttackStarted += OnMothAttackStarted;
+        _spider.Deactivated += OnProjectileDeactivated;
+        _swarm.MothDeactivated += OnProjectileDeactivated;
+        
     }
     
     private void OnDestroy()
@@ -161,11 +164,12 @@ public class FDragonfly : CollidableEnemy, IAnimatedEnemy, IProjectileShooter
         _movement.DeathAnimationEnded -= OnDeathAnimationEnded;
         
         _movement.CollisionPhaseReached -= OnCollisionPhaseReached;
-        
-        _spider.Deactivated -= OnSpiderDeactivated;
+
+        _swarm.MothAttackStarted -= OnMothAttackStarted;
+        _spider.Deactivated -= OnProjectileDeactivated;
+        _swarm.MothDeactivated -= OnProjectileDeactivated;
     }
 
-    
 
     public override void Play()
     {
@@ -221,19 +225,19 @@ public class FDragonfly : CollidableEnemy, IAnimatedEnemy, IProjectileShooter
         _movement.TriggerBounce();
         _isCollidedWithLamp = true;
     }
-    
+
     public override Vector3 ProvideImpactPoint()
     {
         return Vector3.zero;
     }
-    
+
     public override void HandleEnterAttackZone()
     {
         CollisionState = CollidableState.InAttackZone;
         IsReadyForDamage = true;
         _isInAttackExitZone = true;
     }
-    
+
     public override void HandleExitAttackZone()
     {
         _isInAttackExitZone = false;
@@ -246,13 +250,13 @@ public class FDragonfly : CollidableEnemy, IAnimatedEnemy, IProjectileShooter
         
         _movement.TriggerFall(false);
     }
-    
+
     private void Update()
     {
         _stateMachine.Tick();
         _stateDebug = _stateMachine.CurrentState.ToString();
     }
-    
+
     private void CreateStates()
     {
         // Initialize the states
@@ -271,7 +275,7 @@ public class FDragonfly : CollidableEnemy, IAnimatedEnemy, IProjectileShooter
         _swarmAttackState = new DragonflySwarmAttackState(_swarmAttackDuration);
         _waitForBounceState = new DragonflyWaitForBounceState();
     }
-    
+
     private void CreateStateTransitions()
     {
         // Enter
@@ -391,9 +395,10 @@ public class FDragonfly : CollidableEnemy, IAnimatedEnemy, IProjectileShooter
             return false;
         };
     }
-    
-    
+
+
     // State Event Handle Methods
+
     private void GenerateAttackPosition()
     {
         _isReadyToAttackWait = true;
@@ -419,15 +424,16 @@ public class FDragonfly : CollidableEnemy, IAnimatedEnemy, IProjectileShooter
         _movement.StartAttack(DragonflyPatrolAttackMode.Spider);
         _isAttacked = true;
     }
-    
+
+
     // Event Handle Methods
-    
+
     private void OnCollisionPhaseReached()
     {
         _collisionProvider.FindClosestPointIndex();
         Radius = _collisionProvider.CurrentCollisionRadius;
     }
-    
+
     private void OnReadyToAttackStateEntered(IState movementState)
     {
         _patrolAttackMode = (DragonflyPatrolAttackMode)Random.Range(0, 2);
@@ -497,8 +503,8 @@ public class FDragonfly : CollidableEnemy, IAnimatedEnemy, IProjectileShooter
         _spider.SetDirection(direction);
         _spider.Play();
     }
-    
-    private void OnSpiderDeactivated(FEnemy spider, bool damaged)
+
+    private void OnProjectileDeactivated(FEnemy spider, bool damaged)
     {
         ProjectileDeactivated?.Invoke(spider, damaged);
     }
@@ -519,6 +525,8 @@ public class FDragonfly : CollidableEnemy, IAnimatedEnemy, IProjectileShooter
         enabled = false;
     }
 
-
-    
+    private void OnMothAttackStarted(CollidableEnemy enemy)
+    {
+        ProjectileShot?.Invoke(enemy);
+    }
 }

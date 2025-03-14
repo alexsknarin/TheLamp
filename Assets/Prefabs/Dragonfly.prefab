@@ -414,8 +414,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 536128517787533269}
-  - component: {fileID: 2904604697334278238}
-  - component: {fileID: 5963243322587194821}
   - component: {fileID: 12913915097583921}
   - component: {fileID: 4705609336870397485}
   - component: {fileID: 8134831335528203179}
@@ -446,69 +444,6 @@ Transform:
   - {fileID: 7310737243474828091}
   m_Father: {fileID: 2800351027539773626}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!50 &2904604697334278238
-Rigidbody2D:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 715282628447408877}
-  m_BodyType: 1
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDamping: 0
-  m_AngularDamping: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
---- !u!58 &5963243322587194821
-CircleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 715282628447408877}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_CompositeOperation: 0
-  m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
-  m_Radius: 0.07
 --- !u!96 &12913915097583921
 TrailRenderer:
   serializedVersion: 3
@@ -637,7 +572,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb657196896d0d146a6025dae3805e63, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _enemyType: 10
+  _collisionRadius: 0.07
   _movement: {fileID: 8134831335528203179}
   _presentation: {fileID: 3686948029250856359}
 --- !u!114 &8134831335528203179
@@ -652,8 +587,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29bb4363150b4684fb3ebdb649fce0a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _speed: 5
-  _bounceSpeed: 1
+  _speed: 4
+  _bounceSpeed: 0.9
   _fallSpeed: 1.5
   _fallAcceleraion: 1.6
   _noiseFrequency: 8
@@ -1183,8 +1118,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1840641927490535469}
-  - component: {fileID: 1321284742913331944}
-  - component: {fileID: 7423704140388138416}
   - component: {fileID: 1194807768318344783}
   - component: {fileID: 7940097423237272309}
   - component: {fileID: 8035262596699361151}
@@ -1215,69 +1148,6 @@ Transform:
   - {fileID: 5069473765196684697}
   m_Father: {fileID: 2800351027539773626}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!50 &1321284742913331944
-Rigidbody2D:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1091404441523174240}
-  m_BodyType: 1
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDamping: 0
-  m_AngularDamping: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
---- !u!58 &7423704140388138416
-CircleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1091404441523174240}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_CompositeOperation: 0
-  m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
-  m_Radius: 0.07
 --- !u!96 &1194807768318344783
 TrailRenderer:
   serializedVersion: 3
@@ -1406,7 +1276,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb657196896d0d146a6025dae3805e63, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _enemyType: 10
+  _collisionRadius: 0.07
   _movement: {fileID: 8035262596699361151}
   _presentation: {fileID: 8268907214776640367}
 --- !u!114 &8035262596699361151
@@ -1421,8 +1291,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29bb4363150b4684fb3ebdb649fce0a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _speed: 5
-  _bounceSpeed: 1
+  _speed: 4
+  _bounceSpeed: 0.9
   _fallSpeed: 1.5
   _fallAcceleraion: 1.6
   _noiseFrequency: 8
@@ -1915,7 +1785,6 @@ GameObject:
   - component: {fileID: 9194556110137074828}
   - component: {fileID: 8953583610499858097}
   - component: {fileID: 4085273778962474757}
-  - component: {fileID: 383248156095613895}
   - component: {fileID: 7644510270352010590}
   - component: {fileID: 2549383682762519659}
   - component: {fileID: 1980114250451078023}
@@ -2110,33 +1979,6 @@ MonoBehaviour:
   - {fileID: 3788864594734516028}
   - {fileID: 7940097423237272309}
   _timeInterval: 1.1
---- !u!50 &383248156095613895
-Rigidbody2D:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1489340059461961505}
-  m_BodyType: 1
-  m_Simulated: 0
-  m_UseFullKinematicContacts: 1
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDamping: 0
-  m_AngularDamping: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!114 &7644510270352010590
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3707,8 +3549,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7608469564688856589}
-  - component: {fileID: 2626282915390823138}
-  - component: {fileID: 5147781416161023761}
   - component: {fileID: 3103121774586482712}
   - component: {fileID: 3788864594734516028}
   - component: {fileID: 880654667660763720}
@@ -3739,69 +3579,6 @@ Transform:
   - {fileID: 7059037682099895005}
   m_Father: {fileID: 2800351027539773626}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!58 &2626282915390823138
-CircleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2940684656461013416}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_CompositeOperation: 0
-  m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
-  m_Radius: 0.07
---- !u!50 &5147781416161023761
-Rigidbody2D:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2940684656461013416}
-  m_BodyType: 1
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDamping: 0
-  m_AngularDamping: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!96 &3103121774586482712
 TrailRenderer:
   serializedVersion: 3
@@ -3930,7 +3707,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb657196896d0d146a6025dae3805e63, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _enemyType: 10
+  _collisionRadius: 0.07
   _movement: {fileID: 880654667660763720}
   _presentation: {fileID: 5235645752848437582}
 --- !u!114 &880654667660763720
@@ -3945,8 +3722,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29bb4363150b4684fb3ebdb649fce0a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _speed: 5
-  _bounceSpeed: 1
+  _speed: 4
+  _bounceSpeed: 0.9
   _fallSpeed: 1.5
   _fallAcceleraion: 1.6
   _noiseFrequency: 8

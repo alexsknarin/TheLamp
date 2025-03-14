@@ -88,6 +88,9 @@ public class ScoresCollectionController: IInitializable, IDisposable
             case EnemyType.DragonflyProjectileSpider:
                 score = _gameConfigService.ScoreConfig.DragonflyProjectileSpiderScorePrice;
                 break;
+            case EnemyType.DragonflyProjectileMoth:
+                score = _gameConfigService.ScoreConfig.DragonflyProjectileMothScorePrice;
+                break;
             case EnemyType.Dragonfly:
                 score = _gameConfigService.ScoreConfig.Dragonfly;
                 break;
