@@ -136,6 +136,7 @@ public class WaveEnemyDirector : MonoBehaviour, IInitializable, IProjectileDeact
 
         foreach (var enemy in _enemies)
         {
+            Debug.Log("Lamp Destroyed. Enemies left: " + enemy.gameObject.name);    
             if (enemy is IStickableWithLamp)
             {
                 ((IStickableWithLamp)enemy).HandleLampDestroyed();

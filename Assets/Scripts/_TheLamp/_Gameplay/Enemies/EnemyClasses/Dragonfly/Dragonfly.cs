@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public class Dragonfly : CollidableEnemy, IAnimatedEnemy, IProjectileShooter
+public class Dragonfly : CollidableEnemy, IAnimatedEnemy, IProjectileShooter, IBoss
 {
     private readonly DragonflyReturnMode[] _returnModes = new DragonflyReturnMode[] //TODO: capital letter R
     {
@@ -84,9 +84,9 @@ public class Dragonfly : CollidableEnemy, IAnimatedEnemy, IProjectileShooter
     public event Action<CollidableEnemy> AnimatedAttackStarted;
     public event Action<CollidableEnemy> ProjectileShot;
     public event Action<FEnemy, bool> ProjectileDeactivated;
-
+    public event Action SpreadRequested;
     public override Vector2 Position => _collisionProvider.CurrentCollisionPoint;
-    
+    public Transform MovementTransform => _visibleBodyTransform;
     public override void Initialize()
     {
         _patrolAttackPositionProvider = new DragonflyPatrolAttackPositionProvider(
@@ -527,4 +527,5 @@ public class Dragonfly : CollidableEnemy, IAnimatedEnemy, IProjectileShooter
     {
         ProjectileShot?.Invoke(enemy);
     }
+
 }

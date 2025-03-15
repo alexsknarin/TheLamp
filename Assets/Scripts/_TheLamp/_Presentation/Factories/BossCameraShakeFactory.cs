@@ -44,22 +44,36 @@ public class BossCameraShakeFactory
         }
         if (boss is Megabeetle)
         {
-            LoadStrategy(
-                ref _megabeetleCameraShakeStrategy,
-                "Behaviors/MegabeetleCameraShakeStrategy",
-                boss.transform
+            if (_megabeetleCameraShakeStrategy is null)
+            {
+                LoadStrategy(
+                    ref _megabeetleCameraShakeStrategy,
+                    "Behaviors/MegabeetleCameraShakeStrategy",
+                    boss.transform
                 );
-            return _megabeetleCameraShakeStrategy;
+            }
+            else
+            {
+                _megabeetleCameraShakeStrategy.Construct(boss.transform);
+            }
+            return _megabeetleCameraShakeStrategy;    
         }
-        // if (boss is Dragonfly)
-        // {
-        //     LoadStrategy(
-        //         ref _dragonflyCameraShakeStrategy,
-        //         "Behaviors/DragonflyCameraShakeStrategy",
-        //         boss.transform
-        //         );
-        //     return _dragonflyCameraShakeStrategy;
-        // }
+        if (boss is Dragonfly)
+        {
+            if (_dragonflyCameraShakeStrategy is null)
+            {
+                LoadStrategy(
+                    ref _dragonflyCameraShakeStrategy,
+                    "Behaviors/DragonflyCameraShakeStrategy",
+                    ((Dragonfly)boss).MovementTransform
+                );  
+            }
+            else
+            {
+                _dragonflyCameraShakeStrategy.Construct(((Dragonfly)boss).MovementTransform);
+            }
+            return _dragonflyCameraShakeStrategy;
+        }
         return null;
     }
     
