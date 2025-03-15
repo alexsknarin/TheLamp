@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class FDragonflyMovement : MonoBehaviour
+public class DragonflyMovement : MonoBehaviour
 {
     [SerializeField] private string _currentStateType;
     [SerializeField] private Animator _animator;

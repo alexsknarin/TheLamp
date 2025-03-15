@@ -14,7 +14,7 @@ public class EnemyTypeLibrary
         { EnemyType.Megamothling , typeof(Megamothling) },
         { EnemyType.Wasp , typeof(Wasp) },
         { EnemyType.Megabeetle , typeof(Megabeetle) },
-        { EnemyType.Dragonfly , typeof(FDragonfly) },
+        { EnemyType.Dragonfly , typeof(Dragonfly) },
         { EnemyType.DragonflyProjectileSpider , typeof(DragonflyProjectileSpider) },
         { EnemyType.DragonflyProjectileMoth , typeof(DragonflyProjectileMoth) }
         
@@ -31,7 +31,7 @@ public class EnemyTypeLibrary
         { typeof(Megamothling), EnemyType.Megamothling },
         { typeof(Wasp), EnemyType.Wasp },
         { typeof(Megabeetle), EnemyType.Megabeetle },
-        { typeof(FDragonfly), EnemyType.Dragonfly },
+        { typeof(Dragonfly), EnemyType.Dragonfly },
         { typeof(DragonflyProjectileSpider), EnemyType.DragonflyProjectileSpider },
         { typeof(DragonflyProjectileMoth), EnemyType.DragonflyProjectileMoth }
     };

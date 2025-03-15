@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public class FDragonfly : CollidableEnemy, IAnimatedEnemy, IProjectileShooter
+public class Dragonfly : CollidableEnemy, IAnimatedEnemy, IProjectileShooter
 {
     private readonly DragonflyReturnMode[] _returnModes = new DragonflyReturnMode[] //TODO: capital letter R
     {
@@ -20,7 +20,7 @@ public class FDragonfly : CollidableEnemy, IAnimatedEnemy, IProjectileShooter
     [SerializeField] private int _maxHealth = 24;
     [SerializeField] private int _currentHealth;
     [Header("-- Movement --")]
-    [SerializeField] private FDragonflyMovement _movement;
+    [SerializeField] private DragonflyMovement _movement;
     [SerializeField] private Transform _visibleBodyTransform;
     [Header("-- Presentation --")]
     [SerializeField] private DragonflyPresentation _presentation;

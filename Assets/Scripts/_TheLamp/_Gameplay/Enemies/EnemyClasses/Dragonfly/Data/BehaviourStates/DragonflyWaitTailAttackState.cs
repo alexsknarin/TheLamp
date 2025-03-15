@@ -6,13 +6,13 @@ public class DragonflyWaitTailAttackState : IState
     private Vector3 _targetPosition;
     private Transform _transform;
     private DragonflyPatrolAttackPositionProvider _patrolAttackPositionProvider;
-    private FDragonflyMovement _movement;
+    private DragonflyMovement _movement;
     private bool _isLastPatrolDirectionSet = false;
     private int _lastPatrolDirection = 0;
 
     public DragonflyWaitTailAttackState(Transform visibleBodyTransform, 
         DragonflyPatrolAttackPositionProvider patrolAttackPositionProvider, 
-        FDragonflyMovement movement)
+        DragonflyMovement movement)
     {
         _transform = visibleBodyTransform;
         _patrolAttackPositionProvider = patrolAttackPositionProvider;

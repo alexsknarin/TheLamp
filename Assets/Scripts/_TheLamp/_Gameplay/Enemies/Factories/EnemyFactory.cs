@@ -144,7 +144,7 @@ public class EnemyFactory
             Debug.Log("Megabeetle Loaded");
         }
         
-        if (type == typeof(FDragonfly))
+        if (type == typeof(Dragonfly))
         {
             _dragonflyEnemyAssetHandle = Addressables.LoadAssetAsync<GameObject>("Boss/Dragonfly.prefab");
             await _dragonflyEnemyAssetHandle.Task;
@@ -200,7 +200,7 @@ public class EnemyFactory
             var prefab = _megabeetleEnemyAssetHandle.Result;
             return CreateMegabeetleInstance(prefab);    
         }
-        if (type == typeof(FDragonfly) && _dragonflyEnemyAssetHandle.IsValid())
+        if (type == typeof(Dragonfly) && _dragonflyEnemyAssetHandle.IsValid())
         {
             var prefab = _dragonflyEnemyAssetHandle.Result;
             return CreateDragonflyInstance(prefab);    
@@ -318,7 +318,7 @@ public class EnemyFactory
         GameObject enemyInstance = Object.Instantiate(prefab);
         // enemyInstance.GetComponent<MegabeetleMovement>().Construct(_megabeetleMovementStateFactory);
         // enemyInstance.GetComponent<MegabeetlePresentation>().Initialize();
-        var enemy = enemyInstance.GetComponent<FDragonfly>();
+        var enemy = enemyInstance.GetComponent<Dragonfly>();
         enemy.Initialize();
         
         return enemy;

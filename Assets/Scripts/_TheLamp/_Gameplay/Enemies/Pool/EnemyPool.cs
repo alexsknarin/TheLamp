@@ -222,7 +222,7 @@ public class EnemyPool : IEnemyDeactivatedProvider
             }
             throw new Exception("Megabeetle prefab is not loaded yet");
         }
-        if (type == typeof(FDragonfly))
+        if (type == typeof(Dragonfly))
         {
             if (_enemyFactory.IsDragonflyLoaded)
             {
@@ -320,7 +320,7 @@ public class EnemyPool : IEnemyDeactivatedProvider
     
     private FEnemy CreateDragonfly()
     {
-        FEnemy enemyInstance = _enemyFactory.CreateEnemy(typeof(FDragonfly));
+        FEnemy enemyInstance = _enemyFactory.CreateEnemy(typeof(Dragonfly));
         enemyInstance.SetObjectPool(_dragonflyPool);
         enemyInstance.name = "Dragonfly" + _dragonflyCount;
         _dragonflyCount++;
