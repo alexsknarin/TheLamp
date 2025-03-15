@@ -22,6 +22,8 @@ public class FDragonfly : CollidableEnemy, IAnimatedEnemy, IProjectileShooter
     [Header("-- Movement --")]
     [SerializeField] private FDragonflyMovement _movement;
     [SerializeField] private Transform _visibleBodyTransform;
+    [Header("-- Presentation --")]
+    [SerializeField] private DragonflyPresentation _presentation;
     [Header("-- Collision --")]
     [SerializeField] private DragonflyCollisionProvider _collisionProvider;
     [Header("Hover")]
@@ -76,9 +78,8 @@ public class FDragonfly : CollidableEnemy, IAnimatedEnemy, IProjectileShooter
     private bool _isAttacked = false;
     private bool _isDead = false;
     private DragonflyReturnMode _returnMode;
-    
-    // public override Vector2 Position => Vector2.one; // TODO: Get current collider position
-    // public override float Radius { get; protected set; } // TODO: Get current collider radius
+
+    // TODO: radius set implementation
     
     public event Action<CollidableEnemy> AnimatedAttackStarted;
     public event Action<CollidableEnemy> ProjectileShot;
@@ -103,11 +104,10 @@ public class FDragonfly : CollidableEnemy, IAnimatedEnemy, IProjectileShooter
         _isReadyToPreAttackWait = false;
         _isReadyToAttackWait = false;
         _isAttacked = false;
-        // _presentation.Initialize();
+        _presentation.Initialize();
         _spider.Initialize();
         _swarm.Initialize();
         _movement.Initialize();
-        // gameObject.SetActive(false);
         
         _patrolHeadState.Ended += GenerateAttackPosition;
         _patrolTailState.Ended += GenerateAttackPosition;
@@ -186,26 +186,26 @@ public class FDragonfly : CollidableEnemy, IAnimatedEnemy, IProjectileShooter
     {
         IsReadyForDamage = false;
         _currentHealth -= damageAmount;
+        IsReceivedLampAttackDamage = true;
 
         if (_currentHealth > 0)
         {
-            // ReceivedLampAttack = true;
-            
-            // _presentation.HealthUpdate(_currentHealth, _maxHealth);
-            // _presentation.SetActiveColliderTransform(_collisionController.GetFirstActiveColliderTransform());
-            // _presentation.DamageFlash();
+            _presentation.HealthUpdate(_currentHealth, _maxHealth); // TODO: remake as events
+            _presentation.SetActiveColliderTransform(_collisionProvider.CurrentCollisionTransform); // TODO: remake as events
+            _presentation.DamageFlash(); // TODO: remake as events
             _movement.TriggerFall(true);
+            
+            // TODO: invoke events ??
         }
         else
         {
             if (!_isDead)
             {
-                // ReceivedLampAttack = true;
                 _currentHealth = 0; 
                 _movement.TriggerDeath(); 
-                // _presentation.DeathFlash();
-                // OnEnemyDeathInvoke(this);
+                _presentation.DeathFlash();
                 _isDead = true;
+                // TODO: invoke events ??
             }
         }
     }
@@ -228,7 +228,7 @@ public class FDragonfly : CollidableEnemy, IAnimatedEnemy, IProjectileShooter
 
     public override Vector3 ProvideImpactPoint()
     {
-        return Vector3.zero;
+        return _collisionProvider.CurrentCollisionPoint;
     }
 
     public override void HandleEnterAttackZone()
@@ -454,30 +454,24 @@ public class FDragonfly : CollidableEnemy, IAnimatedEnemy, IProjectileShooter
 
     private void OnPreAttackStarted()
     {
-        // TODO:
-        // ReceivedLampAttack = false;
-        // _presentation.PreAttackStart();
+        IsReceivedLampAttackDamage = false;
+        _presentation.PreAttackStart();
     }
 
     private void OnAttackStarted()
     {
         AnimatedAttackStarted?.Invoke(this);
-        // TODO:
-        // _collisionController.EnableColliders();
-        // _presentation.PreAttackEnd();
-
+        _presentation.PreAttackEnd();
     }
 
     private void OnAttackEnded()
     {
-        // TODO:
-        // _collisionController.DisableColliders();
+        // TODO: remove???
     }
 
     private void OnSwarmCalled()
     {
-        // TODO:
-        // _presentation.SwarmCall();
+        _presentation.SwarmCall();
     }
 
     private void OnWaitForBounceStateEnded()

@@ -1782,17 +1782,15 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2800351027539773626}
-  - component: {fileID: 9194556110137074828}
+  - component: {fileID: 7317761736038300975}
   - component: {fileID: 8953583610499858097}
   - component: {fileID: 4085273778962474757}
-  - component: {fileID: 7644510270352010590}
   - component: {fileID: 2549383682762519659}
   - component: {fileID: 1980114250451078023}
   - component: {fileID: 6507509925217970434}
   - component: {fileID: 3890820807162266275}
   - component: {fileID: 9185911319585977721}
   - component: {fileID: 6112219141313886415}
-  - component: {fileID: 7317761736038300975}
   - component: {fileID: 2373099942957532617}
   m_Layer: 0
   m_Name: Dragonfly
@@ -1828,29 +1826,28 @@ Transform:
   - {fileID: 1840641927490535469}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &9194556110137074828
+--- !u!114 &7317761736038300975
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1489340059461961505}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 16eae1143c5a2b44390c227e30d912ca, type: 3}
+  m_Script: {fileID: 11500000, guid: 7d73755303a39af41badf538077b5fc2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _stateDebug: 
-  _enemyType: 9
-  _maxHealth: 20
-  _currentHealth: 20
+  _maxHealth: 24
+  _currentHealth: 0
   _movement: {fileID: 8953583610499858097}
-  _presentation: {fileID: 2549383682762519659}
-  _swarm: {fileID: 4085273778962474757}
-  _collisionController: {fileID: 7644510270352010590}
   _visibleBodyTransform: {fileID: 7331037268719211253}
+  _presentation: {fileID: 2549383682762519659}
+  _collisionProvider: {fileID: 2373099942957532617}
   _hoverWaitMin: 0.5
   _hoverWaitMax: 2
+  _swarm: {fileID: 4085273778962474757}
   _swarmAttackDuration: 3
   _patrolWaitMin: 0
   _patrolWaitMax: 0.5
@@ -1979,25 +1976,6 @@ MonoBehaviour:
   - {fileID: 3788864594734516028}
   - {fileID: 7940097423237272309}
   _timeInterval: 1.1
---- !u!114 &7644510270352010590
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1489340059461961505}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b50a8134daf6e104f9a1622100390b61, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _colliders:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
 --- !u!114 &2549383682762519659
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2137,43 +2115,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &7317761736038300975
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1489340059461961505}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7d73755303a39af41badf538077b5fc2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _stateDebug: 
-  _maxHealth: 24
-  _currentHealth: 0
-  _movement: {fileID: 8953583610499858097}
-  _visibleBodyTransform: {fileID: 7331037268719211253}
-  _collisionProvider: {fileID: 2373099942957532617}
-  _hoverWaitMin: 0.5
-  _hoverWaitMax: 2
-  _swarm: {fileID: 4085273778962474757}
-  _swarmAttackDuration: 3
-  _patrolWaitMin: 0
-  _patrolWaitMax: 0.5
-  _patrolAttackZonesL: {fileID: 11400000, guid: 7e96f2076b5edb84ab43969652ed065f,
-    type: 2}
-  _patrolAttackZonesR: {fileID: 11400000, guid: ab3e3f64eabbf794aad6fbb0033308d3,
-    type: 2}
-  _tailAttackPositionBase: {x: 0.9991122, y: -0.7506288, z: -1.272415}
-  _patrolTailWaitMin: 0
-  _patrolTailWaitMax: 0.5
-  _spiderAttackPositionBase: {x: 0.68, y: -0.4, z: -0.62}
-  _spiderPatrolWaitMin: 1.05
-  _spiderPatrolWaitMax: 1.8
-  _spider: {fileID: 3221089541326229784}
-  _isInAttackExitZone: 0
-  _isCollidedWithLamp: 0
 --- !u!114 &2373099942957532617
 MonoBehaviour:
   m_ObjectHideFlags: 0

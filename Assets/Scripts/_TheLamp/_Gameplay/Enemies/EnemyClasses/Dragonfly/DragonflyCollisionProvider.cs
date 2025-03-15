@@ -10,6 +10,7 @@ public class DragonflyCollisionProvider : MonoBehaviour
     
     public Vector2 CurrentCollisionPoint => _collisionTransforms[_currentIndex].position;
     public float CurrentCollisionRadius => _collisionRadii[_currentIndex];
+    public Transform CurrentCollisionTransform => _collisionTransforms[_currentIndex];
 
     public void FindClosestPointIndex()
     {

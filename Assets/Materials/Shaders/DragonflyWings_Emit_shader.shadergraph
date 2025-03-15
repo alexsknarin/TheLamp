@@ -2676,7 +2676,7 @@
     },
     "m_DefaultValue": {
         "x": 0.0,
-        "y": 0.0
+        "y": 1.0
     },
     "m_Labels": []
 }
@@ -3544,7 +3544,7 @@
     },
     "m_DefaultValue": {
         "x": 0.0,
-        "y": 0.0
+        "y": 1.0
     },
     "m_Labels": []
 }
@@ -3708,8 +3708,8 @@
     "m_ObjectId": "180a8fcf62b241f3b4ae733a9568f9f0",
     "m_Title": "Flashing Generator",
     "m_Position": {
-        "x": -7890.66650390625,
-        "y": 6489.33251953125
+        "x": -7890.6669921875,
+        "y": 6489.3330078125
     }
 }
 
@@ -4422,8 +4422,8 @@
         "y": 1.0
     },
     "m_DefaultValue": {
-        "x": 0.0,
-        "y": 0.0
+        "x": -1.0,
+        "y": 1.0
     },
     "m_Labels": []
 }
@@ -4580,7 +4580,7 @@
     "m_StageCapability": 3,
     "m_BareResource": false,
     "m_Texture": {
-        "m_SerializedTexture": "{\"texture\":{\"instanceID\":0}}",
+        "m_SerializedTexture": "",
         "m_Guid": ""
     },
     "m_DefaultType": 0
@@ -4601,8 +4601,8 @@
         "y": 1.0
     },
     "m_DefaultValue": {
-        "x": 0.0,
-        "y": 0.0
+        "x": -1.0,
+        "y": 1.0
     },
     "m_Labels": []
 }
@@ -4647,7 +4647,7 @@
     },
     "m_DefaultValue": {
         "x": 0.0,
-        "y": 0.0
+        "y": 1.0
     },
     "m_Labels": []
 }
@@ -5078,7 +5078,7 @@
     },
     "m_DefaultValue": {
         "x": 0.0,
-        "y": 0.0
+        "y": 1.0
     },
     "m_Labels": []
 }
@@ -6100,7 +6100,7 @@
     },
     "m_DefaultValue": {
         "x": 0.0,
-        "y": 0.0
+        "y": 1.0
     },
     "m_Labels": []
 }
@@ -6121,7 +6121,7 @@
     },
     "m_DefaultValue": {
         "x": 0.0,
-        "y": 0.0
+        "y": 1.0
     },
     "m_Labels": []
 }
@@ -6156,8 +6156,8 @@
     "m_ObjectId": "410856ed40ea455aa8837ed9d67aa445",
     "m_Title": "Emillison mask  for the death Phase",
     "m_Position": {
-        "x": -759.9991455078125,
-        "y": -539.3335571289063
+        "x": -826.0,
+        "y": -519.3333740234375
     }
 }
 
@@ -6701,8 +6701,8 @@
         "y": 1.0
     },
     "m_DefaultValue": {
-        "x": 0.0,
-        "y": 0.0
+        "x": -1.0,
+        "y": 1.0
     },
     "m_Labels": []
 }
@@ -8121,8 +8121,8 @@
     "m_ObjectId": "5d014325acdb4c6fa70ea3d9e08a70fa",
     "m_Title": "Specular_Map",
     "m_Position": {
-        "x": -6795.39599609375,
-        "y": 3087.227783203125
+        "x": -6796.00048828125,
+        "y": 3086.666748046875
     }
 }
 
@@ -8984,8 +8984,8 @@
         "y": 0.3100000023841858
     },
     "m_DefaultValue": {
-        "x": 0.0,
-        "y": 0.0
+        "x": -1.0,
+        "y": 1.0
     },
     "m_Labels": []
 }
@@ -9427,7 +9427,7 @@
     "m_StageCapability": 3,
     "m_BareResource": false,
     "m_Texture": {
-        "m_SerializedTexture": "{\"texture\":{\"instanceID\":0}}",
+        "m_SerializedTexture": "",
         "m_Guid": ""
     },
     "m_DefaultType": 0
@@ -10787,8 +10787,8 @@
     "m_ObjectId": "97c44a3c82044c8780946797e1bd3688",
     "m_Title": "Emission Death Animation",
     "m_Position": {
-        "x": -750.6673583984375,
-        "y": -1418.0003662109375
+        "x": -750.666748046875,
+        "y": -1418.0001220703125
     }
 }
 
@@ -11327,7 +11327,7 @@
     },
     "m_DefaultValue": {
         "x": 0.0,
-        "y": 0.0
+        "y": 1.0
     },
     "m_Labels": []
 }
@@ -11615,7 +11615,7 @@
     },
     "m_DefaultValue": {
         "x": 0.0,
-        "y": 0.0
+        "y": 1.0
     },
     "m_Labels": []
 }
@@ -11885,6 +11885,9 @@
     "m_AlphaClip": true,
     "m_CastShadows": true,
     "m_ReceiveShadows": true,
+    "m_DisableTint": false,
+    "m_AdditionalMotionVectorMode": 0,
+    "m_AlembicMotionVectors": false,
     "m_SupportsLODCrossFade": false,
     "m_CustomEditorGUI": "",
     "m_SupportVFX": false
@@ -12151,8 +12154,8 @@
         "y": 1.0
     },
     "m_DefaultValue": {
-        "x": 0.0,
-        "y": 0.0
+        "x": -1.0,
+        "y": 1.0
     },
     "m_Labels": []
 }
@@ -12599,7 +12602,7 @@
     "m_Title": "Color_Map",
     "m_Position": {
         "x": -6448.00048828125,
-        "y": 1488.0001220703125
+        "y": 1487.9998779296875
     }
 }
 
@@ -13274,8 +13277,8 @@
     "m_ObjectId": "c2c45690a0b944adaa8bac8f17baf05c",
     "m_Title": "Main Noise Generator",
     "m_Position": {
-        "x": -4666.66650390625,
-        "y": -1398.6668701171875
+        "x": -6559.33349609375,
+        "y": -1326.0001220703125
     }
 }
 
@@ -13972,8 +13975,8 @@
         "y": 1.0
     },
     "m_DefaultValue": {
-        "x": 0.0,
-        "y": 0.0
+        "x": -1.0,
+        "y": 1.0
     },
     "m_Labels": []
 }
@@ -14172,7 +14175,7 @@
     "m_StageCapability": 3,
     "m_BareResource": false,
     "m_Texture": {
-        "m_SerializedTexture": "{\"texture\":{\"instanceID\":0}}",
+        "m_SerializedTexture": "",
         "m_Guid": ""
     },
     "m_DefaultType": 0
@@ -14733,8 +14736,8 @@
         "y": 1.0
     },
     "m_DefaultValue": {
-        "x": 0.0,
-        "y": 0.0
+        "x": -1.0,
+        "y": 1.0
     },
     "m_Labels": []
 }
@@ -14960,7 +14963,7 @@
     },
     "m_DefaultValue": {
         "x": 0.0,
-        "y": 0.0
+        "y": 1.0
     },
     "m_Labels": []
 }
@@ -15153,8 +15156,8 @@
     "m_ObjectId": "eb96cff882aa48d69a8b071b72584952",
     "m_Title": "Pre Death Flash",
     "m_Position": {
-        "x": 183.332763671875,
-        "y": 7181.33349609375
+        "x": 182.66650390625,
+        "y": 7181.3330078125
     }
 }
 
@@ -15493,8 +15496,8 @@
         "y": 1.0
     },
     "m_DefaultValue": {
-        "x": 0.0,
-        "y": 0.0
+        "x": -1.0,
+        "y": 1.0
     },
     "m_Labels": []
 }
@@ -15505,8 +15508,8 @@
     "m_ObjectId": "f4bd02c13de342a394ea61489e994e1e",
     "m_Title": "Alpha Clip Death Animation",
     "m_Position": {
-        "x": -616.666015625,
-        "y": -2391.333984375
+        "x": -616.666748046875,
+        "y": -2433.333251953125
     }
 }
 
@@ -15540,8 +15543,8 @@
     "m_ObjectId": "f4f406069d464706934a6a184e6b725a",
     "m_Title": "New Group",
     "m_Position": {
-        "x": -7563.3330078125,
-        "y": 4613.99951171875
+        "x": -7563.33349609375,
+        "y": 4614.0
     }
 }
 
@@ -15805,8 +15808,8 @@
         "y": 1.0
     },
     "m_DefaultValue": {
-        "x": 0.0,
-        "y": 0.0
+        "x": -1.0,
+        "y": 1.0
     },
     "m_Labels": []
 }
