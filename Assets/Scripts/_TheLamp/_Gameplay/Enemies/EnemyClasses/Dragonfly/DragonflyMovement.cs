@@ -86,7 +86,7 @@ public class DragonflyMovement : MonoBehaviour
     private int _returnSideDirection;
     private bool _isPlaying = false;
     private bool _isAnimClipEnded = false;
-    private bool _isBounced = false;
+    [SerializeField] private bool _isBounced = false;
     private DragonflyEnterType _enterState = 0;
     private int _sideDirection = 1;
     private bool _isAttackSuccess;
@@ -377,6 +377,7 @@ public class DragonflyMovement : MonoBehaviour
     
     public void TriggerBounce()
     {
+        Debug.Log(" ***---  Bounce Triggered");
         _isBounced = true;
     }
 
@@ -610,6 +611,7 @@ public class DragonflyMovement : MonoBehaviour
         {
             if (_isBounced)
             {
+                Debug.Log("!!!!!!!!!!!!!!!! Bounced !!!!!!!!!!!!!!!!"); // DEBUG
                 _isBounced = false;
                 return true;
             }

@@ -65,10 +65,8 @@ public class FDragonflyAttackTailStateL : ScriptableObject, IState
         {
             _phase = 1f;
         }
-        Debug.Log(_localTime);
         if (!_isCollisionPhaseReached && _localTime >= _collisionReadyTime)
         {
-            Debug.Log(" -- Collision phase reached - state: " + this);
             _isCollisionPhaseReached = true;
             CollisionPhaseReached?.Invoke();
         }

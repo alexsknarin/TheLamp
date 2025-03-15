@@ -30,7 +30,8 @@ public abstract class FEnemy: MonoBehaviour, IInitializable, IDamageable, IPoola
     }
     protected void OnDeathStateEnded()
     {
-        _objectPool.Release(this);
+        Debug.Log("Death state ended.");
+        ReturnToPool();
     }
     public void ReturnToPool()
     {

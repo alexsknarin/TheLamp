@@ -75,7 +75,7 @@ public class Dragonfly : CollidableEnemy, IAnimatedEnemy, IProjectileShooter
     private DragonflyPatrolAttackMode _patrolAttackMode = DragonflyPatrolAttackMode.Head;
     private bool _isReadyToPreAttackWait = false;
     private bool _isReadyToAttackWait = false;
-    private bool _isAttacked = false;
+    [SerializeField] private bool _isAttacked = false;
     private bool _isDead = false;
     private DragonflyReturnMode _returnMode;
 
@@ -224,6 +224,7 @@ public class Dragonfly : CollidableEnemy, IAnimatedEnemy, IProjectileShooter
     {
         _movement.TriggerBounce();
         _isCollidedWithLamp = true;
+        CollisionState = CollidableState.AfterCollision;
     }
 
     public override Vector3 ProvideImpactPoint()
@@ -425,9 +426,7 @@ public class Dragonfly : CollidableEnemy, IAnimatedEnemy, IProjectileShooter
         _isAttacked = true;
     }
 
-
     // Event Handle Methods
-
     private void OnCollisionPhaseReached()
     {
         _collisionProvider.FindClosestPointIndex();
@@ -476,7 +475,10 @@ public class Dragonfly : CollidableEnemy, IAnimatedEnemy, IProjectileShooter
 
     private void OnWaitForBounceStateEnded()
     {
-        _movement.TriggerBounce();
+        if (IsReceivedLampAttackDamage)
+        {
+            
+        }
     }
 
     private void OnAfterAttackExitEnded(IState movementState)
@@ -515,8 +517,10 @@ public class Dragonfly : CollidableEnemy, IAnimatedEnemy, IProjectileShooter
 
     private void OnDeathAnimationEnded()
     {
+        OnDeathStateEnded();
         gameObject.SetActive(false); // TODO: fix naming to be consistent
         enabled = false;
+        
     }
 
     private void OnMothAttackStarted(CollidableEnemy enemy)

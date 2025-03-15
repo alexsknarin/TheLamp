@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Mono.Cecil.Cil;
 using UnityEngine;
 
 public class LampCollisionDetectionService : MonoBehaviour, IInitializable
@@ -105,6 +106,9 @@ public class LampCollisionDetectionService : MonoBehaviour, IInitializable
             if (collidable.CollisionState == CollidableState.Outside && distance < attackZoneCombinedRadius)
             {
                 collidable.HandleEnterAttackZone();
+                Debug.Log(((FEnemy)collidable).gameObject.name + " --- Entered Attack Zone.");
+                Debug.Log("Position: " + collidable.Position);
+                Debug.DrawLine(Vector3.zero, collidable.Position, Color.yellow, 1f);
             }
             
             // Exiting Attack Zone Before Collision
@@ -112,12 +116,18 @@ public class LampCollisionDetectionService : MonoBehaviour, IInitializable
             {
                 _collidablesToRemove.Add(collidable);
                 collidable.HandleExitAttackZone();
+                Debug.Log(((FEnemy)collidable).gameObject.name + " --- Exited Attack Attack Zone Before Collision.");
+                Debug.Log("Position: " + collidable.Position);
+                Debug.DrawLine(Vector3.zero, collidable.Position, Color.yellow, 1f);
             }
             
             // Collision detection
             if (collidable.CollisionState == CollidableState.InAttackZone &&  distance < _combinedCollisionRadius + collidable.Radius)
             {
                 collidable.HandleCollision();
+                Debug.Log(((FEnemy)collidable).gameObject.name + " --- Collided.");
+                Debug.Log("Position: " + collidable.Position);
+                Debug.DrawLine(Vector3.zero, collidable.Position, Color.white, 1f);
             }
             
             // Exiting Attack Zone After Collision
@@ -127,6 +137,9 @@ public class LampCollisionDetectionService : MonoBehaviour, IInitializable
                 collidable.HandleExitAttackZone();
                 EnemyAttackEnded?.Invoke(collidable.ProvideImpactPoint(), collidable.IsReceivedLampAttackDamage, collidable.GetType().ToString());
                 Debug.Log($"Enemy {collidable.GetType().ToString()} has just attacked.");
+                Debug.Log(((FEnemy)collidable).gameObject.name + " --- Exited Attack Zone after collision.");
+                Debug.Log("Position: " + collidable.Position);
+                Debug.DrawLine(Vector3.zero, collidable.Position, Color.green, 1f);
             }
         }
     }
