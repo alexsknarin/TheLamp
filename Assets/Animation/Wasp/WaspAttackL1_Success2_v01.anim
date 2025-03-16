@@ -109,11 +109,20 @@ AnimationClip:
       - serializedVersion: 3
         time: 1.1666666
         value: {x: 5.01, y: 3.45, z: 7.3438044}
-        inSlope: {x: 0, y: 19.380592, z: 15.711734}
-        outSlope: {x: 0, y: 19.380592, z: 15.711734}
+        inSlope: {x: 0.35065842, y: 19.380592, z: 15.711734}
+        outSlope: {x: 0.35065842, y: 0, z: 0}
         tangentMode: 0
         weightedMode: 0
         inWeight: {x: 0.33333334, y: 0.24774311, z: 0.29089296}
+        outWeight: {x: 0.33333334, y: 0.33333334, z: 0.33333334}
+      - serializedVersion: 3
+        time: 1.4
+        value: {x: 5.0538325, y: 3.45, z: 7.3438044}
+        inSlope: {x: 0, y: 0, z: 0}
+        outSlope: {x: 0, y: 0, z: 0}
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: {x: 0.33333334, y: 0.33333334, z: 0.33333334}
         outWeight: {x: 0.33333334, y: 0.33333334, z: 0.33333334}
       m_PreInfinity: 2
       m_PostInfinity: 2
@@ -212,6 +221,15 @@ AnimationClip:
       - serializedVersion: 3
         time: 1.1666666
         value: 5.01
+        inSlope: 0.35065842
+        outSlope: 0.35065842
+        tangentMode: 136
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 1.4
+        value: 5.0538325
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -551,13 +569,6 @@ AnimationClip:
   m_HasGenericRootTransform: 1
   m_HasMotionFloatCurves: 0
   m_Events:
-  - time: 0
-    functionName: DisableCollider
-    data: 
-    objectReferenceParameter: {fileID: 0}
-    floatParameter: 0
-    intParameter: 0
-    messageOptions: 0
   - time: 0.21666667
     functionName: TriggerSpread
     data: 
@@ -573,7 +584,7 @@ AnimationClip:
     intParameter: 0
     messageOptions: 0
   - time: 1.6333333
-    functionName: ClipEnded
+    functionName: AnimationClipEnded
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0

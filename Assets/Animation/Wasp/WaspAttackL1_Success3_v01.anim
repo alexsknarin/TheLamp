@@ -128,11 +128,20 @@ AnimationClip:
         time: 1.3333334
         value: {x: 1.2331965, y: 5.0115385, z: 2.7982774}
         inSlope: {x: -9.204351, y: 21.93903, z: -62.7325}
-        outSlope: {x: -9.204351, y: 21.93903, z: -62.7325}
+        outSlope: {x: -9.204351, y: 21.93903, z: 0}
         tangentMode: 0
         weightedMode: 0
         inWeight: {x: 0.30661854, y: 0.2633885, z: 0.11379499}
         outWeight: {x: 0.33333334, y: 0.33333334, z: 0.33333334}
+      - serializedVersion: 3
+        time: 1.4833333
+        value: {x: -0.13983375, y: 8.522856, z: 2.7982774}
+        inSlope: {x: -9.817571, y: 23.531351, z: 0}
+        outSlope: {x: -9.817571, y: 23.531351, z: 0}
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: {x: 0.3275562, y: 0.26071075, z: 0.33333334}
+        outWeight: {x: 0.33333334, y: 0, z: 0.33333334}
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
@@ -245,6 +254,15 @@ AnimationClip:
         weightedMode: 0
         inWeight: 0.30661854
         outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 1.4833333
+        value: -0.13983375
+        inSlope: -9.817571
+        outSlope: -9.817571
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.3275562
+        outWeight: 0.33333334
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
@@ -311,6 +329,15 @@ AnimationClip:
         weightedMode: 0
         inWeight: 0.2633885
         outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 1.4833333
+        value: 8.522856
+        inSlope: 23.531351
+        outSlope: 23.531351
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.26071075
+        outWeight: 0
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
@@ -623,13 +650,6 @@ AnimationClip:
   m_HasGenericRootTransform: 1
   m_HasMotionFloatCurves: 0
   m_Events:
-  - time: 0
-    functionName: DisableCollider
-    data: 
-    objectReferenceParameter: {fileID: 0}
-    floatParameter: 0
-    intParameter: 0
-    messageOptions: 0
   - time: 0.4
     functionName: TriggerSpread
     data: 
@@ -645,7 +665,7 @@ AnimationClip:
     intParameter: 0
     messageOptions: 0
   - time: 1.5833334
-    functionName: ClipEnded
+    functionName: AnimationClipEnded
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0

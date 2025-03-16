@@ -14,9 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <AnalyticsTimeOutTime>k__BackingField: 10
   <IsTestStartWave>k__BackingField: 1
-  <TestStartWave>k__BackingField: 30
+  <TestStartWave>k__BackingField: 61
   <FireflyExplosionRadius>k__BackingField: 0.8
   <FireflyExplosionDuration>k__BackingField: 0.36
+  <MaxAggressionLevel>k__BackingField: 6
   <IntroStageSkip>k__BackingField: 0
   <IntroStageDuration>k__BackingField: 2
   <PrepareInStageSkip>k__BackingField: 0
@@ -24,6 +25,6 @@ MonoBehaviour:
   <PrepareOutStageSkip>k__BackingField: 0
   <PrepareOutStageDuration>k__BackingField: 0.5
   <GameoverInStageSkip>k__BackingField: 0
-  <GameoverInStageDuration>k__BackingField: 0.5
+  <GameoverInStageDuration>k__BackingField: 4.5
   <GameoverOutStageSkip>k__BackingField: 0
   <GameoverOutStageDuration>k__BackingField: 0.7

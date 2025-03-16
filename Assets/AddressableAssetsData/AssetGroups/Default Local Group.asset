@@ -1,0 +1,78 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Default Local Group
+  m_EditorClassIdentifier: 
+  m_GroupName: Default Local Group
+  m_GUID: 71b3bb27ba1368945af5631993174c19
+  m_SerializeEntries:
+  - m_GUID: 005592423a785354eb2465873778551b
+    m_Address: FX/FireflyExplosion.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2cc875d9feabdd8438f8a00fb4b456f6
+    m_Address: Enemy/Fly.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 47f16e370a2971d4d8cd69eefe9f7eda
+    m_Address: Boss/Megabeetle.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5abdecc64f378fa42a25d190ec1a9a13
+    m_Address: Boss/Dragonfly.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5e12a1b3161307c4287f1dada9e7591c
+    m_Address: Enemy/Spider.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6e257d672bf644a41b36dfc062381f0b
+    m_Address: Enemy/Moth.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: aa860cab0fd8e3e4883fd6fc5c85ba90
+    m_Address: Boss/Wasp.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c12285346e8302f4e9d030f42df48c80
+    m_Address: Enemy/Ladybug.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: dd6c7d157e29ff14ab01bd586bb6ac3a
+    m_Address: Boss/Megamothling.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f337a2a073071724aa88aa33f1abfd76
+    m_Address: Enemy/Mothling.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f468adb9b3d93a14d889821e20deb934
+    m_Address: Enemy/FireFly.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: aa6228f148f87a64c9ac93b29dcffc3e, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: d93e0ee2b9a21e540983f1aebcb4d1e6, type: 2}
+    - {fileID: 11400000, guid: d71e89bf264011d43a35b83a1b3510fb, type: 2}
