@@ -1,26 +1,30 @@
-using System;
+using _GAME.Scripts.GameCoreSystems.DataManagement.DataTypes;
+using _GAME.Scripts.UI.ViewModels;
 using UnityEngine;
 
-public class GameStateView : MonoBehaviour
+namespace _GAME.Scripts.UI.Views
 {
-    [SerializeField] private GameState _gameState;
-    private GameStateViewModel _gameStateViewModel;
+    public class GameStateView : MonoBehaviour
+    {
+        [SerializeField] private GameState _gameState;
+        private GameStateViewModel _gameStateViewModel;
     
-    public void Bind(GameStateViewModel viewModel)
-    {
-        _gameStateViewModel = viewModel;
-        _gameState = _gameStateViewModel.CurrentGameState;        
+        public void Bind(GameStateViewModel viewModel)
+        {
+            _gameStateViewModel = viewModel;
+            _gameState = _gameStateViewModel.CurrentGameState;        
         
-        _gameStateViewModel.GameStateChanged += OnGameStateChanged;
-    }
+            _gameStateViewModel.GameStateChanged += OnGameStateChanged;
+        }
 
-    private void OnDestroy()
-    {
-        _gameStateViewModel.GameStateChanged -= OnGameStateChanged;
-    }
+        private void OnDestroy()
+        {
+            _gameStateViewModel.GameStateChanged -= OnGameStateChanged;
+        }
 
-    private void OnGameStateChanged(GameState gameState)
-    {
-        _gameState = gameState;
+        private void OnGameStateChanged(GameState gameState)
+        {
+            _gameState = gameState;
+        }
     }
 }

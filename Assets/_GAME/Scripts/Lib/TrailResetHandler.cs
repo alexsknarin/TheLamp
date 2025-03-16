@@ -1,28 +1,31 @@
-using System;
 using System.Collections;
+using _GAME.Scripts.Lib.Interfaces;
 using UnityEngine;
 
-public class TrailResetHandler : MonoBehaviour, IInitializable
+namespace _GAME.Scripts.Lib
 {
-    [SerializeField] private TrailRenderer _trailRenderer;
-    private WaitForSeconds _waitTime = new WaitForSeconds(.25f);
-
-    public void Initialize()
+    public class TrailResetHandler : MonoBehaviour, IInitializable
     {
-        _trailRenderer.emitting = false;
-        _trailRenderer.Clear();
-        StartCoroutine(EnableTrail());
-    }
+        [SerializeField] private TrailRenderer _trailRenderer;
+        private WaitForSeconds _waitTime = new WaitForSeconds(.25f);
 
-    private IEnumerator EnableTrail()
-    {
-        yield return _waitTime;
-        _trailRenderer.gameObject.SetActive(true);
-        _trailRenderer.emitting = true;
-    }
+        public void Initialize()
+        {
+            _trailRenderer.emitting = false;
+            _trailRenderer.Clear();
+            StartCoroutine(EnableTrail());
+        }
 
-    private void OnDisable()
-    {
-        _trailRenderer.gameObject.SetActive(false);
+        private IEnumerator EnableTrail()
+        {
+            yield return _waitTime;
+            _trailRenderer.gameObject.SetActive(true);
+            _trailRenderer.emitting = true;
+        }
+
+        private void OnDisable()
+        {
+            _trailRenderer.gameObject.SetActive(false);
+        }
     }
 }

@@ -1,8 +1,11 @@
-public enum StickableState
+namespace _GAME.Scripts.Lib.Enums
 {
-    Outside,
-    InAttackZone,
-    InAttackZoneDamaged,
-    Sticked,
-    AfterStick
+    public enum StickableState
+    {
+        Outside,
+        InAttackZone,
+        InAttackZoneDamaged,
+        Sticked,
+        AfterStick
+    }
 }

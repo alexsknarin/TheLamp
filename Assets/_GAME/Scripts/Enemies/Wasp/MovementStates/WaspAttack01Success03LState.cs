@@ -1,14 +1,16 @@
-using System;
 using UnityEngine;
 
-public class WaspAttack01Success03LState : FWaspAnimBaseState
+namespace _GAME.Scripts.Enemies.Wasp.MovementStates
 {
-    public WaspAttack01Success03LState(Animator animator, int clipHash, Transform baseTransform) : 
-        base(animator, clipHash, baseTransform) { }
-    
-    public override void OnEnter()
+    public class WaspAttack01Success03LState : FWaspAnimBaseState
     {
-        _baseTransform.localScale = _baseScaleL;
-        _animator.Play(_clipHash, -1, 0);
+        public WaspAttack01Success03LState(Animator animator, int clipHash, Transform baseTransform) : 
+            base(animator, clipHash, baseTransform) { }
+    
+        public override void OnEnter()
+        {
+            _baseTransform.localScale = _baseScaleL;
+            _animator.Play(_clipHash, -1, 0);
+        }
     }
 }

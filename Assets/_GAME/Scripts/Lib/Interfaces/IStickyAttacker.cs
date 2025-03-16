@@ -1,7 +1,10 @@
 using System;
 using UnityEngine;
 
-public interface IStickyAttacker
+namespace _GAME.Scripts.Lib.Interfaces
 {
-    public event Action<Vector3, bool, string> StickyAttackEnded;
+    public interface IStickyAttacker
+    {
+        public event Action<Vector3, bool, string> StickyAttackEnded;
+    }
 }

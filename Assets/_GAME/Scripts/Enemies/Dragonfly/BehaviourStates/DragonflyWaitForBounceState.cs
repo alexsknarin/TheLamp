@@ -1,18 +1,22 @@
 using System;
+using _GAME.Scripts.Lib.Interfaces;
 
-public class DragonflyWaitForBounceState : IState
+namespace _GAME.Scripts.Enemies.Dragonfly.BehaviourStates
 {
-    public event Action Ended;
-    public void OnEnter()
+    public class DragonflyWaitForBounceState : IState
     {
-    }
+        public event Action Ended;
+        public void OnEnter()
+        {
+        }
 
-    public void Tick()
-    {
-    }
+        public void Tick()
+        {
+        }
 
-    public void OnExit()
-    {
-        Ended?.Invoke();
+        public void OnExit()
+        {
+            Ended?.Invoke();
+        }
     }
 }

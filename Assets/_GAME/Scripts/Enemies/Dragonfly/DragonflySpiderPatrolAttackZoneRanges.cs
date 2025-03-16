@@ -1,28 +1,31 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "DragonflySpiderPatrolAttackZoneRanges", menuName = "DragonflyData/DragonflySpiderPatrolAttackZoneRanges")]
-public class DragonflySpiderPatrolAttackZoneRanges : ScriptableObject
+namespace _GAME.Scripts.Enemies.Dragonfly
 {
-    [SerializeField] private Vector3 _frontLZoneMin; 
-    [SerializeField] private Vector3 _frontLZoneMax; 
-    [SerializeField] private Vector3 _backLZoneMin; 
-    [SerializeField] private Vector3 _backLZoneMax; 
-    [SerializeField] private Vector3 _backRZoneMin; 
-    [SerializeField] private Vector3 _backRZoneMax; 
-    [SerializeField] private Vector3 _frontRZoneMin; 
-    [SerializeField] private Vector3 _frontRZoneMax;
-    
-    public void GetRanges(DragonflySpiderPatrolAttackZoneRangesData data)
+    [CreateAssetMenu(fileName = "DragonflySpiderPatrolAttackZoneRanges", menuName = "DragonflyData/DragonflySpiderPatrolAttackZoneRanges")]
+    public class DragonflySpiderPatrolAttackZoneRanges : ScriptableObject
     {
-        data.SetData(
-            _frontLZoneMin,
-            _frontLZoneMax,
-            _backLZoneMin,
-            _backLZoneMax,
-            _backRZoneMin,
-            _backRZoneMax,
-            _frontRZoneMin,
-            _frontRZoneMax
+        [SerializeField] private Vector3 _frontLZoneMin; 
+        [SerializeField] private Vector3 _frontLZoneMax; 
+        [SerializeField] private Vector3 _backLZoneMin; 
+        [SerializeField] private Vector3 _backLZoneMax; 
+        [SerializeField] private Vector3 _backRZoneMin; 
+        [SerializeField] private Vector3 _backRZoneMax; 
+        [SerializeField] private Vector3 _frontRZoneMin; 
+        [SerializeField] private Vector3 _frontRZoneMax;
+    
+        public void GetRanges(DragonflySpiderPatrolAttackZoneRangesData data)
+        {
+            data.SetData(
+                _frontLZoneMin,
+                _frontLZoneMax,
+                _backLZoneMin,
+                _backLZoneMax,
+                _backRZoneMin,
+                _backRZoneMax,
+                _frontRZoneMin,
+                _frontRZoneMax
             );
+        }
     }
 }

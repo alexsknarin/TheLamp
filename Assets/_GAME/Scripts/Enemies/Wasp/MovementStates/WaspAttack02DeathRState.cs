@@ -1,21 +1,24 @@
 using System;
 using UnityEngine;
 
-public class WaspAttack02DeathRState : FWaspAnimBaseState
+namespace _GAME.Scripts.Enemies.Wasp.MovementStates
 {
-    public WaspAttack02DeathRState(Animator animator, int clipHash, Transform baseTransform) : 
-        base(animator, clipHash, baseTransform) { }
-    
-    public event Action Ended;
-    
-    public override void OnEnter()
+    public class WaspAttack02DeathRState : FWaspAnimBaseState
     {
-        _baseTransform.localScale = _baseScaleR;
-        _animator.Play(_clipHash, -1, 0);
-    }
+        public WaspAttack02DeathRState(Animator animator, int clipHash, Transform baseTransform) : 
+            base(animator, clipHash, baseTransform) { }
     
-    public override void OnExit()
-    {
-        Ended?.Invoke();
+        public event Action Ended;
+    
+        public override void OnEnter()
+        {
+            _baseTransform.localScale = _baseScaleR;
+            _animator.Play(_clipHash, -1, 0);
+        }
+    
+        public override void OnExit()
+        {
+            Ended?.Invoke();
+        }
     }
 }

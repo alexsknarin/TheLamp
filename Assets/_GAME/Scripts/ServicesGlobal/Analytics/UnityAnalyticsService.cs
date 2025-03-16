@@ -1,7 +1,11 @@
 using System;
 using System.Collections;
+using _GAME.Scripts.GameCoreSystems.DI;
+using _GAME.Scripts.Lib.Interfaces;
 using Unity.Services.Analytics;
 using UnityEngine;
+using IAnalyticsService = _GAME.Scripts.Lib.Interfaces.IAnalyticsService;
+using IDisposable = _GAME.Scripts.Lib.Interfaces.IDisposable;
 
 public class UnityAnalyticsService : IAnalyticsService, IInitializable, IDisposable
 {

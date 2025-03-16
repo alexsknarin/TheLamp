@@ -1,8 +1,11 @@
-public enum DragonflyReturnMode
+namespace _GAME.Scripts.Enemies.Dragonfly
 {
-    PatrolL,
-    PatrolR,
-    SpiderL,
-    SpiderR,
-    Hover
+    public enum DragonflyReturnMode
+    {
+        PatrolL,
+        PatrolR,
+        SpiderL,
+        SpiderR,
+        Hover
+    }
 }

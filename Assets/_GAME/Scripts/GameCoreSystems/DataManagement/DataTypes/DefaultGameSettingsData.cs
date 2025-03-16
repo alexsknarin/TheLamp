@@ -1,7 +1,10 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "DefaultGameSettingsData", menuName = "Configs/DefaultGameSettingsData")]
-public class DefaultGameSettingsData : ScriptableObject
+namespace _GAME.Scripts.GameCoreSystems.DataManagement.DataTypes
 {
-    [field: SerializeField] public GameSettings GameSettings { get; private set; }
+    [CreateAssetMenu(fileName = "DefaultGameSettingsData", menuName = "Configs/DefaultGameSettingsData")]
+    public class DefaultGameSettingsData : ScriptableObject
+    {
+        [field: SerializeField] public GameSettings GameSettings { get; private set; }
+    }
 }

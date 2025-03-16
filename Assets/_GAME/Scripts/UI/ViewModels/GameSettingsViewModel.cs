@@ -1,58 +1,65 @@
-public class GameSettingsViewModel : IInitializable, IDisposable
+using _GAME.Scripts.GameCoreSystems.DataManagement;
+using _GAME.Scripts.Lib;
+using _GAME.Scripts.Lib.Interfaces;
+
+namespace _GAME.Scripts.UI.ViewModels
 {
-    public Observable<bool> IsConsentSetView = new Observable<bool>();
-    public Observable<bool> IsDataCollectionEnabledView = new Observable<bool>();
-    
-    private GameSettingsModel _gameSettingsModel;
-    public GameSettingsViewModel(GameSettingsModel gameSettingsModel)
+    public class GameSettingsViewModel : IInitializable, IDisposable
     {
-        _gameSettingsModel = gameSettingsModel;
-        IsConsentSetView.Value = _gameSettingsModel.IsConsentSet;
-        IsDataCollectionEnabledView.Value = _gameSettingsModel.IsDataCollectionEnabled;
-    }
+        public Observable<bool> IsConsentSetView = new Observable<bool>();
+        public Observable<bool> IsDataCollectionEnabledView = new Observable<bool>();
     
-    public void Initialize()
-    {
-        _gameSettingsModel.IsConsentSetChanged += OnIsConsentSetChanged;
-        _gameSettingsModel.IsDataCollectionEnabledChanged += OnIsDataCollectionEnabledChanged;
-    }
+        private GameSettingsModel _gameSettingsModel;
+        public GameSettingsViewModel(GameSettingsModel gameSettingsModel)
+        {
+            _gameSettingsModel = gameSettingsModel;
+            IsConsentSetView.Value = _gameSettingsModel.IsConsentSet;
+            IsDataCollectionEnabledView.Value = _gameSettingsModel.IsDataCollectionEnabled;
+        }
+    
+        public void Initialize()
+        {
+            _gameSettingsModel.IsConsentSetChanged += OnIsConsentSetChanged;
+            _gameSettingsModel.IsDataCollectionEnabledChanged += OnIsDataCollectionEnabledChanged;
+        }
 
-    public void Dispose()
-    {
-        _gameSettingsModel.IsConsentSetChanged -= OnIsConsentSetChanged;
-        _gameSettingsModel.IsDataCollectionEnabledChanged -= OnIsDataCollectionEnabledChanged;
-    }
+        public void Dispose()
+        {
+            _gameSettingsModel.IsConsentSetChanged -= OnIsConsentSetChanged;
+            _gameSettingsModel.IsDataCollectionEnabledChanged -= OnIsDataCollectionEnabledChanged;
+        }
     
-    // Handle View Events
-    public void HandleYesInitialConsentButtonClicked()
-    {
-        _gameSettingsModel.AnalyticsConsentSet(true);
-    }
+        // Handle View Events
+        public void HandleYesInitialConsentButtonClicked()
+        {
+            _gameSettingsModel.AnalyticsConsentSet(true);
+        }
     
-    public void HandleNoInitialConsentButtonClicked()
-    {
-        _gameSettingsModel.AnalyticsConsentSet(false);
-    }
+        public void HandleNoInitialConsentButtonClicked()
+        {
+            _gameSettingsModel.AnalyticsConsentSet(false);
+        }
     
-    public void HandleEnableDataCollectionButtonClicked()
-    {
-        _gameSettingsModel.AnalyticsConsentSet(true);
-    }
+        public void HandleEnableDataCollectionButtonClicked()
+        {
+            _gameSettingsModel.AnalyticsConsentSet(true);
+        }
     
-    public void HandleDisableDataCollectionButtonClicked()
-    {
-        _gameSettingsModel.AnalyticsConsentSet(false);
-    }
+        public void HandleDisableDataCollectionButtonClicked()
+        {
+            _gameSettingsModel.AnalyticsConsentSet(false);
+        }
     
-    // Handle Model Events
+        // Handle Model Events
     
-    private void OnIsConsentSetChanged(bool value)
-    {
-        IsConsentSetView.Value = value;
-    }
+        private void OnIsConsentSetChanged(bool value)
+        {
+            IsConsentSetView.Value = value;
+        }
 
-    private void OnIsDataCollectionEnabledChanged(bool value)
-    {
-        IsDataCollectionEnabledView.Value = value;
+        private void OnIsDataCollectionEnabledChanged(bool value)
+        {
+            IsDataCollectionEnabledView.Value = value;
+        }
     }
 }

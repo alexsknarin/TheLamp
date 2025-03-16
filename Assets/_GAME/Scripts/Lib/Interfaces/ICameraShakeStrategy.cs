@@ -1,6 +1,9 @@
 using UnityEngine;
 
-public interface ICameraShakeStrategy
+namespace _GAME.Scripts.Lib.Interfaces
 {
-    public Vector3 Execute();
+    public interface ICameraShakeStrategy
+    {
+        public Vector3 Execute();
+    }
 }

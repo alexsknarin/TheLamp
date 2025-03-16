@@ -1,14 +1,17 @@
-[System.Serializable]
-public class GameSettings
+namespace _GAME.Scripts.GameCoreSystems.DataManagement.DataTypes
 {
-    public GameSettings() { }
-    
-    public GameSettings(GameSettings gameSettings)
+    [System.Serializable]
+    public class GameSettings
     {
-        IsConsentSet = gameSettings.IsConsentSet;
-        IsDataCollectionEnabled = gameSettings.IsDataCollectionEnabled;
-    }
+        public GameSettings() { }
     
-    public bool IsConsentSet;
-    public bool IsDataCollectionEnabled;
+        public GameSettings(GameSettings gameSettings)
+        {
+            IsConsentSet = gameSettings.IsConsentSet;
+            IsDataCollectionEnabled = gameSettings.IsDataCollectionEnabled;
+        }
+    
+        public bool IsConsentSet;
+        public bool IsDataCollectionEnabled;
+    }
 }

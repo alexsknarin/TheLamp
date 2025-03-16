@@ -1,7 +1,11 @@
+using _GAME.Scripts.Enemies;
 using UnityEngine.Pool;
 
-public interface IPoolableFEnemy
+namespace _GAME.Scripts.Lib.Interfaces
 {
-    public void SetObjectPool(ObjectPool<FEnemy> pool);
-    public void ReturnToPool();
+    public interface IPoolableFEnemy
+    {
+        public void SetObjectPool(ObjectPool<FEnemy> pool);
+        public void ReturnToPool();
+    }
 }

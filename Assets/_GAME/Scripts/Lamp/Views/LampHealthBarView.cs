@@ -1,43 +1,48 @@
+using _GAME.Scripts.Lib;
+using _GAME.Scripts.UI.ViewModels;
 using UnityEngine;
 
-public class LampHealthBarView : MonoBehaviour
+namespace _GAME.Scripts.Lamp.Views
 {
-    [SerializeField] private LampHealthBarController _lampHealthBarController;
-    PlayerGameplayViewModel _playerGameplayViewModel;
-    public void Bind(PlayerGameplayViewModel playerGameplayViewModel)
+    public class LampHealthBarView : MonoBehaviour
     {
-        _playerGameplayViewModel = playerGameplayViewModel;
-        _playerGameplayViewModel.LampNormalizedHealth.Changed += OnLampNormalizedHealthChanged;
-        _playerGameplayViewModel.LastHealthPointStarted += OnLastHealthPointStarted;
-        _playerGameplayViewModel.LastHealthPointEnded += OnLastHealthPointEnded;
-        _playerGameplayViewModel.HealthUpgraded += OnHealthUpgraded;
-    }
-    private void OnDestroy()
-    {
-        _playerGameplayViewModel.LampNormalizedHealth.Changed -= OnLampNormalizedHealthChanged;
-        _playerGameplayViewModel.LastHealthPointStarted -= OnLastHealthPointStarted;
-        _playerGameplayViewModel.LastHealthPointEnded -= OnLastHealthPointEnded;
-        _playerGameplayViewModel.HealthUpgraded -= OnHealthUpgraded;
-    }
+        [SerializeField] private LampHealthBarController _lampHealthBarController;
+        PlayerGameplayViewModel _playerGameplayViewModel;
+        public void Bind(PlayerGameplayViewModel playerGameplayViewModel)
+        {
+            _playerGameplayViewModel = playerGameplayViewModel;
+            _playerGameplayViewModel.LampNormalizedHealth.Changed += OnLampNormalizedHealthChanged;
+            _playerGameplayViewModel.LastHealthPointStarted += OnLastHealthPointStarted;
+            _playerGameplayViewModel.LastHealthPointEnded += OnLastHealthPointEnded;
+            _playerGameplayViewModel.HealthUpgraded += OnHealthUpgraded;
+        }
+        private void OnDestroy()
+        {
+            _playerGameplayViewModel.LampNormalizedHealth.Changed -= OnLampNormalizedHealthChanged;
+            _playerGameplayViewModel.LastHealthPointStarted -= OnLastHealthPointStarted;
+            _playerGameplayViewModel.LastHealthPointEnded -= OnLastHealthPointEnded;
+            _playerGameplayViewModel.HealthUpgraded -= OnHealthUpgraded;
+        }
     
-    // Event Handle Methods
-    private void OnLampNormalizedHealthChanged(object sender, Observable<float>.ChangedEventArgs e)
-    {
-        _lampHealthBarController.SetHealth(e.NewValue);
-    }
+        // Event Handle Methods
+        private void OnLampNormalizedHealthChanged(object sender, Observable<float>.ChangedEventArgs e)
+        {
+            _lampHealthBarController.SetHealth(e.NewValue);
+        }
 
-    private void OnLastHealthPointStarted()
-    {
-        _lampHealthBarController.EnableLastHealth();
-    }
+        private void OnLastHealthPointStarted()
+        {
+            _lampHealthBarController.EnableLastHealth();
+        }
     
-    private void OnLastHealthPointEnded()
-    {
-        _lampHealthBarController.DisableLastHealth();    
-    }
+        private void OnLastHealthPointEnded()
+        {
+            _lampHealthBarController.DisableLastHealth();    
+        }
     
-    private void OnHealthUpgraded()
-    {
-        _lampHealthBarController.PlayUpgrade();
+        private void OnHealthUpgraded()
+        {
+            _lampHealthBarController.PlayUpgrade();
+        }
     }
 }

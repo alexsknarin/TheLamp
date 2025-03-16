@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class RandomDirection
+public abstract class RandomDirection
 {
     public static int Generate()
     {

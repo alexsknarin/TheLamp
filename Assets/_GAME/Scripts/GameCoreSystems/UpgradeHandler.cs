@@ -1,17 +1,22 @@
-public class UpgradeHandler
+using _GAME.Scripts.GameCoreSystems.DataManagement.DataTypes;
+
+namespace _GAME.Scripts.GameCoreSystems
 {
-    public int GetUpgradePointsAndUpdateScoreData(ref UpgradeData upgradeData)
+    public class UpgradeHandler
     {
-        int upgradePoints = 0;
-        int newScores = upgradeData.Score - upgradeData.UsedScore;
-        while (newScores >= upgradeData.CurrentScoreUpgradePrice)
+        public int GetUpgradePointsAndUpdateScoreData(ref UpgradeData upgradeData)
         {
-            upgradePoints++;
-            upgradeData.UsedScore += upgradeData.CurrentScoreUpgradePrice;
-            upgradeData.CurrentScoreUpgradePrice += upgradeData.CurrentScoreUpgradePriceIncrement;
-            upgradeData.CurrentScoreUpgradePriceIncrement++;
-            newScores = upgradeData.Score - upgradeData.UsedScore;
+            int upgradePoints = 0;
+            int newScores = upgradeData.Score - upgradeData.UsedScore;
+            while (newScores >= upgradeData.CurrentScoreUpgradePrice)
+            {
+                upgradePoints++;
+                upgradeData.UsedScore += upgradeData.CurrentScoreUpgradePrice;
+                upgradeData.CurrentScoreUpgradePrice += upgradeData.CurrentScoreUpgradePriceIncrement;
+                upgradeData.CurrentScoreUpgradePriceIncrement++;
+                newScores = upgradeData.Score - upgradeData.UsedScore;
+            }
+            return upgradePoints;
         }
-        return upgradePoints;
     }
 }

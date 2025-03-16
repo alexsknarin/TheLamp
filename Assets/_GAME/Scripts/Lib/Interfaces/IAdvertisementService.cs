@@ -1,8 +1,11 @@
 using System;
 
-public interface IAdvertisementService
+namespace _GAME.Scripts.Lib.Interfaces
 {
-    public event Action AdSuccessfullyFinished;
-    public void LoadAd();
-    public void ShowAd();
+    public interface IAdvertisementService
+    {
+        public event Action AdSuccessfullyFinished;
+        public void LoadAd();
+        public void ShowAd();
+    }
 }

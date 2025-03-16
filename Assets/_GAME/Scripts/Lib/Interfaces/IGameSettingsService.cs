@@ -1,9 +1,12 @@
 using System;
 
-public interface IGameSettingsService
+namespace _GAME.Scripts.Lib.Interfaces
 {
-    public bool IsConsentSet { get; }
-    public bool IsDataCollectionEnabled { get; }
-    public event Action<bool> IsConsentSetChanged;
-    public event Action<bool> IsDataCollectionEnabledChanged;
+    public interface IGameSettingsService
+    {
+        public bool IsConsentSet { get; }
+        public bool IsDataCollectionEnabled { get; }
+        public event Action<bool> IsConsentSetChanged;
+        public event Action<bool> IsDataCollectionEnabledChanged;
+    }
 }

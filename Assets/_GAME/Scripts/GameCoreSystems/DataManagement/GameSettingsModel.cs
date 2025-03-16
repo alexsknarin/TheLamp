@@ -2,50 +2,54 @@
 // TODO: separate view models for different settings ???? 
 
 using System;
+using _GAME.Scripts.GameCoreSystems.DataManagement.DataTypes;
 
-public class GameSettingsModel
+namespace _GAME.Scripts.GameCoreSystems.DataManagement
 {
-    private GameSettings _gameSettings;
-    
-    public GameSettingsModel(GameSettings gameSettings)
+    public class GameSettingsModel
     {
-        _gameSettings = gameSettings;
-    }
+        private GameSettings _gameSettings;
     
-    public event Action<bool> IsConsentSetChanged;
-    public event Action<bool> IsDataCollectionEnabledChanged;
-    
-    public bool IsConsentSet
-    {
-        get => _gameSettings.IsConsentSet;
-        private set
+        public GameSettingsModel(GameSettings gameSettings)
         {
-            var oldValue = _gameSettings.IsConsentSet;
-            _gameSettings.IsConsentSet = value;
-            if (!oldValue.Equals(value))
+            _gameSettings = gameSettings;
+        }
+    
+        public event Action<bool> IsConsentSetChanged;
+        public event Action<bool> IsDataCollectionEnabledChanged;
+    
+        public bool IsConsentSet
+        {
+            get => _gameSettings.IsConsentSet;
+            private set
             {
-                IsConsentSetChanged?.Invoke(value);
+                var oldValue = _gameSettings.IsConsentSet;
+                _gameSettings.IsConsentSet = value;
+                if (!oldValue.Equals(value))
+                {
+                    IsConsentSetChanged?.Invoke(value);
+                }
             }
         }
-    }
 
-    public bool IsDataCollectionEnabled
-    {
-        get => _gameSettings.IsDataCollectionEnabled;
-        private set
+        public bool IsDataCollectionEnabled
         {
-            var oldValue = _gameSettings.IsDataCollectionEnabled;
-            _gameSettings.IsDataCollectionEnabled = value;
-            if (!oldValue.Equals(value))
+            get => _gameSettings.IsDataCollectionEnabled;
+            private set
             {
-                IsDataCollectionEnabledChanged?.Invoke(value);
+                var oldValue = _gameSettings.IsDataCollectionEnabled;
+                _gameSettings.IsDataCollectionEnabled = value;
+                if (!oldValue.Equals(value))
+                {
+                    IsDataCollectionEnabledChanged?.Invoke(value);
+                }
             }
         }
-    }
 
-    public void AnalyticsConsentSet(bool value)
-    {
-        IsConsentSet = true;
-        IsDataCollectionEnabled = value;
+        public void AnalyticsConsentSet(bool value)
+        {
+            IsConsentSet = true;
+            IsDataCollectionEnabled = value;
+        }
     }
 }

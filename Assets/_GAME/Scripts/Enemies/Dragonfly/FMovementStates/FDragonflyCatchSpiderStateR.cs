@@ -1,13 +1,16 @@
 using System;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "FDragonflyCatchSpiderStateR", menuName = "FDragonflyMovementStates/FDragonflyCatchSpiderStateR")]
-public class FDragonflyCatchSpiderStateR: FDragonflyAnimBaseState
+namespace _GAME.Scripts.Enemies.Dragonfly.FMovementStates
 {
-    public event Action Started;
-    public override void OnEnter()
+    [CreateAssetMenu(fileName = "FDragonflyCatchSpiderStateR", menuName = "FDragonflyMovementStates/FDragonflyCatchSpiderStateR")]
+    public class FDragonflyCatchSpiderStateR: FDragonflyAnimBaseState
     {
-        base.OnEnter();
-        Started?.Invoke();
+        public event Action Started;
+        public override void OnEnter()
+        {
+            base.OnEnter();
+            Started?.Invoke();
+        }
     }
 }

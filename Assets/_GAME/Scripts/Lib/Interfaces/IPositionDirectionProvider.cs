@@ -1,7 +1,10 @@
 using UnityEngine;
 
-public interface IPositionDirectionProvider
+namespace _GAME.Scripts.Lib.Interfaces
 {
-    public Vector2 Position2D { get; }
-    public Vector3 DepthDirection { get; }
+    public interface IPositionDirectionProvider
+    {
+        public Vector2 Position2D { get; }
+        public Vector3 DepthDirection { get; }
+    }
 }

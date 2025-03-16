@@ -1,13 +1,16 @@
 using UnityEngine;
 
-public class WaspAttack01BounceRState : FWaspAnimBaseState
+namespace _GAME.Scripts.Enemies.Wasp.MovementStates
 {
-    public WaspAttack01BounceRState(Animator animator, int clipHash, Transform baseTransform) : 
-        base(animator, clipHash, baseTransform) { }
-    
-    public override void OnEnter()
+    public class WaspAttack01BounceRState : FWaspAnimBaseState
     {
-        _baseTransform.localScale = _baseScaleR;
-        _animator.Play(_clipHash, -1, 0);
+        public WaspAttack01BounceRState(Animator animator, int clipHash, Transform baseTransform) : 
+            base(animator, clipHash, baseTransform) { }
+    
+        public override void OnEnter()
+        {
+            _baseTransform.localScale = _baseScaleR;
+            _animator.Play(_clipHash, -1, 0);
+        }
     }
 }

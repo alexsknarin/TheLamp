@@ -1,13 +1,17 @@
+using _GAME.Scripts.Lib.Enums;
 using UnityEngine;
 
-public interface ICollidableWithLamp
+namespace _GAME.Scripts.Lib.Interfaces
 {
-    public float Radius { get; }
-    public Vector2 Position { get; }
-    public bool IsReceivedLampAttackDamage { get; }
-    public CollidableState CollisionState { get; }
-    public void HandleEnterAttackZone();
-    public void HandleCollision();
-    public void HandleExitAttackZone();
-    public Vector3 ProvideImpactPoint();
+    public interface ICollidableWithLamp
+    {
+        public float Radius { get; }
+        public Vector2 Position { get; }
+        public bool IsReceivedLampAttackDamage { get; }
+        public CollidableState CollisionState { get; }
+        public void HandleEnterAttackZone();
+        public void HandleCollision();
+        public void HandleExitAttackZone();
+        public Vector3 ProvideImpactPoint();
+    }
 }

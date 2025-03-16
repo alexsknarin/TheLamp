@@ -1,11 +1,14 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "FDragonflyEnterToHoverStateL", menuName = "FDragonflyMovementStates/FDragonflyEnterToHoverStateL")]
-public class FDragonflyEnterToHoverStateL : FDragonflyAnimBaseState
+namespace _GAME.Scripts.Enemies.Dragonfly.FMovementStates
 {
-    public override void OnEnter()
+    [CreateAssetMenu(fileName = "FDragonflyEnterToHoverStateL", menuName = "FDragonflyMovementStates/FDragonflyEnterToHoverStateL")]
+    public class FDragonflyEnterToHoverStateL : FDragonflyAnimBaseState
     {
-        ParentVisibleBodyToAnimatedTransform();
-        _animator.Play(_clipHash, -1, 0);
+        public override void OnEnter()
+        {
+            ParentVisibleBodyToAnimatedTransform();
+            _animator.Play(_clipHash, -1, 0);
+        }
     }
 }

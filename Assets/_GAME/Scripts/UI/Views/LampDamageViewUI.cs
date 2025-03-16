@@ -1,30 +1,36 @@
+using _GAME.Scripts.Lib.Enums;
+using _GAME.Scripts.UI.UiElements;
+using _GAME.Scripts.UI.ViewModels;
 using UnityEngine;
 
-public class LampDamageViewUI : MonoBehaviour
+namespace _GAME.Scripts.UI.Views
 {
-    [SerializeField] private BrokenGlassEffect _brokenGlassEffect;
-    private PlayerGameplayViewModel _playerGameplayViewModel;
-    
-    public void Bind(PlayerGameplayViewModel playerGameplayViewModel)
+    public class LampDamageViewUI : MonoBehaviour
     {
-        _playerGameplayViewModel = playerGameplayViewModel;
+        [SerializeField] private BrokenGlassEffect _brokenGlassEffect;
+        private PlayerGameplayViewModel _playerGameplayViewModel;
+    
+        public void Bind(PlayerGameplayViewModel playerGameplayViewModel)
+        {
+            _playerGameplayViewModel = playerGameplayViewModel;
         
-        _playerGameplayViewModel.LampDamaged += OnLampDamaged;
-    }
+            _playerGameplayViewModel.LampDamaged += OnLampDamaged;
+        }
 
-    private void OnDestroy()
-    {
-        _playerGameplayViewModel.LampDamaged -= OnLampDamaged;
-    }
+        private void OnDestroy()
+        {
+            _playerGameplayViewModel.LampDamaged -= OnLampDamaged;
+        }
     
-    // Event Handle Methods
-    private void OnLampDamaged(float duration)
-    {
-        _brokenGlassEffect.Play(BrokenGlassEventType.Damage); // TODO: replace with duration
-    }
+        // Event Handle Methods
+        private void OnLampDamaged(float duration)
+        {
+            _brokenGlassEffect.Play(BrokenGlassEventType.Damage); // TODO: replace with duration
+        }
 
-    private void OnLampDied()
-    {
-        _brokenGlassEffect.Play(BrokenGlassEventType.Death);
+        private void OnLampDied()
+        {
+            _brokenGlassEffect.Play(BrokenGlassEventType.Death);
+        }
     }
 }

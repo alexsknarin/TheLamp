@@ -1,31 +1,35 @@
+using _GAME.Scripts.Lib.Interfaces;
 using UnityEngine;
 
-public class DragonflyPreAttackFlash : MonoBehaviour, IInitializable
+namespace _GAME.Scripts.Enemies.Dragonfly.Presentation
 {
-    [SerializeField] private MeshRenderer _bodyMeshRenderer;
-    [SerializeField] private MeshRenderer _wingsMeshRenderer;
-    private Material _bodyMaterial;
-    private Material _wingsMaterial;
-
-    public void Initialize()
+    public class DragonflyPreAttackFlash : MonoBehaviour, IInitializable
     {
-        _bodyMaterial = _bodyMeshRenderer.material;
-        _wingsMaterial = _wingsMeshRenderer.material;
+        [SerializeField] private MeshRenderer _bodyMeshRenderer;
+        [SerializeField] private MeshRenderer _wingsMeshRenderer;
+        private Material _bodyMaterial;
+        private Material _wingsMaterial;
+
+        public void Initialize()
+        {
+            _bodyMaterial = _bodyMeshRenderer.material;
+            _wingsMaterial = _wingsMeshRenderer.material;
         
-        _bodyMaterial.SetFloat("_AttackSemaphore", 0f);
-        _wingsMaterial.SetFloat("_AttackSemaphore", 0f);
-    }
+            _bodyMaterial.SetFloat("_AttackSemaphore", 0f);
+            _wingsMaterial.SetFloat("_AttackSemaphore", 0f);
+        }
 
-    public void PreAttackStart()
-    {
-        _bodyMaterial.SetFloat("_AttackSemaphore", 1f);
-        _wingsMaterial.SetFloat("_AttackSemaphore", 1f);
-    }
+        public void PreAttackStart()
+        {
+            _bodyMaterial.SetFloat("_AttackSemaphore", 1f);
+            _wingsMaterial.SetFloat("_AttackSemaphore", 1f);
+        }
 
-    public void PreAttackEnd()
-    {
-        _bodyMaterial.SetFloat("_AttackSemaphore", 0f);
-        _wingsMaterial.SetFloat("_AttackSemaphore", 0f);
+        public void PreAttackEnd()
+        {
+            _bodyMaterial.SetFloat("_AttackSemaphore", 0f);
+            _wingsMaterial.SetFloat("_AttackSemaphore", 0f);
         
+        }
     }
 }

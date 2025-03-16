@@ -1,4 +1,7 @@
-public interface IStateMachineOwner
+namespace _GAME.Scripts.Lib.Interfaces
 {
-    public void SwitchState();
+    public interface IStateMachineOwner
+    {
+        public void SwitchState();
+    }
 }

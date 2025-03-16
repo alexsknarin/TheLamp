@@ -1,105 +1,110 @@
 using System;
+using _GAME.Scripts.Lib.Enums;
+using _GAME.Scripts.Lib.Interfaces;
 using UnityEngine;
 
-public class Spider : CollidableEnemy, ISpreadable
+namespace _GAME.Scripts.Enemies.Spider
 {
-    [Header("-- Attributes --")]
-    [SerializeField] private int _maxHealth = 1;
-    [SerializeField] private int _currentHealth;
-    [SerializeField] private float _collisionRadius = 0.1f;
-    [Header("-- Movement --")]
-    [SerializeField] private SpiderMovement _movement;
+    public class Spider : CollidableEnemy, ISpreadable
+    {
+        [Header("-- Attributes --")]
+        [SerializeField] private int _maxHealth = 1;
+        [SerializeField] private int _currentHealth;
+        [SerializeField] private float _collisionRadius = 0.1f;
+        [Header("-- Movement --")]
+        [SerializeField] private SpiderMovement _movement;
     
-    public event Action Started;
-    public event Action Damaged;
-    public event Action<int, int> HealthChanged; 
-    public event Action Dead;
-    public override float Radius => _collisionRadius;
-    public override Vector2 Position => transform.position;
-    public override bool IsReadyToAttack => CheckIsReadyToAttack();
+        public event Action Started;
+        public event Action Damaged;
+        public event Action<int, int> HealthChanged; 
+        public event Action Dead;
+        public override float Radius => _collisionRadius;
+        public override Vector2 Position => transform.position;
+        public override bool IsReadyToAttack => CheckIsReadyToAttack();
     
-    public override void Initialize()
-    {
-        _movement.Initialize();
-        _movement.ReadyToAttackStateStarted += OnReadyToAttackStateStarted;
-        _movement.ReadyToAttackStateEnded += OnReadyToAttackStateEnded;
-        _movement.DeathStateEnded += OnDeathStateEnded;
-    }
-
-    private void OnDestroy()
-    {
-        _movement.ReadyToAttackStateStarted -= OnReadyToAttackStateStarted;
-        _movement.ReadyToAttackStateEnded -= OnReadyToAttackStateEnded;
-        _movement.DeathStateEnded -= OnDeathStateEnded;
-    }
-
-    public override void Play()
-    {
-        _currentHealth = _maxHealth;
-        _isInAttackReadyMovementState = false;
-        IsReadyForDamage = false;
-        IsReceivedLampAttackDamage = false;
-        CollisionState = CollidableState.Outside;
-        HealthChanged?.Invoke(_currentHealth, _maxHealth);
-        _movement.Play();
-        Started?.Invoke();
-    }
-
-    public override void ReceiveDamage(int damageAmount)
-    {
-        IsReceivedLampAttackDamage = true;
-        IsReadyForDamage = false;
-        _currentHealth -= damageAmount;
-        
-        if (_currentHealth <= 0)
+        public override void Initialize()
         {
-            Dead?.Invoke();
-            DoDeath();
+            _movement.Initialize();
+            _movement.ReadyToAttackStateStarted += OnReadyToAttackStateStarted;
+            _movement.ReadyToAttackStateEnded += OnReadyToAttackStateEnded;
+            _movement.DeathStateEnded += OnDeathStateEnded;
         }
-        else
+
+        private void OnDestroy()
         {
-            Debug.Log($"Damage Received: {damageAmount}.");
-            _movement.TriggerFall();
-            Damaged?.Invoke();
+            _movement.ReadyToAttackStateStarted -= OnReadyToAttackStateStarted;
+            _movement.ReadyToAttackStateEnded -= OnReadyToAttackStateEnded;
+            _movement.DeathStateEnded -= OnDeathStateEnded;
+        }
+
+        public override void Play()
+        {
+            _currentHealth = _maxHealth;
+            _isInAttackReadyMovementState = false;
+            IsReadyForDamage = false;
+            IsReceivedLampAttackDamage = false;
+            CollisionState = CollidableState.Outside;
             HealthChanged?.Invoke(_currentHealth, _maxHealth);
+            _movement.Play();
+            Started?.Invoke();
         }
-    }
 
-    private bool CheckIsReadyToAttack()
-    {
-        if (_isInAttackReadyMovementState)
+        public override void ReceiveDamage(int damageAmount)
         {
-            return true;
+            IsReceivedLampAttackDamage = true;
+            IsReadyForDamage = false;
+            _currentHealth -= damageAmount;
+        
+            if (_currentHealth <= 0)
+            {
+                Dead?.Invoke();
+                DoDeath();
+            }
+            else
+            {
+                Debug.Log($"Damage Received: {damageAmount}.");
+                _movement.TriggerFall();
+                Damaged?.Invoke();
+                HealthChanged?.Invoke(_currentHealth, _maxHealth);
+            }
         }
-        return false;
-    }
 
-    public override void Attack()
-    {
-        _isInAttackReadyMovementState = false;
-        IsReceivedLampAttackDamage = false;
-        _movement.TriggerAttack();
-    }
+        private bool CheckIsReadyToAttack()
+        {
+            if (_isInAttackReadyMovementState)
+            {
+                return true;
+            }
+            return false;
+        }
 
-    public void Spread()
-    {
-        _movement.TriggerSpread();
-    }
+        public override void Attack()
+        {
+            _isInAttackReadyMovementState = false;
+            IsReceivedLampAttackDamage = false;
+            _movement.TriggerAttack();
+        }
 
-    public override void DoDeath()
-    {
-        _movement.TriggerDeath();
-    }
+        public void Spread()
+        {
+            _movement.TriggerSpread();
+        }
 
-    public override void HandleCollision()
-    {
-        CollisionState = CollidableState.AfterCollision;
-        _movement.TriggerFall();
-    }
+        public override void DoDeath()
+        {
+            _movement.TriggerDeath();
+        }
 
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.cyan;
-        Gizmos.DrawWireSphere(transform.position, _collisionRadius);
+        public override void HandleCollision()
+        {
+            CollisionState = CollidableState.AfterCollision;
+            _movement.TriggerFall();
+        }
+
+        private void OnDrawGizmos()
+        {
+            Gizmos.color = Color.cyan;
+            Gizmos.DrawWireSphere(transform.position, _collisionRadius);
+        }
     }
 }

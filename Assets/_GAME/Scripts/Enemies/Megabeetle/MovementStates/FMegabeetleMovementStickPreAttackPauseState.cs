@@ -1,44 +1,48 @@
 using System;
+using _GAME.Scripts.Lib.Interfaces;
 using UnityEngine;
 
-public class FMegabeetleMovementStickPreAttackPauseState : RegularEnemyMovementStateBase
+namespace _GAME.Scripts.Enemies.Megabeetle.MovementStates
 {
-    private readonly IPositionDirectionProvider _positionDirectionProvider;
-    
-    private float _duration = 0.12f;
-    private float _localTime = 0f;
-    private float _phase = 0f;
-    
-    public FMegabeetleMovementStickPreAttackPauseState(IPositionDirectionProvider positionDirectionProvider)
+    public class FMegabeetleMovementStickPreAttackPauseState : EnemyMovementStateBase
     {
-        _positionDirectionProvider = positionDirectionProvider;
-    }
+        private readonly IPositionDirectionProvider _positionDirectionProvider;
     
-    public event Action Started;
-    public event Action Ended;
+        private float _duration = 0.12f;
+        private float _localTime = 0f;
+        private float _phase = 0f;
     
-    public override void OnEnter()
-    {
-        IsReadyToSwitch = false;
-        Position2D = _positionDirectionProvider.Position2D;
-        _localTime = 0;
-        _phase = 0;
-        Started?.Invoke();
-    }
-
-    public override void Tick()
-    {
-        _phase  = _localTime / _duration;
-        _localTime += Time.deltaTime;
-        if (_phase > 1)
+        public FMegabeetleMovementStickPreAttackPauseState(IPositionDirectionProvider positionDirectionProvider)
         {
-            IsReadyToSwitch = true;
+            _positionDirectionProvider = positionDirectionProvider;
         }
-        
-    }
     
-    public override void OnExit()
-    {
-        Ended?.Invoke();
+        public event Action Started;
+        public event Action Ended;
+    
+        public override void OnEnter()
+        {
+            IsReadyToSwitch = false;
+            Position2D = _positionDirectionProvider.Position2D;
+            _localTime = 0;
+            _phase = 0;
+            Started?.Invoke();
+        }
+
+        public override void Tick()
+        {
+            _phase  = _localTime / _duration;
+            _localTime += Time.deltaTime;
+            if (_phase > 1)
+            {
+                IsReadyToSwitch = true;
+            }
+        
+        }
+    
+        public override void OnExit()
+        {
+            Ended?.Invoke();
+        }
     }
 }

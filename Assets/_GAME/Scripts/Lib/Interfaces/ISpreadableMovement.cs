@@ -1,4 +1,7 @@
-public interface ISpreadableMovement
+namespace _GAME.Scripts.Lib.Interfaces
 {
-    public void TriggerSpread();
+    public interface ISpreadableMovement
+    {
+        public void TriggerSpread();
+    }
 }

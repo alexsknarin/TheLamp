@@ -1,12 +1,15 @@
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Assets/Create/SpawnQueueData")]
-public class SpawnQueueData : ScriptableObject
+namespace _GAME.Scripts.GameCoreSystems.DataManagement.DataTypes
 {
-    [SerializeField] private string _spawnQueue;
-    public string Data
+    [CreateAssetMenu(menuName = "Assets/Create/SpawnQueueData")]
+    public class SpawnQueueData : ScriptableObject
     {
-        get { return _spawnQueue; }
-        set { _spawnQueue = value; }
+        [SerializeField] private string _spawnQueue;
+        public string Data
+        {
+            get { return _spawnQueue; }
+            set { _spawnQueue = value; }
+        }
     }
 }

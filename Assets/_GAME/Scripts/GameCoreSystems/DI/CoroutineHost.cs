@@ -1,4 +1,8 @@
 using UnityEngine;
-public class CoroutineHost : MonoBehaviour
+
+namespace _GAME.Scripts.GameCoreSystems.DI
 {
+    public class CoroutineHost : MonoBehaviour
+    {
+    }
 }

@@ -1,28 +1,32 @@
+using _GAME.Scripts.Lib.Interfaces;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "FDragonflyIdleState", menuName = "FDragonflyMovementStates/FDragonflyIdleState")]
-public class FDragonflyIdleState : ScriptableObject, IState
+namespace _GAME.Scripts.Enemies.Dragonfly.FMovementStates
 {
-    // Dependencies
-    private Transform _visibleBodyTransform;
-    private Transform _baseTransform;
-    private Vector3 _startPosition;
-    
-    public void SetDependencies(Transform visibleBodyTransform, Transform baseTransform)
+    [CreateAssetMenu(fileName = "FDragonflyIdleState", menuName = "FDragonflyMovementStates/FDragonflyIdleState")]
+    public class FDragonflyIdleState : ScriptableObject, IState
     {
-        _visibleBodyTransform = visibleBodyTransform;
-        _baseTransform = baseTransform;
-        _startPosition = new Vector3(0f, -8f, 0f);
-    }
+        // Dependencies
+        private Transform _visibleBodyTransform;
+        private Transform _baseTransform;
+        private Vector3 _startPosition;
     
-    public void OnEnter()
-    {
-        _visibleBodyTransform.SetParent(_baseTransform);
-        _visibleBodyTransform.localPosition = _startPosition;
-        _visibleBodyTransform.rotation = Quaternion.identity;
+        public void SetDependencies(Transform visibleBodyTransform, Transform baseTransform)
+        {
+            _visibleBodyTransform = visibleBodyTransform;
+            _baseTransform = baseTransform;
+            _startPosition = new Vector3(0f, -8f, 0f);
+        }
+    
+        public void OnEnter()
+        {
+            _visibleBodyTransform.SetParent(_baseTransform);
+            _visibleBodyTransform.localPosition = _startPosition;
+            _visibleBodyTransform.rotation = Quaternion.identity;
+        }
+
+        public void Tick() { }
+
+        public void OnExit() { }
     }
-
-    public void Tick() { }
-
-    public void OnExit() { }
 }

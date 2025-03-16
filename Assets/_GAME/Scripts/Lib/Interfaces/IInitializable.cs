@@ -1,4 +1,7 @@
-public interface IInitializable
+namespace _GAME.Scripts.Lib.Interfaces
 {
-    public void Initialize();
+    public interface IInitializable
+    {
+        public void Initialize();
+    }
 }

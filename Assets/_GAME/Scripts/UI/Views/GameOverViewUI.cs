@@ -1,29 +1,34 @@
+using _GAME.Scripts.Lib.Interfaces;
+using _GAME.Scripts.UI.ViewModels;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class GameOverViewUI : MonoBehaviour, IInitializable
+namespace _GAME.Scripts.UI.Views
 {
-    [SerializeField] private Button _restartWithAdButton;
-    [SerializeField] private Button _restartNoAdButton;
-    [SerializeField] private Button _exitButton;
-    private GameOverViewModel _gameOverViewModel;
-    
-    public void Bind(GameOverViewModel gameOverViewModel)
+    public class GameOverViewUI : MonoBehaviour, IInitializable
     {
-        _gameOverViewModel = gameOverViewModel;
-    }
+        [SerializeField] private Button _restartWithAdButton;
+        [SerializeField] private Button _restartNoAdButton;
+        [SerializeField] private Button _exitButton;
+        private GameOverViewModel _gameOverViewModel;
     
-    public void Initialize()
-    {
-        _restartNoAdButton.onClick.AddListener(_gameOverViewModel.RestartGame);
-        _restartWithAdButton.onClick.AddListener(_gameOverViewModel.RestartGameWitAd);
-        _exitButton.onClick.AddListener(_gameOverViewModel.ExitGame);
-    }
+        public void Bind(GameOverViewModel gameOverViewModel)
+        {
+            _gameOverViewModel = gameOverViewModel;
+        }
     
-    private void OnDestroy()
-    {
-        _restartNoAdButton.onClick.RemoveListener(_gameOverViewModel.RestartGame);
-        _restartWithAdButton.onClick.RemoveListener(_gameOverViewModel.RestartGameWitAd);
-        _exitButton.onClick.RemoveListener(_gameOverViewModel.ExitGame);
+        public void Initialize()
+        {
+            _restartNoAdButton.onClick.AddListener(_gameOverViewModel.RestartGame);
+            _restartWithAdButton.onClick.AddListener(_gameOverViewModel.RestartGameWitAd);
+            _exitButton.onClick.AddListener(_gameOverViewModel.ExitGame);
+        }
+    
+        private void OnDestroy()
+        {
+            _restartNoAdButton.onClick.RemoveListener(_gameOverViewModel.RestartGame);
+            _restartWithAdButton.onClick.RemoveListener(_gameOverViewModel.RestartGameWitAd);
+            _exitButton.onClick.RemoveListener(_gameOverViewModel.ExitGame);
+        }
     }
 }

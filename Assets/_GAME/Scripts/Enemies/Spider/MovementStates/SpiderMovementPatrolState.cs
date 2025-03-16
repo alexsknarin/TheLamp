@@ -1,44 +1,48 @@
 using System;
+using _GAME.Scripts.Lib.Interfaces;
 using UnityEngine;
 
-public class SpiderMovementPatrolState: RegularEnemyMovementStateBase
+namespace _GAME.Scripts.Enemies.Spider.MovementStates
 {
-    private IPositionDirectionProvider _positionDirectionProvider;
-    private Vector2 _hangingPoint;
-    private float _localTime;
-    
-    public SpiderMovementPatrolState(IPositionDirectionProvider positionDirectionProvider, float xCenter, float height)
+    public class SpiderMovementPatrolState: EnemyMovementStateBase
     {
-        _positionDirectionProvider = positionDirectionProvider;
-        _hangingPoint.x = xCenter;
-        _hangingPoint.y = height;
-    }
+        private IPositionDirectionProvider _positionDirectionProvider;
+        private Vector2 _hangingPoint;
+        private float _localTime;
     
-    public event Action Started;
-    public event Action Ended;
+        public SpiderMovementPatrolState(IPositionDirectionProvider positionDirectionProvider, float xCenter, float height)
+        {
+            _positionDirectionProvider = positionDirectionProvider;
+            _hangingPoint.x = xCenter;
+            _hangingPoint.y = height;
+        }
+    
+        public event Action Started;
+        public event Action Ended;
    
-    public override void OnEnter()
-    {
-        _hangingPoint.x = Mathf.Abs(_hangingPoint.x);
-        Position2D = _positionDirectionProvider.Position2D;
-        _localTime = 0;
-        Started?.Invoke();
-    }
+        public override void OnEnter()
+        {
+            _hangingPoint.x = Mathf.Abs(_hangingPoint.x);
+            Position2D = _positionDirectionProvider.Position2D;
+            _localTime = 0;
+            Started?.Invoke();
+        }
 
-    public override void Tick()
-    {
-        float swing = Mathf.Sin(_localTime) * 0.06f + _hangingPoint.x;
+        public override void Tick()
+        {
+            float swing = Mathf.Sin(_localTime) * 0.06f + _hangingPoint.x;
         
-        Vector2 newPosition = Position2D;
-        newPosition.x = swing;
-        newPosition = (newPosition - _hangingPoint).normalized * 5f + _hangingPoint;
+            Vector2 newPosition = Position2D;
+            newPosition.x = swing;
+            newPosition = (newPosition - _hangingPoint).normalized * 5f + _hangingPoint;
         
-        Position2D = newPosition;
-        _localTime += Time.deltaTime;
-    }
+            Position2D = newPosition;
+            _localTime += Time.deltaTime;
+        }
     
-    public override void OnExit()
-    {
-        Ended?.Invoke();
+        public override void OnExit()
+        {
+            Ended?.Invoke();
+        }
     }
 }

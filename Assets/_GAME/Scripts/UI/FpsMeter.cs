@@ -1,14 +1,17 @@
 using TMPro;
 using UnityEngine;
 
-public class FpsMeter : MonoBehaviour
+namespace _GAME.Scripts.UI
 {
-    [SerializeField] private TMP_Text _fpsText;
-
-    // Update is called once per frame
-    void Update()
+    public class FpsMeter : MonoBehaviour
     {
-        float fps = 1.0f / Time.deltaTime;
-        _fpsText.text = $"FPS: {Mathf.Round(fps)}";
+        [SerializeField] private TMP_Text _fpsText;
+
+        // Update is called once per frame
+        void Update()
+        {
+            float fps = 1.0f / Time.deltaTime;
+            _fpsText.text = $"FPS: {Mathf.Round(fps)}";
+        }
     }
 }

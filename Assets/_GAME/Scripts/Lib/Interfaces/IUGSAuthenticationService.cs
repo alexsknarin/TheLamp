@@ -1,4 +1,7 @@
-public interface IUGSAuthenticationService
+namespace _GAME.Scripts.Lib.Interfaces
 {
-    public bool IsConnected { get; }
+    public interface IUGSAuthenticationService
+    {
+        public bool IsConnected { get; }
+    }
 }

@@ -1,13 +1,16 @@
-public enum GameStageState
+namespace _GAME.Scripts.Lib.Enums
 {
-    Loading,
-    Intro,
-    PrepareIn,
-    Prepare,
-    PrepareOut,
-    Wave,
-    GameOverIn,
-    GameOver,
-    GameOverOut,
-    Advertisement
+    public enum GameStageState
+    {
+        Loading,
+        Intro,
+        PrepareIn,
+        Prepare,
+        PrepareOut,
+        Wave,
+        GameOverIn,
+        GameOver,
+        GameOverOut,
+        Advertisement
+    }
 }

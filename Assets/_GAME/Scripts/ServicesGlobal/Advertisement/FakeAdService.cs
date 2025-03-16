@@ -1,49 +1,52 @@
 using System;
 using UnityEngine;
 
-public class FakeAdService: AdvertisementBaseService
+namespace _GAME.Scripts.ServicesGlobal.Advertisement
 {
-    private FakeAd _fakeAd;
-
-    public FakeAdService(FakeAd fakeAd)
+    public class FakeAdService: AdvertisementBaseService
     {
-        _fakeAd = fakeAd;
-        _fakeAd.AdFinished += OnAdFinished;
-    }
+        private FakeAd _fakeAd;
 
-    public override void Dispose()
-    {
-        _fakeAd.AdFinished -= OnAdFinished;
-    }
+        public FakeAdService(FakeAd fakeAd)
+        {
+            _fakeAd = fakeAd;
+            _fakeAd.AdFinished += OnAdFinished;
+        }
 
-    public override event Action AdSuccessfullyFinished;
+        public override void Dispose()
+        {
+            _fakeAd.AdFinished -= OnAdFinished;
+        }
 
-    public override void Initialize()
-    {
-        Debug.Log("AdService: Start Connecting to the Ad Service");
-        // Subscribe to Connected event
-        // Restart Connection if failed to connect
-        // Subscribe to AdLoaded event
-        // Subscribe to AdLoadedFail event
-        // If load failed try again
-    }
+        public override event Action AdSuccessfullyFinished;
 
-    public override void LoadAd()
-    {
-        Debug.Log("AdService: Start Loading Ad");
-    }
+        public override void Initialize()
+        {
+            Debug.Log("AdService: Start Connecting to the Ad Service");
+            // Subscribe to Connected event
+            // Restart Connection if failed to connect
+            // Subscribe to AdLoaded event
+            // Subscribe to AdLoadedFail event
+            // If load failed try again
+        }
 
-    public override void ShowAd()
-    {
-        // If connected
-        // If Ad is loaded
-        _fakeAd.Play();
-        // Otherwise play promo
-    }
+        public override void LoadAd()
+        {
+            Debug.Log("AdService: Start Loading Ad");
+        }
 
-    private void OnAdFinished()
-    {
-        Debug.Log("AdService: Ad Finished");
-        AdSuccessfullyFinished?.Invoke();
+        public override void ShowAd()
+        {
+            // If connected
+            // If Ad is loaded
+            _fakeAd.Play();
+            // Otherwise play promo
+        }
+
+        private void OnAdFinished()
+        {
+            Debug.Log("AdService: Ad Finished");
+            AdSuccessfullyFinished?.Invoke();
+        }
     }
 }

@@ -1,24 +1,29 @@
-public class GameOverViewModel
+using _GAME.Scripts.GameCoreSystems;
+
+namespace _GAME.Scripts.UI.ViewModels
 {
-    private GameModel _gameModel;
-    
-    public GameOverViewModel(GameModel gameModel)
+    public class GameOverViewModel
     {
-        _gameModel = gameModel;
-    }
+        private GameModel _gameModel;
     
-    public void RestartGameWitAd()
-    {
-        _gameModel.HandleRestartGameWitAdFromGameOver();
-    }
+        public GameOverViewModel(GameModel gameModel)
+        {
+            _gameModel = gameModel;
+        }
     
-    public void RestartGame()
-    {
-        _gameModel.HandleRestartGameNoAdFromGameOver();
-    }
+        public void RestartGameWitAd()
+        {
+            _gameModel.HandleRestartGameWitAdFromGameOver();
+        }
     
-    public void ExitGame()
-    {
-        _gameModel.ExitGame();
+        public void RestartGame()
+        {
+            _gameModel.HandleRestartGameNoAdFromGameOver();
+        }
+    
+        public void ExitGame()
+        {
+            _gameModel.ExitGame();
+        }
     }
 }

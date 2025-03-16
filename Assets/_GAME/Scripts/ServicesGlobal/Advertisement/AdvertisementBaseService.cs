@@ -1,11 +1,15 @@
 using System;
-using UnityEngine;
+using _GAME.Scripts.Lib.Interfaces;
+using IDisposable = _GAME.Scripts.Lib.Interfaces.IDisposable;
 
-public abstract class AdvertisementBaseService : IAdvertisementService, IInitializable, IDisposable
+namespace _GAME.Scripts.ServicesGlobal.Advertisement
 {
-    public abstract event Action AdSuccessfullyFinished;
-    public abstract void Initialize();
-    public abstract void Dispose();
-    public abstract void LoadAd();
-    public abstract void ShowAd();
+    public abstract class AdvertisementBaseService : IAdvertisementService, IInitializable, IDisposable
+    {
+        public abstract event Action AdSuccessfullyFinished;
+        public abstract void Initialize();
+        public abstract void Dispose();
+        public abstract void LoadAd();
+        public abstract void ShowAd();
+    }
 }

@@ -1,47 +1,52 @@
-using System;
 using System.Collections.Generic;
+using _GAME.Scripts.Enemies;
+using _GAME.Scripts.Lib;
+using _GAME.Scripts.Lib.Interfaces;
 
-public class FLampAttacker
+namespace _GAME.Scripts.GameCoreSystems.EnemyManagement
 {
-    private bool _isBlockedMode = false;
-    
-    public void SetBlockedMode()
+    public class FLampAttacker
     {
-        _isBlockedMode = true;
-    }
+        private bool _isBlockedMode = false;
     
-    public void SetUnBlockedMode()
-    {
-        _isBlockedMode = false;
-    }
-    
-    public void Attack(float power, List<FEnemy> enemies)
-    {
-        foreach (var enemy in enemies)
+        public void SetBlockedMode()
         {
-            if (_isBlockedMode)
+            _isBlockedMode = true;
+        }
+    
+        public void SetUnBlockedMode()
+        {
+            _isBlockedMode = false;
+        }
+    
+        public void Attack(float power, List<FEnemy> enemies)
+        {
+            foreach (var enemy in enemies)
             {
-                if(enemy is IStickableWithLamp && enemy.IsReadyForDamage)
+                if (_isBlockedMode)
                 {
-                    int damage = Converters.PowerToAttackPower(power);
-                    if (damage > 0)
+                    if(enemy is IStickableWithLamp && enemy.IsReadyForDamage)
                     {
-                        enemy.ReceiveDamage(damage);
-                    }
-                }    
-            }
-            else
-            {
-                if(enemy.IsReadyForDamage)
+                        int damage = Converters.PowerToAttackPower(power);
+                        if (damage > 0)
+                        {
+                            enemy.ReceiveDamage(damage);
+                        }
+                    }    
+                }
+                else
                 {
-                    int damage = Converters.PowerToAttackPower(power);
-                    if (damage > 0)
+                    if(enemy.IsReadyForDamage)
                     {
-                        enemy.ReceiveDamage(damage);
+                        int damage = Converters.PowerToAttackPower(power);
+                        if (damage > 0)
+                        {
+                            enemy.ReceiveDamage(damage);
+                        }
                     }
                 }
-            }
             
+            }
         }
     }
 }

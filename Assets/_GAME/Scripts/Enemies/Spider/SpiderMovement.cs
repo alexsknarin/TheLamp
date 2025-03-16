@@ -1,204 +1,212 @@
 using System;
+using _GAME.Scripts.Enemies.Generic.States;
+using _GAME.Scripts.Enemies.Spider.MovementStates;
+using _GAME.Scripts.Factories;
+using _GAME.Scripts.Lib;
+using _GAME.Scripts.Lib.Interfaces;
 using UnityEngine;
 
-public class SpiderMovement : EnemyMovementBase, IPositionDirectionProvider, ISpreadableMovement
+namespace _GAME.Scripts.Enemies.Spider
 {
-    [Header("-- Movement Settings --")]
-    [SerializeField] private float _speed;
-    // Debug
-    [SerializeField] private string _stateDebug;
-    [SerializeField] private int _sideDirection = 1; // TODO: Try without it
-    [SerializeField] private int _depthSideDirection = 0;
-    [SerializeField] private float _height = 5f;
-    [SerializeField] private float _xCenter = 1.12f;
-    [Header("---- States Settings ----")]
-    [SerializeField] private float _fallBounceForce = 4f;
-    
-    private ILampPositionProviderService _lampPositionProviderService;
-
-    private Vector3 _position3D;
-
-    // State Machine
-    private readonly StateMachine _stateMachine = new();
-    private SpiderMovementStateFactory _stateFactory;
-    private RegularEnemyMovementStateBase _currentState;
-    
-    private SpiderMovementEnterState _enterState;
-    private SpiderMovementPatrolState _patrolState;
-    private SpiderMovementPreAttackState _preAttackState;
-    private SpiderMovementAttackState _attackState;
-    private SpiderMovementReturnState _returnState;
-    private FlyGenericMovementDeathState _deathState;
-    private SpiderMovementClimbUpState _climbUpState;
-    
-    public void Construct(
-        SpiderMovementStateFactory stateFactory, 
-        ILampPositionProviderService lampPositionProviderService)
+    public class SpiderMovement : EnemyMovementBase, IPositionDirectionProvider, ISpreadableMovement
     {
-        _stateFactory = stateFactory;
-        _lampPositionProviderService = lampPositionProviderService;
-    }
+        [Header("-- Movement Settings --")]
+        [SerializeField] private float _speed;
+        // Debug
+        [SerializeField] private string _stateDebug;
+        [SerializeField] private int _sideDirection = 1; // TODO: Try without it
+        [SerializeField] private int _depthSideDirection = 0;
+        [SerializeField] private float _height = 5f;
+        [SerializeField] private float _xCenter = 1.12f;
+        [Header("---- States Settings ----")]
+        [SerializeField] private float _fallBounceForce = 4f;
     
-    public event Action ReadyToAttackStateStarted;
-    public event Action ReadyToAttackStateEnded;
-    public event Action PreAttackStarted;
-    public event Action PreAttackEnded;
-    public event Action DeathStateEnded;
+        private ILampPositionProviderService _lampPositionProviderService;
 
-    public Vector2 Position2D { get; private set; } 
-    public Vector3 DepthDirection { get; private set; }
+        private Vector3 _position3D;
+
+        // State Machine
+        private readonly StateMachine _stateMachine = new();
+        private SpiderMovementStateFactory _stateFactory;
+        private EnemyMovementStateBase _currentState;
     
-    public override int SideDirection => _sideDirection;
+        private SpiderMovementEnterState _enterState;
+        private SpiderMovementPatrolState _patrolState;
+        private SpiderMovementPreAttackState _preAttackState;
+        private SpiderMovementAttackState _attackState;
+        private SpiderMovementReturnState _returnState;
+        private FlyGenericMovementDeathState _deathState;
+        private SpiderMovementClimbUpState _climbUpState;
     
-    public override void Initialize()
-    {
-        Debug.Log("FFlyMovement Initializing");
-        // Create Movement States
-        // TODO: get collision radius from configs
-        _stateFactory.SetEnemyDependencies(this, _speed, _xCenter, _height);
-        _enterState = (SpiderMovementEnterState)_stateFactory.Create(typeof(SpiderMovementEnterState));
-        _patrolState = (SpiderMovementPatrolState)_stateFactory.Create(typeof(SpiderMovementPatrolState));
-        _preAttackState = (SpiderMovementPreAttackState)_stateFactory.Create(typeof(SpiderMovementPreAttackState));
-        _attackState = (SpiderMovementAttackState)_stateFactory.Create(typeof(SpiderMovementAttackState));
-        _returnState = (SpiderMovementReturnState)_stateFactory.Create(typeof(SpiderMovementReturnState));
-        _deathState = (FlyGenericMovementDeathState)_stateFactory.Create(typeof(FlyGenericMovementDeathState));
-        _climbUpState = (SpiderMovementClimbUpState)_stateFactory.Create(typeof(SpiderMovementClimbUpState));
-        
-        // _patrolState = (FFlyGenericMovementPatrolState)_stateFactory.Create(typeof(FFlyGenericMovementPatrolState));
-        // _preAttackStateR = (FFlyMovementPreAttackStateR)_stateFactory.Create(typeof(FFlyMovementPreAttackStateR));
-        // _preAttackStateL = (FFlyMovementPreAttackStateL)_stateFactory.Create(typeof(FFlyMovementPreAttackStateL));
-        // _attackState = (FFlyGenericMovementAcceleratedAttackState)_stateFactory.Create(typeof(FFlyGenericMovementAcceleratedAttackState));
-        // _fallState = (FFlyGenericMovementFallState)_stateFactory.Create(typeof(FFlyGenericMovementFallState));
-        // _deathState = (FFlyMovementDeathState)_stateFactory.Create(typeof(FFlyMovementDeathState));
-        // _spreadState = (FFlyGenericMovementSpreadState)_stateFactory.Create(typeof(FFlyGenericMovementSpreadState));
-        
-        // Subscribe to state events
-        _patrolState.Started += OnPatrolStateStarted; 
-        _patrolState.Ended += OnPatrolStateEnded;
-        _preAttackState.Started += OnPreAttackStateStarted;
-        _preAttackState.Ended += OnPreAttackStateEnded;
-        _deathState.Ended += OnDeathStateEnded;
-        // _spreadState.Ended += OnSpreadStateEnded;
-        
-        At(_enterState, _patrolState, () => _enterState.IsReadyToSwitch);
-        At(_patrolState, _preAttackState, IsAttackStarted());
-        At(_preAttackState, _attackState, () => _preAttackState.IsReadyToSwitch);
-        At(_returnState, _patrolState, () => _returnState.IsReadyToSwitch);
-        At(_climbUpState, _enterState, () => _climbUpState.IsReadyToSwitch);
-        
-        // Predicates
-        Func<bool> IsAttackStarted() => () =>
+        public void Construct(
+            SpiderMovementStateFactory stateFactory, 
+            ILampPositionProviderService lampPositionProviderService)
         {
-            if (_isAttacking)
+            _stateFactory = stateFactory;
+            _lampPositionProviderService = lampPositionProviderService;
+        }
+    
+        public event Action ReadyToAttackStateStarted;
+        public event Action ReadyToAttackStateEnded;
+        public event Action PreAttackStarted;
+        public event Action PreAttackEnded;
+        public event Action DeathStateEnded;
+
+        public Vector2 Position2D { get; private set; } 
+        public Vector3 DepthDirection { get; private set; }
+    
+        public override int SideDirection => _sideDirection;
+    
+        public override void Initialize()
+        {
+            Debug.Log("FFlyMovement Initializing");
+            // Create Movement States
+            // TODO: get collision radius from configs
+            _stateFactory.SetEnemyDependencies(this, _speed, _xCenter, _height);
+            _enterState = (SpiderMovementEnterState)_stateFactory.Create(typeof(SpiderMovementEnterState));
+            _patrolState = (SpiderMovementPatrolState)_stateFactory.Create(typeof(SpiderMovementPatrolState));
+            _preAttackState = (SpiderMovementPreAttackState)_stateFactory.Create(typeof(SpiderMovementPreAttackState));
+            _attackState = (SpiderMovementAttackState)_stateFactory.Create(typeof(SpiderMovementAttackState));
+            _returnState = (SpiderMovementReturnState)_stateFactory.Create(typeof(SpiderMovementReturnState));
+            _deathState = (FlyGenericMovementDeathState)_stateFactory.Create(typeof(FlyGenericMovementDeathState));
+            _climbUpState = (SpiderMovementClimbUpState)_stateFactory.Create(typeof(SpiderMovementClimbUpState));
+        
+            // _patrolState = (FFlyGenericMovementPatrolState)_stateFactory.Create(typeof(FFlyGenericMovementPatrolState));
+            // _preAttackStateR = (FFlyMovementPreAttackStateR)_stateFactory.Create(typeof(FFlyMovementPreAttackStateR));
+            // _preAttackStateL = (FFlyMovementPreAttackStateL)_stateFactory.Create(typeof(FFlyMovementPreAttackStateL));
+            // _attackState = (FFlyGenericMovementAcceleratedAttackState)_stateFactory.Create(typeof(FFlyGenericMovementAcceleratedAttackState));
+            // _fallState = (FFlyGenericMovementFallState)_stateFactory.Create(typeof(FFlyGenericMovementFallState));
+            // _deathState = (FFlyMovementDeathState)_stateFactory.Create(typeof(FFlyMovementDeathState));
+            // _spreadState = (FFlyGenericMovementSpreadState)_stateFactory.Create(typeof(FFlyGenericMovementSpreadState));
+        
+            // Subscribe to state events
+            _patrolState.Started += OnPatrolStateStarted; 
+            _patrolState.Ended += OnPatrolStateEnded;
+            _preAttackState.Started += OnPreAttackStateStarted;
+            _preAttackState.Ended += OnPreAttackStateEnded;
+            _deathState.Ended += OnDeathStateEnded;
+            // _spreadState.Ended += OnSpreadStateEnded;
+        
+            At(_enterState, _patrolState, () => _enterState.IsReadyToSwitch);
+            At(_patrolState, _preAttackState, IsAttackStarted());
+            At(_preAttackState, _attackState, () => _preAttackState.IsReadyToSwitch);
+            At(_returnState, _patrolState, () => _returnState.IsReadyToSwitch);
+            At(_climbUpState, _enterState, () => _climbUpState.IsReadyToSwitch);
+        
+            // Predicates
+            Func<bool> IsAttackStarted() => () =>
             {
-                _isAttacking = false;
-                return true;
-            }
-            return false;
-        };
+                if (_isAttacking)
+                {
+                    _isAttacking = false;
+                    return true;
+                }
+                return false;
+            };
         
         
-        void At(IState from, IState to, Func<bool> condition) => _stateMachine.AddTransition(from, to, condition);
-    }
+            void At(IState from, IState to, Func<bool> condition) => _stateMachine.AddTransition(from, to, condition);
+        }
 
-    private void OnDestroy()
-    {
-        _patrolState.Started += OnPatrolStateStarted; 
-        _patrolState.Ended += OnPatrolStateEnded;
-        _preAttackState.Started -= OnPreAttackStateStarted;
-        _preAttackState.Ended -= OnPreAttackStateEnded;
-        _deathState.Ended -= OnDeathStateEnded;
-    }
+        private void OnDestroy()
+        {
+            _patrolState.Started += OnPatrolStateStarted; 
+            _patrolState.Ended += OnPatrolStateEnded;
+            _preAttackState.Started -= OnPreAttackStateStarted;
+            _preAttackState.Ended -= OnPreAttackStateEnded;
+            _deathState.Ended -= OnDeathStateEnded;
+        }
 
-    public override void Play()
-    {
-        _sideDirection = RandomDirection.Generate();;
+        public override void Play()
+        {
+            _sideDirection = RandomDirection.Generate();;
         
-        SwitchToStateAndApply(_enterState);
+            SwitchToStateAndApply(_enterState);
         
-        _isAttacking = false;
-        enabled = true;
-    }
+            _isAttacking = false;
+            enabled = true;
+        }
 
-    public override void TriggerAttack()
-    {
-        _isAttacking = true;
-    }
+        public override void TriggerAttack()
+        {
+            _isAttacking = true;
+        }
 
-    public override void TriggerFall()
-    {
-        HandleLampCollision();
-        SwitchToStateAndApply(_returnState);
-    }
+        public override void TriggerFall()
+        {
+            HandleLampCollision();
+            SwitchToStateAndApply(_returnState);
+        }
 
-    public override void TriggerDeath()
-    {
-        HandleLampCollision();
-        SwitchToStateAndApply(_deathState);
-    }
+        public override void TriggerDeath()
+        {
+            HandleLampCollision();
+            SwitchToStateAndApply(_deathState);
+        }
 
-    public void TriggerSpread()
-    {
-        SwitchToStateAndApply(_climbUpState);
-    }
+        public void TriggerSpread()
+        {
+            SwitchToStateAndApply(_climbUpState);
+        }
 
-    private void Update()
-    {
-        _stateMachine.Tick();
-        _currentState = (RegularEnemyMovementStateBase)_stateMachine.CurrentState;
-        _stateDebug = _currentState.GetType().Name; // Debug only
-        Position2D = _currentState.Position2D;
+        private void Update()
+        {
+            _stateMachine.Tick();
+            _currentState = (EnemyMovementStateBase)_stateMachine.CurrentState;
+            _stateDebug = _currentState.GetType().Name; // Debug only
+            Position2D = _currentState.Position2D;
         
-        Vector2 newPosition = Position2D;
-        newPosition.x *= _sideDirection;
+            Vector2 newPosition = Position2D;
+            newPosition.x *= _sideDirection;
         
-        transform.position = newPosition;
-    }
+            transform.position = newPosition;
+        }
 
-    private void SwitchToStateAndApply(RegularEnemyMovementStateBase state) // TODO: implement this in all enemies
-    {
-        _currentState = state;
-        _stateMachine.SetState(_currentState);
-        Position2D = _currentState.Position2D;
-        Vector2 newPosition = Position2D;
+        private void SwitchToStateAndApply(EnemyMovementStateBase state) // TODO: implement this in all enemies
+        {
+            _currentState = state;
+            _stateMachine.SetState(_currentState);
+            Position2D = _currentState.Position2D;
+            Vector2 newPosition = Position2D;
         
-        // Apply side direction
-        newPosition.x *= _sideDirection;
+            // Apply side direction
+            newPosition.x *= _sideDirection;
         
-        transform.position = newPosition;
-        _stateDebug = _currentState.GetType().Name;
-    }
+            transform.position = newPosition;
+            _stateDebug = _currentState.GetType().Name;
+        }
 
-    private void HandleLampCollision()
-    {
-        Vector2 lampPosition = _lampPositionProviderService.GetLampPosition();
-        lampPosition.x *= _sideDirection;
-        Vector2 collisionDirection = (Position2D - lampPosition).normalized;
-        Position2D = lampPosition + collisionDirection * (0.49f + 0.15f + 0.0001f); // TODO: magic numbers
-    }
+        private void HandleLampCollision()
+        {
+            Vector2 lampPosition = _lampPositionProviderService.GetLampPosition();
+            lampPosition.x *= _sideDirection;
+            Vector2 collisionDirection = (Position2D - lampPosition).normalized;
+            Position2D = lampPosition + collisionDirection * (0.49f + 0.15f + 0.0001f); // TODO: magic numbers
+        }
 
-    private void OnPatrolStateStarted()
-    {
-        ReadyToAttackStateStarted?.Invoke();
-    }
+        private void OnPatrolStateStarted()
+        {
+            ReadyToAttackStateStarted?.Invoke();
+        }
 
-    private void OnPatrolStateEnded()
-    {
-        ReadyToAttackStateEnded?.Invoke();
-    }
+        private void OnPatrolStateEnded()
+        {
+            ReadyToAttackStateEnded?.Invoke();
+        }
 
-    private void OnPreAttackStateStarted()
-    {
-        PreAttackStarted?.Invoke();        
-    }
+        private void OnPreAttackStateStarted()
+        {
+            PreAttackStarted?.Invoke();        
+        }
 
-    private void OnPreAttackStateEnded()
-    {
-        PreAttackEnded?.Invoke();
-    }
+        private void OnPreAttackStateEnded()
+        {
+            PreAttackEnded?.Invoke();
+        }
 
-    private void OnDeathStateEnded()
-    {
-        DeathStateEnded?.Invoke();
+        private void OnDeathStateEnded()
+        {
+            DeathStateEnded?.Invoke();
+        }
     }
 }

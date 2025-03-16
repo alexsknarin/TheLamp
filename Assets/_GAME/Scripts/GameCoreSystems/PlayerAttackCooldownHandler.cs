@@ -1,101 +1,105 @@
 using System;
 using System.Collections;
+using _GAME.Scripts.Lib.Interfaces;
 using UnityEngine;
 
-public class PlayerAttackCooldownHandler : ITickable
+namespace _GAME.Scripts.GameCoreSystems
 {
-    private float _power;
-    private WaitForSeconds _attackEndWaitDuraiton;
-    private float _localTime;
-    private float _cooldownDuration;
-    private bool _isCooldownPlaying = false;
-    // Dependencies
-    private MonoBehaviour _coroutineHost; 
-    
-    public PlayerAttackCooldownHandler(MonoBehaviour monoBehaviour)
+    public class PlayerAttackCooldownHandler : ITickable
     {
-        _coroutineHost = monoBehaviour;
-    }
+        private float _power;
+        private WaitForSeconds _attackEndWaitDuraiton;
+        private float _localTime;
+        private float _cooldownDuration;
+        private bool _isCooldownPlaying = false;
+        // Dependencies
+        private MonoBehaviour _coroutineHost; 
     
-    public event Action<float> PowerChanged;
-    public event Action CooldownEnded;  // TODO: assess if this event is needed
-    public event Action PlayerAttackEnded;
-    
-    public float Power 
-    {
-        get => _power;
-        private set
+        public PlayerAttackCooldownHandler(MonoBehaviour monoBehaviour)
         {
-            _power = value;
-            PowerChanged?.Invoke(_power);
+            _coroutineHost = monoBehaviour;
         }
-    }
     
-    public void SetAttackDuration(float attackDuration)
-    {
-        _attackEndWaitDuraiton = new WaitForSeconds(attackDuration);
-    }
-    public void SetCooldownDuration(float cooldownDuration)
-    {
-        _cooldownDuration = cooldownDuration;
-    }
+        public event Action<float> PowerChanged;
+        public event Action CooldownEnded;  // TODO: assess if this event is needed
+        public event Action PlayerAttackEnded;
     
-    public void PlayAttack()
-    {
-        if (_isCooldownPlaying)
+        public float Power 
         {
-            StopCooldown();
+            get => _power;
+            private set
+            {
+                _power = value;
+                PowerChanged?.Invoke(_power);
+            }
         }
-        _coroutineHost.StartCoroutine(WaitForAttackEnd());
-    }
     
-    public void PlayCooldown()
-    {
-        if (_isCooldownPlaying)
+        public void SetAttackDuration(float attackDuration)
         {
-            StopCooldown();
+            _attackEndWaitDuraiton = new WaitForSeconds(attackDuration);
         }
-        StartCooldown();
-    }
-
-    public void StopCooldown()
-    {
-        _isCooldownPlaying = false;
-    }
-
-    public void Tick(float deltaTime)
-    {
-        if (_isCooldownPlaying)
+        public void SetCooldownDuration(float cooldownDuration)
         {
-            PerformCooldown(deltaTime);
+            _cooldownDuration = cooldownDuration;
         }
-    }
+    
+        public void PlayAttack()
+        {
+            if (_isCooldownPlaying)
+            {
+                StopCooldown();
+            }
+            _coroutineHost.StartCoroutine(WaitForAttackEnd());
+        }
+    
+        public void PlayCooldown()
+        {
+            if (_isCooldownPlaying)
+            {
+                StopCooldown();
+            }
+            StartCooldown();
+        }
 
-    private IEnumerator WaitForAttackEnd()
-    {
-        yield return _attackEndWaitDuraiton;
-        StartCooldown();
-        PlayerAttackEnded?.Invoke();
-    }
-
-    private void StartCooldown()
-    {
-        Power = 0;
-        _localTime = 0;
-        _isCooldownPlaying = true;
-    }
-
-    private void PerformCooldown(float deltaTime)
-    {
-        float phase = _localTime / _cooldownDuration;
-        if (phase > 1)
+        public void StopCooldown()
         {
             _isCooldownPlaying = false;
-            Power = 1;
-            CooldownEnded?.Invoke();
-            return;
         }
-        Power = phase;
-        _localTime += deltaTime;
+
+        public void Tick(float deltaTime)
+        {
+            if (_isCooldownPlaying)
+            {
+                PerformCooldown(deltaTime);
+            }
+        }
+
+        private IEnumerator WaitForAttackEnd()
+        {
+            yield return _attackEndWaitDuraiton;
+            StartCooldown();
+            PlayerAttackEnded?.Invoke();
+        }
+
+        private void StartCooldown()
+        {
+            Power = 0;
+            _localTime = 0;
+            _isCooldownPlaying = true;
+        }
+
+        private void PerformCooldown(float deltaTime)
+        {
+            float phase = _localTime / _cooldownDuration;
+            if (phase > 1)
+            {
+                _isCooldownPlaying = false;
+                Power = 1;
+                CooldownEnded?.Invoke();
+                return;
+            }
+            Power = phase;
+            _localTime += deltaTime;
+        }
     }
 }

@@ -1,6 +1,9 @@
 using System;
 
-public interface IBoss
+namespace _GAME.Scripts.Lib.Interfaces
 {
-    public event Action SpreadRequested;
+    public interface IBoss
+    {
+        public event Action SpreadRequested;
+    }
 }

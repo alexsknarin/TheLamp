@@ -1,6 +1,10 @@
 using System;
+using _GAME.Scripts.Enemies;
 
-public interface IEnemyDeactivatedProvider
+namespace _GAME.Scripts.Lib.Interfaces
 {
-    public event Action<FEnemy> EnemyReleasedToPool;
+    public interface IEnemyDeactivatedProvider
+    {
+        public event Action<FEnemy> EnemyReleasedToPool;
+    }
 }

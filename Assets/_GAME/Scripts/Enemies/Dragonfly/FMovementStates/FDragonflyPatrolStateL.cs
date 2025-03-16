@@ -1,40 +1,44 @@
 using System;
+using _GAME.Scripts.Lib.Interfaces;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "FDragonflyPatrolStateL", menuName = "FDragonflyMovementStates/FDragonflyPatrolStateL")]
-public class FDragonflyPatrolStateL : ScriptableObject, IState
+namespace _GAME.Scripts.Enemies.Dragonfly.FMovementStates
 {
-    private readonly int _sideDirection = 1;
-    // Dependencies
-    private Transform _visibleBodyTransform;
-    private Transform _patrolTransform;
-    private DragonflyPatrolRotator _patrolRotator;
+    [CreateAssetMenu(fileName = "FDragonflyPatrolStateL", menuName = "FDragonflyMovementStates/FDragonflyPatrolStateL")]
+    public class FDragonflyPatrolStateL : ScriptableObject, IState
+    {
+        private readonly int _sideDirection = 1;
+        // Dependencies
+        private Transform _visibleBodyTransform;
+        private Transform _patrolTransform;
+        private DragonflyPatrolRotator _patrolRotator;
     
-    public event Action Started;
+        public event Action Started;
 
-    public void SetDependencies(Transform visibleBodyTransform, Transform patrolTransform, DragonflyPatrolRotator patrolRotator)
-    {
-        _visibleBodyTransform = visibleBodyTransform;
-        _patrolTransform = patrolTransform;
-        _patrolRotator = patrolRotator;
-    }
+        public void SetDependencies(Transform visibleBodyTransform, Transform patrolTransform, DragonflyPatrolRotator patrolRotator)
+        {
+            _visibleBodyTransform = visibleBodyTransform;
+            _patrolTransform = patrolTransform;
+            _patrolRotator = patrolRotator;
+        }
     
-    public void OnEnter()
-    {
-        Vector3 currentPosition = _visibleBodyTransform.position;
-        _patrolRotator.SetRotationPhase(currentPosition);
-        _patrolRotator.Play(_sideDirection);
+        public void OnEnter()
+        {
+            Vector3 currentPosition = _visibleBodyTransform.position;
+            _patrolRotator.SetRotationPhase(currentPosition);
+            _patrolRotator.Play(_sideDirection);
         
-        _visibleBodyTransform.SetParent(_patrolTransform, false);
-        _visibleBodyTransform.localPosition = Vector3.zero;
-        _visibleBodyTransform.localRotation = Quaternion.identity;
-        Started?.Invoke();
-    }
+            _visibleBodyTransform.SetParent(_patrolTransform, false);
+            _visibleBodyTransform.localPosition = Vector3.zero;
+            _visibleBodyTransform.localRotation = Quaternion.identity;
+            Started?.Invoke();
+        }
 
-    public void Tick() { }
+        public void Tick() { }
 
-    public void OnExit()
-    {
-        _patrolRotator.Stop();
+        public void OnExit()
+        {
+            _patrolRotator.Stop();
+        }
     }
 }

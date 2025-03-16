@@ -1,9 +1,10 @@
-using UnityEngine;
-
-public interface IEnemyMovable
+namespace _GAME.Scripts.Lib.Interfaces
 {
-    public void Play(); 
-    public void TriggerAttack(); 
-    public void TriggerFall(); 
-    public void TriggerDeath();
+    public interface IEnemyMovable
+    {
+        public void Play(); 
+        public void TriggerAttack(); 
+        public void TriggerFall(); 
+        public void TriggerDeath();
+    }
 }

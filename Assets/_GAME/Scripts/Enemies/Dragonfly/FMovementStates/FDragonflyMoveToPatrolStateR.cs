@@ -1,6 +1,9 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "FDragonflyMoveToPatrolStateR", menuName = "FDragonflyMovementStates/FDragonflyMoveToPatrolStateR")]
-public class FDragonflyMoveToPatrolStateR : FDragonflyAnimBaseState
+namespace _GAME.Scripts.Enemies.Dragonfly.FMovementStates
 {
+    [CreateAssetMenu(fileName = "FDragonflyMoveToPatrolStateR", menuName = "FDragonflyMovementStates/FDragonflyMoveToPatrolStateR")]
+    public class FDragonflyMoveToPatrolStateR : FDragonflyAnimBaseState
+    {
+    }
 }

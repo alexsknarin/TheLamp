@@ -1,8 +1,13 @@
-public class DragonflyPassiveState : IState
+using _GAME.Scripts.Lib.Interfaces;
+
+namespace _GAME.Scripts.Enemies.Dragonfly.BehaviourStates
 {
-    public void OnEnter() { }
+    public class DragonflyPassiveState : IState
+    {
+        public void OnEnter() { }
 
-    public void Tick() { }
+        public void Tick() { }
 
-    public void OnExit() { }
+        public void OnExit() { }
+    }
 }

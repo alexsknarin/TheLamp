@@ -1,5 +1,10 @@
-public interface IGameSettingsProviderService
+using _GAME.Scripts.GameCoreSystems.DataManagement.DataTypes;
+
+namespace _GAME.Scripts.Lib.Interfaces
 {
-    public GameSettings Get();
-    public void Save();
+    public interface IGameSettingsProviderService
+    {
+        public GameSettings Get();
+        public void Save();
+    }
 }

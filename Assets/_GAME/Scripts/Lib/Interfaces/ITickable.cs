@@ -1,4 +1,7 @@
-public interface ITickable
+namespace _GAME.Scripts.Lib.Interfaces
 {
-    public void Tick(float deltaTime);
+    public interface ITickable
+    {
+        public void Tick(float deltaTime);
+    }
 }

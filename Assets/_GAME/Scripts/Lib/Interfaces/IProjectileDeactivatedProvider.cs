@@ -1,6 +1,10 @@
 using System;
+using _GAME.Scripts.Enemies;
 
-public interface IProjectileDeactivatedProvider
+namespace _GAME.Scripts.Lib.Interfaces
 {
-    public event Action<FEnemy> ProjectileDestroyed;
+    public interface IProjectileDeactivatedProvider
+    {
+        public event Action<FEnemy> ProjectileDestroyed;
+    }
 }

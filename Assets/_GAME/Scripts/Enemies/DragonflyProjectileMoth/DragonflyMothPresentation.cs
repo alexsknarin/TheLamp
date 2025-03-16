@@ -1,16 +1,20 @@
+using _GAME.Scripts.Enemies.Generic.Presentation;
 using UnityEngine;
 
-public class DragonflyMothPresentation : MonoBehaviour
+namespace _GAME.Scripts.Enemies.DragonflyProjectileMoth
 {
-    [SerializeField] private DeathFlash _deathFlash; 
-    
-    public void Initialize()
+    public class DragonflyMothPresentation : MonoBehaviour
     {
-        _deathFlash.Initialize();
-    }
+        [SerializeField] private DeathFlash _deathFlash; 
     
-    public void DeathFlash()
-    {
-        _deathFlash.Play();
+        public void Initialize()
+        {
+            _deathFlash.Initialize();
+        }
+    
+        public void DeathFlash()
+        {
+            _deathFlash.Play();
+        }
     }
 }

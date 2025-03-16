@@ -1,3 +1,6 @@
+using _GAME.Scripts.GameCoreSystems;
+using _GAME.Scripts.Lib.Interfaces;
+
 public class AnalyticsEventListener: IDisposable
 {
     private IAnalyticsService _analyticsService;

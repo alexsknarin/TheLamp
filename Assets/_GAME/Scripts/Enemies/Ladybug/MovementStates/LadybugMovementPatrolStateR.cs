@@ -1,31 +1,35 @@
+using _GAME.Scripts.Lib.Interfaces;
 using UnityEngine;
 
-public class LadybugMovementPatrolStateR : FLadybugMovementPatrolState
+namespace _GAME.Scripts.Enemies.Ladybug.MovementStates
 {
-    public LadybugMovementPatrolStateR(
-        Vector3 cameraPosition, 
-        IPositionDirectionProvider positionDirectionProvider, 
-        ILampPositionProviderService lampPositionProviderService, 
-        float speed, 
-        float radius, 
-        float verticalAmplitude) :
-        base(
-            cameraPosition, 
-            positionDirectionProvider, 
-            lampPositionProviderService, 
-            speed, 
-            radius, 
-            verticalAmplitude)
+    public class LadybugMovementPatrolStateR : FLadybugMovementPatrolState
     {
-    }
+        public LadybugMovementPatrolStateR(
+            Vector3 cameraPosition, 
+            IPositionDirectionProvider positionDirectionProvider, 
+            ILampPositionProviderService lampPositionProviderService, 
+            float speed, 
+            float radius, 
+            float verticalAmplitude) :
+            base(
+                cameraPosition, 
+                positionDirectionProvider, 
+                lampPositionProviderService, 
+                speed, 
+                radius, 
+                verticalAmplitude)
+        {
+        }
 
-    public override void OnEnter()
-    {
-        HandleEnter(1);
-    }
+        public override void OnEnter()
+        {
+            HandleEnter(1);
+        }
 
-    public override void Tick()
-    {
-        HandleTick(1);
+        public override void Tick()
+        {
+            HandleTick(1);
+        }
     }
 }

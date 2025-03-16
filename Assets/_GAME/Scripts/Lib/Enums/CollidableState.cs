@@ -1,6 +1,9 @@
-public enum CollidableState
+namespace _GAME.Scripts.Lib.Enums
 {
-    Outside,
-    InAttackZone,
-    AfterCollision
+    public enum CollidableState
+    {
+        Outside,
+        InAttackZone,
+        AfterCollision
+    }
 }

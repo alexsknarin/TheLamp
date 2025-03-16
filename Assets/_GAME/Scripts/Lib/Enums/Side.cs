@@ -1,5 +1,8 @@
-public enum Side
+namespace _GAME.Scripts.Lib.Enums
 {
-    Left,
-    Right
+    public enum Side
+    {
+        Left,
+        Right
+    }
 }

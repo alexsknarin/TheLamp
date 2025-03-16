@@ -1,14 +1,17 @@
-[System.Serializable]
-public struct GlassDamageData
+namespace _GAME.Scripts.GameCoreSystems.DataManagement.DataTypes
 {
-    public int ImpactLastPointNumber;
-    public int CracksNumberRight;
-    public int CracksNumberLeft;
-    public int CracksNumberBottom;
-    public float CracksAmountRight;
-    public float CracksAmountLeft;
-    public float CracksAmountBottom;
-    public LampDamagePoint LampDamagePoint01;
-    public LampDamagePoint LampDamagePoint02;
-    public LampDamagePoint LampDamagePoint03;
+    [System.Serializable]
+    public struct GlassDamageData
+    {
+        public int ImpactLastPointNumber;
+        public int CracksNumberRight;
+        public int CracksNumberLeft;
+        public int CracksNumberBottom;
+        public float CracksAmountRight;
+        public float CracksAmountLeft;
+        public float CracksAmountBottom;
+        public LampDamagePoint LampDamagePoint01;
+        public LampDamagePoint LampDamagePoint02;
+        public LampDamagePoint LampDamagePoint03;
+    }
 }

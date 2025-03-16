@@ -1,6 +1,10 @@
 using System;
+using _GAME.Scripts.Enemies;
 
-public interface IAnimatedEnemy
+namespace _GAME.Scripts.Lib.Interfaces
 {
-    public event Action<CollidableEnemy> AnimatedAttackStarted;
+    public interface IAnimatedEnemy
+    {
+        public event Action<CollidableEnemy> AnimatedAttackStarted;
+    }
 }

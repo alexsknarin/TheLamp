@@ -1,12 +1,17 @@
-public class PlayerAttackViewModel
+using _GAME.Scripts.GameCoreSystems;
+
+namespace _GAME.Scripts.UI.ViewModels
 {
-    private GameModel _gameModel;
-    public PlayerAttackViewModel(GameModel gameModel)
+    public class PlayerAttackViewModel
     {
-        _gameModel = gameModel;
-    }
-    public void HandleAttackButtonClicked()
-    {
-        _gameModel.HandleAttackButtonClicked();
+        private GameModel _gameModel;
+        public PlayerAttackViewModel(GameModel gameModel)
+        {
+            _gameModel = gameModel;
+        }
+        public void HandleAttackButtonClicked()
+        {
+            _gameModel.HandleAttackButtonClicked();
+        }
     }
 }

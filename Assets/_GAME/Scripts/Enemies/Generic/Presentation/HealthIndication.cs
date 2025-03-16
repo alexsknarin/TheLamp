@@ -1,18 +1,22 @@
+using _GAME.Scripts.Lib.Interfaces;
 using UnityEngine;
 
-public class HealthIndication : MonoBehaviour, IInitializable
+namespace _GAME.Scripts.Enemies.Generic.Presentation
 {
-    [SerializeField] private MeshRenderer _meshRenderer;
-    private Material _material;
-
-    public void Initialize()
+    public class HealthIndication : MonoBehaviour, IInitializable
     {
-        _material = _meshRenderer.material;
-        _material.SetFloat("_Health", 1f);
-    }
+        [SerializeField] private MeshRenderer _meshRenderer;
+        private Material _material;
 
-    public void Refresh(int currentHealth, int maxHealth)
-    {
-        _material.SetFloat("_Health", (float)currentHealth / maxHealth);
+        public void Initialize()
+        {
+            _material = _meshRenderer.material;
+            _material.SetFloat("_Health", 1f);
+        }
+
+        public void Refresh(int currentHealth, int maxHealth)
+        {
+            _material.SetFloat("_Health", (float)currentHealth / maxHealth);
+        }
     }
 }

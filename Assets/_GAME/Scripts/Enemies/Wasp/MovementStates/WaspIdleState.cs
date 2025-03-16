@@ -1,13 +1,15 @@
-using System;
 using UnityEngine;
 
-public class WaspIdleState: FWaspAnimBaseState
+namespace _GAME.Scripts.Enemies.Wasp.MovementStates
 {
-    public WaspIdleState(Animator animator, int clipHash, Transform baseTransform) : 
-        base(animator, clipHash, baseTransform) { }
-    
-    public override void OnEnter()
+    public class WaspIdleState: FWaspAnimBaseState
     {
-        _animator.Play(_clipHash, -1, 0);
+        public WaspIdleState(Animator animator, int clipHash, Transform baseTransform) : 
+            base(animator, clipHash, baseTransform) { }
+    
+        public override void OnEnter()
+        {
+            _animator.Play(_clipHash, -1, 0);
+        }
     }
 }

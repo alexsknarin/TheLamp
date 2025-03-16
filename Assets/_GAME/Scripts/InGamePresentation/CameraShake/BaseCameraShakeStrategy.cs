@@ -1,8 +1,12 @@
+using _GAME.Scripts.Lib.Interfaces;
 using UnityEngine;
 
-public abstract class BaseCameraShakeStrategy: ScriptableObject, ICameraShakeStrategy, IInitializable
+namespace _GAME.Scripts.InGamePresentation.CameraShake
 {
-    public abstract void Construct(Transform bossTransform);
-    public abstract void Initialize();
-    public abstract Vector3 Execute();
+    public abstract class BaseCameraShakeStrategy: ScriptableObject, ICameraShakeStrategy, IInitializable
+    {
+        public abstract void Construct(Transform bossTransform);
+        public abstract void Initialize();
+        public abstract Vector3 Execute();
+    }
 }

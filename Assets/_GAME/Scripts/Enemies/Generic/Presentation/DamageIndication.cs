@@ -1,7 +1,11 @@
+using _GAME.Scripts.Lib.Interfaces;
 using UnityEngine;
 
-public abstract class DamageIndication : MonoBehaviour, IInitializable
+namespace _GAME.Scripts.Enemies.Generic.Presentation
 {
-    public abstract void Initialize();
-    public abstract void Play();
+    public abstract class DamageIndication : MonoBehaviour, IInitializable
+    {
+        public abstract void Initialize();
+        public abstract void Play();
+    }
 }

@@ -1,5 +1,8 @@
-public enum BrokenGlassEventType
+namespace _GAME.Scripts.Lib.Enums
 {
-    Damage,
-    Death
+    public enum BrokenGlassEventType
+    {
+        Damage,
+        Death
+    }
 }

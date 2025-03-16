@@ -1,66 +1,71 @@
-using System;
+using _GAME.Scripts.Enemies.Generic.Presentation;
+using _GAME.Scripts.Lib;
+using _GAME.Scripts.Lib.Interfaces;
 using UnityEngine;
 
-public class LadybugPresentation : MonoBehaviour, IInitializable
+namespace _GAME.Scripts.Enemies.Ladybug
 {
-    [SerializeField] private Ladybug _ladybug;
-    [SerializeField] private LadybugMovement _movement;
-    [SerializeField] private PreAttackFlash _preAttackFlash;
-    [SerializeField] private LadybugDamageFlash _damageFlash;
-    [SerializeField] private DeathFlash _deathFlash;
-    [SerializeField] private HealthIndication _healthIndication;
-    [SerializeField] private TrailResetHandler _trailResetHandler;
-
-    public void Initialize()
+    public class LadybugPresentation : MonoBehaviour, IInitializable
     {
-        _preAttackFlash.Initialize();
-        _damageFlash.Initialize();
-        _deathFlash.Initialize();
-        _healthIndication.Initialize();
-        _trailResetHandler.Initialize();
+        [SerializeField] private Ladybug _ladybug;
+        [SerializeField] private LadybugMovement _movement;
+        [SerializeField] private PreAttackFlash _preAttackFlash;
+        [SerializeField] private LadybugDamageFlash _damageFlash;
+        [SerializeField] private DeathFlash _deathFlash;
+        [SerializeField] private HealthIndication _healthIndication;
+        [SerializeField] private TrailResetHandler _trailResetHandler;
+
+        public void Initialize()
+        {
+            _preAttackFlash.Initialize();
+            _damageFlash.Initialize();
+            _deathFlash.Initialize();
+            _healthIndication.Initialize();
+            _trailResetHandler.Initialize();
         
-        _movement.PreAttackStarted += OnPreAttackStarted;
-        _movement.PreAttackEnded += OnPreAttackEnded;
-        _ladybug.Started += OnLadybugStarted;
-        _ladybug.Damaged += OnLadybugDamaged;
-        _ladybug.HealthChanged += _healthIndication.Refresh;
-        _ladybug.Dead += OnLadybugDead;
-    }
+            _movement.PreAttackStarted += OnPreAttackStarted;
+            _movement.PreAttackEnded += OnPreAttackEnded;
+            _ladybug.Started += OnLadybugStarted;
+            _ladybug.Damaged += OnLadybugDamaged;
+            _ladybug.HealthChanged += _healthIndication.Refresh;
+            _ladybug.Dead += OnLadybugDead;
+        }
 
-    private void OnDestroy()
-    {
-        _movement.PreAttackStarted -= OnPreAttackStarted;
-        _movement.PreAttackEnded -= OnPreAttackEnded;
-        _ladybug.Started -= OnLadybugStarted;
-        _ladybug.Damaged -= OnLadybugDamaged;
-        _ladybug.HealthChanged -= _healthIndication.Refresh;
-        _ladybug.Dead -= OnLadybugDead;
-    }
+        private void OnDestroy()
+        {
+            _movement.PreAttackStarted -= OnPreAttackStarted;
+            _movement.PreAttackEnded -= OnPreAttackEnded;
+            _ladybug.Started -= OnLadybugStarted;
+            _ladybug.Damaged -= OnLadybugDamaged;
+            _ladybug.HealthChanged -= _healthIndication.Refresh;
+            _ladybug.Dead -= OnLadybugDead;
+        }
 
-    private void OnLadybugStarted()
-    {
-        _trailResetHandler.Initialize();
-        _deathFlash.Initialize();
-    }
+        private void OnLadybugStarted()
+        {
+            _trailResetHandler.Initialize();
+            _deathFlash.Initialize();
+        }
 
-    private void OnLadybugDamaged()
-    {
-        _damageFlash.Play();
-    }
+        private void OnLadybugDamaged()
+        {
+            _damageFlash.Play();
+        }
 
-    private void OnPreAttackStarted()
-    {
-        // TODO: set subscription directly to the methods in presentation and other sub classes 
-        _preAttackFlash.PreAttackStart();
-    }
+        private void OnPreAttackStarted()
+        {
+            // TODO: set subscription directly to the methods in presentation and other sub classes 
+            _preAttackFlash.PreAttackStart();
+        }
 
-    private void OnPreAttackEnded()
-    {
-        _preAttackFlash.PreAttackEnd();
-    }
+        private void OnPreAttackEnded()
+        {
+            _preAttackFlash.PreAttackEnd();
+        }
 
-    private void OnLadybugDead()
-    {
-        _deathFlash.Play();
+        private void OnLadybugDead()
+        {
+            _deathFlash.Play();
+        }
     }
 }

@@ -1,4 +1,7 @@
-public interface ISpreadable
+namespace _GAME.Scripts.Lib.Interfaces
 {
-    public void Spread();
+    public interface ISpreadable
+    {
+        public void Spread();
+    }
 }

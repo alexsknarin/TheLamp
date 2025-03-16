@@ -1,56 +1,60 @@
 using System;
+using _GAME.Scripts.Lib.Interfaces;
 using UnityEngine;
 
-public class DragonflyWaitHeadAttackState : IState
+namespace _GAME.Scripts.Enemies.Dragonfly.BehaviourStates
 {
-    private Vector3 _targetPosition;
-    private readonly Transform _transform;
-    private readonly DragonflyPatrolAttackPositionProvider _patrolAttackPositionProvider;
-    private readonly DragonflyMovement _movement;
-    private bool _isLastPatrolDirectionSet = false;
-    private int _lastPatrolDirection = 0;
-
-    public DragonflyWaitHeadAttackState(Transform visibleBodyTransform, 
-        DragonflyPatrolAttackPositionProvider patrolAttackPositionProvider, 
-        DragonflyMovement movement)
+    public class DragonflyWaitHeadAttackState : IState
     {
-        _transform = visibleBodyTransform;
-        _patrolAttackPositionProvider = patrolAttackPositionProvider;
-        _movement = movement;
-    }
+        private Vector3 _targetPosition;
+        private readonly Transform _transform;
+        private readonly DragonflyPatrolAttackPositionProvider _patrolAttackPositionProvider;
+        private readonly DragonflyMovement _movement;
+        private bool _isLastPatrolDirectionSet = false;
+        private int _lastPatrolDirection = 0;
 
-    public event Action<DragonflyPatrolAttackMode> Ended;
-
-    public void OnEnter()
-    {
-        _targetPosition = _patrolAttackPositionProvider.GenerateRandomPreAttackHeadPosition(_movement.MovementState);
-        _isLastPatrolDirectionSet = false;
-        _lastPatrolDirection = 0;
-    }
-
-    public void Tick()
-    {
-        Vector3 currentPosition = _transform.position;
-        currentPosition.y = 0;
-        currentPosition.Normalize();
-        float distance = Vector3.Distance(currentPosition, _targetPosition);
-        if (distance < 0.25f)
+        public DragonflyWaitHeadAttackState(Transform visibleBodyTransform, 
+            DragonflyPatrolAttackPositionProvider patrolAttackPositionProvider, 
+            DragonflyMovement movement)
         {
-            if (!_isLastPatrolDirectionSet)
+            _transform = visibleBodyTransform;
+            _patrolAttackPositionProvider = patrolAttackPositionProvider;
+            _movement = movement;
+        }
+
+        public event Action<DragonflyPatrolAttackMode> Ended;
+
+        public void OnEnter()
+        {
+            _targetPosition = _patrolAttackPositionProvider.GenerateRandomPreAttackHeadPosition(_movement.MovementState);
+            _isLastPatrolDirectionSet = false;
+            _lastPatrolDirection = 0;
+        }
+
+        public void Tick()
+        {
+            Vector3 currentPosition = _transform.position;
+            currentPosition.y = 0;
+            currentPosition.Normalize();
+            float distance = Vector3.Distance(currentPosition, _targetPosition);
+            if (distance < 0.25f)
             {
-                _lastPatrolDirection = (int)Mathf.Sign((_targetPosition - currentPosition).normalized.x);
-                _isLastPatrolDirectionSet = true;
-            }
-            else
-            {
-                float currentPatrolDirection = (int)Mathf.Sign((_targetPosition - currentPosition).normalized.x);
-                if (currentPatrolDirection + _lastPatrolDirection == 0)
+                if (!_isLastPatrolDirectionSet)
                 {
-                    Ended?.Invoke(DragonflyPatrolAttackMode.Head);
+                    _lastPatrolDirection = (int)Mathf.Sign((_targetPosition - currentPosition).normalized.x);
+                    _isLastPatrolDirectionSet = true;
+                }
+                else
+                {
+                    float currentPatrolDirection = (int)Mathf.Sign((_targetPosition - currentPosition).normalized.x);
+                    if (currentPatrolDirection + _lastPatrolDirection == 0)
+                    {
+                        Ended?.Invoke(DragonflyPatrolAttackMode.Head);
+                    }
                 }
             }
         }
-    }
 
-    public void OnExit() { }
+        public void OnExit() { }
+    }
 }

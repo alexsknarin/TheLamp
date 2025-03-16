@@ -1,6 +1,9 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "FDragonflyReturnTransitionLRBTState", menuName = "FDragonflyMovementStates/FDragonflyReturnTransitionLRBTState")]
-public class FDragonflyReturnTransitionLRBTState : FDragonflyAnimBaseState
+namespace _GAME.Scripts.Enemies.Dragonfly.FMovementStates
 {
+    [CreateAssetMenu(fileName = "FDragonflyReturnTransitionLRBTState", menuName = "FDragonflyMovementStates/FDragonflyReturnTransitionLRBTState")]
+    public class FDragonflyReturnTransitionLRBTState : FDragonflyAnimBaseState
+    {
+    }
 }

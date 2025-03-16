@@ -1,11 +1,14 @@
 using UnityEngine;
 
-public class AdvertisementStageAnimation : MonoBehaviour
+namespace _GAME.Scripts.InGamePresentation.GameStageTransitions
 {
-    [SerializeField] private GameObject _gameOverUi;
-    
-    public void Play()
+    public class AdvertisementStageAnimation : MonoBehaviour
     {
-        _gameOverUi.SetActive(false);
+        [SerializeField] private GameObject _gameOverUi;
+    
+        public void Play()
+        {
+            _gameOverUi.SetActive(false);
+        }
     }
 }

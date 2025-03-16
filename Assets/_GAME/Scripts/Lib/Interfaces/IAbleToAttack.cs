@@ -1,5 +1,8 @@
-public interface IAbleToAttack
+namespace _GAME.Scripts.Lib.Interfaces
 {
-    public bool IsReadyToAttack { get; }
-    public void Attack();
+    public interface IAbleToAttack
+    {
+        public bool IsReadyToAttack { get; }
+        public void Attack();
+    }
 }

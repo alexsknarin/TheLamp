@@ -1,38 +1,42 @@
+using _GAME.Scripts.Lib.Interfaces;
 using UnityEngine;
 
-public class LightningFlashController : MonoBehaviour, IInitializable
+namespace _GAME.Scripts.InGamePresentation.GameStageTransitions
 {
-    [SerializeField] private Light _light;  
-    [SerializeField] private float _flashDuration;
-    [SerializeField] private AnimationCurve _flashCurve;
-    [SerializeField] private float _lightMaxIntensity;
-    private float _localTime;
-
-    public void Initialize()
+    public class LightningFlashController : MonoBehaviour, IInitializable
     {
-        _light.enabled = false;
-        enabled = false;
-    }
+        [SerializeField] private Light _light;  
+        [SerializeField] private float _flashDuration;
+        [SerializeField] private AnimationCurve _flashCurve;
+        [SerializeField] private float _lightMaxIntensity;
+        private float _localTime;
 
-    public void Play()
-    {
-        _light.enabled = true;
-        _light.intensity = 0;
-        _localTime = 0;
-        enabled = true;
-    }
-
-    void Update()
-    {
-        float phase = _localTime / _flashDuration;
-        if (phase > 1)
+        public void Initialize()
         {
-            _light.intensity = 0;        
-            enabled = false;
             _light.enabled = false;
+            enabled = false;
         }
+
+        public void Play()
+        {
+            _light.enabled = true;
+            _light.intensity = 0;
+            _localTime = 0;
+            enabled = true;
+        }
+
+        void Update()
+        {
+            float phase = _localTime / _flashDuration;
+            if (phase > 1)
+            {
+                _light.intensity = 0;        
+                enabled = false;
+                _light.enabled = false;
+            }
         
-        _light.intensity = _flashCurve.Evaluate(phase) * _lightMaxIntensity;
-        _localTime += Time.deltaTime;
+            _light.intensity = _flashCurve.Evaluate(phase) * _lightMaxIntensity;
+            _localTime += Time.deltaTime;
+        }
     }
 }

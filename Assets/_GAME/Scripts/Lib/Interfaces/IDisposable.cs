@@ -1,4 +1,7 @@
-﻿public interface IDisposable
+﻿namespace _GAME.Scripts.Lib.Interfaces
 {
-    public void Dispose();
+    public interface IDisposable
+    {
+        public void Dispose();
+    }
 }

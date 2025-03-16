@@ -1,6 +1,9 @@
 using UnityEngine;
 
-public interface ILampPositionProviderService
+namespace _GAME.Scripts.Lib.Interfaces
 {
-    public Vector2 GetLampPosition();
+    public interface ILampPositionProviderService
+    {
+        public Vector2 GetLampPosition();
+    }
 }

@@ -1,7 +1,10 @@
-public enum AttackBlockerState
+namespace _GAME.Scripts.Lib.Enums
 {
-    Outisde,
-    Inside,
-    Sticked,
-    Damaged
+    public enum AttackBlockerState
+    {
+        Outisde,
+        Inside,
+        Sticked,
+        Damaged
+    }
 }

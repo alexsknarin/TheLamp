@@ -1,19 +1,23 @@
+using _GAME.Scripts.UI.ViewModels;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class PlayerAttackUIView : MonoBehaviour, IPointerDownHandler
+namespace _GAME.Scripts.UI.Views
 {
-    [SerializeField] private Button _button;
-    private PlayerAttackViewModel _playerAttackViewModel;
-    
-    public void Bind(PlayerAttackViewModel playerAttackViewModel)
+    public class PlayerAttackUIView : MonoBehaviour, IPointerDownHandler
     {
-        _playerAttackViewModel = playerAttackViewModel;
-    }
+        [SerializeField] private Button _button;
+        private PlayerAttackViewModel _playerAttackViewModel;
     
-    public void OnPointerDown(PointerEventData eventData)
-    {
-        _playerAttackViewModel.HandleAttackButtonClicked();
+        public void Bind(PlayerAttackViewModel playerAttackViewModel)
+        {
+            _playerAttackViewModel = playerAttackViewModel;
+        }
+    
+        public void OnPointerDown(PointerEventData eventData)
+        {
+            _playerAttackViewModel.HandleAttackButtonClicked();
+        }
     }
 }

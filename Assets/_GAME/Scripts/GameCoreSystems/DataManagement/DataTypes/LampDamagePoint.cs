@@ -1,7 +1,10 @@
-[System.Serializable]
-public struct LampDamagePoint
+namespace _GAME.Scripts.GameCoreSystems.DataManagement.DataTypes
 {
-    public float Strength;
-    public float LocalAngle;
-    public float GlobalAngle;
+    [System.Serializable]
+    public struct LampDamagePoint
+    {
+        public float Strength;
+        public float LocalAngle;
+        public float GlobalAngle;
+    }
 }

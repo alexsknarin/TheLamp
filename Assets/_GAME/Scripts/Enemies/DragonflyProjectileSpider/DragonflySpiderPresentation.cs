@@ -1,42 +1,47 @@
+using _GAME.Scripts.Enemies.Generic.Presentation;
+using _GAME.Scripts.Lib.Interfaces;
 using UnityEngine;
 
-public class DragonflySpiderPresentation : MonoBehaviour, IInitializable
+namespace _GAME.Scripts.Enemies.DragonflyProjectileSpider
 {
-    [SerializeField] private DeathFlash _deathFlash; 
-    [Header("------ Preattack Flash ------")]
-    [SerializeField] private PreAttackFlash _preAttackFlash;
-    [SerializeField] private DragonflySpiderWebHandler _spiderWeb;
-    
-    public void Initialize()
+    public class DragonflySpiderPresentation : MonoBehaviour, IInitializable
     {
-        _deathFlash.Initialize();
-        _preAttackFlash.Initialize();
-        _spiderWeb.Initialize();
-    }
+        [SerializeField] private DeathFlash _deathFlash; 
+        [Header("------ Preattack Flash ------")]
+        [SerializeField] private PreAttackFlash _preAttackFlash;
+        [SerializeField] private DragonflySpiderWebController _spiderWeb;
     
-    public void Play()
-    {
-        _spiderWeb.Play(transform);
-        _deathFlash.Initialize();
-    }
+        public void Initialize()
+        {
+            _deathFlash.Initialize();
+            _preAttackFlash.Initialize();
+            _spiderWeb.Initialize();
+        }
     
-    public void SwitchToCaughtState()
-    {
-        _spiderWeb.StartShrink();
-    }
+        public void Play()
+        {
+            _spiderWeb.Play(transform);
+            _deathFlash.Initialize();
+        }
     
-    public void PreAttackStart()
-    {
-        _preAttackFlash.PreAttackStart();
-    }
+        public void SwitchToCaughtState()
+        {
+            _spiderWeb.StartShrink();
+        }
+    
+        public void PreAttackStart()
+        {
+            _preAttackFlash.PreAttackStart();
+        }
 
-    public void PreAttackEnd()
-    {
-        _preAttackFlash.PreAttackEnd();
-    }
+        public void PreAttackEnd()
+        {
+            _preAttackFlash.PreAttackEnd();
+        }
 
-    public void DeathFlash()
-    {
-        _deathFlash.Play();
+        public void DeathFlash()
+        {
+            _deathFlash.Play();
+        }
     }
 }

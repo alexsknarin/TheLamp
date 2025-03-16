@@ -1,38 +1,41 @@
 using System.Collections.Generic;
 
-public class SpawnQueue
+namespace _GAME.Scripts.GameCoreSystems.DataManagement.GameDataHandlers
 {
-    private List<EnemyQueue> _enemyQueues;
-    
-    public SpawnQueue()
+    public class SpawnQueue
     {
-        _enemyQueues = new List<EnemyQueue>();
-    }
+        private List<EnemyQueue> _enemyQueues;
     
-    public void Clear()
-    {
-        _enemyQueues.Clear();
-    }
-    
-    public void Add(EnemyQueue enemyQueue)
-    {
-        _enemyQueues.Add(enemyQueue);
-    }
-    
-    public EnemyQueue Get(int index)
-    {
-        if (index < _enemyQueues.Count)
+        public SpawnQueue()
         {
-            return _enemyQueues[index];    
+            _enemyQueues = new List<EnemyQueue>();
         }
-        else
-        {
-            return null;
-        }
-    }
     
-    public int Count()
-    {
-        return _enemyQueues.Count;
+        public void Clear()
+        {
+            _enemyQueues.Clear();
+        }
+    
+        public void Add(EnemyQueue enemyQueue)
+        {
+            _enemyQueues.Add(enemyQueue);
+        }
+    
+        public EnemyQueue Get(int index)
+        {
+            if (index < _enemyQueues.Count)
+            {
+                return _enemyQueues[index];    
+            }
+            else
+            {
+                return null;
+            }
+        }
+    
+        public int Count()
+        {
+            return _enemyQueues.Count;
+        }
     }
 }

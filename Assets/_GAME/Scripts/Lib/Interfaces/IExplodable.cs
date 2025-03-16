@@ -1,3 +1,6 @@
-public interface IExplodable
+namespace _GAME.Scripts.Lib.Interfaces
 {
+    public interface IExplodable
+    {
+    }
 }

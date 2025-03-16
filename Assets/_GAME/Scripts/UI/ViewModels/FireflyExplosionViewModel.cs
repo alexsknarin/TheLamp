@@ -1,42 +1,49 @@
 using System;
+using _GAME.Scripts.Enemies;
+using _GAME.Scripts.GameCoreSystems.EnemyManagement;
+using _GAME.Scripts.Lib.Interfaces;
 using UnityEngine;
+using IDisposable = _GAME.Scripts.Lib.Interfaces.IDisposable;
 
-public class FireflyExplosionViewModel: IInitializable, IDisposable
+namespace _GAME.Scripts.UI.ViewModels
 {
-    private WaveEnemyDirector _waveEnemyDirector;
+    public class FireflyExplosionViewModel: IInitializable, IDisposable
+    {
+        private WaveEnemyDirector _waveEnemyDirector;
     
-    private bool _isExplosionLoadRequested = false;
-    public event Action FireflyExplosionLoadRequested;
-    public event Action<Vector2> FireflyExplosionStarted;
+        private bool _isExplosionLoadRequested = false;
+        public event Action FireflyExplosionLoadRequested;
+        public event Action<Vector2> FireflyExplosionStarted;
     
-    public FireflyExplosionViewModel(WaveEnemyDirector waveEnemyDirector)
-    {
-        _waveEnemyDirector = waveEnemyDirector;
-    }
-
-    public void Initialize()
-    {
-        _waveEnemyDirector.ExplodableEnemySpawned += OnExplodableEnemySpawned;
-        _waveEnemyDirector.ExplodableEnemyDeactivated += OnExplodableEnemyDeactivated;
-    }
-
-    public void Dispose()
-    {
-        _waveEnemyDirector.ExplodableEnemySpawned -= OnExplodableEnemySpawned;
-        _waveEnemyDirector.ExplodableEnemyDeactivated -= OnExplodableEnemyDeactivated;
-    }
-
-    private void OnExplodableEnemySpawned()
-    {
-        if (!_isExplosionLoadRequested)
+        public FireflyExplosionViewModel(WaveEnemyDirector waveEnemyDirector)
         {
-            _isExplosionLoadRequested = true;
-            FireflyExplosionLoadRequested?.Invoke();
+            _waveEnemyDirector = waveEnemyDirector;
         }
-    }
 
-    private void OnExplodableEnemyDeactivated(FEnemy enemy)
-    {
-        FireflyExplosionStarted?.Invoke(enemy.transform.position);
+        public void Initialize()
+        {
+            _waveEnemyDirector.ExplodableEnemySpawned += OnExplodableEnemySpawned;
+            _waveEnemyDirector.ExplodableEnemyDeactivated += OnExplodableEnemyDeactivated;
+        }
+
+        public void Dispose()
+        {
+            _waveEnemyDirector.ExplodableEnemySpawned -= OnExplodableEnemySpawned;
+            _waveEnemyDirector.ExplodableEnemyDeactivated -= OnExplodableEnemyDeactivated;
+        }
+
+        private void OnExplodableEnemySpawned()
+        {
+            if (!_isExplosionLoadRequested)
+            {
+                _isExplosionLoadRequested = true;
+                FireflyExplosionLoadRequested?.Invoke();
+            }
+        }
+
+        private void OnExplodableEnemyDeactivated(FEnemy enemy)
+        {
+            FireflyExplosionStarted?.Invoke(enemy.transform.position);
+        }
     }
 }

@@ -1,7 +1,11 @@
 using System;
+using _GAME.Scripts.Enemies;
 
-public interface IProjectileShooter
+namespace _GAME.Scripts.Lib.Interfaces
 {
-    public event Action<CollidableEnemy> ProjectileShot;
-    public event Action<FEnemy, bool> ProjectileDeactivated;
+    public interface IProjectileShooter
+    {
+        public event Action<CollidableEnemy> ProjectileShot;
+        public event Action<FEnemy, bool> ProjectileDeactivated;
+    }
 }

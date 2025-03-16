@@ -1,6 +1,9 @@
 using System;
 
-public interface ILampDeadEventProviderService
+namespace _GAME.Scripts.Lib.Interfaces
 {
-    public event Action LampDestroyed;
+    public interface ILampDeadEventProviderService
+    {
+        public event Action LampDestroyed;
+    }
 }

@@ -1,17 +1,20 @@
 using System;
 using UnityEngine;
 
-public class WaspAttack02RState : FWaspAnimBaseState
+namespace _GAME.Scripts.Enemies.Wasp.MovementStates
 {
-    public WaspAttack02RState(Animator animator, int clipHash, Transform baseTransform) : 
-        base(animator, clipHash, baseTransform) { }
-    
-    public event Action Started;
-    
-    public override void OnEnter()
+    public class WaspAttack02RState : FWaspAnimBaseState
     {
-        _baseTransform.localScale = _baseScaleR;
-        _animator.Play(_clipHash, -1, 0);
-        Started?.Invoke();
+        public WaspAttack02RState(Animator animator, int clipHash, Transform baseTransform) : 
+            base(animator, clipHash, baseTransform) { }
+    
+        public event Action Started;
+    
+        public override void OnEnter()
+        {
+            _baseTransform.localScale = _baseScaleR;
+            _animator.Play(_clipHash, -1, 0);
+            Started?.Invoke();
+        }
     }
 }

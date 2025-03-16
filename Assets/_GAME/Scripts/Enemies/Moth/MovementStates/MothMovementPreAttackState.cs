@@ -1,60 +1,64 @@
 using System;
+using _GAME.Scripts.Lib.Interfaces;
 using UnityEngine;
 
-public class MothMovementPreAttackState: RegularEnemyMovementStateBase
+namespace _GAME.Scripts.Enemies.Moth.MovementStates
 {
-    // Dependencies
-    private readonly Vector3 _cameraPosition = new Vector3(0, 0, -5.88f);
-    private readonly IPositionDirectionProvider _positionDirectionProvider;
-    private readonly float _speed;
+    public class MothMovementPreAttackState: EnemyMovementStateBase
+    {
+        // Dependencies
+        private readonly Vector3 _cameraPosition = new Vector3(0, 0, -5.88f);
+        private readonly IPositionDirectionProvider _positionDirectionProvider;
+        private readonly float _speed;
 
-    private float _duration = .35f;
-    private float _acceleratedSpeed;
-    private float _acceleration = 0.93f;
-    private Vector2 _direction;
-    private float _localTime;
+        private float _duration = .35f;
+        private float _acceleratedSpeed;
+        private float _acceleration = 0.93f;
+        private Vector2 _direction;
+        private float _localTime;
     
-    public MothMovementPreAttackState(
-        Vector3 cameraPosition,
-        IPositionDirectionProvider positionDirectionProvider,
-        float speed
-    )
-    {
-        // _cameraPosition = cameraPosition; // TODO: enable later
-        _positionDirectionProvider = positionDirectionProvider;
-        _speed = speed;
-    }
-    
-    public event Action Started;
-    public event Action Ended;
-    
-    public override void OnEnter()
-    {
-        IsReadyToSwitch = false;
-        _acceleratedSpeed = 1f;
-        Position2D = _positionDirectionProvider.Position2D;
-        _direction = Position2D.normalized;
-        _localTime = 0;
-        Started?.Invoke();
-    }
-
-    public override void Tick()
-    {
-        Position2D += _direction * (_speed * Time.deltaTime * (Mathf.PI/2) * _acceleratedSpeed);
-        
-        Vector3 cameraDirection = (_cameraPosition - (Vector3)Position2D).normalized;
-        DepthDirection = cameraDirection * 2.5f;
-        _acceleratedSpeed *= _acceleration;
-        _localTime += Time.deltaTime;
-        
-        if (_localTime > _duration)
+        public MothMovementPreAttackState(
+            Vector3 cameraPosition,
+            IPositionDirectionProvider positionDirectionProvider,
+            float speed
+        )
         {
-            IsReadyToSwitch = true;
+            // _cameraPosition = cameraPosition; // TODO: enable later
+            _positionDirectionProvider = positionDirectionProvider;
+            _speed = speed;
         }
-    }
     
-    public override void OnExit()
-    {
-        Ended?.Invoke();
+        public event Action Started;
+        public event Action Ended;
+    
+        public override void OnEnter()
+        {
+            IsReadyToSwitch = false;
+            _acceleratedSpeed = 1f;
+            Position2D = _positionDirectionProvider.Position2D;
+            _direction = Position2D.normalized;
+            _localTime = 0;
+            Started?.Invoke();
+        }
+
+        public override void Tick()
+        {
+            Position2D += _direction * (_speed * Time.deltaTime * (Mathf.PI/2) * _acceleratedSpeed);
+        
+            Vector3 cameraDirection = (_cameraPosition - (Vector3)Position2D).normalized;
+            DepthDirection = cameraDirection * 2.5f;
+            _acceleratedSpeed *= _acceleration;
+            _localTime += Time.deltaTime;
+        
+            if (_localTime > _duration)
+            {
+                IsReadyToSwitch = true;
+            }
+        }
+    
+        public override void OnExit()
+        {
+            Ended?.Invoke();
+        }
     }
 }

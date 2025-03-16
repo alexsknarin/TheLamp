@@ -1,35 +1,39 @@
 using System;
+using _GAME.Scripts.Lib.Interfaces;
 using UnityEngine;
 using Random = UnityEngine.Random;
-public class DragonflyPatrolTailState : IState
+namespace _GAME.Scripts.Enemies.Dragonfly.BehaviourStates
 {
-    private readonly float _minWaitTime = 0f;
-    private readonly float _maxWaitTime = 1f;
-    private float _localTime = 0f;
-    private float _duration = 0f;
-
-    public DragonflyPatrolTailState(float minWaitTime, float maxWaitTime)
+    public class DragonflyPatrolTailState : IState
     {
-        _minWaitTime = minWaitTime;
-        _maxWaitTime = maxWaitTime;
-    }
+        private readonly float _minWaitTime = 0f;
+        private readonly float _maxWaitTime = 1f;
+        private float _localTime = 0f;
+        private float _duration = 0f;
 
-    public event Action Ended;
-
-    public void OnEnter()
-    {
-        _localTime = 0;
-        _duration = Random.Range(_minWaitTime, _maxWaitTime);
-    }
-
-    public void Tick()
-    {
-        _localTime += Time.deltaTime;
-        if (_localTime >= _duration)
+        public DragonflyPatrolTailState(float minWaitTime, float maxWaitTime)
         {
-            Ended?.Invoke();
+            _minWaitTime = minWaitTime;
+            _maxWaitTime = maxWaitTime;
         }
-    }
 
-    public void OnExit() { }
+        public event Action Ended;
+
+        public void OnEnter()
+        {
+            _localTime = 0;
+            _duration = Random.Range(_minWaitTime, _maxWaitTime);
+        }
+
+        public void Tick()
+        {
+            _localTime += Time.deltaTime;
+            if (_localTime >= _duration)
+            {
+                Ended?.Invoke();
+            }
+        }
+
+        public void OnExit() { }
+    }
 }
