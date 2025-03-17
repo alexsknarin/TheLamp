@@ -15,8 +15,8 @@ namespace _GAME.Scripts.Enemies
     
         private List<FEnemy> _enemies;
         private Vector2 _explosionPosition;
-        private float _explosionRadius;   // TODO: read from config
-        private float _explosionDuration; // TODO: read from config
+        private float _explosionRadius;
+        private float _explosionDuration;
     
         private bool _isExploding = false;
         private float _localTime;
