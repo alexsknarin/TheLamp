@@ -53,14 +53,14 @@ namespace _GAME.Scripts.Enemies.Wasp
         };
     
         [SerializeField] private string _currentStateType;
-        [SerializeField] private float _collisionRadius = 0.24f;
         [SerializeField] private Animator _animator;
         [SerializeField] private Transform _baseTransform;
         private ILampPositionProviderService _lampPositionProvider;
 
 
+        private float _collisionRadius = 0.24f;
         private StateMachine _stateMachine = new();
-        private float _colliderRadius = 0.24f;
+
         // State parameters
         private Side _side = Side.Left;
         private bool _isAnimClipEnded = false;
@@ -208,7 +208,11 @@ namespace _GAME.Scripts.Enemies.Wasp
             _attack04DeathRState.Ended -= OnDeathStateEnded;
         }
 
-
+        public void SetCollisionRadius(float radius)
+        {
+            _collisionRadius = radius;
+        }
+        
         public void Play()
         {
             enabled = true;
@@ -661,9 +665,9 @@ namespace _GAME.Scripts.Enemies.Wasp
                 // Check if lamp was penetrated
                 // TODO: remake into Vector2
                 Vector3 newPosition = transform.position;
-                if ((newPosition - (Vector3)_lampPositionProvider.GetLampPosition()).magnitude < _colliderRadius + 0.5f)
+                if ((newPosition - (Vector3)_lampPositionProvider.GetLampPosition()).magnitude < _collisionRadius + 0.5f)
                 {
-                    newPosition = (Vector3)_lampPositionProvider.GetLampPosition() + newPosition.normalized * (0.5f + _colliderRadius);
+                    newPosition = (Vector3)_lampPositionProvider.GetLampPosition() + newPosition.normalized * (0.5f + _collisionRadius);
                 }
                 transform.position = newPosition;
             }

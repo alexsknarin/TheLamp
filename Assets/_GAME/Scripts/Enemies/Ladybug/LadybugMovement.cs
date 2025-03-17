@@ -12,7 +12,7 @@ namespace _GAME.Scripts.Enemies.Ladybug
     public class LadybugMovement : EnemyMovementBase, IPositionDirectionProvider, ISpreadableMovement
     {
         [Header("-- Movement Settings --")]
-        [SerializeField] private float _collisionRadius = 0.125f; // TODO: DI?
+        
         [SerializeField] private float _speed;
         [SerializeField] private float _radius;
         [SerializeField] private float _verticalAmplitude;
@@ -21,7 +21,9 @@ namespace _GAME.Scripts.Enemies.Ladybug
         // Debug
         [SerializeField] private string _stateDebug;
         [SerializeField] private int _sideDirection = 1;
-    
+        
+        private float _collisionRadius;
+        
         private Vector3 _position3D;
         // Debug only
         private Vector3 _prevPosition;
@@ -100,11 +102,13 @@ namespace _GAME.Scripts.Enemies.Ladybug
             _patrolStateR.EnteredAttackRange -= OnEnteredAttackRange;
             transform.parent = null;
         }
-
-        private void OnEnteredAttackRange()
+        
+        public void SetCollisionRadius(float radius)
         {
-            EnteredAttackRange?.Invoke();
+            _collisionRadius = radius;
         }
+
+        
 
         public override void Play()
         {
@@ -241,6 +245,11 @@ namespace _GAME.Scripts.Enemies.Ladybug
         {
             SpreadStateEnded?.Invoke();
             Play();
+        }
+        
+        private void OnEnteredAttackRange()
+        {
+            EnteredAttackRange?.Invoke();
         }
     }
 }

@@ -13,7 +13,6 @@ namespace _GAME.Scripts.Enemies.Mothling
     public class MothlingMovement : EnemyMovementBase, IPositionDirectionProvider, ISpreadableMovement
     {
         [Header("-- Movement States Base Settings --")]
-        [SerializeField] private float _collisionRadius = 0.075f;
         [SerializeField] private float _speed;
         [SerializeField] private float _radius;
         [SerializeField] private float _verticalAmplitude;
@@ -39,7 +38,8 @@ namespace _GAME.Scripts.Enemies.Mothling
         [SerializeField] private string _stateDebug;
         [SerializeField] private int _sideDirection = 1;
         [SerializeField] private int _depthSideDirection = 0;
-    
+        
+        private float _collisionRadius = 0.075f;
         private Vector3 _position3D;
         // Debug only
         private Vector3 _prevPosition;

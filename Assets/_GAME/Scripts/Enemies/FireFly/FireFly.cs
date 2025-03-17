@@ -26,6 +26,7 @@ namespace _GAME.Scripts.Enemies.FireFly
         public override void Initialize()
         {
             _movement.Initialize();
+            _movement.SetCollisionRadius(_collisionRadius);
             _movement.ReadyToAttackStateStarted += OnReadyToAttackStateStarted;
             _movement.ReadyToAttackStateEnded += OnReadyToAttackStateEnded;
             _movement.DeathStateEnded += OnDeathStateEnded;

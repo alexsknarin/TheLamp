@@ -28,6 +28,7 @@ namespace _GAME.Scripts.Enemies.Wasp
         public override void Initialize()
         {
             _movement.Initialize();
+            _movement.SetCollisionRadius(_collisionRadius);
             _animationClipEventListener.ClipEnded += OnClipEnded;
             _animationClipEventListener.SpreadTgiggered += OnSpreadTriggered;
             _animationClipEventListener.AttackStarted += OnAttackStateStarted;

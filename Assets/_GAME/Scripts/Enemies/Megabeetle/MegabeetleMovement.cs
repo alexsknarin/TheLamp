@@ -11,7 +11,7 @@ namespace _GAME.Scripts.Enemies.Megabeetle
 {
     public class MegabeetleMovement : EnemyMovementBase, IPositionDirectionProvider
     {
-        [SerializeField] private float _collisionRadius = 0.125f; // TODO: DI?
+        
         [Header("-- Movement Settings --")]
         [SerializeField] private float _speed;
         [SerializeField] private float _radius;
@@ -21,7 +21,8 @@ namespace _GAME.Scripts.Enemies.Megabeetle
         [SerializeField] private Vector3 IDLE_POSITION; // For Debug
         [SerializeField] private int _sideDirection; // For Debug
         [SerializeField] private string _stateDebug; // For Debug
-    
+        private float _collisionRadius;
+        
         // State Machine
         private readonly StateMachine _stateMachine = new();
         private MegabeetleMovementStateFactory _stateFactory;
@@ -138,7 +139,12 @@ namespace _GAME.Scripts.Enemies.Megabeetle
             _stickAttackState.Ended += OnStickAttackEnded;
             _fallState.Ended -= OnFallStateEnded;
         }
-
+        
+        public void SetCollisionRadius(float radius)
+        {
+            _collisionRadius = radius;
+        }
+        
         public override void Play()
         {
             StartMovement(_enterStateR, _enterStateL);

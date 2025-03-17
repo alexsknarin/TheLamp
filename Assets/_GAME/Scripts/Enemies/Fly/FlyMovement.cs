@@ -12,7 +12,6 @@ namespace _GAME.Scripts.Enemies.Fly
     public class FlyMovement : EnemyMovementBase, IPositionDirectionProvider, ISpreadableMovement
     {
         [Header("-- Movement States Base Settings --")]
-        [SerializeField] private float _collisionRadius = 0.1f; // TODO: DI?
         [SerializeField] private float _speed;
         [SerializeField] private float _radius;
         [SerializeField] private float _verticalAmplitude;
@@ -40,7 +39,7 @@ namespace _GAME.Scripts.Enemies.Fly
         [SerializeField] private float _fallBounceForce = 4f;
         [SerializeField] private float _fallGravityForce = .2f;
     
-    
+        private float _collisionRadius;
         private Vector3 _position3D;
         // Debug only
         private Vector3 _prevPosition;
@@ -168,6 +167,11 @@ namespace _GAME.Scripts.Enemies.Fly
             _preAttackStateL.Ended -= OnPreAttackStateEnded;
             _deathState.Ended -= OnDeathStateEnded;
             _spreadState.Ended -= OnSpreadStateEnded;
+        }
+        
+        public void SetCollisionRadius(float radius)
+        {
+            _collisionRadius = radius;
         }
 
         public override void Play()

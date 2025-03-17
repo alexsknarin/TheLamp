@@ -13,7 +13,6 @@ namespace _GAME.Scripts.Enemies.Megamothling
     public class MegamothlingMovement : EnemyMovementBase, IPositionDirectionProvider
     {
         [Header("-- Movement States Base Settings --")]
-        [SerializeField] private float _collisionRadius = 0.175f;   // TODO: DI?
         [SerializeField] private float _speed;
         [SerializeField] private float _radius;
         [SerializeField] private float _verticalAmplitude;
@@ -40,7 +39,7 @@ namespace _GAME.Scripts.Enemies.Megamothling
         [SerializeField] private float _fallBounceForce = 2f;
         [SerializeField] private float _fallGravityForce = .1f;
         [SerializeField] private float _deathBounceForce = 2f;
-    
+        private float _collisionRadius;
         private float _smoothTimeAllowed = 0;
     
         private Vector3 _position3D;
@@ -160,6 +159,11 @@ namespace _GAME.Scripts.Enemies.Megamothling
             _preAttackStateL.Ended -= OnPreAttackStateEnded;
             _preAttackStateR.Ended -= OnPreAttackStateEnded;
             _deathState.Ended -= OnDeathStateEnded;
+        }
+        
+        public void SetCollisionRadius(float radius)
+        {
+            _collisionRadius = radius;
         }
 
         public override void Play()
