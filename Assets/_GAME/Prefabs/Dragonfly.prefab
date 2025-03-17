@@ -1864,6 +1864,7 @@ MonoBehaviour:
   _spider: {fileID: 3221089541326229784}
   _isInAttackExitZone: 0
   _isCollidedWithLamp: 0
+  _isAttacked: 0
 --- !u!114 &8953583610499858097
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1956,6 +1957,7 @@ MonoBehaviour:
     type: 2}
   _spiderPushStateL: {fileID: 11400000, guid: b9a528afb4edc7240b25d383469448ce, type: 2}
   _spiderPushStateR: {fileID: 11400000, guid: f34b4697802a5564dbcfd6d29c735c95, type: 2}
+  _isBounced: 0
 --- !u!114 &4085273778962474757
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1988,11 +1990,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dab9715d45769a242820d370b7b19f32, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _dragonfly: {fileID: 7317761736038300975}
+  _dragonflyMovement: {fileID: 8953583610499858097}
   _damageIndication: {fileID: 1980114250451078023}
   _healthIndication: {fileID: 6507509925217970434}
   _deathFlash: {fileID: 3890820807162266275}
   _preAttackFlash: {fileID: 9185911319585977721}
-  _swarmCallPresentation: {fileID: 6112219141313886415}
+  _swarmCallFX: {fileID: 6112219141313886415}
 --- !u!114 &1980114250451078023
 MonoBehaviour:
   m_ObjectHideFlags: 0

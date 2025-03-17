@@ -1,6 +1,7 @@
 using System;
 using _GAME.Scripts.Enemies;
 using _GAME.Scripts.Enemies.Dragonfly;
+using _GAME.Scripts.Enemies.Dragonfly.Presentation;
 using _GAME.Scripts.Enemies.FireFly;
 using _GAME.Scripts.Enemies.Fly;
 using _GAME.Scripts.Enemies.Ladybug;
@@ -329,8 +330,7 @@ namespace _GAME.Scripts.Factories
         private FEnemy CreateDragonflyInstance(GameObject prefab)
         {
             GameObject enemyInstance = Object.Instantiate(prefab);
-            // enemyInstance.GetComponent<MegabeetleMovement>().Construct(_megabeetleMovementStateFactory);
-            // enemyInstance.GetComponent<MegabeetlePresentation>().Initialize();
+            enemyInstance.GetComponent<DragonflyPresentation>().Initialize();
             var enemy = enemyInstance.GetComponent<Dragonfly>();
             enemy.Initialize();
         

@@ -29,8 +29,6 @@ namespace _GAME.Scripts.Enemies.Dragonfly
         [Header("-- Movement --")]
         [SerializeField] private DragonflyMovement _movement;
         [SerializeField] private Transform _visibleBodyTransform;
-        [Header("-- Presentation --")]
-        [SerializeField] private DragonflyPresentation _presentation;
         [Header("-- Collision --")]
         [SerializeField] private DragonflyCollisionProvider _collisionProvider;
         [Header("Hover")]
@@ -90,6 +88,12 @@ namespace _GAME.Scripts.Enemies.Dragonfly
         public event Action<CollidableEnemy> ProjectileShot;
         public event Action<FEnemy, bool> ProjectileDeactivated;
         public event Action SpreadRequested;
+        public event Action Damaged;
+        public event Action<int, int> HealthChanged;
+        public event Action Died;
+        public event Action SwarmCalled;
+        public event Action<Transform> ColliderTransformChanged; 
+        
         public override Vector2 Position => _collisionProvider.CurrentCollisionPoint;
         public Transform MovementTransform => _visibleBodyTransform;
         public override void Initialize()
@@ -109,7 +113,6 @@ namespace _GAME.Scripts.Enemies.Dragonfly
             _isReadyToPreAttackWait = false;
             _isReadyToAttackWait = false;
             _isAttacked = false;
-            _presentation.Initialize();
             _spider.Initialize();
             _swarm.Initialize();
             _swarm.SetDuration(_swarmAttackDuration);
@@ -196,12 +199,10 @@ namespace _GAME.Scripts.Enemies.Dragonfly
 
             if (_currentHealth > 0)
             {
-                _presentation.HealthUpdate(_currentHealth, _maxHealth); // TODO: remake as events
-                _presentation.SetActiveColliderTransform(_collisionProvider.CurrentCollisionTransform); // TODO: remake as events
-                _presentation.DamageFlash(); // TODO: remake as events
                 _movement.TriggerFall(true);
-            
-                // TODO: invoke events ??
+                Damaged?.Invoke();
+                HealthChanged?.Invoke(_currentHealth, _maxHealth);
+                ColliderTransformChanged?.Invoke(_collisionProvider.CurrentCollisionTransform);
             }
             else
             {
@@ -209,9 +210,8 @@ namespace _GAME.Scripts.Enemies.Dragonfly
                 {
                     _currentHealth = 0; 
                     _movement.TriggerDeath(); 
-                    _presentation.DeathFlash();
+                    Died?.Invoke();
                     _isDead = true;
-                    // TODO: invoke events ??
                 }
             }
         }
@@ -456,13 +456,11 @@ namespace _GAME.Scripts.Enemies.Dragonfly
         private void OnPreAttackStarted()
         {
             IsReceivedLampAttackDamage = false;
-            _presentation.PreAttackStart();
         }
 
         private void OnAttackStarted()
         {
             AnimatedAttackStarted?.Invoke(this);
-            _presentation.PreAttackEnd();
         }
 
         private void OnAttackEnded()
@@ -472,7 +470,7 @@ namespace _GAME.Scripts.Enemies.Dragonfly
 
         private void OnSwarmCalled()
         {
-            _presentation.SwarmCall();
+            SwarmCalled?.Invoke();
         }
 
         private void OnWaitForBounceStateEnded()
