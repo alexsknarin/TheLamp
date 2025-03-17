@@ -12,7 +12,7 @@ namespace _GAME.Scripts.Enemies.Dragonfly
 {
     public class Dragonfly : CollidableEnemy, IAnimatedEnemy, IProjectileShooter, IBoss
     {
-        private readonly DragonflyReturnMode[] _returnModes = new DragonflyReturnMode[] //TODO: capital letter R
+        private readonly DragonflyReturnMode[] _returnModes = new DragonflyReturnMode[]
         {
             DragonflyReturnMode.PatrolL,
             DragonflyReturnMode.PatrolR,
@@ -86,8 +86,6 @@ namespace _GAME.Scripts.Enemies.Dragonfly
         private bool _isDead = false;
         private DragonflyReturnMode _returnMode;
 
-        // TODO: radius set implementation
-    
         public event Action<CollidableEnemy> AnimatedAttackStarted;
         public event Action<CollidableEnemy> ProjectileShot;
         public event Action<FEnemy, bool> ProjectileDeactivated;
@@ -249,13 +247,9 @@ namespace _GAME.Scripts.Enemies.Dragonfly
         public override void HandleExitAttackZone()
         {
             _isInAttackExitZone = false;
-        
             CollisionState = CollidableState.Outside;
             IsReadyForDamage = false;
             _isCollidedWithLamp = false;
-        
-            // TODO: account for damage
-        
             _movement.TriggerFall(false);
         }
 
@@ -525,7 +519,7 @@ namespace _GAME.Scripts.Enemies.Dragonfly
         private void OnDeathAnimationEnded()
         {
             OnDeathStateEnded();
-            gameObject.SetActive(false); // TODO: fix naming to be consistent
+            gameObject.SetActive(false);
             enabled = false;
         
         }

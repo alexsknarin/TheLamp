@@ -50,7 +50,7 @@ namespace _GAME.Scripts.UI.ViewModels
         public event Action HealthUpgraded;
 
 
-        public void OnDamageStateEnded() // TODO: com up with name
+        public void OnDamageStateEnded()
         {
             _gameModel.HandleDamageStateEnded();
         }

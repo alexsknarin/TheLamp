@@ -25,7 +25,7 @@ namespace _GAME.Scripts.UI.Views
         // Event Handle Methods
         private void OnLampDamaged(float duration)
         {
-            _brokenGlassEffect.Play(BrokenGlassEventType.Damage); // TODO: replace with duration
+            _brokenGlassEffect.Play(BrokenGlassEventType.Damage);
         }
 
         private void OnLampDied()

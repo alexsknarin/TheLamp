@@ -14,7 +14,7 @@ namespace _GAME.Scripts.Enemies.Generic.States
         private readonly float _verticalAmplitude;
 
         // State specific attributes
-        private readonly Vector2 _invertX = new Vector2(-1, 1); // TODO: DI?
+        private readonly Vector2 _invertX = new Vector2(-1, 1);
         private Vector2 _endPos = Vector2.zero;
         private Vector2 _enterDirection;
         private readonly float _depthMultiplier = 2f;

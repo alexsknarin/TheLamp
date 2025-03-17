@@ -99,9 +99,9 @@ namespace _GAME.Scripts.Enemies.Dragonfly
         private bool _isDead;
     
         // Events
-        public event Action<IState> ReadyToAttackStateEntered; // TODO: possibly Use Type instead of IState 
+        public event Action<IState> ReadyToAttackStateEntered; 
         public event Action<IState> ReadyToSwarmAttackStateEntered;
-        public event Action<IState> AfterAttackExitEnded; // TODO: possibly Use Type instead of IState
+        public event Action<IState> AfterAttackExitEnded;
         public event Action AttackStarted;
         public event Action PreAttackStarted;
         public event Action AttackEnded;

@@ -88,7 +88,7 @@ namespace _GAME.Scripts.Enemies.Mothling
                 _collisionRadius,
                 _fallBounceForce,
                 _fallGravityForce
-            ); // TODO: magic number
+            );
             _enterState = (FlyGenericMovementEnterState)_stateFactory.Create(typeof(FlyGenericMovementEnterState));
             _patrolState = (FlyGenericMovementPatrolState)_stateFactory.Create(typeof(FlyGenericMovementPatrolState));
             _preAttackState = (FMothlingMovementPreAttackState)_stateFactory.Create(typeof(FMothlingMovementPreAttackState));

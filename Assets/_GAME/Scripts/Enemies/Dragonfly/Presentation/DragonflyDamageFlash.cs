@@ -13,7 +13,7 @@ namespace _GAME.Scripts.Enemies.Dragonfly.Presentation
         [SerializeField] private VisualEffect _damageParticles;
         private Material _bodyMaterial;
         private Material _wingsMaterial;
-        private WaitForSeconds _damageFlashDuration = new WaitForSeconds(1.2f); // TODO: make use parameter - initialize in Initialize()
+        private WaitForSeconds _damageFlashDuration;
         private Transform _contactCollisionTransform;
 
         public override void Initialize()
@@ -22,6 +22,7 @@ namespace _GAME.Scripts.Enemies.Dragonfly.Presentation
             _wingsMaterial = _wingsMeshRenderer.material;
             _bodyMaterial.SetFloat("_AttackSemaphore", 0f);
             _wingsMaterial.SetFloat("_AttackSemaphore", 0f);
+            _damageFlashDuration = new WaitForSeconds(_duration);
         }
 
         public override void Play()

@@ -22,7 +22,7 @@ namespace _GAME.Scripts.InGamePresentation.FX
 
         public void Initialize()
         {
-            _material = _meshRenderer.material; // TODO: move to Initialize
+            _material = _meshRenderer.material;
             enabled = false;
         }
 

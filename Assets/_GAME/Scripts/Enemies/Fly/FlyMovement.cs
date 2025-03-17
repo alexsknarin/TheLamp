@@ -211,7 +211,6 @@ namespace _GAME.Scripts.Enemies.Fly
                 _stateMachine.SetState(_currentState);
 
                 // Immediately Apply Position2D and SideDirection to transform to avoid visible collision penetration.
-                // TODO: doublecheck this
                 Vector3 newPosition = transform.position;
                 newPosition.x = _currentState.Position2D.x;
                 newPosition.y = _currentState.Position2D.y;

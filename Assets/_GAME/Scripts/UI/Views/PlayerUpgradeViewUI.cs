@@ -68,7 +68,6 @@ namespace _GAME.Scripts.UI.Views
 
 
         // Event Handle Methods
-
         private void OnHealthUpgradeEnabledChanged(bool isEnabled)
         {
             // TODO: change to setEnabled to be able to set in 1 line
