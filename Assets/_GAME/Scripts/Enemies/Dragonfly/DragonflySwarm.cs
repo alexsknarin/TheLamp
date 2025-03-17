@@ -29,6 +29,11 @@ namespace _GAME.Scripts.Enemies.Dragonfly
             _isWaitingForAttack = false;
             _attackCount = 0;
         }
+        
+        public void SetDuration(float duration)
+        {
+            _timeInterval = duration/3;
+        }
 
         private void OnEnable()
         {

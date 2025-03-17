@@ -39,7 +39,7 @@ namespace _GAME.Scripts.Enemies.Dragonfly
         [Header("Patrol")]
         [Header("Head")]
         [SerializeField] private DragonflySwarm _swarm;
-        [SerializeField] private float _swarmAttackDuration; // TODO: control swarm duration itself from here as well
+        [SerializeField] private float _swarmAttackDuration;
         [SerializeField] private float _patrolWaitMin;
         [SerializeField] private float _patrolWaitMax;
         [SerializeField] private DragonflyPatrolAttackZoneRanges _patrolAttackZonesL;
@@ -112,6 +112,7 @@ namespace _GAME.Scripts.Enemies.Dragonfly
             _presentation.Initialize();
             _spider.Initialize();
             _swarm.Initialize();
+            _swarm.SetDuration(_swarmAttackDuration);
             _movement.Initialize();
         
             _patrolHeadState.Ended += GenerateAttackPosition;
