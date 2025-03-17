@@ -13,7 +13,7 @@ namespace _GAME.Scripts.Enemies.Mothling
     public class MothlingMovement : EnemyMovementBase, IPositionDirectionProvider, ISpreadableMovement
     {
         [Header("-- Movement States Base Settings --")]
-        [SerializeField] private float _collisionRadius = 0.075f; // TODO: DI?
+        [SerializeField] private float _collisionRadius = 0.075f;
         [SerializeField] private float _speed;
         [SerializeField] private float _radius;
         [SerializeField] private float _verticalAmplitude;
@@ -73,7 +73,6 @@ namespace _GAME.Scripts.Enemies.Mothling
         public event Action DeathStateEnded;
         public event Action SpreadStateEnded;
     
-
         public Vector2 Position2D { get; private set; } 
         public Vector3 DepthDirection { get; private set; } 
 
@@ -142,6 +141,11 @@ namespace _GAME.Scripts.Enemies.Mothling
             _preAttackState.Ended -= OnPreAttackStateEnded;
             _deathState.Ended -= OnDeathStateEnded;
             _spreadState.Ended -= OnSpreadStateEnded;
+        }
+        
+        public void SetCollisionRadius(float radius)
+        {
+            _collisionRadius = radius;
         }
 
         public override void Play()
