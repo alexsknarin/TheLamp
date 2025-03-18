@@ -70,15 +70,7 @@ namespace _GAME.Scripts.Enemies.Spider
             _returnState = (SpiderMovementReturnState)_stateFactory.Create(typeof(SpiderMovementReturnState));
             _deathState = (FlyGenericMovementDeathState)_stateFactory.Create(typeof(FlyGenericMovementDeathState));
             _climbUpState = (SpiderMovementClimbUpState)_stateFactory.Create(typeof(SpiderMovementClimbUpState));
-        
-            // _patrolState = (FFlyGenericMovementPatrolState)_stateFactory.Create(typeof(FFlyGenericMovementPatrolState));
-            // _preAttackStateR = (FFlyMovementPreAttackStateR)_stateFactory.Create(typeof(FFlyMovementPreAttackStateR));
-            // _preAttackStateL = (FFlyMovementPreAttackStateL)_stateFactory.Create(typeof(FFlyMovementPreAttackStateL));
-            // _attackState = (FFlyGenericMovementAcceleratedAttackState)_stateFactory.Create(typeof(FFlyGenericMovementAcceleratedAttackState));
-            // _fallState = (FFlyGenericMovementFallState)_stateFactory.Create(typeof(FFlyGenericMovementFallState));
-            // _deathState = (FFlyMovementDeathState)_stateFactory.Create(typeof(FFlyMovementDeathState));
-            // _spreadState = (FFlyGenericMovementSpreadState)_stateFactory.Create(typeof(FFlyGenericMovementSpreadState));
-        
+       
             // Subscribe to state events
             _patrolState.Started += OnPatrolStateStarted; 
             _patrolState.Ended += OnPatrolStateEnded;

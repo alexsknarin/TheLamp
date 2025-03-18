@@ -68,17 +68,17 @@ namespace _GAME.Scripts.GameCoreSystems.EnemyManagement
             enabled = false;
         
             // Debug Spawn Queue
-            // Debug.Log("++++ ----- Spawn Queue Generated:");
-            // for(int i=0; i<_spawnQueue.Count(); i++)
-            // {
-            //     Debug.Log($"Wave : {i} --- Count: {_spawnQueue.Get(i).Count()}");
-            //     string waveData = "";
-            //     for(int j=0; j<_spawnQueue.Get(i).Count(); j++)
-            //     {
-            //         waveData = waveData + " - " + _spawnQueue.Get(i).Get(j).ToString();
-            //     }
-            //     Debug.Log(waveData);
-            // }
+            Debug.Log("++++ ----- Spawn Queue Generated:");
+            for(int i=0; i<_spawnQueue.Count(); i++)
+            {
+                Debug.Log($"Wave : {i} --- Count: {_spawnQueue.Get(i).Count()}");
+                string waveData = "";
+                for(int j=0; j<_spawnQueue.Get(i).Count(); j++)
+                {
+                    waveData = waveData + " - " + _spawnQueue.Get(i).Get(j).ToString();
+                }
+                Debug.Log(waveData);
+            }
         }
 
         private void OnDestroy()

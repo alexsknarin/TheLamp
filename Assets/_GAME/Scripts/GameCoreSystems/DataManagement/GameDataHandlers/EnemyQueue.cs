@@ -6,12 +6,6 @@ namespace _GAME.Scripts.GameCoreSystems.DataManagement.GameDataHandlers
     public class EnemyQueue
     {
         private List<EnemyType> _enemies;
-
-        public EnemyQueue()
-        {
-            _enemies = new List<EnemyType>();
-        }
-
         public int MaxEnemiesOnScreen { get; set; }
         public int AggressionLevel { get; set; }
         /// <summary>
@@ -29,9 +23,9 @@ namespace _GAME.Scripts.GameCoreSystems.DataManagement.GameDataHandlers
             _enemies.Clear();
         }
     
-        public void Add(EnemyType enemy)
+        public void SetRange(List<EnemyType> enemyList)
         {
-            _enemies.Add(enemy);
+            _enemies = enemyList;
         }
     
         public int Count()
