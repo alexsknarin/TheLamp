@@ -35,13 +35,13 @@ namespace _GAME.Scripts.Enemies.Megabeetle
         private LadybugMovementPreAttackStateR _preAttackStateR;
         private LadybugMovementPreAttackStateL _preAttackStateL;
         private LadybugMovementAttackState _attackState;
-        private FMegabeetleMovementStickState _stickState;
-        private FMegabeetleMovementStickPreAttackState _stickPreAttackState;
-        private FMegabeetleMovementStickPreAttackPauseState _stickPreAttackPauseState;
-        private FMegabeetleMovementStickAttackState _stickAttackState;
-        private FMegabeetleMovementStickLandingState _stickLandingState;
-        private FMegabeetleMovementFallState _fallState;
-        private FMegabeetleMovementDeathState _deathState;
+        private MegabeetleMovementStickState _stickState;
+        private MegabeetleMovementStickPreAttackState _stickPreAttackState;
+        private MegabeetleMovementStickPreAttackPauseState _stickPreAttackPauseState;
+        private MegabeetleMovementStickAttackState _stickAttackState;
+        private MegabeetleMovementStickLandingState _stickLandingState;
+        private MegabeetleMovementFallState _fallState;
+        private MegabeetleMovementDeathState _deathState;
     
     
         // Debug only
@@ -83,13 +83,13 @@ namespace _GAME.Scripts.Enemies.Megabeetle
             _preAttackStateR = (LadybugMovementPreAttackStateR)_stateFactory.Create(typeof(LadybugMovementPreAttackStateR));
             _preAttackStateL = (LadybugMovementPreAttackStateL)_stateFactory.Create(typeof(LadybugMovementPreAttackStateL));
             _attackState = (LadybugMovementAttackState)_stateFactory.Create(typeof(LadybugMovementAttackState));
-            _stickState = (FMegabeetleMovementStickState)_stateFactory.Create(typeof(FMegabeetleMovementStickState));
-            _stickPreAttackState = (FMegabeetleMovementStickPreAttackState)_stateFactory.Create(typeof(FMegabeetleMovementStickPreAttackState));
-            _stickPreAttackPauseState = (FMegabeetleMovementStickPreAttackPauseState)_stateFactory.Create(typeof(FMegabeetleMovementStickPreAttackPauseState));
-            _stickAttackState = (FMegabeetleMovementStickAttackState)_stateFactory.Create(typeof(FMegabeetleMovementStickAttackState));
-            _stickLandingState = (FMegabeetleMovementStickLandingState)_stateFactory.Create(typeof(FMegabeetleMovementStickLandingState));
-            _fallState = (FMegabeetleMovementFallState)_stateFactory.Create(typeof(FMegabeetleMovementFallState));
-            _deathState = (FMegabeetleMovementDeathState)_stateFactory.Create(typeof(FMegabeetleMovementDeathState));
+            _stickState = (MegabeetleMovementStickState)_stateFactory.Create(typeof(MegabeetleMovementStickState));
+            _stickPreAttackState = (MegabeetleMovementStickPreAttackState)_stateFactory.Create(typeof(MegabeetleMovementStickPreAttackState));
+            _stickPreAttackPauseState = (MegabeetleMovementStickPreAttackPauseState)_stateFactory.Create(typeof(MegabeetleMovementStickPreAttackPauseState));
+            _stickAttackState = (MegabeetleMovementStickAttackState)_stateFactory.Create(typeof(MegabeetleMovementStickAttackState));
+            _stickLandingState = (MegabeetleMovementStickLandingState)_stateFactory.Create(typeof(MegabeetleMovementStickLandingState));
+            _fallState = (MegabeetleMovementFallState)_stateFactory.Create(typeof(MegabeetleMovementFallState));
+            _deathState = (MegabeetleMovementDeathState)_stateFactory.Create(typeof(MegabeetleMovementDeathState));
         
             _enterStateR.EnteredAttackRange += OnEnteredAttackRange;
             _enterStateL.EnteredAttackRange += OnEnteredAttackRange;

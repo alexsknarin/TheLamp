@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace _GAME.Scripts.Enemies.Megabeetle.MovementStates
 {
-    public class FMegabeetleMovementDeathState : EnemyMovementStateBase
+    public class MegabeetleMovementDeathState : EnemyMovementStateBase
     {
         // Dependencies
         private readonly IPositionDirectionProvider _positionDirectionProvider;
@@ -19,7 +19,7 @@ namespace _GAME.Scripts.Enemies.Megabeetle.MovementStates
         private float _gravityForceMagnitude = .17f;
         private float _dragAmount = 0.9f;
     
-        public FMegabeetleMovementDeathState(IPositionDirectionProvider positionDirectionProvider)
+        public MegabeetleMovementDeathState(IPositionDirectionProvider positionDirectionProvider)
         {
             _positionDirectionProvider = positionDirectionProvider;
         }

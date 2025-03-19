@@ -6,7 +6,7 @@ namespace _GAME.Scripts.Enemies.Ladybug.MovementStates
 {
     public class LadybugMovementDeathFallState: EnemyMovementStateBase
     {
-        private readonly Vector3 _cameraPosition = new Vector3(0, 0, -5.88f);
+        private readonly Vector3 _cameraPosition;
         IPositionDirectionProvider _positionDirectionProvider;
         private readonly ILampPositionProviderService _lampPositionProviderService;
 
@@ -25,7 +25,7 @@ namespace _GAME.Scripts.Enemies.Ladybug.MovementStates
             ILampPositionProviderService lampPositionProviderService
         )
         {
-            // _cameraPosition = cameraPosition; TODO: enable later
+            _cameraPosition = cameraPosition;
             _positionDirectionProvider = positionDirectionProvider;
             _lampPositionProviderService = lampPositionProviderService;
         }

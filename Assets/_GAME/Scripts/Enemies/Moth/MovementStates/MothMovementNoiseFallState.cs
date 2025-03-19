@@ -8,7 +8,7 @@ namespace _GAME.Scripts.Enemies.Moth.MovementStates
     public class MothMovementNoiseFallState: EnemyMovementStateBase
     {
         // Dependencies
-        private readonly Vector3 _cameraPosition = new Vector3(0, 0, -5.88f);
+        private readonly Vector3 _cameraPosition;
         private readonly IPositionDirectionProvider _positionDirectionProvider;
         private ILampPositionProviderService _lampPositionProviderService;
         private readonly float _radius;
@@ -34,7 +34,7 @@ namespace _GAME.Scripts.Enemies.Moth.MovementStates
             float verticalAmplitude
         )
         {
-            // _cameraPosition = cameraPosition; // TODO: enable later
+            _cameraPosition = cameraPosition;
             _positionDirectionProvider = positionDirectionProvider;
             _lampPositionProviderService = lampPositionProviderService;
             _radius = radius;

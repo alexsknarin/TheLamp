@@ -6,7 +6,7 @@ namespace _GAME.Scripts.Enemies.Generic.States
     public class FlyGenericMovementEnterState: EnemyMovementStateBase
     {
         // Dependencies
-        private readonly Vector3 _cameraPosition = new Vector3(0, 0, -5.88f);
+        private readonly Vector3 _cameraPosition;
         private readonly IPositionDirectionProvider _positionDirectionProvider;
         private ILampPositionProviderService _lampPositionProviderService; // TODO: enable later
         private readonly float _speed;
@@ -29,7 +29,7 @@ namespace _GAME.Scripts.Enemies.Generic.States
             float verticalAmplitude
         )
         {
-            // _cameraPosition = cameraPosition; // TODO: enable later
+            _cameraPosition = cameraPosition;
             _positionDirectionProvider = positionDirectionProvider;
             _lampPositionProviderService = lampPositionProviderService;
             _speed = speed;

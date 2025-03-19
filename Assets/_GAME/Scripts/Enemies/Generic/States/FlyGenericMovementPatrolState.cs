@@ -8,9 +8,8 @@ namespace _GAME.Scripts.Enemies.Generic.States
     {
         // Dependencies
 
-        private readonly Vector3 _cameraPosition = new Vector3(0, 0, -5.88f); // DI?
+        private readonly Vector3 _cameraPosition;
         private readonly IPositionDirectionProvider _positionDirectionProvider;
-        private ILampPositionProviderService _lampPositionProviderService; // TODO: enable later
         private readonly float _speed;
         private readonly float _radius;
         private readonly float _verticalAmplitude;
@@ -25,14 +24,12 @@ namespace _GAME.Scripts.Enemies.Generic.States
         public FlyGenericMovementPatrolState(
             Vector3 cameraPosition,
             IPositionDirectionProvider positionDirectionProvider,
-            ILampPositionProviderService lampPositionProviderService,
             float speed,
             float radius,
             float verticalAmplitude)
         {
-            // _cameraPosition = cameraPosition; // TODO: enable later
+            _cameraPosition = cameraPosition;
             _positionDirectionProvider = positionDirectionProvider;
-            _lampPositionProviderService = lampPositionProviderService;
             _speed = speed;
             _radius = radius;
             _verticalAmplitude = verticalAmplitude;

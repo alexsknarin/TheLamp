@@ -6,7 +6,7 @@ namespace _GAME.Scripts.Enemies.Megamothling.MovementStates
     public class FMegamothlingMovementAttackState: EnemyMovementStateBase
     {
         // Dependencies
-        private readonly Vector3 _cameraPosition = new Vector3(0, 0, -5.88f);
+        private readonly Vector3 _cameraPosition;
         private readonly IPositionDirectionProvider _positionDirectionProvider;
         private readonly float _speed;
     

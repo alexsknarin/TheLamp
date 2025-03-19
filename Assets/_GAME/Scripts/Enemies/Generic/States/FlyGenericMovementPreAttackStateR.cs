@@ -7,7 +7,7 @@ namespace _GAME.Scripts.Enemies.Generic.States
     public class FlyGenericMovementPreAttackStateR: EnemyMovementStateBase
     {
         // Dependencies
-        private readonly Vector3 _cameraPosition = new Vector3(0, 0, -5.88f);
+        private readonly Vector3 _cameraPosition;
         private readonly IPositionDirectionProvider _positionDirectionProvider;
         private float _speed;
 
@@ -25,7 +25,7 @@ namespace _GAME.Scripts.Enemies.Generic.States
             float duration
         )
         {
-            // _cameraPosition = cameraPosition; // TODO: enable later
+            _cameraPosition = cameraPosition;
             _positionDirectionProvider = positionDirectionProvider;
             _speed = speed;
             _duration = duration;

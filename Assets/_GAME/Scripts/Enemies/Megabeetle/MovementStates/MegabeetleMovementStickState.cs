@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace _GAME.Scripts.Enemies.Megabeetle.MovementStates
 {
-    public class FMegabeetleMovementStickState : EnemyMovementStateBase
+    public class MegabeetleMovementStickState : EnemyMovementStateBase
     {
         private readonly IPositionDirectionProvider _positionDirectionProvider;
     
@@ -11,7 +11,7 @@ namespace _GAME.Scripts.Enemies.Megabeetle.MovementStates
         private float _localTime = 0f;
         private float _phase = 0f;
     
-        public FMegabeetleMovementStickState(IPositionDirectionProvider positionDirectionProvider)
+        public MegabeetleMovementStickState(IPositionDirectionProvider positionDirectionProvider)
         {
             _positionDirectionProvider = positionDirectionProvider;
         }

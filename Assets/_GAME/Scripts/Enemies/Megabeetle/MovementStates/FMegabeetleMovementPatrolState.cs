@@ -6,9 +6,8 @@ namespace _GAME.Scripts.Enemies.Megabeetle.MovementStates
 {
     public abstract class FMegabeetleMovementPatrolState : EnemyMovementStateBase
     {
-        private readonly Vector3 _cameraPosition = new Vector3(0, 0, -5.88f);
+        private readonly Vector3 _cameraPosition;
         private readonly IPositionDirectionProvider _positionDirectionProvider;
-        private readonly ILampPositionProviderService _lampPositionProviderService;
         private readonly float _speed;
         private readonly float _radius;
         private readonly float _verticalAmplitude;
@@ -29,15 +28,13 @@ namespace _GAME.Scripts.Enemies.Megabeetle.MovementStates
         public FMegabeetleMovementPatrolState(
             Vector3 cameraPosition,
             IPositionDirectionProvider positionDirectionProvider,
-            ILampPositionProviderService lampPositionProviderService,
             float speed, 
             float radius,
             float verticalAmplitude
         )
         {
-            // _cameraPosition = cameraPosition;
+            _cameraPosition = cameraPosition;
             _positionDirectionProvider = positionDirectionProvider;
-            _lampPositionProviderService = lampPositionProviderService;
             _speed = speed;
             _radius = radius;
             _verticalAmplitude = verticalAmplitude;

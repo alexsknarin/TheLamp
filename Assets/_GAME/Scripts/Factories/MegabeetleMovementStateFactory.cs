@@ -70,7 +70,6 @@ namespace _GAME.Scripts.Factories
                 return new FMegabeetleMovementPatrolStateR(
                     _cameraTransform.position,
                     _positionDirectionProvider,
-                    _lampPositionProviderService,
                     _speed,
                     _radius,
                     _verticalAmplitude
@@ -81,7 +80,6 @@ namespace _GAME.Scripts.Factories
                 return new FMegabeetleMovementPatrolStateL(
                     _cameraTransform.position,
                     _positionDirectionProvider,
-                    _lampPositionProviderService,
                     _speed,
                     _radius,
                     _verticalAmplitude
@@ -114,37 +112,37 @@ namespace _GAME.Scripts.Factories
                     _speed
                 );
             }
-            if (stateType == typeof(FMegabeetleMovementStickState))
+            if (stateType == typeof(MegabeetleMovementStickState))
             {
-                return new FMegabeetleMovementStickState(_positionDirectionProvider);
+                return new MegabeetleMovementStickState(_positionDirectionProvider);
             }
-            if (stateType == typeof(FMegabeetleMovementStickPreAttackState))
+            if (stateType == typeof(MegabeetleMovementStickPreAttackState))
             {
-                return new FMegabeetleMovementStickPreAttackState(_positionDirectionProvider);
+                return new MegabeetleMovementStickPreAttackState(_positionDirectionProvider);
             }
-            if (stateType == typeof(FMegabeetleMovementStickPreAttackPauseState))
+            if (stateType == typeof(MegabeetleMovementStickPreAttackPauseState))
             {
-                return new FMegabeetleMovementStickPreAttackPauseState(_positionDirectionProvider);
+                return new MegabeetleMovementStickPreAttackPauseState(_positionDirectionProvider);
             }
-            if (stateType == typeof(FMegabeetleMovementStickAttackState))
+            if (stateType == typeof(MegabeetleMovementStickAttackState))
             {
-                return new FMegabeetleMovementStickAttackState(_positionDirectionProvider);
+                return new MegabeetleMovementStickAttackState(_positionDirectionProvider);
             }
-            if (stateType == typeof(FMegabeetleMovementStickLandingState))
+            if (stateType == typeof(MegabeetleMovementStickLandingState))
             {
-                return new FMegabeetleMovementStickLandingState(_positionDirectionProvider);
+                return new MegabeetleMovementStickLandingState(_positionDirectionProvider);
             }
-            if (stateType == typeof(FMegabeetleMovementFallState))
+            if (stateType == typeof(MegabeetleMovementFallState))
             {
-                return new FMegabeetleMovementFallState(_positionDirectionProvider);
+                return new MegabeetleMovementFallState(_positionDirectionProvider);
             }
-            if (stateType == typeof(FMegabeetleMovementFallState))
+            if (stateType == typeof(MegabeetleMovementFallState))
             {
-                return new FMegabeetleMovementFallState(_positionDirectionProvider);
+                return new MegabeetleMovementFallState(_positionDirectionProvider);
             }
-            if (stateType == typeof(FMegabeetleMovementDeathState))
+            if (stateType == typeof(MegabeetleMovementDeathState))
             {
-                return new FMegabeetleMovementDeathState(_positionDirectionProvider);
+                return new MegabeetleMovementDeathState(_positionDirectionProvider);
             }
             return null;
         }

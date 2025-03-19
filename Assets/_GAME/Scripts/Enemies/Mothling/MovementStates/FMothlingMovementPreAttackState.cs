@@ -7,7 +7,7 @@ namespace _GAME.Scripts.Enemies.Mothling.MovementStates
     public class FMothlingMovementPreAttackState: EnemyMovementStateBase
     {
         // Dependencies
-        private readonly Vector3 _cameraPosition = new Vector3(0, 0, -5.88f);
+        private readonly Vector3 _cameraPosition;
         private readonly IPositionDirectionProvider _positionDirectionProvider;
 
         // State specific attributes
@@ -20,7 +20,7 @@ namespace _GAME.Scripts.Enemies.Mothling.MovementStates
             IPositionDirectionProvider positionDirectionProvider
         )
         {
-            // _cameraPosition = cameraPosition; // TODO: enable later
+            _cameraPosition = cameraPosition;
             _positionDirectionProvider = positionDirectionProvider;
         }
 

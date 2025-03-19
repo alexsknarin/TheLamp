@@ -7,8 +7,7 @@ namespace _GAME.Scripts.Enemies.Moth.MovementStates
     public class MothMovementEnterState: EnemyMovementStateBase
     {
         // Dependencies
-        private readonly Vector3 _cameraPosition = new Vector3(0, 0, -5.88f);
-        private readonly IPositionDirectionProvider _positionDirectionProvider;
+        private readonly Vector3 _cameraPosition;
         private readonly float _speed;
         private readonly float _radius;
         private readonly float _verticalAmplitude;
@@ -29,14 +28,12 @@ namespace _GAME.Scripts.Enemies.Moth.MovementStates
     
         public MothMovementEnterState(
             Vector3 cameraPosition,
-            IPositionDirectionProvider positionDirectionProvider,
             float speed,
             float radius,
             float verticalAmplitude
         )
         {
-            // _cameraPosition = cameraPosition; // TODO: enable later
-            _positionDirectionProvider = positionDirectionProvider;
+            _cameraPosition = cameraPosition;
             _speed = speed;
             _radius = radius;
             _verticalAmplitude = verticalAmplitude;

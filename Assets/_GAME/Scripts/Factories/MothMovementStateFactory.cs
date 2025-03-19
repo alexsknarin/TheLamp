@@ -43,7 +43,6 @@ namespace _GAME.Scripts.Factories
             {
                 return new MothMovementEnterState(
                     _cameraTransform.position,
-                    _positionDirectionProvider,
                     _speed,
                     _radius,
                     _verticalAmplitude

@@ -66,7 +66,6 @@ namespace _GAME.Scripts.Factories
                 return new FlyGenericMovementPatrolState(
                     _cameraTransform.position,
                     _positionDirectionProvider,
-                    _lampPositionProviderService,
                     _speed,
                     _radius,
                     _verticalAmplitude

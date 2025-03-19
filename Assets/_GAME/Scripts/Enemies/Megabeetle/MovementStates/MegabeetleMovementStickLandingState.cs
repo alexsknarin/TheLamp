@@ -1,53 +1,47 @@
-using System;
 using _GAME.Scripts.Lib.Interfaces;
 using UnityEngine;
 
 namespace _GAME.Scripts.Enemies.Megabeetle.MovementStates
 {
-    public class FMegabeetleMovementStickAttackState : EnemyMovementStateBase
+    public class MegabeetleMovementStickLandingState : EnemyMovementStateBase
     {
         private readonly IPositionDirectionProvider _positionDirectionProvider;
-    
-        private float _duration = .27f;
-        private float _localTime = 0f;
-        private float _phase = 0f;
 
+        private readonly float _startDistance = 0.64f;
+        private readonly float _endDistance = 0.44f;
+        private float _duration = .491f;
+        private float _phase;
+        private float _localTime;
         private Vector2 _startPosition;
         private Vector2 _endPosition;
     
-        public FMegabeetleMovementStickAttackState(IPositionDirectionProvider positionDirectionProvider)
+        public MegabeetleMovementStickLandingState(IPositionDirectionProvider positionDirectionProvider)
         {
             _positionDirectionProvider = positionDirectionProvider;
         }
     
-        public event Action Ended;
-    
         public override void OnEnter()
         {
             IsReadyToSwitch = false;
+        
             Position2D = _positionDirectionProvider.Position2D;
-            _startPosition = Position2D;
-            _endPosition = Position2D.normalized * 0.38f; 
             _localTime = 0;
             _phase = 0;
+            _startPosition = Position2D.normalized * _startDistance;
+            _endPosition = Position2D.normalized * _endDistance;
+        
         }
 
         public override void Tick()
         {
-        
             _phase  = _localTime / _duration;
-            Position2D = Vector3.Lerp(_startPosition, _endPosition, Mathf.Pow(_phase, 2.6f));
+            Position2D = Vector2.Lerp(_startPosition, _endPosition, _phase);
             _localTime += Time.deltaTime;
         
-            if (_phase > 1.0f)
+            if (_phase > 1)
             {
                 IsReadyToSwitch = true;
             }
-        }
-    
-        public override void OnExit()
-        {
-            Ended?.Invoke();
         }
     }
 }

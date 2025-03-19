@@ -6,7 +6,7 @@ namespace _GAME.Scripts.Enemies.Ladybug.MovementStates
 {
     public class LadybugMovementAttackState : EnemyMovementStateBase
     {
-        private readonly Vector3 _cameraPosition = new Vector3(0, 0, -5.88f);
+        private readonly Vector3 _cameraPosition;
         private readonly IPositionDirectionProvider _positionDirectionProvider;
         private readonly ILampPositionProviderService _lampPositionProviderService;
         private readonly float _speed;
@@ -20,7 +20,7 @@ namespace _GAME.Scripts.Enemies.Ladybug.MovementStates
             float speed
         )
         {
-            // _cameraPosition = cameraPosition; TODO: enable later
+            _cameraPosition = cameraPosition;
             _positionDirectionProvider = positionDirectionProvider;
             _lampPositionProviderService = lampPositionProviderService;
             _speed = speed;
