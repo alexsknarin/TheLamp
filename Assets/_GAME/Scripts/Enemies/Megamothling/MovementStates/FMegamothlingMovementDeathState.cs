@@ -10,14 +10,14 @@ namespace _GAME.Scripts.Enemies.Megamothling.MovementStates
         private readonly IPositionDirectionProvider _positionDirectionProvider;
     
         // State specific attributes
+        private readonly float _bounceForceMagnitude = 2f;
+        private readonly float _gravityForceMagnitude = .2f;
+        private readonly float _duration = 1.7f;
+        private float _dragAmount = 0.94f;
         private Vector2 _bounceForce;
         private Vector2 _gravityForce;
-        private float _bounceForceMagnitude = 2f;
-        private float _gravityForceMagnitude = .2f;
-        private float _dragAmount = 0.94f;
-        private float _duration = 1.7f;
         private float _localTime;
-    
+
         public FMegamothlingMovementDeathState(IPositionDirectionProvider positionDirectionProvider)
         {
             _positionDirectionProvider = positionDirectionProvider;

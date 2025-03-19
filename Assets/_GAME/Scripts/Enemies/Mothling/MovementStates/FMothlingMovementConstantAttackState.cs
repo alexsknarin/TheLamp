@@ -8,7 +8,7 @@ namespace _GAME.Scripts.Enemies.Mothling.MovementStates
         // Dependencies
         private readonly Vector3 _cameraPosition;
         private readonly IPositionDirectionProvider _positionDirectionProvider;
-        private ILampPositionProviderService _lampPositionProviderService;
+        private readonly ILampPositionProviderService _lampPositionProviderService;
         private readonly float _speed;
 
         // State specific attributes

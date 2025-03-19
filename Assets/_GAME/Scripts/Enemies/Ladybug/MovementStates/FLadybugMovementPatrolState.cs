@@ -13,18 +13,18 @@ namespace _GAME.Scripts.Enemies.Ladybug.MovementStates
         private readonly float _radius;
         private readonly float _verticalAmplitude;
     
-        private float _attackRange = 1.5f;
+        private readonly float _attackRange = 1.5f;
         private bool _outsideAttackRange;
         private float _patrolStartOffsetAngle;
         private float _enterTimeOffset;
         private float _phase;
-        private float _spiralSpeedStart = 0.2f;
-        private float _spiralSpeedEnd = 0.015f;
+        private readonly float _spiralSpeedStart = 0.2f;
+        private readonly float _spiralSpeedEnd = 0.015f;
         private float _spiralPhase = 1f;
-        private float _preAttackTriggerDistance = 0.7f;
-        private float _preAttackTriggerYThreshold = 0.3f;
-        private float _depthMultiplierMax = 3f;
-        private float _depthMultiplierMin = 0f;
+        private readonly float _preAttackTriggerDistance = 0.7f;
+        private readonly float _preAttackTriggerYThreshold = 0.3f;
+        private readonly float _depthMultiplierMax = 3f;
+        private readonly float _depthMultiplierMin = 0f;
     
         public event Action EnteredAttackRange;
     

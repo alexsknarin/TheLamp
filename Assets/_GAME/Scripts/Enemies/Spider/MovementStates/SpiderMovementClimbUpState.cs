@@ -5,10 +5,10 @@ namespace _GAME.Scripts.Enemies.Spider.MovementStates
 {
     public class SpiderMovementClimbUpState: EnemyMovementStateBase
     {
-        private IPositionDirectionProvider _positionDirectionProvider;
-        private Vector2 _hangingPoint;
+        private readonly IPositionDirectionProvider _positionDirectionProvider;
+        private readonly Vector2 _hangingPoint;
     
-        private float duration = 3f;
+        private readonly float _duration = 3f;
         private float _localTime;
         private readonly float _tau = Mathf.PI * 2;
         private float _startY;
@@ -33,7 +33,7 @@ namespace _GAME.Scripts.Enemies.Spider.MovementStates
 
         public override void Tick()
         {
-            float phase = _localTime / duration;
+            float phase = _localTime / _duration;
         
             Vector2 newPosition = Position2D;
             newPosition.y = _startY + Mathf.Sin(phase * _tau) + phase * 3.6f;

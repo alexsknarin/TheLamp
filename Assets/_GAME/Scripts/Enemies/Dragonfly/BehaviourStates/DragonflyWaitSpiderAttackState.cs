@@ -11,7 +11,7 @@ namespace _GAME.Scripts.Enemies.Dragonfly.BehaviourStates
         private readonly Vector3 _attackPositionBase;
         private bool _isLastPatrolDirectionSet = false;
         private int _lastPatrolDirection = 0;
-        private float _preattackDistance = 0.4f;
+        private float _preattackDistance = 0.4f; // TODO: configs
         private bool _isReadyToPreAttack = false;
 
         public DragonflyWaitSpiderAttackState(Transform visibleBodyTransform, Vector3 attackPositionBase)

@@ -11,8 +11,8 @@ namespace _GAME.Scripts.Enemies.Megamothling.MovementStates
         private readonly float _speed;
     
         // State specific attributes
-        private float _acceleration = 3.1f; //13.5f;
-        private float _depthDecrement = 0.2f;
+        private readonly float _acceleration = 3.1f;
+        private readonly float _depthDecrement = 0.2f;
         private float _acceleratedSpeed = 1f;
         private float _startDistance;
     

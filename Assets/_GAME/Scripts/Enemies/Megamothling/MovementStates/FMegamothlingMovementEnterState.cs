@@ -13,12 +13,12 @@ namespace _GAME.Scripts.Enemies.Megamothling.MovementStates
         private readonly float _verticalAmplitude;
     
         private readonly Vector2 _invertX = new Vector2(-1, 1);
+        private readonly float _depthMultiplier = 2f;
+        private readonly float _depthAdjustDuration = 0.6f;
         private Vector2 _endPos = Vector2.zero;
         private Vector2 _enterDirection;
-        private float _depthMultiplier = 2f;
         private float _initialDistance;
         private float _startDepth;
-        private float _depthAdjustDuration = 0.6f;
         private float _depthAdjustLocalTime;
     
         public FMegamothlingMovementEnterState(

@@ -16,13 +16,13 @@ namespace _GAME.Scripts.Enemies.Moth.MovementStates
     
     
         // State specific attributes
+        private readonly float _bounceForceMagnitude = 4f;
+        private readonly float _gravityForceMagnitude = .2f;
+        private readonly float _dragAmount = 0.94f;
+        private readonly float _noiseFrequency = 7f;
+        private readonly float _noiseAmplitude = 0.015f;
         private Vector2 _bounceForce;
         private Vector2 _gravityForce;
-        private float _bounceForceMagnitude = 4f;
-        private float _gravityForceMagnitude = .2f;
-        private float _dragAmount = 0.94f;
-        private float _noiseFrequency = 7f;
-        private float _noiseAmplitude = 0.015f;
         private float _localTime;
         private readonly float _yPositionToSwitch;
     

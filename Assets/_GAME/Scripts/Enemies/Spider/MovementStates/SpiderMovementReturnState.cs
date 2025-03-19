@@ -5,18 +5,18 @@ namespace _GAME.Scripts.Enemies.Spider.MovementStates
 {
     public class SpiderMovementReturnState: EnemyMovementStateBase
     {
-        private IPositionDirectionProvider _positionDirectionProvider;
-        private Vector2 _hangingPoint;
-        private float _speed;
-    
+        private readonly IPositionDirectionProvider _positionDirectionProvider;
+        private readonly Vector2 _hangingPoint;
+        private readonly float _speed;
+
+        private readonly float _decceleration = 0.07f;
         private float _localTime;
         private float _initialAmplitude;
         private float _swingAmplitude;
         private float _initialXpos;
         private int _returnPhase;
         private Vector2 _initialDirection;
-        private float _decceleration = 0.07f;
-    
+
         public SpiderMovementReturnState(
             IPositionDirectionProvider positionDirectionProvider, float speed, float xCenter, float height)
         {

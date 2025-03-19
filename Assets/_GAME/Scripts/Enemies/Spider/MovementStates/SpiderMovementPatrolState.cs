@@ -6,7 +6,7 @@ namespace _GAME.Scripts.Enemies.Spider.MovementStates
 {
     public class SpiderMovementPatrolState: EnemyMovementStateBase
     {
-        private IPositionDirectionProvider _positionDirectionProvider;
+        private readonly IPositionDirectionProvider _positionDirectionProvider;
         private Vector2 _hangingPoint;
         private float _localTime;
     

@@ -12,19 +12,19 @@ namespace _GAME.Scripts.Enemies.Megabeetle.MovementStates
         private readonly float _radius;
         private readonly float _verticalAmplitude;
     
-        private float _attackRange = 1.5f;
+        private readonly float _attackRange = 1.5f;
+        private readonly float _spiralSpeedStart = 0.2f;
+        private readonly float _spiralSpeedEnd = 0.015f;
+        private readonly float _preAttackTriggerDistance = 1.0f;
+        private readonly float _preAttackTriggerYThreshold = 0.3f;
+        private readonly float _depthMultiplierMax = 1.8f;
+        private readonly float _depthMultiplierMin = 0f;
         private bool _outsideAttackRange;
         private float _patrolStartOffsetAngle;
         private float _enterTimeOffset;
         private float _phase;
-        private float _spiralSpeedStart = 0.2f;
-        private float _spiralSpeedEnd = 0.015f;
         private float _spiralPhase = 1f;
-        private float _preAttackTriggerDistance = 1.0f;
-        private float _preAttackTriggerYThreshold = 0.3f;
-        private float _depthMultiplierMax = 1.8f;
-        private float _depthMultiplierMin = 0f;
-    
+
         public FMegabeetleMovementPatrolState(
             Vector3 cameraPosition,
             IPositionDirectionProvider positionDirectionProvider,

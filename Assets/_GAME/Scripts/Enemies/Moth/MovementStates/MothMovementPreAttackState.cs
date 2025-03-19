@@ -11,9 +11,9 @@ namespace _GAME.Scripts.Enemies.Moth.MovementStates
         private readonly IPositionDirectionProvider _positionDirectionProvider;
         private readonly float _speed;
 
-        private float _duration = .35f;
+        private readonly float _duration = .35f;
+        private readonly float _acceleration = 0.93f;
         private float _acceleratedSpeed;
-        private float _acceleration = 0.93f;
         private Vector2 _direction;
         private float _localTime;
     

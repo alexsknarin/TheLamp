@@ -7,7 +7,7 @@ namespace _GAME.Scripts.Enemies.Megabeetle.MovementStates
     {
         private readonly IPositionDirectionProvider _positionDirectionProvider;
     
-        private float _duration = 1.25f;
+        private readonly float _duration = 1.25f;
         private float _localTime = 0f;
         private float _phase = 0f;
     

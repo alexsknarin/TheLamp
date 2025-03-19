@@ -9,16 +9,16 @@ namespace _GAME.Scripts.Enemies.Megabeetle.MovementStates
         // Dependencies
         private readonly IPositionDirectionProvider _positionDirectionProvider;
     
-        private readonly Vector2 IDLE_POSITION = new Vector2(0f, -4.5f);
+        private readonly Vector2 _idlePosition = new Vector2(0f, -4.5f);
+        private readonly float _duration = 1.7f;
+        private readonly float _bounceForceMagnitude = 3f;
+        private readonly float _gravityForceMagnitude = .17f;
+        private readonly float _dragAmount = 0.9f;
         private Vector2 _bounceForce;
         private Vector2 _gravityForce;
-        private float _duration = 1.7f;
         private float _localTime = 0f;
         private float _phase = 0f;
-        private float _bounceForceMagnitude = 3f;
-        private float _gravityForceMagnitude = .17f;
-        private float _dragAmount = 0.9f;
-    
+
         public MegabeetleMovementDeathState(IPositionDirectionProvider positionDirectionProvider)
         {
             _positionDirectionProvider = positionDirectionProvider;
@@ -47,7 +47,7 @@ namespace _GAME.Scripts.Enemies.Megabeetle.MovementStates
         
             if (_phase > 1f)
             {
-                Position2D = IDLE_POSITION;
+                Position2D = _idlePosition;
                 IsReadyToSwitch = true;
                 Ended?.Invoke();
             }

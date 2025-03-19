@@ -15,21 +15,21 @@ namespace _GAME.Scripts.Enemies.Moth.MovementStates
         private readonly float _radius;
     
         // State specific attributes
+        private readonly float _depthMultiplier = 0.6f;
+        private readonly float _hoverRadius = .35f;
+        private readonly float _moveFromCenterDuration = 0.2f;
+        private readonly float _speedNoiseCompensation = 0.4f;
+        private readonly float _hoverDurationMin = .5f;
+        private readonly float _hoverDurationMax = 2f;
+        private readonly float _noiseFrequency = 8f;
+        private readonly float _noiseAmplitude = 0.29f;
         private float _patrolStartOffsetAngle;
         private float _enterTimeOffset; // TMP
         private float _phase;
-        private float _depthMultiplier = 0.6f;
-        private float _hoverRadius = .35f;
         private Vector2 _hoverCenter;
         private float _speedFactor;
-        private float _moveFromCenterDuration = 0.2f;
-        private float _speedNoiseCompensation = 0.4f;
         private float _hoverDuration;
-        private float _hoverDurationMin = .5f;
-        private float _hoverDurationMax = 2f;
         private float _hoverPhase;
-        private float _noiseFrequency = 8f;
-        private float _noiseAmplitude = 0.29f;
         private float _localTime;
     
         public MothMovementHoverState(

@@ -6,7 +6,7 @@ namespace _GAME.Scripts.Enemies.Spider.MovementStates
     {
         private readonly float _speed;
     
-        private Vector2 _hangingPoint;
+        private readonly Vector2 _hangingPoint;
         private float _localTime;
     
         public SpiderMovementEnterState(float speed, float xCenter, float height)

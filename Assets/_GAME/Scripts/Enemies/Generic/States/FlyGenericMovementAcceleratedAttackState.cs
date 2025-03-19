@@ -13,8 +13,8 @@ namespace _GAME.Scripts.Enemies.Generic.States
         private readonly float _proximityOffset;
 
         // State specific attributes
-        private float _acceleration = 6.5f;
-        private float _depthDecrement = 0.4f;
+        private readonly float _acceleration = 6.5f;
+        private readonly float _depthDecrement = 0.4f;
 
         private float _acceleratedSpeed = 1f;
         private float _startDistance;

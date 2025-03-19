@@ -6,8 +6,8 @@ namespace _GAME.Scripts.Enemies.Spider.MovementStates
 {
     public class SpiderMovementPreAttackState: EnemyMovementStateBase
     {
-        private IPositionDirectionProvider _positionDirectionProvider;
-        private Vector2 _hangingPoint;
+        private readonly IPositionDirectionProvider _positionDirectionProvider;
+        private readonly Vector2 _hangingPoint;
     
         private float _localTime;
         private readonly float _acceleration = 9.7f;

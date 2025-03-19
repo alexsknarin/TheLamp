@@ -13,19 +13,19 @@ namespace _GAME.Scripts.Enemies.Moth.MovementStates
         private readonly float _verticalAmplitude;
     
         // State specific attributes
-        private float _deadZoneAngle = 35;
-        private float _minDistance = 2.5f;
-        private float _maxDistance = 4.7f;
-    
+        private readonly float _deadZoneAngle = 35;
+        private readonly float _minDistance = 2.5f;
+        private readonly float _maxDistance = 4.7f;
+
+        private readonly float _depthMultiplier = 1.6f;
+        private readonly float _noiseFrequency = 9f;
+        private readonly float _noiseAmplitude = 0.05f;
         private Vector2 _endPos = Vector2.zero;
         private Vector2 _enterDirection;
-        private float _depthMultiplier = 1.6f;
         private float _initialDistance;
         private float _phase;
-        private float _noiseFrequency = 9f;
-        private float _noiseAmplitude = 0.05f;
-    
-    
+
+
         public MothMovementEnterState(
             Vector3 cameraPosition,
             float speed,

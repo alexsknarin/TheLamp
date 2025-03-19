@@ -60,7 +60,6 @@ namespace _GAME.Scripts.Factories
             if (stateType == typeof(MothMovementNoisePatrolState))
             {
                 return new MothMovementNoisePatrolState(
-                    _cameraTransform.position,
                     _positionDirectionProvider,
                     _speed,
                     _radius,

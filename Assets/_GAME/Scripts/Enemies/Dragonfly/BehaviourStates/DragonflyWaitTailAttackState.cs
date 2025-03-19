@@ -7,9 +7,9 @@ namespace _GAME.Scripts.Enemies.Dragonfly.BehaviourStates
     public class DragonflyWaitTailAttackState : IState
     {
         private Vector3 _targetPosition;
-        private Transform _transform;
-        private DragonflyPatrolAttackPositionProvider _patrolAttackPositionProvider;
-        private DragonflyMovement _movement;
+        private readonly Transform _transform;
+        private readonly DragonflyPatrolAttackPositionProvider _patrolAttackPositionProvider;
+        private readonly DragonflyMovement _movement;
         private bool _isLastPatrolDirectionSet = false;
         private int _lastPatrolDirection = 0;
 

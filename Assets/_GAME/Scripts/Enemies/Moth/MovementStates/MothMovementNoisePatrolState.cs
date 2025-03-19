@@ -7,33 +7,30 @@ namespace _GAME.Scripts.Enemies.Moth.MovementStates
     public class MothMovementNoisePatrolState: EnemyMovementStateBase
     {
         // Dependencies
-        private readonly Vector3 _cameraPosition;
         private readonly IPositionDirectionProvider _positionDirectionProvider;
         private readonly float _speed;
         private readonly float _radius;
         private readonly float _verticalAmplitude;
     
         // State specific attributes
+        private readonly float _mainTrajectoryAdaptTime = 0.45f;
+        private readonly float _patrolDurationMin = 0.5f;
+        private readonly float _patrolDurationMax = 1.2f;
+        private readonly float _noiseFrequency = 9f;
+        private readonly float _noiseAmplitude = 0.05f;
         private float _patrolStartOffsetAngle;
-        private float _enterTimeOffset; // TMP
+        private float _enterTimeOffset;
         private float _phase;
-        private float _mainTrajectoryAdaptTime = 0.45f;
         private float _patrolDuration;
-        private float _patrolDurationMin = 0.5f;
-        private float _patrolDurationMax = 1.2f;
-        private float _noiseFrequency = 9f;
-        private float _noiseAmplitude = 0.05f;
         private float _localTime;
     
         public MothMovementNoisePatrolState(
-            Vector3 cameraPosition,
             IPositionDirectionProvider positionDirectionProvider,
             float speed,
             float radius,
             float verticalAmplitude
         )
         {
-            _cameraPosition = cameraPosition;
             _positionDirectionProvider = positionDirectionProvider;
             _speed = speed;
             _radius = radius;

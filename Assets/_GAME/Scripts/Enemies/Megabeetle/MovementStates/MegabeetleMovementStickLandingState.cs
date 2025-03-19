@@ -9,7 +9,7 @@ namespace _GAME.Scripts.Enemies.Megabeetle.MovementStates
 
         private readonly float _startDistance = 0.64f;
         private readonly float _endDistance = 0.44f;
-        private float _duration = .491f;
+        private readonly float _duration = .491f;
         private float _phase;
         private float _localTime;
         private Vector2 _startPosition;

@@ -18,7 +18,7 @@ namespace _GAME.Scripts.Enemies.Generic.States
         private readonly float _dragAmount = 0.94f;
         private readonly float _speedMultiplier = 0.8f;
         private readonly float _fallBottomYcoordinate = -6f;
-        private float _duration = 0.32f;
+        private readonly float _duration = 0.32f;
         private float _localTime;
     
         public FlyGenericMovementDeathState(

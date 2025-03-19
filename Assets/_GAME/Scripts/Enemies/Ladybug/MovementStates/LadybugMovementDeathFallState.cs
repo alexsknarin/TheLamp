@@ -7,18 +7,18 @@ namespace _GAME.Scripts.Enemies.Ladybug.MovementStates
     public class LadybugMovementDeathFallState: EnemyMovementStateBase
     {
         private readonly Vector3 _cameraPosition;
-        IPositionDirectionProvider _positionDirectionProvider;
+        private readonly IPositionDirectionProvider _positionDirectionProvider;
         private readonly ILampPositionProviderService _lampPositionProviderService;
 
 
         private readonly float _depth = 0.3f; // TODO: move to config
 
+        private readonly float _bounceForceMagnitude = 3f;
+        private readonly float _gravityForceMagnitude = .17f;
+        private readonly float _dragAmount = 0.9f;
         private Vector2 _bounceForce;
         private Vector2 _gravityForce;
-        private float _bounceForceMagnitude = 3f;
-        private float _gravityForceMagnitude = .17f;
-        private float _dragAmount = 0.9f;
-    
+
         public LadybugMovementDeathFallState(
             Vector3 cameraPosition,
             IPositionDirectionProvider positionDirectionProvider,

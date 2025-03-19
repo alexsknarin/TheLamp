@@ -7,13 +7,13 @@ namespace _GAME.Scripts.Enemies.Megabeetle.MovementStates
     public class MegabeetleMovementFallState : EnemyMovementStateBase
     {
         private readonly IPositionDirectionProvider _positionDirectionProvider;
-    
+
+        private readonly float _bounceForceMagnitude = 3f;
+        private readonly float _gravityForceMagnitude = .17f;
+        private readonly float _dragAmount = 0.9f;
         private Vector2 _bounceForce;
         private Vector2 _gravityForce;
-        private float _bounceForceMagnitude = 3f;
-        private float _gravityForceMagnitude = .17f;
-        private float _dragAmount = 0.9f;
-    
+
         public MegabeetleMovementFallState(IPositionDirectionProvider positionDirectionProvider)
         {
             _positionDirectionProvider = positionDirectionProvider;

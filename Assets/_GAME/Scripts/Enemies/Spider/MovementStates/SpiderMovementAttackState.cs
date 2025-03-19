@@ -5,11 +5,11 @@ namespace _GAME.Scripts.Enemies.Spider.MovementStates
 {
     public class SpiderMovementAttackState: EnemyMovementStateBase
     {
-        private IPositionDirectionProvider _positionDirectionProvider;
-        private Vector2 _hangingPoint;
-        private float _speed;
+        private readonly IPositionDirectionProvider _positionDirectionProvider;
+        private readonly Vector2 _hangingPoint;
+        private readonly float _speed;
     
-        private float _acceleration = 8.7f;
+        private readonly float _acceleration = 8.7f;
         private float _acceleratedSpeed;
     
         public SpiderMovementAttackState(

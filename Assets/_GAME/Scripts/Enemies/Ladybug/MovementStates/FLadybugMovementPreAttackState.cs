@@ -11,9 +11,9 @@ namespace _GAME.Scripts.Enemies.Ladybug.MovementStates
         private readonly ILampPositionProviderService _lampPositionProviderService;
         private readonly float _speed;
 
-        private float _duration = .30f;
+        private readonly float _duration = .30f;
+        private readonly float _acceleration = 0.93f;
         private float _acceleratedSpeed;
-        private float _acceleration = 0.93f;
         private Vector2 _direction;
         private Vector2 _tangentDirection;
         private float _localTime;
