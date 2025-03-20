@@ -165,9 +165,9 @@ namespace _GAME.Scripts.Enemies.Megabeetle
                 _currentState = newtStateL;
             }
             _stateMachine.SetState(_currentState);
-        
+            
             Position2D = _currentState.Position2D;
-            transform.position = Position2D; // TODO: include distance to camera
+            transform.position = Position2D;
         
             enabled = true;
         }
@@ -196,16 +196,8 @@ namespace _GAME.Scripts.Enemies.Megabeetle
             _currentState = _stickLandingState;
             _stateMachine.SetState(_currentState); // Correct sticky position on enter
 
-            // if (_isDepthEnabled)
-            // {
-            //     DepthDirection = _currentState.DepthDirection;
-            //     transform.localPosition = (Vector3)Position2D + DepthDirection;
-            // }
-            // else
-            // {
-            //     transform.localPosition = _currentState.Position2D;
-            // }
-        
+            // TODO: move a little bit forward
+     
             transform.localPosition = _currentState.Position2D;
         }
 
