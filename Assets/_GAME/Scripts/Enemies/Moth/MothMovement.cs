@@ -143,7 +143,6 @@ namespace _GAME.Scripts.Enemies.Moth
         {
             if (_currentState.Equals(_attackState))
             {
-                // ApplyTransformToPosition2D();
                 _currentState = _fallState;
                 _stateDebug = _currentState.GetType().Name; // Debug only
                 _stateMachine.SetState(_currentState);

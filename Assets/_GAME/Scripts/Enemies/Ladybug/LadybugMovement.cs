@@ -194,7 +194,7 @@ namespace _GAME.Scripts.Enemies.Ladybug
             return spawnPosition;
         }
 
-        private void SwitchToStateAndApply(EnemyMovementStateBase state) // TODO: implement this in all enemies
+        private void SwitchToStateAndApply(EnemyMovementStateBase state)
         {
             _currentState = state;
             _stateMachine.SetState(_currentState);
