@@ -22,12 +22,14 @@ namespace _GAME.Scripts.Enemies.Ladybug.MovementStates
         public LadybugMovementDeathFallState(
             Vector3 cameraPosition,
             IPositionDirectionProvider positionDirectionProvider,
-            ILampPositionProviderService lampPositionProviderService
+            ILampPositionProviderService lampPositionProviderService,
+            float depth
         )
         {
             _cameraPosition = cameraPosition;
             _positionDirectionProvider = positionDirectionProvider;
             _lampPositionProviderService = lampPositionProviderService;
+            _depth = depth;
         }
     
         public event Action Ended;

@@ -12,6 +12,7 @@ namespace _GAME.Scripts.Factories
         private Transform _cameraTransform;
         private IPositionDirectionProvider _positionDirectionProvider;
         private ILampPositionProviderService _lampPositionProviderService;
+        private IGameConfigService _gameConfigService;
         private float _speed;
         private float _radius;
         private float _verticalAmplitude;
@@ -19,11 +20,13 @@ namespace _GAME.Scripts.Factories
     
         public LadybugMovementStateFactory(
             Transform cameraTransform, 
-            ILampPositionProviderService lampPositionProviderService
+            ILampPositionProviderService lampPositionProviderService,
+            IGameConfigService gameConfigService
         )
         {
             _cameraTransform = cameraTransform;
             _lampPositionProviderService = lampPositionProviderService;
+            _gameConfigService = gameConfigService;
         }
     
         public void SetEnemyDependencies(
@@ -106,7 +109,8 @@ namespace _GAME.Scripts.Factories
                 return new LadybugMovementDeathFallState(
                     _cameraTransform.position,
                     _positionDirectionProvider,
-                    _lampPositionProviderService
+                    _lampPositionProviderService,
+                    _gameConfigService.GameConfig.LadybugDeathDepth
                 );
             }
             if (stateType == typeof(FlyGenericMovementSpreadState))
