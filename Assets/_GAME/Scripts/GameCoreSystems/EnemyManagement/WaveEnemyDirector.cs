@@ -10,6 +10,7 @@ namespace _GAME.Scripts.GameCoreSystems.EnemyManagement
 {
     public class WaveEnemyDirector : MonoBehaviour, IInitializable, IProjectileDeactivatedProvider
     {
+        [SerializeField] private Transform _cameraTransform; 
         private SpawnQueueGenerator _spawnQueueGenerator;
         private SpawnQueue _spawnQueue;
         private EnemyQueue _currentWaveEnemyQueue;
@@ -56,7 +57,7 @@ namespace _GAME.Scripts.GameCoreSystems.EnemyManagement
             _spawnQueue = _spawnQueueGenerator.Generate();
             _lampAttacker = new FLampAttacker();
             _enemyAttacker = new EnemyAttacker(_gameConfigService.GameConfig.MaxAggressionLevel);
-            _fireflyExplosionEnemyDamager = new FireflyExplosionEnemyDamager(_gameConfigService);
+            _fireflyExplosionEnemyDamager = new FireflyExplosionEnemyDamager(_gameConfigService, _cameraTransform);
             _fireflyExplosionEnemyDamager.Initialize();
         
             _waitToDeactivateEnemies = new WaitForSeconds(_gameConfigService.GameConfig.GameoverInStageDuration);

@@ -10554,6 +10554,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cdb0dd54eee801449a41dbf5d8ba5aac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _cameraTransform: {fileID: 330585546}
   _lampBlocked: 0
 --- !u!1660057539 &9223372036854775807
 SceneRoots:

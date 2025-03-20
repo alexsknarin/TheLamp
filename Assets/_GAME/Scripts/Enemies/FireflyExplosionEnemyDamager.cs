@@ -7,10 +7,14 @@ namespace _GAME.Scripts.Enemies
     public class FireflyExplosionEnemyDamager: ITickable, IInitializable
     {
         private IGameConfigService _gameConfigService;
+        private Transform _cameraTransform;
     
-        public FireflyExplosionEnemyDamager(IGameConfigService gameConfigService)
+        public FireflyExplosionEnemyDamager(
+            IGameConfigService gameConfigService,
+            Transform cameraTransform)
         {
             _gameConfigService = gameConfigService;
+            _cameraTransform = cameraTransform;
         }
     
         private List<FEnemy> _enemies;
@@ -56,13 +60,22 @@ namespace _GAME.Scripts.Enemies
         {
             foreach (var enemy in _enemies)
             {
-                // TODO: take camera projection into account
-                Vector2 enemyPosition2d = enemy.transform.position;
+                Vector2 enemyPosition2d = ProjectPointOnXYPlane(_cameraTransform.position, enemy.transform.position);
                 if((_explosionPosition - enemyPosition2d).magnitude < _explosionRadius)
                 {
                     enemy.ReceiveDamage(100);
                 }
             }
+        }
+        
+        private Vector3 ProjectPointOnXYPlane(Vector3 cameraPoint, Vector3 targetPoint)
+        {
+            float katetLength = Mathf.Abs(targetPoint.z);
+            Vector3 hippotenuseDirection = (targetPoint - cameraPoint).normalized;
+            float angleCos = Vector3.Dot(Vector3.forward, hippotenuseDirection);
+            Vector3 projectedPoint = targetPoint + hippotenuseDirection * (katetLength / angleCos);
+            projectedPoint.z = 0;
+            return projectedPoint;
         }
     }
 }
