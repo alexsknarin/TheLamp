@@ -8,6 +8,7 @@ namespace _GAME.Scripts.Enemies.Megabeetle.MovementStates
         private readonly IPositionDirectionProvider _positionDirectionProvider;
     
         private readonly float _duration = 1.25f;
+        private readonly float _stickDistance = 0.44f;
         private float _localTime = 0f;
         private float _phase = 0f;
     
@@ -20,8 +21,8 @@ namespace _GAME.Scripts.Enemies.Megabeetle.MovementStates
         {
         
             IsReadyToSwitch = false;
-            Position2D = _positionDirectionProvider.Position2D.normalized * 0.44f; // TODO: set normalized local position, magic number
-            // TODO: read depth as well
+            Position2D = _positionDirectionProvider.Position2D.normalized * _stickDistance;
+            DepthDirection = _positionDirectionProvider.DepthDirection;
             _localTime = 0;
             _phase = 0;
         }
