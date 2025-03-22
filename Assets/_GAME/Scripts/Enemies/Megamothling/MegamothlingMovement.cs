@@ -57,9 +57,9 @@ namespace _GAME.Scripts.Enemies.Megamothling
         private FlyGenericMovementPatrolState  _patrolState;
         private FlyGenericMovementPreAttackStateL _preAttackStateL; // TODO: change duration to 0.45f and depth to 1.0f
         private FlyGenericMovementPreAttackStateR _preAttackStateR; // the same
-        private FMegamothlingMovementAttackState _attackState;
+        private MegamothlingMovementAttackState _attackState;
         private FlyGenericMovementFallState _fallState; // TODO: bounce force to 0.2 gravity force to 0.1
-        private FMegamothlingMovementDeathState _deathState; // TODO: bounce force to 2.0 gravity force to 0.2 duration 1.7
+        private MegamothlingMovementDeathState _deathState; // TODO: bounce force to 2.0 gravity force to 0.2 duration 1.7
     
         private WaitForSeconds _waitSmoothDamp = new(0.5f);
     
@@ -95,9 +95,9 @@ namespace _GAME.Scripts.Enemies.Megamothling
             _patrolState = (FlyGenericMovementPatrolState)_stateFactory.Create(typeof(FlyGenericMovementPatrolState));
             _preAttackStateL = (FlyGenericMovementPreAttackStateL)_stateFactory.Create(typeof(FlyGenericMovementPreAttackStateL));
             _preAttackStateR = (FlyGenericMovementPreAttackStateR)_stateFactory.Create(typeof(FlyGenericMovementPreAttackStateR));
-            _attackState = (FMegamothlingMovementAttackState)_stateFactory.Create(typeof(FMegamothlingMovementAttackState));
+            _attackState = (MegamothlingMovementAttackState)_stateFactory.Create(typeof(MegamothlingMovementAttackState));
             _fallState = (FlyGenericMovementFallState)_stateFactory.Create(typeof(FlyGenericMovementFallState));
-            _deathState = (FMegamothlingMovementDeathState)_stateFactory.Create(typeof(FMegamothlingMovementDeathState));
+            _deathState = (MegamothlingMovementDeathState)_stateFactory.Create(typeof(MegamothlingMovementDeathState));
         
             // Subscribe to state events
             _patrolState.Started += OnPatrolStateStarted;

@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace _GAME.Scripts.Enemies.Megamothling.MovementStates
 {
-    public class FMegamothlingMovementDeathState: EnemyMovementStateBase
+    public class MegamothlingMovementDeathState: EnemyMovementStateBase
     {
         // Dependencies
         private readonly IPositionDirectionProvider _positionDirectionProvider;
@@ -18,7 +18,7 @@ namespace _GAME.Scripts.Enemies.Megamothling.MovementStates
         private Vector2 _gravityForce;
         private float _localTime;
 
-        public FMegamothlingMovementDeathState(IPositionDirectionProvider positionDirectionProvider)
+        public MegamothlingMovementDeathState(IPositionDirectionProvider positionDirectionProvider)
         {
             _positionDirectionProvider = positionDirectionProvider;
         }

@@ -90,9 +90,9 @@ namespace _GAME.Scripts.Factories
                     _preAttackDuration
                 );
             }
-            if (stateType == typeof(FMegamothlingMovementAttackState))
+            if (stateType == typeof(MegamothlingMovementAttackState))
             {
-                return new FMegamothlingMovementAttackState(
+                return new MegamothlingMovementAttackState(
                     _cameraTransform.position,
                     _positionDirectionProvider,
                     _speed
@@ -110,9 +110,9 @@ namespace _GAME.Scripts.Factories
                     _fallGravityForce
                 );
             }
-            if (stateType == typeof(FMegamothlingMovementDeathState))
+            if (stateType == typeof(MegamothlingMovementDeathState))
             {
-                return new FMegamothlingMovementDeathState(
+                return new MegamothlingMovementDeathState(
                     _positionDirectionProvider
                 );
             }

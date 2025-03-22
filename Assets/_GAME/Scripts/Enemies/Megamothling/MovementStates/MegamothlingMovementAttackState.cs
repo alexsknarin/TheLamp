@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace _GAME.Scripts.Enemies.Megamothling.MovementStates
 {
-    public class FMegamothlingMovementAttackState: EnemyMovementStateBase
+    public class MegamothlingMovementAttackState: EnemyMovementStateBase
     {
         // Dependencies
         private readonly Vector3 _cameraPosition;
@@ -13,10 +13,15 @@ namespace _GAME.Scripts.Enemies.Megamothling.MovementStates
         // State specific attributes
         private readonly float _acceleration = 3.1f;
         private readonly float _depthDecrement = 0.2f;
+        private readonly float _startPositionDistance = 0.65f;
+        private readonly float _minAttackProximityValue = 0.5f;
+        private readonly float _maxAttackProximityValue = 1f;
+        private readonly float _bvaseCameraDepthDistance = 2.5f;
+        
         private float _acceleratedSpeed = 1f;
         private float _startDistance;
     
-        public FMegamothlingMovementAttackState(
+        public MegamothlingMovementAttackState(
             Vector3 cameraPosition,
             IPositionDirectionProvider positionDirectionProvider,
             float speed
@@ -30,7 +35,7 @@ namespace _GAME.Scripts.Enemies.Megamothling.MovementStates
         public override void OnEnter()
         {
             _acceleratedSpeed = 1f;
-            _startDistance = _positionDirectionProvider.Position2D.magnitude - 0.65f; // TODO: Magic number
+            _startDistance = _positionDirectionProvider.Position2D.magnitude - _startPositionDistance;
         }
 
         public override void Tick()
@@ -42,8 +47,10 @@ namespace _GAME.Scripts.Enemies.Megamothling.MovementStates
             Position2D = newPosition;
         
             Vector3 cameraDirection = (_cameraPosition - (Vector3)Position2D).normalized;
-            float attackProximityGradient = Mathf.Clamp((Position2D.magnitude - 0.65f) / _startDistance, 0.5f, 1.0f);
-            DepthDirection = cameraDirection * (2.5f * _depthDecrement * attackProximityGradient);
+            float attackProximityGradient = Mathf.Clamp((Position2D.magnitude - _startPositionDistance) / _startDistance, 
+                _minAttackProximityValue,
+                _maxAttackProximityValue);
+            DepthDirection = cameraDirection * (_bvaseCameraDepthDistance * _depthDecrement * attackProximityGradient);
         }
     }
 }
