@@ -21,14 +21,15 @@ namespace _GAME.Scripts.Factories
 {
     public class EnemyFactory
     {
-        private ILampPositionProviderService _lampPositionProviderService;
-        private MothlingMovementStateFactory _mothlingMovementStateFactory;
-        private FlyMovementStateFactory _flyMovementStateFactory;
-        private MothMovementStateFactory _mothMovementStateFactory;
-        private SpiderMovementStateFactory _spiderMovementStateFactory;
-        private LadybugMovementStateFactory _ladybugMovementStateFactory;
-        private MegamothlingMovementStateFactory _megamothlingMovementStateFactory;
-        private MegabeetleMovementStateFactory _megabeetleMovementStateFactory;
+        private readonly ILampPositionProviderService _lampPositionProviderService;
+        private readonly MothlingMovementStateFactory _mothlingMovementStateFactory;
+        private readonly FlyMovementStateFactory _flyMovementStateFactory;
+        private readonly MothMovementStateFactory _mothMovementStateFactory;
+        private readonly SpiderMovementStateFactory _spiderMovementStateFactory;
+        private readonly LadybugMovementStateFactory _ladybugMovementStateFactory;
+        private readonly MegamothlingMovementStateFactory _megamothlingMovementStateFactory;
+        private readonly MegabeetleMovementStateFactory _megabeetleMovementStateFactory;
+        private readonly IGameConfigService _gameConfigService;
     
         AsyncOperationHandle<GameObject> _mothlingEnemyAssetHandle;
         AsyncOperationHandle<GameObject> _flyEnemyAssetHandle;
@@ -50,8 +51,9 @@ namespace _GAME.Scripts.Factories
             LadybugMovementStateFactory ladybugMovementStateFactory,
             MegamothlingMovementStateFactory megamothlingMovementStateFactory,
             MegabeetleMovementStateFactory megabeetleMovementStateFactory,
-            ILampPositionProviderService lampPositionProviderService
-        )
+            ILampPositionProviderService lampPositionProviderService,
+            IGameConfigService gameConfigService
+            )
         {
             _mothlingMovementStateFactory = mothlingMovementStateFactory;
             _flyMovementStateFactory = flyMovementStateFactory;
@@ -61,6 +63,7 @@ namespace _GAME.Scripts.Factories
             _megamothlingMovementStateFactory = megamothlingMovementStateFactory;
             _lampPositionProviderService = lampPositionProviderService;
             _megabeetleMovementStateFactory = megabeetleMovementStateFactory;
+            _gameConfigService = gameConfigService;
         
             IsMothlingLoaded = false;
             IsFlyLoaded = false;
@@ -274,7 +277,10 @@ namespace _GAME.Scripts.Factories
             GameObject enemyInstance = Object.Instantiate(prefab);
             enemyInstance.GetComponent<SpiderMovement>().Construct(
                 _spiderMovementStateFactory,
-                _lampPositionProviderService);
+                _lampPositionProviderService,
+                _gameConfigService.PlayerConfig.LampCollisionRadius,
+                _gameConfigService.PlayerConfig.CollisionThreshold
+                );
             enemyInstance.GetComponent<SpiderPresentation>().Initialize();
             var enemy = enemyInstance.GetComponent<Spider>();
             enemy.Initialize();

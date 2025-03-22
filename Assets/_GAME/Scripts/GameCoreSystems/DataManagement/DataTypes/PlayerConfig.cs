@@ -14,5 +14,8 @@ namespace _GAME.Scripts.GameCoreSystems.DataManagement.DataTypes
         [field: SerializeField] public float AttackDistanceCap { get; private set; } = 0.82f;
         [field: SerializeField] public float AttackDistanceIncrement { get; private set; } = 0.01f;
         [field: SerializeField] public float AttackDistanceUpgradeAnimationTime { get; private set; } = 0.45f;
+        [field:Header("Collision Settings")]
+        [field: SerializeField] public float LampCollisionRadius { get; private set; } = 0.49f;
+        [field: SerializeField] public float CollisionThreshold { get; private set; } = 0.0001f;
     }
 }

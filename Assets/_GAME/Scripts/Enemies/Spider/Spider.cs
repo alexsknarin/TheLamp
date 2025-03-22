@@ -25,6 +25,7 @@ namespace _GAME.Scripts.Enemies.Spider
         public override void Initialize()
         {
             _movement.Initialize();
+            _movement.SetCollisionRadius(_collisionRadius);
             _movement.ReadyToAttackStateStarted += OnReadyToAttackStateStarted;
             _movement.ReadyToAttackStateEnded += OnReadyToAttackStateEnded;
             _movement.DeathStateEnded += OnDeathStateEnded;
@@ -36,6 +37,8 @@ namespace _GAME.Scripts.Enemies.Spider
             _movement.ReadyToAttackStateEnded -= OnReadyToAttackStateEnded;
             _movement.DeathStateEnded -= OnDeathStateEnded;
         }
+        
+        
 
         public override void Play()
         {

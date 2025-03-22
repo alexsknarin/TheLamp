@@ -22,8 +22,11 @@ namespace _GAME.Scripts.Enemies.Spider
         [SerializeField] private float _fallBounceForce = 4f;
     
         private ILampPositionProviderService _lampPositionProviderService;
-
         private Vector3 _position3D;
+
+        private float _lampCollisionRadius;
+        private float _collisionThreshold;
+        private float _collisionRadius;
 
         // State Machine
         private readonly StateMachine _stateMachine = new();
@@ -40,10 +43,15 @@ namespace _GAME.Scripts.Enemies.Spider
     
         public void Construct(
             SpiderMovementStateFactory stateFactory, 
-            ILampPositionProviderService lampPositionProviderService)
+            ILampPositionProviderService lampPositionProviderService,
+            float lampCollisionRadius,
+            float collisionThreshold
+            )
         {
             _stateFactory = stateFactory;
             _lampPositionProviderService = lampPositionProviderService;
+            _lampCollisionRadius = lampCollisionRadius;
+            _collisionThreshold = collisionThreshold;
         }
     
         public event Action ReadyToAttackStateStarted;
@@ -61,7 +69,6 @@ namespace _GAME.Scripts.Enemies.Spider
         {
             Debug.Log("FFlyMovement Initializing");
             // Create Movement States
-            // TODO: get collision radius from configs
             _stateFactory.SetEnemyDependencies(this, _speed, _xCenter, _height);
             _enterState = (SpiderMovementEnterState)_stateFactory.Create(typeof(SpiderMovementEnterState));
             _patrolState = (SpiderMovementPatrolState)_stateFactory.Create(typeof(SpiderMovementPatrolState));
@@ -107,6 +114,11 @@ namespace _GAME.Scripts.Enemies.Spider
             _preAttackState.Started -= OnPreAttackStateStarted;
             _preAttackState.Ended -= OnPreAttackStateEnded;
             _deathState.Ended -= OnDeathStateEnded;
+        }
+        
+        public void SetCollisionRadius(float radius)
+        {
+            _collisionRadius = radius;
         }
 
         public override void Play()
@@ -154,7 +166,7 @@ namespace _GAME.Scripts.Enemies.Spider
             transform.position = newPosition;
         }
 
-        private void SwitchToStateAndApply(EnemyMovementStateBase state) // TODO: implement this in all enemies
+        private void SwitchToStateAndApply(EnemyMovementStateBase state)
         {
             _currentState = state;
             _stateMachine.SetState(_currentState);
@@ -173,7 +185,8 @@ namespace _GAME.Scripts.Enemies.Spider
             Vector2 lampPosition = _lampPositionProviderService.GetLampPosition();
             lampPosition.x *= _sideDirection;
             Vector2 collisionDirection = (Position2D - lampPosition).normalized;
-            Position2D = lampPosition + collisionDirection * (0.49f + 0.15f + 0.0001f); // TODO: magic numbers
+            Position2D = lampPosition + collisionDirection * (
+                _lampCollisionRadius + _collisionRadius + _collisionThreshold);
         }
 
         private void OnPatrolStateStarted()

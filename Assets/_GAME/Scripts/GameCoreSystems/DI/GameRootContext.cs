@@ -234,7 +234,8 @@ namespace _GAME.Scripts.GameCoreSystems.DI
                 _ladybugMovementStateFactory,
                 _megamothlingMovementStateFactory,
                 _megabeetleMovementStateFactory,
-                _lampPositionProviderService
+                _lampPositionProviderService,
+                _gameConfigService
             );
             _enemyPool = new EnemyPool(_enemyFactory);
             _enemyPool.Initialize();
