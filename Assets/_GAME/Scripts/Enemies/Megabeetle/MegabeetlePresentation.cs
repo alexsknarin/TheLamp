@@ -22,56 +22,30 @@ namespace _GAME.Scripts.Enemies.Megabeetle
             _healthIndication.Initialize();
             _trailResetHandler.Initialize();
         
-            _movement.PreAttackStarted += OnPreAttackStarted;
-            _movement.PreAttackEnded += OnPreAttackEnded;
-            _movement.FallEnded += OnFallEnded;
+            _movement.PreAttackStarted += _preAttackFlash.PreAttackStart;
+            _movement.PreAttackEnded += _preAttackFlash.PreAttackEnd;
+            _movement.FallEnded += _trailResetHandler.Initialize;
             _megabeetle.Started += OnLadybugStarted;
-            _megabeetle.Damaged += OnLadybugDamaged;
+            _megabeetle.Damaged += _damageFlash.Play;
             _megabeetle.HealthChanged += _healthIndication.Refresh;
-            _megabeetle.Dead += OnLadybugDead;
+            _megabeetle.Dead += _deathFlash.Play;
         }
 
         private void OnDestroy()
         {
-            _movement.PreAttackStarted -= OnPreAttackStarted;
-            _movement.PreAttackEnded -= OnPreAttackEnded;
-            _movement.FallEnded -= OnFallEnded;
+            _movement.PreAttackStarted -= _preAttackFlash.PreAttackStart;
+            _movement.PreAttackEnded -= _preAttackFlash.PreAttackEnd;
+            _movement.FallEnded -= _trailResetHandler.Initialize;
             _megabeetle.Started -= OnLadybugStarted;
-            _megabeetle.Damaged -= OnLadybugDamaged;
+            _megabeetle.Damaged -= _damageFlash.Play;
             _megabeetle.HealthChanged -= _healthIndication.Refresh;
-            _megabeetle.Dead -= OnLadybugDead;
+            _megabeetle.Dead -= _deathFlash.Play;
         }
 
         private void OnLadybugStarted()
         {
             _trailResetHandler.Initialize();
             _deathFlash.Initialize();
-        }
-
-        private void OnLadybugDamaged()
-        {
-            _damageFlash.Play();
-        }
-
-        private void OnPreAttackStarted()
-        {
-            // TODO: set subscription directly to the methods in presentation and other sub classes 
-            _preAttackFlash.PreAttackStart();
-        }
-
-        private void OnPreAttackEnded()
-        {
-            _preAttackFlash.PreAttackEnd();
-        }
-
-        private void OnLadybugDead()
-        {
-            _deathFlash.Play();
-        }
-
-        private void OnFallEnded()
-        {
-            _trailResetHandler.Initialize();
         }
     }
 }
