@@ -9,7 +9,6 @@ namespace _GAME.Scripts.UI.ViewModels
 {
     public class PlayerUpgradeViewModel : IDisposable
     {
-        // TODO: get settings service to get upgrade cap values
         private bool _healthUpgradeEnabled;
         private bool _cooldownUpgradeEnabled;
         private bool _attackDistanceUpgradeEnabled;
