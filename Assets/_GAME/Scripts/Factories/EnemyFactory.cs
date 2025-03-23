@@ -314,7 +314,8 @@ namespace _GAME.Scripts.Factories
         private FEnemy CreateWaspsInstance(GameObject prefab)
         {
             GameObject enemyInstance = Object.Instantiate(prefab);
-            enemyInstance.transform.GetChild(0).GetComponent<WaspMovement>().Construct(_lampPositionProviderService);
+            enemyInstance.transform.GetChild(0).GetComponent<WaspMovement>().Construct(
+                _lampPositionProviderService);
             enemyInstance.GetComponent<WaspPresentation>().Initialize();
             var enemy = enemyInstance.GetComponent<Wasp>();
             enemy.Initialize();

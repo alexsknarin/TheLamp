@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using _GAME.Scripts.Lib;
 using _GAME.Scripts.Lib.Interfaces;
 using UnityEngine;
 
@@ -60,22 +61,15 @@ namespace _GAME.Scripts.Enemies
         {
             foreach (var enemy in _enemies)
             {
-                Vector2 enemyPosition2d = ProjectPointOnXYPlane(_cameraTransform.position, enemy.transform.position);
+                Vector2 enemyPosition2d = CameraProjection.ProjectPointOnXYPlane(
+                    _cameraTransform.position,
+                    enemy.transform.position
+                    );
                 if((_explosionPosition - enemyPosition2d).magnitude < _explosionRadius)
                 {
                     enemy.ReceiveDamage(100);
                 }
             }
-        }
-        
-        private Vector3 ProjectPointOnXYPlane(Vector3 cameraPoint, Vector3 targetPoint)
-        {
-            float katetLength = Mathf.Abs(targetPoint.z);
-            Vector3 hippotenuseDirection = (targetPoint - cameraPoint).normalized;
-            float angleCos = Vector3.Dot(Vector3.forward, hippotenuseDirection);
-            Vector3 projectedPoint = targetPoint + hippotenuseDirection * (katetLength / angleCos);
-            projectedPoint.z = 0;
-            return projectedPoint;
         }
     }
 }

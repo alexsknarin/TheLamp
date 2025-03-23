@@ -68,7 +68,7 @@ namespace _GAME.Scripts.Enemies.Wasp
         private int _threeOptionsSplit = 0;
         private bool _isDamaged = false;
         private bool _isDead = false;
-        private bool _isLampDestroyed = false; // TODO: replace all this with enum? sucess, damaged, dead, lampDestroyed
+        private bool _isLampDestroyed = false;
         private bool _isCollided = false;
         // Animation 
         private readonly int _idleHash = Animator.StringToHash("Idle");
@@ -152,10 +152,10 @@ namespace _GAME.Scripts.Enemies.Wasp
             _lampPositionProvider = lampPositionProvider;
         }
 
-        public event Action AttackStateStarted; // TODO: maybe remove this
+        public event Action AttackStateStarted;
         public event Action DeathStateEnded;
-    
-        public Vector3 Position => transform.position; // TODO: camera projection - calculate in FWasp??
+
+        public Vector3 Position => transform.position;
     
         public void Initialize()
         {
@@ -328,7 +328,7 @@ namespace _GAME.Scripts.Enemies.Wasp
             //---
             // Attack01 transitions
             // Bounce
-            At(_attack01LState, _attack01BounceLState, IsCollidedWithLamp()); // TODO: make it based on collision instead
+            At(_attack01LState, _attack01BounceLState, IsCollidedWithLamp());
             At(_attack01RState, _attack01BounceRState, IsCollidedWithLamp());
             // Success
             At(_attack01BounceLState, _attack01Success01LState, IsAnimationEndedThreeOptionSuccess01());
@@ -663,7 +663,6 @@ namespace _GAME.Scripts.Enemies.Wasp
             if (ATTACK_STATES.Contains(_stateMachine.CurrentStateType))
             {
                 // Check if lamp was penetrated
-                // TODO: remake into Vector2
                 Vector3 newPosition = transform.position;
                 if ((newPosition - (Vector3)_lampPositionProvider.GetLampPosition()).magnitude < _collisionRadius + 0.5f)
                 {
