@@ -26,6 +26,10 @@ namespace _GAME.Scripts.InGamePresentation.GameStageTransitions
         [SerializeField] private AnimationCurve _gameOverButtonsAnimationCurve;
         [SerializeField] private FadableButtonPresentation _restartWithAdButton;
         [SerializeField] private FadableButtonPresentation _restartNoAdButton;
+        [SerializeField] private float _restartNoAdButtonAdDisabledY = -503;
+        [SerializeField] private float _exitButtonAdDisabledY = -685;
+        [SerializeField] private float _restartNoAdButtonAdEnabledY = -263;
+        [SerializeField] private float _exitButtonAdEnabledY = -445;
         [SerializeField] private FadableButtonPresentation _exitButton;
         [SerializeField] private GameObject _ingameUi;
         [Header("Lamp")]
@@ -78,20 +82,20 @@ namespace _GAME.Scripts.InGamePresentation.GameStageTransitions
             {
                 _restartWithAdButton.gameObject.SetActive(true);
                 var pos = _restartNoAdButton.transform.localPosition;
-                pos.y = -503;                                                       // TODO: fix magic numbers
+                pos.y = _restartNoAdButtonAdDisabledY;
                 _restartNoAdButton.transform.localPosition = pos;
                 pos = _exitButton.transform.localPosition;
-                pos.y = -685;                                                       // TODO: fix magic numbers
+                pos.y = _exitButtonAdDisabledY;
                 _exitButton.transform.localPosition = pos;
             }
             else
             {
                 _restartWithAdButton.gameObject.SetActive(false);
                 var pos = _restartNoAdButton.transform.localPosition;
-                pos.y = -263;                                                       // TODO: fix magic numbers
+                pos.y = _restartNoAdButtonAdEnabledY;
                 _restartNoAdButton.transform.localPosition = pos;
                 pos = _exitButton.transform.localPosition;
-                pos.y = -445;                                                       // TODO: fix magic numbers
+                pos.y = _exitButtonAdEnabledY;
                 _exitButton.transform.localPosition = pos;
             }
         }
