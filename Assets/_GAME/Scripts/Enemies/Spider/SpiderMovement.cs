@@ -132,6 +132,13 @@ namespace _GAME.Scripts.Enemies.Spider
             _isAttacking = false;
             enabled = true;
         }
+        
+        public void Restart()
+        {
+            SwitchToStateAndApply(_enterState);
+            _isAttacking = false;
+            enabled = true;
+        }
 
         public override void TriggerAttack()
         {

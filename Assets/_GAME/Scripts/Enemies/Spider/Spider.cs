@@ -119,7 +119,15 @@ namespace _GAME.Scripts.Enemies.Spider
             }
             else
             {
-                _movement.Play();
+                _movement.Restart();
+            }
+        }
+
+        private void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.A))
+            {
+                Spread();
             }
         }
     }

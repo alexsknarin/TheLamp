@@ -14,7 +14,6 @@ namespace _GAME.Scripts.Enemies.Spider.MovementStates
         private float _localTime;
         private float _startY;
         private float _startX;
-        // TODO: lower height
     
         public SpiderMovementClimbUpState(IPositionDirectionProvider positionDirectionProvider, float xCenter, float height)
         {
