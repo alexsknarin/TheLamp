@@ -21,7 +21,6 @@ namespace _GAME.Scripts.GameCoreSystems
         }
     
         public event Action<float> PowerChanged;
-        public event Action CooldownEnded;  // TODO: assess if this event is needed
         public event Action PlayerAttackEnded;
     
         public float Power 
@@ -95,7 +94,6 @@ namespace _GAME.Scripts.GameCoreSystems
             {
                 _isCooldownPlaying = false;
                 Power = 1;
-                CooldownEnded?.Invoke();
                 return;
             }
             Power = phase;
