@@ -244,7 +244,6 @@ namespace _GAME.Scripts.Enemies.Ladybug
         private void OnSpreadStateEnded()
         {
             SpreadStateEnded?.Invoke();
-            Play();
         }
         
         private void OnEnteredAttackRange()

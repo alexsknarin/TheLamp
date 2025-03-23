@@ -1,3 +1,4 @@
+using System;
 using _GAME.Scripts.Lib.Interfaces;
 using UnityEngine;
 
@@ -9,8 +10,8 @@ namespace _GAME.Scripts.Enemies.Spider.MovementStates
         private readonly Vector2 _hangingPoint;
     
         private readonly float _duration = 3f;
-        private float _localTime;
         private readonly float _tau = Mathf.PI * 2;
+        private float _localTime;
         private float _startY;
         private float _startX;
         // TODO: lower height
@@ -21,6 +22,8 @@ namespace _GAME.Scripts.Enemies.Spider.MovementStates
             _hangingPoint.x = xCenter;
             _hangingPoint.y = height;
         }
+        
+        public event Action Ended;
     
         public override void OnEnter()
         {
@@ -44,6 +47,7 @@ namespace _GAME.Scripts.Enemies.Spider.MovementStates
         
             if (phase > 1)
             {
+                Ended?.Invoke();
                 IsReadyToSwitch = true;
             }
         }

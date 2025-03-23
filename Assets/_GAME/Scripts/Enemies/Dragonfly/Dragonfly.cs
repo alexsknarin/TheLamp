@@ -182,9 +182,10 @@ namespace _GAME.Scripts.Enemies.Dragonfly
 
         public override void Play()
         {
+            IsGameOver = false;
+            
             enabled = true;
             _currentHealth = _maxHealth;
-        
             _enterType = (DragonflyEnterType)Random.Range(0, 2);
             int sideDirection = RandomDirection.Generate();
             _movement.Play(_enterType, sideDirection);

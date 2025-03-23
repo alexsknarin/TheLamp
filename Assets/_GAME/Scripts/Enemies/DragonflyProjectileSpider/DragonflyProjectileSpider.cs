@@ -38,13 +38,14 @@ namespace _GAME.Scripts.Enemies.DragonflyProjectileSpider
 
         public override void Play()
         {
+            IsGameOver = false;
+            IsReadyForDamage = false;
+            IsReceivedLampAttackDamage = false;
             gameObject.SetActive(true);
             _trailRenderer.Clear();
             _trailRenderer.emitting = false;
             _movement.Play(_direction);
             _presentation.Play();
-            IsReadyForDamage = false;
-            IsReceivedLampAttackDamage = false;
         }
 
         public void StartPreAttack()

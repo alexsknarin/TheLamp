@@ -362,9 +362,7 @@ namespace _GAME.Scripts.Enemies.Fly
 
         private void OnSpreadStateEnded()
         {
-            // TODO: external control over it
             SpreadStateEnded?.Invoke();
-            Play();
         }
     }
 }

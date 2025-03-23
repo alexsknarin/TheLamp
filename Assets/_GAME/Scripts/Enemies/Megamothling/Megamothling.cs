@@ -43,11 +43,11 @@ namespace _GAME.Scripts.Enemies.Megamothling
 
         public override void Play()
         {
-            Debug.Log(" ---------------- FMegamothling: Play");
-            _currentHealth = _maxHealth;
-            _isInAttackReadyMovementState = false;
+            IsGameOver = false;
             IsReadyForDamage = false;
             IsReceivedLampAttackDamage = false;
+            _currentHealth = _maxHealth;
+            _isInAttackReadyMovementState = false;
             CollisionState = CollidableState.Outside;
             Started?.Invoke();
             _movement.Play();

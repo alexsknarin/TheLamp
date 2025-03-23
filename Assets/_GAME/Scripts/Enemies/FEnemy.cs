@@ -13,6 +13,7 @@ namespace _GAME.Scripts.Enemies
         public  bool IsReadyForDamage { get; protected set; }
         public  bool IsReceivedLampAttackDamage { get; protected set; }
         public bool IsDead { get; protected set; }
+        public bool IsGameOver { get; set; }
         public abstract void Initialize();
         public abstract void Play();
         public abstract void ReceiveDamage(int damageAmount);

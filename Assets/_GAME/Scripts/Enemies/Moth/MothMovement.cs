@@ -250,10 +250,7 @@ namespace _GAME.Scripts.Enemies.Moth
 
         private void OnSpreadStateEnded()
         {
-            // TODO: 
-            // if lamp is not dead or gameover (need to DI this information or let EnemyManager decide)
             SpreadStateEnded?.Invoke();
-            Play();
         }
     }
 }

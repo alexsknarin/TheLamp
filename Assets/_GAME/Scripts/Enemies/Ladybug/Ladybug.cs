@@ -32,21 +32,24 @@ namespace _GAME.Scripts.Enemies.Ladybug
             _movement.SetCollisionRadius(_collisionRadius);
             _movement.EnteredAttackRange += OnEnteredAttackRange;
             _movement.DeathStateEnded += OnDeathStateEnded;
+            _movement.SpreadStateEnded += OnSpreadStateEnded;
         }
     
         private void OnDestroy()
         {
             _movement.EnteredAttackRange -= OnEnteredAttackRange;
             _movement.DeathStateEnded -= OnDeathStateEnded;
+            _movement.SpreadStateEnded -= OnSpreadStateEnded;
         }
 
         public override void Play()
         {
+            IsGameOver = false;
             IsDead = false;
-            _currentHealth = _maxHealth;
-            _isInAttackReadyMovementState = false;
             IsReadyForDamage = false;
             IsReceivedLampAttackDamage = false;
+            _currentHealth = _maxHealth;
+            _isInAttackReadyMovementState = false;
             StickState = StickableState.Outside;
             AttackBlockState = AttackBlockerState.Outisde;
             HealthChanged?.Invoke(_currentHealth, _maxHealth);
@@ -164,6 +167,18 @@ namespace _GAME.Scripts.Enemies.Ladybug
         {
             Debug.Log(gameObject.name + " is ready to stick.");
             StickReadyStarted?.Invoke(this);
+        }
+        
+        private void OnSpreadStateEnded()
+        {
+            if (IsGameOver)
+            {
+                ReturnToPool();
+            }
+            else
+            {
+                _movement.Play();
+            }
         }
     }
 }

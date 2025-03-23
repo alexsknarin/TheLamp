@@ -29,6 +29,7 @@ namespace _GAME.Scripts.Enemies.Moth
             _movement.ReadyToAttackStateStarted += OnReadyToAttackStateStarted;
             _movement.ReadyToAttackStateEnded += OnReadyToAttackStateEnded;
             _movement.DeathStateEnded += OnDeathStateEnded;
+            _movement.SpreadStateEnded += OnSpreadStateEnded;
         }
 
         private void OnDestroy()
@@ -36,14 +37,16 @@ namespace _GAME.Scripts.Enemies.Moth
             _movement.ReadyToAttackStateStarted -= OnReadyToAttackStateStarted;
             _movement.ReadyToAttackStateEnded -= OnReadyToAttackStateEnded;
             _movement.DeathStateEnded -= OnDeathStateEnded;
+            _movement.SpreadStateEnded -= OnSpreadStateEnded;
         }
 
         public override void Play()
         {
-            _currentHealth = _maxHealth;
-            _isInAttackReadyMovementState = false;
+            IsGameOver = false;
             IsReadyForDamage = false;
             IsReceivedLampAttackDamage = false;
+            _currentHealth = _maxHealth;
+            _isInAttackReadyMovementState = false;
             CollisionState = CollidableState.Outside;
             Started?.Invoke();
             HealthChanged?.Invoke(_currentHealth, _maxHealth);
@@ -68,7 +71,6 @@ namespace _GAME.Scripts.Enemies.Moth
                 Damaged?.Invoke();
                 HealthChanged?.Invoke(_currentHealth, _maxHealth);
             }
-        
         }
 
         private bool CheckIsReadyToAttack()
@@ -108,6 +110,18 @@ namespace _GAME.Scripts.Enemies.Moth
         {
             Gizmos.color = Color.cyan;
             Gizmos.DrawWireSphere(transform.position, _collisionRadius);
+        }
+        
+        private void OnSpreadStateEnded()
+        {
+            if (IsGameOver)
+            {
+                ReturnToPool();
+            }
+            else
+            {
+                _movement.Play();
+            }
         }
     }
 }

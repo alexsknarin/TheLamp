@@ -59,6 +59,7 @@ namespace _GAME.Scripts.Enemies.Spider
         public event Action PreAttackStarted;
         public event Action PreAttackEnded;
         public event Action DeathStateEnded;
+        public event Action SpreadStateEnded;
 
         public Vector2 Position2D { get; private set; } 
         public Vector3 DepthDirection { get; private set; }
@@ -84,7 +85,7 @@ namespace _GAME.Scripts.Enemies.Spider
             _preAttackState.Started += OnPreAttackStateStarted;
             _preAttackState.Ended += OnPreAttackStateEnded;
             _deathState.Ended += OnDeathStateEnded;
-            // _spreadState.Ended += OnSpreadStateEnded;
+            _climbUpState.Ended += OnSpreadStateEnded;
         
             At(_enterState, _patrolState, () => _enterState.IsReadyToSwitch);
             At(_patrolState, _preAttackState, IsAttackStarted());
@@ -114,8 +115,9 @@ namespace _GAME.Scripts.Enemies.Spider
             _preAttackState.Started -= OnPreAttackStateStarted;
             _preAttackState.Ended -= OnPreAttackStateEnded;
             _deathState.Ended -= OnDeathStateEnded;
+            _climbUpState.Ended += OnSpreadStateEnded;
         }
-        
+
         public void SetCollisionRadius(float radius)
         {
             _collisionRadius = radius;
@@ -157,7 +159,7 @@ namespace _GAME.Scripts.Enemies.Spider
         {
             _stateMachine.Tick();
             _currentState = (EnemyMovementStateBase)_stateMachine.CurrentState;
-            _stateDebug = _currentState.GetType().Name; // Debug only
+            _stateDebug = _currentState.GetType().Name;
             Position2D = _currentState.Position2D;
         
             Vector2 newPosition = Position2D;
@@ -212,6 +214,11 @@ namespace _GAME.Scripts.Enemies.Spider
         private void OnDeathStateEnded()
         {
             DeathStateEnded?.Invoke();
+        }
+
+        private void OnSpreadStateEnded()
+        {
+            SpreadStateEnded?.Invoke();
         }
     }
 }

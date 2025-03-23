@@ -344,9 +344,7 @@ namespace _GAME.Scripts.Enemies.Mothling
 
         private void OnSpreadStateEnded()
         {
-            // TODO: should be decided based on gameover state
             SpreadStateEnded?.Invoke();
-            Play();
         }
     }
 }

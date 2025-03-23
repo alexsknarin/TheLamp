@@ -29,6 +29,7 @@ namespace _GAME.Scripts.Enemies.Spider
             _movement.ReadyToAttackStateStarted += OnReadyToAttackStateStarted;
             _movement.ReadyToAttackStateEnded += OnReadyToAttackStateEnded;
             _movement.DeathStateEnded += OnDeathStateEnded;
+            _movement.SpreadStateEnded += OnSpreadStateEnded;
         }
 
         private void OnDestroy()
@@ -36,16 +37,16 @@ namespace _GAME.Scripts.Enemies.Spider
             _movement.ReadyToAttackStateStarted -= OnReadyToAttackStateStarted;
             _movement.ReadyToAttackStateEnded -= OnReadyToAttackStateEnded;
             _movement.DeathStateEnded -= OnDeathStateEnded;
+            _movement.SpreadStateEnded -= OnSpreadStateEnded;
         }
-        
-        
 
         public override void Play()
         {
-            _currentHealth = _maxHealth;
-            _isInAttackReadyMovementState = false;
+            IsGameOver = false;
             IsReadyForDamage = false;
             IsReceivedLampAttackDamage = false;
+            _currentHealth = _maxHealth;
+            _isInAttackReadyMovementState = false;
             CollisionState = CollidableState.Outside;
             HealthChanged?.Invoke(_currentHealth, _maxHealth);
             _movement.Play();
@@ -108,6 +109,18 @@ namespace _GAME.Scripts.Enemies.Spider
         {
             Gizmos.color = Color.cyan;
             Gizmos.DrawWireSphere(transform.position, _collisionRadius);
+        }
+        
+        private void OnSpreadStateEnded()
+        {
+            if (IsGameOver)
+            {
+                ReturnToPool();
+            }
+            else
+            {
+                _movement.Play();
+            }
         }
     }
 }

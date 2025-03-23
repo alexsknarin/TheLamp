@@ -34,9 +34,10 @@ namespace _GAME.Scripts.Enemies.DragonflyProjectileMoth
 
         public override void Play()
         {
-            _presentation.Initialize();
+            IsGameOver = false;
             IsReadyForDamage = false;
             IsReceivedLampAttackDamage = false;
+            _presentation.Initialize();
             _movement.TriggerAttack();
         }
 

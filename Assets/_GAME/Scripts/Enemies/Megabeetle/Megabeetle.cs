@@ -48,12 +48,13 @@ namespace _GAME.Scripts.Enemies.Megabeetle
 
         public override void Play()
         {
+            IsGameOver = false;
             IsDead = false;
+            IsReadyForDamage = false;
+            IsReceivedLampAttackDamage = false;
             _currentHealth = _maxHealth;
             _currentHealthToFall = _healthToFallThreshold;
             _isInAttackReadyMovementState = false;
-            IsReadyForDamage = false;
-            IsReceivedLampAttackDamage = false;
             StickState = StickableState.Outside;
             AttackBlockState = AttackBlockerState.Outisde;
             HealthChanged?.Invoke(_currentHealth, _maxHealth);

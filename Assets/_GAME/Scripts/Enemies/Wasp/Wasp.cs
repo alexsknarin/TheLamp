@@ -45,6 +45,7 @@ namespace _GAME.Scripts.Enemies.Wasp
 
         public override void Play()
         {
+            IsGameOver = false;
             _movement.Play();
             CollisionState = CollidableState.Outside;
             _currentHealth = _maxHealth;

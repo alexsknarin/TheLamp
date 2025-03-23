@@ -147,6 +147,7 @@ namespace _GAME.Scripts.GameCoreSystems.EnemyManagement
                 {
                     ((IStickableWithLamp)enemy).HandleLampDestroyed();
                 }
+                enemy.IsGameOver = true;
             }
             StartCoroutine(SpreadEnemiesAfterGameOver());
             StartCoroutine(DeactivateEnemiesAfterGameOver());
