@@ -22,6 +22,11 @@ namespace _GAME.Scripts.ServicesGlobal
     
         // TODO: add event for enemy collision
         public event Action<Vector3, bool, string> EnemyAttackEnded;
+        
+        public void Construct(float collisionThreshold)
+        {
+            _collisionThreshold = collisionThreshold;
+        }
     
         public void Initialize()
         {

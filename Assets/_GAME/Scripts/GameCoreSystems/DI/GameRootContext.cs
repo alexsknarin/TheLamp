@@ -183,6 +183,7 @@ namespace _GAME.Scripts.GameCoreSystems.DI
             _advertisementService.Initialize();
         
             // Lamp 
+            _lampCollisionDetectionService.Construct(_gameConfigService.PlayerConfig.CollisionThreshold);
             _lampCollisionDetectionService.Initialize();
         }
 
