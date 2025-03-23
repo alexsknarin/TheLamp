@@ -12,16 +12,10 @@ namespace _GAME.Scripts.UI.UiElements
         [SerializeField] private Color _enabledTextColor = Color.white;
         [SerializeField] private Color _disabledTextColor = Color.grey;
 
-        public void EnableButton()
+        public void SetEnabled(bool isEnabled)
         {
-            _button.interactable = true;
-            _text.color = _enabledTextColor;
-        }
-
-        public void DisableButton()
-        {
-            _button.interactable = false;
-            _text.color = Color.grey;
+            _button.interactable = isEnabled;
+            _text.color = isEnabled ? _enabledTextColor : _disabledTextColor;
         }
 
         public void SetVisibilityLevel(float visibilityLevel)

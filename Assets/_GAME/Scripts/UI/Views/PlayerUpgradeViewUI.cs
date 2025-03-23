@@ -70,42 +70,17 @@ namespace _GAME.Scripts.UI.Views
         // Event Handle Methods
         private void OnHealthUpgradeEnabledChanged(bool isEnabled)
         {
-            // TODO: change to setEnabled to be able to set in 1 line
-            if (isEnabled)
-            {
-                _healthButtonPresentation.EnableButton();
-            }
-            else
-            {
-                _healthButtonPresentation.DisableButton();
-            }
+            _healthButtonPresentation.SetEnabled(isEnabled);
         }
 
         private void OnCooldownUpgradeEnabledChanged(bool isEnabled)
         {
-            // TODO: change to setEnabled to be able to set in 1 line
-            if (isEnabled)
-            {
-                _cooldownButtonPresentation.EnableButton();
-            }
-            else
-            {
-                _cooldownButtonPresentation.DisableButton();
-            }
-        
+            _cooldownButtonPresentation.SetEnabled(isEnabled);
         }
 
         private void OnAttackDistanceUpgradeEnabledChanged(bool isEnabled)
         {
-            // TODO: change to setEnabled to be able to set in 1 line
-            if (isEnabled)
-            {
-                _attackDistanceButtonPresentation.EnableButton();
-            }
-            else
-            {
-                _attackDistanceButtonPresentation.DisableButton();
-            }
+            _attackDistanceButtonPresentation.SetEnabled(isEnabled);
         }
 
         private void OnUpgradePointsChanged(int upgradePoints)
