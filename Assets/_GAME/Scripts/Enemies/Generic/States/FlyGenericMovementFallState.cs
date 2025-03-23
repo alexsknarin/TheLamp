@@ -18,8 +18,8 @@ namespace _GAME.Scripts.Enemies.Generic.States
         private readonly float _fullLampCollisionRadius = LampCollisionRadius + CollisionThreshold;
         private Vector2 _bounceForce;
         private Vector2 _gravityForce;
-        private readonly float _bounceForceMagnitude = 4f;
-        private readonly float _gravityForceMagnitude = .2f;
+        private readonly float _bounceForceMagnitude;
+        private readonly float _gravityForceMagnitude;
         private readonly float _dragAmount = 0.94f;
         private readonly float _ySwitchDistance;
     

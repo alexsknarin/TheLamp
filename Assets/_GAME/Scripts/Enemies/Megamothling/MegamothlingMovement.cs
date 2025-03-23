@@ -38,7 +38,6 @@ namespace _GAME.Scripts.Enemies.Megamothling
         [SerializeField] private float _preAttackDuration = .45f;
         [SerializeField] private float _fallBounceForce = 2f;
         [SerializeField] private float _fallGravityForce = .1f;
-        [SerializeField] private float _deathBounceForce = 2f;
         private float _collisionRadius;
         private float _smoothTimeAllowed = 0;
     
@@ -55,11 +54,11 @@ namespace _GAME.Scripts.Enemies.Megamothling
         private EnemyMovementStateBase _currentState;
         private FMegamothlingMovementEnterState _enterState;
         private FlyGenericMovementPatrolState  _patrolState;
-        private FlyGenericMovementPreAttackStateL _preAttackStateL; // TODO: change duration to 0.45f and depth to 1.0f
-        private FlyGenericMovementPreAttackStateR _preAttackStateR; // the same
+        private FlyGenericMovementPreAttackStateL _preAttackStateL;
+        private FlyGenericMovementPreAttackStateR _preAttackStateR;
         private MegamothlingMovementAttackState _attackState;
-        private FlyGenericMovementFallState _fallState; // TODO: bounce force to 0.2 gravity force to 0.1
-        private MegamothlingMovementDeathState _deathState; // TODO: bounce force to 2.0 gravity force to 0.2 duration 1.7
+        private FlyGenericMovementFallState _fallState;
+        private MegamothlingMovementDeathState _deathState;
     
         private WaitForSeconds _waitSmoothDamp = new(0.5f);
     
@@ -168,9 +167,9 @@ namespace _GAME.Scripts.Enemies.Megamothling
 
         public override void Play()
         {
-            _sideDirection = 1; //RandomDirection.Generate();
+            _sideDirection = RandomDirection.Generate();
             _depthSideDirection = RandomDirection.Generate();
-            Position2D = GenerateSpawnPosition(-1); // TODO: check
+            Position2D = GenerateSpawnPosition(-1);
         
             _position3D = Position2D;
             transform.position = _position3D;
@@ -208,7 +207,7 @@ namespace _GAME.Scripts.Enemies.Megamothling
                 _stateMachine.SetState(_currentState);
 
                 // Immediately Apply Position2D and SideDirection to transform to avoid visible collision penetration.
-                // TODO: doublecheck this
+                
                 Vector3 newPosition = transform.position;
                 newPosition.x = _currentState.Position2D.x;
                 newPosition.y = _currentState.Position2D.y;
