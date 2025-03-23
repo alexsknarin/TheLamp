@@ -5,7 +5,7 @@ using _GAME.Scripts.Lib.Interfaces;
 
 namespace _GAME.Scripts.GameCoreSystems.EnemyManagement
 {
-    public class FLampAttacker
+    public class LampAttacker
     {
         private bool _isBlockedMode = false;
     

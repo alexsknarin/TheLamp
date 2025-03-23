@@ -17,7 +17,7 @@ namespace _GAME.Scripts.GameCoreSystems.EnemyManagement
         private List<FEnemy> _enemies = new ();
         private List<IStickableWithLamp> _stickedEnemies = new ();
         private int _enemiesKilledCount = 0;
-        private FLampAttacker _lampAttacker;
+        private LampAttacker _lampAttacker;
         private FireflyExplosionEnemyDamager _fireflyExplosionEnemyDamager;
         [SerializeField] private bool _lampBlocked = false;
         private EnemyAttacker _enemyAttacker;
@@ -55,7 +55,7 @@ namespace _GAME.Scripts.GameCoreSystems.EnemyManagement
             Debug.Log("WaveEnemyDirector: Initializing");
             _spawnQueueGenerator = new SpawnQueueGenerator(_gameConfigService.SpawnQueueConfig.Data);
             _spawnQueue = _spawnQueueGenerator.Generate();
-            _lampAttacker = new FLampAttacker();
+            _lampAttacker = new LampAttacker();
             _enemyAttacker = new EnemyAttacker(_gameConfigService.GameConfig.MaxAggressionLevel);
             _fireflyExplosionEnemyDamager = new FireflyExplosionEnemyDamager(_gameConfigService, _cameraTransform);
             _fireflyExplosionEnemyDamager.Initialize();
