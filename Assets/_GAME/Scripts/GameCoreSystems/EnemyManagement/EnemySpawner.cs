@@ -12,9 +12,7 @@ namespace _GAME.Scripts.GameCoreSystems.EnemyManagement
     public class EnemySpawner: ITickable, IDisposable
     {
         private EnemyQueue _enemyQueue;
-        private float _firstEnemySpawnDelay = 0.5f; // TODO: move to config
-        // TODO: find a way to make it work without a need to keep the enemy list
-        // spawner should spawn enemies and raise event with enemy only
+        private readonly float _firstEnemySpawnDelay;
         private List<FEnemy> _activeEnemies; 
 
         private int _currentEnemyIndex;
@@ -25,9 +23,13 @@ namespace _GAME.Scripts.GameCoreSystems.EnemyManagement
         // Dependencies
         private readonly EnemyPool _enemyPool; 
     
-        public EnemySpawner(EnemyPool enemyPool)
+        public EnemySpawner(
+            EnemyPool enemyPool,
+            float firstEnemySpawnDelay
+            )
         {
             _enemyPool = enemyPool;
+            _firstEnemySpawnDelay = firstEnemySpawnDelay;
         }
     
         public event Action<FEnemy> EnemySpawned;
@@ -54,7 +56,6 @@ namespace _GAME.Scripts.GameCoreSystems.EnemyManagement
             _activeEnemies = enemies;
         
             string waveData = "";
-            // TODO: Optimize preload 
             for (int i = 0; i < _enemyQueue.Count(); i++)
             {
                 _enemyPool.PreloadEnemy(EnemyTypeLibrary.EnemyTypeDictionary[_enemyQueue.Get(i)]);

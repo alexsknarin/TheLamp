@@ -15,6 +15,7 @@ namespace _GAME.Scripts.GameCoreSystems.DataManagement.DataTypes
         [field:SerializeField] public float FireflyExplosionDuration { get; private set; } = 0.22f;
         [field:Header("Enemy Wave Settings")]
         [field:SerializeField] public float MaxAggressionLevel { get; private set; } = 6f;
+        [field:SerializeField] public float FirstEnemySpawnDelay { get; private set; } = 0.5f;
         [field:Header("Ladybug Settings")]
         [field:SerializeField] public float LadybugDeathDepth { get; private set; } = 0.3f;
         [field:Header("Game Stages Settings")]

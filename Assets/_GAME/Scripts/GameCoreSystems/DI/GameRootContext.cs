@@ -246,7 +246,7 @@ namespace _GAME.Scripts.GameCoreSystems.DI
 
         private void ControllersSetup()
         {
-            _enemySpawner = new EnemySpawner(_enemyPool);
+            _enemySpawner = new EnemySpawner(_enemyPool, _gameConfigService.GameConfig.FirstEnemySpawnDelay);
             _enemySpawner.Initialize();
             _tickables.Add(_enemySpawner);
             _disposables.Add(_enemySpawner);
