@@ -69,7 +69,7 @@ namespace _GAME.Scripts.GameCoreSystems.DI
     
         private CameraShakeEventListener _cameraShakeEventListener;
         private PlayerAttackCooldownHandler _playerAttackCooldownHandler;
-        private ScoresCollectionController _scoresCollectionController;
+        private ScoresCollectionService _scoresCollectionService;
         private PlayerEnemyInteractionMediator _playerEnemyInteractionMediator;
     
         private GameModel _gameModel;
@@ -256,9 +256,9 @@ namespace _GAME.Scripts.GameCoreSystems.DI
         
             _waveEnemyDirector.Construct(_gameConfigService, _enemySpawner);
         
-            _scoresCollectionController = new ScoresCollectionController(_gameConfigService, _enemyPool, _waveEnemyDirector);
-            _scoresCollectionController.Initialize();
-            _disposables.Add(_scoresCollectionController);
+            _scoresCollectionService = new ScoresCollectionService(_gameConfigService, _enemyPool, _waveEnemyDirector);
+            _scoresCollectionService.Initialize();
+            _disposables.Add(_scoresCollectionService);
 
 
             _lampMovementController.Initialize();
@@ -284,7 +284,7 @@ namespace _GAME.Scripts.GameCoreSystems.DI
                 _playerAttackCooldownHandler,
                 _playerEnemyInteractionMediator,
                 _lampMovementController,
-                _scoresCollectionController);
+                _scoresCollectionService);
         }
 
         private void ViewModelsSetup()

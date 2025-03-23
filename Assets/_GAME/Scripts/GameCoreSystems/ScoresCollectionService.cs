@@ -7,7 +7,7 @@ using IDisposable = _GAME.Scripts.Lib.Interfaces.IDisposable;
 // TODO: rename to service
 namespace _GAME.Scripts.GameCoreSystems
 {
-    public class ScoresCollectionController: IInitializable, IDisposable
+    public class ScoresCollectionService: IInitializable, IDisposable
     {
         public bool _isActive = false;
     
@@ -15,7 +15,7 @@ namespace _GAME.Scripts.GameCoreSystems
         private IEnemyDeactivatedProvider _enemyDeactivatedProvider;
         private IProjectileDeactivatedProvider _projectileDeactivatedProvider;
     
-        public ScoresCollectionController(
+        public ScoresCollectionService(
             IGameConfigService gameConfigService,
             IEnemyDeactivatedProvider enemyDeactivatedProvider,
             IProjectileDeactivatedProvider projectileDeactivatedProvider

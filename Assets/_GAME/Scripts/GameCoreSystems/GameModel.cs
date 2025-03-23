@@ -26,7 +26,7 @@ namespace _GAME.Scripts.GameCoreSystems
         private readonly PlayerEnemyInteractionMediator _playerEnemyInteractionMediator;
         // private PlayerCollidersPropertyController _playerCollidersPropertyController;
         private readonly LampMovementController _lampMovementController;
-        private readonly ScoresCollectionController _scoresCollectionController;
+        private readonly ScoresCollectionService _scoresCollectionService;
         private readonly LampDamageDataHandler _lampDamageDataHandler = new LampDamageDataHandler();
         private readonly UpgradeHandler _upgradeHandler = new UpgradeHandler();
 
@@ -38,7 +38,7 @@ namespace _GAME.Scripts.GameCoreSystems
             PlayerAttackCooldownHandler playerAttackCooldownHandler,
             PlayerEnemyInteractionMediator playerEnemyInteractionMediator,
             LampMovementController lampMovementController,
-            ScoresCollectionController scoresCollectionController)
+            ScoresCollectionService scoresCollectionService)
         {
             Debug.Log(" +++ GameModel: Creating GameModel +++");
             _gameStateProviderService = gameStateProviderService;
@@ -49,7 +49,7 @@ namespace _GAME.Scripts.GameCoreSystems
             _playerEnemyInteractionMediator = playerEnemyInteractionMediator;
             // _playerEnemyInteractionHandler = playerEnemyInteractionHandler;
             _lampMovementController = lampMovementController;
-            _scoresCollectionController = scoresCollectionController;
+            _scoresCollectionService = scoresCollectionService;
         
             // Subscriptions
             _waveEnemyDirector.WaveEnded += OnWaveEnded;
@@ -63,7 +63,7 @@ namespace _GAME.Scripts.GameCoreSystems
             _waveEnemyDirector.LampUnblocked += OnLampUnblocked;
             _waveEnemyDirector.StickyAttackEnded += OnEnemyAttackEnded;
         
-            _scoresCollectionController.ScoreChanged += OnScoreChanged;
+            _scoresCollectionService.ScoreChanged += OnScoreChanged;
         }
 
         public void Dispose()
@@ -79,7 +79,7 @@ namespace _GAME.Scripts.GameCoreSystems
             _waveEnemyDirector.LampUnblocked -= OnLampUnblocked;
             _waveEnemyDirector.StickyAttackEnded += OnEnemyAttackEnded;
 
-            _scoresCollectionController.ScoreChanged -= OnScoreChanged;
+            _scoresCollectionService.ScoreChanged -= OnScoreChanged;
         }
 
         // Events
@@ -229,7 +229,7 @@ namespace _GAME.Scripts.GameCoreSystems
             _currentPower = 1.0f;
             LampGlassDamage = _currentGameState.GlassDamageData;
             _lampDamageDataHandler.MaxHealth = _currentGameState.LampMaxHealth;
-            _scoresCollectionController.StartCollecting();
+            _scoresCollectionService.StartCollecting();
             GameStarted?.Invoke();
         }
     
@@ -253,7 +253,7 @@ namespace _GAME.Scripts.GameCoreSystems
         private void StartGameOver()
         {
             _waveEnemyDirector.HandleLampDestroyed();
-            _scoresCollectionController.StopCollecting();
+            _scoresCollectionService.StopCollecting();
             CurrentGameStageState = GameStageState.GameOverIn;
             _playerAttackCooldownHandler.StopCooldown();
         }
@@ -440,7 +440,7 @@ namespace _GAME.Scripts.GameCoreSystems
             CurrentGameState = _gameStateProviderService.Get();
             Debug.Log("New GameState Generated");
             Debug.Log($"Wave: {CurrentGameState.Wave}");
-            _scoresCollectionController.StopCollecting();
+            _scoresCollectionService.StopCollecting();
             _playerEnemyInteractionMediator.Reset();
             _waveEnemyDirector.Reset();
             _lampMovementController.Reset();
