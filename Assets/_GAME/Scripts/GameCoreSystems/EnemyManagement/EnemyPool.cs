@@ -54,8 +54,6 @@ namespace _GAME.Scripts.GameCoreSystems.EnemyManagement
 
         public void Initialize()
         {
-            // TODO: create pool objects on demand
-        
             _mothlingCount= 0;
             _mothlingPool = new ObjectPool<FEnemy>(
                 CreateMothling, 

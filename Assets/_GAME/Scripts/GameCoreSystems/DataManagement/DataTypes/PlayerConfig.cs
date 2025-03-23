@@ -17,5 +17,6 @@ namespace _GAME.Scripts.GameCoreSystems.DataManagement.DataTypes
         [field:Header("Collision Settings")]
         [field: SerializeField] public float LampCollisionRadius { get; private set; } = 0.49f;
         [field: SerializeField] public float CollisionThreshold { get; private set; } = 0.0001f;
+        [field: SerializeField] public float DefaultAttackZoneRadius { get; private set; } = 0.62f;
     }
 }

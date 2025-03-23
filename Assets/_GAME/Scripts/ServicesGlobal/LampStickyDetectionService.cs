@@ -26,6 +26,16 @@ namespace _GAME.Scripts.ServicesGlobal
         public event Action<IStickableWithLamp> EnemySticked;
         public event Action<IStickableWithLamp> EnemyUnSticked;
 
+        public void Construct(float attackZoneRadius)
+        {
+            _attackZoneRadius = attackZoneRadius;
+        }
+        
+        public void UpdateAttackZoneRadius(float attackZoneRadius)
+        {
+            _attackZoneRadius = attackZoneRadius;
+        }
+
         public void Initialize()
         {
             _combinedStickRadius = _stickyRadius + _collisionThreshold;

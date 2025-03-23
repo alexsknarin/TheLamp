@@ -88,6 +88,7 @@ namespace _GAME.Scripts.GameCoreSystems.DI
         private LightningFlashEventsListener _lightningFlashEventsListener;
         private AnalyticsEventListener _analyticsEventListener;
         private AdvertisementEventListener _advertisementEventListener;
+        private AttackZoneUpgradeEventListener _attackZoneUpgradeEventListener;
         // +++ Factories
         private BossCameraShakeFactory _bossCameraShakeFactory;
         // Enemy Factories
@@ -183,7 +184,11 @@ namespace _GAME.Scripts.GameCoreSystems.DI
             _advertisementService.Initialize();
         
             // Lamp 
-            _lampCollisionDetectionService.Construct(_gameConfigService.PlayerConfig.CollisionThreshold);
+            _lampCollisionDetectionService.Construct(
+                _gameConfigService.PlayerConfig.LampCollisionRadius,
+                _gameConfigService.PlayerConfig.CollisionThreshold,
+                _gameConfigService.PlayerConfig.DefaultAttackZoneRadius
+                );
             _lampCollisionDetectionService.Initialize();
         }
 
@@ -252,6 +257,7 @@ namespace _GAME.Scripts.GameCoreSystems.DI
             _tickables.Add(_enemySpawner);
             _disposables.Add(_enemySpawner);
         
+            _lampStickyDetectionService.Construct(_gameConfigService.PlayerConfig.DefaultAttackZoneRadius);
             _lampStickyDetectionService.Initialize();
         
             _waveEnemyDirector.Construct(_gameConfigService, _enemySpawner);
@@ -372,6 +378,13 @@ namespace _GAME.Scripts.GameCoreSystems.DI
         
             _advertisementEventListener = new AdvertisementEventListener(_advertisementService, _gameModel);
             _disposables.Add(_advertisementEventListener);
+            
+            _attackZoneUpgradeEventListener = new AttackZoneUpgradeEventListener(
+                _gameModel,
+                _lampCollisionDetectionService,
+                _lampStickyDetectionService
+            );
+            _disposables.Add(_attackZoneUpgradeEventListener);
         }
 
         private void Update()
