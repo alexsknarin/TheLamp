@@ -11,30 +11,36 @@ namespace _GAME.Scripts.Factories
         private Transform _cameraTransform;
         private ILampPositionProviderService _lampPositionProviderService;
         private IPositionDirectionProvider _positionDirectionProvider;
+        private IGameConfigService _gameConfigService;
         private float _speed;
         private float _radius;
         private float _verticalAmplitude;
+        private float _collisionRadius;
     
         public MothMovementStateFactory(
             Transform cameraTransform, 
-            ILampPositionProviderService lampPositionProviderService
+            ILampPositionProviderService lampPositionProviderService,
+            IGameConfigService gameConfigService
         )
         {
             _cameraTransform = cameraTransform;
             _lampPositionProviderService = lampPositionProviderService;
+            _gameConfigService = gameConfigService;
         }
     
         public void SetEnemyDependencies(
             IPositionDirectionProvider positionDirectionProvider,
             float speed,
             float radius,
-            float verticalAmplitude
+            float verticalAmplitude,
+            float collisionRadius
         )
         {
             _positionDirectionProvider = positionDirectionProvider;
             _speed = speed;
             _radius = radius;
             _verticalAmplitude = verticalAmplitude;
+            _collisionRadius = collisionRadius;
         }
 
         public EnemyMovementStateBase Create(Type stateType)
@@ -90,7 +96,10 @@ namespace _GAME.Scripts.Factories
                     _positionDirectionProvider,
                     _lampPositionProviderService,
                     _radius,
-                    _verticalAmplitude
+                    _verticalAmplitude,
+                    _gameConfigService.PlayerConfig.LampCollisionRadius,
+                    _gameConfigService.PlayerConfig.CollisionThreshold,
+                    _collisionRadius
                 );
             }
             if (stateType == typeof(MothMovementNoiseDeathState))

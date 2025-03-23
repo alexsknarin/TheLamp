@@ -24,6 +24,7 @@ namespace _GAME.Scripts.Enemies.Moth
     
         public override void Initialize()
         {
+            _movement.SetCollisionRadius(_collisionRadius);
             _movement.Initialize();
             _movement.ReadyToAttackStateStarted += OnReadyToAttackStateStarted;
             _movement.ReadyToAttackStateEnded += OnReadyToAttackStateEnded;

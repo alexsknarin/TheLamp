@@ -208,7 +208,8 @@ namespace _GAME.Scripts.GameCoreSystems.DI
             );
             _mothMovementStateFactory = new MothMovementStateFactory(
                 _cameraTransform,
-                _lampPositionProviderService
+                _lampPositionProviderService,
+                _gameConfigService
             );
             _spiderMovementStateFactory = new SpiderMovementStateFactory();
             _ladybugMovementStateFactory = new LadybugMovementStateFactory(

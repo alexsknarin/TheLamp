@@ -23,6 +23,7 @@ namespace _GAME.Scripts.Enemies.Moth
         [SerializeField] private string _stateDebug;
         [SerializeField] private int _sideDirection = 1;
         [SerializeField] private int _depthSideDirection = 0;
+        private float _collisionRadius;
         // Debug
         private Vector3 _position3d;
         private Vector3 _prevPosition;
@@ -59,7 +60,7 @@ namespace _GAME.Scripts.Enemies.Moth
 
         public override void Initialize()
         {
-            _stateFactory.SetEnemyDependencies(this, _speed, _radius, _verticalAmplitude);
+            _stateFactory.SetEnemyDependencies(this, _speed, _radius, _verticalAmplitude, _collisionRadius);
             _enterState = (MothMovementEnterState)_stateFactory.Create(typeof(MothMovementEnterState));
             _hoverState = (MothMovementHoverState)_stateFactory.Create(typeof(MothMovementHoverState));
             _patrolState = (MothMovementNoisePatrolState)_stateFactory.Create(typeof(MothMovementNoisePatrolState));
@@ -112,6 +113,11 @@ namespace _GAME.Scripts.Enemies.Moth
             _preAttackState.Ended -= OnPreAttackStateEnded;
             _deathState.Ended -= OnDeathStateEnded;
             _spreadState.Ended -= OnSpreadStateEnded;
+        }
+        
+        public void SetCollisionRadius(float radius)
+        {
+            _collisionRadius = radius;
         }
 
         public override void Play()

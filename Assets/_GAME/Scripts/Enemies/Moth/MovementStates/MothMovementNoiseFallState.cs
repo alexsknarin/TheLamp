@@ -13,14 +13,20 @@ namespace _GAME.Scripts.Enemies.Moth.MovementStates
         private ILampPositionProviderService _lampPositionProviderService;
         private readonly float _radius;
         private readonly float _verticalAmplitude;
-    
-    
+        
+        private float _lampCollisionRadius;
+        private float _collisionThreshold;
+        private float _collisionRadius;
+        
         // State specific attributes
         private readonly float _bounceForceMagnitude = 4f;
         private readonly float _gravityForceMagnitude = .2f;
         private readonly float _dragAmount = 0.94f;
         private readonly float _noiseFrequency = 7f;
         private readonly float _noiseAmplitude = 0.015f;
+        private readonly float _duration = 1.5f;
+        
+        
         private Vector2 _bounceForce;
         private Vector2 _gravityForce;
         private float _localTime;
@@ -31,9 +37,16 @@ namespace _GAME.Scripts.Enemies.Moth.MovementStates
             IPositionDirectionProvider positionDirectionProvider,
             ILampPositionProviderService lampPositionProviderService,
             float radius,
-            float verticalAmplitude
+            float verticalAmplitude,
+            float lampCollisionRadius,
+            float collisionThreshold,
+            float collisionRadius
         )
         {
+            _lampCollisionRadius = lampCollisionRadius;
+            _collisionThreshold = collisionThreshold;
+            _collisionRadius = collisionRadius;
+            
             _cameraPosition = cameraPosition;
             _positionDirectionProvider = positionDirectionProvider;
             _lampPositionProviderService = lampPositionProviderService;
@@ -51,7 +64,9 @@ namespace _GAME.Scripts.Enemies.Moth.MovementStates
             Position2D = _positionDirectionProvider.Position2D;
         
             Vector2 position2DNormalized = (Position2D - _lampPositionProviderService.GetLampPosition()).normalized;
-            Position2D = position2DNormalized * (0.49f + 0.1f + 0.0001f) + _lampPositionProviderService.GetLampPosition(); // TODO: Magic numbers
+            Position2D = position2DNormalized 
+                * (_lampCollisionRadius + _collisionRadius + _collisionThreshold) 
+                + _lampPositionProviderService.GetLampPosition();
         
             _bounceForce = position2DNormalized * _bounceForceMagnitude;
         
@@ -66,7 +81,7 @@ namespace _GAME.Scripts.Enemies.Moth.MovementStates
             Position2D += _bounceForce * Time.deltaTime + _gravityForce;
         
             // Add noise
-            float noisePhase = _localTime / 1.5f; // TODO: Magic Number
+            float noisePhase = _localTime / _duration;
             Vector2 trajectoryNoise = TrajectoryNoise.Generate(_noiseFrequency) * noisePhase;
             Position2D += trajectoryNoise * _noiseAmplitude;
         
