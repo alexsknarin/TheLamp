@@ -17,9 +17,19 @@ namespace _GAME.Scripts.GameCoreSystems.EnemyManagement
         private bool _isWaveActive = false;
         private float _localTime;
         private bool _isCooldownActive = false;
+        
+        private readonly float _startAttackDelayMinMin = 4.5f;
+        private readonly float _startAttackDelayMinMax = 1.8f;
+        private readonly float _startAttackDelayMaxMin = 6.5f;
+        private readonly float _startAttackDelayMaxMax = 2.8f;
+        
+        private readonly float _attackAttackDelayMinMin = 2.5f;
+        private readonly float _attackAttackDelayMinMax = 0.8f;
+        private readonly float _attackAttackDelayMaxMin = 6.1f;
+        private readonly float _attackAttackDelayMaxMax = 1.8f;
     
-        private List<FEnemy> _enemies; // TODO: find a way to remove this dependency and to not keep the list of enemies
-        private List<CollidableEnemy> _enemiesReadyToAttack = new ();
+        private List<FEnemy> _enemies;
+        private readonly List<CollidableEnemy> _enemiesReadyToAttack = new ();
 
         public EnemyAttacker(float maxAggressionLevel)
         {
@@ -37,8 +47,13 @@ namespace _GAME.Scripts.GameCoreSystems.EnemyManagement
     
         public void StartWave()
         {
-            // TODO: fix magic numbers
-            _attackCooldown = GetRandomAttackDelay(4.5f, 1.8f, 6.5f, 2.8f, _aggressionLevelNormalized);
+            _attackCooldown = GetRandomAttackDelay(
+                _startAttackDelayMinMin,
+                _startAttackDelayMinMax,
+                _startAttackDelayMaxMin, 
+                _startAttackDelayMaxMax,
+                _aggressionLevelNormalized
+                );
             _isWaveActive = true;
             _isCooldownActive = true;
             _localTime = 0;
@@ -138,10 +153,14 @@ namespace _GAME.Scripts.GameCoreSystems.EnemyManagement
             attackingEnemy.Attack();
             EnemyAttackStarted?.Invoke(attackingEnemy);
         
-        
             _localTime = 0;
-            // TODO: fix magic numbers
-            _attackCooldown = GetRandomAttackDelay(2.5f, 0.8f, 6.1f, 1.8f, _aggressionLevelNormalized); 
+            _attackCooldown = GetRandomAttackDelay(
+                _attackAttackDelayMinMin,
+                _attackAttackDelayMinMax,
+                _attackAttackDelayMaxMin,
+                _attackAttackDelayMaxMax,
+                _aggressionLevelNormalized
+                ); 
         }
     
         private float GetRandomAttackDelay(float minMin, float minMax, float maxMin, float maxMax, float aggressionLevel)
