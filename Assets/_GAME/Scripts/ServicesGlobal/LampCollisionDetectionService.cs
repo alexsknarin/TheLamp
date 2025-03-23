@@ -19,8 +19,7 @@ namespace _GAME.Scripts.ServicesGlobal
         private Vector2 _position;
         private float _collisionThreshold;
         private float _combinedCollisionRadius;
-    
-        // TODO: add event for enemy collision
+        
         public event Action<Vector3, bool, string> EnemyAttackEnded;
         
         public void Construct(
