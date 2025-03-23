@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace _GAME.Scripts.Enemies.Wasp.MovementStates
 {
-    public class WaspAttack02DeathRState : FWaspAnimBaseState
+    public class WaspAttack02DeathRState : WaspAnimBaseState
     {
         public WaspAttack02DeathRState(Animator animator, int clipHash, Transform baseTransform) : 
             base(animator, clipHash, baseTransform) { }
