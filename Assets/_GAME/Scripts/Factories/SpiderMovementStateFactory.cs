@@ -8,22 +8,37 @@ namespace _GAME.Scripts.Factories
 {
     public class SpiderMovementStateFactory
     {
+        private ILampPositionProviderService _lampPositionProviderService;
+        private IGameConfigService _gameConfigService;
+        
         private IPositionDirectionProvider _positionDirectionProvider;
         private float _speed;
         private float _xCenter;
         private float _height;
+        private float _collisionRadius;
     
+        public SpiderMovementStateFactory(
+            ILampPositionProviderService lampPositionProviderService,
+            IGameConfigService gameConfigService
+        )
+        {
+            _lampPositionProviderService = lampPositionProviderService;
+            _gameConfigService = gameConfigService;
+        }
+        
         public void SetEnemyDependencies(
             IPositionDirectionProvider positionDirectionProvider,
             float speed,
             float xCenter,
-            float height
+            float height,
+            float collisionRadius
         )
         {
             _positionDirectionProvider = positionDirectionProvider;
             _speed = speed;
             _xCenter = xCenter;
             _height = height;
+            _collisionRadius = collisionRadius;
         }
 
         public EnemyMovementStateBase Create(Type stateType)
@@ -65,9 +80,13 @@ namespace _GAME.Scripts.Factories
             {
                 return new SpiderMovementReturnState(
                     _positionDirectionProvider,
+                    _lampPositionProviderService,
                     _speed,
                     _xCenter,
-                    _height
+                    _height,
+                    _gameConfigService.PlayerConfig.LampCollisionRadius,
+                    _gameConfigService.PlayerConfig.CollisionThreshold,
+                    _collisionRadius
                 );
             }
             if (stateType == typeof(FlyGenericMovementDeathState))

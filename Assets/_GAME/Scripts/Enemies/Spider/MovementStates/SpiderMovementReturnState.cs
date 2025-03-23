@@ -6,8 +6,12 @@ namespace _GAME.Scripts.Enemies.Spider.MovementStates
     public class SpiderMovementReturnState: EnemyMovementStateBase
     {
         private readonly IPositionDirectionProvider _positionDirectionProvider;
+        private readonly ILampPositionProviderService _lampPositionProviderService;
         private readonly Vector2 _hangingPoint;
         private readonly float _speed;
+        private readonly float _lampCollisionRadius;
+        private readonly float _collisionThreshold;
+        private readonly float _collisionRadius;
 
         private readonly float _decceleration = 0.07f;
         private float _localTime;
@@ -18,18 +22,30 @@ namespace _GAME.Scripts.Enemies.Spider.MovementStates
         private Vector2 _initialDirection;
 
         public SpiderMovementReturnState(
-            IPositionDirectionProvider positionDirectionProvider, float speed, float xCenter, float height)
+            IPositionDirectionProvider positionDirectionProvider,
+            ILampPositionProviderService lampPositionProviderService,
+            float speed,
+            float xCenter,
+            float height,
+            float lampCollisionRadius,
+            float collisionThreshold,
+            float collisionRadius
+            )
         {
             _positionDirectionProvider = positionDirectionProvider;
+            _lampPositionProviderService = lampPositionProviderService;
             _hangingPoint.x = xCenter;
             _hangingPoint.y = height;
             _speed = speed;
+            _lampCollisionRadius = lampCollisionRadius;
+            _collisionThreshold = collisionThreshold;
+            _collisionRadius = collisionRadius;
         }
     
-        // TODO: fix interpenetration at the first frame
         public override void OnEnter()
         {
-            Position2D = _positionDirectionProvider.Position2D;
+            Position2D = (_positionDirectionProvider.Position2D - _lampPositionProviderService.GetLampPosition()).normalized
+                         * (_lampCollisionRadius + _collisionThreshold + _collisionRadius);
             _initialAmplitude = Mathf.Abs(Mathf.Abs(Position2D.x) - Mathf.Abs(_hangingPoint.x));
             _swingAmplitude = _initialAmplitude;
             _initialDirection = Position2D.normalized;

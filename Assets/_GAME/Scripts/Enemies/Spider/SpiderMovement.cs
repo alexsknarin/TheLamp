@@ -14,7 +14,7 @@ namespace _GAME.Scripts.Enemies.Spider
         [SerializeField] private float _speed;
         // Debug
         [SerializeField] private string _stateDebug;
-        [SerializeField] private int _sideDirection = 1; // TODO: Try without it
+        [SerializeField] private int _sideDirection = 1;
         [SerializeField] private int _depthSideDirection = 0;
         [SerializeField] private float _height = 5f;
         [SerializeField] private float _xCenter = 1.12f;
@@ -68,9 +68,8 @@ namespace _GAME.Scripts.Enemies.Spider
     
         public override void Initialize()
         {
-            Debug.Log("FFlyMovement Initializing");
             // Create Movement States
-            _stateFactory.SetEnemyDependencies(this, _speed, _xCenter, _height);
+            _stateFactory.SetEnemyDependencies(this, _speed, _xCenter, _height, _collisionRadius);
             _enterState = (SpiderMovementEnterState)_stateFactory.Create(typeof(SpiderMovementEnterState));
             _patrolState = (SpiderMovementPatrolState)_stateFactory.Create(typeof(SpiderMovementPatrolState));
             _preAttackState = (SpiderMovementPreAttackState)_stateFactory.Create(typeof(SpiderMovementPreAttackState));
