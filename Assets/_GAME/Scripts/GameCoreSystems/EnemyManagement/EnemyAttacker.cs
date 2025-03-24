@@ -17,7 +17,7 @@ namespace _GAME.Scripts.GameCoreSystems.EnemyManagement
         private bool _isWaveActive = false;
         private float _localTime;
         private bool _isCooldownActive = false;
-        
+       
         private readonly float _startAttackDelayMinMin = 4.5f;
         private readonly float _startAttackDelayMinMax = 1.8f;
         private readonly float _startAttackDelayMaxMin = 6.5f;
@@ -76,8 +76,6 @@ namespace _GAME.Scripts.GameCoreSystems.EnemyManagement
             _isCooldownActive = true;
         }
     
-
-    
         public void Tick(float deltaTime)
         {
             if (_isWaveActive)
@@ -134,22 +132,7 @@ namespace _GAME.Scripts.GameCoreSystems.EnemyManagement
             }
         
             var attackingEnemy = _enemiesReadyToAttack[enemyIndex];
-        
-
-            // MEGAMOTHLING: TODO: add later
-            // It attacks alongside other enemies, but it should be
-            // Prioritized to attack more often
-            // In this case twice as often
-        
-            // if (_isBossActive && (_boss.EnemyType == EnemyType.Megamothling) && _boss.ReadyToAttack)
-            // {
-            //     int megamothlingAttackChance = Random.Range(0, 2);
-            //     if (megamothlingAttackChance == 0)
-            //     {
-            //         attackingEnemy = _boss;
-            //     }
-            // }
-       
+     
             attackingEnemy.Attack();
             EnemyAttackStarted?.Invoke(attackingEnemy);
         

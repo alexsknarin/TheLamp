@@ -153,6 +153,7 @@ namespace _GAME.Scripts.Enemies.Wasp
         }
 
         public event Action AttackStateStarted;
+        public event Action SuccessStateEnded;
         public event Action DeathStateEnded;
 
         public Vector3 Position => transform.position;
@@ -179,6 +180,21 @@ namespace _GAME.Scripts.Enemies.Wasp
             _attack03DeathRState.Ended += OnDeathStateEnded;
             _attack04DeathLState.Ended += OnDeathStateEnded;
             _attack04DeathRState.Ended += OnDeathStateEnded;
+            
+            _attack01Success01LState.Ended += OnSuccessStateEnded;
+            _attack01Success01RState.Ended += OnSuccessStateEnded;
+            _attack01Success02LState.Ended += OnSuccessStateEnded;
+            _attack01Success02RState.Ended += OnSuccessStateEnded;
+            _attack01Success03LState.Ended += OnSuccessStateEnded;
+            _attack01Success03RState.Ended += OnSuccessStateEnded;
+            _attack02Success01LState.Ended += OnSuccessStateEnded;
+            _attack02Success01RState.Ended += OnSuccessStateEnded;
+            _attack03Success01LState.Ended += OnSuccessStateEnded;
+            _attack03Success01RState.Ended += OnSuccessStateEnded;
+            _attack04Success01LState.Ended += OnSuccessStateEnded;
+            _attack04Success01RState.Ended += OnSuccessStateEnded;
+            
+            
         
             enabled = false;
             _isAnimClipEnded = false;
@@ -206,13 +222,26 @@ namespace _GAME.Scripts.Enemies.Wasp
             _attack03DeathRState.Ended -= OnDeathStateEnded;
             _attack04DeathLState.Ended -= OnDeathStateEnded;
             _attack04DeathRState.Ended -= OnDeathStateEnded;
+            
+            _attack01Success01LState.Ended -= OnSuccessStateEnded;
+            _attack01Success01RState.Ended -= OnSuccessStateEnded;
+            _attack01Success02LState.Ended -= OnSuccessStateEnded;
+            _attack01Success02RState.Ended -= OnSuccessStateEnded;
+            _attack01Success03LState.Ended -= OnSuccessStateEnded;
+            _attack01Success03RState.Ended -= OnSuccessStateEnded;
+            _attack02Success01LState.Ended -= OnSuccessStateEnded;
+            _attack02Success01RState.Ended -= OnSuccessStateEnded;
+            _attack03Success01LState.Ended -= OnSuccessStateEnded;
+            _attack03Success01RState.Ended -= OnSuccessStateEnded;
+            _attack04Success01LState.Ended -= OnSuccessStateEnded;
+            _attack04Success01RState.Ended -= OnSuccessStateEnded;
         }
 
         public void SetCollisionRadius(float radius)
         {
             _collisionRadius = radius;
         }
-        
+
         public void Play()
         {
             enabled = true;
@@ -671,8 +700,9 @@ namespace _GAME.Scripts.Enemies.Wasp
                 transform.position = newPosition;
             }
         }
-    
+
         // Event Handle Methods
+
         private void OnDeathStateEnded()
         {
             enabled = false;
@@ -682,6 +712,11 @@ namespace _GAME.Scripts.Enemies.Wasp
         private void OnBossAttackStarted()
         {
             AttackStateStarted?.Invoke();
+        }
+
+        private void OnSuccessStateEnded()
+        {
+            SuccessStateEnded?.Invoke();
         }
     }
 }

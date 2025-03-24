@@ -228,7 +228,10 @@ namespace _GAME.Scripts.GameCoreSystems.EnemyManagement
                 foreach (var enemy in _enemies)
                 {
                     Debug.Log("Return enemy to pool:" + enemy.gameObject.name);
-                    enemy.ReturnToPool();
+                    if (enemy.gameObject.activeInHierarchy)
+                    {
+                        enemy.ReturnToPool();                        
+                    }
                 }            
             }
             _enemies.Clear();

@@ -32,6 +32,7 @@ namespace _GAME.Scripts.Enemies.Wasp
             _animationClipEventListener.ClipEnded += OnClipEnded;
             _animationClipEventListener.SpreadTgiggered += OnSpreadTriggered;
             _animationClipEventListener.AttackStarted += OnAttackStateStarted;
+            _movement.SuccessStateEnded += OnSuccessStateEnded;
             _movement.DeathStateEnded += OnDeathStateEnded;
         }
 
@@ -40,6 +41,7 @@ namespace _GAME.Scripts.Enemies.Wasp
             _animationClipEventListener.ClipEnded -= OnClipEnded;
             _animationClipEventListener.SpreadTgiggered -= OnSpreadTriggered;
             _animationClipEventListener.AttackStarted -= OnAttackStateStarted;
+            _movement.SuccessStateEnded -= OnSuccessStateEnded;
             _movement.DeathStateEnded -= OnDeathStateEnded;
         }
 
@@ -80,7 +82,7 @@ namespace _GAME.Scripts.Enemies.Wasp
         {
             _movement.SetDead();
         }
-    
+
         public override Vector3 ProvideImpactPoint()
         {
             Vector3 position = _movement.Position;
@@ -93,30 +95,38 @@ namespace _GAME.Scripts.Enemies.Wasp
             _movement.SetCollidedWithLamp();
             CollisionState = CollidableState.AfterCollision;
         }
-    
+
         // Calls from animation clips
+
         private void OnClipEnded()
         {
             _movement.ClipEnded();
         }
-    
+
         private void OnSpreadTriggered()
         {
             SpreadRequested?.Invoke();
         }
-    
+
         private void OnAttackStateStarted()
         {
             IsReceivedLampAttackDamage = false;
             AnimatedAttackStarted?.Invoke(this);
         }
-    
-    
-    
+
+
         private void OnDrawGizmos()
         {
             Gizmos.color = Color.cyan;
             Gizmos.DrawWireSphere(_movement.Position, _collisionRadius);
+        }
+
+        private void OnSuccessStateEnded()
+        {
+            if (IsGameOver)
+            {
+                ReturnToPool();
+            }
         }
     }
 }
