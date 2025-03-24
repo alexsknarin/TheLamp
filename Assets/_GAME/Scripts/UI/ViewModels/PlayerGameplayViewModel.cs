@@ -1,0 +1,143 @@
+using System;
+using _GAME.Scripts.GameCoreSystems;
+using _GAME.Scripts.GameCoreSystems.DataManagement.DataTypes;
+using _GAME.Scripts.Lib;
+using UnityEngine;
+using IDisposable = _GAME.Scripts.Lib.Interfaces.IDisposable;
+
+namespace _GAME.Scripts.UI.ViewModels
+{
+    public class PlayerGameplayViewModel : IDisposable
+    {
+        private GameModel _gameModel;
+        
+        public Observable<float> Power = new();
+        public Observable<float> LampNormalizedHealth = new();
+        public Observable<bool> IsBlocked = new();
+        public Observable<float> AttackDistance = new();
+        private int _currentHealth = 8;
+
+        public event Action UpgradePointsChanged;
+    
+        public PlayerGameplayViewModel(GameModel gameModel)
+        {
+            _gameModel = gameModel;
+            _gameModel.LampAttackStarted += OnLampAttackStarted;
+            _gameModel.PowerChanged += OnPowerChanged;
+            _gameModel.LampHealthChanged += OnLampHealthChanged;
+            _gameModel.LampMaxHealthChanged += OnLampMaxHealthChanged;
+            _gameModel.IsLampBlockedChanged += OnIsLampBlockedChanged;
+            _gameModel.LampDamageStarted += OnLampDamageStarted;
+            _gameModel.LampGlassDamageChanged += OnLampGlassDamageChanged;
+            _gameModel.LampAttackDistanceChanged += OnLampAttackDistanceChanged;
+            _gameModel.UpgradePointsChanged += OnUpgradePointsChanged;
+        }
+
+        public void Dispose()
+        {
+            _gameModel.LampAttackStarted -= OnLampAttackStarted;
+            _gameModel.PowerChanged -= OnPowerChanged;
+            _gameModel.LampHealthChanged -= OnLampHealthChanged;
+            _gameModel.LampMaxHealthChanged -= OnLampMaxHealthChanged;
+            _gameModel.IsLampBlockedChanged -= OnIsLampBlockedChanged;
+            _gameModel.LampDamageStarted -= OnLampDamageStarted;
+            _gameModel.LampGlassDamageChanged -= OnLampGlassDamageChanged;
+            _gameModel.LampAttackDistanceChanged -= OnLampAttackDistanceChanged;
+            _gameModel.UpgradePointsChanged -= OnUpgradePointsChanged;
+        }
+
+        public Action<GlassDamageData> LampGlassDamageChanged;
+
+        public event Action LastHealthPointStarted;
+
+        public event Action LastHealthPointEnded;
+
+        public event Action<float, bool> AttackStart;
+
+        public event Action<float> LampDamaged;
+
+        public event Action HealthUpgraded;
+
+
+        public void OnDamageStateEnded()
+        {
+            _gameModel.HandleDamageStateEnded();
+        }
+
+        // Called from the view
+
+        public void HandleExitButtonClicked()
+        {
+            _gameModel.ExitGame();
+        }
+
+        public void HandleRestartButtonClicked()
+        {
+            _gameModel.HandleImmediateRestartGame();
+        }
+
+        // Event Handle Methods
+
+        /// <summary>
+        /// Start Lamp Attack.
+        /// </summary>
+        /// <param name="currentPower"></param>
+        private void OnLampAttackStarted(float currentPower)
+        {
+            AttackStart?.Invoke(currentPower, _gameModel.IsLampBlocked);
+        }
+
+        private void OnPowerChanged(float power)
+        {
+            Power.Value = power;
+        }
+
+        private void OnLampHealthChanged(int newHealth)
+        {
+        
+            _currentHealth = newHealth;
+            LampNormalizedHealth.Value = (float)_currentHealth / _gameModel.LampMaxHealth;
+        
+            // check for the last health point
+            if (newHealth == 1)
+            {
+                LastHealthPointStarted?.Invoke();
+            }
+            else
+            {
+                LastHealthPointEnded?.Invoke();
+            }
+        }
+
+        private void OnLampMaxHealthChanged(int newMaxPoints)
+        {   
+            HealthUpgraded?.Invoke();
+        }
+
+        private void OnIsLampBlockedChanged(bool isBlocked)
+        {
+            Debug.Log($"Gameplay Viewmodel: IsBlocked Changed: {isBlocked}");
+            IsBlocked.Value = isBlocked;
+        }
+
+        private void OnLampDamageStarted(float duration, string enemyTypeName)
+        {
+            LampDamaged?.Invoke(duration);
+        }
+
+        private void OnLampGlassDamageChanged(GlassDamageData damageData)
+        {
+            LampGlassDamageChanged?.Invoke(damageData);
+        }
+
+        private void OnLampAttackDistanceChanged(float distance)
+        {
+            AttackDistance.Value = distance;
+        }
+
+        private void OnUpgradePointsChanged(int obj)
+        {
+            UpgradePointsChanged?.Invoke();
+        }
+    }
+}

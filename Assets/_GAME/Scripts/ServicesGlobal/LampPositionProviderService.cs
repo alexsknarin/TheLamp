@@ -1,0 +1,20 @@
+using _GAME.Scripts.Lib.Interfaces;
+using UnityEngine;
+
+namespace _GAME.Scripts.ServicesGlobal
+{
+    public class LampPositionProviderService : MonoBehaviour, ILampPositionProviderService
+    {
+        private Vector2 _lampPosition;
+    
+        public Vector2 GetLampPosition()
+        {
+            return _lampPosition;
+        }
+
+        private void FixedUpdate()
+        {
+            _lampPosition = transform.position;
+        }
+    }
+}
