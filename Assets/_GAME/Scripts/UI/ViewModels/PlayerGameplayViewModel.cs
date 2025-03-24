@@ -9,14 +9,16 @@ namespace _GAME.Scripts.UI.ViewModels
 {
     public class PlayerGameplayViewModel : IDisposable
     {
+        private GameModel _gameModel;
+        
         public Observable<float> Power = new();
         public Observable<float> LampNormalizedHealth = new();
         public Observable<bool> IsBlocked = new();
         public Observable<float> AttackDistance = new();
         private int _currentHealth = 8;
-    
-        private GameModel _gameModel;
 
+        public event Action UpgradePointsChanged;
+    
         public PlayerGameplayViewModel(GameModel gameModel)
         {
             _gameModel = gameModel;
@@ -28,6 +30,7 @@ namespace _GAME.Scripts.UI.ViewModels
             _gameModel.LampDamageStarted += OnLampDamageStarted;
             _gameModel.LampGlassDamageChanged += OnLampGlassDamageChanged;
             _gameModel.LampAttackDistanceChanged += OnLampAttackDistanceChanged;
+            _gameModel.UpgradePointsChanged += OnUpgradePointsChanged;
         }
 
         public void Dispose()
@@ -40,13 +43,19 @@ namespace _GAME.Scripts.UI.ViewModels
             _gameModel.LampDamageStarted -= OnLampDamageStarted;
             _gameModel.LampGlassDamageChanged -= OnLampGlassDamageChanged;
             _gameModel.LampAttackDistanceChanged -= OnLampAttackDistanceChanged;
+            _gameModel.UpgradePointsChanged -= OnUpgradePointsChanged;
         }
 
         public Action<GlassDamageData> LampGlassDamageChanged;
+
         public event Action LastHealthPointStarted;
+
         public event Action LastHealthPointEnded;
+
         public event Action<float, bool> AttackStart;
+
         public event Action<float> LampDamaged;
+
         public event Action HealthUpgraded;
 
 
@@ -54,19 +63,21 @@ namespace _GAME.Scripts.UI.ViewModels
         {
             _gameModel.HandleDamageStateEnded();
         }
-    
+
         // Called from the view
+
         public void HandleExitButtonClicked()
         {
             _gameModel.ExitGame();
         }
-    
+
         public void HandleRestartButtonClicked()
         {
             _gameModel.HandleImmediateRestartGame();
         }
-    
+
         // Event Handle Methods
+
         /// <summary>
         /// Start Lamp Attack.
         /// </summary>
@@ -122,6 +133,11 @@ namespace _GAME.Scripts.UI.ViewModels
         private void OnLampAttackDistanceChanged(float distance)
         {
             AttackDistance.Value = distance;
+        }
+
+        private void OnUpgradePointsChanged(int obj)
+        {
+            UpgradePointsChanged?.Invoke();
         }
     }
 }

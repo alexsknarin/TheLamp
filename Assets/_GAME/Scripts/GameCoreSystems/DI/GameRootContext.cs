@@ -9,6 +9,7 @@ using _GAME.Scripts.InGamePresentation.FX.Views;
 using _GAME.Scripts.InGamePresentation.GameStageTransitions;
 using _GAME.Scripts.InGamePresentation.Haptic;
 using _GAME.Scripts.InGamePresentation.Lightning;
+using _GAME.Scripts.InGamePresentation.Views;
 using _GAME.Scripts.Lamp;
 using _GAME.Scripts.Lamp.Views;
 using _GAME.Scripts.Lib.Interfaces;
@@ -41,6 +42,7 @@ namespace _GAME.Scripts.GameCoreSystems.DI
         [SerializeField] private PlayerUpgradeViewUI _playerUpgradeViewUI;
         [SerializeField] private GameOverViewUI _gameOverViewUI;
         [SerializeField] private PlayerGameplayViewUI _playerGameplayViewUI;
+        [SerializeField] private LevelUpEffectView _levelUpEffectView;
         [Header("Services")]
         [SerializeField] private CameraShakeService _cameraShakeService;
         [SerializeField] private LampPositionProviderService _lampPositionProviderService;
@@ -353,6 +355,9 @@ namespace _GAME.Scripts.GameCoreSystems.DI
             _fireflyExplosionView = new FireflyExplosionView(_fxFactory, _fireflyExplosionViewModel);
             _fireflyExplosionView.Initialize();
             _disposables.Add(_fireflyExplosionView);
+            
+            _levelUpEffectView.Bind(_playerGameplayViewModel);
+            _levelUpEffectView.Initialize();
         }
 
         private void EventListenersSetup()

@@ -51,7 +51,6 @@ namespace _GAME.Scripts.InGamePresentation.GameStageTransitions
             // Get Control over Exposure
             VolumeProfile volumeProfile = _postProcessingVolume.profile;
             if (!volumeProfile) throw new NullReferenceException(nameof(VolumeProfile));
-            // You can leave this variable out of your function, so you can reuse it throughout your class.
             if (!volumeProfile.TryGet(out _colorAdjustments))
                 throw new NullReferenceException(nameof(_colorAdjustments));
             _colorAdjustments.postExposure.Override(_startExposure);

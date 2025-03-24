@@ -526,7 +526,7 @@ namespace _GAME.Scripts.GameCoreSystems
             if (newUpgradePoints > 0)
             {
                 _currentGameState.LampUpgradePoints += newUpgradePoints;
-                // TODO: maybe add event to indicate it somehow
+                UpgradePoints = _currentGameState.LampUpgradePoints;
             }
         }
     }

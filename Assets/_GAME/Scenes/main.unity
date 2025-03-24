@@ -4875,6 +4875,7 @@ MonoBehaviour:
   _playerUpgradeViewUI: {fileID: 1291610360}
   _gameOverViewUI: {fileID: 1291610361}
   _playerGameplayViewUI: {fileID: 1291610362}
+  _levelUpEffectView: {fileID: 1736170232}
   _cameraShakeService: {fileID: 330585549}
   _lampPositionProviderService: {fileID: 1934066263}
   _lampCollisionDetectionService: {fileID: 1934066264}
@@ -7900,6 +7901,7 @@ GameObject:
   - component: {fileID: 1736170229}
   - component: {fileID: 1736170230}
   - component: {fileID: 1736170231}
+  - component: {fileID: 1736170232}
   m_Layer: 0
   m_Name: GameStageVew
   m_TagString: Untagged
@@ -8433,6 +8435,10 @@ MonoBehaviour:
     m_RotationOrder: 4
   _restartWithAdButton: {fileID: 1197657948}
   _restartNoAdButton: {fileID: 949782840}
+  _restartNoAdButtonAdDisabledY: -503
+  _exitButtonAdDisabledY: -685
+  _restartNoAdButtonAdEnabledY: -263
+  _exitButtonAdEnabledY: -445
   _exitButton: {fileID: 155560126}
   _ingameUi: {fileID: 234870344}
   _lampDeathAnimation: {fileID: 1934066251}
@@ -8490,6 +8496,54 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _gameOverUi: {fileID: 1889387872}
+--- !u!114 &1736170232
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1736170223}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c2a2cea6522b7b4f8326e6abaf406ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _postProcessingVolume: {fileID: 832575518}
+  _duration: 1
+  _exposureCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0.40622723
+      outSlope: 0.40622723
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.10412926
+    - serializedVersion: 3
+      time: 0.5
+      value: 1
+      inSlope: 2
+      outSlope: -2
+      tangentMode: 69
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: -0.51456434
+      outSlope: -0.51456434
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.10532606
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _highExposureValue: 3
 --- !u!4 &1755611450 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 92097553111088338, guid: 556ccd576c35d634e88ba039c8700cfa,
