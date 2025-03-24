@@ -27,7 +27,6 @@ namespace _GAME.Scripts.GameCoreSystems.DataManagement
             {
                 Debug.Log("GameState not found in PlayerPrefs - Generating a new one");
             
-                // TODO: use a spreadsheet to generate the default values
                 // TODO: make in updatable after deployment !!!
                 // Use ScriptableObject to store default values for now
             
