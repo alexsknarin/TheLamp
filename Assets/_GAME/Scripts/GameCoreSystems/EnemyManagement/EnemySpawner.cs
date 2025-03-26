@@ -106,11 +106,9 @@ namespace _GAME.Scripts.GameCoreSystems.EnemyManagement
                 if (_activeEnemies.Count < _enemyQueue.MaxEnemiesOnScreen)
                 {
                     // Potential boss spawn here
-                    var enemy = SpawnRegularEnemy(_enemyQueue.Get(_currentEnemyIndex));
+                    var enemy = SpawnEnemy(_enemyQueue.Get(_currentEnemyIndex));
                     _activeEnemies.Add(enemy);
                     EnemySpawned?.Invoke(enemy);
-                    // TODO: perhaps need to update enemies count from the outside and remove the reference to _enemies list
-                
                     _currentEnemyIndex++;
                 }
                 else
@@ -127,7 +125,7 @@ namespace _GAME.Scripts.GameCoreSystems.EnemyManagement
             }
         }
     
-        private FEnemy SpawnRegularEnemy(EnemyType enemyType)
+        private FEnemy SpawnEnemy(EnemyType enemyType)
         {
             var enemy = _enemyPool.Get(EnemyTypeLibrary.EnemyTypeDictionary[enemyType]);
             enemy.Play();

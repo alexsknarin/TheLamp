@@ -2,7 +2,6 @@ using System;
 using _GAME.Scripts.Lib.Enums;
 using _GAME.Scripts.Lib.Interfaces;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace _GAME.Scripts.Enemies.Wasp
 {
@@ -14,11 +13,11 @@ namespace _GAME.Scripts.Enemies.Wasp
         [SerializeField] private float _collisionRadius = 0.22f;
         [Header("-- Movement --")]
         [SerializeField] private WaspMovement _movement;
-        [FormerlySerializedAs("_animationClipEventsListener")] [FormerlySerializedAs("_animationEventsListener")] [SerializeField] private WaspAnimationClipEventListener _animationClipEventListener;
+        [SerializeField] private WaspAnimationClipEventListener _animationClipEventListener;
     
         public event Action SpreadRequested;
         public event Action<CollidableEnemy> AnimatedAttackStarted;
-        public event Action Damaged; // TODO: Remove this event and check if other classes need it
+        public event Action Damaged; // TODO: Use it separately for damage animations in presentation
         public event Action<int, int> HealthChanged;
         public event Action Dead;
     
@@ -48,9 +47,14 @@ namespace _GAME.Scripts.Enemies.Wasp
         public override void Play()
         {
             IsGameOver = false;
+            IsDead = false;
+            IsReadyForDamage = false;
+            IsReceivedLampAttackDamage = false;
+            _currentHealth = _maxHealth;
+            HealthChanged?.Invoke(_currentHealth, _maxHealth);
             _movement.Play();
             CollisionState = CollidableState.Outside;
-            _currentHealth = _maxHealth;
+            Debug.Log("Wasp Play is called.  +++++++ ");
         }
 
         public override void ReceiveDamage(int damageAmount)
@@ -68,8 +72,8 @@ namespace _GAME.Scripts.Enemies.Wasp
             else
             {
                 Debug.Log($"Damage Received: {damageAmount}.");
-                Damaged?.Invoke();
                 HealthChanged?.Invoke(_currentHealth, _maxHealth);
+                Damaged?.Invoke();
             }
         }
 

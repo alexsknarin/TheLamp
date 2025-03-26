@@ -159,7 +159,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _currentStateType: 
-  _collisionRadius: 0.24
   _animator: {fileID: 8060389453633497060}
   _baseTransform: {fileID: 3856058477050779949}
 --- !u!114 &2787323014210774032
@@ -610,7 +609,7 @@ MonoBehaviour:
   _currentHealth: 0
   _collisionRadius: 0.24
   _movement: {fileID: 3557808951252730490}
-  _animationEventsListener: {fileID: 2787323014210774032}
+  _animationClipEventListener: {fileID: 2787323014210774032}
 --- !u!114 &2849195405238438855
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -624,7 +623,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _wasp: {fileID: 8922066689776222209}
-  _animationEventsListener: {fileID: 2787323014210774032}
+  _animationClipEventListener: {fileID: 2787323014210774032}
   _waspBodyMeshRenderer: {fileID: 8672826720965004605}
   _trailResetHandler: {fileID: 1639228510314528884}
   _damageParticles: {fileID: 5962640272398656442}

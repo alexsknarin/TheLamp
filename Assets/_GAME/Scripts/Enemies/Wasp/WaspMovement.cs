@@ -247,6 +247,12 @@ namespace _GAME.Scripts.Enemies.Wasp
             enabled = true;
             _isAnimClipEnded = false;
             _side = (Side)Random.Range(0, 2);
+            _isAnimClipEnded = false;
+            _isLampDestroyed = false;
+            _isDamaged = false;
+            _isCollided = false;
+            _isDead = false;
+            _stateMachine.SetState(_idleState);
         }
 
         public void SetDamaged()

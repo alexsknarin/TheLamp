@@ -10,7 +10,7 @@ namespace _GAME.Scripts.Enemies.Wasp
     public class WaspPresentation : MonoBehaviour, IInitializable
     {
         [SerializeField] private Wasp _wasp;
-        [FormerlySerializedAs("_animationClipEventsListener")] [FormerlySerializedAs("_animationEventsListener")] [SerializeField] private WaspAnimationClipEventListener _animationClipEventListener;
+        [SerializeField] private WaspAnimationClipEventListener _animationClipEventListener;
         [SerializeField] private MeshRenderer _waspBodyMeshRenderer;
         [SerializeField] private TrailResetHandler _trailResetHandler;
         [SerializeField] private VisualEffect _damageParticles;
@@ -21,11 +21,16 @@ namespace _GAME.Scripts.Enemies.Wasp
         private Material _waspBodyMaterial;
         private WaitForSeconds _damageFlashDuration = new WaitForSeconds(0.8f);
         private float _localTime;
+        
+        private float _currentHealth;
+        private float _maxHealth;
+        private float _damagePhase;
     
         public void Initialize()
         {
             _wasp.HealthChanged += OnHealthChanged;
             _wasp.Dead += OnDead;
+            _wasp.Damaged += OnDamaged;
             _animationClipEventListener.TrailReset += ResetTrail;
         
             _waspBodyMeshRenderer.gameObject.SetActive(true);
@@ -44,29 +49,39 @@ namespace _GAME.Scripts.Enemies.Wasp
         {
             _wasp.HealthChanged -= OnHealthChanged;
             _wasp.Dead -= OnDead;
+            _wasp.Damaged -= OnDamaged;
             _animationClipEventListener.TrailReset -= ResetTrail;
         }
 
         private void OnHealthChanged(int currentHealth, int maxHealth)
         {
-            float damagePhase = (1 - (float)currentHealth/maxHealth) + 0.2f;
-            damagePhase = Mathf.Clamp(damagePhase, 0, 1);
-        
-            _waspBodyMaterial.SetFloat("_DamagePhase", damagePhase);
+            _currentHealth = currentHealth;
+            _maxHealth = maxHealth;
+            _damagePhase = 1 - (float)currentHealth/maxHealth;
+            if (_damagePhase > 0)
+            {
+                _damagePhase += 0.2f;
+            }
+            
+            _waspBodyMaterial.SetFloat("_DamagePhase", _damagePhase);
+        }
+
+        private void OnDamaged()
+        {
             _waspBodyMaterial.SetInt("_isDamaged", 1);
-        
+            float damagePhase = Mathf.Clamp(_damagePhase, 0, 1);
             float emitRate = damagePhase * 22;
             _damageEmitParticles.SendEvent("OnStartEmit");
             _damageEmitParticles.SetFloat("Rate", emitRate);
             StartCoroutine(WaitForDamageFlashEnd());
         }
-    
+
         private IEnumerator WaitForDamageFlashEnd()
         {
             yield return _damageFlashDuration;
             _waspBodyMaterial.SetInt("_isDamaged", 0);
         }
-    
+
         private void OnDead()
         {
             _isDead = true;
@@ -74,12 +89,12 @@ namespace _GAME.Scripts.Enemies.Wasp
             _damageEmitParticles.SendEvent("OnStartEmit");
             _damageEmitParticles.SetFloat("Rate", 35);
         }
-    
+
         private void ResetTrail()
         {
             _trailResetHandler.Initialize();
         }
-    
+
         private void PerformDeath()
         {
             if (_isDead)
@@ -105,7 +120,7 @@ namespace _GAME.Scripts.Enemies.Wasp
         {
             PerformDeath();
         }
-    
+
         private void Reset()
         {
             _waspBodyMeshRenderer.gameObject.SetActive(false);
