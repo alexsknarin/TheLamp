@@ -123,5 +123,10 @@ namespace _GAME.Scripts.Enemies.Moth
                 _movement.Play();
             }
         }
+
+        private void Update()
+        {
+            
+        }
     }
 }

@@ -122,13 +122,5 @@ namespace _GAME.Scripts.Enemies.Spider
                 _movement.Restart();
             }
         }
-
-        private void Update()
-        {
-            if (Input.GetKeyDown(KeyCode.A))
-            {
-                Spread();
-            }
-        }
     }
 }
