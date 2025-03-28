@@ -440,6 +440,7 @@ namespace _GAME.Scripts.GameCoreSystems
             _playerEnemyInteractionMediator.Reset();
             _waveEnemyDirector.Reset();
             _lampMovementController.Reset();
+            IsLampBlocked = false;
             StartGame();
         }
 
