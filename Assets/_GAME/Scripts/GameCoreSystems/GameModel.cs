@@ -21,10 +21,8 @@ namespace _GAME.Scripts.GameCoreSystems
         private readonly IGameStateProviderService _gameStateProviderService;
         private readonly IGameConfigService _gameConfigService;
         private readonly WaveEnemyDirector _waveEnemyDirector;
-        // private EnemyController _enemyController;
         private readonly PlayerAttackCooldownHandler _playerAttackCooldownHandler;
         private readonly PlayerEnemyInteractionMediator _playerEnemyInteractionMediator;
-        // private PlayerCollidersPropertyController _playerCollidersPropertyController;
         private readonly LampMovementController _lampMovementController;
         private readonly ScoresCollectionService _scoresCollectionService;
         private readonly LampDamageDataHandler _lampDamageDataHandler = new LampDamageDataHandler();
@@ -34,7 +32,6 @@ namespace _GAME.Scripts.GameCoreSystems
             IGameStateProviderService gameStateProviderService, 
             IGameConfigService gameConfigService,
             WaveEnemyDirector waveEnemyDirector,
-            // EnemyController enemyController, 
             PlayerAttackCooldownHandler playerAttackCooldownHandler,
             PlayerEnemyInteractionMediator playerEnemyInteractionMediator,
             LampMovementController lampMovementController,
@@ -47,7 +44,6 @@ namespace _GAME.Scripts.GameCoreSystems
             _gameConfigService = gameConfigService;
             _playerAttackCooldownHandler = playerAttackCooldownHandler;
             _playerEnemyInteractionMediator = playerEnemyInteractionMediator;
-            // _playerEnemyInteractionHandler = playerEnemyInteractionHandler;
             _lampMovementController = lampMovementController;
             _scoresCollectionService = scoresCollectionService;
         

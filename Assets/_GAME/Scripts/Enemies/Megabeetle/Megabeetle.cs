@@ -135,7 +135,7 @@ namespace _GAME.Scripts.Enemies.Megabeetle
 
         public void HandleLampDestroyed()
         {
-            _movement.TriggerFall();
+            _movement.TriggerFallOnLampDestroyed();
         }
 
         public Vector3 ProvideImpactPoint()

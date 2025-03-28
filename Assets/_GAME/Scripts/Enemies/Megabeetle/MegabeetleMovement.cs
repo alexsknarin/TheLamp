@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using _GAME.Scripts.Enemies.Ladybug.MovementStates;
 using _GAME.Scripts.Enemies.Megabeetle.MovementStates;
 using _GAME.Scripts.Factories;
@@ -180,6 +181,18 @@ namespace _GAME.Scripts.Enemies.Megabeetle
         public override void TriggerFall()
         {
             transform.parent = null;
+            SwitchToStateAndApply(_fallState);
+        }
+        
+        public void TriggerFallOnLampDestroyed()
+        {
+            transform.parent = null;
+            StartCoroutine(SwitchToFallAfterDelay());
+        }
+        
+        private IEnumerator SwitchToFallAfterDelay()
+        {
+            yield return null;
             SwitchToStateAndApply(_fallState);
         }
 
