@@ -96,6 +96,7 @@ namespace _GAME.Scripts.Enemies.Dragonfly
         private int _sideDirection = 1;
         private bool _isAttackSuccess;
         private bool _isAttackFail;
+        private bool _isLampDestroyed;
         private bool _isDead;
     
         // Events
@@ -259,11 +260,17 @@ namespace _GAME.Scripts.Enemies.Dragonfly
         public void Play(DragonflyEnterType state, int sideDirection)
         {
             _isDead = false;
+            _isAnimClipEnded = false;
             _isAttackSuccess = false;
             _isAttackFail = false;
             _sideDirection = sideDirection;
             _enterState = state;
             _isPlaying = true;
+            _isBounced = false;
+            _isLampDestroyed = false;
+            
+            _stateMachine.SetState(_idleState);
+            _currentStateType = _stateMachine.CurrentStateType.ToString().Replace("FDragonfly", ""); // DEBUG
         }
 
         public void StartAttack(DragonflyPatrolAttackMode mode)
@@ -406,12 +413,20 @@ namespace _GAME.Scripts.Enemies.Dragonfly
             _isAttackFail = false;
             _isDead = true;
         }
+        
+        public void SetLampDestroyed()
+        {
+            _isLampDestroyed = true;
+        }
     
         public void TriggerGameOver()
         {
             _stateMachine.SetState(_gameoverHoverState);
         }
-
+        
+        
+        // TODO: control for this from the factory
+        
         private void Awake() 
         {
             _isPlaying = false;
@@ -583,7 +598,7 @@ namespace _GAME.Scripts.Enemies.Dragonfly
         
             Func<bool> IsStartHeadAttack() => () =>
             {
-                if (_isAttacking && _currentPatrolAttackMode == DragonflyPatrolAttackMode.Head)
+                if (_isAttacking && _currentPatrolAttackMode == DragonflyPatrolAttackMode.Head && !_isLampDestroyed)
                 {
                     _isAttacking = false;
                     return true;
@@ -593,7 +608,7 @@ namespace _GAME.Scripts.Enemies.Dragonfly
         
             Func<bool> IsStartTailAttack() => () =>
             {
-                if (_isAttacking && _currentPatrolAttackMode == DragonflyPatrolAttackMode.Tail)
+                if (_isAttacking && _currentPatrolAttackMode == DragonflyPatrolAttackMode.Tail && !_isLampDestroyed)
                 {
                     _isAttacking = false;
                     return true;
@@ -603,7 +618,7 @@ namespace _GAME.Scripts.Enemies.Dragonfly
         
             Func<bool> IsStartSpiderAttack() => () =>
             {
-                if (_isAttacking && _currentPatrolAttackMode == DragonflyPatrolAttackMode.Spider)
+                if (_isAttacking && _currentPatrolAttackMode == DragonflyPatrolAttackMode.Spider && !_isLampDestroyed)
                 {
                     _isAttacking = false;
                     return true;
@@ -616,7 +631,6 @@ namespace _GAME.Scripts.Enemies.Dragonfly
             {
                 if (_isBounced)
                 {
-                    Debug.Log("!!!!!!!!!!!!!!!! Bounced !!!!!!!!!!!!!!!!"); // DEBUG
                     _isBounced = false;
                     return true;
                 }

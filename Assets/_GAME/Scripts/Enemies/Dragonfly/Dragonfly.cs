@@ -1,7 +1,6 @@
 using System;
 using _GAME.Scripts.Enemies.Dragonfly.BehaviourStates;
 using _GAME.Scripts.Enemies.Dragonfly.FMovementStates;
-using _GAME.Scripts.Enemies.Dragonfly.Presentation;
 using _GAME.Scripts.Lib;
 using _GAME.Scripts.Lib.Enums;
 using _GAME.Scripts.Lib.Interfaces;
@@ -10,7 +9,7 @@ using Random = UnityEngine.Random;
 
 namespace _GAME.Scripts.Enemies.Dragonfly
 {
-    public class Dragonfly : CollidableEnemy, IAnimatedEnemy, IProjectileShooter, IBoss
+    public class Dragonfly : CollidableEnemy, IAnimatedEnemy, IProjectileShooter, IBoss, ILampDestroyedDependable
     {
         private readonly DragonflyReturnMode[] _returnModes = new DragonflyReturnMode[]
         {
@@ -82,6 +81,7 @@ namespace _GAME.Scripts.Enemies.Dragonfly
         private bool _isReadyToAttackWait = false;
         [SerializeField] private bool _isAttacked = false;
         private bool _isDead = false;
+        private bool _isLampDestroyed = false;
         private DragonflyReturnMode _returnMode;
 
         public event Action<CollidableEnemy> AnimatedAttackStarted;
@@ -133,15 +133,15 @@ namespace _GAME.Scripts.Enemies.Dragonfly
             _movement.AttackStarted += OnAttackStarted;
             _movement.AttackEnded += OnAttackEnded;
             _movement.SwarmCalled += OnSwarmCalled;
-            _waitForBounceState.Ended += OnWaitForBounceStateEnded;
             _movement.AfterAttackExitEnded += OnAfterAttackExitEnded;
             _movement.ReadyToSpiderAttackStateStarted += OnReadyToSpiderAttackStateStarted;
             _movement.CatchSpiderStarted += OnCatchSpiderStarted;
-            _spider.EnterAnimationEnded += OnSpiderEnterAnimationEnded;
             _movement.DeathAnimationEnded += OnDeathAnimationEnded;
-
             _movement.CollisionPhaseReached += OnCollisionPhaseReached;
-        
+            
+            _spider.EnterAnimationEnded += OnSpiderEnterAnimationEnded;
+            _waitForBounceState.Ended += OnWaitForBounceStateEnded;
+
             _swarm.MothAttackStarted += OnMothAttackStarted;
             _spider.Deactivated += OnProjectileDeactivated;
             _swarm.MothDeactivated += OnProjectileDeactivated;
@@ -165,14 +165,14 @@ namespace _GAME.Scripts.Enemies.Dragonfly
             _movement.AttackStarted -= OnAttackStarted;
             _movement.AttackEnded -= OnAttackEnded;
             _movement.SwarmCalled -= OnSwarmCalled;
-            _waitForBounceState.Ended -= OnWaitForBounceStateEnded;
             _movement.AfterAttackExitEnded -= OnAfterAttackExitEnded;
             _movement.ReadyToSpiderAttackStateStarted -= OnReadyToSpiderAttackStateStarted;
             _movement.CatchSpiderStarted -= OnCatchSpiderStarted;
-            _spider.EnterAnimationEnded -= OnSpiderEnterAnimationEnded;
             _movement.DeathAnimationEnded -= OnDeathAnimationEnded;
-        
             _movement.CollisionPhaseReached -= OnCollisionPhaseReached;
+            _waitForBounceState.Ended -= OnWaitForBounceStateEnded;
+            _spider.EnterAnimationEnded -= OnSpiderEnterAnimationEnded;
+
 
             _swarm.MothAttackStarted -= OnMothAttackStarted;
             _spider.Deactivated -= OnProjectileDeactivated;
@@ -183,8 +183,8 @@ namespace _GAME.Scripts.Enemies.Dragonfly
         public override void Play()
         {
             IsGameOver = false;
-            
             enabled = true;
+            _isLampDestroyed = false;
             _currentHealth = _maxHealth;
             _enterType = (DragonflyEnterType)Random.Range(0, 2);
             int sideDirection = RandomDirection.Generate();
@@ -417,16 +417,22 @@ namespace _GAME.Scripts.Enemies.Dragonfly
 
         private void StartSpiderPreAttack()
         {
-            _spider.StartPreAttack();
+            if (!_isLampDestroyed)
+            {
+                _spider.StartPreAttack();
+            }
         }
 
         private void StartSpiderAttack()
         {
-            _spider.gameObject.transform.SetParent(this.transform);
-            _spider.Attack();
-            ProjectileShot?.Invoke(_spider);
-            _movement.StartAttack(DragonflyPatrolAttackMode.Spider);
-            _isAttacked = true;
+            if (!_isLampDestroyed)
+            {
+                _spider.gameObject.transform.SetParent(this.transform);
+                _spider.Attack();
+                ProjectileShot?.Invoke(_spider);
+                _movement.StartAttack(DragonflyPatrolAttackMode.Spider);
+                _isAttacked = true;
+            }
         }
 
         // Event Handle Methods
@@ -444,13 +450,16 @@ namespace _GAME.Scripts.Enemies.Dragonfly
 
         private void OnReadyToSwarmAttackStateEntered(IState movementState)
         {
-            if (movementState.GetType() == typeof(FDragonflyPatrolStateL))
+            if (!_isLampDestroyed)
             {
-                _swarm.PlayAttack(1);
-            }
-            else if (movementState.GetType() == typeof(FDragonflyPatrolStateR))
-            {
-                _swarm.PlayAttack(-1);
+                if (movementState.GetType() == typeof(FDragonflyPatrolStateL))
+                {
+                    _swarm.PlayAttack(1);
+                }
+                else if (movementState.GetType() == typeof(FDragonflyPatrolStateR))
+                {
+                    _swarm.PlayAttack(-1);
+                }    
             }
         }
 
@@ -529,5 +538,11 @@ namespace _GAME.Scripts.Enemies.Dragonfly
             ProjectileShot?.Invoke(enemy);
         }
 
+        public void HandleLampDestroyed()
+        {
+            _movement.SetLampDestroyed();
+            _swarm.TriggerGameover();
+            _isLampDestroyed = true;
+        }
     }
 }
