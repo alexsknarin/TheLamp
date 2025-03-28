@@ -125,7 +125,7 @@ namespace _GAME.Scripts.Enemies.Megabeetle
 
 
 
-        private void OnDisable()
+        private void OnDestroy()
         {
             _enterStateR.EnteredAttackRange -= OnEnteredAttackRange;
             _enterStateL.EnteredAttackRange -= OnEnteredAttackRange;

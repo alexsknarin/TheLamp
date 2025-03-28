@@ -145,6 +145,7 @@ namespace _GAME.Scripts.Enemies.Megabeetle
     
         private void OnEnteredAttackRange()
         {
+            Debug.Log("Megabeetle entered attack range. +++++++++++++++++++++");
             StickReadyStarted?.Invoke(this);
         }
     
