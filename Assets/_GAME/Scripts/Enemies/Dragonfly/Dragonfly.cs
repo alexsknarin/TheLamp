@@ -96,6 +96,7 @@ namespace _GAME.Scripts.Enemies.Dragonfly
         
         public override Vector2 Position => _collisionProvider.CurrentCollisionPoint;
         public Transform MovementTransform => _visibleBodyTransform;
+        
         public override void Initialize()
         {
             _patrolAttackPositionProvider = new DragonflyPatrolAttackPositionProvider(

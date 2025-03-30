@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace _GAME.Scripts.Enemies.Dragonfly
 {
-    public class DragonflyMovement : MonoBehaviour
+    public class DragonflyMovement : MonoBehaviour, IInitializable
     {
         [SerializeField] private string _currentStateType;
         [SerializeField] private Animator _animator;
@@ -115,8 +115,18 @@ namespace _GAME.Scripts.Enemies.Dragonfly
     
         public IState MovementState => _stateMachine.CurrentState;
 
-        private void OnEnable()
+        public void Initialize()
         {
+            _isPlaying = false;
+            _isAnimClipEnded = false;
+            _isBounced = false;
+            _isAttackSuccess = false;
+            _isAttackFail = false;
+            _isDead = false;
+        
+            _stateMachine.SetState(_idleState);
+            _currentStateType = _stateMachine.CurrentStateType.ToString().Replace("FDragonfly", ""); // DEBUG
+            
             _animationClipEvents.AnimClipEnded += OnAnimClipEnded;
             _animationClipEvents.SwarmCalled += OnSwarmCalled;
             _spiderPushStateL.Ended += OnSwarmCalled;
@@ -179,7 +189,7 @@ namespace _GAME.Scripts.Enemies.Dragonfly
             Debug.Log("Subscrided to Dragonfly Events");
         }
 
-        private void OnDisable()
+        private void OnDestroy()
         {
             _animationClipEvents.AnimClipEnded -= OnAnimClipEnded;
             _animationClipEvents.SwarmCalled -= OnSwarmCalled;
@@ -242,20 +252,6 @@ namespace _GAME.Scripts.Enemies.Dragonfly
             _attackHoverState.CollisionPhaseReached -= OnCollisionPhaseReached;
         }
 
-    
-
-        public void Initialize()
-        {
-            _isPlaying = false;
-            _isAnimClipEnded = false;
-            _isBounced = false;
-            _isAttackSuccess = false;
-            _isAttackFail = false;
-            _isDead = false;
-        
-            _stateMachine.SetState(_idleState);
-            _currentStateType = _stateMachine.CurrentStateType.ToString().Replace("FDragonfly", ""); // DEBUG
-        }
 
         public void Play(DragonflyEnterType state, int sideDirection)
         {

@@ -337,10 +337,10 @@ namespace _GAME.Scripts.Factories
         private FEnemy CreateDragonflyInstance(GameObject prefab)
         {
             GameObject enemyInstance = Object.Instantiate(prefab);
-            enemyInstance.GetComponent<DragonflyPresentation>().Initialize();
             var enemy = enemyInstance.GetComponent<Dragonfly>();
             enemy.Initialize();
-        
+            enemyInstance.GetComponent<DragonflyPresentation>().Initialize();
+
             return enemy;
         }
     }

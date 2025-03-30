@@ -1,9 +1,10 @@
 using System;
+using _GAME.Scripts.Lib.Interfaces;
 using UnityEngine;
 
 namespace _GAME.Scripts.Enemies.Dragonfly
 {
-    public class DragonflySwarm : MonoBehaviour
+    public class DragonflySwarm : MonoBehaviour, IInitializable
     {
         [SerializeField] private Vector3 _startPositionL;
         [SerializeField] private Vector3 _startPositionMid;
