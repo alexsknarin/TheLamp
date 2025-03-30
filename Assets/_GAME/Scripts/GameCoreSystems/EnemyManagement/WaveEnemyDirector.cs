@@ -368,6 +368,12 @@ namespace _GAME.Scripts.GameCoreSystems.EnemyManagement
         {
             _enemyAttacker.Tick(Time.deltaTime);
             _fireflyExplosionEnemyDamager.Tick(Time.deltaTime);
+
+            // TODO: added for tests - remove
+            if (Input.GetKeyDown(KeyCode.A))
+            {
+                SpreadEnemies();
+            }
         }
 
 
