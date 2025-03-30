@@ -79,8 +79,9 @@ namespace _GAME.Scripts.Enemies.FireFly
         {
             if (_isInAttackReadyMovementState)
             {
-                float x = _movement.Position2D.x;
-                float y = _movement.Position2D.y;
+                float x = transform.position.x;
+                float y = transform.position.y;
+                
                 if (y < 0)
                 {
                     return true;
