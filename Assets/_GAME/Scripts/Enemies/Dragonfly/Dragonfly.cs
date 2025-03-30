@@ -189,6 +189,12 @@ namespace _GAME.Scripts.Enemies.Dragonfly
             _currentHealth = _maxHealth;
             _enterType = (DragonflyEnterType)Random.Range(0, 2);
             int sideDirection = RandomDirection.Generate();
+            
+            _spider.gameObject.transform.SetParent(transform);
+            _spider.gameObject.SetActive(false);
+            _spider.Initialize();
+            _swarm.Initialize();
+            
             _movement.Play(_enterType, sideDirection);
             _isActivated = true;
         }
@@ -428,7 +434,7 @@ namespace _GAME.Scripts.Enemies.Dragonfly
         {
             if (!_isLampDestroyed)
             {
-                _spider.gameObject.transform.SetParent(this.transform);
+                _spider.gameObject.transform.SetParent(transform);
                 _spider.Attack();
                 ProjectileShot?.Invoke(_spider);
                 _movement.StartAttack(DragonflyPatrolAttackMode.Spider);
