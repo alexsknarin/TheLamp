@@ -12,7 +12,7 @@ namespace _GAME.Scripts.GameCoreSystems.EnemyManagement
         // Dependencies
         private readonly float _maxAggressionLevel;
     
-        private float _attackCooldown;
+        private float _attackCooldownTime;
         private float _aggressionLevelNormalized;
         private bool _isWaveActive = false;
         private float _localTime;
@@ -47,7 +47,7 @@ namespace _GAME.Scripts.GameCoreSystems.EnemyManagement
     
         public void StartWave()
         {
-            _attackCooldown = GetRandomAttackDelay(
+            _attackCooldownTime = GetRandomAttackDelay(
                 _startAttackDelayMinMin,
                 _startAttackDelayMinMax,
                 _startAttackDelayMaxMin, 
@@ -103,16 +103,14 @@ namespace _GAME.Scripts.GameCoreSystems.EnemyManagement
     
         private void WaitForCooldown()
         {
-            if (_localTime >= _attackCooldown)
+            if (_localTime >= _attackCooldownTime)
             {
-                _localTime = 0;
                 Attack();
             }
             else
             {
                 if (_isCooldownActive)
                 {
-                    // TODO: add exception for Megamothling and Megabeetle (BOSSES)
                     _localTime += Time.deltaTime;   
                 }
             }
@@ -135,15 +133,15 @@ namespace _GAME.Scripts.GameCoreSystems.EnemyManagement
      
             attackingEnemy.Attack();
             EnemyAttackStarted?.Invoke(attackingEnemy);
-        
-            _localTime = 0;
-            _attackCooldown = GetRandomAttackDelay(
+            
+            _attackCooldownTime = GetRandomAttackDelay(
                 _attackAttackDelayMinMin,
                 _attackAttackDelayMinMax,
                 _attackAttackDelayMaxMin,
                 _attackAttackDelayMaxMax,
                 _aggressionLevelNormalized
-                ); 
+                );
+            _localTime = 0;
         }
     
         private float GetRandomAttackDelay(float minMin, float minMax, float maxMin, float maxMax, float aggressionLevel)
