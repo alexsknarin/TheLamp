@@ -125,8 +125,6 @@ namespace _GAME.Scripts.ServicesGlobal
                 if (collidable.CollisionState == CollidableState.Outside && distance < attackZoneCombinedRadius)
                 {
                     collidable.HandleEnterAttackZone();
-                    Debug.Log(((FEnemy)collidable).gameObject.name + " --- Entered Attack Zone.");
-                    Debug.Log("Position: " + collidable.Position);
                     Debug.DrawLine(Vector3.zero, collidable.Position, Color.yellow, 1f);
                 }
             
@@ -135,8 +133,6 @@ namespace _GAME.Scripts.ServicesGlobal
                 {
                     _collidablesToRemove.Add(collidable);
                     collidable.HandleExitAttackZone();
-                    Debug.Log(((FEnemy)collidable).gameObject.name + " --- Exited Attack Attack Zone Before Collision.");
-                    Debug.Log("Position: " + collidable.Position);
                     Debug.DrawLine(Vector3.zero, collidable.Position, Color.yellow, 1f);
                 }
             
@@ -144,8 +140,6 @@ namespace _GAME.Scripts.ServicesGlobal
                 if (collidable.CollisionState == CollidableState.InAttackZone &&  distance < _combinedCollisionRadius + collidable.Radius)
                 {
                     collidable.HandleCollision();
-                    Debug.Log(((FEnemy)collidable).gameObject.name + " --- Collided.");
-                    Debug.Log("Position: " + collidable.Position);
                     Debug.DrawLine(Vector3.zero, collidable.Position, Color.white, 1f);
                 }
             
@@ -155,9 +149,6 @@ namespace _GAME.Scripts.ServicesGlobal
                     _collidablesToRemove.Add(collidable);
                     collidable.HandleExitAttackZone();
                     EnemyAttackEnded?.Invoke(collidable.ProvideImpactPoint(), collidable.IsReceivedLampAttackDamage, collidable.GetType().ToString());
-                    Debug.Log($"Enemy {collidable.GetType().ToString()} has just attacked.");
-                    Debug.Log(((FEnemy)collidable).gameObject.name + " --- Exited Attack Zone after collision.");
-                    Debug.Log("Position: " + collidable.Position);
                     Debug.DrawLine(Vector3.zero, collidable.Position, Color.green, 1f);
                 }
             }

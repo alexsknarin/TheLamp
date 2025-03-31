@@ -86,11 +86,11 @@ namespace _GAME.Scripts.Enemies.Fly
                     return true;
                 }
             
-                if ((_movement.SideDirection < 0) && (x > 0.3f))
+                if ((_movement.SideDirection < 0) && (x > 0.53f))
                 { 
                     return true; 
                 }
-                if ((_movement.SideDirection > 0) && (x < -0.3f))
+                if ((_movement.SideDirection > 0) && (x < -0.53f))
                 {
                     return true; 
                 }

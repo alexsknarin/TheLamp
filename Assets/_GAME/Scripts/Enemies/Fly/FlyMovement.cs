@@ -36,8 +36,8 @@ namespace _GAME.Scripts.Enemies.Fly
         [SerializeField] private int _depthSideDirection = 0;
         [Header("---- States Settings ----")]
         [SerializeField] private float _preAttackDuration = .35f;
-        [SerializeField] private float _fallBounceForce = 4f;
-        [SerializeField] private float _fallGravityForce = .2f;
+        [SerializeField] private float _fallBounceForce = 2.3f;
+        [SerializeField] private float _fallGravityForce = .16f;
     
         private float _collisionRadius;
         private Vector3 _position3D;
