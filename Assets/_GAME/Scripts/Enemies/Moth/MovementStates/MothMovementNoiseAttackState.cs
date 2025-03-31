@@ -13,7 +13,7 @@ namespace _GAME.Scripts.Enemies.Moth.MovementStates
         private readonly float _speed;
     
         // State specific attributes
-        private readonly float _acceleration = 0.02f;
+        private readonly float _acceleration = 0.011f;
         private readonly float _depthDecrement = 0.2f;
         private readonly float _noiseFrequency = 13f;
         private readonly float _noiseAmplitude = 0.08f;

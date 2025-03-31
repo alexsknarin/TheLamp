@@ -27,6 +27,7 @@ namespace _GAME.Scripts.Enemies.Moth
         // Debug
         private Vector3 _position3d;
         private Vector3 _prevPosition;
+        private bool _isPatrolEnterChecked;
 
         private readonly StateMachine _stateMachine = new();
         private MothMovementStateFactory _stateFactory;
@@ -85,10 +86,6 @@ namespace _GAME.Scripts.Enemies.Moth
             At(_patrolState, _hoverState, () => _patrolState.IsReadyToSwitch && Position2D.y < 0.9f);
             At(_preAttackState, _attackState, () => _preAttackState.IsReadyToSwitch);
         
-            At(_fallState, _hoverState, () => _fallState.IsReadyToSwitch);
-        
-        
-        
             // Predicates
             Func<bool> IsAttackStarted() => () =>
             {
@@ -130,7 +127,8 @@ namespace _GAME.Scripts.Enemies.Moth
             _position3d.x *= _sideDirection;
         
             transform.position = _position3d;
-        
+
+            _isPatrolEnterChecked = false;
             _isAttacking = false;
             enabled = true;
         }
@@ -140,7 +138,7 @@ namespace _GAME.Scripts.Enemies.Moth
             Debug.Log("Attack triggered.");
             if (_currentState.Equals(_hoverState))
             {
-                ApplyTransformToPosition2D(1);
+                ApplyTransformToPosition2D();
                 _isAttacking = true;    
             }
         }
@@ -164,7 +162,7 @@ namespace _GAME.Scripts.Enemies.Moth
 
         public override void TriggerDeath()
         {
-            ApplyTransformToPosition2D(1);
+            ApplyTransformToPosition2D();
             _currentState = _deathState;
             _stateDebug = _currentState.GetType().Name; // Debug only
             _stateMachine.SetState(_currentState);
@@ -174,7 +172,7 @@ namespace _GAME.Scripts.Enemies.Moth
         {
             if (!_currentState.Equals(_attackState))
             {
-                ApplyTransformToPosition2D(1);
+                ApplyTransformToPosition2D();
                 _currentState = _spreadState;
                 _stateDebug = _currentState.GetType().Name; // Debug only
                 _stateMachine.SetState(_currentState);
@@ -207,24 +205,44 @@ namespace _GAME.Scripts.Enemies.Moth
                 transform.position = _position3d;
             }
         
-            Debug.DrawLine(_prevPosition, transform.position, Color.cyan, 5f);
+            Debug.DrawLine(_prevPosition, transform.position, Color.cyan, 2.5f);
+            
+            // Fix incorrect side switch
+            if (_currentState.GetType() == typeof(MothMovementNoisePatrolState) && !_isPatrolEnterChecked)
+            {
+                _isPatrolEnterChecked = true;
+                // Check if side is switched incorrectly and fix it:
+                int prevPositionSign = (int)(Mathf.Sign(_prevPosition.x));
+                int currentPositionSign = (int)(Mathf.Sign(transform.position.x));
+                if (prevPositionSign != currentPositionSign)
+                {
+                    Vector2 newPosition2D = Position2D;
+                    newPosition2D.x *= -1;
+                    Position2D = newPosition2D;
+                    
+                    Vector3 newPosition3D = transform.position;
+                    newPosition3D.x *= -1;
+                    transform.position = newPosition3D;
+                }
+            }
         }
 
-        private void ApplyTransformToPosition2D(int direction)
+        private void ApplyTransformToPosition2D()
         {
             Vector2 newPosition2D = Position2D;
-            newPosition2D.x = Mathf.Abs(newPosition2D.x) * Mathf.Sign(transform.position.x) * direction;
+            newPosition2D.x = Mathf.Abs(newPosition2D.x) * Mathf.Sign(transform.position.x);
             Position2D = newPosition2D;
-        }
-
-        private void OnHoverStateEnded()
-        {
-            ReadyToAttackStateEnded?.Invoke();
         }
 
         private void OnHoverStateStarted()
         {
             ReadyToAttackStateStarted?.Invoke();
+            _isPatrolEnterChecked = false;
+        }
+
+        private void OnHoverStateEnded()
+        {
+            ReadyToAttackStateEnded?.Invoke();
         }
 
         private void OnPreAttackStateStarted()
@@ -240,7 +258,15 @@ namespace _GAME.Scripts.Enemies.Moth
         private void OnFallStateEnded()
         {
             Debug.Log("Fall state ended.");
-            ApplyTransformToPosition2D(_sideDirection);
+            _sideDirection = RandomDirection.Generate();
+
+            Vector2 newPosition2D = Position2D;
+            newPosition2D.x = Mathf.Abs(newPosition2D.x) * Mathf.Sign(transform.position.x) * _sideDirection;
+            Position2D = newPosition2D;
+            
+            _currentState = _patrolState;
+            _stateDebug = _currentState.GetType().Name; // Debug only
+            _stateMachine.SetState(_currentState);
         }
 
         private void OnDeathStateEnded()
