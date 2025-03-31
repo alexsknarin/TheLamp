@@ -176,7 +176,7 @@ namespace _GAME.Scripts.GameCoreSystems.DI
             _gameStateProviderService = new PlayerPrefsGameStateProviderService(_defaultGameStateData.GameState);
         
             // Haptic
-            _hapticFeedbackService = new HapticFeedbackService();
+            _hapticFeedbackService = new HapticFeedbackService(_coroutineHost);
         
             // Camera Shake
             _cameraShakeService.Initialize();
