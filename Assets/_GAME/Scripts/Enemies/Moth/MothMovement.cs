@@ -28,6 +28,7 @@ namespace _GAME.Scripts.Enemies.Moth
         private Vector3 _position3d;
         private Vector3 _prevPosition;
         private bool _isPatrolEnterChecked;
+        private bool _isAfterSpreadAttackSkipFinished;
 
         private readonly StateMachine _stateMachine = new();
         private MothMovementStateFactory _stateFactory;
@@ -125,10 +126,10 @@ namespace _GAME.Scripts.Enemies.Moth
             _stateMachine.SetState(_currentState);
             _position3d = _enterState.Position2D;
             _position3d.x *= _sideDirection;
-        
-            transform.position = _position3d;
 
+            transform.position = _position3d;
             _isPatrolEnterChecked = false;
+            
             _isAttacking = false;
             enabled = true;
         }
@@ -177,6 +178,9 @@ namespace _GAME.Scripts.Enemies.Moth
                 _stateDebug = _currentState.GetType().Name; // Debug only
                 _stateMachine.SetState(_currentState);
             }
+            
+            ReadyToAttackStateEnded?.Invoke();
+            _isAfterSpreadAttackSkipFinished = false;
         }
 
         private void Update()
@@ -236,13 +240,17 @@ namespace _GAME.Scripts.Enemies.Moth
 
         private void OnHoverStateStarted()
         {
-            ReadyToAttackStateStarted?.Invoke();
+            if (_isAfterSpreadAttackSkipFinished)
+            {
+                ReadyToAttackStateStarted?.Invoke();    
+            }
             _isPatrolEnterChecked = false;
         }
 
         private void OnHoverStateEnded()
         {
             ReadyToAttackStateEnded?.Invoke();
+            _isAfterSpreadAttackSkipFinished = true;
         }
 
         private void OnPreAttackStateStarted()

@@ -13,14 +13,16 @@ namespace _GAME.Scripts.Enemies.Moth
         [SerializeField] private float _collisionRadius = 0.1f;
         [Header("-- Movement --")]
         [SerializeField] private MothMovement _movement;
-    
+        
+        [SerializeField] private bool _isReadyToAttack;
+        
         public event Action Started;
         public event Action Damaged;
         public event Action<int, int> HealthChanged; 
         public event Action Dead;
         public override float Radius => _collisionRadius;
         public override Vector2 Position => _movement.Position2D;
-        public override bool IsReadyToAttack => CheckIsReadyToAttack();
+        public override bool IsReadyToAttack => _isInAttackReadyMovementState;
     
         public override void Initialize()
         {
@@ -73,15 +75,6 @@ namespace _GAME.Scripts.Enemies.Moth
             }
         }
 
-        private bool CheckIsReadyToAttack()
-        {
-            if (_isInAttackReadyMovementState)
-            {
-                return true;
-            }
-            return false;
-        }
-
         public override void Attack()
         {
             Debug.Log("Attack Called.");
@@ -126,7 +119,7 @@ namespace _GAME.Scripts.Enemies.Moth
 
         private void Update()
         {
-            
+            _isReadyToAttack = _isInAttackReadyMovementState;
         }
     }
 }
