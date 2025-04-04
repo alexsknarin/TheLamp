@@ -11,7 +11,7 @@ namespace _GAME.Scripts.Enemies.Ladybug.MovementStates
         private readonly ILampPositionProviderService _lampPositionProviderService;
         private readonly float _speed;
 
-        private readonly float _duration = .30f;
+        private readonly float _duration = .210f;
         private readonly float _acceleration = 0.93f;
         private float _acceleratedSpeed;
         private Vector2 _direction;
@@ -42,7 +42,7 @@ namespace _GAME.Scripts.Enemies.Ladybug.MovementStates
             Position2D = _positionDirectionProvider.Position2D;
         
             Vector3 direction = (Position2D - _lampPositionProviderService.GetLampPosition()).normalized; 
-            Quaternion rotation = Quaternion.Euler(0, 0, 90 * sideDirection);
+            Quaternion rotation = Quaternion.Euler(0, 0, 82 * sideDirection);
             _tangentDirection = rotation * direction;
             _direction = direction;
             Started?.Invoke();
@@ -53,9 +53,9 @@ namespace _GAME.Scripts.Enemies.Ladybug.MovementStates
             Vector2 direction;
             float phase = _localTime / _duration;
         
-            if (phase < 0.5f)
+            if (phase < 0.55f)
             {
-                direction = Vector2.Lerp(_tangentDirection, _direction, phase * 2).normalized;
+                direction = Vector2.Lerp(_tangentDirection, _direction, phase * 2f).normalized;
             }
             else
             {
@@ -68,7 +68,7 @@ namespace _GAME.Scripts.Enemies.Ladybug.MovementStates
             DepthDirection = cameraDirection * 0.1f;
             _acceleratedSpeed *= _acceleration;
         
-            if (phase > 1.1f)
+            if (phase > 1.5f)
             {
                 IsReadyToSwitch = true;
             }

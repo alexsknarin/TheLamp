@@ -12,6 +12,8 @@ namespace _GAME.Scripts.Enemies.Ladybug.MovementStates
         private readonly float _speed;
     
         private readonly float _depth = 0.3f;
+        private readonly float _localSpeedMultiplier = 0.86f;
+        private readonly float _localSpeed;
 
         public LadybugMovementAttackState(
             Vector3 cameraPosition,
@@ -24,6 +26,7 @@ namespace _GAME.Scripts.Enemies.Ladybug.MovementStates
             _positionDirectionProvider = positionDirectionProvider;
             _lampPositionProviderService = lampPositionProviderService;
             _speed = speed;
+            _localSpeed = _speed * _localSpeedMultiplier;
         }
 
         public event Action Started;
@@ -37,7 +40,7 @@ namespace _GAME.Scripts.Enemies.Ladybug.MovementStates
         {
             Vector2 newPosition = _positionDirectionProvider.Position2D;
             Vector2 direction = (_lampPositionProviderService.GetLampPosition() - Position2D).normalized;
-            newPosition += direction * (_speed * Time.deltaTime);
+            newPosition += direction * (_localSpeed * Time.deltaTime);
             Position2D = newPosition;
             Vector3 cameraDirection = (_cameraPosition - (Vector3)Position2D).normalized;
             DepthDirection = cameraDirection * _depth;

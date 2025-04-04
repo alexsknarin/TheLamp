@@ -9,6 +9,7 @@ namespace _GAME.Scripts.Enemies.Ladybug.MovementStates
             Vector3 cameraPosition,
             IPositionDirectionProvider positionDirectionProvider,
             ILampPositionProviderService lampPositionProviderService,
+            LadybugLampPositionsHolder lampPositionsHolder,
             float speed,
             float radius,
             float verticalAmplitude) : 
@@ -16,6 +17,7 @@ namespace _GAME.Scripts.Enemies.Ladybug.MovementStates
                 cameraPosition, 
                 positionDirectionProvider, 
                 lampPositionProviderService, 
+                lampPositionsHolder,
                 speed, 
                 radius, 
                 verticalAmplitude)

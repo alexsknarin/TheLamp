@@ -22,6 +22,8 @@ namespace _GAME.Scripts.Enemies.Ladybug
         [SerializeField] private string _stateDebug;
         [SerializeField] private int _sideDirection = 1;
         
+        [SerializeField] private float _startAngle;
+        
         private float _collisionRadius;
         
         private Vector3 _position3D;
@@ -167,7 +169,6 @@ namespace _GAME.Scripts.Enemies.Ladybug
             _currentState = (EnemyMovementStateBase)_stateMachine.CurrentState;
             _stateDebug = _currentState.GetType().Name; // Debug only
             Position2D = _currentState.Position2D;
-        
         
             // Add Depth later
             if (_isDepthEnabled)

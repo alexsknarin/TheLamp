@@ -57,6 +57,7 @@ namespace _GAME.Scripts.GameCoreSystems.DI
         [SerializeField] private FakeAd _fakeAd;
         [Header("Scene References")]
         [SerializeField] private Transform _cameraTransform;
+        [SerializeField] private LadybugLampPositionsHolder _ladybugLampPositionsHolder;
 
         private CoroutineHost _coroutineHost;
     
@@ -226,7 +227,8 @@ namespace _GAME.Scripts.GameCoreSystems.DI
             _ladybugMovementStateFactory = new LadybugMovementStateFactory(
                 _cameraTransform,
                 _lampPositionProviderService,
-                _gameConfigService
+                _gameConfigService,
+                _ladybugLampPositionsHolder
             );
             _megamothlingMovementStateFactory = new MegamothlingMovementStateFactory(
                 _cameraTransform,

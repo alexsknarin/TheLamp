@@ -9,6 +9,7 @@ namespace _GAME.Scripts.Enemies.Ladybug.MovementStates
         private readonly Vector3 _cameraPosition;
         private readonly IPositionDirectionProvider _positionDirectionProvider;
         private readonly ILampPositionProviderService _lampPositionProviderService;
+        private readonly LadybugLampPositionsHolder _lampPositionsHolder;
 
 
         private readonly float _depth = 0.3f; // TODO: move to config
@@ -23,12 +24,14 @@ namespace _GAME.Scripts.Enemies.Ladybug.MovementStates
             Vector3 cameraPosition,
             IPositionDirectionProvider positionDirectionProvider,
             ILampPositionProviderService lampPositionProviderService,
+            LadybugLampPositionsHolder lampPositionsHolder,
             float depth
         )
         {
             _cameraPosition = cameraPosition;
             _positionDirectionProvider = positionDirectionProvider;
             _lampPositionProviderService = lampPositionProviderService;
+            _lampPositionsHolder = lampPositionsHolder;
             _depth = depth;
         }
     
@@ -40,6 +43,8 @@ namespace _GAME.Scripts.Enemies.Ladybug.MovementStates
             _bounceForce = (Position2D - _lampPositionProviderService.GetLampPosition()).normalized * _bounceForceMagnitude;
             _gravityForce = Vector2.zero;
             DepthDirection = _positionDirectionProvider.DepthDirection;
+            
+            _lampPositionsHolder.FreeLandingPosition(Position2D);
         }
 
         public override void Tick()

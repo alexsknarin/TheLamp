@@ -4887,6 +4887,7 @@ MonoBehaviour:
   _lightningFlashController: {fileID: 104459}
   _fakeAd: {fileID: 1516525759}
   _cameraTransform: {fileID: 330585546}
+  _ladybugLampPositionsHolder: {fileID: 1934066266}
 --- !u!4 &1037269785
 Transform:
   m_ObjectHideFlags: 0
@@ -8923,6 +8924,7 @@ GameObject:
   - component: {fileID: 1934066263}
   - component: {fileID: 1934066264}
   - component: {fileID: 1934066265}
+  - component: {fileID: 1934066266}
   m_Layer: 0
   m_Name: LampObject
   m_TagString: Lamp
@@ -9640,6 +9642,30 @@ MonoBehaviour:
   _attackZoneRadius: 0.62
   _stickableCount: 0
   _blockedAttacks: 0
+--- !u!114 &1934066266
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1934066237}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: acdfb021b0148054985256064bd7496b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _ladybugLampPositions:
+  - {x: -0.7918851, y: 0.6106702, z: 0}
+  - {x: -0.99979043, y: 0.020471744, z: 0}
+  - {x: -0.8044135, y: -0.5940698, z: 0}
+  - {x: -0.28427628, y: -0.9587424, z: 0}
+  - {x: 0.3812159, y: -0.92448604, z: 0}
+  - {x: 0.86464465, y: -0.50238407, z: 0}
+  - {x: 0.9953379, y: 0.096449554, z: 0}
+  - {x: 0.759118, y: 0.650953, z: 0}
+  _showGizmos: 0
+  _gizmoDistance: 0.51
+  _gizmoRadius: 0.06
 --- !u!1 &1944166815
 GameObject:
   m_ObjectHideFlags: 0
