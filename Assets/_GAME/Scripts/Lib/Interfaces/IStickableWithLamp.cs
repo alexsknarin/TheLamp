@@ -16,6 +16,7 @@ namespace _GAME.Scripts.Lib.Interfaces
         public void HandleStick(Transform lampTransform);
         public void HandleExitAttackZone();
         public void HandleEnterAttackBlockerZone();
+        public void HandleExitAttackBlockerZone();
         public void HandleLampDestroyed();
         public Vector3 ProvideImpactPoint();
     }

@@ -132,6 +132,11 @@ namespace _GAME.Scripts.Enemies.Megabeetle
         {
             AttackBlockState = AttackBlockerState.Inside;
         }
+        
+        public void HandleExitAttackBlockerZone()
+        {
+            AttackBlockState = AttackBlockerState.Outisde;
+        }
 
         public void HandleLampDestroyed()
         {

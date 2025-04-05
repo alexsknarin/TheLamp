@@ -147,6 +147,13 @@ namespace _GAME.Scripts.ServicesGlobal
                 {
                     stickable.HandleEnterAttackBlockerZone();
                 }
+                
+                // Exiting Attack Blocker Zone
+                if ((distance > _blockAttackRadius + stickable.Radius) && stickable.AttackBlockState == AttackBlockerState.Inside) 
+                {
+                    stickable.HandleExitAttackBlockerZone();
+                    _attackBlockerCount--;
+                }
             
                 // Counting Attack Blockers
                 if (stickable.AttackBlockState == AttackBlockerState.Inside)

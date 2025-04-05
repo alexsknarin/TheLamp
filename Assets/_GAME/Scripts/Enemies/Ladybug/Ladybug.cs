@@ -116,7 +116,7 @@ namespace _GAME.Scripts.Enemies.Ladybug
 
         public void Spread()
         {
-            _movement.TriggerSpread();
+            if (!_isInStickyState) _movement.TriggerSpread();
         }
 
         public override void DoDeath()
@@ -164,6 +164,11 @@ namespace _GAME.Scripts.Enemies.Ladybug
         public void HandleEnterAttackBlockerZone()
         {
             AttackBlockState = AttackBlockerState.Inside;
+        }
+
+        public void HandleExitAttackBlockerZone()
+        {
+            AttackBlockState = AttackBlockerState.Outisde;
         }
 
         public void HandleLampDestroyed()
