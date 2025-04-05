@@ -25,6 +25,7 @@ namespace _GAME.Scripts.Enemies.Ladybug
         
             _movement.PreAttackStarted += OnPreAttackStarted;
             _movement.PreAttackEnded += OnPreAttackEnded;
+            _movement.SpreadStateEnded += OnSpreadStateEnded;
             _ladybug.Started += OnLadybugStarted;
             _ladybug.Damaged += OnLadybugDamaged;
             _ladybug.HealthChanged += _healthIndication.Refresh;
@@ -35,6 +36,7 @@ namespace _GAME.Scripts.Enemies.Ladybug
         {
             _movement.PreAttackStarted -= OnPreAttackStarted;
             _movement.PreAttackEnded -= OnPreAttackEnded;
+            _movement.SpreadStateEnded -= OnSpreadStateEnded;
             _ladybug.Started -= OnLadybugStarted;
             _ladybug.Damaged -= OnLadybugDamaged;
             _ladybug.HealthChanged -= _healthIndication.Refresh;
@@ -66,6 +68,11 @@ namespace _GAME.Scripts.Enemies.Ladybug
         private void OnLadybugDead()
         {
             _deathFlash.Play();
+        }
+
+        private void OnSpreadStateEnded()
+        {
+            _trailResetHandler.Initialize();
         }
     }
 }
