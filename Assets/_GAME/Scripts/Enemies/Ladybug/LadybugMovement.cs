@@ -58,6 +58,8 @@ namespace _GAME.Scripts.Enemies.Ladybug
         public event Action DeathStateEnded;
         public event Action SpreadStateEnded;
         public event Action EnteredAttackRange;
+        public event Action StickStarted;
+        public event Action StickEnded;
     
         public Vector2 Position2D { get; private set; }
         public Vector3 DepthDirection { get; private set; }
@@ -83,6 +85,8 @@ namespace _GAME.Scripts.Enemies.Ladybug
             _spreadState.Ended += OnSpreadStateEnded;
             _patrolStateR.EnteredAttackRange += OnEnteredAttackRange;
             _patrolStateL.EnteredAttackRange += OnEnteredAttackRange;
+            _stickState.Started += OnStickStateStarted;
+            _stickState.Ended += OnStickStateEnded;
         
             At(_patrolStateR, _preAttackStateR, () => _patrolStateR.IsReadyToSwitch);
             At(_preAttackStateR, _attackState, () => _preAttackStateR.IsReadyToSwitch);
@@ -92,7 +96,7 @@ namespace _GAME.Scripts.Enemies.Ladybug
         
             void At(IState from, IState to, Func<bool> condition) => _stateMachine.AddTransition(from, to, condition);
         }
-
+        
         private void OnDestroy()
         {
             _preAttackStateR.Started -= OnPreAttackStateStarted;
@@ -102,6 +106,8 @@ namespace _GAME.Scripts.Enemies.Ladybug
             _deathFallState.Ended -= OnDeathFallStateEnded;
             _spreadState.Ended -= OnSpreadStateEnded;
             _patrolStateR.EnteredAttackRange -= OnEnteredAttackRange;
+            _stickState.Started -= OnStickStateStarted;
+            _stickState.Ended -= OnStickStateEnded;
             transform.parent = null;
         }
         
@@ -250,6 +256,16 @@ namespace _GAME.Scripts.Enemies.Ladybug
         private void OnEnteredAttackRange()
         {
             EnteredAttackRange?.Invoke();
+        }
+        
+        private void OnStickStateStarted()
+        {
+            StickStarted?.Invoke();
+        }
+
+        private void OnStickStateEnded()
+        {   
+            StickEnded?.Invoke();
         }
     }
 }
