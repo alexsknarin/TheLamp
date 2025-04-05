@@ -4,11 +4,11 @@ using UnityEngine.Pool;
 
 namespace _GAME.Scripts.Enemies
 {
-    public abstract class FEnemy: MonoBehaviour, IInitializable, IDamageable, IPoolableFEnemy, IAbleToAttack
+    public abstract class Enemy: MonoBehaviour, IInitializable, IDamageable, IPoolableFEnemy, IAbleToAttack
     {
         // Common fields
         protected bool _isInAttackReadyMovementState = false;
-        protected IObjectPool<FEnemy> _objectPool;
+        protected IObjectPool<Enemy> _objectPool;
         public virtual bool IsReadyToAttack { get; }
         public  bool IsReadyForDamage { get; protected set; }
         public  bool IsReceivedLampAttackDamage { get; protected set; }
@@ -19,7 +19,7 @@ namespace _GAME.Scripts.Enemies
         public abstract void ReceiveDamage(int damageAmount);
         public abstract void Attack();
         public abstract void DoDeath();
-        public virtual void SetObjectPool(ObjectPool<FEnemy> pool)
+        public virtual void SetObjectPool(ObjectPool<Enemy> pool)
         {
             _objectPool = pool;
         }

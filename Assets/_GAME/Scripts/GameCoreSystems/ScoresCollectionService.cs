@@ -51,7 +51,7 @@ namespace _GAME.Scripts.GameCoreSystems
         }
     
         // Event Handle Methods
-        private void OnEnemyDeactivated(FEnemy enemy)
+        private void OnEnemyDeactivated(Enemy enemy)
         {
             if (!_isActive)
             {

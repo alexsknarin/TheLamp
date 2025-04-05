@@ -86,7 +86,7 @@ namespace _GAME.Scripts.Enemies.Dragonfly
 
         public event Action<CollidableEnemy> AnimatedAttackStarted;
         public event Action<CollidableEnemy> ProjectileShot;
-        public event Action<FEnemy, bool> ProjectileDeactivated;
+        public event Action<Enemy, bool> ProjectileDeactivated;
         public event Action SpreadRequested;
         public event Action Damaged;
         public event Action<int, int> HealthChanged;
@@ -517,7 +517,7 @@ namespace _GAME.Scripts.Enemies.Dragonfly
             _spider.Play();
         }
 
-        private void OnProjectileDeactivated(FEnemy spider, bool damaged)
+        private void OnProjectileDeactivated(Enemy spider, bool damaged)
         {
             ProjectileDeactivated?.Invoke(spider, damaged);
         }

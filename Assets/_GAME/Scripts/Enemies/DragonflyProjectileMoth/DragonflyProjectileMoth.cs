@@ -11,7 +11,7 @@ namespace _GAME.Scripts.Enemies.DragonflyProjectileMoth
         [SerializeField] private DragonflyMothPresentation _presentation;
     
         public override Vector2 Position => transform.position;
-        public event Action<FEnemy, bool> Deactivated;
+        public event Action<Enemy, bool> Deactivated;
     
         public override void Initialize()
         {

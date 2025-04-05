@@ -28,7 +28,7 @@ namespace _GAME.Scripts.GameCoreSystems.EnemyManagement
         private readonly float _attackAttackDelayMaxMin = 6.1f;
         private readonly float _attackAttackDelayMaxMax = 1.8f;
     
-        private List<FEnemy> _enemies;
+        private List<Enemy> _enemies;
         private readonly List<CollidableEnemy> _enemiesReadyToAttack = new ();
 
         public EnemyAttacker(float maxAggressionLevel)
@@ -38,7 +38,7 @@ namespace _GAME.Scripts.GameCoreSystems.EnemyManagement
     
         public event Action<CollidableEnemy> EnemyAttackStarted;
     
-        public void PrepareWave(int aggressionLevel, List<FEnemy> enemies)
+        public void PrepareWave(int aggressionLevel, List<Enemy> enemies)
         {
             _enemies = enemies;
             _enemiesReadyToAttack.Clear();

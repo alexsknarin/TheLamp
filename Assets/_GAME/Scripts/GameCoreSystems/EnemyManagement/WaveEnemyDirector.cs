@@ -14,7 +14,7 @@ namespace _GAME.Scripts.GameCoreSystems.EnemyManagement
         private SpawnQueueGenerator _spawnQueueGenerator;
         private SpawnQueue _spawnQueue;
         private EnemyQueue _currentWaveEnemyQueue;
-        private List<FEnemy> _enemies = new ();
+        private List<Enemy> _enemies = new ();
         private List<IStickableWithLamp> _stickedEnemies = new ();
         private int _enemiesKilledCount = 0;
         private LampAttacker _lampAttacker;
@@ -43,12 +43,12 @@ namespace _GAME.Scripts.GameCoreSystems.EnemyManagement
         public event Action LampBlocked;
         public event Action LampUnblocked;
         public event Action ExplodableEnemySpawned;
-        public event Action<FEnemy> ExplodableEnemyDeactivated;
+        public event Action<Enemy> ExplodableEnemyDeactivated;
         public event Action FireflyExplosionStarted;
-        public event Action<FEnemy> BossSpawned;
+        public event Action<Enemy> BossSpawned;
         public event Action BossDied;
         public event Action<Vector3, bool, string> StickyAttackEnded;
-        public event Action<FEnemy> ProjectileDestroyed;
+        public event Action<Enemy> ProjectileDestroyed;
     
         public void Initialize()
         {
@@ -242,7 +242,7 @@ namespace _GAME.Scripts.GameCoreSystems.EnemyManagement
             _enemies.Clear();
         }
 
-        private void OnEnemySpawned(FEnemy enemy)
+        private void OnEnemySpawned(Enemy enemy)
         {
             if (enemy is IStickableWithLamp)
             {
@@ -272,7 +272,7 @@ namespace _GAME.Scripts.GameCoreSystems.EnemyManagement
             }
         }
 
-        private void OnEnemyDead(FEnemy enemy)
+        private void OnEnemyDead(Enemy enemy)
         {
             // TODO: find better way to return enemies to pool that will work better with gameover one
             if (enabled)
@@ -351,7 +351,7 @@ namespace _GAME.Scripts.GameCoreSystems.EnemyManagement
             _enemies.Add(enemy);
         }
     
-        private void OnProjectileDeactivated(FEnemy enemy, bool damaged)
+        private void OnProjectileDeactivated(Enemy enemy, bool damaged)
         {
             if (damaged)
             {

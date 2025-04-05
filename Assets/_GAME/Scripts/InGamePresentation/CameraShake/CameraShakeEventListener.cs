@@ -58,7 +58,7 @@ namespace _GAME.Scripts.InGamePresentation.CameraShake
             _cameraShakeService.StartDamageShake();
         }
 
-        private void OnBossSpawned(FEnemy boss)
+        private void OnBossSpawned(Enemy boss)
         {
             _cameraShakeService.EnableBossShake(_bossCameraShakeFactory.Create(boss)); 
         }

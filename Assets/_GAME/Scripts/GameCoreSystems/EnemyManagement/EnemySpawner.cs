@@ -13,7 +13,7 @@ namespace _GAME.Scripts.GameCoreSystems.EnemyManagement
     {
         private EnemyQueue _enemyQueue;
         private readonly float _firstEnemySpawnDelay;
-        private List<FEnemy> _activeEnemies; 
+        private List<Enemy> _activeEnemies; 
 
         private int _currentEnemyIndex;
         private float _spawnCooldown;
@@ -32,8 +32,8 @@ namespace _GAME.Scripts.GameCoreSystems.EnemyManagement
             _firstEnemySpawnDelay = firstEnemySpawnDelay;
         }
     
-        public event Action<FEnemy> EnemySpawned;
-        public event Action<FEnemy> EnemyReturnedToPool;
+        public event Action<Enemy> EnemySpawned;
+        public event Action<Enemy> EnemyReturnedToPool;
 
         public void Initialize()
         {
@@ -45,12 +45,12 @@ namespace _GAME.Scripts.GameCoreSystems.EnemyManagement
             _enemyPool.EnemyReleasedToPool -= OnEnemyReleasedToPool;
         }
 
-        private void OnEnemyReleasedToPool(FEnemy enemy)
+        private void OnEnemyReleasedToPool(Enemy enemy)
         {
             EnemyReturnedToPool?.Invoke(enemy);
         }
 
-        public void PrepareWave(EnemyQueue enemyQueue, List<FEnemy> enemies)
+        public void PrepareWave(EnemyQueue enemyQueue, List<Enemy> enemies)
         {
             _enemyQueue = enemyQueue;
             _activeEnemies = enemies;
@@ -125,7 +125,7 @@ namespace _GAME.Scripts.GameCoreSystems.EnemyManagement
             }
         }
     
-        private FEnemy SpawnEnemy(EnemyType enemyType)
+        private Enemy SpawnEnemy(EnemyType enemyType)
         {
             var enemy = _enemyPool.Get(EnemyTypeLibrary.EnemyTypeDictionary[enemyType]);
             enemy.Play();

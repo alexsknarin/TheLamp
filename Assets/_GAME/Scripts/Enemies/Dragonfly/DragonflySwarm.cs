@@ -17,7 +17,7 @@ namespace _GAME.Scripts.Enemies.Dragonfly
         private int _attackCount = 0;
 
         public event Action<CollidableEnemy> MothAttackStarted;
-        public event Action<FEnemy, bool> MothDeactivated;
+        public event Action<Enemy, bool> MothDeactivated;
     
         public void Initialize()
         {
@@ -112,7 +112,7 @@ namespace _GAME.Scripts.Enemies.Dragonfly
             }
         }
 
-        private void OnMothDeactivated(FEnemy enemy, bool damaged)
+        private void OnMothDeactivated(Enemy enemy, bool damaged)
         {
             MothDeactivated?.Invoke(enemy, damaged);
         }

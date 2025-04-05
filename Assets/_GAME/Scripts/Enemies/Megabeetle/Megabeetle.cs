@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace _GAME.Scripts.Enemies.Megabeetle
 {
-    public class Megabeetle : FEnemy, IStickableWithLamp, IBoss, IStickyAttacker
+    public class Megabeetle : Enemy, IStickableWithLamp, IBoss, IStickyAttacker
     {
         [SerializeField] private float _collisionRadius = 0.3f;
         [SerializeField] private int _maxHealth;

@@ -41,7 +41,7 @@ namespace _GAME.Scripts.UI.ViewModels
             }
         }
 
-        private void OnExplodableEnemyDeactivated(FEnemy enemy)
+        private void OnExplodableEnemyDeactivated(Enemy enemy)
         {
             FireflyExplosionStarted?.Invoke(enemy.transform.position);
         }

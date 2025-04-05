@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace _GAME.Scripts.Enemies
 {
-    public abstract class CollidableEnemy: FEnemy, ICollidableWithLamp
+    public abstract class CollidableEnemy: Enemy, ICollidableWithLamp
     {
         public virtual  Vector2 Position { get; protected set; }
         public virtual float Radius { get; protected set; }

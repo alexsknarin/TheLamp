@@ -73,7 +73,7 @@ namespace _GAME.Scripts.InGamePresentation.Haptic
             _hapticFeedbackService.DoDamageVibration();
         }
     
-        private void OnBossSpawned(FEnemy boss)
+        private void OnBossSpawned(Enemy boss)
         {
             _hapticFeedbackService.DoDamageVibration();
         }

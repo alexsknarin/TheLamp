@@ -13,7 +13,7 @@ namespace _GAME.Scripts.Enemies.DragonflyProjectileSpider
         private int _direction;
         public override Vector2 Position => transform.position;
         public event Action EnterAnimationEnded;
-        public event Action<FEnemy, bool> Deactivated;
+        public event Action<Enemy, bool> Deactivated;
     
         public override void Initialize()
         {

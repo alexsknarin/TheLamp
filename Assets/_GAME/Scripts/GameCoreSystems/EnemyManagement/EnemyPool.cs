@@ -19,16 +19,16 @@ namespace _GAME.Scripts.GameCoreSystems.EnemyManagement
 {
     public class EnemyPool : IEnemyDeactivatedProvider
     {
-        private ObjectPool<FEnemy> _mothlingPool;
-        private ObjectPool<FEnemy> _flyPool;
-        private ObjectPool<FEnemy> _fireFlyPool;
-        private ObjectPool<FEnemy> _mothPool;
-        private ObjectPool<FEnemy> _spiderPool;
-        private ObjectPool<FEnemy> _ladybugPool;
-        private ObjectPool<FEnemy> _megamothlingPool;
-        private ObjectPool<FEnemy> _waspPool;
-        private ObjectPool<FEnemy> _megabeetlePool;
-        private ObjectPool<FEnemy> _dragonflyPool;
+        private ObjectPool<Enemy> _mothlingPool;
+        private ObjectPool<Enemy> _flyPool;
+        private ObjectPool<Enemy> _fireFlyPool;
+        private ObjectPool<Enemy> _mothPool;
+        private ObjectPool<Enemy> _spiderPool;
+        private ObjectPool<Enemy> _ladybugPool;
+        private ObjectPool<Enemy> _megamothlingPool;
+        private ObjectPool<Enemy> _waspPool;
+        private ObjectPool<Enemy> _megabeetlePool;
+        private ObjectPool<Enemy> _dragonflyPool;
     
         private readonly EnemyFactory _enemyFactory;
         private readonly int _poolSize = 5;
@@ -45,7 +45,7 @@ namespace _GAME.Scripts.GameCoreSystems.EnemyManagement
     
         private readonly List<Type> _preloadedEnemyTypes = new List<Type>();
     
-        public event Action<FEnemy> EnemyReleasedToPool;
+        public event Action<Enemy> EnemyReleasedToPool;
     
         public EnemyPool(EnemyFactory enemyFactory)
         {
@@ -55,7 +55,7 @@ namespace _GAME.Scripts.GameCoreSystems.EnemyManagement
         public void Initialize()
         {
             _mothlingCount= 0;
-            _mothlingPool = new ObjectPool<FEnemy>(
+            _mothlingPool = new ObjectPool<Enemy>(
                 CreateMothling, 
                 OnGetFromPool, 
                 OnReleaseToPool, 
@@ -64,7 +64,7 @@ namespace _GAME.Scripts.GameCoreSystems.EnemyManagement
                 _poolSize,
                 _poolSize
             );
-            _flyPool = new ObjectPool<FEnemy>(
+            _flyPool = new ObjectPool<Enemy>(
                 CreateFly, 
                 OnGetFromPool, 
                 OnReleaseToPool, 
@@ -73,7 +73,7 @@ namespace _GAME.Scripts.GameCoreSystems.EnemyManagement
                 _poolSize,
                 _poolSize
             );
-            _fireFlyPool = new ObjectPool<FEnemy>(
+            _fireFlyPool = new ObjectPool<Enemy>(
                 CreateFireFly, 
                 OnGetFromPool, 
                 OnReleaseToPool, 
@@ -82,7 +82,7 @@ namespace _GAME.Scripts.GameCoreSystems.EnemyManagement
                 _poolSize,
                 _poolSize
             );
-            _mothPool = new ObjectPool<FEnemy>(
+            _mothPool = new ObjectPool<Enemy>(
                 CreateMoth,
                 OnGetFromPool, 
                 OnReleaseToPool, 
@@ -91,7 +91,7 @@ namespace _GAME.Scripts.GameCoreSystems.EnemyManagement
                 _poolSize,
                 _poolSize
             );
-            _spiderPool = new ObjectPool<FEnemy>(
+            _spiderPool = new ObjectPool<Enemy>(
                 CreateSpider,
                 OnGetFromPool, 
                 OnReleaseToPool, 
@@ -100,7 +100,7 @@ namespace _GAME.Scripts.GameCoreSystems.EnemyManagement
                 _poolSize,
                 _poolSize
             );
-            _ladybugPool = new ObjectPool<FEnemy>(
+            _ladybugPool = new ObjectPool<Enemy>(
                 CreateLadybug,
                 OnGetFromPool, 
                 OnReleaseToPool, 
@@ -109,7 +109,7 @@ namespace _GAME.Scripts.GameCoreSystems.EnemyManagement
                 _poolSize,
                 _poolSize
             );
-            _megamothlingPool = new ObjectPool<FEnemy>(
+            _megamothlingPool = new ObjectPool<Enemy>(
                 CreateMegamothling,
                 OnGetFromPool, 
                 OnReleaseToPool, 
@@ -119,7 +119,7 @@ namespace _GAME.Scripts.GameCoreSystems.EnemyManagement
                 _poolSize
             );
         
-            _waspPool = new ObjectPool<FEnemy>(
+            _waspPool = new ObjectPool<Enemy>(
                 CreateWasp,
                 OnGetFromPool, 
                 OnReleaseToPool, 
@@ -129,7 +129,7 @@ namespace _GAME.Scripts.GameCoreSystems.EnemyManagement
                 _poolSize
             );
         
-            _megabeetlePool = new ObjectPool<FEnemy>(
+            _megabeetlePool = new ObjectPool<Enemy>(
                 CreateMegabeetle,
                 OnGetFromPool, 
                 OnReleaseToPool, 
@@ -139,7 +139,7 @@ namespace _GAME.Scripts.GameCoreSystems.EnemyManagement
                 _poolSize
             );
         
-            _dragonflyPool = new ObjectPool<FEnemy>(
+            _dragonflyPool = new ObjectPool<Enemy>(
                 CreateDragonfly,
                 OnGetFromPool, 
                 OnReleaseToPool, 
@@ -159,7 +159,7 @@ namespace _GAME.Scripts.GameCoreSystems.EnemyManagement
             }
         }
 
-        public FEnemy Get(Type type)
+        public Enemy Get(Type type)
         {
             if (type == typeof(Mothling))
             {
@@ -248,108 +248,108 @@ namespace _GAME.Scripts.GameCoreSystems.EnemyManagement
         }
 
     
-        private FEnemy CreateMothling()
+        private Enemy CreateMothling()
         {
-            FEnemy enemyInstance = _enemyFactory.CreateEnemy(typeof(Mothling));
+            Enemy enemyInstance = _enemyFactory.CreateEnemy(typeof(Mothling));
             enemyInstance.SetObjectPool(_mothlingPool);
             enemyInstance.name = "Mothling" + _mothlingCount;
             _mothlingCount++;
             return enemyInstance;
         }
     
-        private FEnemy CreateFly()
+        private Enemy CreateFly()
         {
-            FEnemy enemyInstance = _enemyFactory.CreateEnemy(typeof(Fly));
+            Enemy enemyInstance = _enemyFactory.CreateEnemy(typeof(Fly));
             enemyInstance.SetObjectPool(_flyPool);
             enemyInstance.name = "Fly" + _flyCount;
             _flyCount++;
             return enemyInstance;
         }
     
-        private FEnemy CreateFireFly()
+        private Enemy CreateFireFly()
         {
-            FEnemy enemyInstance = _enemyFactory.CreateEnemy(typeof(FireFly));
+            Enemy enemyInstance = _enemyFactory.CreateEnemy(typeof(FireFly));
             enemyInstance.SetObjectPool(_flyPool);
             enemyInstance.name = "FireFly" + _fireFlyCount;
             _flyCount++;
             return enemyInstance;
         }
     
-        private FEnemy CreateMoth()
+        private Enemy CreateMoth()
         {
-            FEnemy enemyInstance = _enemyFactory.CreateEnemy(typeof(Moth));
+            Enemy enemyInstance = _enemyFactory.CreateEnemy(typeof(Moth));
             enemyInstance.SetObjectPool(_mothPool);
             enemyInstance.name = "Moth" + _mothCount;
             _mothCount++;
             return enemyInstance;
         }
     
-        private FEnemy CreateSpider()
+        private Enemy CreateSpider()
         {
-            FEnemy enemyInstance = _enemyFactory.CreateEnemy(typeof(Spider));
+            Enemy enemyInstance = _enemyFactory.CreateEnemy(typeof(Spider));
             enemyInstance.SetObjectPool(_spiderPool);
             enemyInstance.name = "Spider" + _spiderCount;
             _spiderCount++;
             return enemyInstance;
         }
     
-        private FEnemy CreateLadybug()
+        private Enemy CreateLadybug()
         {
-            FEnemy enemyInstance = _enemyFactory.CreateEnemy(typeof(Ladybug));
+            Enemy enemyInstance = _enemyFactory.CreateEnemy(typeof(Ladybug));
             enemyInstance.SetObjectPool(_ladybugPool);
             enemyInstance.name = "Ladybug" + _ladybugCount;
             _ladybugCount++;
             return enemyInstance;
         }
     
-        private FEnemy CreateMegamothling()
+        private Enemy CreateMegamothling()
         {
-            FEnemy enemyInstance = _enemyFactory.CreateEnemy(typeof(Megamothling));
+            Enemy enemyInstance = _enemyFactory.CreateEnemy(typeof(Megamothling));
             enemyInstance.SetObjectPool(_megamothlingPool);
             enemyInstance.name = "Megamothling" + _megamothlingCount;
             _megamothlingCount++;
             return enemyInstance;
         }
     
-        private FEnemy CreateWasp()
+        private Enemy CreateWasp()
         {
-            FEnemy enemyInstance = _enemyFactory.CreateEnemy(typeof(Wasp));
+            Enemy enemyInstance = _enemyFactory.CreateEnemy(typeof(Wasp));
             enemyInstance.SetObjectPool(_waspPool);
             enemyInstance.name = "Wasp" + _waspCount;
             _waspCount++;
             return enemyInstance;
         }
     
-        private FEnemy CreateMegabeetle()
+        private Enemy CreateMegabeetle()
         {
-            FEnemy enemyInstance = _enemyFactory.CreateEnemy(typeof(Megabeetle));
+            Enemy enemyInstance = _enemyFactory.CreateEnemy(typeof(Megabeetle));
             enemyInstance.SetObjectPool(_megabeetlePool);
             enemyInstance.name = "Megabeetle" + _megabeetleCount;
             _megabeetleCount++;
             return enemyInstance;
         }
     
-        private FEnemy CreateDragonfly()
+        private Enemy CreateDragonfly()
         {
-            FEnemy enemyInstance = _enemyFactory.CreateEnemy(typeof(Dragonfly));
+            Enemy enemyInstance = _enemyFactory.CreateEnemy(typeof(Dragonfly));
             enemyInstance.SetObjectPool(_dragonflyPool);
             enemyInstance.name = "Dragonfly" + _dragonflyCount;
             _dragonflyCount++;
             return enemyInstance;
         }
     
-        private void OnGetFromPool(FEnemy enemy)
+        private void OnGetFromPool(Enemy enemy)
         {
             enemy.gameObject.SetActive(true);
         }
     
-        private void OnReleaseToPool(FEnemy enemy)
+        private void OnReleaseToPool(Enemy enemy)
         {
             enemy.gameObject.SetActive(false);
             EnemyReleasedToPool?.Invoke(enemy);
         }
     
-        private void OnDestroyPooledObject(FEnemy enemy)
+        private void OnDestroyPooledObject(Enemy enemy)
         {
             enemy.gameObject.SetActive(false);
         }

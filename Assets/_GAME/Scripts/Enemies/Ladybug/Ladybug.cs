@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace _GAME.Scripts.Enemies.Ladybug
 {
-    public class Ladybug : FEnemy, IStickableWithLamp, ISpreadable
+    public class Ladybug : Enemy, IStickableWithLamp, ISpreadable
     {
         [SerializeField] private int _maxHealth = 7;
         [SerializeField] private int _currentHealth;

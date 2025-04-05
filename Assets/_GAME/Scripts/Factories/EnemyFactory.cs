@@ -170,7 +170,7 @@ namespace _GAME.Scripts.Factories
             }
         }
     
-        public FEnemy CreateEnemy(Type type)
+        public Enemy CreateEnemy(Type type)
         {
             if (type == typeof(Mothling) && _mothlingEnemyAssetHandle.IsValid())
             {
@@ -228,7 +228,7 @@ namespace _GAME.Scripts.Factories
             }
         }
     
-        private FEnemy CreateMothlingInstance(GameObject prefab)
+        private Enemy CreateMothlingInstance(GameObject prefab)
         {
             GameObject enemyInstance = Object.Instantiate(prefab);
             enemyInstance.GetComponent<MothlingMovement>().Construct(_mothlingMovementStateFactory);
@@ -239,7 +239,7 @@ namespace _GAME.Scripts.Factories
             return enemy;
         } 
     
-        private FEnemy CreateFlyInstance(GameObject prefab)
+        private Enemy CreateFlyInstance(GameObject prefab)
         {
             GameObject enemyInstance = Object.Instantiate(prefab);
             enemyInstance.GetComponent<FlyMovement>().Construct(_flyMovementStateFactory);
@@ -250,7 +250,7 @@ namespace _GAME.Scripts.Factories
             return enemy;
         }
     
-        private FEnemy CreateFireFlyInstance(GameObject prefab)
+        private Enemy CreateFireFlyInstance(GameObject prefab)
         {
             GameObject enemyInstance = Object.Instantiate(prefab);
             enemyInstance.GetComponent<FlyMovement>().Construct(_flyMovementStateFactory);
@@ -261,7 +261,7 @@ namespace _GAME.Scripts.Factories
             return enemy;
         }
     
-        private FEnemy CreateMothInstance(GameObject prefab)
+        private Enemy CreateMothInstance(GameObject prefab)
         {
             GameObject enemyInstance = Object.Instantiate(prefab);
             enemyInstance.GetComponent<MothMovement>().Construct(_mothMovementStateFactory);
@@ -272,7 +272,7 @@ namespace _GAME.Scripts.Factories
             return enemy;
         }
     
-        private FEnemy CreateSpiderInstance(GameObject prefab)
+        private Enemy CreateSpiderInstance(GameObject prefab)
         {
             GameObject enemyInstance = Object.Instantiate(prefab);
             enemyInstance.GetComponent<SpiderMovement>().Construct(
@@ -288,7 +288,7 @@ namespace _GAME.Scripts.Factories
             return enemy;
         }
     
-        private FEnemy CreateLadybugInstance(GameObject prefab)
+        private Enemy CreateLadybugInstance(GameObject prefab)
         {
             GameObject enemyInstance = Object.Instantiate(prefab);
             enemyInstance.GetComponent<LadybugMovement>().Construct(
@@ -300,7 +300,7 @@ namespace _GAME.Scripts.Factories
             return enemy;
         }
     
-        private FEnemy CreateMegamothlingInstance(GameObject prefab)
+        private Enemy CreateMegamothlingInstance(GameObject prefab)
         {
             GameObject enemyInstance = Object.Instantiate(prefab);
             enemyInstance.GetComponent<MegamothlingMovement>().Construct(_megamothlingMovementStateFactory);
@@ -311,7 +311,7 @@ namespace _GAME.Scripts.Factories
             return enemy;
         } 
     
-        private FEnemy CreateWaspsInstance(GameObject prefab)
+        private Enemy CreateWaspsInstance(GameObject prefab)
         {
             GameObject enemyInstance = Object.Instantiate(prefab);
             enemyInstance.transform.GetChild(0).GetComponent<WaspMovement>().Construct(
@@ -323,7 +323,7 @@ namespace _GAME.Scripts.Factories
             return enemy;
         }
     
-        private FEnemy CreateMegabeetleInstance(GameObject prefab)
+        private Enemy CreateMegabeetleInstance(GameObject prefab)
         {
             GameObject enemyInstance = Object.Instantiate(prefab);
             enemyInstance.GetComponent<MegabeetleMovement>().Construct(_megabeetleMovementStateFactory);
@@ -334,7 +334,7 @@ namespace _GAME.Scripts.Factories
             return enemy;
         }
     
-        private FEnemy CreateDragonflyInstance(GameObject prefab)
+        private Enemy CreateDragonflyInstance(GameObject prefab)
         {
             GameObject enemyInstance = Object.Instantiate(prefab);
             var enemy = enemyInstance.GetComponent<Dragonfly>();

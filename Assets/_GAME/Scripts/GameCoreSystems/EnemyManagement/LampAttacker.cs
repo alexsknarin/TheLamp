@@ -19,7 +19,7 @@ namespace _GAME.Scripts.GameCoreSystems.EnemyManagement
             _isBlockedMode = false;
         }
     
-        public void Attack(float power, List<FEnemy> enemies)
+        public void Attack(float power, List<Enemy> enemies)
         {
             foreach (var enemy in enemies)
             {
