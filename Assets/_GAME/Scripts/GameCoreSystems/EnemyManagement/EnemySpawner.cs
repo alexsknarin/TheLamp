@@ -11,25 +11,27 @@ namespace _GAME.Scripts.GameCoreSystems.EnemyManagement
 {
     public class EnemySpawner: ITickable, IDisposable
     {
-        private EnemyQueue _enemyQueue;
+        // Dependencies
+        private readonly EnemyPool _enemyPool;
         private readonly float _firstEnemySpawnDelay;
+        private ISpiderSpawnAvailableChecker _spiderSpawnAvailableChecker;
+        
+        private EnemyQueue _enemyQueue;
         private List<Enemy> _activeEnemies; 
-
         private int _currentEnemyIndex;
         private float _spawnCooldown;
         private float _localTime;
         private bool _isWaveActive = false;
-    
-        // Dependencies
-        private readonly EnemyPool _enemyPool; 
-    
+        
         public EnemySpawner(
             EnemyPool enemyPool,
-            float firstEnemySpawnDelay
+            float firstEnemySpawnDelay,
+            ISpiderSpawnAvailableChecker spiderSpawnAvailableChecker
             )
         {
             _enemyPool = enemyPool;
             _firstEnemySpawnDelay = firstEnemySpawnDelay;
+            _spiderSpawnAvailableChecker = spiderSpawnAvailableChecker;
         }
     
         public event Action<Enemy> EnemySpawned;
@@ -55,13 +57,7 @@ namespace _GAME.Scripts.GameCoreSystems.EnemyManagement
             _enemyQueue = enemyQueue;
             _activeEnemies = enemies;
         
-            string waveData = "";
-            for (int i = 0; i < _enemyQueue.Count(); i++)
-            {
-                _enemyPool.PreloadEnemy(EnemyTypeLibrary.EnemyTypeDictionary[_enemyQueue.Get(i)]);
-                waveData = waveData + " - " + _enemyQueue.Get(i).ToString();
-            }
-            Debug.Log(waveData);
+            LogCurrentWaveData();
         }
 
         public void StartWave()
@@ -71,7 +67,7 @@ namespace _GAME.Scripts.GameCoreSystems.EnemyManagement
             _spawnCooldown = _firstEnemySpawnDelay;
             _isWaveActive = true;
         }
-    
+
         public void StopWave()
         {
             _isWaveActive = false;
@@ -84,7 +80,7 @@ namespace _GAME.Scripts.GameCoreSystems.EnemyManagement
                 WaitForCooldown(deltaTime);
             }
         }
-    
+
         private void WaitForCooldown(float deltaTime)
         {
             if (_localTime >= _spawnCooldown)
@@ -98,23 +94,33 @@ namespace _GAME.Scripts.GameCoreSystems.EnemyManagement
                 _localTime += deltaTime;
             }
         }
-    
+
         private void SpawnEnemies()
         {
             if (_currentEnemyIndex < _enemyQueue.Count())
             {
                 if (_activeEnemies.Count < _enemyQueue.MaxEnemiesOnScreen)
                 {
-                    // Potential boss spawn here
-                    var enemy = SpawnEnemy(_enemyQueue.Get(_currentEnemyIndex));
+                    // TODO: refactor
+                    EnemyType enemyType = _enemyQueue.Get(_currentEnemyIndex);
+                    
+                    if (enemyType == EnemyType.Spider && !_spiderSpawnAvailableChecker.CheckPointAvailability())
+                    {
+                        bool hasReplacement = _enemyQueue.PushEnemyForward(_currentEnemyIndex, enemyType);
+                        if (!hasReplacement)
+                        {
+                            return;
+                        }
+                        enemyType = _enemyQueue.Get(_currentEnemyIndex);
+                    }
+                    
+                    Enemy enemy = SpawnEnemy(enemyType);
                     _activeEnemies.Add(enemy);
                     EnemySpawned?.Invoke(enemy);
                     _currentEnemyIndex++;
                 }
                 else
                 {
-                    // Reset timer until there is enough room for the next enemy
-                    // Effectively setting the timer on pause
                     _localTime = 0; 
                 }
             }
@@ -124,19 +130,30 @@ namespace _GAME.Scripts.GameCoreSystems.EnemyManagement
                 _isWaveActive = false;
             }
         }
-    
+
         private Enemy SpawnEnemy(EnemyType enemyType)
         {
             var enemy = _enemyPool.Get(EnemyTypeLibrary.EnemyTypeDictionary[enemyType]);
             enemy.Play();
             return enemy;
         }
-    
+
         private float UpdateSpawnCooldown()
         {
             float spawnDelayPhase = (float)(_currentEnemyIndex-1) / (_enemyQueue.Count()-1);
             float spawnDelayAcceleration = 1f/Mathf.Lerp(1, _enemyQueue.SpawnDelayAcceleration, spawnDelayPhase);
             return _enemyQueue.SpawnDelay * spawnDelayAcceleration;
+        }
+
+        private void LogCurrentWaveData()
+        {
+            string waveData = "";
+            for (int i = 0; i < _enemyQueue.Count(); i++)
+            {
+                _enemyPool.PreloadEnemy(EnemyTypeLibrary.EnemyTypeDictionary[_enemyQueue.Get(i)]);
+                waveData = waveData + " - " + _enemyQueue.Get(i).ToString();
+            }
+            Debug.Log(waveData);
         }
     }
 }

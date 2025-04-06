@@ -24,12 +24,13 @@ namespace _GAME.Scripts.Enemies.Spider
         private float _lampCollisionRadius;
         private float _collisionThreshold;
         private float _collisionRadius;
-
-        // State Machine
+        
         private readonly StateMachine _stateMachine = new();
         private SpiderMovementStateFactory _stateFactory;
         private EnemyMovementStateBase _currentState;
-    
+        private ISpiderSideDirectionProvider _sideDirectionProvider;
+        
+        // State Machine
         private SpiderMovementEnterState _enterState;
         private SpiderMovementPatrolState _patrolState;
         private SpiderMovementPreAttackState _preAttackState;
@@ -41,12 +42,14 @@ namespace _GAME.Scripts.Enemies.Spider
         public void Construct(
             SpiderMovementStateFactory stateFactory, 
             ILampPositionProviderService lampPositionProviderService,
+            ISpiderSideDirectionProvider sideDirectionProvider,
             float lampCollisionRadius,
             float collisionThreshold
             )
         {
             _stateFactory = stateFactory;
             _lampPositionProviderService = lampPositionProviderService;
+            _sideDirectionProvider = sideDirectionProvider;
             _lampCollisionRadius = lampCollisionRadius;
             _collisionThreshold = collisionThreshold;
         }
@@ -121,7 +124,8 @@ namespace _GAME.Scripts.Enemies.Spider
 
         public override void Play()
         {
-            _sideDirection = RandomDirection.Generate();;
+            // _sideDirection = RandomDirection.Generate();;
+            _sideDirection = _sideDirectionProvider.RequestPoint(this);
         
             SwitchToStateAndApply(_enterState);
         
@@ -216,6 +220,7 @@ namespace _GAME.Scripts.Enemies.Spider
 
         private void OnDeathStateEnded()
         {
+            _sideDirectionProvider.ReleasePoint(this);
             DeathStateEnded?.Invoke();
         }
 

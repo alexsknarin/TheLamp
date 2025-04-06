@@ -69,6 +69,7 @@ namespace _GAME.Scripts.GameCoreSystems.DI
         private GameConfigService _gameConfigService;
         private HapticFeedbackService _hapticFeedbackService;
         private UnityAnalyticsService _unityAnalyticsService;
+        private SpiderPositionHolder _spiderPositionHolder;
     
         private CameraShakeEventListener _cameraShakeEventListener;
         private PlayerAttackCooldownHandler _playerAttackCooldownHandler;
@@ -193,6 +194,8 @@ namespace _GAME.Scripts.GameCoreSystems.DI
                 _gameConfigService.PlayerConfig.DefaultAttackZoneRadius
                 );
             _lampCollisionDetectionService.Initialize();
+
+            _spiderPositionHolder = new();
         }
 
         private void HandlersSetup()
@@ -249,7 +252,8 @@ namespace _GAME.Scripts.GameCoreSystems.DI
                 _megamothlingMovementStateFactory,
                 _megabeetleMovementStateFactory,
                 _lampPositionProviderService,
-                _gameConfigService
+                _gameConfigService,
+                _spiderPositionHolder
             );
             _enemyPool = new EnemyPool(_enemyFactory);
             _enemyPool.Initialize();
@@ -259,7 +263,11 @@ namespace _GAME.Scripts.GameCoreSystems.DI
 
         private void ControllersSetup()
         {
-            _enemySpawner = new EnemySpawner(_enemyPool, _gameConfigService.GameConfig.FirstEnemySpawnDelay);
+            _enemySpawner = new EnemySpawner(
+                _enemyPool,
+                _gameConfigService.GameConfig.FirstEnemySpawnDelay,
+                _spiderPositionHolder
+                );
             _enemySpawner.Initialize();
             _tickables.Add(_enemySpawner);
             _disposables.Add(_enemySpawner);

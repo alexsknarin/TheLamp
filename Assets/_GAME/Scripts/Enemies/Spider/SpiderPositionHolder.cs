@@ -1,0 +1,58 @@
+using _GAME.Scripts.Enemies;
+using _GAME.Scripts.Lib.Interfaces;
+using UnityEngine;
+
+public class SpiderPositionHolder: ISpiderSpawnAvailableChecker, ISpiderSideDirectionProvider
+{
+    private int[] _directions = {-1, 1};
+    private EnemyMovementBase[] _occupants = { null, null };
+    private bool[] _occupiedStatus = { false, false };
+
+    public bool CheckPointAvailability()
+    {
+        if (_occupiedStatus[0] && _occupiedStatus[1])
+        {
+            Debug.Log("Spider spawn points are occupied.");
+            return false;
+        }
+        Debug.Log("Spider spawn point is available.");
+        return true;
+    }
+
+    public int RequestPoint(EnemyMovementBase occupant)
+    {
+        int side = 0;
+        if (!_occupiedStatus[0] && !_occupiedStatus[1])
+        {
+            side = Random.Range(0, 2);
+        }
+        else if (_occupiedStatus[0] && !_occupiedStatus[1])
+        {
+            side = 1;
+        }
+        else if (!_occupiedStatus[0] && _occupiedStatus[1])
+        {
+            side = 0;
+        }
+        
+        Debug.Log("Spider spawn point requested : " + _directions[side]);
+        
+        _occupants[side] = occupant;
+        _occupiedStatus[side] = true;
+        return _directions[side];
+    }
+
+    public void ReleasePoint(EnemyMovementBase occupant)
+    {
+        for (int i = 0; i < _occupants.Length; i++)
+        {
+            if (_occupants[i] == occupant)
+            {
+                _occupants[i] = null;
+                _occupiedStatus[i] = false;
+                Debug.Log("Spider spawn point released : " + _directions[i]);
+                break;
+            }
+        }
+    }
+}

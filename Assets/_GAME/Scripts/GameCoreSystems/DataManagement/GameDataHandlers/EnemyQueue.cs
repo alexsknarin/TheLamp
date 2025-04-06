@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using _GAME.Scripts.Lib.Enums;
+using UnityEngine;
 
 namespace _GAME.Scripts.GameCoreSystems.DataManagement.GameDataHandlers
 {
@@ -45,5 +46,32 @@ namespace _GAME.Scripts.GameCoreSystems.DataManagement.GameDataHandlers
             }
         }
 
+        public bool PushEnemyForward(int enemyIndex, EnemyType enemyType)
+        {
+            int replacementIndex = enemyIndex;
+            bool hasReplacemesnt = false;
+            // TODO: potential otimization
+            while (replacementIndex < _enemies.Count) 
+            {
+                if (_enemies[replacementIndex] != enemyType)
+                {
+                    hasReplacemesnt = true;
+                    break;
+                }
+                replacementIndex++;
+            }
+            
+            if (hasReplacemesnt)
+            {
+                SwapEnemies(enemyIndex, replacementIndex);
+                return true;
+            }
+            return false;
+        }
+        
+        private void SwapEnemies(int index1, int index2)
+        {
+            (_enemies[index1], _enemies[index2]) = (_enemies[index2], _enemies[index1]);
+        }
     }
 }

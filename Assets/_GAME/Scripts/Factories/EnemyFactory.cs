@@ -30,6 +30,7 @@ namespace _GAME.Scripts.Factories
         private readonly MegamothlingMovementStateFactory _megamothlingMovementStateFactory;
         private readonly MegabeetleMovementStateFactory _megabeetleMovementStateFactory;
         private readonly IGameConfigService _gameConfigService;
+        private readonly ISpiderSideDirectionProvider _spiderSideDirectionProvider;
     
         AsyncOperationHandle<GameObject> _mothlingEnemyAssetHandle;
         AsyncOperationHandle<GameObject> _flyEnemyAssetHandle;
@@ -52,7 +53,8 @@ namespace _GAME.Scripts.Factories
             MegamothlingMovementStateFactory megamothlingMovementStateFactory,
             MegabeetleMovementStateFactory megabeetleMovementStateFactory,
             ILampPositionProviderService lampPositionProviderService,
-            IGameConfigService gameConfigService
+            IGameConfigService gameConfigService,
+            ISpiderSideDirectionProvider spiderSideDirectionProvider
             )
         {
             _mothlingMovementStateFactory = mothlingMovementStateFactory;
@@ -64,6 +66,7 @@ namespace _GAME.Scripts.Factories
             _lampPositionProviderService = lampPositionProviderService;
             _megabeetleMovementStateFactory = megabeetleMovementStateFactory;
             _gameConfigService = gameConfigService;
+            _spiderSideDirectionProvider = spiderSideDirectionProvider;
         
             IsMothlingLoaded = false;
             IsFlyLoaded = false;
@@ -278,6 +281,7 @@ namespace _GAME.Scripts.Factories
             enemyInstance.GetComponent<SpiderMovement>().Construct(
                 _spiderMovementStateFactory,
                 _lampPositionProviderService,
+                _spiderSideDirectionProvider,
                 _gameConfigService.PlayerConfig.LampCollisionRadius,
                 _gameConfigService.PlayerConfig.CollisionThreshold
                 );
