@@ -86,7 +86,6 @@ namespace _GAME.Scripts.Enemies.FireFly
                 {
                     return true;
                 }
-            
                 if ((_movement.SideDirection < 0) && (x > 0.53f))
                 { 
                     return true; 
