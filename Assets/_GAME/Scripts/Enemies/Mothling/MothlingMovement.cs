@@ -226,10 +226,7 @@ namespace _GAME.Scripts.Enemies.Mothling
 
         private void Update()
         {
-            // Debug only
-            _prevPosition = _position3D;
-            _prevPosSmooth = transform.position;
-      
+            StashPreviousPositions();
             UpdateStateMachine();
 
             // Add Noise
@@ -273,6 +270,13 @@ namespace _GAME.Scripts.Enemies.Mothling
         
             Debug.DrawLine(_prevPosition, _prevPosition + (_position3D-_prevPosition).normalized*0.02f, Color.cyan, 5f);
             Debug.DrawLine(_prevPosSmooth, _prevPosSmooth + (transform.position-_prevPosSmooth).normalized*0.02f, Color.yellow, 5f);
+        }
+
+        private void StashPreviousPositions()
+        {
+            // Debug only
+            _prevPosition = _position3D;
+            _prevPosSmooth = transform.position;
         }
 
         private void UpdateStateMachine()
