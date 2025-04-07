@@ -44,8 +44,10 @@ namespace _GAME.Scripts.Enemies.Spider.MovementStates
     
         public override void OnEnter()
         {
-            Position2D = (_positionDirectionProvider.Position2D - _lampPositionProviderService.GetLampPosition()).normalized
-                         * (_lampCollisionRadius + _collisionThreshold + _collisionRadius);
+            Position2D 
+                = (_positionDirectionProvider.Position2D - _lampPositionProviderService.GetLampPosition()).normalized
+                  * (_lampCollisionRadius + _collisionThreshold + _collisionRadius);
+            
             _initialAmplitude = Mathf.Abs(Mathf.Abs(Position2D.x) - Mathf.Abs(_hangingPoint.x));
             _swingAmplitude = _initialAmplitude;
             _initialDirection = Position2D.normalized;

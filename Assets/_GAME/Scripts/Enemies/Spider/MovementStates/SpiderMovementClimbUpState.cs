@@ -15,7 +15,11 @@ namespace _GAME.Scripts.Enemies.Spider.MovementStates
         private float _startY;
         private float _startX;
     
-        public SpiderMovementClimbUpState(IPositionDirectionProvider positionDirectionProvider, float xCenter, float height)
+        public SpiderMovementClimbUpState(
+            IPositionDirectionProvider positionDirectionProvider,
+            float xCenter,
+            float height
+            )
         {
             _positionDirectionProvider = positionDirectionProvider;
             _hangingPoint.x = xCenter;

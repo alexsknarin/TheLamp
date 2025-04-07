@@ -124,7 +124,6 @@ namespace _GAME.Scripts.Enemies.Spider
 
         public override void Play()
         {
-            // _sideDirection = RandomDirection.Generate();;
             _sideDirection = _sideDirectionProvider.RequestPoint(this);
         
             SwitchToStateAndApply(_enterState);

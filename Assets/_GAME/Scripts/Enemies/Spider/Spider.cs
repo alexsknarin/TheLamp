@@ -116,7 +116,6 @@ namespace _GAME.Scripts.Enemies.Spider
 
         public override void DoDeath()
         {
-            // CollisionState = CollidableState.AfterCollision;
             _movement.TriggerDeath();
         }
 
