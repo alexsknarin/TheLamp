@@ -13,7 +13,7 @@ namespace _GAME.Scripts.Enemies.Spider.MovementStates
         private readonly float _collisionThreshold;
         private readonly float _collisionRadius;
 
-        private readonly float _decceleration = 0.07f;
+        private readonly float _decceleration = 0.08f;
         private float _localTime;
         private float _initialAmplitude;
         private float _swingAmplitude;

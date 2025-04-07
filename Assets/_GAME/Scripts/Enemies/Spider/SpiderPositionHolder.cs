@@ -12,10 +12,8 @@ public class SpiderPositionHolder: ISpiderSpawnAvailableChecker, ISpiderSideDire
     {
         if (_occupiedStatus[0] && _occupiedStatus[1])
         {
-            Debug.Log("Spider spawn points are occupied.");
             return false;
         }
-        Debug.Log("Spider spawn point is available.");
         return true;
     }
 
@@ -35,8 +33,6 @@ public class SpiderPositionHolder: ISpiderSpawnAvailableChecker, ISpiderSideDire
             side = 0;
         }
         
-        Debug.Log("Spider spawn point requested : " + _directions[side]);
-        
         _occupants[side] = occupant;
         _occupiedStatus[side] = true;
         return _directions[side];
@@ -50,7 +46,6 @@ public class SpiderPositionHolder: ISpiderSpawnAvailableChecker, ISpiderSideDire
             {
                 _occupants[i] = null;
                 _occupiedStatus[i] = false;
-                Debug.Log("Spider spawn point released : " + _directions[i]);
                 break;
             }
         }

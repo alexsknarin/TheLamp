@@ -32,6 +32,7 @@ namespace _GAME.Scripts.GameCoreSystems
         public void Initialize()
         {
             _waveEnemyDirector.EnemyAttackStarted += OnEnemyAttackStarted;
+            _waveEnemyDirector.EnemyCollisionReqested += OnEnemyCollisionReqested;
             _waveEnemyDirector.StickyEnemyReadyToStick += OnStickyEnemyReadyToStick;
         
             _lampCollisionDetectionService.EnemyAttackEnded += OnEnemyAttackEnded;
@@ -45,6 +46,7 @@ namespace _GAME.Scripts.GameCoreSystems
         public void Dispose()
         {
             _waveEnemyDirector.EnemyAttackStarted -= OnEnemyAttackStarted;
+            _waveEnemyDirector.EnemyCollisionReqested += OnEnemyCollisionReqested;
             _waveEnemyDirector.StickyEnemyReadyToStick -= OnStickyEnemyReadyToStick;
         
             _lampCollisionDetectionService.EnemyAttackEnded -= OnEnemyAttackEnded;
@@ -54,13 +56,13 @@ namespace _GAME.Scripts.GameCoreSystems
             _lampStickyDetectionService.EnemySticked -= OnEnemySticked;
             _lampStickyDetectionService.EnemyUnSticked -= OnEnemyUnSticked;
         }
-    
+
         public void SetAttackZoneRadius(float radius)
         {
             _lampCollisionDetectionService.SetAttackZoneRadius(radius);
             _lampStickyDetectionService.SetAttackZoneRadius(radius);
         }
-    
+
         public void Reset()
         {
             _lampCollisionDetectionService.Reset();
@@ -72,11 +74,16 @@ namespace _GAME.Scripts.GameCoreSystems
             _lampCollisionDetectionService.AddCollidable(enemy);
         }
 
+        private void OnEnemyCollisionReqested(CollidableEnemy enemy)
+        {
+            _lampCollisionDetectionService.AddCollidable(enemy);
+        }
+
         private void OnStickyEnemyReadyToStick(IStickableWithLamp enemy)
         {
             _lampStickyDetectionService.AddStickable(enemy);
         }
-    
+
         private void OnEnemyAttackEnded(Vector3 impactPoint, bool isEnemyDamaged, string enemyTypeName)
         {
             EnemyAttackEnded?.Invoke(impactPoint, isEnemyDamaged, enemyTypeName);

@@ -39,6 +39,7 @@ namespace _GAME.Scripts.GameCoreSystems.EnemyManagement
     
         public event Action WaveEnded;
         public event Action<CollidableEnemy> EnemyAttackStarted;
+        public event Action<CollidableEnemy> EnemyCollisionReqested;
         public event Action<IStickableWithLamp> StickyEnemyReadyToStick;
         public event Action LampBlocked;
         public event Action LampUnblocked;
@@ -270,6 +271,10 @@ namespace _GAME.Scripts.GameCoreSystems.EnemyManagement
                 ((IProjectileShooter)enemy).ProjectileShot += OnProjectileShot;
                 ((IProjectileShooter)enemy).ProjectileDeactivated += OnProjectileDeactivated;
             }
+            if (enemy is IForcedCollidableEnemy)
+            {
+                ((IForcedCollidableEnemy)enemy).CollisionRequested += OnForcedCollisionRequested;
+            }
         }
 
         private void OnEnemyDead(Enemy enemy)
@@ -321,6 +326,10 @@ namespace _GAME.Scripts.GameCoreSystems.EnemyManagement
                     ((IProjectileShooter)enemy).ProjectileShot -= OnProjectileShot;
                     ((IProjectileShooter)enemy).ProjectileDeactivated -= OnProjectileDeactivated;
                 }
+                if (enemy is IForcedCollidableEnemy)
+                {
+                    ((IForcedCollidableEnemy)enemy).CollisionRequested -= OnForcedCollisionRequested;
+                }
             }
         }
 
@@ -344,13 +353,18 @@ namespace _GAME.Scripts.GameCoreSystems.EnemyManagement
         {
             StickyAttackEnded?.Invoke(transform.position, false, "Megabeetle");
         }
-    
+
         private void OnProjectileShot(CollidableEnemy enemy)
         {
             EnemyAttackStarted?.Invoke(enemy);
             _enemies.Add(enemy);
         }
-    
+
+        private void OnForcedCollisionRequested(CollidableEnemy enemy)
+        {
+            EnemyCollisionReqested?.Invoke(enemy);
+        }
+
         private void OnProjectileDeactivated(Enemy enemy, bool damaged)
         {
             if (damaged)
