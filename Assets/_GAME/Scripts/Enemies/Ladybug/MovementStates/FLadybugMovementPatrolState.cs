@@ -132,7 +132,8 @@ namespace _GAME.Scripts.Enemies.Ladybug.MovementStates
         {
             Vector2 horizontalVector = Vector2.right;
             horizontalVector.x *= sideDirection;
-            _patrolStartOffsetAngle = Mathf.Acos(Vector2.Dot(horizontalVector.normalized, Position2D.normalized));
+            _patrolStartOffsetAngle 
+                = Mathf.Acos(Vector2.Dot(horizontalVector.normalized, Position2D.normalized));
             _patrolStartOffsetAngle *= Mathf.Sign(Position2D.y);
         }
 
@@ -154,7 +155,14 @@ namespace _GAME.Scripts.Enemies.Ladybug.MovementStates
 
         private Vector2 FindEllipsePosition()
         {
-            Vector2 ellipsePosition = EnemyMovementPatterns.CircleMotion(_patrolStartOffsetAngle, _radius, _radius, _verticalAmplitude, _phase);
+            Vector2 ellipsePosition = EnemyMovementPatterns.CircleMotion(
+                _patrolStartOffsetAngle, 
+                _radius,
+                _radius,
+                _verticalAmplitude, 
+                _phase
+                );
+
             ellipsePosition *= _spiralPhase;
             return ellipsePosition;
         }

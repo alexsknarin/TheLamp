@@ -32,8 +32,9 @@ namespace _GAME.Scripts.Enemies.Ladybug.MovementStates
     
         public override void OnEnter()
         {
-            Vector2 newPosition = (_positionDirectionProvider.Position2D - _lampPositionProviderService.GetLampPosition()).normalized 
-                                  * (_lampStickRadius + _collisionRadius); 
+            Vector2 newPosition 
+                = (_positionDirectionProvider.Position2D - _lampPositionProviderService.GetLampPosition()).normalized
+                  * (_lampStickRadius + _collisionRadius); 
             Position2D = newPosition;
         
             Vector3 cameraDirection = (_cameraPosition - (Vector3)Position2D).normalized;

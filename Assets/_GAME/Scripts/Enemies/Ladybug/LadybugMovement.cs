@@ -120,9 +120,7 @@ namespace _GAME.Scripts.Enemies.Ladybug
 
         public override void Play()
         {
-            // Spawn position
-            _sideDirection = RandomDirection.Generate();
-            SideDirection = _sideDirection;
+            SetInitialDirections();
             Position2D = GenerateSpawnPosition(_radius);
         
             if (_sideDirection > 0)
@@ -141,6 +139,12 @@ namespace _GAME.Scripts.Enemies.Ladybug
         
             enabled = true;
 
+        }
+
+        private void SetInitialDirections()
+        {
+            _sideDirection = RandomDirection.Generate();
+            SideDirection = _sideDirection;
         }
 
         public override void TriggerAttack()
@@ -170,13 +174,8 @@ namespace _GAME.Scripts.Enemies.Ladybug
         private void Update()
         {
             _prevPosition = transform.position;
-        
-            _stateMachine.Tick();
-            _currentState = (EnemyMovementStateBase)_stateMachine.CurrentState;
-            _stateDebug = _currentState.GetType().Name; // Debug only
-            Position2D = _currentState.Position2D;
-        
-            // Add Depth later
+            UpdateStateMachine();
+
             if (_isDepthEnabled)
             {
                 DepthDirection = _currentState.DepthDirection;
@@ -187,9 +186,15 @@ namespace _GAME.Scripts.Enemies.Ladybug
                 transform.position = Position2D;
             }
         
-            // Add Smooth?
-        
             Debug.DrawLine(_prevPosition, transform.position, Color.cyan, 10f);
+        }
+
+        private void UpdateStateMachine()
+        {
+            _stateMachine.Tick();
+            _currentState = (EnemyMovementStateBase)_stateMachine.CurrentState;
+            _stateDebug = _currentState.GetType().Name; // Debug only
+            Position2D = _currentState.Position2D;
         }
 
         private Vector2 GenerateSpawnPosition(float distance)

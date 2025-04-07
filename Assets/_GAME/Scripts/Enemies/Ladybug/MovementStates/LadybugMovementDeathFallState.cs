@@ -40,7 +40,8 @@ namespace _GAME.Scripts.Enemies.Ladybug.MovementStates
         public override void OnEnter()
         {
             Position2D = _positionDirectionProvider.Position2D;
-            _bounceForce = (Position2D - _lampPositionProviderService.GetLampPosition()).normalized * _bounceForceMagnitude;
+            _bounceForce 
+                = (Position2D - _lampPositionProviderService.GetLampPosition()).normalized * _bounceForceMagnitude;
             _gravityForce = Vector2.zero;
             DepthDirection = _positionDirectionProvider.DepthDirection;
             
