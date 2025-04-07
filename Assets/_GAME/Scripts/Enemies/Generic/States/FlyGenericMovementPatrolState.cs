@@ -42,7 +42,8 @@ namespace _GAME.Scripts.Enemies.Generic.States
         {
             Position2D = _positionDirectionProvider.Position2D;
             Vector3 horizontalVector = Vector2.right;
-            _patrolStartOffsetAngle = Mathf.Acos(Vector3.Dot(horizontalVector.normalized, Position2D.normalized));
+            _patrolStartOffsetAngle 
+                = Mathf.Acos(Vector3.Dot(horizontalVector.normalized, Position2D.normalized));
             _phase = 0;
             _localTime = 0;
             Started?.Invoke();
@@ -55,14 +56,20 @@ namespace _GAME.Scripts.Enemies.Generic.States
             float finalXRadius = _radius;
             if (radiusAdaptPhase < 1f)
             {
-                finalXRadius = Mathf.Lerp(_radius * _verticalAmplitude, _radius,  Mathf.SmoothStep(0, 1, radiusAdaptPhase));
+                finalXRadius 
+                    = Mathf.Lerp(_radius * _verticalAmplitude, _radius,  Mathf.SmoothStep(0, 1, radiusAdaptPhase));
             }
         
             // Circle motion
             _phase += Time.deltaTime * _speed;
         
             Vector2 circlePosition = EnemyMovementPatterns.CircleMotion(
-                -_patrolStartOffsetAngle, finalXRadius, _radius, _verticalAmplitude, _phase);
+                -_patrolStartOffsetAngle, 
+                finalXRadius,
+                _radius,
+                _verticalAmplitude,
+                _phase
+                );
         
             Position2D = circlePosition;
         

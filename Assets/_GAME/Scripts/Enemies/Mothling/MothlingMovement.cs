@@ -150,8 +150,7 @@ namespace _GAME.Scripts.Enemies.Mothling
 
         public override void Play()
         {
-            _sideDirection = RandomDirection.Generate();
-            _depthSideDirection = RandomDirection.Generate();
+            SetInitialDirections();
             Position2D = GenerateSpawnPosition(-1);
             _position3D = Position2D;
             transform.position = _position3D;
@@ -170,6 +169,12 @@ namespace _GAME.Scripts.Enemies.Mothling
             enabled = true;
         }
 
+        private void SetInitialDirections()
+        {
+            _sideDirection = RandomDirection.Generate();
+            _depthSideDirection = RandomDirection.Generate();
+        }
+
         public override void TriggerAttack()
         {
             if (_currentState.Equals(_patrolState))
@@ -184,16 +189,13 @@ namespace _GAME.Scripts.Enemies.Mothling
             if (_currentState.Equals(_attackState))
             {
                 ApplyTransformToPosition2D();
+                
                 _currentState = _fallState;
                 _stateDebug = _currentState.GetType().Name; // Debug only
                 _stateMachine.SetState(_currentState);
 
-                // Immediately Apply Position2D and SideDirection to transform to avoid visible collision penetration.
-                Vector3 newPosition = transform.position;
-                newPosition.x = _currentState.Position2D.x;
-                newPosition.y = _currentState.Position2D.y;
-                transform.position = newPosition;
-            
+                ApplyPosition2DToTransform();
+
                 // Refresh Smooth Damp velocity (for the sharp bounce).
                 _velocity = Vector3.zero;
             }
@@ -308,6 +310,14 @@ namespace _GAME.Scripts.Enemies.Mothling
             Vector2 newPosition2D = Position2D;
             newPosition2D.x = Mathf.Abs(newPosition2D.x) * Mathf.Sign(transform.position.x);
             Position2D = newPosition2D;
+        }
+
+        private void ApplyPosition2DToTransform()
+        {
+            Vector3 newPosition = transform.position;
+            newPosition.x = _currentState.Position2D.x;
+            newPosition.y = _currentState.Position2D.y;
+            transform.position = newPosition;
         }
 
         private IEnumerator SmoothDampDelay()
