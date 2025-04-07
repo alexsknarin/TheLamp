@@ -50,7 +50,8 @@ namespace _GAME.Scripts.Enemies.Moth.MovementStates
 
             // Add noise
             Vector2 trajectoryNoise = TrajectoryNoise.Generate(_noiseFrequency);
-            float noiseAttenuation = Mathf.Clamp((lampVector.magnitude - 0.65f) / (_maxDistance - 0.65f) * 1.5f - 0.5f , 0, 1); 
+            float noiseAttenuation 
+                = Mathf.Clamp((lampVector.magnitude - 0.65f) / (_maxDistance - 0.65f) * 1.5f - 0.5f , 0, 1); 
             Position2D = newPosition + trajectoryNoise * (_noiseAmplitude * noiseAttenuation);
             Vector3 cameraDirection = (_cameraPosition - (Vector3)Position2D).normalized;
             DepthDirection = cameraDirection * (0.2f * _depthDecrement);

@@ -44,19 +44,28 @@ namespace _GAME.Scripts.Enemies.Moth.MovementStates
             IsReadyToSwitch = false;
             Position2D = GenerateSpawnPosition(_deadZoneAngle, _minDistance, _maxDistance);
         
-            // Find intersection to the ellipse
-            float a = _radius;
-            float b = _radius * _verticalAmplitude;
+            CalculateEndPos();
 
-            float denominator = ((a * b) / (Mathf.Sqrt((a * a) * (Position2D.y * Position2D.y) 
-                                                       + (b * b) * (Position2D.x * Position2D.x)))); 
-            _endPos = Vector3.zero;
-            _endPos.x = denominator * Position2D.x;
-            _endPos.y = denominator * Position2D.y;
-       
             _enterDirection = (Vector2.zero - Position2D).normalized;
             _initialDistance = (_endPos - Position2D).magnitude;
             _phase = 1;
+        }
+
+        private void CalculateEndPos()
+        {
+            var denominator = FindIntersectionWithEllipse();
+            _endPos = Vector3.zero;
+            _endPos.x = denominator * Position2D.x;
+            _endPos.y = denominator * Position2D.y;
+        }
+
+        private float FindIntersectionWithEllipse()
+        {
+            float a = _radius;
+            float b = _radius * _verticalAmplitude;
+            float denominator = ((a * b) / (Mathf.Sqrt((a * a) * (Position2D.y * Position2D.y) 
+                                                       + (b * b) * (Position2D.x * Position2D.x))));
+            return denominator;
         }
 
         public override void Tick()

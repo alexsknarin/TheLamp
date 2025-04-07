@@ -120,8 +120,7 @@ namespace _GAME.Scripts.Enemies.Moth
 
         public override void Play()
         {
-            _sideDirection = RandomDirection.Generate();
-            _depthSideDirection = RandomDirection.Generate();
+            SetInitialDirections();
             _currentState = _enterState;
             _stateMachine.SetState(_currentState);
             _position3d = _enterState.Position2D;
@@ -132,6 +131,12 @@ namespace _GAME.Scripts.Enemies.Moth
             
             _isAttacking = false;
             enabled = true;
+        }
+
+        private void SetInitialDirections()
+        {
+            _sideDirection = RandomDirection.Generate();
+            _depthSideDirection = RandomDirection.Generate();
         }
 
         public override void TriggerAttack()
@@ -186,13 +191,8 @@ namespace _GAME.Scripts.Enemies.Moth
         private void Update()
         {
             _prevPosition = transform.position;
-        
-            _stateMachine.Tick();
-            _currentState = (EnemyMovementStateBase)_stateMachine.CurrentState;
-            _stateDebug = _currentState.GetType().Name;
-            Position2D = _currentState.Position2D;
-            DepthDirection = _currentState.DepthDirection;
-        
+            UpdateStateMachine();
+
             _position3d = Position2D;
         
             if (_currentState.Equals(_patrolState) || _currentState.Equals(_hoverState) || _currentState.Equals(_enterState))
@@ -215,19 +215,34 @@ namespace _GAME.Scripts.Enemies.Moth
             if (_currentState.GetType() == typeof(MothMovementNoisePatrolState) && !_isPatrolEnterChecked)
             {
                 _isPatrolEnterChecked = true;
-                // Check if side is switched incorrectly and fix it:
-                int prevPositionSign = (int)(Mathf.Sign(_prevPosition.x));
-                int currentPositionSign = (int)(Mathf.Sign(transform.position.x));
-                if (prevPositionSign != currentPositionSign)
-                {
-                    Vector2 newPosition2D = Position2D;
-                    newPosition2D.x *= -1;
-                    Position2D = newPosition2D;
+
+                FixIncorrectSideSwitch();
+            }
+        }
+
+        private void UpdateStateMachine()
+        {
+            _stateMachine.Tick();
+            _currentState = (EnemyMovementStateBase)_stateMachine.CurrentState;
+            _stateDebug = _currentState.GetType().Name;
+            Position2D = _currentState.Position2D;
+            DepthDirection = _currentState.DepthDirection;
+        }
+
+        private void FixIncorrectSideSwitch()
+        {
+            // Check if side is switched incorrectly and fix it:
+            int prevPositionSign = (int)(Mathf.Sign(_prevPosition.x));
+            int currentPositionSign = (int)(Mathf.Sign(transform.position.x));
+            if (prevPositionSign != currentPositionSign)
+            {
+                Vector2 newPosition2D = Position2D;
+                newPosition2D.x *= -1;
+                Position2D = newPosition2D;
                     
-                    Vector3 newPosition3D = transform.position;
-                    newPosition3D.x *= -1;
-                    transform.position = newPosition3D;
-                }
+                Vector3 newPosition3D = transform.position;
+                newPosition3D.x *= -1;
+                transform.position = newPosition3D;
             }
         }
 

@@ -70,7 +70,12 @@ namespace _GAME.Scripts.Enemies.Moth.MovementStates
         
             _bounceForce = position2DNormalized * _bounceForceMagnitude;
         
-            Debug.DrawRay(_lampPositionProviderService.GetLampPosition(), position2DNormalized, Color.red, 5f);
+            Debug.DrawRay(
+                _lampPositionProviderService.GetLampPosition(),
+                position2DNormalized, 
+                Color.red,
+                5f
+                );
         
             _gravityForce = Vector3.zero;
             _localTime = 0;
