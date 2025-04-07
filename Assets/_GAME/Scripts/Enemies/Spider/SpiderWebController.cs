@@ -18,14 +18,12 @@ namespace _GAME.Scripts.Enemies.Spider
         public void Initialize()
         {
             _lineMaterial = _spiderWebLineRenderer.material;
-            _lineMaterial.SetFloat("_Damage", 0f);
-            _spiderWebLineRenderer.positionCount = 2;
         }
 
         public void Play()
         {
-            Debug.Log("Spiderweb Play");
-            Debug.Log(transform.position);
+            _lineMaterial.SetFloat("_Damage", 0f);
+            _spiderWebLineRenderer.positionCount = 2;
             _startPoint = transform.position;
             _endPoint = transform.position;
             _isShrinking = false;
