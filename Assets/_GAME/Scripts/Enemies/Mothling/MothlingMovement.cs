@@ -229,14 +229,9 @@ namespace _GAME.Scripts.Enemies.Mothling
             // Debug only
             _prevPosition = _position3D;
             _prevPosSmooth = transform.position;
+      
+            UpdateStateMachine();
 
-        
-            _stateMachine.Tick();
-            _currentState = (EnemyMovementStateBase)_stateMachine.CurrentState;
-            _stateDebug = _currentState.GetType().Name; // Debug only
-            Position2D = _currentState.Position2D;
-            DepthDirection = _currentState.DepthDirection;
-        
             // Add Noise
             if (_isNoiseEnabled)
             {
@@ -278,6 +273,15 @@ namespace _GAME.Scripts.Enemies.Mothling
         
             Debug.DrawLine(_prevPosition, _prevPosition + (_position3D-_prevPosition).normalized*0.02f, Color.cyan, 5f);
             Debug.DrawLine(_prevPosSmooth, _prevPosSmooth + (transform.position-_prevPosSmooth).normalized*0.02f, Color.yellow, 5f);
+        }
+
+        private void UpdateStateMachine()
+        {
+            _stateMachine.Tick();
+            _currentState = (EnemyMovementStateBase)_stateMachine.CurrentState;
+            _stateDebug = _currentState.GetType().Name; // Debug only
+            Position2D = _currentState.Position2D;
+            DepthDirection = _currentState.DepthDirection;
         }
 
         private void AddMotionNoise()
