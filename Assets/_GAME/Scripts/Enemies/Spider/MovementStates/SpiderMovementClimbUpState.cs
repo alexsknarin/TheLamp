@@ -29,7 +29,7 @@ namespace _GAME.Scripts.Enemies.Spider.MovementStates
             IsReadyToSwitch = false;
             Position2D = _positionDirectionProvider.Position2D;
             _startY = Position2D.y;
-            _startX = (Position2D.x - _hangingPoint.x) * 0.75f;
+            _startX = Position2D.x;
             _localTime = 0;
         }
 
@@ -39,7 +39,7 @@ namespace _GAME.Scripts.Enemies.Spider.MovementStates
         
             Vector2 newPosition = Position2D;
             newPosition.y = _startY + Mathf.Sin(phase * _tau) + phase * 3.6f;
-            newPosition.x = Mathf.Cos(_localTime * 8) * _startX * Mathf.Pow(1-phase, 2)  + _hangingPoint.x;
+            newPosition.x = Mathf.Lerp(_startX, _hangingPoint.x,  Mathf.Clamp01(phase * 6.5f));
         
             Position2D = newPosition;
             _localTime += Time.deltaTime;

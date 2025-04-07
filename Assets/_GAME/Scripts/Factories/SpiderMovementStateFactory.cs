@@ -100,7 +100,7 @@ namespace _GAME.Scripts.Factories
             {
                 return new SpiderMovementClimbUpState(
                     _positionDirectionProvider,
-                    _speed,
+                    _xCenter,
                     _height
                 );
             }
