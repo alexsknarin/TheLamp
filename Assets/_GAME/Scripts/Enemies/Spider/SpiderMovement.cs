@@ -31,6 +31,7 @@ namespace _GAME.Scripts.Enemies.Spider
         private ISpiderSideDirectionProvider _sideDirectionProvider;
         
         // State Machine
+        private GenericIdleMovementState _idleState;
         private SpiderMovementEnterState _enterState;
         private SpiderMovementPatrolState _patrolState;
         private SpiderMovementPreAttackState _preAttackState;
@@ -70,6 +71,7 @@ namespace _GAME.Scripts.Enemies.Spider
         {
             // Create Movement States
             _stateFactory.SetEnemyDependencies(this, _speed, _xCenter, _height, _collisionRadius);
+            _idleState = (GenericIdleMovementState)_stateFactory.Create(typeof(GenericIdleMovementState));
             _enterState = (SpiderMovementEnterState)_stateFactory.Create(typeof(SpiderMovementEnterState));
             _patrolState = (SpiderMovementPatrolState)_stateFactory.Create(typeof(SpiderMovementPatrolState));
             _preAttackState = (SpiderMovementPreAttackState)_stateFactory.Create(typeof(SpiderMovementPreAttackState));
@@ -124,6 +126,8 @@ namespace _GAME.Scripts.Enemies.Spider
 
         public override void Play()
         {
+            _stateMachine.SetState(_idleState);
+            
             _sideDirection = _sideDirectionProvider.RequestPoint(this);
         
             SwitchToStateAndApply(_enterState);

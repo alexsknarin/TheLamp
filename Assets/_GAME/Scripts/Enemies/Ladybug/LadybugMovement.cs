@@ -37,7 +37,7 @@ namespace _GAME.Scripts.Enemies.Ladybug
         private readonly StateMachine _stateMachine = new();
         private LadybugMovementStateFactory _stateFactory;
         private EnemyMovementStateBase _currentState;
-    
+        private GenericIdleMovementState _idleState;
         private LadybugMovementPatrolStateR _patrolStateR;
         private LadybugMovementPatrolStateL _patrolStateL;
         private LadybugMovementPreAttackStateR _preAttackStateR;
@@ -68,6 +68,7 @@ namespace _GAME.Scripts.Enemies.Ladybug
         {        
             enabled = false;
             _stateFactory.SetEnemyDependencies(this, _speed, _radius, _verticalAmplitude, _collisionRadius);
+            _idleState = (GenericIdleMovementState)_stateFactory.Create(typeof(GenericIdleMovementState));
             _patrolStateR = (LadybugMovementPatrolStateR)_stateFactory.Create(typeof(LadybugMovementPatrolStateR));
             _patrolStateL = (LadybugMovementPatrolStateL)_stateFactory.Create(typeof(LadybugMovementPatrolStateL));
             _preAttackStateR = (LadybugMovementPreAttackStateR)_stateFactory.Create(typeof(LadybugMovementPreAttackStateR));
@@ -115,11 +116,11 @@ namespace _GAME.Scripts.Enemies.Ladybug
         {
             _collisionRadius = radius;
         }
-
         
-
         public override void Play()
         {
+            _stateMachine.SetState(_idleState);
+            
             SetInitialDirections();
             Position2D = GenerateSpawnPosition(_radius);
         

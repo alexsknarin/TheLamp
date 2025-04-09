@@ -1,4 +1,5 @@
 using System;
+using _GAME.Scripts.Enemies.Generic.States;
 using _GAME.Scripts.Enemies.Moth.MovementStates;
 using _GAME.Scripts.Factories;
 using _GAME.Scripts.Lib;
@@ -34,6 +35,7 @@ namespace _GAME.Scripts.Enemies.Moth
         private MothMovementStateFactory _stateFactory;
         // Movement States
         private EnemyMovementStateBase _currentState;
+        private GenericIdleMovementState _idleState;
         private MothMovementEnterState _enterState;
         private MothMovementHoverState _hoverState;
         private MothMovementNoisePatrolState _patrolState;
@@ -63,6 +65,7 @@ namespace _GAME.Scripts.Enemies.Moth
         public override void Initialize()
         {
             _stateFactory.SetEnemyDependencies(this, _speed, _radius, _verticalAmplitude, _collisionRadius);
+            _idleState = (GenericIdleMovementState)_stateFactory.Create(typeof(GenericIdleMovementState));
             _enterState = (MothMovementEnterState)_stateFactory.Create(typeof(MothMovementEnterState));
             _hoverState = (MothMovementHoverState)_stateFactory.Create(typeof(MothMovementHoverState));
             _patrolState = (MothMovementNoisePatrolState)_stateFactory.Create(typeof(MothMovementNoisePatrolState));
@@ -120,6 +123,8 @@ namespace _GAME.Scripts.Enemies.Moth
 
         public override void Play()
         {
+            _stateMachine.SetState(_idleState);
+            
             SetInitialDirections();
             _currentState = _enterState;
             _stateMachine.SetState(_currentState);

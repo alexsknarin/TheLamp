@@ -1,5 +1,6 @@
 using System;
 using _GAME.Scripts.Enemies;
+using _GAME.Scripts.Enemies.Generic.States;
 using _GAME.Scripts.Enemies.Moth.MovementStates;
 using _GAME.Scripts.Lib.Interfaces;
 using UnityEngine;
@@ -45,6 +46,10 @@ namespace _GAME.Scripts.Factories
 
         public EnemyMovementStateBase Create(Type stateType)
         {
+            if (stateType == typeof(GenericIdleMovementState))
+            {
+                return new GenericIdleMovementState();
+            }
             if (stateType == typeof(MothMovementEnterState))
             {
                 return new MothMovementEnterState(

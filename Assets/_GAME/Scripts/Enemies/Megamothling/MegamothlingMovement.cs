@@ -173,7 +173,6 @@ namespace _GAME.Scripts.Enemies.Megamothling
             
             SetInitialDirections();
             Position2D = GenerateSpawnPosition(-1);
-            
             _position3D = Position2D;
             transform.position = _position3D;
         

@@ -51,6 +51,7 @@ namespace _GAME.Scripts.Enemies.Fly
         private FlyMovementStateFactory _stateFactory;
         // States
         private EnemyMovementStateBase _currentState;
+        private GenericIdleMovementState _idleState;
         private FlyGenericMovementEnterState _enterState;
         private FlyGenericMovementPatrolState _patrolState;
         private FlyGenericMovementPreAttackStateR _preAttackStateR;
@@ -96,6 +97,7 @@ namespace _GAME.Scripts.Enemies.Fly
                 _fallBounceForce,
                 _fallGravityForce
             );
+            _idleState = (GenericIdleMovementState)_stateFactory.Create(typeof(GenericIdleMovementState));
             _enterState = (FlyGenericMovementEnterState)_stateFactory.Create(typeof(FlyGenericMovementEnterState));
             _patrolState = (FlyGenericMovementPatrolState)_stateFactory.Create(typeof(FlyGenericMovementPatrolState));
             _preAttackStateR = (FlyGenericMovementPreAttackStateR)_stateFactory.Create(typeof(FlyGenericMovementPreAttackStateR));
@@ -176,6 +178,8 @@ namespace _GAME.Scripts.Enemies.Fly
 
         public override void Play()
         {
+            _stateMachine.SetState(_idleState);
+            
             SetInitialDirections();
             Position2D = GenerateSpawnPosition(-1);
             _position3D = Position2D;
