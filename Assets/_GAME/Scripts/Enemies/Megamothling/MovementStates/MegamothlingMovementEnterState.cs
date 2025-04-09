@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace _GAME.Scripts.Enemies.Megamothling.MovementStates
 {
-    public class FMegamothlingMovementEnterState : EnemyMovementStateBase
+    public class MegamothlingMovementEnterState : EnemyMovementStateBase
     {
         // Dependencies
         private readonly Vector3 _cameraPosition;
@@ -21,7 +21,7 @@ namespace _GAME.Scripts.Enemies.Megamothling.MovementStates
         private float _startDepth;
         private float _depthAdjustLocalTime;
     
-        public FMegamothlingMovementEnterState(
+        public MegamothlingMovementEnterState(
             Vector3 cameraPosition,
             IPositionDirectionProvider positionDirectionProvider,
             float speed,
@@ -63,6 +63,7 @@ namespace _GAME.Scripts.Enemies.Megamothling.MovementStates
 
             _startDepth = 0;
             _depthAdjustLocalTime = 0;
+            Debug.Log("Entered: " + Position2D);
         }
 
         public override void Tick()
@@ -90,6 +91,8 @@ namespace _GAME.Scripts.Enemies.Megamothling.MovementStates
             {
                 IsReadyToSwitch = true;
             }
+            
+            Debug.Log("Tick: " + Position2D);
         }
     }
 }

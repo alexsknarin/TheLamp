@@ -52,7 +52,8 @@ namespace _GAME.Scripts.Enemies.Megamothling
         private MegamothlingMovementStateFactory _stateFactory;
         // States
         private EnemyMovementStateBase _currentState;
-        private FMegamothlingMovementEnterState _enterState;
+        private GenericIdleMovementState _idleState;
+        private MegamothlingMovementEnterState _enterState;
         private FlyGenericMovementPatrolState  _patrolState;
         private FlyGenericMovementPreAttackStateL _preAttackStateL;
         private FlyGenericMovementPreAttackStateR _preAttackStateR;
@@ -95,7 +96,8 @@ namespace _GAME.Scripts.Enemies.Megamothling
                 _fallBounceForce,
                 _fallGravityForce
             );
-            _enterState = (FMegamothlingMovementEnterState)_stateFactory.Create(typeof(FMegamothlingMovementEnterState));
+            _idleState = (GenericIdleMovementState)_stateFactory.Create(typeof(GenericIdleMovementState));
+            _enterState = (MegamothlingMovementEnterState)_stateFactory.Create(typeof(MegamothlingMovementEnterState));
             _patrolState = (FlyGenericMovementPatrolState)_stateFactory.Create(typeof(FlyGenericMovementPatrolState));
             _preAttackStateL = (FlyGenericMovementPreAttackStateL)_stateFactory.Create(typeof(FlyGenericMovementPreAttackStateL));
             _preAttackStateR = (FlyGenericMovementPreAttackStateR)_stateFactory.Create(typeof(FlyGenericMovementPreAttackStateR));
@@ -167,9 +169,11 @@ namespace _GAME.Scripts.Enemies.Megamothling
 
         public override void Play()
         {
+            _stateMachine.SetState(_idleState);
+            
             SetInitialDirections();
             Position2D = GenerateSpawnPosition(-1);
-        
+            
             _position3D = Position2D;
             transform.position = _position3D;
         
