@@ -30,8 +30,8 @@ namespace _GAME.Scripts.Enemies.Ladybug
 
         public override void Initialize()
         {
-            _movement.Initialize();
             _movement.SetCollisionRadius(_collisionRadius);
+            _movement.Initialize();
             _movement.EnteredAttackRange += OnEnteredAttackRange;
             _movement.PreAttackStarted += OnPreAttackStarted;
             _movement.DeathStateEnded += OnDeathStateEnded;

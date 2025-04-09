@@ -75,8 +75,13 @@ namespace _GAME.Scripts.Enemies.Megamothling
         public event Action DeathStateEnded;
     
         public Vector2 Position2D { get; private set; } 
-        public Vector3 DepthDirection { get; private set; } 
-    
+        public Vector3 DepthDirection { get; private set; }
+
+        public void SetCollisionRadius(float radius)
+        {
+            _collisionRadius = radius;
+        }
+
         public override void Initialize()
         {
             // Create Movement States
@@ -148,7 +153,7 @@ namespace _GAME.Scripts.Enemies.Megamothling
             };
             void At(IState from, IState to, Func<bool> condition) => _stateMachine.AddTransition(from, to, condition);
         }
-    
+
         private void OnDestroy()
         {
             _patrolState.Started -= OnPatrolStateStarted;
@@ -158,11 +163,6 @@ namespace _GAME.Scripts.Enemies.Megamothling
             _preAttackStateL.Ended -= OnPreAttackStateEnded;
             _preAttackStateR.Ended -= OnPreAttackStateEnded;
             _deathState.Ended -= OnDeathStateEnded;
-        }
-        
-        public void SetCollisionRadius(float radius)
-        {
-            _collisionRadius = radius;
         }
 
         public override void Play()
