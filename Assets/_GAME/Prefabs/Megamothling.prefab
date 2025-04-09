@@ -542,7 +542,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1a4591e51bff214ab6432e5c1d12b05, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _collisionRadius: 0.175
   _speed: 0.77
   _radius: 1.55
   _verticalAmplitude: 0.93
@@ -562,8 +561,6 @@ MonoBehaviour:
   _preAttackDuration: 0.45
   _fallBounceForce: 2
   _fallGravityForce: 0.1
-  _deathBounceForce: 2
-  _deathGravityForce: 0.1
 --- !u!114 &8101830322762018708
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -642,6 +639,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _meshRenderer: {fileID: 5326005827175476531}
+  _remapMax: 0.801
 --- !u!114 &3160249216096790048
 MonoBehaviour:
   m_ObjectHideFlags: 0
