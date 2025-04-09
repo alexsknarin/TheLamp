@@ -229,7 +229,6 @@ namespace _GAME.Scripts.Enemies.Mothling
             StashPreviousPositions();
             UpdateStateMachine();
 
-            // Add Noise
             if (_isNoiseEnabled)
             {
                 AddMotionNoise();
@@ -239,16 +238,9 @@ namespace _GAME.Scripts.Enemies.Mothling
                 _position3D = Position2D;
             }
         
-            // Add Depth
             if (_isDepthEnabled)
             {
-                int depthDirection = _depthSideDirection;
-                // Always Jump forward in depth for Attack
-                if (_currentState.Equals(_preAttackState) || _currentState.Equals(_attackState))
-                {
-                    depthDirection = 1;
-                }
-                _position3D += _currentState.DepthDirection * depthDirection;
+                AddDepth();
             }
         
             // Apply side direction Only for States that require Left/Right mirroring
@@ -257,19 +249,9 @@ namespace _GAME.Scripts.Enemies.Mothling
             {
                 _position3D.x *= _sideDirection;            
             }
-        
-            // Add SmoothDamp
-            if (_isSmoothDampEnabled)
-            {
-                transform.position = Vector3.SmoothDamp(transform.position, _position3D, ref _velocity, _smoothTimeAllowed);
-            }
-            else
-            {
-                transform.position = _position3D;
-            }
-        
-            Debug.DrawLine(_prevPosition, _prevPosition + (_position3D-_prevPosition).normalized*0.02f, Color.cyan, 5f);
-            Debug.DrawLine(_prevPosSmooth, _prevPosSmooth + (transform.position-_prevPosSmooth).normalized*0.02f, Color.yellow, 5f);
+            
+            ApplySmoothDampIfEnabled();
+            DrawMotionDebugLines();
         }
 
         private void StashPreviousPositions()
@@ -304,6 +286,42 @@ namespace _GAME.Scripts.Enemies.Mothling
                 trajectoryNoise2 *= noiseMultiplier;
             }
             _position3D = (Vector3)Position2D + trajectoryNoise1 * _noise1Amplitude + trajectoryNoise2 * _noise2Amplitude;
+        }
+
+        private void AddDepth()
+        {
+            int depthDirection = _depthSideDirection;
+            // Always Jump forward in depth for Attack
+            if (_currentState.Equals(_preAttackState) || _currentState.Equals(_attackState))
+            {
+                depthDirection = 1;
+            }
+            _position3D += _currentState.DepthDirection * depthDirection;
+        }
+
+        private void ApplySmoothDampIfEnabled()
+        {
+            if (_isSmoothDampEnabled)
+            {
+                transform.position = Vector3.SmoothDamp(transform.position, _position3D, ref _velocity, _smoothTimeAllowed);
+            }
+            else
+            {
+                transform.position = _position3D;
+            }
+        }
+
+        private void DrawMotionDebugLines()
+        {
+            Debug.DrawLine(
+                _prevPosition,
+                _prevPosition + (_position3D-_prevPosition).normalized*0.02f,
+                Color.cyan,
+                5f);
+            Debug.DrawLine(_prevPosSmooth,
+                _prevPosSmooth + (transform.position-_prevPosSmooth).normalized*0.02f,
+                Color.yellow,
+                5f);
         }
 
         private Vector2 GenerateSpawnPosition(int direction)
