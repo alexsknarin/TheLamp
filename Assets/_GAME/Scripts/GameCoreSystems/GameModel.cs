@@ -1,5 +1,7 @@
 using System;
+using System.Collections;
 using _GAME.Scripts.GameCoreSystems.DataManagement.DataTypes;
+using _GAME.Scripts.GameCoreSystems.DI;
 using _GAME.Scripts.GameCoreSystems.EnemyManagement;
 using _GAME.Scripts.Lib.Enums;
 using _GAME.Scripts.Lib.Interfaces;
@@ -18,6 +20,7 @@ namespace _GAME.Scripts.GameCoreSystems
         private bool _isAttacking = false;
 
         // Dependencies
+        private readonly CoroutineHost _coroutineHost;
         private readonly IGameStateProviderService _gameStateProviderService;
         private readonly IGameConfigService _gameConfigService;
         private readonly WaveEnemyDirector _waveEnemyDirector;
@@ -29,6 +32,7 @@ namespace _GAME.Scripts.GameCoreSystems
         private readonly UpgradeHandler _upgradeHandler = new UpgradeHandler();
 
         public GameModel(
+            CoroutineHost coroutineHost,
             IGameStateProviderService gameStateProviderService, 
             IGameConfigService gameConfigService,
             WaveEnemyDirector waveEnemyDirector,
@@ -38,6 +42,7 @@ namespace _GAME.Scripts.GameCoreSystems
             ScoresCollectionService scoresCollectionService)
         {
             Debug.Log(" +++ GameModel: Creating GameModel +++");
+            _coroutineHost = coroutineHost;
             _gameStateProviderService = gameStateProviderService;
             _currentGameState = gameStateProviderService.Get();
             _waveEnemyDirector = waveEnemyDirector;
@@ -458,6 +463,12 @@ namespace _GAME.Scripts.GameCoreSystems
             Debug.Log($"Wave {_currentGameState.Wave} Ended");
             _currentGameState.Wave++;
             _gameStateProviderService.SaveCurrentState();
+            _coroutineHost.StartCoroutine(SwitchToPrepareState());
+        }
+
+        private IEnumerator SwitchToPrepareState()
+        {
+            yield return null;
             StartPrepareIn();
             WaveEnded?.Invoke(_currentGameState.Wave);
         }

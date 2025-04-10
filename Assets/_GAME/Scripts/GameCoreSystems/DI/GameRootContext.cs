@@ -299,6 +299,7 @@ namespace _GAME.Scripts.GameCoreSystems.DI
         private void GameModelSetup()
         {
             _gameModel = new GameModel(
+                _coroutineHost,
                 _gameStateProviderService, 
                 _gameConfigService, 
                 _waveEnemyDirector,
