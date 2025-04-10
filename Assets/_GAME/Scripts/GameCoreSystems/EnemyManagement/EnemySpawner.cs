@@ -14,7 +14,7 @@ namespace _GAME.Scripts.GameCoreSystems.EnemyManagement
         // Dependencies
         private readonly EnemyPool _enemyPool;
         private readonly float _firstEnemySpawnDelay;
-        private ISpiderSpawnAvailableChecker _spiderSpawnAvailableChecker;
+        private ISpiderSpawnAvailablityProvider _spiderSpawnAvailablityProvider;
         
         private EnemyQueue _enemyQueue;
         private List<Enemy> _activeEnemies; 
@@ -26,12 +26,12 @@ namespace _GAME.Scripts.GameCoreSystems.EnemyManagement
         public EnemySpawner(
             EnemyPool enemyPool,
             float firstEnemySpawnDelay,
-            ISpiderSpawnAvailableChecker spiderSpawnAvailableChecker
+            ISpiderSpawnAvailablityProvider spiderSpawnAvailablityProvider
             )
         {
             _enemyPool = enemyPool;
             _firstEnemySpawnDelay = firstEnemySpawnDelay;
-            _spiderSpawnAvailableChecker = spiderSpawnAvailableChecker;
+            _spiderSpawnAvailablityProvider = spiderSpawnAvailablityProvider;
         }
     
         public event Action<Enemy> EnemySpawned;
@@ -56,6 +56,7 @@ namespace _GAME.Scripts.GameCoreSystems.EnemyManagement
         {
             _enemyQueue = enemyQueue;
             _activeEnemies = enemies;
+            _spiderSpawnAvailablityProvider.Reset();
         
             LogCurrentWaveData();
         }
@@ -66,6 +67,7 @@ namespace _GAME.Scripts.GameCoreSystems.EnemyManagement
             _localTime = 0;
             _spawnCooldown = _firstEnemySpawnDelay;
             _isWaveActive = true;
+            
         }
 
         public void StopWave()
@@ -104,7 +106,7 @@ namespace _GAME.Scripts.GameCoreSystems.EnemyManagement
                     // TODO: refactor
                     EnemyType enemyType = _enemyQueue.Get(_currentEnemyIndex);
                     
-                    if (enemyType == EnemyType.Spider && !_spiderSpawnAvailableChecker.CheckPointAvailability())
+                    if (enemyType == EnemyType.Spider && !_spiderSpawnAvailablityProvider.CheckPointAvailability())
                     {
                         bool hasReplacement = _enemyQueue.PushEnemyForward(_currentEnemyIndex, enemyType);
                         if (!hasReplacement)

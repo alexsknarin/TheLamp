@@ -2,11 +2,19 @@ using _GAME.Scripts.Enemies;
 using _GAME.Scripts.Lib.Interfaces;
 using UnityEngine;
 
-public class SpiderPositionHolder: ISpiderSpawnAvailableChecker, ISpiderSideDirectionProvider
+public class SpiderPositionHolder: ISpiderSpawnAvailablityProvider, ISpiderSideDirectionProvider
 {
-    private int[] _directions = {-1, 1};
+    private readonly int[] _directions = {-1, 1};
     private EnemyMovementBase[] _occupants = { null, null };
     private bool[] _occupiedStatus = { false, false };
+
+    public void Reset()
+    {
+        _occupants[0] = null;
+        _occupants[1] = null;
+        _occupiedStatus[0] = false;
+        _occupiedStatus[1] = false;
+    }
 
     public bool CheckPointAvailability()
     {
