@@ -15,6 +15,7 @@ namespace _GAME.Scripts.Enemies.Wasp
         [SerializeField] private WaspMovement _movement;
         [SerializeField] private WaspAnimationClipEventListener _animationClipEventListener;
     
+        public event Action Started;
         public event Action SpreadRequested;
         public event Action<CollidableEnemy> AnimatedAttackStarted;
         public event Action Damaged; // TODO: Use it separately for damage animations in presentation
@@ -54,6 +55,7 @@ namespace _GAME.Scripts.Enemies.Wasp
             HealthChanged?.Invoke(_currentHealth, _maxHealth);
             _movement.Play();
             CollisionState = CollidableState.Outside;
+            Started?.Invoke();
             Debug.Log("Wasp Play is called.  +++++++ ");
         }
 

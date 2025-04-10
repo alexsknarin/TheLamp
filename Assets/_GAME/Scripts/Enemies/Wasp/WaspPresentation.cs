@@ -22,21 +22,34 @@ namespace _GAME.Scripts.Enemies.Wasp
         private WaitForSeconds _damageFlashDuration = new WaitForSeconds(0.8f);
         private float _localTime;
         
-        private float _currentHealth;
-        private float _maxHealth;
         private float _damagePhase;
     
         public void Initialize()
         {
+            _wasp.Started += OnStarted;
             _wasp.HealthChanged += OnHealthChanged;
             _wasp.Dead += OnDead;
             _wasp.Damaged += OnDamaged;
             _animationClipEventListener.TrailReset += ResetTrail;
-        
+            
+            _waspBodyMaterial = _waspBodyMeshRenderer.material;
+        }
+
+        private void OnDestroy()
+        {
+            _wasp.Started -= OnStarted;
+            _wasp.HealthChanged -= OnHealthChanged;
+            _wasp.Dead -= OnDead;
+            _wasp.Damaged -= OnDamaged;
+            _animationClipEventListener.TrailReset -= ResetTrail;
+        }
+
+        private void OnStarted()
+        {
             _waspBodyMeshRenderer.gameObject.SetActive(true);
             _localTime = 0;
             _isDead = false;
-            _waspBodyMaterial = _waspBodyMeshRenderer.material;
+            
             _waspBodyMaterial.SetFloat("_DamagePhase", 0);
             _waspBodyMaterial.SetInt("_isDamaged", 0);
             _waspBodyMaterial.SetFloat("_DeathPhase", 0);
@@ -45,18 +58,8 @@ namespace _GAME.Scripts.Enemies.Wasp
             _damageEmitParticles.SetFloat("Rate", 0);
         }
 
-        private void OnDestroy()
-        {
-            _wasp.HealthChanged -= OnHealthChanged;
-            _wasp.Dead -= OnDead;
-            _wasp.Damaged -= OnDamaged;
-            _animationClipEventListener.TrailReset -= ResetTrail;
-        }
-
         private void OnHealthChanged(int currentHealth, int maxHealth)
         {
-            _currentHealth = currentHealth;
-            _maxHealth = maxHealth;
             _damagePhase = 1 - (float)currentHealth/maxHealth;
             if (_damagePhase > 0)
             {
