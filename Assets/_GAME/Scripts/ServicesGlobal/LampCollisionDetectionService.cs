@@ -14,6 +14,7 @@ namespace _GAME.Scripts.ServicesGlobal
         [SerializeField] private float _attackExitZoneRadius = 0.55f;
         [SerializeField] private int _collidableCount = 0;
         [SerializeField] private string _collidableItems;
+        [SerializeField] private bool _isGizmosEnabled = true;
         private List<ICollidableWithLamp> _collidables = new();
         private List<ICollidableWithLamp> _collidablesToRemove = new();
         private Vector2 _position;
@@ -156,12 +157,15 @@ namespace _GAME.Scripts.ServicesGlobal
 
         private void OnDrawGizmos()
         {
-            Gizmos.color = Color.red;
-            Gizmos.DrawWireSphere(transform.position, _collisionRadius);
-            Gizmos.color = Color.yellow;
-            Gizmos.DrawWireSphere(transform.position, _attackZoneRadius);
-            Gizmos.color = new Color(1f, 0.5f, 0f);
-            Gizmos.DrawWireSphere(transform.position, _attackExitZoneRadius);
+            if (_isGizmosEnabled)
+            {
+                Gizmos.color = Color.red;
+                Gizmos.DrawWireSphere(transform.position, _collisionRadius);
+                Gizmos.color = Color.yellow;
+                Gizmos.DrawWireSphere(transform.position, _attackZoneRadius);
+                Gizmos.color = new Color(1f, 0.5f, 0f);
+                Gizmos.DrawWireSphere(transform.position, _attackExitZoneRadius);    
+            }
         }
     }
 }
