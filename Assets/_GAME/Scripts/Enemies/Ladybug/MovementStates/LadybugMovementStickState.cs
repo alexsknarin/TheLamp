@@ -30,7 +30,7 @@ namespace _GAME.Scripts.Enemies.Ladybug.MovementStates
             _collisionRadius = collisionRadius;
         }
     
-        public override void OnEnter()
+        public override void Enter()
         {
             Vector2 newPosition 
                 = (_positionDirectionProvider.Position2D - _lampPositionProviderService.GetLampPosition()).normalized
@@ -46,7 +46,7 @@ namespace _GAME.Scripts.Enemies.Ladybug.MovementStates
         {
         }
         
-        public override void OnExit()
+        public override void Exit()
         {
             Ended?.Invoke();
         }

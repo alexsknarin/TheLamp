@@ -19,7 +19,7 @@ namespace _GAME.Scripts.Enemies.Dragonfly.BehaviourStates
 
         public event Action Ended;
 
-        public void OnEnter()
+        public void Enter()
         {
             _localTime = 0;
             _duration = Random.Range(_minWaitTime, _maxWaitTime);
@@ -34,6 +34,6 @@ namespace _GAME.Scripts.Enemies.Dragonfly.BehaviourStates
             }
         }
 
-        public void OnExit() { }
+        public void Exit() { }
     }
 }

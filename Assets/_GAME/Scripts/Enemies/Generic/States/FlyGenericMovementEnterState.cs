@@ -37,7 +37,7 @@ namespace _GAME.Scripts.Enemies.Generic.States
             _verticalAmplitude = verticalAmplitude;
         }
 
-        public override void OnEnter()
+        public override void Enter()
         {
             IsReadyToSwitch = false;
             Position2D = _positionDirectionProvider.Position2D;

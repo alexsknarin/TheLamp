@@ -9625,6 +9625,7 @@ MonoBehaviour:
   _attackExitZoneRadius: 0.586
   _collidableCount: 0
   _collidableItems: 
+  _isGizmosEnabled: 1
 --- !u!114 &1934066265
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9642,6 +9643,7 @@ MonoBehaviour:
   _attackZoneRadius: 0.62
   _stickableCount: 0
   _blockedAttacks: 0
+  _isGizmosEnabled: 0
 --- !u!114 &1934066266
 MonoBehaviour:
   m_ObjectHideFlags: 0

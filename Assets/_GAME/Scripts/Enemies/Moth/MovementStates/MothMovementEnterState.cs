@@ -39,7 +39,7 @@ namespace _GAME.Scripts.Enemies.Moth.MovementStates
             _verticalAmplitude = verticalAmplitude;
         }
     
-        public override void OnEnter()
+        public override void Enter()
         {
             IsReadyToSwitch = false;
             Position2D = GenerateSpawnPosition(_deadZoneAngle, _minDistance, _maxDistance);

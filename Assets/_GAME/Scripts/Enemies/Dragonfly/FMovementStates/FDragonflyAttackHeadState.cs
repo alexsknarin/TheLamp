@@ -27,7 +27,7 @@ namespace _GAME.Scripts.Enemies.Dragonfly.FMovementStates
             _baseTransform = baseTransform;
         }
 
-        public void OnEnter()
+        public void Enter()
         {
             _localTime = 0;
             _isCollisionPhaseReached = false;
@@ -66,6 +66,6 @@ namespace _GAME.Scripts.Enemies.Dragonfly.FMovementStates
             }
         }
 
-        public void OnExit() { }
+        public void Exit() { }
     }
 }

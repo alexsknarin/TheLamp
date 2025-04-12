@@ -29,7 +29,7 @@ namespace _GAME.Scripts.Enemies.Dragonfly.FMovementStates
             _fallPointTransform = fallPointTransform;
         }
 
-        public void OnEnter()
+        public void Enter()
         {
             _fallPointTransform.position = _visibleBodyTransform.position;
             _fallPointTransform.rotation = _visibleBodyTransform.rotation;
@@ -77,7 +77,7 @@ namespace _GAME.Scripts.Enemies.Dragonfly.FMovementStates
             }
         }
     
-        public void OnExit()
+        public void Exit()
         {
         }
     }

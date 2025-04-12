@@ -58,7 +58,7 @@ namespace _GAME.Scripts.Enemies.Moth.MovementStates
 
         public event Action Ended;
     
-        public override void OnEnter()
+        public override void Enter()
         {
             IsReadyToSwitch = false;
             Position2D = _positionDirectionProvider.Position2D;

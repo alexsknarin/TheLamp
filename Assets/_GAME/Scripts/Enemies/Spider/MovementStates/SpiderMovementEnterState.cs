@@ -16,7 +16,7 @@ namespace _GAME.Scripts.Enemies.Spider.MovementStates
             _hangingPoint.y = height;
         }
     
-        public override void OnEnter()
+        public override void Enter()
         {
             IsReadyToSwitch = false;
             Position2D = _hangingPoint; 

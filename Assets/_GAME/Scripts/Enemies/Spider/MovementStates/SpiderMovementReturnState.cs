@@ -42,7 +42,7 @@ namespace _GAME.Scripts.Enemies.Spider.MovementStates
             _collisionRadius = collisionRadius;
         }
     
-        public override void OnEnter()
+        public override void Enter()
         {
             Position2D 
                 = (_positionDirectionProvider.Position2D - _lampPositionProviderService.GetLampPosition()).normalized

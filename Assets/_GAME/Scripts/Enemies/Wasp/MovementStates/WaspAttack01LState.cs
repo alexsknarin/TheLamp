@@ -10,7 +10,7 @@ namespace _GAME.Scripts.Enemies.Wasp.MovementStates
     
         public event Action Started;
     
-        public override void OnEnter()
+        public override void Enter()
         {
             _baseTransform.localScale = _baseScaleL;
             _animator.Play(_clipHash, -1, 0);

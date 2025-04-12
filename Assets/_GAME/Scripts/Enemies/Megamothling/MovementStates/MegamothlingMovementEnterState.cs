@@ -37,7 +37,7 @@ namespace _GAME.Scripts.Enemies.Megamothling.MovementStates
         }
     
     
-        public override void OnEnter()
+        public override void Enter()
         {
             IsReadyToSwitch = false;
         

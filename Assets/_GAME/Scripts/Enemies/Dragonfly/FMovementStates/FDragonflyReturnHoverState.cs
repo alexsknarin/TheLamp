@@ -39,7 +39,7 @@ namespace _GAME.Scripts.Enemies.Dragonfly.FMovementStates
             _baseTransform = baseTransform;
         }
     
-        public void OnEnter()
+        public void Enter()
         {
             Vector3 currentPosition = _visibleBodyTransform.position;
             _localTime = 0f;
@@ -95,7 +95,7 @@ namespace _GAME.Scripts.Enemies.Dragonfly.FMovementStates
             CheckForStateChange();
         }
 
-        public void OnExit() { }
+        public void Exit() { }
 
         private void CheckForStateChange()
         {

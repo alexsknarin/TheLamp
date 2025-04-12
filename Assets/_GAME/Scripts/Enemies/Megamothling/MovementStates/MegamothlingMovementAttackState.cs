@@ -32,7 +32,7 @@ namespace _GAME.Scripts.Enemies.Megamothling.MovementStates
             _speed = speed;
         }
     
-        public override void OnEnter()
+        public override void Enter()
         {
             _acceleratedSpeed = 1f;
             _startDistance = _positionDirectionProvider.Position2D.magnitude - _startPositionDistance;

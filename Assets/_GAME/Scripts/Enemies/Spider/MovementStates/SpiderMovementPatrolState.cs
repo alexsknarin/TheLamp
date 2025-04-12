@@ -20,7 +20,7 @@ namespace _GAME.Scripts.Enemies.Spider.MovementStates
         public event Action Started;
         public event Action Ended;
    
-        public override void OnEnter()
+        public override void Enter()
         {
             _hangingPoint.x = Mathf.Abs(_hangingPoint.x);
             Position2D = _positionDirectionProvider.Position2D;
@@ -40,7 +40,7 @@ namespace _GAME.Scripts.Enemies.Spider.MovementStates
             _localTime += Time.deltaTime;
         }
     
-        public override void OnExit()
+        public override void Exit()
         {
             Ended?.Invoke();
         }

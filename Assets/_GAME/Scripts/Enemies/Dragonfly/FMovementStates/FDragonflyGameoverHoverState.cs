@@ -22,7 +22,7 @@ namespace _GAME.Scripts.Enemies.Dragonfly.FMovementStates
             _baseTransform = baseTransform;
         }
     
-        public void OnEnter()
+        public void Enter()
         {
             _visibleBodyTransform.SetParent(_baseTransform);
             _hoverPos = _visibleBodyTransform.localPosition;
@@ -45,6 +45,6 @@ namespace _GAME.Scripts.Enemies.Dragonfly.FMovementStates
             _localTime += Time.deltaTime;
         }
 
-        public void OnExit() { }
+        public void Exit() { }
     }
 }

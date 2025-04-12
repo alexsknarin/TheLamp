@@ -161,6 +161,7 @@ MonoBehaviour:
   _currentStateType: 
   _animator: {fileID: 8060389453633497060}
   _baseTransform: {fileID: 3856058477050779949}
+  _maxLampConstrainDistance: 2.4
 --- !u!114 &2787323014210774032
 MonoBehaviour:
   m_ObjectHideFlags: 0

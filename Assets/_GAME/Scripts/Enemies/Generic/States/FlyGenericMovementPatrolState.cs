@@ -38,7 +38,7 @@ namespace _GAME.Scripts.Enemies.Generic.States
         public event Action Started;
         public event Action Ended;
     
-        public override void OnEnter()
+        public override void Enter()
         {
             Position2D = _positionDirectionProvider.Position2D;
             Vector3 horizontalVector = Vector2.right;
@@ -80,7 +80,7 @@ namespace _GAME.Scripts.Enemies.Generic.States
             _localTime += Time.deltaTime;
         }
 
-        public override void OnExit()
+        public override void Exit()
         {
             _localTime = 0;
             _patrolStartOffsetAngle = 0;

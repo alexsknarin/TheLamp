@@ -45,7 +45,7 @@ namespace _GAME.Scripts.Enemies.Generic.States
             _ySwitchDistance = -_radius * _verticalAmplitude * 1.1f;
         }
     
-        public override void OnEnter()
+        public override void Enter()
         {
             Position2D = _positionDirectionProvider.Position2D;
         

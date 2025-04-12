@@ -22,7 +22,7 @@ namespace _GAME.Scripts.Enemies.Dragonfly.FMovementStates
             _patrolRotator = patrolRotator;
         }
     
-        public void OnEnter()
+        public void Enter()
         {
             Vector3 currentPosition = _visibleBodyTransform.position;
             _patrolRotator.SetRotationPhase(currentPosition);
@@ -36,7 +36,7 @@ namespace _GAME.Scripts.Enemies.Dragonfly.FMovementStates
 
         public void Tick() { }
 
-        public void OnExit()
+        public void Exit()
         {
             _patrolRotator.Stop();
         }

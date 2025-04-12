@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace _GAME.Scripts.Enemies.Wasp.MovementStates
@@ -7,10 +8,14 @@ namespace _GAME.Scripts.Enemies.Wasp.MovementStates
         public WaspAttack03BounceLState(Animator animator, int clipHash, Transform baseTransform) : 
             base(animator, clipHash, baseTransform) { }
     
-        public override void OnEnter()
+        public event Action Started;
+        
+        public override void Enter()
         {
+            Debug.Log("Entered Bounce State");
             _baseTransform.localScale = _baseScaleL;
             _animator.Play(_clipHash, -1, 0);
+            Started?.Invoke();
         }
     }
 }

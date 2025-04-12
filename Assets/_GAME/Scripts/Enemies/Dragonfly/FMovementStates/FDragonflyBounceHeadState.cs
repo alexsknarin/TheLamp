@@ -19,7 +19,7 @@ namespace _GAME.Scripts.Enemies.Dragonfly.FMovementStates
             _baseTransform = baseTransform;
         }
     
-        public void OnEnter()
+        public void Enter()
         {
             _visibleBodyTransform.SetParent(_baseTransform);
             _attackDirection = -_visibleBodyTransform.position.normalized;
@@ -30,6 +30,6 @@ namespace _GAME.Scripts.Enemies.Dragonfly.FMovementStates
             _visibleBodyTransform.position += -_attackDirection * (_speed * Time.deltaTime);
         }
 
-        public void OnExit() { }
+        public void Exit() { }
     }
 }

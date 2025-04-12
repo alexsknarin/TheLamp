@@ -24,7 +24,7 @@ namespace _GAME.Scripts.Enemies.Dragonfly.BehaviourStates
     
         public event Action<DragonflyPatrolAttackMode> Ended;
 
-        public void OnEnter()
+        public void Enter()
         {
             _targetPosition = _patrolAttackPositionProvider.GenerateRandomPreAttackTailPosition(_movement.MovementState);
             _isLastPatrolDirectionSet = false;
@@ -55,6 +55,6 @@ namespace _GAME.Scripts.Enemies.Dragonfly.BehaviourStates
             }
         }
 
-        public void OnExit() { }
+        public void Exit() { }
     }
 }

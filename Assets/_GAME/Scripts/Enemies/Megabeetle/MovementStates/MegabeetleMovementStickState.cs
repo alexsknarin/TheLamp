@@ -17,7 +17,7 @@ namespace _GAME.Scripts.Enemies.Megabeetle.MovementStates
             _positionDirectionProvider = positionDirectionProvider;
         }
     
-        public override void OnEnter()
+        public override void Enter()
         {
         
             IsReadyToSwitch = false;

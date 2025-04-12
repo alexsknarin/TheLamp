@@ -35,7 +35,7 @@ namespace _GAME.Scripts.Enemies.Generic.States
             _proximityOffset = proximityOffset;
         }
     
-        public override void OnEnter()
+        public override void Enter()
         {
             _acceleratedSpeed = 1f;
             _startDistance = _positionDirectionProvider.Position2D.magnitude - 0.65f;

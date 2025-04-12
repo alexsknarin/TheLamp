@@ -15,7 +15,7 @@ namespace _GAME.Scripts.Enemies.Dragonfly.BehaviourStates
             _duration = duration;
         }
     
-        public void OnEnter()
+        public void Enter()
         {
             _localTime = 0f;
         }
@@ -29,7 +29,7 @@ namespace _GAME.Scripts.Enemies.Dragonfly.BehaviourStates
             }
         }
 
-        public void OnExit()
+        public void Exit()
         {
             _readyToSwitch = false;
         }

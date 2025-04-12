@@ -31,7 +31,7 @@ namespace _GAME.Scripts.Enemies.Ladybug.MovementStates
 
         public event Action Started;
     
-        public override void OnEnter()
+        public override void Enter()
         {
             Started?.Invoke();
         }

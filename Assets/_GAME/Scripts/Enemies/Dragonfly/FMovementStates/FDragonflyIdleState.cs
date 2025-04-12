@@ -18,7 +18,7 @@ namespace _GAME.Scripts.Enemies.Dragonfly.FMovementStates
             _startPosition = new Vector3(0f, -8f, 0f);
         }
     
-        public void OnEnter()
+        public void Enter()
         {
             _visibleBodyTransform.SetParent(_baseTransform);
             _visibleBodyTransform.localPosition = _startPosition;
@@ -27,6 +27,6 @@ namespace _GAME.Scripts.Enemies.Dragonfly.FMovementStates
 
         public void Tick() { }
 
-        public void OnExit() { }
+        public void Exit() { }
     }
 }

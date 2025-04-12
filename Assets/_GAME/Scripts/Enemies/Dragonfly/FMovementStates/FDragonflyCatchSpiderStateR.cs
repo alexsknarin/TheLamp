@@ -7,9 +7,9 @@ namespace _GAME.Scripts.Enemies.Dragonfly.FMovementStates
     public class FDragonflyCatchSpiderStateR: FDragonflyAnimBaseState
     {
         public event Action Started;
-        public override void OnEnter()
+        public override void Enter()
         {
-            base.OnEnter();
+            base.Enter();
             Started?.Invoke();
         }
     }

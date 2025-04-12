@@ -6,7 +6,7 @@ namespace _GAME.Scripts.Enemies.Dragonfly.BehaviourStates
     public class DragonflyWaitForBounceState : IState
     {
         public event Action Ended;
-        public void OnEnter()
+        public void Enter()
         {
         }
 
@@ -14,7 +14,7 @@ namespace _GAME.Scripts.Enemies.Dragonfly.BehaviourStates
         {
         }
 
-        public void OnExit()
+        public void Exit()
         {
             Ended?.Invoke();
         }

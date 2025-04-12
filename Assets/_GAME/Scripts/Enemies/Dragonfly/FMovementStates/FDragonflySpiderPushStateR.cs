@@ -31,7 +31,7 @@ namespace _GAME.Scripts.Enemies.Dragonfly.FMovementStates
             _spiderPatrolRotator = spiderPatrolRotator;
         }
     
-        public void OnEnter()
+        public void Enter()
         {
             Vector3 currentPosition = _visibleBodyTransform.position;
             _spiderPatrolRotator.SetRotationPhase(currentPosition);
@@ -56,7 +56,7 @@ namespace _GAME.Scripts.Enemies.Dragonfly.FMovementStates
             CheckForStateChange();
         }
 
-        public void OnExit()
+        public void Exit()
         {
             _spiderPatrolRotator.Stop();
             Ended?.Invoke();

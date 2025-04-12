@@ -23,7 +23,7 @@ namespace _GAME.Scripts.Enemies.Megabeetle.MovementStates
         {
         }
 
-        public override void OnEnter()
+        public override void Enter()
         {
             HandleEnter(-1);
         }

@@ -23,7 +23,7 @@ namespace _GAME.Scripts.Enemies.Dragonfly.BehaviourStates
         public event Action Ended;
         public event Action GotReadyToPreAttack;
 
-        public void OnEnter()
+        public void Enter()
         {
             _targetPosition = _attackPositionBase;
             _targetPosition.x *= RandomDirection.Generate();
@@ -66,6 +66,6 @@ namespace _GAME.Scripts.Enemies.Dragonfly.BehaviourStates
             }
         }
 
-        public void OnExit() { }
+        public void Exit() { }
     }
 }

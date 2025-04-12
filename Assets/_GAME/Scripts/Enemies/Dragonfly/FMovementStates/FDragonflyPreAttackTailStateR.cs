@@ -30,7 +30,7 @@ namespace _GAME.Scripts.Enemies.Dragonfly.FMovementStates
             _patrolRotator = patrolRotator;
         }
     
-        public void OnEnter()
+        public void Enter()
         {
             Vector3 currentPosition = _visibleBodyTransform.position;
         
@@ -58,7 +58,7 @@ namespace _GAME.Scripts.Enemies.Dragonfly.FMovementStates
             CheckForStateChange();
         }
 
-        public void OnExit() { }
+        public void Exit() { }
 
         private void CheckForStateChange()
         {

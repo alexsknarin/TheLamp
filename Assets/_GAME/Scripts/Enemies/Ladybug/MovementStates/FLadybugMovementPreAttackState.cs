@@ -76,7 +76,7 @@ namespace _GAME.Scripts.Enemies.Ladybug.MovementStates
             _localTime += Time.deltaTime;
         }
 
-        public override void OnExit()
+        public override void Exit()
         {
             Ended?.Invoke();
         }

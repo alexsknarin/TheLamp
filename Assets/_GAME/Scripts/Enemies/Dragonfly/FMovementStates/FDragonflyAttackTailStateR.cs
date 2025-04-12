@@ -35,7 +35,7 @@ namespace _GAME.Scripts.Enemies.Dragonfly.FMovementStates
             _patrolRotator = patrolRotator;
         }
     
-        public void OnEnter()
+        public void Enter()
         {
             _isCollisionPhaseReached = false;
             _patrolRotator.SetRotationPhase(_visibleBodyTransform.position + _visibleBodyTransform.right * 0.2f); // Smooth transition
@@ -77,6 +77,6 @@ namespace _GAME.Scripts.Enemies.Dragonfly.FMovementStates
             }
         }
 
-        public void OnExit() { }
+        public void Exit() { }
     }
 }

@@ -24,7 +24,7 @@ namespace _GAME.Scripts.Enemies.Ladybug.MovementStates
         {
         }
     
-        public override void OnEnter()
+        public override void Enter()
         {
             HandleEnter(-1);
         }

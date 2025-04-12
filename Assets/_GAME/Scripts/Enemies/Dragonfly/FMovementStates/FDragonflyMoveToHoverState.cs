@@ -35,7 +35,7 @@ namespace _GAME.Scripts.Enemies.Dragonfly.FMovementStates
             _baseTransform = baseTransform;
         }
     
-        public void OnEnter()
+        public void Enter()
         {
             _currentPointIndex = Random.Range(0, _hoverPoints.Length);
             _localTime = 0f;
@@ -75,7 +75,7 @@ namespace _GAME.Scripts.Enemies.Dragonfly.FMovementStates
             CheckForStateChange();
         }
 
-        public void OnExit() { }
+        public void Exit() { }
 
         private void CheckForStateChange()
         {

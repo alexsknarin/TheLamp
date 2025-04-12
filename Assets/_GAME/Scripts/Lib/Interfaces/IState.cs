@@ -2,8 +2,8 @@ namespace _GAME.Scripts.Lib.Interfaces
 {
     public interface IState
     {
-        public void OnEnter();
+        public void Enter();
         public void Tick();
-        public void OnExit();
+        public void Exit();
     }
 }

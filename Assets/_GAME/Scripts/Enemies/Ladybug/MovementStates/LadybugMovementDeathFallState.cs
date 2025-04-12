@@ -37,7 +37,7 @@ namespace _GAME.Scripts.Enemies.Ladybug.MovementStates
     
         public event Action Ended;
 
-        public override void OnEnter()
+        public override void Enter()
         {
             Position2D = _positionDirectionProvider.Position2D;
             _bounceForce 
