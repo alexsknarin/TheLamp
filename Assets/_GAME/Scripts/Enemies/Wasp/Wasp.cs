@@ -76,6 +76,7 @@ namespace _GAME.Scripts.Enemies.Wasp
             else
             {
                 Debug.Log($"Damage Received: {damageAmount}.");
+                _movement.SetDamaged();
                 HealthChanged?.Invoke(_currentHealth, _maxHealth);
                 Damaged?.Invoke();
             }
