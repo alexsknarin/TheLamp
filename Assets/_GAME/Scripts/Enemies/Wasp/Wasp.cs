@@ -32,7 +32,7 @@ namespace _GAME.Scripts.Enemies.Wasp
             _animationClipEventListener.ClipEnded += OnClipEnded;
             _animationClipEventListener.SpreadTgiggered += OnSpreadTriggered;
             _animationClipEventListener.AttackStarted += OnAttackStateStarted;
-            _animationClipEventListener.ScreenLeft += _movement.HandleScreenLeft;
+            _animationClipEventListener.ScreenLeft += _movement.SetScreenLeft;
             _movement.SuccessStateEnded += OnSuccessStateEnded;
             _movement.DeathStateEnded += OnDeathStateEnded;
         }
@@ -42,7 +42,7 @@ namespace _GAME.Scripts.Enemies.Wasp
             _animationClipEventListener.ClipEnded -= OnClipEnded;
             _animationClipEventListener.SpreadTgiggered -= OnSpreadTriggered;
             _animationClipEventListener.AttackStarted -= OnAttackStateStarted;
-            _animationClipEventListener.ScreenLeft -= _movement.HandleScreenLeft;
+            _animationClipEventListener.ScreenLeft -= _movement.SetScreenLeft;
             _movement.SuccessStateEnded -= OnSuccessStateEnded;
             _movement.DeathStateEnded -= OnDeathStateEnded;
         }

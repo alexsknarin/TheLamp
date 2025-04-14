@@ -15,6 +15,7 @@ namespace _GAME.Scripts.Enemies.Wasp
         [SerializeField] private TrailResetHandler _trailResetHandler;
         [SerializeField] private VisualEffect _damageParticles;
         [SerializeField] private VisualEffect _damageEmitParticles;
+        [SerializeField] private Transform _bodyTransform;
         [SerializeField] private float _deathDuration;
         private bool _isDead;
         private bool _isDamaged;
@@ -77,6 +78,8 @@ namespace _GAME.Scripts.Enemies.Wasp
             _damageEmitParticles.SendEvent("OnStartEmit");
             _damageEmitParticles.SetFloat("Rate", emitRate);
             StartCoroutine(WaitForDamageFlashEnd());
+            
+            EmitDamageParticles();
         }
 
         private IEnumerator WaitForDamageFlashEnd()
@@ -91,6 +94,15 @@ namespace _GAME.Scripts.Enemies.Wasp
             _localTime = 0;
             _damageEmitParticles.SendEvent("OnStartEmit");
             _damageEmitParticles.SetFloat("Rate", 35);
+            
+            EmitDamageParticles();
+        }
+
+        private void EmitDamageParticles()
+        {
+            Vector3 direction = _bodyTransform.position.normalized;
+            _damageParticles.SetVector3("Direction", direction);
+            _damageParticles.SendEvent("OnDamage");
         }
 
         private void ResetTrail()

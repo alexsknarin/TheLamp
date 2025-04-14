@@ -322,7 +322,7 @@ namespace _GAME.Scripts.Enemies.Wasp
             _isNeedCorrectCollision = true;
         }
 
-        public void HandleScreenLeft()
+        public void SetScreenLeft()
         {
             _baseTransform.position = Vector3.zero;
         }

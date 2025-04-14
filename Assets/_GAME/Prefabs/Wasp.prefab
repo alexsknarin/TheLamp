@@ -329,7 +329,7 @@ VisualEffect:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4733647155434441909}
   m_Enabled: 1
-  m_Asset: {fileID: 8926484042661614526, guid: 5b2f72b5e6f450f41b290d6606018a1b, type: 3}
+  m_Asset: {fileID: 8926484042661614526, guid: 6652739953d6fdd47a119b4a4d11ce4a, type: 3}
   m_InitialEventName: 
   m_InitialEventNameOverriden: 1
   m_StartSeed: 0
@@ -629,6 +629,7 @@ MonoBehaviour:
   _trailResetHandler: {fileID: 1639228510314528884}
   _damageParticles: {fileID: 5962640272398656442}
   _damageEmitParticles: {fileID: 8754903820864497051}
+  _bodyTransform: {fileID: 1763095384373111790}
   _deathDuration: 1.7
 --- !u!114 &1639228510314528884
 MonoBehaviour:
