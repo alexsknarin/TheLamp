@@ -187,6 +187,7 @@ namespace _GAME.Scripts.Enemies.Dragonfly
             enabled = true;
             _isLampDestroyed = false;
             _currentHealth = _maxHealth;
+            HealthChanged?.Invoke(_currentHealth, _maxHealth);
             _enterType = (DragonflyEnterType)Random.Range(0, 2);
             int sideDirection = RandomDirection.Generate();
             
