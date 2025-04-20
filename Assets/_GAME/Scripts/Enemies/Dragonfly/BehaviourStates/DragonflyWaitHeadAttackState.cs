@@ -37,7 +37,7 @@ namespace _GAME.Scripts.Enemies.Dragonfly.BehaviourStates
             
             if (distance < ProximityThreshold && distance < _prevDistance)
             {
-                _movement.StartAttack(DragonflyPatrolAttackMode.Head);
+                _movement.StartAttack(PatrolAttackMode.Head);
                 ReadyToSwitch = true;
             }
             _prevDistance = distance;

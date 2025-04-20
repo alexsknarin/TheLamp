@@ -1,3 +1,4 @@
+using System;
 using _GAME.Scripts.Lib.Interfaces;
 using UnityEngine;
 
@@ -13,11 +14,14 @@ namespace _GAME.Scripts.Enemies.Dragonfly.BehaviourStates
         {
             _duration = duration;
         }
-    
+        
+        public event Action Started;
+        
         public void Enter()
         {
              ReadyToSwitch = false;
             _localTime = 0f;
+            Started?.Invoke();
         }
 
         public void Tick()

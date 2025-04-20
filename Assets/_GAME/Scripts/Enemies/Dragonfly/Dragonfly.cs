@@ -11,14 +11,14 @@ namespace _GAME.Scripts.Enemies.Dragonfly
 {
     public class Dragonfly : CollidableEnemy, IAnimatedEnemy, IProjectileShooter, IBoss, ILampDestroyedDependable
     {
-        private readonly DragonflyReturnMode[] _returnModes = new DragonflyReturnMode[]
+        private readonly ReturnMode[] _returnModes =
         {
-            DragonflyReturnMode.PatrolL,
-            DragonflyReturnMode.PatrolR,
-            DragonflyReturnMode.SpiderL,
-            DragonflyReturnMode.SpiderR,
-            DragonflyReturnMode.Hover,
-            DragonflyReturnMode.Hover
+            ReturnMode.PatrolL,
+            ReturnMode.PatrolR,
+            ReturnMode.SpiderL,
+            ReturnMode.SpiderR,
+            ReturnMode.Hover,
+            ReturnMode.Hover
         };
     
         [SerializeField] private string _stateDebug;
@@ -51,8 +51,7 @@ namespace _GAME.Scripts.Enemies.Dragonfly
         [SerializeField] private float _spiderPatrolWaitMax;
         [SerializeField] private DragonflyProjectileSpider.DragonflyProjectileSpider _spider;
         // Serialized for debug
-        // [SerializeField] private bool _isInAttackExitZone = false;
-        [SerializeField] private bool _isCollidedWithLamp = false;
+        [SerializeField] private bool _isCollidedWithLamp;
     
         private DragonflyPatrolAttackPositionProvider _patrolAttackPositionProvider;
         private Vector3 _patrolAttackPosition;
@@ -74,14 +73,15 @@ namespace _GAME.Scripts.Enemies.Dragonfly
         private DragonflySwarmAttackState _swarmAttackState;
         private DragonflyWaitForBounceState _waitForBounceState;
         // Parameters
-        [SerializeField] private DragonflyEnterType _enterType;
-        [SerializeField] private DragonflyPatrolAttackMode _patrolAttackMode;
-        private bool _isReadyToPreAttackWait = false;
-        private bool _isReadyToAttackWait = false;
-        [SerializeField] private bool _isAttacked = false;
+        [SerializeField] private EnterType _enterType;
+        [SerializeField] private PatrolAttackMode _patrolAttackMode;
+        [SerializeField] private PostSpiderAttackMode _postSpiderAttackMode;
+        private bool _isReadyToHoverAttackWait;
+        private bool _isReadyToSpiderAttackWait;
         private bool _isDead;
         private bool _isLampDestroyed;
-        private DragonflyReturnMode _returnMode;
+        private IState _movementState;
+        private ReturnMode _returnMode;
 
         public event Action<CollidableEnemy> AnimatedAttackStarted;
         public event Action<CollidableEnemy> ProjectileShot;
@@ -107,7 +107,7 @@ namespace _GAME.Scripts.Enemies.Dragonfly
             CreateStates();
             CreateStateTransitions();
             
-            _enterType = DragonflyEnterType.None;
+            _enterType = EnterType.None;
             _stateMachine.SetState(_inactiveState);
             
             _swarm.SetDuration(_swarmAttackDuration);
@@ -117,32 +117,24 @@ namespace _GAME.Scripts.Enemies.Dragonfly
 
             enabled = false;
             _isDead = false;
-            _isReadyToPreAttackWait = false;
-            _isReadyToAttackWait = false;
-            _isAttacked = false;
             
             _patrolState.Started += OnPatrolStateStarted;
             _hoverState.Started += OnHoverStateStarted;
-            _patrolHeadState.Started += OnPatrolHeadStateStarted;
-            _patrolTailState.Started += OnPatrolTailStateStarted;
             
+            _patrolHeadState.Ended += OnPatrolHeadStateEnded;
+            _patrolTailState.Ended += OnPatrolTailStateEnded;
             
-            _patrolHeadState.Ended += GenerateAttackPosition; //?
-            _patrolTailState.Ended += GenerateAttackPosition; //?
-            _patrolSpiderState.Ended += GenerateAttackPosition; //?
-            
-            _waitHoverAttackState.Ended += StartAttack;
+            _swarmAttackState.Started += OnSwarmAttackStateStarted;
+
             _waitSpiderAttackState.GotReadyToPreAttack += StartSpiderPreAttack;
             _waitSpiderAttackState.Ended += StartSpiderAttack;
         
-            _movement.ReadyToAttackStateEntered += OnReadyToAttackStateEntered;
+            _movement.ReadyHoverToAttackStateEntered += OnReadyHoverToAttackStateEntered;
             _movement.ReadyToSwarmAttackStateEntered += OnReadyToSwarmAttackStateEntered;
+            _movement.ReadyToSpiderAttackStateStarted += OnReadyToSpiderAttackStateStarted;
             _movement.PreAttackStarted += OnPreAttackStarted;
             _movement.AttackStarted += OnAttackStarted;
-            _movement.AttackEnded += OnAttackEnded;
-            _movement.SwarmCalled += OnSwarmCalled;
             _movement.AfterAttackExitEnded += OnAfterAttackExitEnded;
-            _movement.ReadyToSpiderAttackStateStarted += OnReadyToSpiderAttackStateStarted;
             _movement.CatchSpiderStarted += OnCatchSpiderStarted;
             _movement.DeathAnimationEnded += OnDeathAnimationEnded;
             _movement.CollisionPhaseReached += OnCollisionPhaseReached;
@@ -155,49 +147,61 @@ namespace _GAME.Scripts.Enemies.Dragonfly
         
         }
 
+        private void OnSwarmAttackStateStarted()
+        {
+            SwarmCalled?.Invoke();
+            if (!_isLampDestroyed)
+            {
+                if (_movementState.GetType() == typeof(FDragonflyPatrolStateL))
+                {
+                    _swarm.PlayAttack(1);
+                }
+                else if (_movementState.GetType() == typeof(FDragonflyPatrolStateR))
+                {
+                    _swarm.PlayAttack(-1);
+                }    
+            }
+        }
+
         private void OnPatrolStateStarted()
         {
-            _enterType = DragonflyEnterType.None;
+            _enterType = EnterType.None;
         }
 
         private void OnHoverStateStarted()
         {
-            _enterType = DragonflyEnterType.None;
+            _enterType = EnterType.None;
         }
         
-        private void OnPatrolHeadStateStarted()
+        private void OnPatrolHeadStateEnded()
         {
-            _patrolAttackMode = DragonflyPatrolAttackMode.None;
+            _patrolAttackMode = PatrolAttackMode.None;
         }
-
-        private void OnPatrolTailStateStarted()
+        
+        private void OnPatrolTailStateEnded()
         {
-            _patrolAttackMode = DragonflyPatrolAttackMode.None;
+            _patrolAttackMode = PatrolAttackMode.None;
         }
 
         private void OnDestroy()
         {
             _patrolState.Started -= OnPatrolStateStarted;
             _hoverState.Started -= OnHoverStateStarted;
-            _patrolHeadState.Started -= OnPatrolHeadStateStarted;
-            _patrolTailState.Started -= OnPatrolTailStateStarted;
             
-            _patrolHeadState.Ended -= GenerateAttackPosition; //
-            _patrolTailState.Ended -= GenerateAttackPosition;//
-            _patrolSpiderState.Ended -= GenerateAttackPosition;//
+            _patrolHeadState.Ended -= OnPatrolHeadStateEnded;
+            _patrolTailState.Ended -= OnPatrolTailStateEnded;
             
-            _waitHoverAttackState.Ended -= StartAttack;
+            _swarmAttackState.Started -= OnSwarmAttackStateStarted;
+            
             _waitSpiderAttackState.GotReadyToPreAttack -= StartSpiderPreAttack;
             _waitSpiderAttackState.Ended -= StartSpiderAttack;
         
-            _movement.ReadyToAttackStateEntered -= OnReadyToAttackStateEntered;
+            _movement.ReadyHoverToAttackStateEntered -= OnReadyHoverToAttackStateEntered;
             _movement.ReadyToSwarmAttackStateEntered -= OnReadyToSwarmAttackStateEntered;
+            _movement.ReadyToSpiderAttackStateStarted -= OnReadyToSpiderAttackStateStarted;
             _movement.PreAttackStarted -= OnPreAttackStarted;
             _movement.AttackStarted -= OnAttackStarted;
-            _movement.AttackEnded -= OnAttackEnded;
-            _movement.SwarmCalled -= OnSwarmCalled;
             _movement.AfterAttackExitEnded -= OnAfterAttackExitEnded;
-            _movement.ReadyToSpiderAttackStateStarted -= OnReadyToSpiderAttackStateStarted;
             _movement.CatchSpiderStarted -= OnCatchSpiderStarted;
             _movement.DeathAnimationEnded -= OnDeathAnimationEnded;
             _movement.CollisionPhaseReached -= OnCollisionPhaseReached;
@@ -213,14 +217,15 @@ namespace _GAME.Scripts.Enemies.Dragonfly
         {
             enabled = true;
             
-            _enterType = DragonflyEnterType.None;
-            _patrolAttackMode = DragonflyPatrolAttackMode.None;
+            _enterType = EnterType.None;
+            _patrolAttackMode = PatrolAttackMode.None;
+            _returnMode = ReturnMode.None;
+            _postSpiderAttackMode = PostSpiderAttackMode.None;
             _stateMachine.SetState(_inactiveState);
             
             _isDead = false;
-            _isReadyToPreAttackWait = false;
-            _isReadyToAttackWait = false;
-            _isAttacked = false;
+            _isReadyToHoverAttackWait = false;
+            _isReadyToSpiderAttackWait = false;
             IsGameOver = false;
             _isLampDestroyed = false;
             
@@ -233,8 +238,7 @@ namespace _GAME.Scripts.Enemies.Dragonfly
 
             HealthChanged?.Invoke(_currentHealth, _maxHealth);
 
-            // _enterType = (DragonflyEnterType)Random.Range(0, 2);
-            _enterType = DragonflyEnterType.Patrol;
+            _enterType = (EnterType)Random.Range(0, 2);
             int sideDirection = RandomDirection.Generate();
 
             _movement.Play(_enterType, sideDirection);
@@ -282,8 +286,7 @@ namespace _GAME.Scripts.Enemies.Dragonfly
             _isCollidedWithLamp = true;
             CollisionState = CollidableState.AfterCollision;
             
-            // Reset state switcher enums TODO: extract method???
-            _patrolAttackMode = DragonflyPatrolAttackMode.None;
+            // _patrolAttackMode = PatrolAttackMode.None;
         }
 
         public override Vector3 ProvideImpactPoint()
@@ -301,7 +304,6 @@ namespace _GAME.Scripts.Enemies.Dragonfly
         {
             CollisionState = CollidableState.Outside;
             IsReadyForDamage = false;
-            _isCollidedWithLamp = false;
             _movement.TriggerFall(false);
         }
 
@@ -313,19 +315,19 @@ namespace _GAME.Scripts.Enemies.Dragonfly
 
         private void CreateStates()
         {
-            // Initialize the states
+            // TODO: replace with state factory
             _inactiveState = new DragonflyInactiveState();
             _passiveState = new DragonflyPassiveState();
             _patrolState = new DragonflyPatrolState();
             _hoverState = new DragonflyHoverState();
             _patrolHeadState = new DragonflyPatrolHeadState(_patrolWaitMin, _patrolWaitMax);
             _patrolTailState = new DragonflyPatrolTailState(_patrolTailWaitMin, _patrolTailWaitMax);
-            _waitHeadAttackState = new DragonflyWaitHeadAttackState(_visibleBodyTransform, _patrolAttackPositionProvider, _movement);
-            _waitTailAttackState = new DragonflyWaitTailAttackState(_visibleBodyTransform, _patrolAttackPositionProvider, _movement);
-            _waitHoverAttackState = new DragonflyWaitHoverAttackState(_hoverWaitMin, _hoverWaitMax);
+            _waitHeadAttackState = new DragonflyWaitHeadAttackState(_visibleBodyTransform, _patrolAttackPositionProvider, _movement); // TODO: Interface for movemetn
+            _waitTailAttackState = new DragonflyWaitTailAttackState(_visibleBodyTransform, _patrolAttackPositionProvider, _movement); // TODO:  Interface for movemetn
+            _waitHoverAttackState = new DragonflyWaitHoverAttackState(_hoverWaitMin, _hoverWaitMax, _movement);                       // TODO:  Interface for movemetn
+            _waitSpiderAttackState = new DragonflyWaitSpiderAttackState(_visibleBodyTransform, _spiderAttackPositionBase);
             _spiderEnterState = new DragonflySpiderEnterState();
             _patrolSpiderState = new DragonflyPatrolSpiderState(_spiderPatrolWaitMin, _spiderPatrolWaitMax);
-            _waitSpiderAttackState = new DragonflyWaitSpiderAttackState(_visibleBodyTransform, _spiderAttackPositionBase);
             _swarmAttackState = new DragonflySwarmAttackState(_swarmAttackDuration);
             _waitForBounceState = new DragonflyWaitForBounceState();
         }
@@ -333,60 +335,68 @@ namespace _GAME.Scripts.Enemies.Dragonfly
         private void CreateStateTransitions()
         {
             // Enter
-            At(_inactiveState, _patrolState, () => _enterType == DragonflyEnterType.Patrol); //+
-            At(_inactiveState, _hoverState, () => _enterType == DragonflyEnterType.Hover); //+
+            At(_inactiveState, _patrolState, () => _enterType == EnterType.Patrol);
+            At(_inactiveState, _hoverState, () => _enterType == EnterType.Hover);
             // Patrol to Head/Tail attack through the swarm attack state
-            At(_patrolState, _swarmAttackState, () => _patrolAttackMode != DragonflyPatrolAttackMode.None); //+
-            At(_swarmAttackState, _patrolHeadState, () => _swarmAttackState.ReadyToSwitch && _patrolAttackMode == DragonflyPatrolAttackMode.Head); //+
-            At(_swarmAttackState, _patrolTailState, () => _swarmAttackState.ReadyToSwitch && _patrolAttackMode == DragonflyPatrolAttackMode.Tail); //+
-            At(_patrolHeadState, _waitHeadAttackState, () => _patrolHeadState.ReadyToSwitch); //+
-            At(_patrolTailState, _waitTailAttackState, () => _patrolTailState.ReadyToSwitch); //+
+            At(_patrolState, _swarmAttackState, () => _patrolAttackMode != PatrolAttackMode.None);
+            At(_swarmAttackState, _patrolHeadState, 
+                () => 
+                    _swarmAttackState.ReadyToSwitch 
+                    && _patrolAttackMode == PatrolAttackMode.Head);
+            At(_swarmAttackState, _patrolTailState, 
+                () => 
+                    _swarmAttackState.ReadyToSwitch
+                    && _patrolAttackMode == PatrolAttackMode.Tail);
+            At(_patrolHeadState, _waitHeadAttackState, () => _patrolHeadState.ReadyToSwitch);
+            At(_patrolTailState, _waitTailAttackState, () => _patrolTailState.ReadyToSwitch);
             // Hover to Attack        
-            At(_hoverState, _waitHoverAttackState, IsReadyToPreAttackWait());
+            At(_hoverState, _waitHoverAttackState, IsReadyToHoverAttackWait());
             // Exit from attacks to passive state
-            At(_waitHeadAttackState, _waitForBounceState, () => _waitHeadAttackState.ReadyToSwitch);//+
-            At(_waitTailAttackState, _waitForBounceState, () => _waitTailAttackState.ReadyToSwitch);//+
-            At(_waitHoverAttackState, _waitForBounceState, IsAttacked());
+            At(_waitHeadAttackState, _waitForBounceState, () => _waitHeadAttackState.ReadyToSwitch);
+            At(_waitTailAttackState, _waitForBounceState, () => _waitTailAttackState.ReadyToSwitch);
+            At(_waitHoverAttackState, _waitForBounceState, () => _waitHoverAttackState.ReadyToSwitch);
         
-            At(_waitForBounceState, _passiveState, () => _isCollidedWithLamp);
+            At(_waitForBounceState, _passiveState, IsCollidedWithLamp());
         
             // Return to patrol/hover
             At(_passiveState, _patrolState, IsReturnToPatrol());
             At(_passiveState, _hoverState, IsReturnToHover());
             At(_passiveState, _spiderEnterState, IsReturnToSpider());
             // Spider Attack
-            At(_spiderEnterState, _patrolSpiderState, IsReadyToAttackWait());
-            At(_patrolSpiderState, _waitSpiderAttackState, IsReadyToAttackWait());
-            At(_waitSpiderAttackState, _patrolState, IsAttacked());
+            At(_spiderEnterState, _patrolSpiderState, IsReadyToSpiderAttackWait());
+            At(_patrolSpiderState, _waitSpiderAttackState, () => _patrolSpiderState.ReadyToSwitch);
+            // Post spider modes           
+            At(_waitSpiderAttackState, _patrolState, IsPostSpiderPatrol());
+            At(_waitSpiderAttackState, _patrolHeadState, IsPostSpiderHead());
         
         
             void At(IState from, IState to, Func<bool> condition) => _stateMachine.AddTransition(from, to, condition);
 
-            Func<bool> IsReadyToPreAttackWait() => () =>
+            Func<bool> IsCollidedWithLamp() => () =>
             {
-                if (_isReadyToPreAttackWait)
+                if (_isCollidedWithLamp)
                 {
-                    _isReadyToPreAttackWait = false;
+                    _isCollidedWithLamp = false;
                     return true;
                 }
                 return false;
             };
-        
-            Func<bool> IsReadyToAttackWait() => () =>
+            
+            Func<bool> IsReadyToHoverAttackWait() => () =>
             {
-                if(_isReadyToAttackWait)
+                if (_isReadyToHoverAttackWait)
                 {
-                    _isReadyToAttackWait = false;
+                    _isReadyToHoverAttackWait = false;
                     return true;
                 }
                 return false;
             };
-        
-            Func<bool> IsAttacked() => () =>
+            
+            Func<bool> IsReadyToSpiderAttackWait() => () =>
             {
-                if(_isAttacked)
+                if (_isReadyToSpiderAttackWait)
                 {
-                    _isAttacked = false;
+                    _isReadyToSpiderAttackWait = false;
                     return true;
                 }
                 return false;
@@ -394,9 +404,9 @@ namespace _GAME.Scripts.Enemies.Dragonfly
         
             Func<bool> IsReturnToPatrol() => () =>
             {
-                if (_isReadyToPreAttackWait && (_returnMode == DragonflyReturnMode.PatrolL || _returnMode == DragonflyReturnMode.PatrolR))
+                if (_returnMode == ReturnMode.PatrolL || _returnMode == ReturnMode.PatrolR)
                 {
-                    _isReadyToPreAttackWait = false;
+                    _returnMode = ReturnMode.None;
                     return true;
                 }
                 return false;
@@ -404,9 +414,9 @@ namespace _GAME.Scripts.Enemies.Dragonfly
         
             Func<bool> IsReturnToHover() => () =>
             {
-                if (_isReadyToPreAttackWait && _returnMode == DragonflyReturnMode.Hover)
+                if (_returnMode == ReturnMode.Hover)
                 {
-                    _isReadyToPreAttackWait = false;
+                    _returnMode = ReturnMode.None;
                     return true;
                 }
                 return false;
@@ -414,9 +424,29 @@ namespace _GAME.Scripts.Enemies.Dragonfly
         
             Func<bool> IsReturnToSpider() => () =>
             {
-                if (_isReadyToPreAttackWait && (_returnMode == DragonflyReturnMode.SpiderR || _returnMode == DragonflyReturnMode.SpiderL))
+                if (_returnMode == ReturnMode.SpiderR || _returnMode == ReturnMode.SpiderL)
                 {
-                    _isReadyToPreAttackWait = false;
+                    _returnMode = ReturnMode.None;
+                    return true;
+                }
+                return false;
+            };
+            
+            Func<bool> IsPostSpiderPatrol() => () =>
+            {
+                if (_postSpiderAttackMode == PostSpiderAttackMode.Patrol)
+                {
+                    _postSpiderAttackMode = PostSpiderAttackMode.None;
+                    return true;
+                }
+                return false;
+            };
+            
+            Func<bool> IsPostSpiderHead() => () =>
+            {
+                if (_postSpiderAttackMode == PostSpiderAttackMode.Head)
+                {
+                    _postSpiderAttackMode = PostSpiderAttackMode.None;
                     return true;
                 }
                 return false;
@@ -425,19 +455,6 @@ namespace _GAME.Scripts.Enemies.Dragonfly
 
 
         // State Event Handle Methods
-
-        private void GenerateAttackPosition()
-        {
-            _isReadyToAttackWait = true;
-        }
-
-        private void StartAttack(DragonflyPatrolAttackMode mode)
-        {
-            _movement.StartAttack(mode);
-            _isAttacked = true;
-            _isCollidedWithLamp = false;
-        }
-
         private void StartSpiderPreAttack()
         {
             if (!_isLampDestroyed)
@@ -453,8 +470,8 @@ namespace _GAME.Scripts.Enemies.Dragonfly
                 _spider.gameObject.transform.SetParent(transform);
                 _spider.Attack();
                 ProjectileShot?.Invoke(_spider);
-                _movement.StartAttack(DragonflyPatrolAttackMode.Spider);
-                _isAttacked = true;
+                _movement.StartAttack(PatrolAttackMode.Spider);
+                _postSpiderAttackMode = (PostSpiderAttackMode)Random.Range(0, 2);
             }
         }
 
@@ -466,27 +483,20 @@ namespace _GAME.Scripts.Enemies.Dragonfly
             Radius = _collisionProvider.CurrentCollisionRadius;
         }
 
-        private void OnReadyToAttackStateEntered(IState movementState)
+        private void OnReadyHoverToAttackStateEntered(IState movementState)
         {
-            _isReadyToPreAttackWait = true;
+            _isReadyToHoverAttackWait = true;
         }
 
         private void OnReadyToSwarmAttackStateEntered(IState movementState)
         {
-            // _patrolAttackMode = (DragonflyPatrolAttackMode)Random.Range(0, 2);
-            _patrolAttackMode = DragonflyPatrolAttackMode.Tail;
-                
-            if (!_isLampDestroyed)
-            {
-                if (movementState.GetType() == typeof(FDragonflyPatrolStateL))
-                {
-                    _swarm.PlayAttack(1);
-                }
-                else if (movementState.GetType() == typeof(FDragonflyPatrolStateR))
-                {
-                    _swarm.PlayAttack(-1);
-                }    
-            }
+            _patrolAttackMode = (PatrolAttackMode)Random.Range(0, 2);
+            _movementState = movementState;
+        }
+
+        private void OnReadyToSpiderAttackStateStarted()
+        {
+            _isReadyToSpiderAttackWait = true;
         }
 
         private void OnPreAttackStarted()
@@ -496,30 +506,13 @@ namespace _GAME.Scripts.Enemies.Dragonfly
 
         private void OnAttackStarted()
         {
-            _isCollidedWithLamp = false;
             AnimatedAttackStarted?.Invoke(this);
         }
-
-        private void OnAttackEnded()
-        {
-            // TODO: remove???
-        }
-
-        private void OnSwarmCalled()
-        {
-            SwarmCalled?.Invoke();
-        }
-
+        
         private void OnAfterAttackExitEnded(IState movementState)
         {
             _returnMode = _returnModes[Random.Range(0, 6)];
             _movement.ResolveReturnTransition(_returnMode);
-            _isReadyToPreAttackWait = true;
-        }
-
-        private void OnReadyToSpiderAttackStateStarted()
-        {
-            _isReadyToAttackWait = true;
         }
 
         private void OnCatchSpiderStarted(int direction)

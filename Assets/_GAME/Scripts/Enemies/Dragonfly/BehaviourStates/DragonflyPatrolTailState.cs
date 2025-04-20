@@ -18,7 +18,6 @@ namespace _GAME.Scripts.Enemies.Dragonfly.BehaviourStates
             _maxWaitTime = maxWaitTime;
         }
 
-        public event Action Started;
         public event Action Ended;
 
         public void Enter()
@@ -26,7 +25,6 @@ namespace _GAME.Scripts.Enemies.Dragonfly.BehaviourStates
             ReadyToSwitch = false;
             _localTime = 0;
             _duration = Random.Range(_minWaitTime, _maxWaitTime);
-            Started?.Invoke();
         }
 
         public void Tick()

@@ -1,10 +1,9 @@
 namespace _GAME.Scripts.Enemies.Dragonfly
 {
-    public enum DragonflyPatrolAttackMode
+    public enum PostSpiderAttackMode
     {
+        Patrol,
         Head,
-        Tail,
-        Spider,
         None
     }
 }
