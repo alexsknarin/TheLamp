@@ -4,7 +4,7 @@ using UnityEngine;
 namespace _GAME.Scripts.Enemies.Dragonfly.FMovementStates
 {
     [CreateAssetMenu(fileName = "FDragonflyGameoverHoverState", menuName = "FDragonflyMovementStates/FDragonflyGameoverHoverState")]
-    public class FDragonflyGameoverHoverState : ScriptableObject, IState
+    public class FDragonflyGameoverHoverState : ScriptableObject, IState, ILeft
     {
         [SerializeField] private float _amplitude = 0.5f;
         [SerializeField] private float _frequency = 0.33f;

@@ -1816,14 +1816,14 @@ MonoBehaviour:
   _hoverWaitMin: 0.5
   _hoverWaitMax: 2
   _swarm: {fileID: 4085273778962474757}
-  _swarmAttackDuration: 3
+  _swarmAttackDuration: 3.55
   _patrolWaitMin: 0
   _patrolWaitMax: 0.5
   _patrolAttackZonesL: {fileID: 11400000, guid: 7e96f2076b5edb84ab43969652ed065f,
     type: 2}
   _patrolAttackZonesR: {fileID: 11400000, guid: ab3e3f64eabbf794aad6fbb0033308d3,
     type: 2}
-  _tailAttackPositionBase: {x: 0.9991122, y: -0.7506288, z: -1.272415}
+  _tailAttackPositionBase: {x: -0.9991122, y: -0.7506288, z: -1.272415}
   _patrolTailWaitMin: 0
   _patrolTailWaitMax: 0.5
   _spiderAttackPositionBase: {x: 0.68, y: -0.4, z: -0.62}
@@ -1833,7 +1833,7 @@ MonoBehaviour:
   _isCollidedWithLamp: 0
   _enterType: 0
   _patrolAttackMode: 0
-  _isAttacked: 0
+  _postSpiderAttackMode: 0
 --- !u!114 &8953583610499858097
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1929,6 +1929,7 @@ MonoBehaviour:
   _isAttacking: 0
   _currentPatrolAttackMode: 0
   _isBounced: 0
+  _sideDirection: 1
   _isLampDestroyed: 0
 --- !u!114 &4085273778962474757
 MonoBehaviour:

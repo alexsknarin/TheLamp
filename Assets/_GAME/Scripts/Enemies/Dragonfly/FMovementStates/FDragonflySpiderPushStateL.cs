@@ -5,7 +5,7 @@ using UnityEngine;
 namespace _GAME.Scripts.Enemies.Dragonfly.FMovementStates
 {
     [CreateAssetMenu(fileName = "FDragonflySpiderPushStateL", menuName = "FDragonflyMovementStates/FDragonflySpiderPushStateL")]
-    public class FDragonflySpiderPushStateL : ScriptableObject, IState
+    public class FDragonflySpiderPushStateL : ScriptableObject, IState, ILeft
     {
         [SerializeField] private float _distance = 0.5f;
         [SerializeField] private float _duration = 0.5f;

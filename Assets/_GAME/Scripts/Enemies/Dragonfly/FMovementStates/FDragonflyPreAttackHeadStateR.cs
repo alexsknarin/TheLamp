@@ -5,7 +5,7 @@ using UnityEngine;
 namespace _GAME.Scripts.Enemies.Dragonfly.FMovementStates
 {
     [CreateAssetMenu(fileName = "FDragonflyPreAttackHeadStateR", menuName = "FDragonflyMovementStates/FDragonflyPreAttackHeadStateR")]
-    public class FDragonflyPreAttackHeadStateR : ScriptableObject, IState
+    public class FDragonflyPreAttackHeadStateR : ScriptableObject, IState, IRight
     {
         [SerializeField] private float _speed = 4f;
         [SerializeField] private float _duration = 0.4f;

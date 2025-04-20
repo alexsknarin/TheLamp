@@ -4,7 +4,7 @@ using UnityEngine;
 namespace _GAME.Scripts.Enemies.Dragonfly.FMovementStates
 {
     [CreateAssetMenu(fileName = "FDragonflySpiderPreattackHeadTransitionStateL", menuName = "FDragonflyMovementStates/FDragonflySpiderPreattackHeadTransitionStateL")]
-    public class FDragonflySpiderPreattackHeadTransitionStateL : ScriptableObject, IState
+    public class FDragonflySpiderPreattackHeadTransitionStateL : ScriptableObject, IState, ILeft
     {
         [SerializeField] private float _duration = 0.65f;
         private Transform _patrolTransformParent;

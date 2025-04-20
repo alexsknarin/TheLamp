@@ -4,7 +4,7 @@ using UnityEngine;
 namespace _GAME.Scripts.Enemies.Dragonfly.FMovementStates
 {
     [CreateAssetMenu(fileName = "FDragonflyIdleState", menuName = "FDragonflyMovementStates/FDragonflyIdleState")]
-    public class FDragonflyIdleState : ScriptableObject, IState
+    public class FDragonflyIdleState : ScriptableObject, IState, ILeft
     {
         // Dependencies
         private Transform _visibleBodyTransform;

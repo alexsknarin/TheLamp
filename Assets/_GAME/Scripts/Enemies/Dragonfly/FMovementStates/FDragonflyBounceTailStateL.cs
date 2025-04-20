@@ -5,7 +5,7 @@ namespace _GAME.Scripts.Enemies.Dragonfly.FMovementStates
 {
     [CreateAssetMenu(fileName = "FDragonflyBounceTailStateL",
         menuName = "FDragonflyMovementStates/FDragonflyBounceTailStateL")]
-    public class FDragonflyBounceTailStateL : ScriptableObject, IState
+    public class FDragonflyBounceTailStateL : ScriptableObject, IState, ILeft
     {
         [SerializeField] private float _rotationSpeed = 125f;
         private readonly int _sideDirection = 1;

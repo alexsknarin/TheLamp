@@ -121,8 +121,8 @@ namespace _GAME.Scripts.Enemies.Dragonfly
             _patrolState.Started += OnPatrolStateStarted;
             _hoverState.Started += OnHoverStateStarted;
             
-            _patrolHeadState.Ended += OnPatrolHeadStateEnded;
-            _patrolTailState.Ended += OnPatrolTailStateEnded;
+            _patrolHeadState.Started += OnPatrolHeadStateStarted;
+            _patrolTailState.Started += OnPatrolTailStateStarted;
             
             _swarmAttackState.Started += OnSwarmAttackStateStarted;
 
@@ -138,6 +138,7 @@ namespace _GAME.Scripts.Enemies.Dragonfly
             _movement.CatchSpiderStarted += OnCatchSpiderStarted;
             _movement.DeathAnimationEnded += OnDeathAnimationEnded;
             _movement.CollisionPhaseReached += OnCollisionPhaseReached;
+            _movement.SwarmCalled += OnSwarmCalled;
             
             _spider.EnterAnimationEnded += OnSpiderEnterAnimationEnded;
 
@@ -147,9 +148,13 @@ namespace _GAME.Scripts.Enemies.Dragonfly
         
         }
 
-        private void OnSwarmAttackStateStarted()
+        private void OnSwarmCalled()
         {
             SwarmCalled?.Invoke();
+        }
+
+        private void OnSwarmAttackStateStarted()
+        {
             if (!_isLampDestroyed)
             {
                 if (_movementState.GetType() == typeof(FDragonflyPatrolStateL))
@@ -173,12 +178,12 @@ namespace _GAME.Scripts.Enemies.Dragonfly
             _enterType = EnterType.None;
         }
         
-        private void OnPatrolHeadStateEnded()
+        private void OnPatrolHeadStateStarted()
         {
             _patrolAttackMode = PatrolAttackMode.None;
         }
         
-        private void OnPatrolTailStateEnded()
+        private void OnPatrolTailStateStarted()
         {
             _patrolAttackMode = PatrolAttackMode.None;
         }
@@ -188,8 +193,8 @@ namespace _GAME.Scripts.Enemies.Dragonfly
             _patrolState.Started -= OnPatrolStateStarted;
             _hoverState.Started -= OnHoverStateStarted;
             
-            _patrolHeadState.Ended -= OnPatrolHeadStateEnded;
-            _patrolTailState.Ended -= OnPatrolTailStateEnded;
+            _patrolHeadState.Started -= OnPatrolHeadStateStarted;
+            _patrolTailState.Started -= OnPatrolTailStateStarted;
             
             _swarmAttackState.Started -= OnSwarmAttackStateStarted;
             
@@ -206,6 +211,7 @@ namespace _GAME.Scripts.Enemies.Dragonfly
             _movement.DeathAnimationEnded -= OnDeathAnimationEnded;
             _movement.CollisionPhaseReached -= OnCollisionPhaseReached;
             _spider.EnterAnimationEnded -= OnSpiderEnterAnimationEnded;
+            _movement.SwarmCalled += OnSwarmCalled;
 
 
             _swarm.MothAttackStarted -= OnMothAttackStarted;

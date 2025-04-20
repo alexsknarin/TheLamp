@@ -5,7 +5,7 @@ using UnityEngine;
 namespace _GAME.Scripts.Enemies.Dragonfly.FMovementStates
 {
     [CreateAssetMenu(fileName = "FDragonflyPatrolStateL", menuName = "FDragonflyMovementStates/FDragonflyPatrolStateL")]
-    public class FDragonflyPatrolStateL : ScriptableObject, IState
+    public class FDragonflyPatrolStateL : ScriptableObject, IState, ILeft
     {
         private readonly int _sideDirection = 1;
         // Dependencies

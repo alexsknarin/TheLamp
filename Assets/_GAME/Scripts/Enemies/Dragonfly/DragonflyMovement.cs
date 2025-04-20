@@ -93,7 +93,7 @@ namespace _GAME.Scripts.Enemies.Dragonfly
         private bool _isAnimClipEnded = false;
         [SerializeField] private bool _isBounced = false;
         private EnterType _enterState = 0;
-        private int _sideDirection = 1;
+        [SerializeField] private int _sideDirection = 1;
         private bool _isAttackSuccess;
         private bool _isAttackFail;
         [SerializeField] private bool _isLampDestroyed;
@@ -114,6 +114,7 @@ namespace _GAME.Scripts.Enemies.Dragonfly
     
     
         public IState MovementState => _stateMachine.CurrentState;
+        public int SideDirection => _sideDirection;
 
         public void Initialize()
         {
@@ -135,8 +136,6 @@ namespace _GAME.Scripts.Enemies.Dragonfly
             _spiderPushStateL.Ended += OnSwarmCalled;
         
             _hoverState.Started += OnReadyToHoverAttackEnter;
-            // _patrolStateL.Started += OnReadyToAttackEnter; // 
-            // _patrolStateR.Started += OnReadyToAttackEnter; //
         
             _patrolStateL.Started += OnReadyToSwarmAttackEnter;
             _patrolStateR.Started += OnReadyToSwarmAttackEnter;
@@ -199,8 +198,6 @@ namespace _GAME.Scripts.Enemies.Dragonfly
             _spiderPushStateL.Ended -= OnSwarmCalled;
         
             _hoverState.Started -= OnReadyToHoverAttackEnter;
-            // _patrolStateL.Started -= OnReadyToAttackEnter; // 
-            // _patrolStateR.Started -= OnReadyToAttackEnter; //
         
             _patrolStateL.Started -= OnReadyToSwarmAttackEnter;
             _patrolStateR.Started -= OnReadyToSwarmAttackEnter;

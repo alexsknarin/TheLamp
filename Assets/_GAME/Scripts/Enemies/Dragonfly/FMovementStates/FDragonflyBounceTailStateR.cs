@@ -4,7 +4,7 @@ using UnityEngine;
 namespace _GAME.Scripts.Enemies.Dragonfly.FMovementStates
 {
     [CreateAssetMenu(fileName = "FDragonflyBounceTailStateR", menuName = "FDragonflyMovementStates/FDragonflyBounceTailStateR")]
-    public class FDragonflyBounceTailStateR : ScriptableObject, IState
+    public class FDragonflyBounceTailStateR : ScriptableObject, IState, IRight
     {
         [SerializeField] private float _rotationSpeed = 125f;
         private readonly int _sideDirection = -1;

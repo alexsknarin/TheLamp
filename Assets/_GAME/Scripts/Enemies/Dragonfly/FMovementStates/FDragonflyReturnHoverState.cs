@@ -5,7 +5,7 @@ using UnityEngine;
 namespace _GAME.Scripts.Enemies.Dragonfly.FMovementStates
 {
     [CreateAssetMenu(fileName = "FDragonflyReturnHoverState", menuName = "FDragonflyMovementStates/FDragonflyReturnHoverState")]
-    public class FDragonflyReturnHoverState : ScriptableObject, IState
+    public class FDragonflyReturnHoverState : ScriptableObject, IState, ILeft
     {
         [SerializeField] private float _verticalDistance = 9.5f;
         [SerializeField] private float _horizontalDistance = 1f;

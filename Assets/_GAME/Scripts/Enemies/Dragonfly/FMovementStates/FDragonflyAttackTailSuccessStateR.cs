@@ -5,7 +5,7 @@ using UnityEngine;
 namespace _GAME.Scripts.Enemies.Dragonfly.FMovementStates
 {
     [CreateAssetMenu(fileName = "FDragonflyAttackTailSuccessStateR", menuName = "FDragonflyMovementStates/FDragonflyAttackTailSuccessStateR")]
-    public class FDragonflyAttackTailSuccessStateR : ScriptableObject, IState
+    public class FDragonflyAttackTailSuccessStateR : ScriptableObject, IState, IRight
     {
         [SerializeField] private float _duration = 1.1f;
         [SerializeField] private AnimationCurve _txCurve;
