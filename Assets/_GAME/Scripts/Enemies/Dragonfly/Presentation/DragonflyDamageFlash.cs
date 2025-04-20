@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using _GAME.Scripts.Enemies.Generic.Presentation;
 using UnityEngine;
@@ -20,9 +21,15 @@ namespace _GAME.Scripts.Enemies.Dragonfly.Presentation
         {
             _bodyMaterial = _bodyMeshRenderer.material;
             _wingsMaterial = _wingsMeshRenderer.material;
+            _damageFlashDuration = new WaitForSeconds(_duration);
             _bodyMaterial.SetFloat("_AttackSemaphore", 0f);
             _wingsMaterial.SetFloat("_AttackSemaphore", 0f);
-            _damageFlashDuration = new WaitForSeconds(_duration);
+        }
+
+        public void Reset()
+        {
+            _bodyMaterial.SetFloat("_AttackSemaphore", 0f);
+            _wingsMaterial.SetFloat("_AttackSemaphore", 0f);
         }
 
         public override void Play()

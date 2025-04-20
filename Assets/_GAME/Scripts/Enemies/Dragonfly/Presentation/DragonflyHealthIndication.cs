@@ -1,3 +1,4 @@
+using System;
 using _GAME.Scripts.Lib.Interfaces;
 using UnityEngine;
 using UnityEngine.VFX;
@@ -20,6 +21,11 @@ namespace _GAME.Scripts.Enemies.Dragonfly.Presentation
         {
             _bodyMaterial = _bodyMeshRenderer.material;
             _wingsMaterial = _wingsMeshRenderer.material;
+            Reset();
+        }
+
+        public void Reset()
+        {
             _bodyMaterial.SetFloat("_DamagePhase", 0f);
             _wingsMaterial.SetFloat("_DamagePhase", 0f);
         

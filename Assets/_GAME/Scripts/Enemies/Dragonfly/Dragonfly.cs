@@ -83,6 +83,7 @@ namespace _GAME.Scripts.Enemies.Dragonfly
         private IState _movementState;
         private ReturnMode _returnMode;
 
+        public event Action Started;
         public event Action<CollidableEnemy> AnimatedAttackStarted;
         public event Action<CollidableEnemy> ProjectileShot;
         public event Action<Enemy, bool> ProjectileDeactivated;
@@ -248,6 +249,7 @@ namespace _GAME.Scripts.Enemies.Dragonfly
             int sideDirection = RandomDirection.Generate();
 
             _movement.Play(_enterType, sideDirection);
+            Started?.Invoke();
         }
 
         public override void ReceiveDamage(int damageAmount)

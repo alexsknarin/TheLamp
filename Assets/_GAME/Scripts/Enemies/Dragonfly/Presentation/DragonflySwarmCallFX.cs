@@ -15,11 +15,16 @@ namespace _GAME.Scripts.Enemies.Dragonfly.Presentation
         public void Initialize()
         {
             _material1 = _swarmWave1Object.GetComponent<MeshRenderer>().material;
+            Reset();
+        }
+
+        public void Reset()
+        {
             _material1.SetFloat("_Transparency", 0f);
             _swarmWave1Object.SetActive(false);
             _isActive = false;
         }
-
+        
         public void Play()
         {
             _swarmWave1Object.SetActive(true);

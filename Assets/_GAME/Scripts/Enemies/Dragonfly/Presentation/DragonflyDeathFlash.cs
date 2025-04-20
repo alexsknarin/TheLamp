@@ -1,3 +1,4 @@
+using System;
 using _GAME.Scripts.Enemies.Generic.Presentation;
 using UnityEngine;
 using UnityEngine.VFX;
@@ -19,10 +20,13 @@ namespace _GAME.Scripts.Enemies.Dragonfly.Presentation
         public override void Initialize()
         {
             enabled = false;
-        
             _bodyMaterial = _bodyMeshRenderer.material;
             _wingsMaterial = _wingsMeshRenderer.material;
-        
+            Reset();
+        }
+
+        public void Reset()
+        {
             _bodyMaterial.SetFloat("_DeathPhase", 0f);
             _wingsMaterial.SetFloat("_DeathPhase", 0f);
         
