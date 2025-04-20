@@ -13,7 +13,7 @@ namespace _GAME.Scripts.Enemies.Dragonfly.FMovementStates
         [SerializeField] private AnimationCurve _rxCurve;
         [SerializeField] private AnimationCurve _ryCurve;
         [SerializeField] private AnimationCurve _rzCurve;
-        [SerializeField] private float _collisionReadyTime = 0.3f;
+        [SerializeField] private float _collisionReadyTime = 0.33f;
         private bool _isCollisionPhaseReached = false;
         private float _localTime = 0f;
         private float _phase = 0f;

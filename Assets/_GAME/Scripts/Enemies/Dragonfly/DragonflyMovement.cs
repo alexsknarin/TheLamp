@@ -82,8 +82,8 @@ namespace _GAME.Scripts.Enemies.Dragonfly
         private readonly int _returnTransitionRLBTHash = Animator.StringToHash("ReturnTransitionRLBT");
         private readonly int _returnTransitionRLTBHash = Animator.StringToHash("ReturnTransitionRLTB");
         // Attack Modes
-        private bool _isAttacking = false;
-        private DragonflyPatrolAttackMode _currentPatrolAttackMode;
+        [SerializeField] private bool _isAttacking = false;
+        [SerializeField] private DragonflyPatrolAttackMode _currentPatrolAttackMode;
         // Tracking previous state
         private IState _previousState;
         private DragonflyReturnMode _resolvedReturnMode;
@@ -96,7 +96,7 @@ namespace _GAME.Scripts.Enemies.Dragonfly
         private int _sideDirection = 1;
         private bool _isAttackSuccess;
         private bool _isAttackFail;
-        private bool _isLampDestroyed;
+        [SerializeField] private bool _isLampDestroyed;
         private bool _isDead;
     
         // Events
@@ -123,6 +123,9 @@ namespace _GAME.Scripts.Enemies.Dragonfly
             _isAttackSuccess = false;
             _isAttackFail = false;
             _isDead = false;
+            
+            SetMovementStatesDependencies();
+            StateMachineSetup();
         
             _stateMachine.SetState(_idleState);
             _currentStateType = _stateMachine.CurrentStateType.ToString().Replace("FDragonfly", ""); // DEBUG
@@ -132,8 +135,8 @@ namespace _GAME.Scripts.Enemies.Dragonfly
             _spiderPushStateL.Ended += OnSwarmCalled;
         
             _hoverState.Started += OnReadyToAttackEnter;
-            _patrolStateL.Started += OnReadyToAttackEnter; // 
-            _patrolStateR.Started += OnReadyToAttackEnter; //
+            // _patrolStateL.Started += OnReadyToAttackEnter; // 
+            // _patrolStateR.Started += OnReadyToAttackEnter; //
         
             _patrolStateL.Started += OnReadyToSwarmAttackEnter;
             _patrolStateR.Started += OnReadyToSwarmAttackEnter;
@@ -196,8 +199,8 @@ namespace _GAME.Scripts.Enemies.Dragonfly
             _spiderPushStateL.Ended -= OnSwarmCalled;
         
             _hoverState.Started -= OnReadyToAttackEnter;
-            _patrolStateL.Started -= OnReadyToAttackEnter; // 
-            _patrolStateR.Started -= OnReadyToAttackEnter; //
+            // _patrolStateL.Started -= OnReadyToAttackEnter; // 
+            // _patrolStateR.Started -= OnReadyToAttackEnter; //
         
             _patrolStateL.Started -= OnReadyToSwarmAttackEnter;
             _patrolStateR.Started -= OnReadyToSwarmAttackEnter;
@@ -420,15 +423,7 @@ namespace _GAME.Scripts.Enemies.Dragonfly
             _stateMachine.SetState(_gameoverHoverState);
         }
         
-        
-        // TODO: control for this from the factory
-        
-        private void Awake() 
-        {
-            _isPlaying = false;
-            SetMovementStatesDependencies();
-            StateMachineSetup();
-        }
+
 
         private void SetMovementStatesDependencies()
         { 

@@ -6,10 +6,11 @@ namespace _GAME.Scripts.Enemies.Dragonfly.BehaviourStates
 {
     public class DragonflyPatrolTailState : IState
     {
-        private readonly float _minWaitTime = 0f;
-        private readonly float _maxWaitTime = 1f;
-        private float _localTime = 0f;
-        private float _duration = 0f;
+        public bool ReadyToSwitch; // TODO: rename
+        private readonly float _minWaitTime;
+        private readonly float _maxWaitTime;
+        private float _localTime;
+        private float _duration;
 
         public DragonflyPatrolTailState(float minWaitTime, float maxWaitTime)
         {
@@ -17,12 +18,15 @@ namespace _GAME.Scripts.Enemies.Dragonfly.BehaviourStates
             _maxWaitTime = maxWaitTime;
         }
 
+        public event Action Started;
         public event Action Ended;
 
         public void Enter()
         {
+            ReadyToSwitch = false;
             _localTime = 0;
             _duration = Random.Range(_minWaitTime, _maxWaitTime);
+            Started?.Invoke();
         }
 
         public void Tick()
@@ -31,9 +35,13 @@ namespace _GAME.Scripts.Enemies.Dragonfly.BehaviourStates
             if (_localTime >= _duration)
             {
                 Ended?.Invoke();
+                ReadyToSwitch = true;
             }
         }
 
-        public void Exit() { }
+        public void Exit()
+        {
+            ReadyToSwitch = false;
+        }
     }
 }

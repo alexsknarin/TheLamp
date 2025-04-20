@@ -6,12 +6,13 @@ namespace _GAME.Scripts.Enemies.Dragonfly.BehaviourStates
 {
     public class DragonflyWaitHeadAttackState : IState
     {
+        private const float ProximityThreshold = 0.25f;
+        public bool ReadyToSwitch; // TODO: rename according to other classes
         private Vector3 _targetPosition;
         private readonly Transform _transform;
         private readonly DragonflyPatrolAttackPositionProvider _patrolAttackPositionProvider;
         private readonly DragonflyMovement _movement;
-        private bool _isLastPatrolDirectionSet = false;
-        private int _lastPatrolDirection = 0;
+        private float _prevDistance;
 
         public DragonflyWaitHeadAttackState(Transform visibleBodyTransform, 
             DragonflyPatrolAttackPositionProvider patrolAttackPositionProvider, 
@@ -22,39 +23,37 @@ namespace _GAME.Scripts.Enemies.Dragonfly.BehaviourStates
             _movement = movement;
         }
 
-        public event Action<DragonflyPatrolAttackMode> Ended;
-
         public void Enter()
         {
+            ReadyToSwitch = false;
             _targetPosition = _patrolAttackPositionProvider.GenerateRandomPreAttackHeadPosition(_movement.MovementState);
-            _isLastPatrolDirectionSet = false;
-            _lastPatrolDirection = 0;
+            _prevDistance = 0;
         }
 
         public void Tick()
         {
+            Vector3 currentPosition = GetCurrentNormalizedPosition();
+            float distance = Vector3.Distance(currentPosition, _targetPosition);
+            
+            if (distance < ProximityThreshold && distance < _prevDistance)
+            {
+                _movement.StartAttack(DragonflyPatrolAttackMode.Head);
+                ReadyToSwitch = true;
+            }
+            _prevDistance = distance;
+        }
+
+        private Vector3 GetCurrentNormalizedPosition()
+        {
             Vector3 currentPosition = _transform.position;
             currentPosition.y = 0;
             currentPosition.Normalize();
-            float distance = Vector3.Distance(currentPosition, _targetPosition);
-            if (distance < 0.25f)
-            {
-                if (!_isLastPatrolDirectionSet)
-                {
-                    _lastPatrolDirection = (int)Mathf.Sign((_targetPosition - currentPosition).normalized.x);
-                    _isLastPatrolDirectionSet = true;
-                }
-                else
-                {
-                    float currentPatrolDirection = (int)Mathf.Sign((_targetPosition - currentPosition).normalized.x);
-                    if (currentPatrolDirection + _lastPatrolDirection == 0)
-                    {
-                        Ended?.Invoke(DragonflyPatrolAttackMode.Head);
-                    }
-                }
-            }
+            return currentPosition;
         }
 
-        public void Exit() { }
+        public void Exit()
+        {
+            ReadyToSwitch = false;
+        }
     }
 }

@@ -4,6 +4,7 @@ namespace _GAME.Scripts.Enemies.Dragonfly
     {
         Head,
         Tail,
-        Spider
+        Spider,
+        None
     }
 }
