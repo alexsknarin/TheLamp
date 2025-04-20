@@ -82,7 +82,7 @@ namespace _GAME.Scripts.Enemies.Dragonfly
         private readonly int _returnTransitionRLBTHash = Animator.StringToHash("ReturnTransitionRLBT");
         private readonly int _returnTransitionRLTBHash = Animator.StringToHash("ReturnTransitionRLTB");
         // Attack Modes
-        [SerializeField] private bool _isAttacking = false;
+        [SerializeField] private bool _isAttacking;
         [SerializeField] private PatrolAttackMode _currentPatrolAttackMode;
         // Tracking previous state
         private IState _previousState;
@@ -264,6 +264,7 @@ namespace _GAME.Scripts.Enemies.Dragonfly
             _isPlaying = true;
             _isBounced = false;
             _isLampDestroyed = false;
+            _isAttacking = false;
             
             _stateMachine.SetState(_idleState);
             _currentStateType = _stateMachine.CurrentStateType.ToString().Replace("FDragonfly", ""); // DEBUG
