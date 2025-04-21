@@ -85,7 +85,6 @@ namespace _GAME.Scripts.Enemies.DragonflyProjectileMoth
 
         public void TriggerGameOver()
         {
-            Debug.Log("Moth projectile Game Over triggered");
             if (_isAttacking)
             {
                 _fleeGoal = _fleeGoalBase;

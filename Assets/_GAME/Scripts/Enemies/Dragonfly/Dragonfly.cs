@@ -220,15 +220,12 @@ namespace _GAME.Scripts.Enemies.Dragonfly
             }
             else
             {
-                Debug.Log("Health < 0");
                 if (_attackResult != AttackResult.Death)
                 {
                     _attackResult = AttackResult.Death;
-                    Debug.Log("Dead +++++++++");
                     _currentHealth = 0; 
                     _movement.TriggerFall(_attackResult);
                     Died?.Invoke();
-                    
                 }
             }
         }

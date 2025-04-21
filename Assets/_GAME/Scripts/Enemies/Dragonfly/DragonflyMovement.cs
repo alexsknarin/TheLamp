@@ -131,6 +131,7 @@ namespace _GAME.Scripts.Enemies.Dragonfly
             _animationClipEvents.AnimClipEnded += OnAnimClipEnded;
             _animationClipEvents.SwarmCalled += OnSwarmCalled;
             _spiderPushStateL.Ended += OnSwarmCalled;
+            _spiderPushStateR.Ended += OnSwarmCalled;
         
             _hoverState.Started += OnReadyToHoverAttackEnter;
         
@@ -192,6 +193,7 @@ namespace _GAME.Scripts.Enemies.Dragonfly
             _animationClipEvents.AnimClipEnded -= OnAnimClipEnded;
             _animationClipEvents.SwarmCalled -= OnSwarmCalled;
             _spiderPushStateL.Ended -= OnSwarmCalled;
+            _spiderPushStateR.Ended -= OnSwarmCalled;
         
             _hoverState.Started -= OnReadyToHoverAttackEnter;
         
