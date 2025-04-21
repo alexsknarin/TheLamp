@@ -29,7 +29,7 @@ namespace _GAME.Scripts.InGamePresentation.Haptic
     
         public void DoTouchHaptic()
         {
-            Debug.Log("~~touch");
+            // Debug.Log("~~touch");
 #if UNITY_ANDROID && !UNITY_EDITOR
         if (_isDamageVibrationDisabled)
         {
@@ -40,7 +40,7 @@ namespace _GAME.Scripts.InGamePresentation.Haptic
     
         public  void DoDamageVibration()
         {
-            Debug.Log("~~~~~~~~damage");
+            // Debug.Log("~~~~~~~~damage");
 #if UNITY_ANDROID && !UNITY_EDITOR
             Handheld.Vibrate();
             _isDamageVibrationDisabled = false;
@@ -50,7 +50,7 @@ namespace _GAME.Scripts.InGamePresentation.Haptic
     
         public void DoExplosionVibration()
         {
-            Debug.Log("~~~~~~~~~~~explosion");
+            // Debug.Log("~~~~~~~~~~~explosion");
 #if UNITY_ANDROID && !UNITY_EDITOR
             Handheld.Vibrate();
             _isDamageVibrationDisabled = false;

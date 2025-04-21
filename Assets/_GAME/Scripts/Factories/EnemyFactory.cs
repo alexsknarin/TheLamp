@@ -98,14 +98,12 @@ namespace _GAME.Scripts.Factories
                 _mothlingEnemyAssetHandle = Addressables.LoadAssetAsync<GameObject>("Enemy/Mothling.prefab");
                 await _mothlingEnemyAssetHandle.Task;
                 IsMothlingLoaded = true;
-                Debug.Log("Mothling Loaded");
             }
             if (type == typeof(Fly))
             {
                 _flyEnemyAssetHandle = Addressables.LoadAssetAsync<GameObject>("Enemy/Fly.prefab");
                 await _flyEnemyAssetHandle.Task;
                 IsFlyLoaded = true;
-                Debug.Log("Fly Loaded");
             }
 
             if (type == typeof(FireFly))
@@ -113,7 +111,6 @@ namespace _GAME.Scripts.Factories
                 _fireFlyEnemyAssetHandle = Addressables.LoadAssetAsync<GameObject>("Enemy/FireFly.prefab");
                 await _fireFlyEnemyAssetHandle.Task;
                 IsFireFlyLoaded = true;
-                Debug.Log("FireFly Loaded");
             }
         
             if (type == typeof(Moth))
@@ -121,7 +118,6 @@ namespace _GAME.Scripts.Factories
                 _mothEnemyAssetHandle = Addressables.LoadAssetAsync<GameObject>("Enemy/Moth.prefab");
                 await _mothEnemyAssetHandle.Task;
                 IsMothLoaded = true;
-                Debug.Log("Moth Loaded");
             }
         
             if (type == typeof(Spider))
@@ -129,7 +125,6 @@ namespace _GAME.Scripts.Factories
                 _spiderEnemyAssetHandle = Addressables.LoadAssetAsync<GameObject>("Enemy/Spider.prefab");
                 await _spiderEnemyAssetHandle.Task;
                 IsSpiderLoaded = true;
-                Debug.Log("Spider Loaded");
             }
         
             if (type == typeof(Ladybug))
@@ -137,7 +132,6 @@ namespace _GAME.Scripts.Factories
                 _ladybugEnemyAssetHandle = Addressables.LoadAssetAsync<GameObject>("Enemy/Ladybug.prefab");
                 await _ladybugEnemyAssetHandle.Task;
                 IsLadybugLoaded = true;
-                Debug.Log("Ladybug Loaded");
             }
         
             if (type == typeof(Megamothling))
@@ -145,7 +139,6 @@ namespace _GAME.Scripts.Factories
                 _megamothlingEnemyAssetHandle = Addressables.LoadAssetAsync<GameObject>("Boss/Megamothling.prefab");
                 await _megamothlingEnemyAssetHandle.Task;
                 IsMegamothlingLoaded = true;
-                Debug.Log("Megamothling Loaded");
             }
         
             if (type == typeof(Wasp))
@@ -153,7 +146,6 @@ namespace _GAME.Scripts.Factories
                 _waspEnemyAssetHandle = Addressables.LoadAssetAsync<GameObject>("Boss/Wasp.prefab");
                 await _waspEnemyAssetHandle.Task;
                 IsWaspLoaded = true;
-                Debug.Log("Wasp Loaded");
             }
         
             if (type == typeof(Megabeetle))
@@ -161,7 +153,6 @@ namespace _GAME.Scripts.Factories
                 _megabeetleEnemyAssetHandle = Addressables.LoadAssetAsync<GameObject>("Boss/Megabeetle.prefab");
                 await _megabeetleEnemyAssetHandle.Task;
                 IsMegabeetleLoaded = true;
-                Debug.Log("Megabeetle Loaded");
             }
         
             if (type == typeof(Dragonfly))
@@ -169,7 +160,6 @@ namespace _GAME.Scripts.Factories
                 _dragonflyEnemyAssetHandle = Addressables.LoadAssetAsync<GameObject>("Boss/Dragonfly.prefab");
                 await _dragonflyEnemyAssetHandle.Task;
                 IsDragonflyLoaded = true;
-                Debug.Log("Dragonfly Loaded");
             }
         }
     

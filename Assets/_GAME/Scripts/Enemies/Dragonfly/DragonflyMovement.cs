@@ -188,7 +188,6 @@ namespace _GAME.Scripts.Enemies.Dragonfly
             _attackTailStateR.CollisionPhaseReached += OnCollisionPhaseReached;
             _attackHeadState.CollisionPhaseReached += OnCollisionPhaseReached;
             _attackHoverState.CollisionPhaseReached += OnCollisionPhaseReached;
-            Debug.Log("Subscrided to Dragonfly Events");
         }
 
         private void OnDestroy()
@@ -386,7 +385,6 @@ namespace _GAME.Scripts.Enemies.Dragonfly
     
         public void TriggerBounce()
         {
-            Debug.Log(" ***---  Bounce Triggered");
             _isBounced = true;
         }
 
@@ -781,7 +779,6 @@ namespace _GAME.Scripts.Enemies.Dragonfly
     
         private void OnCollisionPhaseReached()
         {
-            Debug.Log("Collision Phase Reached!!!"); // DEBUG
             CollisionPhaseReached?.Invoke();
         }
     }

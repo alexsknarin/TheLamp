@@ -68,7 +68,6 @@ namespace _GAME.Scripts.Enemies.Spider
             }
             else
             {
-                Debug.Log($"Damage Received: {damageAmount}.");
                 _movement.TriggerFall();
                 Damaged?.Invoke();
                 HealthChanged?.Invoke(_currentHealth, _maxHealth);

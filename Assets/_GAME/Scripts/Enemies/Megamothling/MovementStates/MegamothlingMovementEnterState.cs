@@ -63,7 +63,6 @@ namespace _GAME.Scripts.Enemies.Megamothling.MovementStates
 
             _startDepth = 0;
             _depthAdjustLocalTime = 0;
-            Debug.Log("Entered: " + Position2D);
         }
 
         public override void Tick()
@@ -91,8 +90,6 @@ namespace _GAME.Scripts.Enemies.Megamothling.MovementStates
             {
                 IsReadyToSwitch = true;
             }
-            
-            Debug.Log("Tick: " + Position2D);
         }
     }
 }

@@ -95,7 +95,6 @@ namespace _GAME.Scripts.Enemies.Moth
             {
                 if (_isAttacking)
                 {
-                    Debug.Log("Attack started.");
                     _isAttacking = false;
                     return true;
                 }
@@ -146,7 +145,6 @@ namespace _GAME.Scripts.Enemies.Moth
 
         public override void TriggerAttack()
         {
-            Debug.Log("Attack triggered.");
             if (_currentState.Equals(_hoverState))
             {
                 ApplyTransformToPosition2D();
@@ -285,7 +283,6 @@ namespace _GAME.Scripts.Enemies.Moth
 
         private void OnFallStateEnded()
         {
-            Debug.Log("Fall state ended.");
             _sideDirection = RandomDirection.Generate();
 
             Vector2 newPosition2D = Position2D;

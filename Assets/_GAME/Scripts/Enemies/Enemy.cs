@@ -34,7 +34,6 @@ namespace _GAME.Scripts.Enemies
         }
         protected void OnDeathStateEnded()
         {
-            Debug.Log("Death state ended.");
             ReturnToPool();
         }
         public void ReturnToPool()

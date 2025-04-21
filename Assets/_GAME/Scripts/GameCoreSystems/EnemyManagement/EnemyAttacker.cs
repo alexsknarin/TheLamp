@@ -66,13 +66,11 @@ namespace _GAME.Scripts.GameCoreSystems.EnemyManagement
     
         public void BlockAttackCooldown()
         {
-            Debug.Log("Cooldown blocked");
             _isCooldownActive = false;
         }
     
         public void UnblockAttackCooldown()
         {
-            Debug.Log("Cooldown unblocked");
             _isCooldownActive = true;
         }
     

@@ -93,13 +93,11 @@ namespace _GAME.Scripts.Enemies.Dragonfly
         
             if (movementState is IRight)
             {
-                Debug.Log("DIRECTION IS RIGHT");
                 attackPosition = _tailAttackBasePositionL;
             
             }
             else
             {
-                Debug.Log("DIRECTION IS LEFT");
                 attackPosition = _tailAttackBasePositionR;
             }
         

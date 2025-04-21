@@ -78,7 +78,6 @@ namespace _GAME.Scripts.Enemies.Megabeetle
             }
             else
             {
-                Debug.Log($"Damage Received: {damageAmount}.");
                 Damaged?.Invoke();
                 HealthChanged?.Invoke(_currentHealth, _maxHealth);
             

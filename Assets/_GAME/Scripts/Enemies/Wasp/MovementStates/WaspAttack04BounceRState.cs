@@ -12,7 +12,6 @@ namespace _GAME.Scripts.Enemies.Wasp.MovementStates
         
         public override void Enter()
         {
-            Debug.Log("Entered Bounce State");
             _baseTransform.localScale = _baseScaleR;
             _animator.Play(_clipHash, -1, 0);
             Started?.Invoke();

@@ -82,7 +82,6 @@ namespace _GAME.Scripts.Enemies.Fly
     
         public override void Initialize()
         {
-            Debug.Log("FFlyMovement Initializing");
             // Create Movement States
             // TODO: get collision radius from configs
             _stateFactory.SetEnemyDependencies(

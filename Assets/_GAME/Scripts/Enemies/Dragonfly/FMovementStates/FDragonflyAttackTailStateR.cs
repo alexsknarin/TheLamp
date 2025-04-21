@@ -70,7 +70,6 @@ namespace _GAME.Scripts.Enemies.Dragonfly.FMovementStates
             }
             if (!_isCollisionPhaseReached && _localTime >= _collisionReadyTime)
             {
-                Debug.Log(" -- Collision phase reached - state: " + this);
                 _isCollisionPhaseReached = true;
                 CollisionPhaseReached?.Invoke();
             }

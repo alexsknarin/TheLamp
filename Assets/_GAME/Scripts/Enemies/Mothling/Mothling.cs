@@ -65,7 +65,6 @@ namespace _GAME.Scripts.Enemies.Mothling
             }
             else
             {
-                Debug.Log($"Damage Received: {damageAmount}.");
                 _movement.TriggerFall();
                 Damaged?.Invoke();
             }

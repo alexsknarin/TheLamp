@@ -92,7 +92,6 @@ namespace _GAME.Scripts.Enemies.Ladybug
             }
             else
             {
-                Debug.Log($"Damage Received: {damageAmount}.");
                 Damaged?.Invoke();
                 HealthChanged?.Invoke(_currentHealth, _maxHealth);
             }
@@ -121,7 +120,6 @@ namespace _GAME.Scripts.Enemies.Ladybug
 
         public override void DoDeath()
         {
-            Debug.Log("Ladybug is dead.");
             _movement.TriggerDeath();
         }
 
@@ -190,13 +188,11 @@ namespace _GAME.Scripts.Enemies.Ladybug
 
         private void OnEnteredAttackRange()
         {
-            Debug.Log(gameObject.name + " is ready to stick.");
             StickReadyStarted?.Invoke(this);
         }
 
         private void OnPreAttackStarted()
         {
-            Debug.Log(gameObject.name + " - ensure that ist is added to stickables.");
             StickReadyStarted?.Invoke(this);
         }
 
