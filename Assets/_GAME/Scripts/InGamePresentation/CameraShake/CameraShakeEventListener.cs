@@ -31,7 +31,7 @@ namespace _GAME.Scripts.InGamePresentation.CameraShake
             _gameModel.LampDestroyed += OnLampDestroyed;
             _waveEnemyDirector.FireflyExplosionStarted += OnFireflyExplosionStarted;
             _waveEnemyDirector.BossSpawned += OnBossSpawned;
-            _waveEnemyDirector.BossDied -= OnBossDied;
+            _waveEnemyDirector.BossDied += OnBossDied;
         }
 
         public void Dispose()
