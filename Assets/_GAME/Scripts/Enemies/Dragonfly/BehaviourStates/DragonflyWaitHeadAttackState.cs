@@ -15,7 +15,8 @@ namespace _GAME.Scripts.Enemies.Dragonfly.BehaviourStates
         private readonly DragonflyMovement _movement;
         private float _prevDistance;
 
-        public DragonflyWaitHeadAttackState(Transform visibleBodyTransform, 
+        public DragonflyWaitHeadAttackState(
+            Transform visibleBodyTransform, 
             DragonflyPatrolAttackPositionProvider patrolAttackPositionProvider, 
             DragonflyMovement movement)
         {

@@ -103,6 +103,7 @@ namespace _GAME.Scripts.GameCoreSystems.DI
         private LadybugMovementStateFactory _ladybugMovementStateFactory;
         private MegamothlingMovementStateFactory _megamothlingMovementStateFactory;
         private MegabeetleMovementStateFactory _megabeetleMovementStateFactory;
+        private DragonflyBehaviourStateFactory _dragonflyBehaviourStateFactory;
         private EnemyFactory _enemyFactory;
         private FXFactory _fxFactory;   
     
@@ -242,6 +243,11 @@ namespace _GAME.Scripts.GameCoreSystems.DI
                 _cameraTransform,
                 _lampPositionProviderService
             );
+            
+            _dragonflyBehaviourStateFactory = new DragonflyBehaviourStateFactory(
+                _gameConfigService
+            );
+            _dragonflyBehaviourStateFactory.Initialize();
         
             _enemyFactory = new EnemyFactory(
                 _mothlingMovementStateFactory, 
@@ -251,6 +257,7 @@ namespace _GAME.Scripts.GameCoreSystems.DI
                 _ladybugMovementStateFactory,
                 _megamothlingMovementStateFactory,
                 _megabeetleMovementStateFactory,
+                _dragonflyBehaviourStateFactory,
                 _lampPositionProviderService,
                 _gameConfigService,
                 _spiderPositionHolder

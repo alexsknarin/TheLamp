@@ -20,6 +20,21 @@ MonoBehaviour:
   <MaxAggressionLevel>k__BackingField: 6
   <FirstEnemySpawnDelay>k__BackingField: 0.5
   <LadybugDeathDepth>k__BackingField: 0.3
+  <PatrolAttackZonesL>k__BackingField: {fileID: 11400000, guid: 7e96f2076b5edb84ab43969652ed065f,
+    type: 2}
+  <PatrolAttackZonesR>k__BackingField: {fileID: 11400000, guid: ab3e3f64eabbf794aad6fbb0033308d3,
+    type: 2}
+  <DragonflyTailAttackPositionBase>k__BackingField: {x: -0.9991122, y: -0.7506288,
+    z: -1.272415}
+  <DragonflyPatrolWaitMin>k__BackingField: 0
+  <DragonflyPatrolWaitMax>k__BackingField: 0.5
+  <DragonflyPatrolTailWaitMin>k__BackingField: 0
+  <DragonflyPatrolTailWaitMax>k__BackingField: 0.5
+  <DragonflyHoverWaitMin>k__BackingField: 0.5
+  <DragonflyHoverWaitMax>k__BackingField: 2
+  <DragonflySpiderAttackPositionBase>k__BackingField: {x: 0.68, y: -0.4, z: -0.62}
+  <DragonflySpiderPatrolWaitMin>k__BackingField: 1.05
+  <DragonflySpiderPatrolWaitMax>k__BackingField: 1.8
   <IntroStageSkip>k__BackingField: 0
   <IntroStageDuration>k__BackingField: 2
   <PrepareInStageSkip>k__BackingField: 0

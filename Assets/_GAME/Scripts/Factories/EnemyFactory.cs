@@ -29,6 +29,7 @@ namespace _GAME.Scripts.Factories
         private readonly LadybugMovementStateFactory _ladybugMovementStateFactory;
         private readonly MegamothlingMovementStateFactory _megamothlingMovementStateFactory;
         private readonly MegabeetleMovementStateFactory _megabeetleMovementStateFactory;
+        private readonly DragonflyBehaviourStateFactory _dragonflyBehaviourStateFactory;
         private readonly IGameConfigService _gameConfigService;
         private readonly ISpiderSideDirectionProvider _spiderSideDirectionProvider;
     
@@ -52,6 +53,7 @@ namespace _GAME.Scripts.Factories
             LadybugMovementStateFactory ladybugMovementStateFactory,
             MegamothlingMovementStateFactory megamothlingMovementStateFactory,
             MegabeetleMovementStateFactory megabeetleMovementStateFactory,
+            DragonflyBehaviourStateFactory dragonflyBehaviourStateFactory,
             ILampPositionProviderService lampPositionProviderService,
             IGameConfigService gameConfigService,
             ISpiderSideDirectionProvider spiderSideDirectionProvider
@@ -63,6 +65,7 @@ namespace _GAME.Scripts.Factories
             _spiderMovementStateFactory = spiderMovementStateFactory;
             _ladybugMovementStateFactory = ladybugMovementStateFactory;
             _megamothlingMovementStateFactory = megamothlingMovementStateFactory;
+            _dragonflyBehaviourStateFactory = dragonflyBehaviourStateFactory;
             _lampPositionProviderService = lampPositionProviderService;
             _megabeetleMovementStateFactory = megabeetleMovementStateFactory;
             _gameConfigService = gameConfigService;
@@ -76,6 +79,7 @@ namespace _GAME.Scripts.Factories
             IsMegamothlingLoaded = false;
             IsWaspLoaded = false;
             IsMegabeetleLoaded = false;
+            IsDragonflyLoaded = false;
         }
     
         public bool IsMothlingLoaded { get; private set; }
@@ -332,6 +336,7 @@ namespace _GAME.Scripts.Factories
         {
             GameObject enemyInstance = Object.Instantiate(prefab);
             var enemy = enemyInstance.GetComponent<Dragonfly>();
+            enemy.Construct(_dragonflyBehaviourStateFactory);
             enemy.Initialize();
             enemyInstance.GetComponent<DragonflyPresentation>().Initialize();
 

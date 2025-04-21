@@ -1,6 +1,7 @@
 using System;
 using _GAME.Scripts.Enemies.Dragonfly.BehaviourStates;
 using _GAME.Scripts.Enemies.Dragonfly.FMovementStates;
+using _GAME.Scripts.Factories;
 using _GAME.Scripts.Lib;
 using _GAME.Scripts.Lib.Enums;
 using _GAME.Scripts.Lib.Interfaces;
@@ -30,30 +31,16 @@ namespace _GAME.Scripts.Enemies.Dragonfly
         [SerializeField] private Transform _visibleBodyTransform;
         [Header("-- Collision --")]
         [SerializeField] private DragonflyCollisionProvider _collisionProvider;
-        [Header("Hover")]
-        [SerializeField] private float _hoverWaitMin;
-        [SerializeField] private float _hoverWaitMax;
-        [Header("Patrol")]
-        [Header("Head")]
+        [Header("Swarm")]
         [SerializeField] private DragonflySwarm _swarm;
         [SerializeField] private float _swarmAttackDuration;
-        [SerializeField] private float _patrolWaitMin;
-        [SerializeField] private float _patrolWaitMax;
-        [SerializeField] private DragonflyPatrolAttackZoneRanges _patrolAttackZonesL;
-        [SerializeField] private DragonflyPatrolAttackZoneRanges _patrolAttackZonesR;
-        [Header("Tail")]
-        [SerializeField] private Vector3 _tailAttackPositionBase;
-        [SerializeField] private float _patrolTailWaitMin;
-        [SerializeField] private float _patrolTailWaitMax;
         [Header("Spider")]
-        [SerializeField] private Vector3 _spiderAttackPositionBase;
-        [SerializeField] private float _spiderPatrolWaitMin;
-        [SerializeField] private float _spiderPatrolWaitMax;
         [SerializeField] private DragonflyProjectileSpider.DragonflyProjectileSpider _spider;
         // Serialized for debug
         [SerializeField] private bool _isCollidedWithLamp;
-    
-        private DragonflyPatrolAttackPositionProvider _patrolAttackPositionProvider;
+        
+        private DragonflyBehaviourStateFactory _stateFactory; 
+
         private Vector3 _patrolAttackPosition;
         private Vector3 _patrolSpiderAttackPosition;
         // STATE MACHINE 
@@ -96,14 +83,19 @@ namespace _GAME.Scripts.Enemies.Dragonfly
         
         public override Vector2 Position => _collisionProvider.CurrentCollisionPoint;
         public Transform MovementTransform => _visibleBodyTransform;
+
+        public void Construct(DragonflyBehaviourStateFactory stateFactory)
+        {
+            _stateFactory = stateFactory;
+        }
         
         public override void Initialize()
         {
-            _patrolAttackPositionProvider = new DragonflyPatrolAttackPositionProvider(
-                _patrolAttackZonesL, 
-                _patrolAttackZonesR, 
-                _tailAttackPositionBase
-            );
+            _stateFactory.SetEnemyDependencies(
+                _visibleBodyTransform,
+                _movement,
+                _swarmAttackDuration
+                );
         
             CreateStates();
             CreateStateTransitions();
@@ -142,7 +134,6 @@ namespace _GAME.Scripts.Enemies.Dragonfly
             _swarm.MothAttackStarted += OnMothAttackStarted;
             _spider.Deactivated += OnSpiderDeactivated;
             _swarm.MothDeactivated += OnMothDeactivated;
-        
         }
 
         private void OnDestroy()
@@ -273,20 +264,20 @@ namespace _GAME.Scripts.Enemies.Dragonfly
         
         private void CreateStates()
         {
-            _inactiveState = new DragonflyInactiveState();
-            _passiveState = new DragonflyPassiveState();
-            _patrolState = new DragonflyPatrolState();
-            _hoverState = new DragonflyHoverState();
-            _patrolHeadState = new DragonflyPatrolHeadState(_patrolWaitMin, _patrolWaitMax);
-            _patrolTailState = new DragonflyPatrolTailState(_patrolTailWaitMin, _patrolTailWaitMax);
-            _waitHeadAttackState = new DragonflyWaitHeadAttackState(_visibleBodyTransform, _patrolAttackPositionProvider, _movement); 
-            _waitTailAttackState = new DragonflyWaitTailAttackState(_visibleBodyTransform, _patrolAttackPositionProvider, _movement); 
-            _waitHoverAttackState = new DragonflyWaitHoverAttackState(_hoverWaitMin, _hoverWaitMax, _movement);
-            _waitSpiderAttackState = new DragonflyWaitSpiderAttackState(_visibleBodyTransform, _spiderAttackPositionBase);
-            _spiderEnterState = new DragonflySpiderEnterState();
-            _patrolSpiderState = new DragonflyPatrolSpiderState(_spiderPatrolWaitMin, _spiderPatrolWaitMax);
-            _swarmAttackState = new DragonflySwarmAttackState(_swarmAttackDuration);
-            _waitForBounceState = new DragonflyWaitForBounceState();
+            _inactiveState = (DragonflyInactiveState)_stateFactory.Create(typeof(DragonflyInactiveState));
+            _passiveState = (DragonflyPassiveState)_stateFactory.Create(typeof(DragonflyPassiveState));
+            _patrolState = (DragonflyPatrolState)_stateFactory.Create(typeof(DragonflyPatrolState));
+            _hoverState = (DragonflyHoverState)_stateFactory.Create(typeof(DragonflyHoverState));
+            _patrolHeadState = (DragonflyPatrolHeadState)_stateFactory.Create(typeof(DragonflyPatrolHeadState));
+            _patrolTailState = (DragonflyPatrolTailState)_stateFactory.Create(typeof(DragonflyPatrolTailState));
+            _waitHeadAttackState = (DragonflyWaitHeadAttackState)_stateFactory.Create(typeof(DragonflyWaitHeadAttackState));
+            _waitTailAttackState = (DragonflyWaitTailAttackState)_stateFactory.Create(typeof(DragonflyWaitTailAttackState));
+            _waitHoverAttackState = (DragonflyWaitHoverAttackState)_stateFactory.Create(typeof(DragonflyWaitHoverAttackState));
+            _waitSpiderAttackState = (DragonflyWaitSpiderAttackState)_stateFactory.Create(typeof(DragonflyWaitSpiderAttackState));
+            _spiderEnterState = (DragonflySpiderEnterState)_stateFactory.Create(typeof(DragonflySpiderEnterState));
+            _patrolSpiderState = (DragonflyPatrolSpiderState)_stateFactory.Create(typeof(DragonflyPatrolSpiderState));
+            _swarmAttackState = (DragonflySwarmAttackState)_stateFactory.Create(typeof(DragonflySwarmAttackState));
+            _waitForBounceState = (DragonflyWaitForBounceState)_stateFactory.Create(typeof(DragonflyWaitForBounceState));
         }
 
         private void CreateStateTransitions()
