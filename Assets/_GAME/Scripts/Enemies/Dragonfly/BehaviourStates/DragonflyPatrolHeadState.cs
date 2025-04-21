@@ -7,7 +7,7 @@ namespace _GAME.Scripts.Enemies.Dragonfly.BehaviourStates
 {
     public class DragonflyPatrolHeadState : IState
     {
-        public bool ReadyToSwitch; // TODO: rename according to other classes
+        public bool IsReadyToSwitch;
         private readonly float _minWaitTime;
         private readonly float _maxWaitTime;
         private float _localTime;
@@ -23,7 +23,7 @@ namespace _GAME.Scripts.Enemies.Dragonfly.BehaviourStates
 
         public void Enter()
         {
-            ReadyToSwitch = false;
+            IsReadyToSwitch = false;
             _localTime = 0;
             _duration = Random.Range(_minWaitTime, _maxWaitTime);
             Started?.Invoke();
@@ -34,13 +34,13 @@ namespace _GAME.Scripts.Enemies.Dragonfly.BehaviourStates
             _localTime += Time.deltaTime;
             if (_localTime >= _duration)
             {
-                ReadyToSwitch = true;
+                IsReadyToSwitch = true;
             }
         }
 
         public void Exit()
         {
-            ReadyToSwitch = false;
+            IsReadyToSwitch = false;
         }
     }
 }

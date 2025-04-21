@@ -7,7 +7,7 @@ namespace _GAME.Scripts.Enemies.Dragonfly.BehaviourStates
     public class DragonflyWaitTailAttackState : IState
     {
         private const float ProximityThreshold = 0.25f;
-        public bool ReadyToSwitch; // TODO: rename according to other classes
+        public bool IsReadyToSwitch;
         private Vector3 _targetPosition;
         private readonly Transform _transform;
         private readonly DragonflyPatrolAttackPositionProvider _patrolAttackPositionProvider;
@@ -25,7 +25,7 @@ namespace _GAME.Scripts.Enemies.Dragonfly.BehaviourStates
 
         public void Enter()
         {
-            ReadyToSwitch = false;
+            IsReadyToSwitch = false;
             _targetPosition = _patrolAttackPositionProvider.GenerateRandomPreAttackTailPosition(_movement.MovementState);
             _prevDistance = 0;
         }
@@ -40,14 +40,14 @@ namespace _GAME.Scripts.Enemies.Dragonfly.BehaviourStates
             if (distance < ProximityThreshold && distance < _prevDistance) 
             {
                 _movement.StartAttack(PatrolAttackMode.Tail);
-                ReadyToSwitch = true;
+                IsReadyToSwitch = true;
             }
             _prevDistance = distance;
         }
 
         public void Exit()
         {
-            ReadyToSwitch = false;
+            IsReadyToSwitch = false;
         }
     }
 }

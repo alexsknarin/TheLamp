@@ -251,7 +251,6 @@ namespace _GAME.Scripts.Enemies.Dragonfly
             _attackHoverState.CollisionPhaseReached -= OnCollisionPhaseReached;
         }
 
-
         public void Play(EnterType state, int sideDirection)
         {
             _isDead = false;
@@ -302,7 +301,7 @@ namespace _GAME.Scripts.Enemies.Dragonfly
         
             // Immediately switch to the resolved state if possible
         
-            if ((ReferenceEquals(_stateMachine.CurrentState, _attackHeadSuccessState) && _visibleBodyTransform.position.x < 0))
+            if (ReferenceEquals(_stateMachine.CurrentState, _attackHeadSuccessState) && _visibleBodyTransform.position.x < 0)
             {
                 if (ReferenceEquals(resolvedState, _moveToPatrolStateR) || ReferenceEquals(resolvedState, _catchSpiderStateL))
                 {
@@ -418,8 +417,6 @@ namespace _GAME.Scripts.Enemies.Dragonfly
         {
             _stateMachine.SetState(_gameoverHoverState);
         }
-        
-
 
         private void SetMovementStatesDependencies()
         { 
