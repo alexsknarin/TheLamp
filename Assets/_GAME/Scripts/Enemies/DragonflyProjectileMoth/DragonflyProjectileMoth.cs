@@ -16,6 +16,7 @@ namespace _GAME.Scripts.Enemies.DragonflyProjectileMoth
         public override void Initialize()
         {
             _movement.FallEnded += OnFallEnded;
+            _movement.SetCollisionRadius(_collisionRadius);
             Reset();
         }
 

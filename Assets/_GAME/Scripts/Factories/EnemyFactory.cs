@@ -336,7 +336,7 @@ namespace _GAME.Scripts.Factories
         {
             GameObject enemyInstance = Object.Instantiate(prefab);
             var enemy = enemyInstance.GetComponent<Dragonfly>();
-            enemy.Construct(_dragonflyBehaviourStateFactory);
+            enemy.Construct(_dragonflyBehaviourStateFactory, _lampPositionProviderService);
             enemy.Initialize();
             enemyInstance.GetComponent<DragonflyPresentation>().Initialize();
 

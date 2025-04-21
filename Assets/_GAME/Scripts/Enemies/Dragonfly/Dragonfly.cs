@@ -84,9 +84,10 @@ namespace _GAME.Scripts.Enemies.Dragonfly
         public override Vector2 Position => _collisionProvider.CurrentCollisionPoint;
         public Transform MovementTransform => _visibleBodyTransform;
 
-        public void Construct(DragonflyBehaviourStateFactory stateFactory)
+        public void Construct(DragonflyBehaviourStateFactory stateFactory, ILampPositionProviderService lampPositionProvider)
         {
             _stateFactory = stateFactory;
+            _swarm.Construct(lampPositionProvider);
         }
         
         public override void Initialize()

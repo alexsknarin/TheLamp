@@ -1,4 +1,5 @@
 using System;
+using _GAME.Scripts.Enemies.DragonflyProjectileMoth;
 using _GAME.Scripts.Lib.Interfaces;
 using UnityEngine;
 
@@ -15,6 +16,15 @@ namespace _GAME.Scripts.Enemies.Dragonfly
         private float _localTime = 0f;
         private bool _isWaitingForAttack = false;
         private int _attackCount = 0;
+       
+        public void Construct(ILampPositionProviderService lampPositionProvider)
+        {
+            for (int i = 0; i < _moths.Length; i++)
+            {
+                var movement = _moths[i].gameObject.GetComponent<DragonflyProjectileMovementMoth>();
+                movement.Construct(lampPositionProvider);
+            }
+        }
 
         public event Action<CollidableEnemy> MothAttackStarted;
         public event Action<Enemy, bool> MothDeactivated;
