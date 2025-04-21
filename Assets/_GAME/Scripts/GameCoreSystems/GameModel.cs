@@ -505,6 +505,13 @@ namespace _GAME.Scripts.GameCoreSystems
 
         private void OnEnemyAttackEnded(Vector3 impactPoint, bool isEnemyDamaged, string enemyTypeName)
         {
+            // Check fo tail attack
+            Vector3 impactPointLocalized = impactPoint;
+            if (impactPoint.magnitude > 5)
+            {
+                impactPointLocalized = impactPointLocalized.x > 0 ? Vector3.right : Vector3.left;
+            }
+            
             if (!isEnemyDamaged)
             {
                 if(_gameConfigService.PlayerConfig.IsDamageable)
@@ -513,8 +520,9 @@ namespace _GAME.Scripts.GameCoreSystems
                 if (LampHealth <= 0)
                 {
                     LastEnemyPosition = impactPoint;
-                    _lampMovementController.AddForce(-LastEnemyPosition.normalized.x * 2);
+                    _lampMovementController.AddForce(-impactPointLocalized.normalized.x * 2);
                     LampDestroyed?.Invoke();
+                    _playerEnemyInteractionMediator.SetLampDestroyed();
                     StartGameOver();
                     Debug.Log("++++++++++ Game Over ++++++++++");
                     return;
@@ -522,7 +530,7 @@ namespace _GAME.Scripts.GameCoreSystems
             
                 LampGlassDamage = _lampDamageDataHandler.UpdateGlassDamageDataDamage(LampGlassDamage, impactPoint.normalized);
             
-                _lampMovementController.AddForce(-impactPoint.normalized.x * 2); 
+                _lampMovementController.AddForce(-impactPointLocalized.normalized.x * 2); 
                 LampDamageStarted?.Invoke(_gameConfigService.PlayerConfig.DamageDuration, enemyTypeName);
             }
         }

@@ -20,6 +20,7 @@ namespace _GAME.Scripts.ServicesGlobal
         private Vector2 _position;
         private float _collisionThreshold;
         private float _combinedCollisionRadius;
+        private bool _isLampDestroyed;
         
         public event Action<Vector3, bool, string> EnemyAttackEnded;
         
@@ -43,6 +44,7 @@ namespace _GAME.Scripts.ServicesGlobal
         {
             _combinedCollisionRadius = _collisionRadius + _collisionThreshold;
             enabled = false;
+            _isLampDestroyed = false;
         }
     
         public void Reset()
@@ -51,6 +53,12 @@ namespace _GAME.Scripts.ServicesGlobal
             _collidablesToRemove.Clear();
             _collidableCount = 0;
             enabled = false;
+            _isLampDestroyed = false;
+        }
+        
+        public void SetLampDestroyed()
+        {
+            _isLampDestroyed = true;
         }
     
         public void SetAttackZoneRadius(float attackZoneRadius)
@@ -112,6 +120,9 @@ namespace _GAME.Scripts.ServicesGlobal
 
         private void CheckCollidables()
         {
+            if (_isLampDestroyed)
+                return;
+            
             foreach (var collidable in _collidables)
             {
                 // Get Current distance

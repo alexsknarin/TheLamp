@@ -20,12 +20,15 @@ namespace _GAME.Scripts.Enemies.Dragonfly.BehaviourStates
             _maxWaitTime = maxWaitTime;
             _movement = movement;
         }
+        
+        public event Action Started;
 
         public void Enter()
         {
             IsReadyToSwitch = false;
             _localTime = 0;
             _duration = Random.Range(_minWaitTime, _maxWaitTime);
+            Started?.Invoke();
         }
 
         public void Tick()

@@ -68,6 +68,11 @@ namespace _GAME.Scripts.GameCoreSystems
             _lampCollisionDetectionService.Reset();
             _lampStickyDetectionService.Reset();
         }
+        
+        public void SetLampDestroyed()
+        {
+            _lampCollisionDetectionService.SetLampDestroyed();
+        }
 
         private void OnEnemyAttackStarted(CollidableEnemy enemy)
         {

@@ -22,12 +22,15 @@ namespace _GAME.Scripts.Enemies.Dragonfly.BehaviourStates
             _patrolAttackPositionProvider = patrolAttackPositionProvider;
             _movement = movement;
         }
+        
+        public event Action Started;
 
         public void Enter()
         {
             IsReadyToSwitch = false;
             _targetPosition = _patrolAttackPositionProvider.GenerateRandomPreAttackTailPosition(_movement.MovementState);
             _prevDistance = 0;
+            Started?.Invoke();
         }
 
         public void Tick()

@@ -69,6 +69,8 @@ namespace _GAME.Scripts.Enemies.Dragonfly
         private bool _isLampDestroyed;
         private IState _movementState;
         private ReturnMode _returnMode;
+        private AttackMode _lastAttackMode;
+        [SerializeField] private AttackResult _attackResult;
 
         public event Action Started;
         public event Action<CollidableEnemy> AnimatedAttackStarted;
@@ -119,7 +121,7 @@ namespace _GAME.Scripts.Enemies.Dragonfly
             _swarmAttackState.Started += OnSwarmAttackStateStarted;
             _waitSpiderAttackState.GotReadyToPreAttack += StartSpiderPreAttack;
             _waitSpiderAttackState.Ended += StartSpiderAttack;
-        
+            
             _movement.ReadyHoverToAttackStateEntered += OnReadyHoverToAttackStateEntered;
             _movement.ReadyToSwarmAttackStateEntered += OnReadyToSwarmAttackStateEntered;
             _movement.ReadyToSpiderAttackStateStarted += OnReadyToSpiderAttackStateStarted;
@@ -135,6 +137,10 @@ namespace _GAME.Scripts.Enemies.Dragonfly
             _swarm.MothAttackStarted += OnMothAttackStarted;
             _spider.Deactivated += OnSpiderDeactivated;
             _swarm.MothDeactivated += OnMothDeactivated;
+            
+            _waitHeadAttackState.Started += OnHeadAttackStateStarted;
+            _waitHoverAttackState.Started += OnHeadAttackStateStarted;
+            _waitTailAttackState.Started += OnTailAttackStateStarted;
         }
 
         private void OnDestroy()
@@ -172,6 +178,7 @@ namespace _GAME.Scripts.Enemies.Dragonfly
             _patrolAttackMode = PatrolAttackMode.None;
             _returnMode = ReturnMode.None;
             _postSpiderAttackMode = PostSpiderAttackMode.None;
+            _attackResult = AttackResult.None;
             _stateMachine.SetState(_inactiveState);
             
             _isDead = false;
@@ -201,22 +208,27 @@ namespace _GAME.Scripts.Enemies.Dragonfly
             IsReadyForDamage = false;
             _currentHealth -= damageAmount;
             IsReceivedLampAttackDamage = true;
-
+            
             if (_currentHealth > 0)
             {
-                _movement.TriggerFall(true);
+                _attackResult = AttackResult.Fail;
+                _movement.TriggerFall(_attackResult);
                 Damaged?.Invoke();
                 HealthChanged?.Invoke(_currentHealth, _maxHealth);
                 ColliderTransformChanged?.Invoke(_collisionProvider.CurrentCollisionTransform);
+                
             }
             else
             {
-                if (!_isDead)
+                Debug.Log("Health < 0");
+                if (_attackResult != AttackResult.Death)
                 {
+                    _attackResult = AttackResult.Death;
+                    Debug.Log("Dead +++++++++");
                     _currentHealth = 0; 
-                    _movement.TriggerDeath(); 
+                    _movement.TriggerFall(_attackResult);
                     Died?.Invoke();
-                    _isDead = true;
+                    
                 }
             }
         }
@@ -240,7 +252,12 @@ namespace _GAME.Scripts.Enemies.Dragonfly
 
         public override Vector3 ProvideImpactPoint()
         {
-            return _collisionProvider.CurrentCollisionPoint;
+            if (_lastAttackMode == AttackMode.Head)
+            {
+                return _collisionProvider.CurrentCollisionPoint;
+            }
+            
+            return _collisionProvider.CurrentCollisionPoint * 100;
         }
 
         public override void HandleEnterAttackZone()
@@ -253,7 +270,10 @@ namespace _GAME.Scripts.Enemies.Dragonfly
         {
             CollisionState = CollidableState.Outside;
             IsReadyForDamage = false;
-            _movement.TriggerFall(false);
+            if (_attackResult != AttackResult.Death && _attackResult != AttackResult.Fail)
+            {
+                _movement.TriggerFall(_attackResult);
+            }
         }
 
         public void HandleLampDestroyed()
@@ -262,7 +282,7 @@ namespace _GAME.Scripts.Enemies.Dragonfly
             _swarm.TriggerGameover();
             _isLampDestroyed = true;
         }
-        
+
         private void CreateStates()
         {
             _inactiveState = (DragonflyInactiveState)_stateFactory.Create(typeof(DragonflyInactiveState));
@@ -408,6 +428,7 @@ namespace _GAME.Scripts.Enemies.Dragonfly
             _stateDebug = _stateMachine.CurrentState.ToString();
         }
 
+
         // Event Handle Methods
         private void OnHoverStateStarted()
         {
@@ -550,6 +571,18 @@ namespace _GAME.Scripts.Enemies.Dragonfly
         private void OnMothDeactivated(Enemy enemy, bool damaged)
         {
             ProjectileDeactivated?.Invoke(enemy, damaged);
+        }
+
+        private void OnHeadAttackStateStarted()
+        {
+            _lastAttackMode = AttackMode.Head;
+            _attackResult = AttackResult.Success;
+        }
+
+        private void OnTailAttackStateStarted()
+        {
+            _lastAttackMode = AttackMode.Tail;
+            _attackResult = AttackResult.Success;
         }
     }
 }

@@ -94,10 +94,10 @@ namespace _GAME.Scripts.Enemies.Dragonfly
         [SerializeField] private bool _isBounced = false;
         private EnterType _enterState = 0;
         [SerializeField] private int _sideDirection = 1;
-        private bool _isAttackSuccess;
-        private bool _isAttackFail;
+        
+        private AttackResult _attackResult;
+        
         [SerializeField] private bool _isLampDestroyed;
-        private bool _isDead;
     
         // Events
         public event Action<IState> ReadyHoverToAttackStateEntered; 
@@ -121,9 +121,6 @@ namespace _GAME.Scripts.Enemies.Dragonfly
             _isPlaying = false;
             _isAnimClipEnded = false;
             _isBounced = false;
-            _isAttackSuccess = false;
-            _isAttackFail = false;
-            _isDead = false;
             
             SetMovementStatesDependencies();
             StateMachineSetup();
@@ -253,16 +250,15 @@ namespace _GAME.Scripts.Enemies.Dragonfly
 
         public void Play(EnterType state, int sideDirection)
         {
-            _isDead = false;
             _isAnimClipEnded = false;
-            _isAttackSuccess = false;
-            _isAttackFail = false;
             _sideDirection = sideDirection;
             _enterState = state;
             _isPlaying = true;
             _isBounced = false;
             _isLampDestroyed = false;
             _isAttacking = false;
+            
+            _attackResult = AttackResult.None;
             
             _stateMachine.SetState(_idleState);
             _currentStateType = _stateMachine.CurrentStateType.ToString().Replace("FDragonfly", ""); // DEBUG
@@ -387,37 +383,16 @@ namespace _GAME.Scripts.Enemies.Dragonfly
             _isBounced = true;
         }
 
-        public void TriggerFall(bool isReceivedDamage)
+        public void TriggerFall(AttackResult attackResult)
         {
-            if (isReceivedDamage)
-            {
-                _isAttackSuccess = false;
-                _isAttackFail = true;
-            }
-            else
-            {
-                _isAttackSuccess = true;
-                _isAttackFail = false;
-            }
+            _attackResult = attackResult;
         }
 
-        public void TriggerDeath()
-        {
-            _isAttackSuccess = false;
-            _isAttackFail = false;
-            _isDead = true;
-        }
-        
         public void SetLampDestroyed()
         {
             _isLampDestroyed = true;
         }
     
-        public void TriggerGameOver()
-        {
-            _stateMachine.SetState(_gameoverHoverState);
-        }
-
         private void SetMovementStatesDependencies()
         { 
             _attackHeadState.SetDependencies(_visibleBodyTransform, transform);
@@ -623,9 +598,9 @@ namespace _GAME.Scripts.Enemies.Dragonfly
         
             Func<bool> IsAttackSuccess() => () =>
             {
-                if (_isAttackSuccess)
+                if (_attackResult == AttackResult.Success)
                 {
-                    _isAttackSuccess = false;
+                    _attackResult = AttackResult.None;
                     return true;
                 }
                 return false;
@@ -633,9 +608,9 @@ namespace _GAME.Scripts.Enemies.Dragonfly
         
             Func<bool> IsAttackFail() => () =>
             {
-                if (_isAttackFail && !_isDead)
+                if (_attackResult == AttackResult.Fail)
                 {
-                    _isAttackFail = false;
+                    _attackResult = AttackResult.None;
                     return true;
                 }
                 return false;
@@ -643,9 +618,9 @@ namespace _GAME.Scripts.Enemies.Dragonfly
         
             Func<bool> IsDied() => () =>
             {
-                if (_isDead)
+                if (_attackResult == AttackResult.Death)
                 {
-                    _isDead = false;
+                    _attackResult = AttackResult.None;
                     return true;
                 }
                 return false;
