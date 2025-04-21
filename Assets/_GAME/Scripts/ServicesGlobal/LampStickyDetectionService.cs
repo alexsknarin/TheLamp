@@ -13,6 +13,7 @@ namespace _GAME.Scripts.ServicesGlobal
         [SerializeField] private float _attackZoneRadius = 0.62f; // TODO: control from the single source
         [SerializeField] private int _stickableCount = 0;
         [SerializeField] private bool _blockedAttacks = false;
+        [SerializeField] private bool _isGizmosEnabled = true;
         private List<IStickableWithLamp> _stickables = new();
         private List<IStickableWithLamp> _stickablesToRemove = new();
     
@@ -147,6 +148,13 @@ namespace _GAME.Scripts.ServicesGlobal
                 {
                     stickable.HandleEnterAttackBlockerZone();
                 }
+                
+                // Exiting Attack Blocker Zone
+                if ((distance > _blockAttackRadius + stickable.Radius) && stickable.AttackBlockState == AttackBlockerState.Inside) 
+                {
+                    stickable.HandleExitAttackBlockerZone();
+                    _attackBlockerCount--;
+                }
             
                 // Counting Attack Blockers
                 if (stickable.AttackBlockState == AttackBlockerState.Inside)
@@ -176,10 +184,12 @@ namespace _GAME.Scripts.ServicesGlobal
     
         private void OnDrawGizmos()
         {
-            Gizmos.color = Color.magenta;
-            Gizmos.DrawWireSphere(transform.position, _stickyRadius);
-            Gizmos.DrawWireSphere(transform.position, _blockAttackRadius);
-        
+            if (_isGizmosEnabled)
+            {
+                Gizmos.color = Color.magenta;
+                Gizmos.DrawWireSphere(transform.position, _stickyRadius);
+                Gizmos.DrawWireSphere(transform.position, _blockAttackRadius);
+            }
         }
     }
 }

@@ -4,7 +4,7 @@ using UnityEngine;
 namespace _GAME.Scripts.Enemies.Dragonfly.FMovementStates
 {
     [CreateAssetMenu(fileName = "FDragonflySpiderPreattackHeadTransitionStateR", menuName = "FDragonflyMovementStates/FDragonflySpiderPreattackHeadTransitionStateR")]
-    public class FDragonflySpiderPreattackHeadTransitionStateR : ScriptableObject, IState
+    public class FDragonflySpiderPreattackHeadTransitionStateR : ScriptableObject, IState, IRight
     {
         [SerializeField] private float _duration = 0.65f;
         private Transform _patrolTransformParent;
@@ -31,7 +31,7 @@ namespace _GAME.Scripts.Enemies.Dragonfly.FMovementStates
             _spiderPatrolRotator = spiderPatrolRotator;
         }
     
-        public void OnEnter()
+        public void Enter()
         {
             Vector3 currentPosition = _visibleBodyTransform.position;
         
@@ -70,7 +70,7 @@ namespace _GAME.Scripts.Enemies.Dragonfly.FMovementStates
             CheckForStateChange();
         }
 
-        public void OnExit() { }
+        public void Exit() { }
 
         private void CheckForStateChange()
         {

@@ -5,7 +5,7 @@ using UnityEngine;
 namespace _GAME.Scripts.Enemies.Dragonfly.FMovementStates
 {
     [CreateAssetMenu(fileName = "FDragonflyPreAttackHoverState", menuName = "FDragonflyMovementStates/FDragonflyPreAttackHoverState")]
-    public class FDragonflyPreAttackHoverState : ScriptableObject, IState
+    public class FDragonflyPreAttackHoverState : ScriptableObject, IState, ILeft
     {
         [SerializeField] private float _speed = 4f;
         [SerializeField] private float _duration = 0.4f;
@@ -28,7 +28,7 @@ namespace _GAME.Scripts.Enemies.Dragonfly.FMovementStates
             _baseTransform = baseTransform;
         }
     
-        public void OnEnter()
+        public void Enter()
         {
             _visibleBodyTransform.SetParent(_baseTransform);
             _attackDirection = -_visibleBodyTransform.position.normalized;
@@ -47,7 +47,7 @@ namespace _GAME.Scripts.Enemies.Dragonfly.FMovementStates
             CheckForStateChange();
         }
 
-        public void OnExit() { }
+        public void Exit() { }
 
         private void CheckForStateChange()
         {

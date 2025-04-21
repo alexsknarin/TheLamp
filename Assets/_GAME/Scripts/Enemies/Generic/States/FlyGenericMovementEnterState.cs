@@ -37,7 +37,7 @@ namespace _GAME.Scripts.Enemies.Generic.States
             _verticalAmplitude = verticalAmplitude;
         }
 
-        public override void OnEnter()
+        public override void Enter()
         {
             IsReadyToSwitch = false;
             Position2D = _positionDirectionProvider.Position2D;
@@ -46,23 +46,29 @@ namespace _GAME.Scripts.Enemies.Generic.States
                 Position2D *= _invertX;
             }
         
-            float xProjectionLength = Mathf.Abs(Position2D.x);
-            float enterDirectionLength = Vector3.Magnitude(Position2D);
-            float r = _radius * _verticalAmplitude;
-        
-            float patrolStartOffsetAngle = 
-                Mathf.PI - Mathf.Acos(r / enterDirectionLength) - Mathf.Acos(xProjectionLength / enterDirectionLength);
-        
-            _endPos.x = Mathf.Cos(-patrolStartOffsetAngle);
-            _endPos.y = Mathf.Sin(-patrolStartOffsetAngle);
-            _endPos = _endPos.normalized * r;
-        
+            CalculateEndPos();
+
             _enterDirection = (_endPos - Position2D);
             _initialDistance = _enterDirection.magnitude;
             _enterDirection = _enterDirection.normalized;
         
             Position2D = Position2D;
             DepthDirection = (_cameraPosition - (Vector3)Position2D).normalized;
+        }
+
+        private void CalculateEndPos()
+        {
+            float xProjectionLength = Mathf.Abs(Position2D.x);
+            float enterDirectionLength = Vector3.Magnitude(Position2D);
+            float r = _radius * _verticalAmplitude;
+        
+            float patrolStartOffsetAngle = 
+                Mathf.PI - Mathf.Acos(r / enterDirectionLength)
+                         - Mathf.Acos(xProjectionLength / enterDirectionLength);
+        
+            _endPos.x = Mathf.Cos(-patrolStartOffsetAngle);
+            _endPos.y = Mathf.Sin(-patrolStartOffsetAngle);
+            _endPos = _endPos.normalized * r;
         }
 
         public override void Tick()
@@ -72,7 +78,8 @@ namespace _GAME.Scripts.Enemies.Generic.States
             // Depth To Camera
             float distancePhase = 1 - (_endPos - Position2D).magnitude / _initialDistance;
             Vector3 cameraDirection = (_cameraPosition - (Vector3)Position2D).normalized;
-            DepthDirection = cameraDirection * (Mathf.Lerp(Position2D.y * _depthMultiplier, Position2D.y, distancePhase));
+            DepthDirection 
+                = cameraDirection * Mathf.Lerp(Position2D.y * _depthMultiplier, Position2D.y, distancePhase);
         
             if(Position2D.x > Mathf.Abs(_endPos.x))
             {

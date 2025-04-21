@@ -1742,37 +1742,6 @@ LineRenderer:
   m_UseWorldSpace: 1
   m_Loop: 0
   m_ApplyActiveColorSpace: 1
---- !u!1 &1484750302623587790
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2374259367477230807}
-  m_Layer: 0
-  m_Name: ColliderTail_3
-  m_TagString: Dragonfly
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &2374259367477230807
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1484750302623587790}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.029, z: -0.863}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 3390148051565547369}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1489340059461961505
 GameObject:
   m_ObjectHideFlags: 0
@@ -1843,28 +1812,15 @@ MonoBehaviour:
   _currentHealth: 0
   _movement: {fileID: 8953583610499858097}
   _visibleBodyTransform: {fileID: 7331037268719211253}
-  _presentation: {fileID: 2549383682762519659}
   _collisionProvider: {fileID: 2373099942957532617}
-  _hoverWaitMin: 0.5
-  _hoverWaitMax: 2
   _swarm: {fileID: 4085273778962474757}
-  _swarmAttackDuration: 3
-  _patrolWaitMin: 0
-  _patrolWaitMax: 0.5
-  _patrolAttackZonesL: {fileID: 11400000, guid: 7e96f2076b5edb84ab43969652ed065f,
-    type: 2}
-  _patrolAttackZonesR: {fileID: 11400000, guid: ab3e3f64eabbf794aad6fbb0033308d3,
-    type: 2}
-  _tailAttackPositionBase: {x: 0.9991122, y: -0.7506288, z: -1.272415}
-  _patrolTailWaitMin: 0
-  _patrolTailWaitMax: 0.5
-  _spiderAttackPositionBase: {x: 0.68, y: -0.4, z: -0.62}
-  _spiderPatrolWaitMin: 1.05
-  _spiderPatrolWaitMax: 1.8
+  _swarmAttackDuration: 3.55
   _spider: {fileID: 3221089541326229784}
-  _isInAttackExitZone: 0
   _isCollidedWithLamp: 0
-  _isAttacked: 0
+  _enterType: 0
+  _patrolAttackMode: 0
+  _postSpiderAttackMode: 0
+  _attackResult: 0
 --- !u!114 &8953583610499858097
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1957,7 +1913,11 @@ MonoBehaviour:
     type: 2}
   _spiderPushStateL: {fileID: 11400000, guid: b9a528afb4edc7240b25d383469448ce, type: 2}
   _spiderPushStateR: {fileID: 11400000, guid: f34b4697802a5564dbcfd6d29c735c95, type: 2}
+  _isAttacking: 0
+  _currentPatrolAttackMode: 0
   _isBounced: 0
+  _sideDirection: 1
+  _isLampDestroyed: 0
 --- !u!114 &4085273778962474757
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2136,12 +2096,10 @@ MonoBehaviour:
   - {fileID: 4813889927740659346}
   - {fileID: 2182724777521011073}
   - {fileID: 336478886118853664}
-  - {fileID: 2374259367477230807}
   _collisionRadii:
   - 0.155
   - 0.155
-  - 0.07
-  - 0.1
+  - 0.09
   - 0.1
 --- !u!1 &1576206371050249575
 GameObject:
@@ -2407,7 +2365,6 @@ Transform:
   - {fileID: 4813889927740659346}
   - {fileID: 2182724777521011073}
   - {fileID: 336478886118853664}
-  - {fileID: 2374259367477230807}
   m_Father: {fileID: 7331037268719211253}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1958356047500427181
@@ -4838,7 +4795,7 @@ Transform:
   m_GameObject: {fileID: 4115765630172609787}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.061, z: -1.141}
+  m_LocalPosition: {x: 0, y: 0.061, z: -1.176}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -6057,7 +6014,7 @@ Transform:
   m_GameObject: {fileID: 5526744263092341538}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.073, z: -1.383}
+  m_LocalPosition: {x: 0, y: 0.073, z: -1.311}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

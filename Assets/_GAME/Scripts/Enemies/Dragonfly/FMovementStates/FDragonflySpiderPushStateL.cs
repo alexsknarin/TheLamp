@@ -5,7 +5,7 @@ using UnityEngine;
 namespace _GAME.Scripts.Enemies.Dragonfly.FMovementStates
 {
     [CreateAssetMenu(fileName = "FDragonflySpiderPushStateL", menuName = "FDragonflyMovementStates/FDragonflySpiderPushStateL")]
-    public class FDragonflySpiderPushStateL : ScriptableObject, IState
+    public class FDragonflySpiderPushStateL : ScriptableObject, IState, ILeft
     {
         [SerializeField] private float _distance = 0.5f;
         [SerializeField] private float _duration = 0.5f;
@@ -31,7 +31,7 @@ namespace _GAME.Scripts.Enemies.Dragonfly.FMovementStates
             _spiderPatrolRotator = spiderPatrolRotator;
         }
     
-        public void OnEnter()
+        public void Enter()
         {
             Vector3 currentPosition = _visibleBodyTransform.position;
             _spiderPatrolRotator.SetRotationPhase(currentPosition);
@@ -56,7 +56,7 @@ namespace _GAME.Scripts.Enemies.Dragonfly.FMovementStates
             CheckForStateChange();
         }
 
-        public void OnExit()
+        public void Exit()
         {
             _spiderPatrolRotator.Stop();
             Ended?.Invoke();

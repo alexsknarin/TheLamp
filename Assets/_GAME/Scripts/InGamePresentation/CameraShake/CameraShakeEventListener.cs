@@ -26,20 +26,27 @@ namespace _GAME.Scripts.InGamePresentation.CameraShake
             _cameraShakeService = cameraShakeService;
             _bossCameraShakeFactory = bossCameraShakeFactory;
         
+            _gameModel.GameStarted += OnGameStarted;
             _gameModel.LampDamageStarted += OnLampDamageStarted;
             _gameModel.LampDestroyed += OnLampDestroyed;
             _waveEnemyDirector.FireflyExplosionStarted += OnFireflyExplosionStarted;
             _waveEnemyDirector.BossSpawned += OnBossSpawned;
-            _waveEnemyDirector.BossDied -= OnBossDied;
+            _waveEnemyDirector.BossDied += OnBossDied;
         }
 
         public void Dispose()
         {
+            _gameModel.GameStarted -= OnGameStarted;
             _gameModel.LampDamageStarted -= OnLampDamageStarted;
             _gameModel.LampDestroyed -= OnLampDestroyed;
             _waveEnemyDirector.FireflyExplosionStarted -= OnFireflyExplosionStarted;
             _waveEnemyDirector.BossSpawned -= OnBossSpawned;
             _waveEnemyDirector.BossDied -= OnBossDied;
+        }
+
+        private void OnGameStarted()
+        {
+            _cameraShakeService.DisableBossShake();
         }
 
         private void OnFireflyExplosionStarted()
@@ -58,7 +65,7 @@ namespace _GAME.Scripts.InGamePresentation.CameraShake
             _cameraShakeService.StartDamageShake();
         }
 
-        private void OnBossSpawned(FEnemy boss)
+        private void OnBossSpawned(Enemy boss)
         {
             _cameraShakeService.EnableBossShake(_bossCameraShakeFactory.Create(boss)); 
         }

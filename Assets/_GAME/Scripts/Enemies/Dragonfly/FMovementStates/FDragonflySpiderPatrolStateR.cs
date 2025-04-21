@@ -5,7 +5,7 @@ using UnityEngine;
 namespace _GAME.Scripts.Enemies.Dragonfly.FMovementStates
 {
     [CreateAssetMenu(fileName = "FDragonflySpiderPatrolStateR", menuName = "FDragonflyMovementStates/FDragonflySpiderPatrolStateR")]
-    public class FDragonflySpiderPatrolStateR : ScriptableObject, IState
+    public class FDragonflySpiderPatrolStateR : ScriptableObject, IState, IRight
     {
         private readonly int _sideDirection = -1;
         // Dependencies
@@ -23,7 +23,7 @@ namespace _GAME.Scripts.Enemies.Dragonfly.FMovementStates
             _spiderPatrolRotator = spiderPatrolRotator;
         }
     
-        public void OnEnter()
+        public void Enter()
         {
             Vector3 currentPosition = _visibleBodyTransform.position;
         
@@ -38,7 +38,7 @@ namespace _GAME.Scripts.Enemies.Dragonfly.FMovementStates
 
         public void Tick() { }
 
-        public void OnExit()
+        public void Exit()
         {
             _spiderPatrolRotator.Stop();
         }

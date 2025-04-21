@@ -1,5 +1,7 @@
 using System;
+using System.Collections;
 using _GAME.Scripts.GameCoreSystems.DataManagement.DataTypes;
+using _GAME.Scripts.GameCoreSystems.DI;
 using _GAME.Scripts.GameCoreSystems.EnemyManagement;
 using _GAME.Scripts.Lib.Enums;
 using _GAME.Scripts.Lib.Interfaces;
@@ -18,36 +20,35 @@ namespace _GAME.Scripts.GameCoreSystems
         private bool _isAttacking = false;
 
         // Dependencies
+        private readonly CoroutineHost _coroutineHost;
         private readonly IGameStateProviderService _gameStateProviderService;
         private readonly IGameConfigService _gameConfigService;
         private readonly WaveEnemyDirector _waveEnemyDirector;
-        // private EnemyController _enemyController;
         private readonly PlayerAttackCooldownHandler _playerAttackCooldownHandler;
         private readonly PlayerEnemyInteractionMediator _playerEnemyInteractionMediator;
-        // private PlayerCollidersPropertyController _playerCollidersPropertyController;
         private readonly LampMovementController _lampMovementController;
         private readonly ScoresCollectionService _scoresCollectionService;
         private readonly LampDamageDataHandler _lampDamageDataHandler = new LampDamageDataHandler();
         private readonly UpgradeHandler _upgradeHandler = new UpgradeHandler();
 
         public GameModel(
+            CoroutineHost coroutineHost,
             IGameStateProviderService gameStateProviderService, 
             IGameConfigService gameConfigService,
             WaveEnemyDirector waveEnemyDirector,
-            // EnemyController enemyController, 
             PlayerAttackCooldownHandler playerAttackCooldownHandler,
             PlayerEnemyInteractionMediator playerEnemyInteractionMediator,
             LampMovementController lampMovementController,
             ScoresCollectionService scoresCollectionService)
         {
             Debug.Log(" +++ GameModel: Creating GameModel +++");
+            _coroutineHost = coroutineHost;
             _gameStateProviderService = gameStateProviderService;
             _currentGameState = gameStateProviderService.Get();
             _waveEnemyDirector = waveEnemyDirector;
             _gameConfigService = gameConfigService;
             _playerAttackCooldownHandler = playerAttackCooldownHandler;
             _playerEnemyInteractionMediator = playerEnemyInteractionMediator;
-            // _playerEnemyInteractionHandler = playerEnemyInteractionHandler;
             _lampMovementController = lampMovementController;
             _scoresCollectionService = scoresCollectionService;
         
@@ -444,6 +445,7 @@ namespace _GAME.Scripts.GameCoreSystems
             _playerEnemyInteractionMediator.Reset();
             _waveEnemyDirector.Reset();
             _lampMovementController.Reset();
+            IsLampBlocked = false;
             StartGame();
         }
 
@@ -461,6 +463,12 @@ namespace _GAME.Scripts.GameCoreSystems
             Debug.Log($"Wave {_currentGameState.Wave} Ended");
             _currentGameState.Wave++;
             _gameStateProviderService.SaveCurrentState();
+            _coroutineHost.StartCoroutine(SwitchToPrepareState());
+        }
+
+        private IEnumerator SwitchToPrepareState()
+        {
+            yield return null;
             StartPrepareIn();
             WaveEnded?.Invoke(_currentGameState.Wave);
         }
@@ -497,6 +505,13 @@ namespace _GAME.Scripts.GameCoreSystems
 
         private void OnEnemyAttackEnded(Vector3 impactPoint, bool isEnemyDamaged, string enemyTypeName)
         {
+            // Check fo tail attack
+            Vector3 impactPointLocalized = impactPoint;
+            if (impactPoint.magnitude > 5)
+            {
+                impactPointLocalized = impactPointLocalized.x > 0 ? Vector3.right : Vector3.left;
+            }
+            
             if (!isEnemyDamaged)
             {
                 if(_gameConfigService.PlayerConfig.IsDamageable)
@@ -505,8 +520,9 @@ namespace _GAME.Scripts.GameCoreSystems
                 if (LampHealth <= 0)
                 {
                     LastEnemyPosition = impactPoint;
-                    _lampMovementController.AddForce(-LastEnemyPosition.normalized.x * 2);
+                    _lampMovementController.AddForce(-impactPointLocalized.normalized.x * 2);
                     LampDestroyed?.Invoke();
+                    _playerEnemyInteractionMediator.SetLampDestroyed();
                     StartGameOver();
                     Debug.Log("++++++++++ Game Over ++++++++++");
                     return;
@@ -514,7 +530,7 @@ namespace _GAME.Scripts.GameCoreSystems
             
                 LampGlassDamage = _lampDamageDataHandler.UpdateGlassDamageDataDamage(LampGlassDamage, impactPoint.normalized);
             
-                _lampMovementController.AddForce(-impactPoint.normalized.x * 2); 
+                _lampMovementController.AddForce(-impactPointLocalized.normalized.x * 2); 
                 LampDamageStarted?.Invoke(_gameConfigService.PlayerConfig.DamageDuration, enemyTypeName);
             }
         }

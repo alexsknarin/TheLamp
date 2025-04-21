@@ -5,6 +5,6 @@ namespace _GAME.Scripts.Lib.Interfaces
 {
     public interface IProjectileDeactivatedProvider
     {
-        public event Action<FEnemy> ProjectileDestroyed;
+        public event Action<Enemy> ProjectileDestroyed;
     }
 }

@@ -4,6 +4,7 @@ namespace _GAME.Scripts.Lib.Enums
     {
         Outside,
         InAttackZone,
-        AfterCollision
+        AfterCollision,
+        ForceCollision
     }
 }

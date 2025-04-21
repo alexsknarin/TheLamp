@@ -776,8 +776,8 @@ AnimationClip:
   m_HasGenericRootTransform: 1
   m_HasMotionFloatCurves: 0
   m_Events:
-  - time: 2.3
-    functionName: EnableCollider
+  - time: 2.8333333
+    functionName: HandleScreenLeft
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0

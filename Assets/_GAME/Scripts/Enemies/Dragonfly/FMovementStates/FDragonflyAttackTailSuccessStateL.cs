@@ -5,7 +5,7 @@ using UnityEngine;
 namespace _GAME.Scripts.Enemies.Dragonfly.FMovementStates
 {
     [CreateAssetMenu(fileName = "FDragonflyAttackTailSuccessStateL", menuName = "FDragonflyMovementStates/FDragonflyAttackTailSuccessStateL")]
-    public class FDragonflyAttackTailSuccessStateL : ScriptableObject, IState
+    public class FDragonflyAttackTailSuccessStateL : ScriptableObject, IState, ILeft
     {
         [SerializeField] private float _duration = 1.1f;
         [SerializeField] private AnimationCurve _txCurve;
@@ -30,7 +30,7 @@ namespace _GAME.Scripts.Enemies.Dragonfly.FMovementStates
             _baseTransform = baseTransform;
         }
 
-        public void OnEnter()
+        public void Enter()
         {
             _visibleBodyTransform.SetParent(_baseTransform);
             _startPosition = _visibleBodyTransform.position;
@@ -59,7 +59,7 @@ namespace _GAME.Scripts.Enemies.Dragonfly.FMovementStates
             CheckForStateChange();
         }
 
-        public void OnExit() { }
+        public void Exit() { }
 
         private void CheckForStateChange()
         {

@@ -1,11 +1,12 @@
 using System;
+using System.Collections;
 using _GAME.Scripts.Lib.Enums;
 using _GAME.Scripts.Lib.Interfaces;
 using UnityEngine;
 
 namespace _GAME.Scripts.Enemies.Spider
 {
-    public class Spider : CollidableEnemy, ISpreadable
+    public class Spider : CollidableEnemy, ISpreadable, IForcedCollidableEnemy
     {
         [Header("-- Attributes --")]
         [SerializeField] private int _maxHealth = 1;
@@ -18,6 +19,7 @@ namespace _GAME.Scripts.Enemies.Spider
         public event Action Damaged;
         public event Action<int, int> HealthChanged; 
         public event Action Dead;
+        public event Action<CollidableEnemy> CollisionRequested;
         public override float Radius => _collisionRadius;
         public override Vector2 Position => transform.position;
         public override bool IsReadyToAttack => CheckIsReadyToAttack();
@@ -66,11 +68,28 @@ namespace _GAME.Scripts.Enemies.Spider
             }
             else
             {
-                Debug.Log($"Damage Received: {damageAmount}.");
                 _movement.TriggerFall();
                 Damaged?.Invoke();
                 HealthChanged?.Invoke(_currentHealth, _maxHealth);
             }
+        }
+        
+        public override void HandleExitAttackZone()
+        {
+            CollisionState = CollidableState.Outside;
+            IsReadyForDamage = false;
+            
+            if (_currentHealth > 0)
+            {
+                StartCoroutine(CallForceCollision());   
+            }
+        }
+        
+        private IEnumerator CallForceCollision()
+        {
+            yield return null;
+            yield return null;
+            CollisionRequested?.Invoke(this);
         }
 
         private bool CheckIsReadyToAttack()
@@ -110,7 +129,7 @@ namespace _GAME.Scripts.Enemies.Spider
             Gizmos.color = Color.cyan;
             Gizmos.DrawWireSphere(transform.position, _collisionRadius);
         }
-        
+
         private void OnSpreadStateEnded()
         {
             if (IsGameOver)
@@ -120,14 +139,6 @@ namespace _GAME.Scripts.Enemies.Spider
             else
             {
                 _movement.Restart();
-            }
-        }
-
-        private void Update()
-        {
-            if (Input.GetKeyDown(KeyCode.A))
-            {
-                Spread();
             }
         }
     }

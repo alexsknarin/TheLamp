@@ -50,6 +50,10 @@ namespace _GAME.Scripts.Factories
     
         public EnemyMovementStateBase Create(Type stateType)
         {
+            if (stateType == typeof(GenericIdleMovementState))
+            {
+                return new GenericIdleMovementState();
+            }
             if (stateType == typeof(FlyGenericMovementEnterState))
             {
                 return new FlyGenericMovementEnterState(

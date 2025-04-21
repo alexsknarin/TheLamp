@@ -26,7 +26,7 @@ namespace _GAME.Scripts.Enemies.Dragonfly.FMovementStates
             _visibleBodyTransform.localRotation = Quaternion.identity;
         }
 
-        public virtual void OnEnter()
+        public virtual void Enter()
         {
             ParentVisibleBodyToAnimatedTransform();
             _animator.Play(_clipHash, -1, 0);
@@ -34,6 +34,6 @@ namespace _GAME.Scripts.Enemies.Dragonfly.FMovementStates
 
         public void Tick() { }
 
-        public void OnExit() { }
+        public void Exit() { }
     }
 }

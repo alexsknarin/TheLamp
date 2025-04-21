@@ -29,7 +29,7 @@ namespace _GAME.Scripts.Enemies.Mothling.MovementStates
             _speed = speed * _speedMultiplier;
         }
     
-        public override void OnEnter()
+        public override void Enter()
         {
             _startDistance = _positionDirectionProvider.Position2D.magnitude - 0.65f;
             Position2D = _positionDirectionProvider.Position2D;

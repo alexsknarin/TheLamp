@@ -29,7 +29,9 @@ namespace _GAME.Scripts.Factories
         private readonly LadybugMovementStateFactory _ladybugMovementStateFactory;
         private readonly MegamothlingMovementStateFactory _megamothlingMovementStateFactory;
         private readonly MegabeetleMovementStateFactory _megabeetleMovementStateFactory;
+        private readonly DragonflyBehaviourStateFactory _dragonflyBehaviourStateFactory;
         private readonly IGameConfigService _gameConfigService;
+        private readonly ISpiderSideDirectionProvider _spiderSideDirectionProvider;
     
         AsyncOperationHandle<GameObject> _mothlingEnemyAssetHandle;
         AsyncOperationHandle<GameObject> _flyEnemyAssetHandle;
@@ -51,8 +53,10 @@ namespace _GAME.Scripts.Factories
             LadybugMovementStateFactory ladybugMovementStateFactory,
             MegamothlingMovementStateFactory megamothlingMovementStateFactory,
             MegabeetleMovementStateFactory megabeetleMovementStateFactory,
+            DragonflyBehaviourStateFactory dragonflyBehaviourStateFactory,
             ILampPositionProviderService lampPositionProviderService,
-            IGameConfigService gameConfigService
+            IGameConfigService gameConfigService,
+            ISpiderSideDirectionProvider spiderSideDirectionProvider
             )
         {
             _mothlingMovementStateFactory = mothlingMovementStateFactory;
@@ -61,9 +65,11 @@ namespace _GAME.Scripts.Factories
             _spiderMovementStateFactory = spiderMovementStateFactory;
             _ladybugMovementStateFactory = ladybugMovementStateFactory;
             _megamothlingMovementStateFactory = megamothlingMovementStateFactory;
+            _dragonflyBehaviourStateFactory = dragonflyBehaviourStateFactory;
             _lampPositionProviderService = lampPositionProviderService;
             _megabeetleMovementStateFactory = megabeetleMovementStateFactory;
             _gameConfigService = gameConfigService;
+            _spiderSideDirectionProvider = spiderSideDirectionProvider;
         
             IsMothlingLoaded = false;
             IsFlyLoaded = false;
@@ -73,6 +79,7 @@ namespace _GAME.Scripts.Factories
             IsMegamothlingLoaded = false;
             IsWaspLoaded = false;
             IsMegabeetleLoaded = false;
+            IsDragonflyLoaded = false;
         }
     
         public bool IsMothlingLoaded { get; private set; }
@@ -95,14 +102,12 @@ namespace _GAME.Scripts.Factories
                 _mothlingEnemyAssetHandle = Addressables.LoadAssetAsync<GameObject>("Enemy/Mothling.prefab");
                 await _mothlingEnemyAssetHandle.Task;
                 IsMothlingLoaded = true;
-                Debug.Log("Mothling Loaded");
             }
             if (type == typeof(Fly))
             {
                 _flyEnemyAssetHandle = Addressables.LoadAssetAsync<GameObject>("Enemy/Fly.prefab");
                 await _flyEnemyAssetHandle.Task;
                 IsFlyLoaded = true;
-                Debug.Log("Fly Loaded");
             }
 
             if (type == typeof(FireFly))
@@ -110,7 +115,6 @@ namespace _GAME.Scripts.Factories
                 _fireFlyEnemyAssetHandle = Addressables.LoadAssetAsync<GameObject>("Enemy/FireFly.prefab");
                 await _fireFlyEnemyAssetHandle.Task;
                 IsFireFlyLoaded = true;
-                Debug.Log("FireFly Loaded");
             }
         
             if (type == typeof(Moth))
@@ -118,7 +122,6 @@ namespace _GAME.Scripts.Factories
                 _mothEnemyAssetHandle = Addressables.LoadAssetAsync<GameObject>("Enemy/Moth.prefab");
                 await _mothEnemyAssetHandle.Task;
                 IsMothLoaded = true;
-                Debug.Log("Moth Loaded");
             }
         
             if (type == typeof(Spider))
@@ -126,7 +129,6 @@ namespace _GAME.Scripts.Factories
                 _spiderEnemyAssetHandle = Addressables.LoadAssetAsync<GameObject>("Enemy/Spider.prefab");
                 await _spiderEnemyAssetHandle.Task;
                 IsSpiderLoaded = true;
-                Debug.Log("Spider Loaded");
             }
         
             if (type == typeof(Ladybug))
@@ -134,7 +136,6 @@ namespace _GAME.Scripts.Factories
                 _ladybugEnemyAssetHandle = Addressables.LoadAssetAsync<GameObject>("Enemy/Ladybug.prefab");
                 await _ladybugEnemyAssetHandle.Task;
                 IsLadybugLoaded = true;
-                Debug.Log("Ladybug Loaded");
             }
         
             if (type == typeof(Megamothling))
@@ -142,7 +143,6 @@ namespace _GAME.Scripts.Factories
                 _megamothlingEnemyAssetHandle = Addressables.LoadAssetAsync<GameObject>("Boss/Megamothling.prefab");
                 await _megamothlingEnemyAssetHandle.Task;
                 IsMegamothlingLoaded = true;
-                Debug.Log("Megamothling Loaded");
             }
         
             if (type == typeof(Wasp))
@@ -150,7 +150,6 @@ namespace _GAME.Scripts.Factories
                 _waspEnemyAssetHandle = Addressables.LoadAssetAsync<GameObject>("Boss/Wasp.prefab");
                 await _waspEnemyAssetHandle.Task;
                 IsWaspLoaded = true;
-                Debug.Log("Wasp Loaded");
             }
         
             if (type == typeof(Megabeetle))
@@ -158,7 +157,6 @@ namespace _GAME.Scripts.Factories
                 _megabeetleEnemyAssetHandle = Addressables.LoadAssetAsync<GameObject>("Boss/Megabeetle.prefab");
                 await _megabeetleEnemyAssetHandle.Task;
                 IsMegabeetleLoaded = true;
-                Debug.Log("Megabeetle Loaded");
             }
         
             if (type == typeof(Dragonfly))
@@ -166,11 +164,10 @@ namespace _GAME.Scripts.Factories
                 _dragonflyEnemyAssetHandle = Addressables.LoadAssetAsync<GameObject>("Boss/Dragonfly.prefab");
                 await _dragonflyEnemyAssetHandle.Task;
                 IsDragonflyLoaded = true;
-                Debug.Log("Dragonfly Loaded");
             }
         }
     
-        public FEnemy CreateEnemy(Type type)
+        public Enemy CreateEnemy(Type type)
         {
             if (type == typeof(Mothling) && _mothlingEnemyAssetHandle.IsValid())
             {
@@ -228,7 +225,7 @@ namespace _GAME.Scripts.Factories
             }
         }
     
-        private FEnemy CreateMothlingInstance(GameObject prefab)
+        private Enemy CreateMothlingInstance(GameObject prefab)
         {
             GameObject enemyInstance = Object.Instantiate(prefab);
             enemyInstance.GetComponent<MothlingMovement>().Construct(_mothlingMovementStateFactory);
@@ -239,7 +236,7 @@ namespace _GAME.Scripts.Factories
             return enemy;
         } 
     
-        private FEnemy CreateFlyInstance(GameObject prefab)
+        private Enemy CreateFlyInstance(GameObject prefab)
         {
             GameObject enemyInstance = Object.Instantiate(prefab);
             enemyInstance.GetComponent<FlyMovement>().Construct(_flyMovementStateFactory);
@@ -250,7 +247,7 @@ namespace _GAME.Scripts.Factories
             return enemy;
         }
     
-        private FEnemy CreateFireFlyInstance(GameObject prefab)
+        private Enemy CreateFireFlyInstance(GameObject prefab)
         {
             GameObject enemyInstance = Object.Instantiate(prefab);
             enemyInstance.GetComponent<FlyMovement>().Construct(_flyMovementStateFactory);
@@ -261,7 +258,7 @@ namespace _GAME.Scripts.Factories
             return enemy;
         }
     
-        private FEnemy CreateMothInstance(GameObject prefab)
+        private Enemy CreateMothInstance(GameObject prefab)
         {
             GameObject enemyInstance = Object.Instantiate(prefab);
             enemyInstance.GetComponent<MothMovement>().Construct(_mothMovementStateFactory);
@@ -272,12 +269,13 @@ namespace _GAME.Scripts.Factories
             return enemy;
         }
     
-        private FEnemy CreateSpiderInstance(GameObject prefab)
+        private Enemy CreateSpiderInstance(GameObject prefab)
         {
             GameObject enemyInstance = Object.Instantiate(prefab);
             enemyInstance.GetComponent<SpiderMovement>().Construct(
                 _spiderMovementStateFactory,
                 _lampPositionProviderService,
+                _spiderSideDirectionProvider,
                 _gameConfigService.PlayerConfig.LampCollisionRadius,
                 _gameConfigService.PlayerConfig.CollisionThreshold
                 );
@@ -288,7 +286,7 @@ namespace _GAME.Scripts.Factories
             return enemy;
         }
     
-        private FEnemy CreateLadybugInstance(GameObject prefab)
+        private Enemy CreateLadybugInstance(GameObject prefab)
         {
             GameObject enemyInstance = Object.Instantiate(prefab);
             enemyInstance.GetComponent<LadybugMovement>().Construct(
@@ -300,7 +298,7 @@ namespace _GAME.Scripts.Factories
             return enemy;
         }
     
-        private FEnemy CreateMegamothlingInstance(GameObject prefab)
+        private Enemy CreateMegamothlingInstance(GameObject prefab)
         {
             GameObject enemyInstance = Object.Instantiate(prefab);
             enemyInstance.GetComponent<MegamothlingMovement>().Construct(_megamothlingMovementStateFactory);
@@ -311,7 +309,7 @@ namespace _GAME.Scripts.Factories
             return enemy;
         } 
     
-        private FEnemy CreateWaspsInstance(GameObject prefab)
+        private Enemy CreateWaspsInstance(GameObject prefab)
         {
             GameObject enemyInstance = Object.Instantiate(prefab);
             enemyInstance.transform.GetChild(0).GetComponent<WaspMovement>().Construct(
@@ -323,7 +321,7 @@ namespace _GAME.Scripts.Factories
             return enemy;
         }
     
-        private FEnemy CreateMegabeetleInstance(GameObject prefab)
+        private Enemy CreateMegabeetleInstance(GameObject prefab)
         {
             GameObject enemyInstance = Object.Instantiate(prefab);
             enemyInstance.GetComponent<MegabeetleMovement>().Construct(_megabeetleMovementStateFactory);
@@ -334,13 +332,14 @@ namespace _GAME.Scripts.Factories
             return enemy;
         }
     
-        private FEnemy CreateDragonflyInstance(GameObject prefab)
+        private Enemy CreateDragonflyInstance(GameObject prefab)
         {
             GameObject enemyInstance = Object.Instantiate(prefab);
-            enemyInstance.GetComponent<DragonflyPresentation>().Initialize();
             var enemy = enemyInstance.GetComponent<Dragonfly>();
+            enemy.Construct(_dragonflyBehaviourStateFactory, _lampPositionProviderService);
             enemy.Initialize();
-        
+            enemyInstance.GetComponent<DragonflyPresentation>().Initialize();
+
             return enemy;
         }
     }

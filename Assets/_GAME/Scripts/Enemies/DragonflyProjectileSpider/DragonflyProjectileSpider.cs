@@ -13,22 +13,27 @@ namespace _GAME.Scripts.Enemies.DragonflyProjectileSpider
         private int _direction;
         public override Vector2 Position => transform.position;
         public event Action EnterAnimationEnded;
-        public event Action<FEnemy, bool> Deactivated;
+        public event Action<Enemy, bool> Deactivated;
     
         public override void Initialize()
         {
-            _presentation.Initialize();
-            Radius = _collisionRadius;
-            gameObject.SetActive(false);
-
             _movement.EnterAnimationEnded += OnEnterAnimationEndHandle;
             _movement.FallEnded += OnFallEndedHandle;
+            
+            Reset();
         }
 
         private void OnDestroy()
         {
             _movement.EnterAnimationEnded -= OnEnterAnimationEndHandle;
             _movement.FallEnded -= OnFallEndedHandle;
+        }
+
+        public void Reset()
+        {
+            _presentation.Initialize();
+            Radius = _collisionRadius;
+            gameObject.SetActive(false);
         }
 
         public void SetDirection(int direction)

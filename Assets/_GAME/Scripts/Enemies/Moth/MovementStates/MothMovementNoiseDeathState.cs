@@ -11,8 +11,8 @@ namespace _GAME.Scripts.Enemies.Moth.MovementStates
         private IPositionDirectionProvider _positionDirectionProvider;
     
         // State specific attributes
-        private readonly float _bounceForceMagnitude = 4f;
-        private readonly float _gravityForceMagnitude = .2f;
+        private readonly float _bounceForceMagnitude = 2.6f;
+        private readonly float _gravityForceMagnitude = .17f;
         private readonly float _dragAmount = 0.94f;
         private readonly float _noiseFrequency = 7f;
         private readonly float _noiseAmplitude = 0.035f;
@@ -26,7 +26,7 @@ namespace _GAME.Scripts.Enemies.Moth.MovementStates
 
         public event Action Ended;
     
-        public override void OnEnter()
+        public override void Enter()
         {
             Position2D = _positionDirectionProvider.Position2D;
             DepthDirection = Vector3.zero;

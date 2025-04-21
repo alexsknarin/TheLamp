@@ -48,7 +48,7 @@ namespace _GAME.Scripts.Enemies.Moth.MovementStates
         public event Action Started;
         public event Action Ended;
     
-        public override void OnEnter()
+        public override void Enter()
         {
             IsReadyToSwitch = false;
             _hoverDuration = Random.Range(_hoverDurationMin, _hoverDurationMax);
@@ -67,16 +67,20 @@ namespace _GAME.Scripts.Enemies.Moth.MovementStates
             _phase += Time.deltaTime * _speed * _speedFactor * speedNoiseCompensation;
             _hoverPhase = _localTime / _hoverDuration;
 
-            Vector2 circlePosition = _hoverCenter + EnemyMovementPatterns.CircleMotion(0, _hoverRadius, _hoverRadius, 1, _phase);
+            Vector2 circlePosition 
+                = _hoverCenter 
+                  + EnemyMovementPatterns.CircleMotion(0, _hoverRadius, _hoverRadius, 1, _phase);
         
             if (radiusAdaptPhase < 1f)
             {
-                circlePosition = Vector3.Lerp(_hoverCenter, circlePosition, Mathf.SmoothStep(0, 1, radiusAdaptPhase));
+                circlePosition 
+                    = Vector3.Lerp(_hoverCenter, circlePosition, Mathf.SmoothStep(0, 1, radiusAdaptPhase));
             }
         
             // Add noise
             Vector2 trajectoryNoise = TrajectoryNoise.Generate(_noiseFrequency);
-            Position2D = circlePosition + trajectoryNoise * (Mathf.Clamp(radiusAdaptPhase, 0, 1) * _noiseAmplitude);
+            Position2D 
+                = circlePosition + trajectoryNoise * (Mathf.Clamp(radiusAdaptPhase, 0, 1) * _noiseAmplitude);
         
             // Depth To Camera
             Vector3 cameraDirection = (_cameraPosition - (Vector3)Position2D).normalized;
@@ -90,7 +94,7 @@ namespace _GAME.Scripts.Enemies.Moth.MovementStates
             }
         }
     
-        public override void OnExit()
+        public override void Exit()
         {
             Ended?.Invoke();
         }

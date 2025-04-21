@@ -7,22 +7,28 @@ namespace _GAME.Scripts.Enemies.Dragonfly.BehaviourStates
 {
     public class DragonflyWaitHoverAttackState : IState
     {
-        public event Action<DragonflyPatrolAttackMode> Ended;
-        private readonly float _minWaitTime = 0f;
-        private readonly float _maxWaitTime = 1f;
-        private float _localTime = 0f;
-        private float _duration = 0f;
-    
-        public DragonflyWaitHoverAttackState(float minWaitTime, float maxWaitTime)
+        public bool IsReadyToSwitch;
+        private readonly float _minWaitTime;
+        private readonly float _maxWaitTime;
+        private readonly DragonflyMovement _movement;
+        private float _localTime;
+        private float _duration;
+
+        public DragonflyWaitHoverAttackState(float minWaitTime, float maxWaitTime, DragonflyMovement movement)
         {
             _minWaitTime = minWaitTime;
             _maxWaitTime = maxWaitTime;
+            _movement = movement;
         }
+        
+        public event Action Started;
 
-        public void OnEnter()
+        public void Enter()
         {
+            IsReadyToSwitch = false;
             _localTime = 0;
             _duration = Random.Range(_minWaitTime, _maxWaitTime);
+            Started?.Invoke();
         }
 
         public void Tick()
@@ -30,10 +36,14 @@ namespace _GAME.Scripts.Enemies.Dragonfly.BehaviourStates
             _localTime += Time.deltaTime;
             if (_localTime >= _duration)
             {
-                Ended?.Invoke(DragonflyPatrolAttackMode.Head);
+                _movement.StartAttack(PatrolAttackMode.Head);
+                IsReadyToSwitch = true;
             }
         }
 
-        public void OnExit() { }
+        public void Exit()
+        {
+            IsReadyToSwitch = false;
+        }
     }
 }

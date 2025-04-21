@@ -21,7 +21,7 @@ namespace _GAME.Scripts.Enemies.Spider.MovementStates
             _speed = speed;
         }
     
-        public override void OnEnter()
+        public override void Enter()
         {
             Position2D = _positionDirectionProvider.Position2D;
             _acceleratedSpeed = 1f;

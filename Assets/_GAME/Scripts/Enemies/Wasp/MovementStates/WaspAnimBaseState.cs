@@ -21,10 +21,10 @@ namespace _GAME.Scripts.Enemies.Wasp.MovementStates
             _baseScaleR.x = -1;
         }
 
-        public virtual void OnEnter() { }
+        public virtual void Enter() { }
 
         public void Tick() { }
 
-        public virtual void OnExit() { }
+        public virtual void Exit() { }
     }
 }

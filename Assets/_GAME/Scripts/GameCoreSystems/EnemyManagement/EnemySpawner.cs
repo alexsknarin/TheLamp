@@ -11,29 +11,31 @@ namespace _GAME.Scripts.GameCoreSystems.EnemyManagement
 {
     public class EnemySpawner: ITickable, IDisposable
     {
-        private EnemyQueue _enemyQueue;
+        // Dependencies
+        private readonly EnemyPool _enemyPool;
         private readonly float _firstEnemySpawnDelay;
-        private List<FEnemy> _activeEnemies; 
-
+        private ISpiderSpawnAvailablityProvider _spiderSpawnAvailablityProvider;
+        
+        private EnemyQueue _enemyQueue;
+        private List<Enemy> _activeEnemies; 
         private int _currentEnemyIndex;
         private float _spawnCooldown;
         private float _localTime;
         private bool _isWaveActive = false;
-    
-        // Dependencies
-        private readonly EnemyPool _enemyPool; 
-    
+        
         public EnemySpawner(
             EnemyPool enemyPool,
-            float firstEnemySpawnDelay
+            float firstEnemySpawnDelay,
+            ISpiderSpawnAvailablityProvider spiderSpawnAvailablityProvider
             )
         {
             _enemyPool = enemyPool;
             _firstEnemySpawnDelay = firstEnemySpawnDelay;
+            _spiderSpawnAvailablityProvider = spiderSpawnAvailablityProvider;
         }
     
-        public event Action<FEnemy> EnemySpawned;
-        public event Action<FEnemy> EnemyReturnedToPool;
+        public event Action<Enemy> EnemySpawned;
+        public event Action<Enemy> EnemyReturnedToPool;
 
         public void Initialize()
         {
@@ -45,23 +47,18 @@ namespace _GAME.Scripts.GameCoreSystems.EnemyManagement
             _enemyPool.EnemyReleasedToPool -= OnEnemyReleasedToPool;
         }
 
-        private void OnEnemyReleasedToPool(FEnemy enemy)
+        private void OnEnemyReleasedToPool(Enemy enemy)
         {
             EnemyReturnedToPool?.Invoke(enemy);
         }
 
-        public void PrepareWave(EnemyQueue enemyQueue, List<FEnemy> enemies)
+        public void PrepareWave(EnemyQueue enemyQueue, List<Enemy> enemies)
         {
             _enemyQueue = enemyQueue;
             _activeEnemies = enemies;
+            _spiderSpawnAvailablityProvider.Reset();
         
-            string waveData = "";
-            for (int i = 0; i < _enemyQueue.Count(); i++)
-            {
-                _enemyPool.PreloadEnemy(EnemyTypeLibrary.EnemyTypeDictionary[_enemyQueue.Get(i)]);
-                waveData = waveData + " - " + _enemyQueue.Get(i).ToString();
-            }
-            Debug.Log(waveData);
+            LogCurrentWaveData();
         }
 
         public void StartWave()
@@ -70,8 +67,9 @@ namespace _GAME.Scripts.GameCoreSystems.EnemyManagement
             _localTime = 0;
             _spawnCooldown = _firstEnemySpawnDelay;
             _isWaveActive = true;
+            
         }
-    
+
         public void StopWave()
         {
             _isWaveActive = false;
@@ -84,7 +82,7 @@ namespace _GAME.Scripts.GameCoreSystems.EnemyManagement
                 WaitForCooldown(deltaTime);
             }
         }
-    
+
         private void WaitForCooldown(float deltaTime)
         {
             if (_localTime >= _spawnCooldown)
@@ -98,25 +96,33 @@ namespace _GAME.Scripts.GameCoreSystems.EnemyManagement
                 _localTime += deltaTime;
             }
         }
-    
+
         private void SpawnEnemies()
         {
             if (_currentEnemyIndex < _enemyQueue.Count())
             {
                 if (_activeEnemies.Count < _enemyQueue.MaxEnemiesOnScreen)
                 {
-                    // Potential boss spawn here
-                    var enemy = SpawnRegularEnemy(_enemyQueue.Get(_currentEnemyIndex));
+                    // TODO: refactor
+                    EnemyType enemyType = _enemyQueue.Get(_currentEnemyIndex);
+                    
+                    if (enemyType == EnemyType.Spider && !_spiderSpawnAvailablityProvider.CheckPointAvailability())
+                    {
+                        bool hasReplacement = _enemyQueue.PushEnemyForward(_currentEnemyIndex, enemyType);
+                        if (!hasReplacement)
+                        {
+                            return;
+                        }
+                        enemyType = _enemyQueue.Get(_currentEnemyIndex);
+                    }
+                    
+                    Enemy enemy = SpawnEnemy(enemyType);
                     _activeEnemies.Add(enemy);
                     EnemySpawned?.Invoke(enemy);
-                    // TODO: perhaps need to update enemies count from the outside and remove the reference to _enemies list
-                
                     _currentEnemyIndex++;
                 }
                 else
                 {
-                    // Reset timer until there is enough room for the next enemy
-                    // Effectively setting the timer on pause
                     _localTime = 0; 
                 }
             }
@@ -126,19 +132,30 @@ namespace _GAME.Scripts.GameCoreSystems.EnemyManagement
                 _isWaveActive = false;
             }
         }
-    
-        private FEnemy SpawnRegularEnemy(EnemyType enemyType)
+
+        private Enemy SpawnEnemy(EnemyType enemyType)
         {
             var enemy = _enemyPool.Get(EnemyTypeLibrary.EnemyTypeDictionary[enemyType]);
             enemy.Play();
             return enemy;
         }
-    
+
         private float UpdateSpawnCooldown()
         {
             float spawnDelayPhase = (float)(_currentEnemyIndex-1) / (_enemyQueue.Count()-1);
             float spawnDelayAcceleration = 1f/Mathf.Lerp(1, _enemyQueue.SpawnDelayAcceleration, spawnDelayPhase);
             return _enemyQueue.SpawnDelay * spawnDelayAcceleration;
+        }
+
+        private void LogCurrentWaveData()
+        {
+            string waveData = "";
+            for (int i = 0; i < _enemyQueue.Count(); i++)
+            {
+                _enemyPool.PreloadEnemy(EnemyTypeLibrary.EnemyTypeDictionary[_enemyQueue.Get(i)]);
+                waveData = waveData + " - " + _enemyQueue.Get(i).ToString();
+            }
+            Debug.Log(waveData);
         }
     }
 }

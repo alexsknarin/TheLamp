@@ -13,12 +13,12 @@ namespace _GAME.Scripts.Enemies.Generic.States
         private readonly float _proximityOffset;
 
         // State specific attributes
-        private readonly float _acceleration = 6.5f;
+        private readonly float _acceleration = 1.9f;
         private readonly float _depthDecrement = 0.4f;
 
         private float _acceleratedSpeed = 1f;
         private float _startDistance;
-        private readonly float _speedMultiplier =  1.1f;
+        private readonly float _speedMultiplier =  1.09f;
 
         public FlyGenericMovementAcceleratedAttackState(
             Vector3 cameraPosition,
@@ -35,7 +35,7 @@ namespace _GAME.Scripts.Enemies.Generic.States
             _proximityOffset = proximityOffset;
         }
     
-        public override void OnEnter()
+        public override void Enter()
         {
             _acceleratedSpeed = 1f;
             _startDistance = _positionDirectionProvider.Position2D.magnitude - 0.65f;

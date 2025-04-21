@@ -5,7 +5,7 @@ namespace _GAME.Scripts.Enemies.Dragonfly.FMovementStates
 {
     [CreateAssetMenu(fileName = "FDragonflyBounceTailStateL",
         menuName = "FDragonflyMovementStates/FDragonflyBounceTailStateL")]
-    public class FDragonflyBounceTailStateL : ScriptableObject, IState
+    public class FDragonflyBounceTailStateL : ScriptableObject, IState, ILeft
     {
         [SerializeField] private float _rotationSpeed = 125f;
         private readonly int _sideDirection = 1;
@@ -22,7 +22,7 @@ namespace _GAME.Scripts.Enemies.Dragonfly.FMovementStates
             _patrolRotator = patrolRotator;
         }
 
-        public void OnEnter()
+        public void Enter()
         {
             Vector3 currentPosition = _visibleBodyTransform.position;
             _patrolRotator.SetRotationPhase(currentPosition);
@@ -38,6 +38,6 @@ namespace _GAME.Scripts.Enemies.Dragonfly.FMovementStates
             _visibleBodyTransform.localRotation = Quaternion.Euler(eulers);
         }
 
-        public void OnExit() { }
+        public void Exit() { }
     }
 }

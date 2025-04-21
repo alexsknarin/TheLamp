@@ -13,7 +13,7 @@ namespace _GAME.Scripts.Enemies.Spider.MovementStates
         private readonly float _collisionThreshold;
         private readonly float _collisionRadius;
 
-        private readonly float _decceleration = 0.07f;
+        private readonly float _decceleration = 0.08f;
         private float _localTime;
         private float _initialAmplitude;
         private float _swingAmplitude;
@@ -42,10 +42,12 @@ namespace _GAME.Scripts.Enemies.Spider.MovementStates
             _collisionRadius = collisionRadius;
         }
     
-        public override void OnEnter()
+        public override void Enter()
         {
-            Position2D = (_positionDirectionProvider.Position2D - _lampPositionProviderService.GetLampPosition()).normalized
-                         * (_lampCollisionRadius + _collisionThreshold + _collisionRadius);
+            Position2D 
+                = (_positionDirectionProvider.Position2D - _lampPositionProviderService.GetLampPosition()).normalized
+                  * (_lampCollisionRadius + _collisionThreshold + _collisionRadius);
+            
             _initialAmplitude = Mathf.Abs(Mathf.Abs(Position2D.x) - Mathf.Abs(_hangingPoint.x));
             _swingAmplitude = _initialAmplitude;
             _initialDirection = Position2D.normalized;

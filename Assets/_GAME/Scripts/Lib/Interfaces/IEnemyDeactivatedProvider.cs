@@ -5,6 +5,6 @@ namespace _GAME.Scripts.Lib.Interfaces
 {
     public interface IEnemyDeactivatedProvider
     {
-        public event Action<FEnemy> EnemyReleasedToPool;
+        public event Action<Enemy> EnemyReleasedToPool;
     }
 }

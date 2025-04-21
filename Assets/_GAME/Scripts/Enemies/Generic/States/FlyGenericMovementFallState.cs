@@ -45,7 +45,7 @@ namespace _GAME.Scripts.Enemies.Generic.States
             _ySwitchDistance = -_radius * _verticalAmplitude * 1.1f;
         }
     
-        public override void OnEnter()
+        public override void Enter()
         {
             Position2D = _positionDirectionProvider.Position2D;
         
@@ -58,7 +58,12 @@ namespace _GAME.Scripts.Enemies.Generic.States
         
             _bounceForce = position2DNormalized * _bounceForceMagnitude;
         
-            Debug.DrawRay(_lampPositionProviderService.GetLampPosition(), position2DNormalized, Color.red, 5f);
+            Debug.DrawRay(
+                _lampPositionProviderService.GetLampPosition(), 
+                position2DNormalized, 
+                Color.red,
+                5f
+                );
         
             _gravityForce = Vector2.zero;
             IsReadyToSwitch = false;

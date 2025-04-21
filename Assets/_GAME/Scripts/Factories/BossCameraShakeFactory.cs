@@ -16,7 +16,7 @@ namespace _GAME.Scripts.Factories
         private MegabeetleCameraShakeStrategy _megabeetleCameraShakeStrategy;
         private DragonflyCameraShakeStrategy _dragonflyCameraShakeStrategy;
     
-        public ICameraShakeStrategy Create(FEnemy boss)
+        public ICameraShakeStrategy Create(Enemy boss)
         {
             if (boss is Wasp)
             {

@@ -27,8 +27,6 @@ namespace _GAME.Scripts.Enemies.Dragonfly
                 }
             }
             _currentIndex = minIndex;
-        
-            Debug.Log(" ++++ Closest point index: " + _currentIndex);
         }
     
         private void OnDrawGizmos()

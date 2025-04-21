@@ -1,3 +1,4 @@
+using _GAME.Scripts.Enemies.Dragonfly;
 using UnityEngine;
 
 namespace _GAME.Scripts.GameCoreSystems.DataManagement.DataTypes
@@ -18,6 +19,19 @@ namespace _GAME.Scripts.GameCoreSystems.DataManagement.DataTypes
         [field:SerializeField] public float FirstEnemySpawnDelay { get; private set; } = 0.5f;
         [field:Header("Ladybug Settings")]
         [field:SerializeField] public float LadybugDeathDepth { get; private set; } = 0.3f;
+        [field:Header("Dragonfly Settings")]
+        [field:SerializeField] public DragonflyPatrolAttackZoneRanges PatrolAttackZonesL { get; private set; }
+        [field:SerializeField] public DragonflyPatrolAttackZoneRanges PatrolAttackZonesR { get; private set; }
+        [field:SerializeField] public Vector3 DragonflyTailAttackPositionBase { get; private set; }
+        [field:SerializeField] public float DragonflyPatrolHeadWaitMin { get; private set; } = 0f;
+        [field:SerializeField] public float DragonflyPatrolHeadWaitMax { get; private set; } = 0.5f;
+        [field:SerializeField] public float DragonflyPatrolTailWaitMin { get; private set; } = 0f;
+        [field:SerializeField] public float DragonflyPatrolTailWaitMax { get; private set; } = 0.5f;
+        [field:SerializeField] public float DragonflyHoverWaitMin { get; private set; } = 0.5f;
+        [field:SerializeField] public float DragonflyHoverWaitMax { get; private set; } = 2f;
+        [field:SerializeField] public Vector3 DragonflySpiderAttackPositionBase { get; private set; }
+        [field:SerializeField] public float DragonflySpiderPatrolWaitMin { get; private set; } = 1.05f;
+        [field:SerializeField] public float DragonflySpiderPatrolWaitMax { get; private set; } = 1.8f;
         [field:Header("Game Stages Settings")]
         [field:SerializeField] public bool IntroStageSkip { get; private set; } = false;
         [field:SerializeField] public float IntroStageDuration { get; private set; } = 2f;

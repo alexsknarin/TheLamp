@@ -5,7 +5,7 @@ using UnityEngine;
 namespace _GAME.Scripts.Enemies.Dragonfly.FMovementStates
 {
     [CreateAssetMenu(fileName = "FDragonflyAttackHeadSuccessState", menuName = "FDragonflyMovementStates/FDragonflyAttackHeadSuccessState")]
-    public class FDragonflyAttackHeadSuccessState : ScriptableObject, IState
+    public class FDragonflyAttackHeadSuccessState : ScriptableObject, IState, ILeft
     {
         [SerializeField] private float _duration = 0.85f;
         [SerializeField] private float _afterDelay = .6f;
@@ -29,7 +29,7 @@ namespace _GAME.Scripts.Enemies.Dragonfly.FMovementStates
             _fallPointTransform = fallPointTransform;
         }
 
-        public void OnEnter()
+        public void Enter()
         {
             _fallPointTransform.position = _visibleBodyTransform.position;
             _fallPointTransform.rotation = _visibleBodyTransform.rotation;
@@ -77,7 +77,7 @@ namespace _GAME.Scripts.Enemies.Dragonfly.FMovementStates
             }
         }
     
-        public void OnExit()
+        public void Exit()
         {
         }
     }

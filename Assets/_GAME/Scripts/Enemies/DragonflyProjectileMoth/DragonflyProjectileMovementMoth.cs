@@ -1,10 +1,12 @@
 using System;
+using _GAME.Scripts.Lib.Interfaces;
 using UnityEngine;
 
 namespace _GAME.Scripts.Enemies.DragonflyProjectileMoth
 {
     public class DragonflyProjectileMovementMoth : MonoBehaviour
     {
+        private const float LampCollisionRadius = 0.49f;
         [SerializeField] private float _speed = 5f;
         [SerializeField] private float _bounceSpeed = 1f;
         [SerializeField] private float _fallSpeed = 1.5f;
@@ -14,9 +16,14 @@ namespace _GAME.Scripts.Enemies.DragonflyProjectileMoth
         [SerializeField] private float _startTransitionDistance = 2.0f;
         [SerializeField] private float _fleeTurnDuration = 0.5f;
         [SerializeField] private Vector3 _fleeGoalBase;
-        private bool _isAttacking = false;
-        private bool _isFalling = false;
-        private bool _isFleeing = false;
+        
+        private ILampPositionProviderService _lampPositionProviderService;
+        
+        private float _collisionRadius;
+        private float _collisionThreshold = 0.00001f;
+        private bool _isAttacking;
+        private bool _isFalling;
+        private bool _isFleeing;
         private Vector3 _attackDirection;
         private float _currentAcceeleration = 0f;
         private Vector3 _sideGoal;
@@ -26,8 +33,18 @@ namespace _GAME.Scripts.Enemies.DragonflyProjectileMoth
         // Debug
         private Vector3 _previousPosition;
         private Vector3 _previousPositionRaw;
-        public event Action FallEnded;
 
+        public void Construct(ILampPositionProviderService lampPositionProvider)
+        {
+            _lampPositionProviderService = lampPositionProvider;
+        }
+        
+        public event Action FallEnded;
+        
+        public void SetCollisionRadius(float radius)
+        {
+            _collisionRadius = radius;
+        }
 
         public void Initialize(Vector3 startPosition)
         {
@@ -56,7 +73,13 @@ namespace _GAME.Scripts.Enemies.DragonflyProjectileMoth
                 _isAttacking = false;
                 _isFleeing = false;
                 _isFalling = true;
-                _currentAcceeleration = 0f;    
+                _currentAcceeleration = 0f;
+                
+                Vector3 lampPosition = _lampPositionProviderService.GetLampPosition();
+                Vector3 lampDirection = (transform.position - lampPosition).normalized;
+                
+                transform.position = lampPosition + lampDirection * (LampCollisionRadius + _collisionRadius + _collisionThreshold);
+                
             }
         }
 

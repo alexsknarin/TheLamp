@@ -18,7 +18,7 @@ namespace _GAME.Scripts.Enemies
             _cameraTransform = cameraTransform;
         }
     
-        private List<FEnemy> _enemies;
+        private List<Enemy> _enemies;
         private Vector2 _explosionPosition;
         private float _explosionRadius;
         private float _explosionDuration;
@@ -32,7 +32,7 @@ namespace _GAME.Scripts.Enemies
             _explosionDuration = _gameConfigService.GameConfig.FireflyExplosionDuration;
         }
 
-        public void StartExplosion(Vector2 explosionPosition, List<FEnemy> enemies)
+        public void StartExplosion(Vector2 explosionPosition, List<Enemy> enemies)
         {
             _enemies = enemies;
             _explosionPosition = explosionPosition;

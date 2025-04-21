@@ -27,7 +27,7 @@ namespace _GAME.Scripts.Enemies.Mothling.MovementStates
         public event Action Started;
         public event Action Ended;
 
-        public override void OnEnter()
+        public override void Enter()
         {
             IsReadyToSwitch = false;
         
@@ -49,7 +49,7 @@ namespace _GAME.Scripts.Enemies.Mothling.MovementStates
             }
         }
     
-        public override void OnExit()
+        public override void Exit()
         {
             Ended?.Invoke();
         }

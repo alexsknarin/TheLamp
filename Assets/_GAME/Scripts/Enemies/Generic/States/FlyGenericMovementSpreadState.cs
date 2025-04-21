@@ -25,7 +25,7 @@ namespace _GAME.Scripts.Enemies.Generic.States
     
         public event Action Ended; 
     
-        public override void OnEnter()
+        public override void Enter()
         {
             Position2D = _positionDirectionProvider.Position2D;
             DepthDirection = _positionDirectionProvider.DepthDirection;

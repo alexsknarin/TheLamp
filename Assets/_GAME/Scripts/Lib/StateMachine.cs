@@ -34,7 +34,7 @@ namespace _GAME.Scripts.Lib
                 return;
             }
         
-            _currentState?.OnExit();
+            _currentState?.Exit();
             _currentState = state;
         
             _transitions.TryGetValue(_currentState.GetType(), out _currentTransitions);
@@ -43,7 +43,7 @@ namespace _GAME.Scripts.Lib
                 _currentTransitions = EmptyTransitions;
             }
         
-            _currentState.OnEnter();
+            _currentState.Enter();
         }
 
         public void AddTransition(IState from, IState to, Func<bool> predicate)

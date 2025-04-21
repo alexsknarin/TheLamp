@@ -28,7 +28,7 @@ namespace _GAME.Scripts.InGamePresentation.Lightning
             _waveEnemyDirector.BossDied -= OnBossDied;
         }
 
-        private void OnBossSpawned(FEnemy boss)
+        private void OnBossSpawned(Enemy boss)
         {
             _lightningFlashController.Play();
         }

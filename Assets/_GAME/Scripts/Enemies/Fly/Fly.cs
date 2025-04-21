@@ -24,8 +24,8 @@ namespace _GAME.Scripts.Enemies.Fly
     
         public override void Initialize()
         {
-            _movement.Initialize();
             _movement.SetCollisionRadius(_collisionRadius);
+            _movement.Initialize();
             _movement.ReadyToAttackStateStarted += OnReadyToAttackStateStarted;
             _movement.ReadyToAttackStateEnded += OnReadyToAttackStateEnded;
             _movement.DeathStateEnded += OnDeathStateEnded;
@@ -66,7 +66,6 @@ namespace _GAME.Scripts.Enemies.Fly
             }
             else
             {
-                Debug.Log($"Damage Received: {damageAmount}.");
                 _movement.TriggerFall();
                 Damaged?.Invoke();
                 HealthChanged?.Invoke(_currentHealth, _maxHealth);
@@ -78,19 +77,18 @@ namespace _GAME.Scripts.Enemies.Fly
         {
             if (_isInAttackReadyMovementState)
             {
-                float x = _movement.Position2D.x;
-                float y = _movement.Position2D.y;
+                float x = transform.position.x;
+                float y = transform.position.y;
             
                 if (y < 0)
                 {
                     return true;
                 }
-            
-                if ((_movement.SideDirection < 0) && (x > 0.3f))
+                if ((_movement.SideDirection < 0) && (x > 0.53f))
                 { 
                     return true; 
                 }
-                if ((_movement.SideDirection > 0) && (x < -0.3f))
+                if ((_movement.SideDirection > 0) && (x < -0.53f))
                 {
                     return true; 
                 }

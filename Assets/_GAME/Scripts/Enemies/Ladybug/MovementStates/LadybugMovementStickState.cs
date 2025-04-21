@@ -1,3 +1,4 @@
+using System;
 using _GAME.Scripts.Lib.Interfaces;
 using UnityEngine;
 
@@ -12,7 +13,10 @@ namespace _GAME.Scripts.Enemies.Ladybug.MovementStates
     
         private readonly float _lampStickRadius = 0.35f;
         private readonly float _depth = 0.3f;
-    
+        
+        public event Action Started;
+        public event Action Ended;
+        
         public LadybugMovementStickState(
             Vector3 cameraPosition,
             IPositionDirectionProvider positionDirectionProvider,
@@ -26,18 +30,25 @@ namespace _GAME.Scripts.Enemies.Ladybug.MovementStates
             _collisionRadius = collisionRadius;
         }
     
-        public override void OnEnter()
+        public override void Enter()
         {
-            Vector2 newPosition = (_positionDirectionProvider.Position2D - _lampPositionProviderService.GetLampPosition()).normalized 
-                                  * (_lampStickRadius + _collisionRadius); 
+            Vector2 newPosition 
+                = (_positionDirectionProvider.Position2D - _lampPositionProviderService.GetLampPosition()).normalized
+                  * (_lampStickRadius + _collisionRadius); 
             Position2D = newPosition;
         
             Vector3 cameraDirection = (_cameraPosition - (Vector3)Position2D).normalized;
             DepthDirection = cameraDirection * _depth;
+            Started?.Invoke();
         }
 
         public override void Tick()
         {
+        }
+        
+        public override void Exit()
+        {
+            Ended?.Invoke();
         }
     }
 }

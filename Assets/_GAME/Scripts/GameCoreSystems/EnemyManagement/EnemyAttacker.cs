@@ -12,7 +12,7 @@ namespace _GAME.Scripts.GameCoreSystems.EnemyManagement
         // Dependencies
         private readonly float _maxAggressionLevel;
     
-        private float _attackCooldown;
+        private float _attackCooldownTime;
         private float _aggressionLevelNormalized;
         private bool _isWaveActive = false;
         private float _localTime;
@@ -28,7 +28,7 @@ namespace _GAME.Scripts.GameCoreSystems.EnemyManagement
         private readonly float _attackAttackDelayMaxMin = 6.1f;
         private readonly float _attackAttackDelayMaxMax = 1.8f;
     
-        private List<FEnemy> _enemies;
+        private List<Enemy> _enemies;
         private readonly List<CollidableEnemy> _enemiesReadyToAttack = new ();
 
         public EnemyAttacker(float maxAggressionLevel)
@@ -38,7 +38,7 @@ namespace _GAME.Scripts.GameCoreSystems.EnemyManagement
     
         public event Action<CollidableEnemy> EnemyAttackStarted;
     
-        public void PrepareWave(int aggressionLevel, List<FEnemy> enemies)
+        public void PrepareWave(int aggressionLevel, List<Enemy> enemies)
         {
             _enemies = enemies;
             _enemiesReadyToAttack.Clear();
@@ -47,7 +47,7 @@ namespace _GAME.Scripts.GameCoreSystems.EnemyManagement
     
         public void StartWave()
         {
-            _attackCooldown = GetRandomAttackDelay(
+            _attackCooldownTime = GetRandomAttackDelay(
                 _startAttackDelayMinMin,
                 _startAttackDelayMinMax,
                 _startAttackDelayMaxMin, 
@@ -66,13 +66,11 @@ namespace _GAME.Scripts.GameCoreSystems.EnemyManagement
     
         public void BlockAttackCooldown()
         {
-            Debug.Log("Cooldown blocked");
             _isCooldownActive = false;
         }
     
         public void UnblockAttackCooldown()
         {
-            Debug.Log("Cooldown unblocked");
             _isCooldownActive = true;
         }
     
@@ -103,16 +101,14 @@ namespace _GAME.Scripts.GameCoreSystems.EnemyManagement
     
         private void WaitForCooldown()
         {
-            if (_localTime >= _attackCooldown)
+            if (_localTime >= _attackCooldownTime)
             {
-                _localTime = 0;
                 Attack();
             }
             else
             {
                 if (_isCooldownActive)
                 {
-                    // TODO: add exception for Megamothling and Megabeetle (BOSSES)
                     _localTime += Time.deltaTime;   
                 }
             }
@@ -135,15 +131,15 @@ namespace _GAME.Scripts.GameCoreSystems.EnemyManagement
      
             attackingEnemy.Attack();
             EnemyAttackStarted?.Invoke(attackingEnemy);
-        
-            _localTime = 0;
-            _attackCooldown = GetRandomAttackDelay(
+            
+            _attackCooldownTime = GetRandomAttackDelay(
                 _attackAttackDelayMinMin,
                 _attackAttackDelayMinMax,
                 _attackAttackDelayMaxMin,
                 _attackAttackDelayMaxMax,
                 _aggressionLevelNormalized
-                ); 
+                );
+            _localTime = 0;
         }
     
         private float GetRandomAttackDelay(float minMin, float minMax, float maxMin, float maxMax, float aggressionLevel)

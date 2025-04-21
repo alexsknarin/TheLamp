@@ -22,6 +22,8 @@ namespace _GAME.Scripts.Enemies.Ladybug
         [SerializeField] private string _stateDebug;
         [SerializeField] private int _sideDirection = 1;
         
+        [SerializeField] private float _startAngle;
+        
         private float _collisionRadius;
         
         private Vector3 _position3D;
@@ -35,7 +37,7 @@ namespace _GAME.Scripts.Enemies.Ladybug
         private readonly StateMachine _stateMachine = new();
         private LadybugMovementStateFactory _stateFactory;
         private EnemyMovementStateBase _currentState;
-    
+        private GenericIdleMovementState _idleState;
         private LadybugMovementPatrolStateR _patrolStateR;
         private LadybugMovementPatrolStateL _patrolStateL;
         private LadybugMovementPreAttackStateR _preAttackStateR;
@@ -56,6 +58,8 @@ namespace _GAME.Scripts.Enemies.Ladybug
         public event Action DeathStateEnded;
         public event Action SpreadStateEnded;
         public event Action EnteredAttackRange;
+        public event Action StickStarted;
+        public event Action StickEnded;
     
         public Vector2 Position2D { get; private set; }
         public Vector3 DepthDirection { get; private set; }
@@ -64,6 +68,7 @@ namespace _GAME.Scripts.Enemies.Ladybug
         {        
             enabled = false;
             _stateFactory.SetEnemyDependencies(this, _speed, _radius, _verticalAmplitude, _collisionRadius);
+            _idleState = (GenericIdleMovementState)_stateFactory.Create(typeof(GenericIdleMovementState));
             _patrolStateR = (LadybugMovementPatrolStateR)_stateFactory.Create(typeof(LadybugMovementPatrolStateR));
             _patrolStateL = (LadybugMovementPatrolStateL)_stateFactory.Create(typeof(LadybugMovementPatrolStateL));
             _preAttackStateR = (LadybugMovementPreAttackStateR)_stateFactory.Create(typeof(LadybugMovementPreAttackStateR));
@@ -81,6 +86,8 @@ namespace _GAME.Scripts.Enemies.Ladybug
             _spreadState.Ended += OnSpreadStateEnded;
             _patrolStateR.EnteredAttackRange += OnEnteredAttackRange;
             _patrolStateL.EnteredAttackRange += OnEnteredAttackRange;
+            _stickState.Started += OnStickStateStarted;
+            _stickState.Ended += OnStickStateEnded;
         
             At(_patrolStateR, _preAttackStateR, () => _patrolStateR.IsReadyToSwitch);
             At(_preAttackStateR, _attackState, () => _preAttackStateR.IsReadyToSwitch);
@@ -90,7 +97,7 @@ namespace _GAME.Scripts.Enemies.Ladybug
         
             void At(IState from, IState to, Func<bool> condition) => _stateMachine.AddTransition(from, to, condition);
         }
-
+        
         private void OnDestroy()
         {
             _preAttackStateR.Started -= OnPreAttackStateStarted;
@@ -100,6 +107,8 @@ namespace _GAME.Scripts.Enemies.Ladybug
             _deathFallState.Ended -= OnDeathFallStateEnded;
             _spreadState.Ended -= OnSpreadStateEnded;
             _patrolStateR.EnteredAttackRange -= OnEnteredAttackRange;
+            _stickState.Started -= OnStickStateStarted;
+            _stickState.Ended -= OnStickStateEnded;
             transform.parent = null;
         }
         
@@ -107,14 +116,12 @@ namespace _GAME.Scripts.Enemies.Ladybug
         {
             _collisionRadius = radius;
         }
-
         
-
         public override void Play()
         {
-            // Spawn position
-            _sideDirection = RandomDirection.Generate();
-            SideDirection = _sideDirection;
+            _stateMachine.SetState(_idleState);
+            
+            SetInitialDirections();
             Position2D = GenerateSpawnPosition(_radius);
         
             if (_sideDirection > 0)
@@ -133,6 +140,12 @@ namespace _GAME.Scripts.Enemies.Ladybug
         
             enabled = true;
 
+        }
+
+        private void SetInitialDirections()
+        {
+            _sideDirection = RandomDirection.Generate();
+            SideDirection = _sideDirection;
         }
 
         public override void TriggerAttack()
@@ -162,14 +175,8 @@ namespace _GAME.Scripts.Enemies.Ladybug
         private void Update()
         {
             _prevPosition = transform.position;
-        
-            _stateMachine.Tick();
-            _currentState = (EnemyMovementStateBase)_stateMachine.CurrentState;
-            _stateDebug = _currentState.GetType().Name; // Debug only
-            Position2D = _currentState.Position2D;
-        
-        
-            // Add Depth later
+            UpdateStateMachine();
+
             if (_isDepthEnabled)
             {
                 DepthDirection = _currentState.DepthDirection;
@@ -180,9 +187,15 @@ namespace _GAME.Scripts.Enemies.Ladybug
                 transform.position = Position2D;
             }
         
-            // Add Smooth?
-        
             Debug.DrawLine(_prevPosition, transform.position, Color.cyan, 10f);
+        }
+
+        private void UpdateStateMachine()
+        {
+            _stateMachine.Tick();
+            _currentState = (EnemyMovementStateBase)_stateMachine.CurrentState;
+            _stateDebug = _currentState.GetType().Name; // Debug only
+            Position2D = _currentState.Position2D;
         }
 
         private Vector2 GenerateSpawnPosition(float distance)
@@ -249,6 +262,16 @@ namespace _GAME.Scripts.Enemies.Ladybug
         private void OnEnteredAttackRange()
         {
             EnteredAttackRange?.Invoke();
+        }
+        
+        private void OnStickStateStarted()
+        {
+            StickStarted?.Invoke();
+        }
+
+        private void OnStickStateEnded()
+        {   
+            StickEnded?.Invoke();
         }
     }
 }

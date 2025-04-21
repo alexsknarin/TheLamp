@@ -36,8 +36,8 @@ namespace _GAME.Scripts.Enemies.Fly
         [SerializeField] private int _depthSideDirection = 0;
         [Header("---- States Settings ----")]
         [SerializeField] private float _preAttackDuration = .35f;
-        [SerializeField] private float _fallBounceForce = 4f;
-        [SerializeField] private float _fallGravityForce = .2f;
+        [SerializeField] private float _fallBounceForce = 2.3f;
+        [SerializeField] private float _fallGravityForce = .16f;
     
         private float _collisionRadius;
         private Vector3 _position3D;
@@ -51,6 +51,7 @@ namespace _GAME.Scripts.Enemies.Fly
         private FlyMovementStateFactory _stateFactory;
         // States
         private EnemyMovementStateBase _currentState;
+        private GenericIdleMovementState _idleState;
         private FlyGenericMovementEnterState _enterState;
         private FlyGenericMovementPatrolState _patrolState;
         private FlyGenericMovementPreAttackStateR _preAttackStateR;
@@ -81,7 +82,6 @@ namespace _GAME.Scripts.Enemies.Fly
     
         public override void Initialize()
         {
-            Debug.Log("FFlyMovement Initializing");
             // Create Movement States
             // TODO: get collision radius from configs
             _stateFactory.SetEnemyDependencies(
@@ -96,6 +96,7 @@ namespace _GAME.Scripts.Enemies.Fly
                 _fallBounceForce,
                 _fallGravityForce
             );
+            _idleState = (GenericIdleMovementState)_stateFactory.Create(typeof(GenericIdleMovementState));
             _enterState = (FlyGenericMovementEnterState)_stateFactory.Create(typeof(FlyGenericMovementEnterState));
             _patrolState = (FlyGenericMovementPatrolState)_stateFactory.Create(typeof(FlyGenericMovementPatrolState));
             _preAttackStateR = (FlyGenericMovementPreAttackStateR)_stateFactory.Create(typeof(FlyGenericMovementPreAttackStateR));
@@ -176,8 +177,9 @@ namespace _GAME.Scripts.Enemies.Fly
 
         public override void Play()
         {
-            _sideDirection = RandomDirection.Generate();
-            _depthSideDirection = RandomDirection.Generate();
+            _stateMachine.SetState(_idleState);
+            
+            SetInitialDirections();
             Position2D = GenerateSpawnPosition(-1);
             _position3D = Position2D;
             transform.position = _position3D;
@@ -194,6 +196,12 @@ namespace _GAME.Scripts.Enemies.Fly
         
             _isAttacking = false;
             enabled = true;
+        }
+
+        private void SetInitialDirections()
+        {
+            _sideDirection = RandomDirection.Generate();
+            _depthSideDirection = RandomDirection.Generate();
         }
 
         public override void TriggerAttack()
@@ -214,12 +222,8 @@ namespace _GAME.Scripts.Enemies.Fly
                 _stateDebug = _currentState.GetType().Name; // Debug only
                 _stateMachine.SetState(_currentState);
 
-                // Immediately Apply Position2D and SideDirection to transform to avoid visible collision penetration.
-                Vector3 newPosition = transform.position;
-                newPosition.x = _currentState.Position2D.x;
-                newPosition.y = _currentState.Position2D.y;
-                transform.position = newPosition;
-            
+                ApplyPosition2DToTransform();
+
                 // Refresh Smooth Damp velocity (for the sharp bounce).
                 _velocity = Vector3.zero;
             }
@@ -250,18 +254,9 @@ namespace _GAME.Scripts.Enemies.Fly
 
         private void Update()
         {
-            // Debug only
-            _prevPosition = _position3D;
-            _prevPosSmooth = transform.position;
+            StashPreviousPositions();
+            UpdateStateMachine();
 
-        
-            _stateMachine.Tick();
-            _currentState = (EnemyMovementStateBase)_stateMachine.CurrentState;
-            _stateDebug = _currentState.GetType().Name; // Debug only
-            Position2D = _currentState.Position2D;
-            DepthDirection = _currentState.DepthDirection;
-        
-            // Add Noise
             if (_isNoiseEnabled && 
                 (_currentState.Equals(_patrolState) ||
                  _currentState.Equals(_enterState)))
@@ -273,19 +268,11 @@ namespace _GAME.Scripts.Enemies.Fly
                 _position3D = Position2D;
             }
         
-            // Add Depth
             if (_isDepthEnabled)
             {
-                int depthDirection = _depthSideDirection;
-                // Always Jump forward in depth for Attack
-                if (_currentState.Equals(_preAttackStateR) || _currentState.Equals(_attackState))
-                {
-                    depthDirection = 1;
-                }
-                _position3D += _currentState.DepthDirection * depthDirection;
+                AddDepth();
             }
         
-            // Apply side direction Only for States that require Left/Right mirroring
             if (_currentState.Equals(_enterState)||
                 _currentState.Equals(_patrolState) 
                )
@@ -293,18 +280,48 @@ namespace _GAME.Scripts.Enemies.Fly
                 _position3D.x *= _sideDirection;            
             }
         
-            // Add SmoothDamp
             if (_isSmoothDampEnabled && !_currentState.Equals(_attackState))
             {
-                transform.position = Vector3.SmoothDamp(transform.position, _position3D, ref _velocity, _smoothTimeAllowed);
+                ApplySmoothDamp();
             }
             else
             {
                 transform.position = _position3D;
             }
         
-            Debug.DrawLine(_prevPosition, _prevPosition + (_position3D-_prevPosition).normalized*0.02f, Color.cyan, 5f);
-            Debug.DrawLine(_prevPosSmooth, _prevPosSmooth + (transform.position-_prevPosSmooth).normalized*0.02f, Color.yellow, 5f);
+            DrawDebugLines();
+        }
+
+        private void ApplySmoothDamp()
+        {
+            transform.position 
+                = Vector3.SmoothDamp(transform.position, _position3D, ref _velocity, _smoothTimeAllowed);
+        }
+
+        private void UpdateStateMachine()
+        {
+            _stateMachine.Tick();
+            _currentState = (EnemyMovementStateBase)_stateMachine.CurrentState;
+            _stateDebug = _currentState.GetType().Name; // Debug only
+            Position2D = _currentState.Position2D;
+            DepthDirection = _currentState.DepthDirection;
+        }
+
+        private void StashPreviousPositions()
+        {
+            _prevPosition = _position3D;
+            _prevPosSmooth = transform.position;
+        }
+
+        private void AddDepth()
+        {
+            int depthDirection = _depthSideDirection;
+            // Always Jump forward in depth for Attack
+            if (_currentState.Equals(_preAttackStateR) || _currentState.Equals(_attackState))
+            {
+                depthDirection = 1;
+            }
+            _position3D += _currentState.DepthDirection * depthDirection;
         }
 
         private void AddMotionNoise()
@@ -320,7 +337,6 @@ namespace _GAME.Scripts.Enemies.Fly
             return spawnPosition;
         }
 
-
         private void ApplyTransformToPosition2D()
         {
             Vector2 newPosition2D = Position2D;
@@ -328,10 +344,24 @@ namespace _GAME.Scripts.Enemies.Fly
             Position2D = newPosition2D;
         }
 
+        private void ApplyPosition2DToTransform()
+        {
+            Vector3 newPosition = transform.position;
+            newPosition.x = _currentState.Position2D.x;
+            newPosition.y = _currentState.Position2D.y;
+            transform.position = newPosition;
+        }
+
         private IEnumerator SmoothDampDelay()
         {
             yield return _waitSmoothDamp;
             _smoothTimeAllowed = _smoothTime;
+        }
+
+        private void DrawDebugLines()
+        {
+            Debug.DrawLine(_prevPosition, _prevPosition + (_position3D-_prevPosition).normalized*0.02f, Color.cyan, 5f);
+            Debug.DrawLine(_prevPosSmooth, _prevPosSmooth + (transform.position-_prevPosSmooth).normalized*0.02f, Color.yellow, 5f);
         }
 
         private void OnPatrolStateStarted()

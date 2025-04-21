@@ -34,7 +34,7 @@ namespace _GAME.Scripts.Enemies.Generic.States
         public event Action Started;
         public event Action Ended;
 
-        public override void OnEnter()
+        public override void Enter()
         {
             IsReadyToSwitch = false;
             _acceleratedSpeed = 1f;
@@ -52,7 +52,9 @@ namespace _GAME.Scripts.Enemies.Generic.States
         public override void Tick()
         {
             Position2D += _direction * (_speed * Time.deltaTime * (Mathf.PI/2) * _acceleratedSpeed);
+            
             DepthDirection = (_cameraPosition - (Vector3)Position2D).normalized;
+            
             _acceleratedSpeed *= _acceleration;
             _localTime += Time.deltaTime;
         
@@ -62,7 +64,7 @@ namespace _GAME.Scripts.Enemies.Generic.States
             }
         }
     
-        public override void OnExit()
+        public override void Exit()
         {
             Ended?.Invoke();
         }

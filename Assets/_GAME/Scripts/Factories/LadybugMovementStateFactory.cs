@@ -13,6 +13,7 @@ namespace _GAME.Scripts.Factories
         private IPositionDirectionProvider _positionDirectionProvider;
         private ILampPositionProviderService _lampPositionProviderService;
         private IGameConfigService _gameConfigService;
+        private LadybugLampPositionsHolder _lampPositionsHolder;
         private float _speed;
         private float _radius;
         private float _verticalAmplitude;
@@ -21,12 +22,14 @@ namespace _GAME.Scripts.Factories
         public LadybugMovementStateFactory(
             Transform cameraTransform, 
             ILampPositionProviderService lampPositionProviderService,
-            IGameConfigService gameConfigService
+            IGameConfigService gameConfigService,
+            LadybugLampPositionsHolder lampPositionsHolder
         )
         {
             _cameraTransform = cameraTransform;
             _lampPositionProviderService = lampPositionProviderService;
             _gameConfigService = gameConfigService;
+            _lampPositionsHolder = lampPositionsHolder;
         }
     
         public void SetEnemyDependencies(
@@ -46,12 +49,17 @@ namespace _GAME.Scripts.Factories
 
         public EnemyMovementStateBase Create(Type stateType)
         {
+            if (stateType == typeof(GenericIdleMovementState))
+            {
+                return new GenericIdleMovementState();
+            }
             if (stateType == typeof(LadybugMovementPatrolStateR))
             {
                 return new LadybugMovementPatrolStateR(
                     _cameraTransform.position,
                     _positionDirectionProvider,
                     _lampPositionProviderService,
+                    _lampPositionsHolder,
                     _speed,
                     _radius,
                     _verticalAmplitude
@@ -63,6 +71,7 @@ namespace _GAME.Scripts.Factories
                     _cameraTransform.position,
                     _positionDirectionProvider,
                     _lampPositionProviderService,
+                    _lampPositionsHolder,
                     _speed,
                     _radius,
                     _verticalAmplitude
@@ -110,6 +119,7 @@ namespace _GAME.Scripts.Factories
                     _cameraTransform.position,
                     _positionDirectionProvider,
                     _lampPositionProviderService,
+                    _lampPositionsHolder,
                     _gameConfigService.GameConfig.LadybugDeathDepth
                 );
             }

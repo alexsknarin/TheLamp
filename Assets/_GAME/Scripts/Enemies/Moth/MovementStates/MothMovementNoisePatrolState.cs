@@ -37,7 +37,7 @@ namespace _GAME.Scripts.Enemies.Moth.MovementStates
             _verticalAmplitude = verticalAmplitude;
         }    
     
-        public override void OnEnter()
+        public override void Enter()
         {
             IsReadyToSwitch = false;
             _phase = 0;
@@ -46,7 +46,8 @@ namespace _GAME.Scripts.Enemies.Moth.MovementStates
             Vector3 horizontalVector = Vector2.right;
             _localTime = 0;
         
-            _patrolStartOffsetAngle = Mathf.Acos(Vector3.Dot(horizontalVector.normalized, Position2D.normalized));
+            _patrolStartOffsetAngle 
+                = Mathf.Acos(Vector3.Dot(horizontalVector.normalized, Position2D.normalized));
             _patrolStartOffsetAngle *= Mathf.Sign(Position2D.y);
         }
 
@@ -56,10 +57,17 @@ namespace _GAME.Scripts.Enemies.Moth.MovementStates
             _phase += Time.deltaTime * _speed;
 
             // Circle motion
-            Vector2 circlePosition = EnemyMovementPatterns.CircleMotion(_patrolStartOffsetAngle, _radius, _radius, _verticalAmplitude, _phase);
+            Vector2 circlePosition = EnemyMovementPatterns.CircleMotion(
+                _patrolStartOffsetAngle,
+                _radius,
+                _radius,
+                _verticalAmplitude,
+                _phase
+                );
             if (trajectoryAdaptPhase < 1)
             {
-                circlePosition = Vector2.Lerp(Position2D, circlePosition, Mathf.SmoothStep(0, 1, trajectoryAdaptPhase));
+                circlePosition 
+                    = Vector2.Lerp(Position2D, circlePosition, Mathf.SmoothStep(0, 1, trajectoryAdaptPhase));
             }
         
             // Add noise

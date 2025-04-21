@@ -24,8 +24,8 @@ namespace _GAME.Scripts.Enemies.Mothling
 
         public override void Initialize()
         {
-            _movement.Initialize();
             _movement.SetCollisionRadius(_collisionRadius);
+            _movement.Initialize();
             _movement.ReadyToAttackStateStarted += OnReadyToAttackStateStarted;
             _movement.ReadyToAttackStateEnded += OnReadyToAttackStateEnded;
             _movement.DeathStateEnded += OnDeathStateEnded;
@@ -65,7 +65,6 @@ namespace _GAME.Scripts.Enemies.Mothling
             }
             else
             {
-                Debug.Log($"Damage Received: {damageAmount}.");
                 _movement.TriggerFall();
                 Damaged?.Invoke();
             }

@@ -14,11 +14,13 @@ namespace _GAME.Scripts.ServicesGlobal
         [SerializeField] private float _attackExitZoneRadius = 0.55f;
         [SerializeField] private int _collidableCount = 0;
         [SerializeField] private string _collidableItems;
+        [SerializeField] private bool _isGizmosEnabled = true;
         private List<ICollidableWithLamp> _collidables = new();
         private List<ICollidableWithLamp> _collidablesToRemove = new();
         private Vector2 _position;
         private float _collisionThreshold;
         private float _combinedCollisionRadius;
+        private bool _isLampDestroyed;
         
         public event Action<Vector3, bool, string> EnemyAttackEnded;
         
@@ -42,6 +44,7 @@ namespace _GAME.Scripts.ServicesGlobal
         {
             _combinedCollisionRadius = _collisionRadius + _collisionThreshold;
             enabled = false;
+            _isLampDestroyed = false;
         }
     
         public void Reset()
@@ -50,6 +53,12 @@ namespace _GAME.Scripts.ServicesGlobal
             _collidablesToRemove.Clear();
             _collidableCount = 0;
             enabled = false;
+            _isLampDestroyed = false;
+        }
+        
+        public void SetLampDestroyed()
+        {
+            _isLampDestroyed = true;
         }
     
         public void SetAttackZoneRadius(float attackZoneRadius)
@@ -111,6 +120,9 @@ namespace _GAME.Scripts.ServicesGlobal
 
         private void CheckCollidables()
         {
+            if (_isLampDestroyed)
+                return;
+            
             foreach (var collidable in _collidables)
             {
                 // Get Current distance
@@ -125,8 +137,6 @@ namespace _GAME.Scripts.ServicesGlobal
                 if (collidable.CollisionState == CollidableState.Outside && distance < attackZoneCombinedRadius)
                 {
                     collidable.HandleEnterAttackZone();
-                    Debug.Log(((FEnemy)collidable).gameObject.name + " --- Entered Attack Zone.");
-                    Debug.Log("Position: " + collidable.Position);
                     Debug.DrawLine(Vector3.zero, collidable.Position, Color.yellow, 1f);
                 }
             
@@ -135,8 +145,6 @@ namespace _GAME.Scripts.ServicesGlobal
                 {
                     _collidablesToRemove.Add(collidable);
                     collidable.HandleExitAttackZone();
-                    Debug.Log(((FEnemy)collidable).gameObject.name + " --- Exited Attack Attack Zone Before Collision.");
-                    Debug.Log("Position: " + collidable.Position);
                     Debug.DrawLine(Vector3.zero, collidable.Position, Color.yellow, 1f);
                 }
             
@@ -144,20 +152,15 @@ namespace _GAME.Scripts.ServicesGlobal
                 if (collidable.CollisionState == CollidableState.InAttackZone &&  distance < _combinedCollisionRadius + collidable.Radius)
                 {
                     collidable.HandleCollision();
-                    Debug.Log(((FEnemy)collidable).gameObject.name + " --- Collided.");
-                    Debug.Log("Position: " + collidable.Position);
                     Debug.DrawLine(Vector3.zero, collidable.Position, Color.white, 1f);
                 }
-            
+           
                 // Exiting Attack Zone After Collision
                 if (collidable.CollisionState == CollidableState.AfterCollision && distance > _attackExitZoneRadius + collidable.Radius)
                 {
                     _collidablesToRemove.Add(collidable);
                     collidable.HandleExitAttackZone();
                     EnemyAttackEnded?.Invoke(collidable.ProvideImpactPoint(), collidable.IsReceivedLampAttackDamage, collidable.GetType().ToString());
-                    Debug.Log($"Enemy {collidable.GetType().ToString()} has just attacked.");
-                    Debug.Log(((FEnemy)collidable).gameObject.name + " --- Exited Attack Zone after collision.");
-                    Debug.Log("Position: " + collidable.Position);
                     Debug.DrawLine(Vector3.zero, collidable.Position, Color.green, 1f);
                 }
             }
@@ -165,12 +168,15 @@ namespace _GAME.Scripts.ServicesGlobal
 
         private void OnDrawGizmos()
         {
-            Gizmos.color = Color.red;
-            Gizmos.DrawWireSphere(transform.position, _collisionRadius);
-            Gizmos.color = Color.yellow;
-            Gizmos.DrawWireSphere(transform.position, _attackZoneRadius);
-            Gizmos.color = new Color(1f, 0.5f, 0f);
-            Gizmos.DrawWireSphere(transform.position, _attackExitZoneRadius);
+            if (_isGizmosEnabled)
+            {
+                Gizmos.color = Color.red;
+                Gizmos.DrawWireSphere(transform.position, _collisionRadius);
+                Gizmos.color = Color.yellow;
+                Gizmos.DrawWireSphere(transform.position, _attackZoneRadius);
+                Gizmos.color = new Color(1f, 0.5f, 0f);
+                Gizmos.DrawWireSphere(transform.position, _attackExitZoneRadius);    
+            }
         }
     }
 }

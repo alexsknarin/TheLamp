@@ -19,8 +19,8 @@ namespace _GAME.Scripts.Enemies.Moth.MovementStates
         private float _collisionRadius;
         
         // State specific attributes
-        private readonly float _bounceForceMagnitude = 4f;
-        private readonly float _gravityForceMagnitude = .2f;
+        private readonly float _bounceForceMagnitude = 2.6f;
+        private readonly float _gravityForceMagnitude = .17f;
         private readonly float _dragAmount = 0.94f;
         private readonly float _noiseFrequency = 7f;
         private readonly float _noiseAmplitude = 0.015f;
@@ -58,7 +58,7 @@ namespace _GAME.Scripts.Enemies.Moth.MovementStates
 
         public event Action Ended;
     
-        public override void OnEnter()
+        public override void Enter()
         {
             IsReadyToSwitch = false;
             Position2D = _positionDirectionProvider.Position2D;
@@ -70,7 +70,12 @@ namespace _GAME.Scripts.Enemies.Moth.MovementStates
         
             _bounceForce = position2DNormalized * _bounceForceMagnitude;
         
-            Debug.DrawRay(_lampPositionProviderService.GetLampPosition(), position2DNormalized, Color.red, 5f);
+            Debug.DrawRay(
+                _lampPositionProviderService.GetLampPosition(),
+                position2DNormalized, 
+                Color.red,
+                5f
+                );
         
             _gravityForce = Vector3.zero;
             _localTime = 0;
@@ -93,12 +98,8 @@ namespace _GAME.Scripts.Enemies.Moth.MovementStates
             if (Position2D.y < _yPositionToSwitch)
             {
                 IsReadyToSwitch = true;
+                Ended?.Invoke();
             }
-        }
-    
-        public override void OnExit()
-        {
-            Ended?.Invoke();
         }
     }
 }

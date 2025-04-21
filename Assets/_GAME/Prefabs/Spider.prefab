@@ -309,11 +309,8 @@ MonoBehaviour:
   _speed: 1
   _stateDebug: 
   _sideDirection: 1
-  _depthSideDirection: 0
   _height: 5
   _xCenter: 1.12
-  _fallBounceForce: 4
-  _fallGravityForce: 0.2
 --- !u!114 &9194570239040107826
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -393,6 +390,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _meshRenderer: {fileID: 6263288309960182674}
+  _remapMax: 0.7
 --- !u!114 &938775239884403839
 MonoBehaviour:
   m_ObjectHideFlags: 0

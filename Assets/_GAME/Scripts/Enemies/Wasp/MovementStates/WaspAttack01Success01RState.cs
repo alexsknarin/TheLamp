@@ -9,13 +9,13 @@ namespace _GAME.Scripts.Enemies.Wasp.MovementStates
             base(animator, clipHash, baseTransform) { }
     
         public event Action Ended;
-        public override void OnEnter()
+        public override void Enter()
         {
             _baseTransform.localScale = _baseScaleR;
             _animator.Play(_clipHash, -1, 0);
         }
         
-        public override void OnExit()
+        public override void Exit()
         {
             Ended?.Invoke();
             

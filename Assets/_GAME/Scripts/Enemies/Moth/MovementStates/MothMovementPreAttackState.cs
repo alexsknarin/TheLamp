@@ -31,7 +31,7 @@ namespace _GAME.Scripts.Enemies.Moth.MovementStates
         public event Action Started;
         public event Action Ended;
     
-        public override void OnEnter()
+        public override void Enter()
         {
             IsReadyToSwitch = false;
             _acceleratedSpeed = 1f;
@@ -56,7 +56,7 @@ namespace _GAME.Scripts.Enemies.Moth.MovementStates
             }
         }
     
-        public override void OnExit()
+        public override void Exit()
         {
             Ended?.Invoke();
         }

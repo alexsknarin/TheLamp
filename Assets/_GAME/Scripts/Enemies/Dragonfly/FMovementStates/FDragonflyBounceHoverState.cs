@@ -4,7 +4,7 @@ using UnityEngine;
 namespace _GAME.Scripts.Enemies.Dragonfly.FMovementStates
 {
     [CreateAssetMenu(fileName = "FDragonflyBounceHoverState", menuName = "FDragonflyMovementStates/FDragonflyBounceHoverState")]
-    public class FDragonflyBounceHoverState : ScriptableObject, IState
+    public class FDragonflyBounceHoverState : ScriptableObject, IState, ILeft
     {
         [SerializeField] private float _speed = 4f;
         private Vector3 _attackDirection;
@@ -18,7 +18,7 @@ namespace _GAME.Scripts.Enemies.Dragonfly.FMovementStates
             _baseTransform = baseTransform;
         }
     
-        public void OnEnter()
+        public void Enter()
         {
             _visibleBodyTransform.SetParent(_baseTransform);
             _attackDirection = -_visibleBodyTransform.position.normalized;
@@ -29,6 +29,6 @@ namespace _GAME.Scripts.Enemies.Dragonfly.FMovementStates
             _visibleBodyTransform.position += -_attackDirection * (_speed * Time.deltaTime);
         }
 
-        public void OnExit() { }
+        public void Exit() { }
     }
 }

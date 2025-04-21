@@ -159,9 +159,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _currentStateType: 
-  _collisionRadius: 0.24
   _animator: {fileID: 8060389453633497060}
   _baseTransform: {fileID: 3856058477050779949}
+  _maxLampConstrainDistance: 2.4
 --- !u!114 &2787323014210774032
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -329,7 +329,7 @@ VisualEffect:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4733647155434441909}
   m_Enabled: 1
-  m_Asset: {fileID: 8926484042661614526, guid: 5b2f72b5e6f450f41b290d6606018a1b, type: 3}
+  m_Asset: {fileID: 8926484042661614526, guid: 6652739953d6fdd47a119b4a4d11ce4a, type: 3}
   m_InitialEventName: 
   m_InitialEventNameOverriden: 1
   m_StartSeed: 0
@@ -610,7 +610,7 @@ MonoBehaviour:
   _currentHealth: 0
   _collisionRadius: 0.24
   _movement: {fileID: 3557808951252730490}
-  _animationEventsListener: {fileID: 2787323014210774032}
+  _animationClipEventListener: {fileID: 2787323014210774032}
 --- !u!114 &2849195405238438855
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -624,11 +624,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _wasp: {fileID: 8922066689776222209}
-  _animationEventsListener: {fileID: 2787323014210774032}
+  _animationClipEventListener: {fileID: 2787323014210774032}
   _waspBodyMeshRenderer: {fileID: 8672826720965004605}
   _trailResetHandler: {fileID: 1639228510314528884}
   _damageParticles: {fileID: 5962640272398656442}
   _damageEmitParticles: {fileID: 8754903820864497051}
+  _bodyTransform: {fileID: 1763095384373111790}
   _deathDuration: 1.7
 --- !u!114 &1639228510314528884
 MonoBehaviour:

@@ -925,6 +925,13 @@ AnimationClip:
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
+  - time: 2.4833333
+    functionName: HandleScreenLeft
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
   - time: 2.55
     functionName: ResetTrail
     data: 
@@ -933,7 +940,7 @@ AnimationClip:
     intParameter: 0
     messageOptions: 0
   - time: 2.6333334
-    functionName: ClipEnded
+    functionName: AnimationClipEnded
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0

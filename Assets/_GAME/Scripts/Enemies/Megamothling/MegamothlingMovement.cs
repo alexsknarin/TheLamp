@@ -52,7 +52,8 @@ namespace _GAME.Scripts.Enemies.Megamothling
         private MegamothlingMovementStateFactory _stateFactory;
         // States
         private EnemyMovementStateBase _currentState;
-        private FMegamothlingMovementEnterState _enterState;
+        private GenericIdleMovementState _idleState;
+        private MegamothlingMovementEnterState _enterState;
         private FlyGenericMovementPatrolState  _patrolState;
         private FlyGenericMovementPreAttackStateL _preAttackStateL;
         private FlyGenericMovementPreAttackStateR _preAttackStateR;
@@ -75,8 +76,13 @@ namespace _GAME.Scripts.Enemies.Megamothling
         public event Action DeathStateEnded;
     
         public Vector2 Position2D { get; private set; } 
-        public Vector3 DepthDirection { get; private set; } 
-    
+        public Vector3 DepthDirection { get; private set; }
+
+        public void SetCollisionRadius(float radius)
+        {
+            _collisionRadius = radius;
+        }
+
         public override void Initialize()
         {
             // Create Movement States
@@ -90,7 +96,8 @@ namespace _GAME.Scripts.Enemies.Megamothling
                 _fallBounceForce,
                 _fallGravityForce
             );
-            _enterState = (FMegamothlingMovementEnterState)_stateFactory.Create(typeof(FMegamothlingMovementEnterState));
+            _idleState = (GenericIdleMovementState)_stateFactory.Create(typeof(GenericIdleMovementState));
+            _enterState = (MegamothlingMovementEnterState)_stateFactory.Create(typeof(MegamothlingMovementEnterState));
             _patrolState = (FlyGenericMovementPatrolState)_stateFactory.Create(typeof(FlyGenericMovementPatrolState));
             _preAttackStateL = (FlyGenericMovementPreAttackStateL)_stateFactory.Create(typeof(FlyGenericMovementPreAttackStateL));
             _preAttackStateR = (FlyGenericMovementPreAttackStateR)_stateFactory.Create(typeof(FlyGenericMovementPreAttackStateR));
@@ -148,7 +155,7 @@ namespace _GAME.Scripts.Enemies.Megamothling
             };
             void At(IState from, IState to, Func<bool> condition) => _stateMachine.AddTransition(from, to, condition);
         }
-    
+
         private void OnDestroy()
         {
             _patrolState.Started -= OnPatrolStateStarted;
@@ -159,18 +166,13 @@ namespace _GAME.Scripts.Enemies.Megamothling
             _preAttackStateR.Ended -= OnPreAttackStateEnded;
             _deathState.Ended -= OnDeathStateEnded;
         }
-        
-        public void SetCollisionRadius(float radius)
-        {
-            _collisionRadius = radius;
-        }
 
         public override void Play()
         {
-            _sideDirection = RandomDirection.Generate();
-            _depthSideDirection = RandomDirection.Generate();
+            _stateMachine.SetState(_idleState);
+            
+            SetInitialDirections();
             Position2D = GenerateSpawnPosition(-1);
-        
             _position3D = Position2D;
             transform.position = _position3D;
         
@@ -188,6 +190,12 @@ namespace _GAME.Scripts.Enemies.Megamothling
             enabled = true;
         }
 
+        private void SetInitialDirections()
+        {
+            _sideDirection = RandomDirection.Generate();
+            _depthSideDirection = RandomDirection.Generate();
+        }
+
         public override void TriggerAttack()
         {
             if (_currentState.Equals(_patrolState))
@@ -203,19 +211,22 @@ namespace _GAME.Scripts.Enemies.Megamothling
             {
                 ApplyTransformToPosition2D();
                 _currentState = _fallState;
-                _stateDebug = _currentState.GetType().Name; // Debug only
+                _stateDebug = _currentState.GetType().Name;
                 _stateMachine.SetState(_currentState);
-
-                // Immediately Apply Position2D and SideDirection to transform to avoid visible collision penetration.
                 
-                Vector3 newPosition = transform.position;
-                newPosition.x = _currentState.Position2D.x;
-                newPosition.y = _currentState.Position2D.y;
-                transform.position = newPosition;
-            
+                ApplyPosition2DToTransform();
+
                 // Refresh Smooth Damp velocity (for the sharp bounce).
                 _velocity = Vector3.zero;
             }
+        }
+
+        private void ApplyPosition2DToTransform()
+        {
+            Vector3 newPosition = transform.position;
+            newPosition.x = _currentState.Position2D.x;
+            newPosition.y = _currentState.Position2D.y;
+            transform.position = newPosition;
         }
 
         public override void TriggerDeath()
@@ -229,17 +240,9 @@ namespace _GAME.Scripts.Enemies.Megamothling
     
         private void Update()
         {
-            // Debug only
-            _prevPosition = _position3D;
-            _prevPosSmooth = transform.position;
-        
-            _stateMachine.Tick();
-            _currentState = (EnemyMovementStateBase)_stateMachine.CurrentState;
-            _stateDebug = _currentState.GetType().Name; // Debug only
-            Position2D = _currentState.Position2D;
-            DepthDirection = _currentState.DepthDirection;
-        
-            // Add Noise
+            StashPreviousPositions();
+            UpdateStateMachine();
+
             if (_isNoiseEnabled)
             {
                 AddMotionNoise();
@@ -249,18 +252,9 @@ namespace _GAME.Scripts.Enemies.Megamothling
                 _position3D = Position2D;
             }
         
-            // Add Depth
             if (_isDepthEnabled)
             {
-                int depthDirection = _depthSideDirection;
-                // Always Jump forward in depth for Attack
-                if (_currentState.Equals(_preAttackStateL) 
-                    || _currentState.Equals(_preAttackStateR) 
-                    || _currentState.Equals(_attackState))
-                {
-                    depthDirection = 1;
-                }
-                _position3D += _currentState.DepthDirection * depthDirection;
+                AddDepth();
             }
         
             // Apply side direction Only for States that require Left/Right mirroring
@@ -270,20 +264,25 @@ namespace _GAME.Scripts.Enemies.Megamothling
                 _position3D.x *= _sideDirection;            
             }
         
-            // Add SmoothDamp
-            if (_isSmoothDampEnabled)
-            {
-                transform.position = Vector3.SmoothDamp(transform.position, _position3D, ref _velocity, _smoothTimeAllowed);
-            }
-            else
-            {
-                transform.position = _position3D;
-            }
-        
-            Debug.DrawLine(_prevPosition, _prevPosition + (_position3D-_prevPosition).normalized*0.02f, Color.cyan, 5f);
-            Debug.DrawLine(_prevPosSmooth, _prevPosSmooth + (transform.position-_prevPosSmooth).normalized*0.02f, Color.yellow, 5f);
+            ApplySmoothDampIfEnabled();
+            DrawMotionDebugLines();
         }
-    
+
+        private void StashPreviousPositions()
+        {
+            _prevPosition = _position3D;
+            _prevPosSmooth = transform.position;
+        }
+
+        private void UpdateStateMachine()
+        {
+            _stateMachine.Tick();
+            _currentState = (EnemyMovementStateBase)_stateMachine.CurrentState;
+            _stateDebug = _currentState.GetType().Name; // Debug only
+            Position2D = _currentState.Position2D;
+            DepthDirection = _currentState.DepthDirection;
+        }
+
         private void AddMotionNoise()
         {
             Vector3 trajectoryNoise1 = TrajectoryNoise.Generate(_noise1Frequency);
@@ -307,8 +306,51 @@ namespace _GAME.Scripts.Enemies.Megamothling
             }
             _position3D = (Vector3)Position2D + trajectoryNoise1 * _noise1Amplitude + trajectoryNoise2 * _noise2Amplitude;
         }
-    
-    
+
+        private void AddDepth()
+        {
+            int depthDirection = _depthSideDirection;
+            // Always Jump forward in depth for Attack
+            if (_currentState.Equals(_preAttackStateL) 
+                || _currentState.Equals(_preAttackStateR) 
+                || _currentState.Equals(_attackState))
+            {
+                depthDirection = 1;
+            }
+            _position3D += _currentState.DepthDirection * depthDirection;
+        }
+
+        private void ApplySmoothDampIfEnabled()
+        {
+            if (_isSmoothDampEnabled)
+            {
+                transform.position = Vector3.SmoothDamp(
+                    transform.position,
+                    _position3D,
+                    ref _velocity,
+                    _smoothTimeAllowed);
+            }
+            else
+            {
+                transform.position = _position3D;
+            }
+        }
+
+        private void DrawMotionDebugLines()
+        {
+            Debug.DrawLine(
+                _prevPosition, 
+                _prevPosition + (_position3D-_prevPosition).normalized*0.02f, 
+                Color.cyan,
+                5f);
+            Debug.DrawLine(
+                _prevPosSmooth,
+                _prevPosSmooth + (transform.position-_prevPosSmooth).normalized*0.02f, 
+                Color.yellow,
+                5f);
+        }
+
+
         private Vector2 GenerateSpawnPosition(int direction)
         {
             Vector2 spawnPosition = (Random.insideUnitCircle * _spawnAreaSize) + _spawnAreaCenter;

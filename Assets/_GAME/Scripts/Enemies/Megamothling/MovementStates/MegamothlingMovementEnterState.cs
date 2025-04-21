@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace _GAME.Scripts.Enemies.Megamothling.MovementStates
 {
-    public class FMegamothlingMovementEnterState : EnemyMovementStateBase
+    public class MegamothlingMovementEnterState : EnemyMovementStateBase
     {
         // Dependencies
         private readonly Vector3 _cameraPosition;
@@ -21,7 +21,7 @@ namespace _GAME.Scripts.Enemies.Megamothling.MovementStates
         private float _startDepth;
         private float _depthAdjustLocalTime;
     
-        public FMegamothlingMovementEnterState(
+        public MegamothlingMovementEnterState(
             Vector3 cameraPosition,
             IPositionDirectionProvider positionDirectionProvider,
             float speed,
@@ -37,7 +37,7 @@ namespace _GAME.Scripts.Enemies.Megamothling.MovementStates
         }
     
     
-        public override void OnEnter()
+        public override void Enter()
         {
             IsReadyToSwitch = false;
         

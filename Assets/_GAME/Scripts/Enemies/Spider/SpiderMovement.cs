@@ -15,11 +15,8 @@ namespace _GAME.Scripts.Enemies.Spider
         // Debug
         [SerializeField] private string _stateDebug;
         [SerializeField] private int _sideDirection = 1;
-        [SerializeField] private int _depthSideDirection = 0;
         [SerializeField] private float _height = 5f;
         [SerializeField] private float _xCenter = 1.12f;
-        [Header("---- States Settings ----")]
-        [SerializeField] private float _fallBounceForce = 4f;
     
         private ILampPositionProviderService _lampPositionProviderService;
         private Vector3 _position3D;
@@ -27,12 +24,14 @@ namespace _GAME.Scripts.Enemies.Spider
         private float _lampCollisionRadius;
         private float _collisionThreshold;
         private float _collisionRadius;
-
-        // State Machine
+        
         private readonly StateMachine _stateMachine = new();
         private SpiderMovementStateFactory _stateFactory;
         private EnemyMovementStateBase _currentState;
-    
+        private ISpiderSideDirectionProvider _sideDirectionProvider;
+        
+        // State Machine
+        private GenericIdleMovementState _idleState;
         private SpiderMovementEnterState _enterState;
         private SpiderMovementPatrolState _patrolState;
         private SpiderMovementPreAttackState _preAttackState;
@@ -44,12 +43,14 @@ namespace _GAME.Scripts.Enemies.Spider
         public void Construct(
             SpiderMovementStateFactory stateFactory, 
             ILampPositionProviderService lampPositionProviderService,
+            ISpiderSideDirectionProvider sideDirectionProvider,
             float lampCollisionRadius,
             float collisionThreshold
             )
         {
             _stateFactory = stateFactory;
             _lampPositionProviderService = lampPositionProviderService;
+            _sideDirectionProvider = sideDirectionProvider;
             _lampCollisionRadius = lampCollisionRadius;
             _collisionThreshold = collisionThreshold;
         }
@@ -70,6 +71,7 @@ namespace _GAME.Scripts.Enemies.Spider
         {
             // Create Movement States
             _stateFactory.SetEnemyDependencies(this, _speed, _xCenter, _height, _collisionRadius);
+            _idleState = (GenericIdleMovementState)_stateFactory.Create(typeof(GenericIdleMovementState));
             _enterState = (SpiderMovementEnterState)_stateFactory.Create(typeof(SpiderMovementEnterState));
             _patrolState = (SpiderMovementPatrolState)_stateFactory.Create(typeof(SpiderMovementPatrolState));
             _preAttackState = (SpiderMovementPreAttackState)_stateFactory.Create(typeof(SpiderMovementPreAttackState));
@@ -124,7 +126,9 @@ namespace _GAME.Scripts.Enemies.Spider
 
         public override void Play()
         {
-            _sideDirection = RandomDirection.Generate();;
+            _stateMachine.SetState(_idleState);
+            
+            _sideDirection = _sideDirectionProvider.RequestPoint(this);
         
             SwitchToStateAndApply(_enterState);
         
@@ -219,6 +223,7 @@ namespace _GAME.Scripts.Enemies.Spider
 
         private void OnDeathStateEnded()
         {
+            _sideDirectionProvider.ReleasePoint(this);
             DeathStateEnded?.Invoke();
         }
 

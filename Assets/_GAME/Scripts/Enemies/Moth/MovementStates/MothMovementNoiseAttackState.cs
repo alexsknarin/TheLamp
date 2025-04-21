@@ -13,7 +13,7 @@ namespace _GAME.Scripts.Enemies.Moth.MovementStates
         private readonly float _speed;
     
         // State specific attributes
-        private readonly float _acceleration = 0.02f;
+        private readonly float _acceleration = 0.011f;
         private readonly float _depthDecrement = 0.2f;
         private readonly float _noiseFrequency = 13f;
         private readonly float _noiseAmplitude = 0.08f;
@@ -33,7 +33,7 @@ namespace _GAME.Scripts.Enemies.Moth.MovementStates
             _speed = speed;
         }
     
-        public override void OnEnter()
+        public override void Enter()
         {
             Position2D = _positionDirectionProvider.Position2D;
             _maxDistance = Position2D.magnitude;
@@ -50,7 +50,8 @@ namespace _GAME.Scripts.Enemies.Moth.MovementStates
 
             // Add noise
             Vector2 trajectoryNoise = TrajectoryNoise.Generate(_noiseFrequency);
-            float noiseAttenuation = Mathf.Clamp((lampVector.magnitude - 0.65f) / (_maxDistance - 0.65f) * 1.5f - 0.5f , 0, 1); 
+            float noiseAttenuation 
+                = Mathf.Clamp((lampVector.magnitude - 0.65f) / (_maxDistance - 0.65f) * 1.5f - 0.5f , 0, 1); 
             Position2D = newPosition + trajectoryNoise * (_noiseAmplitude * noiseAttenuation);
             Vector3 cameraDirection = (_cameraPosition - (Vector3)Position2D).normalized;
             DepthDirection = cameraDirection * (0.2f * _depthDecrement);

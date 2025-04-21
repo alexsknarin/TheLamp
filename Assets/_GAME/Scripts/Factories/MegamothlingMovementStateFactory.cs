@@ -52,9 +52,13 @@ namespace _GAME.Scripts.Factories
 
         public EnemyMovementStateBase Create(Type stateType)
         {
-            if (stateType == typeof(FMegamothlingMovementEnterState))
+            if (stateType == typeof(GenericIdleMovementState))
             {
-                return new FMegamothlingMovementEnterState(
+                return new GenericIdleMovementState();
+            }
+            if (stateType == typeof(MegamothlingMovementEnterState))
+            {
+                return new MegamothlingMovementEnterState(
                     _cameraTransform.position,
                     _positionDirectionProvider,
                     _speed,

@@ -5,14 +5,16 @@ using UnityEngine;
 
 namespace _GAME.Scripts.Enemies.Ladybug
 {
-    public class Ladybug : FEnemy, IStickableWithLamp, ISpreadable
+    public class Ladybug : Enemy, IStickableWithLamp, ISpreadable
     {
         [SerializeField] private int _maxHealth = 7;
         [SerializeField] private int _currentHealth;
         [SerializeField] private float _collisionRadius = 0.125f;
         [Header("-- Movement --")]
         [SerializeField] private LadybugMovement _movement;
-    
+        [SerializeField] StickableState _stickableState;
+        [SerializeField] private bool _isInStickyState;
+        
         public event Action Started;
         public event Action Damaged;
         public event Action<int, int> HealthChanged; 
@@ -22,24 +24,40 @@ namespace _GAME.Scripts.Enemies.Ladybug
         public override bool IsReadyToAttack => CheckIsReadyToAttack();
         public bool IsSticked { get; private set; }
         public AttackBlockerState AttackBlockState { get; private set; }
-        public Vector2 Position => _movement.Position2D;
+        public Vector2 Position => GetCurrentPosition();
         public float Radius => _collisionRadius;
         public StickableState StickState { get; private set; }
 
         public override void Initialize()
         {
-            _movement.Initialize();
             _movement.SetCollisionRadius(_collisionRadius);
+            _movement.Initialize();
             _movement.EnteredAttackRange += OnEnteredAttackRange;
+            _movement.PreAttackStarted += OnPreAttackStarted;
             _movement.DeathStateEnded += OnDeathStateEnded;
             _movement.SpreadStateEnded += OnSpreadStateEnded;
+            _movement.StickStarted += OnStickStarted;
+            _movement.StickEnded += OnStickEnded;
         }
-    
+
         private void OnDestroy()
         {
             _movement.EnteredAttackRange -= OnEnteredAttackRange;
+            _movement.PreAttackStarted += OnPreAttackStarted;
             _movement.DeathStateEnded -= OnDeathStateEnded;
             _movement.SpreadStateEnded -= OnSpreadStateEnded;
+            _movement.StickStarted -= OnStickStarted;
+            _movement.StickEnded -= OnStickEnded;
+        }
+
+        private void OnStickStarted()
+        {
+            _isInStickyState = true;
+        }
+
+        private void OnStickEnded()
+        {
+            _isInStickyState = false;
         }
 
         public override void Play()
@@ -48,6 +66,7 @@ namespace _GAME.Scripts.Enemies.Ladybug
             IsDead = false;
             IsReadyForDamage = false;
             IsReceivedLampAttackDamage = false;
+            _isInStickyState = false;
             _currentHealth = _maxHealth;
             _isInAttackReadyMovementState = false;
             StickState = StickableState.Outside;
@@ -73,7 +92,6 @@ namespace _GAME.Scripts.Enemies.Ladybug
             }
             else
             {
-                Debug.Log($"Damage Received: {damageAmount}.");
                 Damaged?.Invoke();
                 HealthChanged?.Invoke(_currentHealth, _maxHealth);
             }
@@ -97,12 +115,11 @@ namespace _GAME.Scripts.Enemies.Ladybug
 
         public void Spread()
         {
-            _movement.TriggerSpread();
+            if (!_isInStickyState) _movement.TriggerSpread();
         }
 
         public override void DoDeath()
         {
-            Debug.Log("Ladybug is dead.");
             _movement.TriggerDeath();
         }
 
@@ -114,6 +131,7 @@ namespace _GAME.Scripts.Enemies.Ladybug
 
 
         // Handle sticky stuff
+
         public void HandleEnterAttackZone()
         {
             IsSticked = false;
@@ -146,6 +164,11 @@ namespace _GAME.Scripts.Enemies.Ladybug
             AttackBlockState = AttackBlockerState.Inside;
         }
 
+        public void HandleExitAttackBlockerZone()
+        {
+            AttackBlockState = AttackBlockerState.Outisde;
+        }
+
         public void HandleLampDestroyed()
         {
             if (IsSticked)
@@ -162,13 +185,17 @@ namespace _GAME.Scripts.Enemies.Ladybug
         {
             return transform.position;
         }
-    
+
         private void OnEnteredAttackRange()
         {
-            Debug.Log(gameObject.name + " is ready to stick.");
             StickReadyStarted?.Invoke(this);
         }
-        
+
+        private void OnPreAttackStarted()
+        {
+            StickReadyStarted?.Invoke(this);
+        }
+
         private void OnSpreadStateEnded()
         {
             if (IsGameOver)
@@ -179,6 +206,15 @@ namespace _GAME.Scripts.Enemies.Ladybug
             {
                 _movement.Play();
             }
+        }
+        
+        private Vector2 GetCurrentPosition()
+        {
+            if (_isInStickyState)
+            {
+                return transform.position;
+            }
+            return _movement.Position2D;
         }
     }
 }

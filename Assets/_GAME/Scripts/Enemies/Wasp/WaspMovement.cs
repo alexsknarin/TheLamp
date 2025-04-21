@@ -4,6 +4,7 @@ using _GAME.Scripts.Enemies.Wasp.MovementStates;
 using _GAME.Scripts.Lib;
 using _GAME.Scripts.Lib.Enums;
 using _GAME.Scripts.Lib.Interfaces;
+using TMPro;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -11,6 +12,7 @@ namespace _GAME.Scripts.Enemies.Wasp
 {
     public class WaspMovement : MonoBehaviour, IInitializable
     {
+        private const float LampCollisionRadius = 0.49f;
         private readonly List<Type> TWO_OPTION_OUTCOME = new()
         {
             typeof(WaspEnterLState),
@@ -30,7 +32,6 @@ namespace _GAME.Scripts.Enemies.Wasp
             typeof(WaspAttack04Fail01LState),
             typeof(WaspAttack04Fail01RState)
         };
-
         private readonly List<Type> THREE_OPTION_OUTCOME = new()
         {
             typeof(WaspAttack01BounceLState),
@@ -39,7 +40,6 @@ namespace _GAME.Scripts.Enemies.Wasp
             typeof(WaspAttack04Success01RState),
             typeof(WaspAttack01Fail01LState)
         };
-
         private readonly List<Type> ATTACK_STATES = new()
         {
             typeof(WaspAttack01LState),
@@ -51,25 +51,29 @@ namespace _GAME.Scripts.Enemies.Wasp
             typeof(WaspAttack04LState),
             typeof(WaspAttack04RState)        
         };
-    
+
         [SerializeField] private string _currentStateType;
         [SerializeField] private Animator _animator;
         [SerializeField] private Transform _baseTransform;
+        [SerializeField] private float _maxLampConstrainDistance = 1f;
         private ILampPositionProviderService _lampPositionProvider;
 
 
         private float _collisionRadius = 0.24f;
+        private float _fullCollisionRadius;
         private StateMachine _stateMachine = new();
 
         // State parameters
         private Side _side = Side.Left;
-        private bool _isAnimClipEnded = false;
-        private int _twoOptionsSplit = 0;
-        private int _threeOptionsSplit = 0;
-        private bool _isDamaged = false;
-        private bool _isDead = false;
-        private bool _isLampDestroyed = false;
-        private bool _isCollided = false;
+        private bool _isAnimClipEnded;
+        private int _twoOptionsSplit;
+        private int _threeOptionsSplit;
+        private bool _isDamaged;
+        private bool _isDead;
+        private bool _isLampDestroyed;
+        private bool _isCollided;
+        private bool _isNeedCorrectCollision;
+        
         // Animation 
         private readonly int _idleHash = Animator.StringToHash("Idle");
         private readonly int _enterHash = Animator.StringToHash("Enter");
@@ -194,8 +198,17 @@ namespace _GAME.Scripts.Enemies.Wasp
             _attack04Success01LState.Ended += OnSuccessStateEnded;
             _attack04Success01RState.Ended += OnSuccessStateEnded;
             
+            _attack01BounceLState.Started += OnBounceStateStarted;
+            _attack01BounceRState.Started += OnBounceStateStarted;
+            _attack02BounceLState.Started += OnBounceStateStarted;
+            _attack02BounceRState.Started += OnBounceStateStarted;
+            _attack03BounceLState.Started += OnBounceStateStarted;
+            _attack03BounceRState.Started += OnBounceStateStarted;
+            _attack04BounceLState.Started += OnBounceStateStarted;
+            _attack04BounceRState.Started += OnBounceStateStarted;
             
-        
+            
+            _fullCollisionRadius = _collisionRadius + LampCollisionRadius;
             enabled = false;
             _isAnimClipEnded = false;
             _isLampDestroyed = false;
@@ -235,6 +248,15 @@ namespace _GAME.Scripts.Enemies.Wasp
             _attack03Success01RState.Ended -= OnSuccessStateEnded;
             _attack04Success01LState.Ended -= OnSuccessStateEnded;
             _attack04Success01RState.Ended -= OnSuccessStateEnded;
+            
+            _attack01BounceLState.Started -= OnBounceStateStarted;
+            _attack01BounceRState.Started -= OnBounceStateStarted;
+            _attack02BounceLState.Started -= OnBounceStateStarted;
+            _attack02BounceRState.Started -= OnBounceStateStarted;
+            _attack03BounceLState.Started -= OnBounceStateStarted;
+            _attack03BounceRState.Started -= OnBounceStateStarted;
+            _attack04BounceLState.Started -= OnBounceStateStarted;
+            _attack04BounceRState.Started -= OnBounceStateStarted;
         }
 
         public void SetCollisionRadius(float radius)
@@ -244,9 +266,18 @@ namespace _GAME.Scripts.Enemies.Wasp
 
         public void Play()
         {
+            _baseTransform.position = Vector3.zero;
             enabled = true;
             _isAnimClipEnded = false;
             _side = (Side)Random.Range(0, 2);
+            _isAnimClipEnded = false;
+            _isLampDestroyed = false;
+            _isDamaged = false;
+            _isCollided = false;
+            _isDead = false;
+            _isCollided = false;
+            _isNeedCorrectCollision = false;
+            _stateMachine.SetState(_idleState);
         }
 
         public void SetDamaged()
@@ -288,6 +319,17 @@ namespace _GAME.Scripts.Enemies.Wasp
         public void SetCollidedWithLamp()
         {
             _isCollided = true;
+            _isNeedCorrectCollision = true;
+        }
+
+        public void SetScreenLeft()
+        {
+            _baseTransform.position = Vector3.zero;
+        }
+
+        private void OnBounceStateStarted()
+        {
+            _baseTransform.position= _lampPositionProvider.GetLampPosition();
         }
 
         private void CreateMovementStates()
@@ -683,26 +725,28 @@ namespace _GAME.Scripts.Enemies.Wasp
         private void Update()
         {
             _stateMachine.Tick();
-            _currentStateType = _stateMachine.CurrentStateType.ToString().Replace("FWasp", ""); // DEBUG
+            _currentStateType 
+                = _stateMachine.CurrentStateType.ToString().Replace("_GAME.Scripts.Enemies.Wasp.MovementStates.Wasp", ""); // DEBUG
         }
 
         private void LateUpdate()
         {
-            // Correct position after animation - fix lamp penetrations
-            if (ATTACK_STATES.Contains(_stateMachine.CurrentStateType))
+            if (_isNeedCorrectCollision)
             {
-                // Check if lamp was penetrated
-                Vector3 newPosition = transform.position;
-                if ((newPosition - (Vector3)_lampPositionProvider.GetLampPosition()).magnitude < _collisionRadius + 0.5f)
-                {
-                    newPosition = (Vector3)_lampPositionProvider.GetLampPosition() + newPosition.normalized * (0.5f + _collisionRadius);
-                }
-                transform.position = newPosition;
+                CorrectCollisionPenetration();
             }
         }
 
-        // Event Handle Methods
+        private void CorrectCollisionPenetration()
+        {
+            _isNeedCorrectCollision = false;
+            Vector2 newPosition = transform.position;
+            Vector2 newPositionLampDirection = (newPosition - _lampPositionProvider.GetLampPosition()).normalized;
+            newPosition = _lampPositionProvider.GetLampPosition() + newPositionLampDirection * (LampCollisionRadius + _collisionRadius);
+            transform.position = newPosition;
+        }
 
+        // Event Handle Methods
         private void OnDeathStateEnded()
         {
             enabled = false;

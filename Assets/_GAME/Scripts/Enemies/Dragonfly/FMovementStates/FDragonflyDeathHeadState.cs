@@ -5,7 +5,7 @@ using UnityEngine;
 namespace _GAME.Scripts.Enemies.Dragonfly.FMovementStates
 {
     [CreateAssetMenu(fileName = "FDragonflyDeathHeadState", menuName = "FDragonflyMovementStates/FDragonflyDeathHeadState")]
-    public class FDragonflyDeathHeadState : ScriptableObject, IState
+    public class FDragonflyDeathHeadState : ScriptableObject, IState, ILeft
     {
         [SerializeField] private float _duration = 1.1f;
         [SerializeField] private float _afterDelay = .6f;
@@ -28,7 +28,7 @@ namespace _GAME.Scripts.Enemies.Dragonfly.FMovementStates
             _fallPointTransform = fallPointTransform;
         }
     
-        public  void OnEnter()
+        public  void Enter()
         {
             _fallPointTransform.position = _visibleBodyTransform.position;
             _fallPointTransform.rotation = _visibleBodyTransform.rotation;
@@ -55,7 +55,7 @@ namespace _GAME.Scripts.Enemies.Dragonfly.FMovementStates
             CheckForStateChange();
         }
 
-        public void OnExit() { }
+        public void Exit() { }
 
         private void CheckForStateChange()
         {

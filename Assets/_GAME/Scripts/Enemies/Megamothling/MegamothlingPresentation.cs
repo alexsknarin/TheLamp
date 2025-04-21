@@ -44,6 +44,7 @@ namespace _GAME.Scripts.Enemies.Megamothling
         {
             _trailResetHandler.Initialize();
             _deathFlash.Initialize();
+            _healthIndication.Initialize();
         }
 
         private void OnPreAttackStarted()

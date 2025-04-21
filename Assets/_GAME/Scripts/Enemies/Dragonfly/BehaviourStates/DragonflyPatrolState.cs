@@ -1,13 +1,19 @@
+using System;
 using _GAME.Scripts.Lib.Interfaces;
 
 namespace _GAME.Scripts.Enemies.Dragonfly.BehaviourStates
 {
     public class DragonflyPatrolState : IState
     {
-        public void OnEnter() { }
+        public event Action Started;
+
+        public void Enter()
+        {
+            Started?.Invoke();
+        }
 
         public void Tick() { }
 
-        public void OnExit() { }
+        public void Exit() { }
     }
 }

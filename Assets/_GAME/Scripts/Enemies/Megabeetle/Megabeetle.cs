@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace _GAME.Scripts.Enemies.Megabeetle
 {
-    public class Megabeetle : FEnemy, IStickableWithLamp, IBoss, IStickyAttacker
+    public class Megabeetle : Enemy, IStickableWithLamp, IBoss, IStickyAttacker
     {
         [SerializeField] private float _collisionRadius = 0.3f;
         [SerializeField] private int _maxHealth;
@@ -78,7 +78,6 @@ namespace _GAME.Scripts.Enemies.Megabeetle
             }
             else
             {
-                Debug.Log($"Damage Received: {damageAmount}.");
                 Damaged?.Invoke();
                 HealthChanged?.Invoke(_currentHealth, _maxHealth);
             
@@ -132,10 +131,15 @@ namespace _GAME.Scripts.Enemies.Megabeetle
         {
             AttackBlockState = AttackBlockerState.Inside;
         }
+        
+        public void HandleExitAttackBlockerZone()
+        {
+            AttackBlockState = AttackBlockerState.Outisde;
+        }
 
         public void HandleLampDestroyed()
         {
-            _movement.TriggerFall();
+            _movement.TriggerFallOnLampDestroyed();
         }
 
         public Vector3 ProvideImpactPoint()

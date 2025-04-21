@@ -11,20 +11,25 @@ namespace _GAME.Scripts.Enemies.DragonflyProjectileMoth
         [SerializeField] private DragonflyMothPresentation _presentation;
     
         public override Vector2 Position => transform.position;
-        public event Action<FEnemy, bool> Deactivated;
+        public event Action<Enemy, bool> Deactivated;
     
         public override void Initialize()
         {
-            _presentation.Initialize();
-            IsReadyForDamage = false;
-            IsReceivedLampAttackDamage = false;
-        
             _movement.FallEnded += OnFallEnded;
+            _movement.SetCollisionRadius(_collisionRadius);
+            Reset();
         }
 
         private void OnDestroy()
         {
             _movement.FallEnded -= OnFallEnded;
+        }
+
+        public void Reset()
+        {
+            _presentation.Initialize();
+            IsReadyForDamage = false;
+            IsReceivedLampAttackDamage = false;
         }
 
         public void SetStartPosition(Vector3 startPosition)

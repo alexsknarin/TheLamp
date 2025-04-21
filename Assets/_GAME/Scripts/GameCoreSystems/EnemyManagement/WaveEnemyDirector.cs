@@ -10,11 +10,11 @@ namespace _GAME.Scripts.GameCoreSystems.EnemyManagement
 {
     public class WaveEnemyDirector : MonoBehaviour, IInitializable, IProjectileDeactivatedProvider
     {
-        [SerializeField] private Transform _cameraTransform; 
+        [SerializeField] private Transform _cameraTransform;
         private SpawnQueueGenerator _spawnQueueGenerator;
         private SpawnQueue _spawnQueue;
         private EnemyQueue _currentWaveEnemyQueue;
-        private List<FEnemy> _enemies = new ();
+        private List<Enemy> _enemies = new ();
         private List<IStickableWithLamp> _stickedEnemies = new ();
         private int _enemiesKilledCount = 0;
         private LampAttacker _lampAttacker;
@@ -39,16 +39,17 @@ namespace _GAME.Scripts.GameCoreSystems.EnemyManagement
     
         public event Action WaveEnded;
         public event Action<CollidableEnemy> EnemyAttackStarted;
+        public event Action<CollidableEnemy> EnemyCollisionReqested;
         public event Action<IStickableWithLamp> StickyEnemyReadyToStick;
         public event Action LampBlocked;
         public event Action LampUnblocked;
         public event Action ExplodableEnemySpawned;
-        public event Action<FEnemy> ExplodableEnemyDeactivated;
+        public event Action<Enemy> ExplodableEnemyDeactivated;
         public event Action FireflyExplosionStarted;
-        public event Action<FEnemy> BossSpawned;
+        public event Action<Enemy> BossSpawned;
         public event Action BossDied;
         public event Action<Vector3, bool, string> StickyAttackEnded;
-        public event Action<FEnemy> ProjectileDestroyed;
+        public event Action<Enemy> ProjectileDestroyed;
     
         public void Initialize()
         {
@@ -147,6 +148,11 @@ namespace _GAME.Scripts.GameCoreSystems.EnemyManagement
                 {
                     ((IStickableWithLamp)enemy).HandleLampDestroyed();
                 }
+                if (enemy is ILampDestroyedDependable)
+                {
+                    ((ILampDestroyedDependable)enemy).HandleLampDestroyed();
+                }
+                
                 enemy.IsGameOver = true;
             }
             StartCoroutine(SpreadEnemiesAfterGameOver());
@@ -237,7 +243,7 @@ namespace _GAME.Scripts.GameCoreSystems.EnemyManagement
             _enemies.Clear();
         }
 
-        private void OnEnemySpawned(FEnemy enemy)
+        private void OnEnemySpawned(Enemy enemy)
         {
             if (enemy is IStickableWithLamp)
             {
@@ -265,9 +271,13 @@ namespace _GAME.Scripts.GameCoreSystems.EnemyManagement
                 ((IProjectileShooter)enemy).ProjectileShot += OnProjectileShot;
                 ((IProjectileShooter)enemy).ProjectileDeactivated += OnProjectileDeactivated;
             }
+            if (enemy is IForcedCollidableEnemy)
+            {
+                ((IForcedCollidableEnemy)enemy).CollisionRequested += OnForcedCollisionRequested;
+            }
         }
 
-        private void OnEnemyDead(FEnemy enemy)
+        private void OnEnemyDead(Enemy enemy)
         {
             // TODO: find better way to return enemies to pool that will work better with gameover one
             if (enabled)
@@ -316,6 +326,10 @@ namespace _GAME.Scripts.GameCoreSystems.EnemyManagement
                     ((IProjectileShooter)enemy).ProjectileShot -= OnProjectileShot;
                     ((IProjectileShooter)enemy).ProjectileDeactivated -= OnProjectileDeactivated;
                 }
+                if (enemy is IForcedCollidableEnemy)
+                {
+                    ((IForcedCollidableEnemy)enemy).CollisionRequested -= OnForcedCollisionRequested;
+                }
             }
         }
 
@@ -339,14 +353,19 @@ namespace _GAME.Scripts.GameCoreSystems.EnemyManagement
         {
             StickyAttackEnded?.Invoke(transform.position, false, "Megabeetle");
         }
-    
+
         private void OnProjectileShot(CollidableEnemy enemy)
         {
             EnemyAttackStarted?.Invoke(enemy);
             _enemies.Add(enemy);
         }
-    
-        private void OnProjectileDeactivated(FEnemy enemy, bool damaged)
+
+        private void OnForcedCollisionRequested(CollidableEnemy enemy)
+        {
+            EnemyCollisionReqested?.Invoke(enemy);
+        }
+
+        private void OnProjectileDeactivated(Enemy enemy, bool damaged)
         {
             if (damaged)
             {
@@ -361,8 +380,14 @@ namespace _GAME.Scripts.GameCoreSystems.EnemyManagement
 
         private void Update()
         {
-            _enemyAttacker.Tick(Time.deltaTime);
+            _enemyAttacker.Tick(Time.deltaTime);  
             _fireflyExplosionEnemyDamager.Tick(Time.deltaTime);
+
+            // TODO: added for tests - remove
+            if (Input.GetKeyDown(KeyCode.A))
+            {
+                SpreadEnemies();
+            }
         }
 
 

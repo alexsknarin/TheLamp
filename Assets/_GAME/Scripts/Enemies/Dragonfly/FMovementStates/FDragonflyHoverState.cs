@@ -5,7 +5,7 @@ using UnityEngine;
 namespace _GAME.Scripts.Enemies.Dragonfly.FMovementStates
 {
     [CreateAssetMenu(fileName = "FDragonflyHoverState", menuName = "FDragonflyMovementStates/FDragonflyHoverState")]
-    public class FDragonflyHoverState : ScriptableObject, IState
+    public class FDragonflyHoverState : ScriptableObject, IState, ILeft
     {
         [SerializeField] private float _amplitude = 0.5f;
         [SerializeField] private float _frequency = 0.33f;
@@ -23,7 +23,7 @@ namespace _GAME.Scripts.Enemies.Dragonfly.FMovementStates
             _baseTransform = baseTransform;
         }
     
-        public void OnEnter()
+        public void Enter()
         {
             _visibleBodyTransform.SetParent(_baseTransform);
             _hoverPos = _visibleBodyTransform.localPosition;
@@ -41,6 +41,6 @@ namespace _GAME.Scripts.Enemies.Dragonfly.FMovementStates
             _localTime += Time.deltaTime;
         }
 
-        public void OnExit() { }
+        public void Exit() { }
     }
 }

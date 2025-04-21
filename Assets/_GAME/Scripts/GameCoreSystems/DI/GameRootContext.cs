@@ -57,6 +57,7 @@ namespace _GAME.Scripts.GameCoreSystems.DI
         [SerializeField] private FakeAd _fakeAd;
         [Header("Scene References")]
         [SerializeField] private Transform _cameraTransform;
+        [SerializeField] private LadybugLampPositionsHolder _ladybugLampPositionsHolder;
 
         private CoroutineHost _coroutineHost;
     
@@ -68,6 +69,7 @@ namespace _GAME.Scripts.GameCoreSystems.DI
         private GameConfigService _gameConfigService;
         private HapticFeedbackService _hapticFeedbackService;
         private UnityAnalyticsService _unityAnalyticsService;
+        private SpiderPositionHolder _spiderPositionHolder;
     
         private CameraShakeEventListener _cameraShakeEventListener;
         private PlayerAttackCooldownHandler _playerAttackCooldownHandler;
@@ -101,6 +103,7 @@ namespace _GAME.Scripts.GameCoreSystems.DI
         private LadybugMovementStateFactory _ladybugMovementStateFactory;
         private MegamothlingMovementStateFactory _megamothlingMovementStateFactory;
         private MegabeetleMovementStateFactory _megabeetleMovementStateFactory;
+        private DragonflyBehaviourStateFactory _dragonflyBehaviourStateFactory;
         private EnemyFactory _enemyFactory;
         private FXFactory _fxFactory;   
     
@@ -176,7 +179,7 @@ namespace _GAME.Scripts.GameCoreSystems.DI
             _gameStateProviderService = new PlayerPrefsGameStateProviderService(_defaultGameStateData.GameState);
         
             // Haptic
-            _hapticFeedbackService = new HapticFeedbackService();
+            _hapticFeedbackService = new HapticFeedbackService(_coroutineHost);
         
             // Camera Shake
             _cameraShakeService.Initialize();
@@ -192,6 +195,8 @@ namespace _GAME.Scripts.GameCoreSystems.DI
                 _gameConfigService.PlayerConfig.DefaultAttackZoneRadius
                 );
             _lampCollisionDetectionService.Initialize();
+
+            _spiderPositionHolder = new();
         }
 
         private void HandlersSetup()
@@ -226,7 +231,8 @@ namespace _GAME.Scripts.GameCoreSystems.DI
             _ladybugMovementStateFactory = new LadybugMovementStateFactory(
                 _cameraTransform,
                 _lampPositionProviderService,
-                _gameConfigService
+                _gameConfigService,
+                _ladybugLampPositionsHolder
             );
             _megamothlingMovementStateFactory = new MegamothlingMovementStateFactory(
                 _cameraTransform,
@@ -237,6 +243,11 @@ namespace _GAME.Scripts.GameCoreSystems.DI
                 _cameraTransform,
                 _lampPositionProviderService
             );
+            
+            _dragonflyBehaviourStateFactory = new DragonflyBehaviourStateFactory(
+                _gameConfigService
+            );
+            _dragonflyBehaviourStateFactory.Initialize();
         
             _enemyFactory = new EnemyFactory(
                 _mothlingMovementStateFactory, 
@@ -246,8 +257,10 @@ namespace _GAME.Scripts.GameCoreSystems.DI
                 _ladybugMovementStateFactory,
                 _megamothlingMovementStateFactory,
                 _megabeetleMovementStateFactory,
+                _dragonflyBehaviourStateFactory,
                 _lampPositionProviderService,
-                _gameConfigService
+                _gameConfigService,
+                _spiderPositionHolder
             );
             _enemyPool = new EnemyPool(_enemyFactory);
             _enemyPool.Initialize();
@@ -257,7 +270,11 @@ namespace _GAME.Scripts.GameCoreSystems.DI
 
         private void ControllersSetup()
         {
-            _enemySpawner = new EnemySpawner(_enemyPool, _gameConfigService.GameConfig.FirstEnemySpawnDelay);
+            _enemySpawner = new EnemySpawner(
+                _enemyPool,
+                _gameConfigService.GameConfig.FirstEnemySpawnDelay,
+                _spiderPositionHolder
+                );
             _enemySpawner.Initialize();
             _tickables.Add(_enemySpawner);
             _disposables.Add(_enemySpawner);
@@ -289,6 +306,7 @@ namespace _GAME.Scripts.GameCoreSystems.DI
         private void GameModelSetup()
         {
             _gameModel = new GameModel(
+                _coroutineHost,
                 _gameStateProviderService, 
                 _gameConfigService, 
                 _waveEnemyDirector,

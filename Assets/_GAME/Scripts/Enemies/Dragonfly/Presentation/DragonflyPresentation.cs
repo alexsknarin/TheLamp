@@ -21,6 +21,7 @@ namespace _GAME.Scripts.Enemies.Dragonfly.Presentation
             _preAttackFlash.Initialize();
             _swarmCallFX.Initialize();
             
+            _dragonfly.Started += OnDragonflyStarted;
             _dragonflyMovement.PreAttackStarted += OnPreAttackStarted;
             _dragonflyMovement.AttackStarted += OnPreAttackEnded;
             _dragonfly.Damaged += OnDamaged;
@@ -32,6 +33,7 @@ namespace _GAME.Scripts.Enemies.Dragonfly.Presentation
 
         private void OnDestroy()
         {
+            _dragonfly.Started += OnDragonflyStarted;
             _dragonflyMovement.PreAttackStarted -= OnPreAttackStarted;
             _dragonflyMovement.AttackStarted -= OnPreAttackEnded;
             _dragonfly.Damaged -= OnDamaged;
@@ -39,6 +41,15 @@ namespace _GAME.Scripts.Enemies.Dragonfly.Presentation
             _dragonfly.HealthChanged -= OnHealthChanged;
             _dragonfly.SwarmCalled -= OnSwarmCalled;
             _dragonfly.ColliderTransformChanged -= OnColliderTransformChanged;
+        }
+
+        private void OnDragonflyStarted()
+        {
+            _damageIndication.Reset();
+            _healthIndication.Reset();
+            _deathFlash.Reset();
+            _preAttackFlash.Reset();
+            _swarmCallFX.Reset();
         }
 
         private void OnPreAttackStarted()

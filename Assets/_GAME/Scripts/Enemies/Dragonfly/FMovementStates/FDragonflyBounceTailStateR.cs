@@ -4,7 +4,7 @@ using UnityEngine;
 namespace _GAME.Scripts.Enemies.Dragonfly.FMovementStates
 {
     [CreateAssetMenu(fileName = "FDragonflyBounceTailStateR", menuName = "FDragonflyMovementStates/FDragonflyBounceTailStateR")]
-    public class FDragonflyBounceTailStateR : ScriptableObject, IState
+    public class FDragonflyBounceTailStateR : ScriptableObject, IState, IRight
     {
         [SerializeField] private float _rotationSpeed = 125f;
         private readonly int _sideDirection = -1;
@@ -21,7 +21,7 @@ namespace _GAME.Scripts.Enemies.Dragonfly.FMovementStates
             _patrolRotator = patrolRotator;
         }
     
-        public void OnEnter()
+        public void Enter()
         {
             Vector3 currentPosition = _visibleBodyTransform.position;
             _patrolRotator.SetRotationPhase(currentPosition);
@@ -37,6 +37,6 @@ namespace _GAME.Scripts.Enemies.Dragonfly.FMovementStates
             _visibleBodyTransform.localRotation = Quaternion.Euler(eulers);
         }
 
-        public void OnExit() { }
+        public void Exit() { }
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using _GAME.Scripts.Lib.Interfaces;
 using UnityEngine;
 
@@ -15,6 +16,11 @@ namespace _GAME.Scripts.Enemies.Dragonfly.Presentation
             _bodyMaterial = _bodyMeshRenderer.material;
             _wingsMaterial = _wingsMeshRenderer.material;
         
+            Reset();
+        }
+
+        public void Reset()
+        {
             _bodyMaterial.SetFloat("_AttackSemaphore", 0f);
             _wingsMaterial.SetFloat("_AttackSemaphore", 0f);
         }

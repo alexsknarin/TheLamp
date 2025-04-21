@@ -9,9 +9,9 @@ namespace _GAME.Scripts.Enemies.Dragonfly.BehaviourStates
         private Vector3 _targetPosition;
         private readonly Transform _transform;
         private readonly Vector3 _attackPositionBase;
+        private readonly float _preAttackDistance = 0.4f; // TODO: configs
         private bool _isLastPatrolDirectionSet = false;
         private int _lastPatrolDirection = 0;
-        private float _preattackDistance = 0.4f; // TODO: configs
         private bool _isReadyToPreAttack = false;
 
         public DragonflyWaitSpiderAttackState(Transform visibleBodyTransform, Vector3 attackPositionBase)
@@ -23,7 +23,7 @@ namespace _GAME.Scripts.Enemies.Dragonfly.BehaviourStates
         public event Action Ended;
         public event Action GotReadyToPreAttack;
 
-        public void OnEnter()
+        public void Enter()
         {
             _targetPosition = _attackPositionBase;
             _targetPosition.x *= RandomDirection.Generate();
@@ -42,7 +42,7 @@ namespace _GAME.Scripts.Enemies.Dragonfly.BehaviourStates
             currentPosition.y = 0;
             currentPosition.Normalize();
             float distance = Vector3.Distance(currentPosition, _targetPosition);
-            if (!_isReadyToPreAttack && distance < _preattackDistance)
+            if (!_isReadyToPreAttack && distance < _preAttackDistance)
             {
                 _isReadyToPreAttack = true;
                 GotReadyToPreAttack?.Invoke();
@@ -66,6 +66,6 @@ namespace _GAME.Scripts.Enemies.Dragonfly.BehaviourStates
             }
         }
 
-        public void OnExit() { }
+        public void Exit() { }
     }
 }

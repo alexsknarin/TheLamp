@@ -24,7 +24,6 @@ namespace _GAME.Scripts.Lamp.Views
 
         private void OnIsBlockedChanged(object sender, Observable<bool>.ChangedEventArgs e)
         {
-            Debug.Log("LampBlockedModeView : OnIsBlockedChanged");
             _lampEmissionController.IsBlockedMode = e.NewValue;
         }
     }

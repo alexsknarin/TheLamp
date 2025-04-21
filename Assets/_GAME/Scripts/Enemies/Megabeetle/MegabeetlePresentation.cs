@@ -10,6 +10,7 @@ namespace _GAME.Scripts.Enemies.Megabeetle
         [SerializeField] private MegabeetleMovement _movement;
         [SerializeField] private PreAttackFlash _preAttackFlash;
         [SerializeField] private LadybugDamageFlash _damageFlash;
+        [SerializeField] private DamageEmitParticles _damageEmitParticles;
         [SerializeField] private DeathFlash _deathFlash;
         [SerializeField] private HealthIndication _healthIndication;
         [SerializeField] private TrailResetHandler _trailResetHandler;
@@ -19,16 +20,20 @@ namespace _GAME.Scripts.Enemies.Megabeetle
             _preAttackFlash.Initialize();
             _damageFlash.Initialize();
             _deathFlash.Initialize();
+            _damageEmitParticles.Initialize();
             _healthIndication.Initialize();
             _trailResetHandler.Initialize();
         
             _movement.PreAttackStarted += _preAttackFlash.PreAttackStart;
             _movement.PreAttackEnded += _preAttackFlash.PreAttackEnd;
             _movement.FallEnded += _trailResetHandler.Initialize;
+            _movement.DeathStateEnded += _damageEmitParticles.HandleDeathEnd;
             _megabeetle.Started += OnLadybugStarted;
             _megabeetle.Damaged += _damageFlash.Play;
             _megabeetle.HealthChanged += _healthIndication.Refresh;
+            _megabeetle.HealthChanged += _damageEmitParticles.HandleHealthChanged;
             _megabeetle.Dead += _deathFlash.Play;
+            _megabeetle.Dead += _damageEmitParticles.HandleDead;
         }
 
         private void OnDestroy()
@@ -36,10 +41,13 @@ namespace _GAME.Scripts.Enemies.Megabeetle
             _movement.PreAttackStarted -= _preAttackFlash.PreAttackStart;
             _movement.PreAttackEnded -= _preAttackFlash.PreAttackEnd;
             _movement.FallEnded -= _trailResetHandler.Initialize;
+            _movement.DeathStateEnded -= _damageEmitParticles.HandleDeathEnd;
             _megabeetle.Started -= OnLadybugStarted;
             _megabeetle.Damaged -= _damageFlash.Play;
             _megabeetle.HealthChanged -= _healthIndication.Refresh;
+            _megabeetle.HealthChanged -= _damageEmitParticles.HandleHealthChanged;
             _megabeetle.Dead -= _deathFlash.Play;
+            _megabeetle.Dead -= _damageEmitParticles.HandleDead;
         }
 
         private void OnLadybugStarted()

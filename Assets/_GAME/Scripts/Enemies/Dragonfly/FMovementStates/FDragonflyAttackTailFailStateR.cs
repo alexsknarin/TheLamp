@@ -5,7 +5,7 @@ using UnityEngine;
 namespace _GAME.Scripts.Enemies.Dragonfly.FMovementStates
 {
     [CreateAssetMenu(fileName = "FDragonflyAttackTailFailStateR", menuName = "FDragonflyMovementStates/FDragonflyAttackTailFailStateR")]
-    public class FDragonflyAttackTailFailStateR : ScriptableObject, IState
+    public class FDragonflyAttackTailFailStateR : ScriptableObject, IState, IRight
     {
         [SerializeField] private float _duration = 2f;
         [SerializeField] private float _afterDelay = 1f;
@@ -32,7 +32,7 @@ namespace _GAME.Scripts.Enemies.Dragonfly.FMovementStates
             _baseTransform = baseTransform;
         }
     
-        public void OnEnter()
+        public void Enter()
         {
             _visibleBodyTransform.SetParent(_baseTransform);
             _startRz = _visibleBodyTransform.localEulerAngles.z;
@@ -63,7 +63,7 @@ namespace _GAME.Scripts.Enemies.Dragonfly.FMovementStates
             CheckForStateChange();
         }
 
-        public void OnExit() { }
+        public void Exit() { }
 
         private void CheckForStateChange()
         {

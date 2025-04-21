@@ -22,7 +22,7 @@ namespace _GAME.Scripts.Enemies.Megabeetle.MovementStates
     
         public event Action Ended;
     
-        public override void OnEnter()
+        public override void Enter()
         {
             IsReadyToSwitch = false;
             Position2D = _positionDirectionProvider.Position2D;
@@ -45,7 +45,7 @@ namespace _GAME.Scripts.Enemies.Megabeetle.MovementStates
             }
         }
     
-        public override void OnExit()
+        public override void Exit()
         {
             Ended?.Invoke();
         }

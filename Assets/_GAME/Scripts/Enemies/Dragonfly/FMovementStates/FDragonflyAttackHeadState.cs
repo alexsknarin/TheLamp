@@ -5,7 +5,7 @@ using UnityEngine;
 namespace _GAME.Scripts.Enemies.Dragonfly.FMovementStates
 {
     [CreateAssetMenu(fileName = "FDragonflyAttackHeadState", menuName = "FDragonflyMovementStates/FDragonflyAttackHeadState")]
-    public class FDragonflyAttackHeadState : ScriptableObject, IState
+    public class FDragonflyAttackHeadState : ScriptableObject, IState, ILeft
     {
         [SerializeField] private float _speed = 4f;
         [SerializeField] private float _acceleration = 0.75f;
@@ -27,7 +27,7 @@ namespace _GAME.Scripts.Enemies.Dragonfly.FMovementStates
             _baseTransform = baseTransform;
         }
 
-        public void OnEnter()
+        public void Enter()
         {
             _localTime = 0;
             _isCollisionPhaseReached = false;
@@ -60,12 +60,11 @@ namespace _GAME.Scripts.Enemies.Dragonfly.FMovementStates
             _localTime += Time.deltaTime; 
             if (!_isCollisionPhaseReached &&  _localTime >= _collisionReadyTime)
             {
-                Debug.Log(" -- Collision phase reached - state: " + this);
                 _isCollisionPhaseReached = true;
                 CollisionPhaseReached?.Invoke();
             }
         }
 
-        public void OnExit() { }
+        public void Exit() { }
     }
 }

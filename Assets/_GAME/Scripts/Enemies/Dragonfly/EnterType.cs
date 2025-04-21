@@ -1,8 +1,9 @@
 namespace _GAME.Scripts.Enemies.Dragonfly
 {
-    public enum DragonflyEnterType
+    public enum EnterType
     {
         Patrol,
-        Hover
+        Hover,
+        None
     }
 }

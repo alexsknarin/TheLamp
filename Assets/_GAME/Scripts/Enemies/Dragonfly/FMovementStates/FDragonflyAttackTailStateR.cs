@@ -5,7 +5,7 @@ using UnityEngine;
 namespace _GAME.Scripts.Enemies.Dragonfly.FMovementStates
 {
     [CreateAssetMenu(fileName = "FDragonflyAttackTailStateR", menuName = "FDragonflyMovementStates/FDragonflyAttackTailStateR")]
-    public class FDragonflyAttackTailStateR : ScriptableObject, IState
+    public class FDragonflyAttackTailStateR : ScriptableObject, IState, IRight
     {
         [SerializeField] private float _duration = 0.6f;
         [SerializeField] private float _distance = 0.52f;
@@ -13,7 +13,7 @@ namespace _GAME.Scripts.Enemies.Dragonfly.FMovementStates
         [SerializeField] private AnimationCurve _rxCurve;
         [SerializeField] private AnimationCurve _ryCurve;
         [SerializeField] private AnimationCurve _rzCurve;
-        [SerializeField] private float _collisionReadyTime = 0.3f;
+        [SerializeField] private float _collisionReadyTime = 0.33f;
         private bool _isCollisionPhaseReached = false;
         private float _localTime = 0f;
         private float _phase = 0f;
@@ -35,7 +35,7 @@ namespace _GAME.Scripts.Enemies.Dragonfly.FMovementStates
             _patrolRotator = patrolRotator;
         }
     
-        public void OnEnter()
+        public void Enter()
         {
             _isCollisionPhaseReached = false;
             _patrolRotator.SetRotationPhase(_visibleBodyTransform.position + _visibleBodyTransform.right * 0.2f); // Smooth transition
@@ -68,15 +68,13 @@ namespace _GAME.Scripts.Enemies.Dragonfly.FMovementStates
             {
                 _phase = 1f;
             }
-            Debug.Log(_localTime);
             if (!_isCollisionPhaseReached && _localTime >= _collisionReadyTime)
             {
-                Debug.Log(" -- Collision phase reached - state: " + this);
                 _isCollisionPhaseReached = true;
                 CollisionPhaseReached?.Invoke();
             }
         }
 
-        public void OnExit() { }
+        public void Exit() { }
     }
 }

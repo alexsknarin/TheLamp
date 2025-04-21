@@ -7,13 +7,13 @@ namespace _GAME.Scripts.Enemies.Dragonfly
 {
     public class DragonflyPatrolAttackPositionProvider
     {
-        private DragonflyPatrolAttackZoneRanges _patrolAttackZonesL;
-        private DragonflyPatrolAttackZoneRanges _patrolAttackZonesR;
-        private DragonflyPatrolAttackZoneRangesData _patrolAttackZonesDataL = new DragonflyPatrolAttackZoneRangesData();
-        private DragonflyPatrolAttackZoneRangesData _patrolAttackZonesDataR = new DragonflyPatrolAttackZoneRangesData();
+        private readonly DragonflyPatrolAttackZoneRanges _patrolAttackZonesL;
+        private readonly DragonflyPatrolAttackZoneRanges _patrolAttackZonesR;
+        private readonly DragonflyPatrolAttackZoneRangesData _patrolAttackZonesDataL = new();
+        private readonly DragonflyPatrolAttackZoneRangesData _patrolAttackZonesDataR = new();
         private DragonflyPatrolAttackZoneRangesData _patrolAttackZonesData;
-        private Vector3 _tailAttackBasePositionL;
-        private Vector3 _tailAttackBasePositionR;
+        private readonly Vector3 _tailAttackBasePositionL;
+        private readonly Vector3 _tailAttackBasePositionR;
     
         public DragonflyPatrolAttackPositionProvider(
             DragonflyPatrolAttackZoneRanges patrolAttackZonesL,
@@ -36,11 +36,11 @@ namespace _GAME.Scripts.Enemies.Dragonfly
         public Vector3 GenerateRandomPreAttackHeadPosition(IState movementState)
         {
             // Get ranges Data
-            if (movementState.GetType() == typeof(FDragonflyPatrolStateL))
+            if (movementState is ILeft)
             {
                 _patrolAttackZonesData = _patrolAttackZonesDataL;
             }
-            if (movementState.GetType() == typeof(FDragonflyPatrolStateR))
+            else
             {
                 _patrolAttackZonesData = _patrolAttackZonesDataR;
             }
@@ -91,12 +91,12 @@ namespace _GAME.Scripts.Enemies.Dragonfly
         {
             Vector3 attackPosition = Vector3.zero;
         
-            if (movementState.GetType() == typeof(FDragonflyPatrolStateL))
+            if (movementState is IRight)
             {
                 attackPosition = _tailAttackBasePositionL;
             
             }
-            if (movementState.GetType() == typeof(FDragonflyPatrolStateR))
+            else
             {
                 attackPosition = _tailAttackBasePositionR;
             }
