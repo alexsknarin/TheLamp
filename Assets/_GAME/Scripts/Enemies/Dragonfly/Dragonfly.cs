@@ -151,7 +151,11 @@ namespace _GAME.Scripts.Enemies.Dragonfly
 
         private void OnSwarmCalled()
         {
-            SwarmCalled?.Invoke();
+            if (_stateMachine.CurrentState.GetType() != typeof(DragonflyPatrolHeadState)
+                &&_stateMachine.CurrentState.GetType() != typeof(DragonflyWaitHeadAttackState))
+            {
+                SwarmCalled?.Invoke();    
+            }
         }
 
         private void OnSwarmAttackStateStarted()
@@ -172,6 +176,7 @@ namespace _GAME.Scripts.Enemies.Dragonfly
         private void OnPatrolStateStarted()
         {
             _enterType = EnterType.None;
+            _patrolAttackMode = PatrolAttackMode.None;
         }
 
         private void OnHoverStateStarted()
@@ -293,8 +298,6 @@ namespace _GAME.Scripts.Enemies.Dragonfly
             _movement.TriggerBounce();
             _isCollidedWithLamp = true;
             CollisionState = CollidableState.AfterCollision;
-            
-            // _patrolAttackMode = PatrolAttackMode.None;
         }
 
         public override Vector3 ProvideImpactPoint()

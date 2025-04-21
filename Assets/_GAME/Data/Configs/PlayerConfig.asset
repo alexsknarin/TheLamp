@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3564bbbed3c280c44a99d6c5a21b6da0, type: 3}
   m_Name: PlayerConfig
   m_EditorClassIdentifier: 
-  <IsDamageable>k__BackingField: 1
+  <IsDamageable>k__BackingField: 0
   <AttackDuration>k__BackingField: 0.15
   <DamageDuration>k__BackingField: 0.2
   <HealthCap>k__BackingField: 50
