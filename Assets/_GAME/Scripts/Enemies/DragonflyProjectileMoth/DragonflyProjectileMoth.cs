@@ -15,16 +15,20 @@ namespace _GAME.Scripts.Enemies.DragonflyProjectileMoth
     
         public override void Initialize()
         {
-            _presentation.Initialize();
-            IsReadyForDamage = false;
-            IsReceivedLampAttackDamage = false;
-        
             _movement.FallEnded += OnFallEnded;
+            Reset();
         }
 
         private void OnDestroy()
         {
             _movement.FallEnded -= OnFallEnded;
+        }
+
+        public void Reset()
+        {
+            _presentation.Initialize();
+            IsReadyForDamage = false;
+            IsReceivedLampAttackDamage = false;
         }
 
         public void SetStartPosition(Vector3 startPosition)

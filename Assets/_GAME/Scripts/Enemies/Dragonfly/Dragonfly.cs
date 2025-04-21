@@ -144,8 +144,8 @@ namespace _GAME.Scripts.Enemies.Dragonfly
             _spider.EnterAnimationEnded += OnSpiderEnterAnimationEnded;
 
             _swarm.MothAttackStarted += OnMothAttackStarted;
-            _spider.Deactivated += OnProjectileDeactivated;
-            _swarm.MothDeactivated += OnProjectileDeactivated;
+            _spider.Deactivated += OnSpiderDeactivated;
+            _swarm.MothDeactivated += OnMothDeactivated;
         
         }
 
@@ -217,12 +217,12 @@ namespace _GAME.Scripts.Enemies.Dragonfly
             _movement.DeathAnimationEnded -= OnDeathAnimationEnded;
             _movement.CollisionPhaseReached -= OnCollisionPhaseReached;
             _spider.EnterAnimationEnded -= OnSpiderEnterAnimationEnded;
-            _movement.SwarmCalled += OnSwarmCalled;
+            _movement.SwarmCalled -= OnSwarmCalled;
 
 
             _swarm.MothAttackStarted -= OnMothAttackStarted;
-            _spider.Deactivated -= OnProjectileDeactivated;
-            _swarm.MothDeactivated -= OnProjectileDeactivated;
+            _spider.Deactivated -= OnSpiderDeactivated;
+            _swarm.MothDeactivated -= OnMothDeactivated;
         }
 
         public override void Play()
@@ -243,8 +243,8 @@ namespace _GAME.Scripts.Enemies.Dragonfly
             
             _spider.gameObject.transform.SetParent(transform);
             _spider.gameObject.SetActive(false);
-            _spider.Initialize();
-            _swarm.Initialize();
+            _spider.Reset();
+            _swarm.Reset();
             
             _currentHealth = _maxHealth;
 
@@ -294,7 +294,6 @@ namespace _GAME.Scripts.Enemies.Dragonfly
 
         public override void HandleCollision()
         {
-            Debug.Log("HandleCollision");
             _movement.TriggerBounce();
             _isCollidedWithLamp = true;
             CollisionState = CollidableState.AfterCollision;
@@ -489,7 +488,6 @@ namespace _GAME.Scripts.Enemies.Dragonfly
         // Event Handle Methods
         private void OnCollisionPhaseReached()
         {
-            Debug.Log("OnCollisionPhaseReached");
             _collisionProvider.FindClosestPointIndex();
             Radius = _collisionProvider.CurrentCollisionRadius;
         }
@@ -533,9 +531,14 @@ namespace _GAME.Scripts.Enemies.Dragonfly
             _spider.Play();
         }
 
-        private void OnProjectileDeactivated(Enemy spider, bool damaged)
+        private void OnSpiderDeactivated(Enemy enemy, bool damaged)
         {
-            ProjectileDeactivated?.Invoke(spider, damaged);
+            ProjectileDeactivated?.Invoke(enemy, damaged);
+        }
+        
+        private void OnMothDeactivated(Enemy enemy, bool damaged)
+        {
+            ProjectileDeactivated?.Invoke(enemy, damaged);
         }
 
         private void OnSpiderEnterAnimationEnded()

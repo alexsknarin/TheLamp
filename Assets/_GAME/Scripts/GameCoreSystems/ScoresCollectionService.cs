@@ -2,6 +2,7 @@ using System;
 using _GAME.Scripts.Enemies;
 using _GAME.Scripts.Lib.Enums;
 using _GAME.Scripts.Lib.Interfaces;
+using UnityEngine;
 using IDisposable = _GAME.Scripts.Lib.Interfaces.IDisposable;
 
 // TODO: rename to service
@@ -40,17 +41,26 @@ namespace _GAME.Scripts.GameCoreSystems
     
         public void Initialize()
         {
-            _enemyDeactivatedProvider.EnemyReleasedToPool += OnEnemyDeactivated; // TODO: Probably IDeactivatable interface 
-            _projectileDeactivatedProvider.ProjectileDestroyed += OnEnemyDeactivated;
+            _enemyDeactivatedProvider.EnemyReleasedToPool += DeactivatedFromPool;
+            _projectileDeactivatedProvider.ProjectileDestroyed += DeactivatedProjectile;
         }
 
         public void Dispose()
         {
-            _enemyDeactivatedProvider.EnemyReleasedToPool -= OnEnemyDeactivated;
-            _projectileDeactivatedProvider.ProjectileDestroyed -= OnEnemyDeactivated;
+            _enemyDeactivatedProvider.EnemyReleasedToPool -= DeactivatedFromPool;
+            _projectileDeactivatedProvider.ProjectileDestroyed -= DeactivatedProjectile;
+        }
+
+        private void DeactivatedFromPool(Enemy enemy)
+        {
+            OnEnemyDeactivated(enemy);
+        }
+        
+        private void DeactivatedProjectile(Enemy enemy)
+        {
+            OnEnemyDeactivated(enemy);
         }
     
-        // Event Handle Methods
         private void OnEnemyDeactivated(Enemy enemy)
         {
             if (!_isActive)

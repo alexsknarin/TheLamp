@@ -14,9 +14,9 @@ namespace _GAME.Scripts.Enemies.DragonflyProjectileMoth
         [SerializeField] private float _startTransitionDistance = 2.0f;
         [SerializeField] private float _fleeTurnDuration = 0.5f;
         [SerializeField] private Vector3 _fleeGoalBase;
-        private bool _isAttacking = false;
-        private bool _isFalling = false;
-        private bool _isFleeing = false;
+        private bool _isAttacking;
+        private bool _isFalling;
+        private bool _isFleeing;
         private Vector3 _attackDirection;
         private float _currentAcceeleration = 0f;
         private Vector3 _sideGoal;
@@ -26,9 +26,9 @@ namespace _GAME.Scripts.Enemies.DragonflyProjectileMoth
         // Debug
         private Vector3 _previousPosition;
         private Vector3 _previousPositionRaw;
+
         public event Action FallEnded;
-
-
+        
         public void Initialize(Vector3 startPosition)
         {
             transform.position = startPosition;

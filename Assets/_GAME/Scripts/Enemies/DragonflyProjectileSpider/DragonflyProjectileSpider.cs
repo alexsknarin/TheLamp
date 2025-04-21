@@ -17,18 +17,23 @@ namespace _GAME.Scripts.Enemies.DragonflyProjectileSpider
     
         public override void Initialize()
         {
-            _presentation.Initialize();
-            Radius = _collisionRadius;
-            gameObject.SetActive(false);
-
             _movement.EnterAnimationEnded += OnEnterAnimationEndHandle;
             _movement.FallEnded += OnFallEndedHandle;
+            
+            Reset();
         }
 
         private void OnDestroy()
         {
             _movement.EnterAnimationEnded -= OnEnterAnimationEndHandle;
             _movement.FallEnded -= OnFallEndedHandle;
+        }
+
+        public void Reset()
+        {
+            _presentation.Initialize();
+            Radius = _collisionRadius;
+            gameObject.SetActive(false);
         }
 
         public void SetDirection(int direction)

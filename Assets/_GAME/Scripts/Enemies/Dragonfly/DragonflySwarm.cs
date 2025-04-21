@@ -31,6 +31,18 @@ namespace _GAME.Scripts.Enemies.Dragonfly
             _attackCount = 0;
         }
         
+        public void Reset()
+        {
+            for (int i = 0; i < _moths.Length; i++)
+            {
+                _moths[i].gameObject.SetActive(false);
+                _moths[i].Reset();
+            }
+            _localTime = 0f;
+            _isWaitingForAttack = false;
+            _attackCount = 0;
+        }
+        
         public void SetDuration(float duration)
         {
             _timeInterval = duration/3;
