@@ -1808,32 +1808,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _stateDebug: 
-  _maxHealth: 24
+  _maxHealth: 4
   _currentHealth: 0
   _movement: {fileID: 8953583610499858097}
   _visibleBodyTransform: {fileID: 7331037268719211253}
   _collisionProvider: {fileID: 2373099942957532617}
-  _hoverWaitMin: 0.5
-  _hoverWaitMax: 2
   _swarm: {fileID: 4085273778962474757}
   _swarmAttackDuration: 3.55
-  _patrolWaitMin: 0
-  _patrolWaitMax: 0.5
-  _patrolAttackZonesL: {fileID: 11400000, guid: 7e96f2076b5edb84ab43969652ed065f,
-    type: 2}
-  _patrolAttackZonesR: {fileID: 11400000, guid: ab3e3f64eabbf794aad6fbb0033308d3,
-    type: 2}
-  _tailAttackPositionBase: {x: -0.9991122, y: -0.7506288, z: -1.272415}
-  _patrolTailWaitMin: 0
-  _patrolTailWaitMax: 0.5
-  _spiderAttackPositionBase: {x: 0.68, y: -0.4, z: -0.62}
-  _spiderPatrolWaitMin: 1.05
-  _spiderPatrolWaitMax: 1.8
   _spider: {fileID: 3221089541326229784}
   _isCollidedWithLamp: 0
   _enterType: 0
   _patrolAttackMode: 0
   _postSpiderAttackMode: 0
+  _attackResult: 0
 --- !u!114 &8953583610499858097
 MonoBehaviour:
   m_ObjectHideFlags: 0

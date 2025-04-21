@@ -7,6 +7,7 @@ namespace _GAME.Scripts.Enemies.Dragonfly.FMovementStates
     [CreateAssetMenu(fileName = "FDragonflyAttackTailFailStateL", menuName = "FDragonflyMovementStates/FDragonflyAttackTailFailStateL")]
     public class FDragonflyAttackTailFailStateL : ScriptableObject, IState, ILeft
     {
+        private const int SideDirection = 1;
         [SerializeField] private float _duration = 2f;
         [SerializeField] private float _afterDelay = 1f;
         [SerializeField] private float _fallSpeed = 100f;
@@ -14,10 +15,9 @@ namespace _GAME.Scripts.Enemies.Dragonfly.FMovementStates
         [SerializeField] private float _moveAcceleration = 1.9f;
         [SerializeField] private AnimationCurve _rzMixCurve;
         [SerializeField] private float _rzMaxValue;
-        private float _localTime = 0f;
-        private float _phase = 0f;
-        private readonly int _sideDirection = 1;
-        private bool _isAfterDelay = false;
+        private float _localTime;
+        private float _phase;
+        private bool _isAfterDelay;
         private float _startRz;
         // Dependencies
         private Transform _visibleBodyTransform;
@@ -53,13 +53,12 @@ namespace _GAME.Scripts.Enemies.Dragonfly.FMovementStates
         
         
                 Vector3 rotation = _visibleBodyTransform.localEulerAngles;
-                rotation.y += _rotationSpeed * Time.deltaTime * _sideDirection;
+                rotation.y += _rotationSpeed * Time.deltaTime * SideDirection;
                 rotation.z = _startRz - _rzMixCurve.Evaluate(_phase) * _rzMaxValue;
                 _visibleBodyTransform.localEulerAngles = rotation;    
             }
         
             _localTime += Time.deltaTime;
-        
             CheckForStateChange();
         }
 

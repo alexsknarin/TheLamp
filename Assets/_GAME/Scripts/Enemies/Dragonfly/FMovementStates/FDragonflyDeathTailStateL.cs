@@ -7,15 +7,17 @@ namespace _GAME.Scripts.Enemies.Dragonfly.FMovementStates
     [CreateAssetMenu(fileName = "FDragonflyDeathTailStateL", menuName = "FDragonflyMovementStates/FDragonflyDeathTailStateL")]
     public class FDragonflyDeathTailStateL : ScriptableObject, IState, ILeft
     {
+        private const int SideDirection = 1;
         [SerializeField] private float _duration = 2f;
         [SerializeField] private float _afterDelay = 1f;
         [SerializeField] private float _fallSpeed = 100f;
         [SerializeField] private float _rotationSpeed = 380f;
-        [SerializeField] private float _moveAcceleration = 1.9f;
-        private readonly int _sideDirection = 1;
-        private float _localTime = 0f;
-        private float _phase = 0f;
-        private bool _isAfterDelay = false;
+        [SerializeField] private AnimationCurve _rzMixCurve;
+        [SerializeField] private float _rzMaxValue;
+        private float _localTime;
+        private float _phase;
+        private bool _isAfterDelay;
+        private float _startRz;
         // Dependencies
         private Transform _visibleBodyTransform;
         private Transform _baseTransform;
@@ -32,6 +34,7 @@ namespace _GAME.Scripts.Enemies.Dragonfly.FMovementStates
         public void Enter()
         {
             _visibleBodyTransform.SetParent(_baseTransform);
+            _startRz = _visibleBodyTransform.localEulerAngles.z;
             _localTime = 0f;
             _phase = 0f;
             _isAfterDelay = false;
@@ -42,15 +45,15 @@ namespace _GAME.Scripts.Enemies.Dragonfly.FMovementStates
         {
             if (!_isAfterDelay)
             {
-                Vector3 position = _visibleBodyTransform.position;
-                float fallSpeed = _fallSpeed * Mathf.Pow(_phase, _moveAcceleration);
-                position += Vector3.down * (fallSpeed * Time.deltaTime);
+                Vector3 position = _visibleBodyTransform.localPosition;
+                position += Vector3.down * (_fallSpeed * Time.deltaTime);
                 _visibleBodyTransform.localPosition = position;
         
         
                 Vector3 rotation = _visibleBodyTransform.localEulerAngles;
-                rotation.y += _rotationSpeed * Time.deltaTime * _sideDirection;
-                _visibleBodyTransform.localEulerAngles = rotation;    
+                rotation.y += _rotationSpeed * Time.deltaTime * SideDirection;
+                rotation.z = _startRz - _rzMixCurve.Evaluate(_phase) * _rzMaxValue;
+                _visibleBodyTransform.localEulerAngles = rotation;     
             }
         
             _localTime += Time.deltaTime;
