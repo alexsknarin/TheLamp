@@ -1,3 +1,4 @@
+using System;
 using _GAME.Scripts.Lib.Interfaces;
 using UnityEngine;
 
@@ -36,6 +37,9 @@ namespace _GAME.Scripts.Enemies.Generic.States
             _radius = radius;
             _verticalAmplitude = verticalAmplitude;
         }
+        
+        public event Action Started;
+        public event Action Ended;
 
         public override void Enter()
         {
@@ -54,6 +58,7 @@ namespace _GAME.Scripts.Enemies.Generic.States
         
             Position2D = Position2D;
             DepthDirection = (_cameraPosition - (Vector3)Position2D).normalized;
+            Started?.Invoke();
         }
 
         private void CalculateEndPos()
@@ -85,6 +90,11 @@ namespace _GAME.Scripts.Enemies.Generic.States
             {
                 IsReadyToSwitch = true;
             }
+        }
+        
+        public override void Exit()
+        {
+            Ended?.Invoke();
         }
     }
 }

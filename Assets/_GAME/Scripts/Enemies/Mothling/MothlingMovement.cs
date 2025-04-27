@@ -37,7 +37,7 @@ namespace _GAME.Scripts.Enemies.Mothling
         // Debug
         [SerializeField] private string _stateDebug;
         [SerializeField] private int _sideDirection = 1;
-        [SerializeField] private int _depthSideDirection = 0;
+        [SerializeField] private int _depthSideDirection;
         
         private float _collisionRadius = 0.075f;
         private Vector3 _position3D;
@@ -66,7 +66,9 @@ namespace _GAME.Scripts.Enemies.Mothling
         {
             _stateFactory = stateFactory;
         }
-
+        
+        public event Action EnterStateStarted;
+        public event Action EnterStateEnded;
         public event Action ReadyToAttackStateStarted;
         public event Action ReadyToAttackStateEnded;
         public event Action PreAttackStarted;
@@ -76,6 +78,8 @@ namespace _GAME.Scripts.Enemies.Mothling
     
         public Vector2 Position2D { get; private set; } 
         public Vector3 DepthDirection { get; private set; } 
+        public int DepthSideDirection => _depthSideDirection;
+        
 
         public override void Initialize()
         {
@@ -99,6 +103,8 @@ namespace _GAME.Scripts.Enemies.Mothling
             _spreadState = (FlyGenericMovementSpreadState)_stateFactory.Create(typeof(FlyGenericMovementSpreadState));
         
             // Subscribe to state events
+            _enterState.Started += OnEnterStateStarted;
+            _enterState.Ended += OnEnterStateEnded;
             _patrolState.Started += OnPatrolStateStarted;
             _patrolState.Ended += OnPatrolStateEnded;
             _preAttackState.Started += OnPreAttackStateStarted;
@@ -135,8 +141,12 @@ namespace _GAME.Scripts.Enemies.Mothling
             void At(IState from, IState to, Func<bool> condition) => _stateMachine.AddTransition(from, to, condition);
         }
 
+        
+
         private void OnDestroy()
         {
+            _enterState.Started += OnEnterStateStarted;
+            _enterState.Ended -= OnEnterStateEnded;
             _patrolState.Started -= OnPatrolStateStarted; 
             _patrolState.Ended -= OnPatrolStateEnded;
             _preAttackState.Started -= OnPreAttackStateStarted;
@@ -176,7 +186,7 @@ namespace _GAME.Scripts.Enemies.Mothling
         private void SetInitialDirections()
         {
             _sideDirection = RandomDirection.Generate();
-            _depthSideDirection = RandomDirection.Generate();
+            _depthSideDirection = -1;//RandomDirection.Generate();
         }
 
         public override void TriggerAttack()
@@ -354,6 +364,16 @@ namespace _GAME.Scripts.Enemies.Mothling
         {
             yield return _waitSmoothDamp;
             _smoothTimeAllowed = _smoothTime;
+        }
+        
+        private void OnEnterStateStarted()
+        {
+            EnterStateStarted?.Invoke();
+        }
+
+        private void OnEnterStateEnded()
+        {
+            EnterStateEnded?.Invoke();
         }
 
         private void OnPatrolStateStarted()

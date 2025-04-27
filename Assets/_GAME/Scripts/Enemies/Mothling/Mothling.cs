@@ -12,6 +12,7 @@ namespace _GAME.Scripts.Enemies.Mothling
         [SerializeField] private int _maxHealth = 1;
         [SerializeField] private int _currentHealth;
         [SerializeField] private float _collisionRadius = 0.075f;
+        [SerializeField] private bool _isCollisionRadiusVisible = true;
         [Header("-- Movement --")]
         [SerializeField] private MothlingMovement _movement;
     
@@ -108,12 +109,6 @@ namespace _GAME.Scripts.Enemies.Mothling
             _movement.TriggerFall();
         }
 
-        private void OnDrawGizmos()
-        {
-            Gizmos.color = Color.cyan;
-            Gizmos.DrawWireSphere(transform.position, _collisionRadius);
-        }
-
         private void OnSpreadStateEnded()
         {
             if (IsGameOver)
@@ -124,6 +119,17 @@ namespace _GAME.Scripts.Enemies.Mothling
             {
                 _movement.Play();
             }
+        }
+
+        private void OnDrawGizmos()
+        {
+            if (_isCollisionRadiusVisible)
+            {
+                Gizmos.color = Color.cyan;
+                Gizmos.DrawWireSphere(transform.position, _collisionRadius);
+                Gizmos.color = Color.white;
+            }
+            
         }
     }
 }
