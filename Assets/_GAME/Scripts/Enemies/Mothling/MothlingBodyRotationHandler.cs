@@ -18,11 +18,15 @@ namespace _GAME.Scripts.Enemies.Mothling
         private bool _isTransitionMode;
         private float _localTime;
 
+        private bool _isPreAttacking;
+
         public void Initialize()
         {
             _movement.EnterStateStarted += OnEnterStateStarted;
             _movement.EnterStateEnded += OnEnterStateEnded;
             _movement.DeathStateEnded += OnDeathStateEnded;
+            _movement.PreAttackStarted += OnPreAttackStarted;
+            _movement.PreAttackEnded += OnPreAttackEnded;
             
             Reset();
         }
@@ -32,6 +36,8 @@ namespace _GAME.Scripts.Enemies.Mothling
             _movement.EnterStateStarted -= OnEnterStateStarted;
             _movement.EnterStateEnded -= OnEnterStateEnded;
             _movement.DeathStateEnded -= OnDeathStateEnded;
+            _movement.PreAttackStarted -= OnPreAttackStarted;
+            _movement.PreAttackEnded -= OnPreAttackEnded;
         }
 
         public void Reset()
@@ -41,6 +47,18 @@ namespace _GAME.Scripts.Enemies.Mothling
             _isTransitionMode = false;
         }
 
+        private void OnPreAttackStarted()
+        {
+            _currentUpTarget = _enterUpTarget;
+            _isPreAttacking = true;
+        }
+
+        private void OnPreAttackEnded()
+        {
+            _currentUpTarget = _patrolUpTarget;
+            _isPreAttacking = false;
+        }
+
         private void Update()
         {
             if (_isTransitionMode)
@@ -48,7 +66,16 @@ namespace _GAME.Scripts.Enemies.Mothling
                 DoUpVectorTransition();
             }
             
-            Vector3 forwardVelocity = (transform.position - _previousPosition).normalized;
+            Vector3 forwardVelocity = Vector3.zero;
+            if (_isPreAttacking)
+            {
+                forwardVelocity = -transform.position.normalized;
+            }
+            else
+            {
+                forwardVelocity = (transform.position - _previousPosition).normalized;    
+            }
+            
             _previousPosition = transform.position;
         
             Vector3 up = _currentUpTarget - transform.position;
