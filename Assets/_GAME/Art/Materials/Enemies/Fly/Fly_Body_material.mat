@@ -103,6 +103,7 @@ Material:
     - _Blend: 0
     - _BlendModePreserveSpecular: 1
     - _BumpScale: 1
+    - _BurnEdgeSize: 0.08
     - _ClearCoatMask: 0
     - _ClearCoatSmoothness: 0
     - _CoatingSPecularStrength: 1
@@ -125,7 +126,9 @@ Material:
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
+    - _Health: 1
     - _Metallic: 0.783
+    - _NoiseSize: 41.4
     - _NormalStrength: 1
     - _OcclusionStrength: 1
     - _Parallax: 0.005
@@ -147,6 +150,7 @@ Material:
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 0.42452815, g: 1, b: 0.64586353, a: 1}
+    - _DamageColor: {r: 1.3977201, g: 0.04859414, b: 0, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _EyeSpecColor: {r: 0.472, g: 0.30483332, b: 0.22125, a: 1}
     - _PreAttackEmissionColor: {r: 2.958679, g: 0.07745238, b: 0.03098099, a: 1}
