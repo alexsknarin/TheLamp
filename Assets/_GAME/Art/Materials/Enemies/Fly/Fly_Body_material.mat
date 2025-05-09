@@ -110,7 +110,7 @@ Material:
     - _CoatingSpecularPower: 8
     - _CoatingSpecularStrength: 0.835
     - _CoatingSpecularWrap: 1.235
-    - _CoatingStrength: 0.141
+    - _CoatingStrength: 0.514
     - _Cull: 2
     - _Cutoff: 0.5
     - _DeathFade: 0
@@ -138,7 +138,7 @@ Material:
     - _ReceiveShadows: 1
     - _Smoothness: 0.774
     - _SmoothnessTextureChannel: 0
-    - _SpecRoughness: 0.412
+    - _SpecRoughness: 0.444
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _SrcBlendAlpha: 1
@@ -155,7 +155,7 @@ Material:
     - _EyeSpecColor: {r: 0.472, g: 0.30483332, b: 0.22125, a: 1}
     - _PreAttackEmissionColor: {r: 2.958679, g: 0.07745238, b: 0.03098099, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
-    - _TranslucenseColor: {r: 0.63522005, g: 0.3873057, b: 0.29763454, a: 1}
+    - _TranslucenseColor: {r: 0.792, g: 0.484, b: 0.37155557, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!114 &6199657214827425423
