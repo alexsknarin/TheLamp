@@ -33,7 +33,7 @@ namespace _GAME.Scripts.Enemies.Fly
         // Debug
         [SerializeField] private string _stateDebug;
         [SerializeField] private int _sideDirection = 1;
-        [SerializeField] private int _depthSideDirection = 0;
+        [SerializeField] private int _depthSideDirection;
         [Header("---- States Settings ----")]
         [SerializeField] private float _preAttackDuration = .35f;
         [SerializeField] private float _fallBounceForce = 2.3f;
@@ -67,11 +67,12 @@ namespace _GAME.Scripts.Enemies.Fly
         {
             _stateFactory = stateFactory;
         }
-    
+        
         public event Action ReadyToAttackStateStarted;
         public event Action ReadyToAttackStateEnded;
         public event Action PreAttackStarted;
         public event Action PreAttackEnded;
+        public event Action AttackEnded;
         public event Action DeathStateEnded;
         public event Action SpreadStateEnded;
 
@@ -79,6 +80,7 @@ namespace _GAME.Scripts.Enemies.Fly
         public Vector3 DepthDirection { get; private set; }
     
         public override int SideDirection => _sideDirection;
+        public int DepthSideDirection => _depthSideDirection;
     
         public override void Initialize()
         {
@@ -113,6 +115,7 @@ namespace _GAME.Scripts.Enemies.Fly
             _preAttackStateR.Ended += OnPreAttackStateEnded;
             _preAttackStateL.Started += OnPreAttackStateStarted;
             _preAttackStateL.Ended += OnPreAttackStateEnded;
+            _attackState.Ended += OnAttackStateEnded;
             _deathState.Ended += OnDeathStateEnded;
             _spreadState.Ended += OnSpreadStateEnded;
         
@@ -166,10 +169,11 @@ namespace _GAME.Scripts.Enemies.Fly
             _preAttackStateR.Ended -= OnPreAttackStateEnded;
             _preAttackStateL.Started -= OnPreAttackStateStarted;
             _preAttackStateL.Ended -= OnPreAttackStateEnded;
+            _attackState.Ended -= OnAttackStateEnded;
             _deathState.Ended -= OnDeathStateEnded;
             _spreadState.Ended -= OnSpreadStateEnded;
         }
-        
+
         public void SetCollisionRadius(float radius)
         {
             _collisionRadius = radius;
@@ -362,6 +366,11 @@ namespace _GAME.Scripts.Enemies.Fly
         {
             Debug.DrawLine(_prevPosition, _prevPosition + (_position3D-_prevPosition).normalized*0.02f, Color.cyan, 5f);
             Debug.DrawLine(_prevPosSmooth, _prevPosSmooth + (transform.position-_prevPosSmooth).normalized*0.02f, Color.yellow, 5f);
+        }
+
+        private void OnAttackStateEnded()
+        {
+            AttackEnded?.Invoke();
         }
 
         private void OnPatrolStateStarted()

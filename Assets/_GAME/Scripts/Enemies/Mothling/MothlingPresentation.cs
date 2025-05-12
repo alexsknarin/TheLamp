@@ -45,6 +45,7 @@ namespace _GAME.Scripts.Enemies.Mothling
         {
             _trailResetHandler.Initialize();
             _deathFlash.Initialize();
+            _mothlingBodyRotationHandler.Reset();
         }
 
         private void OnPreAttackStarted()
