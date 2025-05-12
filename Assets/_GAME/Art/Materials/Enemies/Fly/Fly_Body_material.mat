@@ -110,9 +110,10 @@ Material:
     - _CoatingSpecularPower: 8
     - _CoatingSpecularStrength: 0.835
     - _CoatingSpecularWrap: 1.235
-    - _CoatingStrength: 0.514
+    - _CoatingStrength: 0.744
     - _Cull: 2
     - _Cutoff: 0.5
+    - _DamageFade: 0
     - _DeathFade: 0
     - _DetailAlbedoMapScale: 1
     - _DetailNormalMapScale: 1
@@ -149,8 +150,9 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
+    - _BurnColor: {r: 2.9685528, g: 0.06613805, b: 0, a: 1}
     - _Color: {r: 0.42452815, g: 1, b: 0.64586353, a: 1}
-    - _DamageColor: {r: 1.3977201, g: 0.04859414, b: 0, a: 1}
+    - _DamageColor: {r: 3.6886055, g: 0.13172902, b: 0, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _EyeSpecColor: {r: 0.472, g: 0.30483332, b: 0.22125, a: 1}
     - _PreAttackEmissionColor: {r: 2.958679, g: 0.07745238, b: 0.03098099, a: 1}
