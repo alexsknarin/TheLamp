@@ -178,6 +178,7 @@ MonoBehaviour:
   _preAttackDuration: 0.35
   _fallBounceForce: 4
   _fallGravityForce: 0.2
+  _showGizmos: 0
 --- !u!114 &689169640329521570
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -338,6 +339,7 @@ MonoBehaviour:
   _movement: {fileID: 4281207078490050979}
   _bodyTransform: {fileID: 7698940028678681946}
   _enterUpTarget: {x: 0, y: 0.25, z: -4}
+  _forwardVelocityNoiseMix: 0.535
   _patrolUpTargetPositiveMin: {x: 0, y: 1, z: -0.63}
   _patrolUpTargetPositiveMax: {x: 0, y: 4, z: -0.63}
   _patrolUpTargetNegativeMin: {x: 0, y: -0.23, z: -2.31}
@@ -346,7 +348,8 @@ MonoBehaviour:
   _patrolPositiveMaxY: 1.12
   _patrolNegativeMinY: -1.2
   _patrolNegativeMaxY: 2
-  _attackUpTarget: {x: 0, y: 2.35, z: -2}
+  _forwardVelocitySmoothTime: 0.75
+  _attackUpTarget: {x: 0, y: 2.35, z: -2.9}
   _showGizmos: 1
 --- !u!1 &3878909750923478054
 GameObject:

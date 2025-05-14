@@ -7,6 +7,8 @@ namespace _GAME.Scripts.Enemies.Fly
         [SerializeField] private FlyMovement _movement;
         [SerializeField] private Transform _bodyTransform;
         [SerializeField] private Vector3 _enterUpTarget;
+        [Range(0f, 1f)]
+        [SerializeField] private float _forwardVelocityNoiseMix = 0f;
         [Header("Patrol UP")]
         [SerializeField] private Vector3 _patrolUpTargetPositiveMin;
         [SerializeField] private Vector3 _patrolUpTargetPositiveMax;
@@ -16,12 +18,16 @@ namespace _GAME.Scripts.Enemies.Fly
         [SerializeField] private float _patrolPositiveMaxY;
         [SerializeField] private float _patrolNegativeMinY;
         [SerializeField] private float _patrolNegativeMaxY;
+        [SerializeField] private float _forwardVelocitySmoothTime = 0.7f;
         [Header("Attack UP")]
         [SerializeField] private Vector3 _attackUpTarget;
         [Header(" ")]
         [SerializeField] private bool _showGizmos = true;
         private Vector3 _currentUpTarget;
         private Vector3 _previousPosition;
+        
+        private Vector3 _currentForwardVelocity;
+       
 
         private float _patrolUpPositiveAmplitude; 
         private float _patrolUpNegativeAmplitude; 
@@ -46,31 +52,26 @@ namespace _GAME.Scripts.Enemies.Fly
         {
             _patrolUpPositiveAmplitude = _patrolPositiveMaxY - _patrolPositiveMinY; 
             _patrolUpNegativeAmplitude = _patrolNegativeMaxY - _patrolNegativeMinY;
-            
-            _previousPosition = transform.position;
         }
 
         private void Update()
         {
-            // Generic Forward Velocity
-            Vector3 forwardVelocity;    
+            Vector3 currentPosition = Vector3.Lerp(_movement.Position3DRaw, transform.position, _forwardVelocityNoiseMix);
+            Vector3 previousPosition = Vector3.Lerp(_movement.PreviousPosition3DRaw, _previousPosition, _forwardVelocityNoiseMix);
             
-
             if (_isAttacking)
             {
-                forwardVelocity = -transform.position.normalized;
+                _currentForwardVelocity = -transform.position.normalized;
                 _currentUpTarget = _attackUpTarget;
             }
             else
             {
-                forwardVelocity = (transform.position - _previousPosition).normalized;
+                _currentForwardVelocity = (currentPosition - previousPosition).normalized;
                 _currentUpTarget = GetPatrolUpVectorTarget();    
             }
+            
             Vector3 up = _currentUpTarget - transform.position;
-            // up.z *= -_movement.DepthSideDirection; 
-            
-            _bodyTransform.LookAt(_bodyTransform.position + forwardVelocity, up);
-            
+            _bodyTransform.LookAt(_bodyTransform.position + _currentForwardVelocity, up);
             _previousPosition = transform.position;
         }
 
@@ -105,9 +106,6 @@ namespace _GAME.Scripts.Enemies.Fly
         {
             if (!_showGizmos) return;
             
-            // Gizmos.color = Color.red;
-            // Gizmos.DrawWireSphere(_enterUpTarget, 0.04f);
-
             Gizmos.color = Color.green;
             Gizmos.DrawWireSphere(_currentUpTarget, 0.04f);
             
