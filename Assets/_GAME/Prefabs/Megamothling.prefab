@@ -555,7 +555,9 @@ MonoBehaviour:
   _noise2Frequency: 1.33
   _noise2Amplitude: 0.013
   _isSmoothDampEnabled: 1
-  _smoothTime: 0.05
+  _smoothTime: 0.39
+  _attackSmoothTime: 0.05
+  _attackSmoothTransitionTime: 0.2
   _isDepthEnabled: 1
   _stateDebug: 
   _sideDirection: 1

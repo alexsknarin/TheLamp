@@ -28,6 +28,8 @@ namespace _GAME.Scripts.Enemies.Megamothling
         [Header("-- Smooth Damp Settings --")]
         [SerializeField] private bool _isSmoothDampEnabled;
         [SerializeField] private float _smoothTime = .3f;
+        [SerializeField] private float _attackSmoothTime = .05f;
+        [SerializeField] private float _attackSmoothTransitionTime = .1f;
         [Header("---- Depth Settings ----")]
         [SerializeField] bool _isDepthEnabled;
         // Debug
@@ -39,7 +41,8 @@ namespace _GAME.Scripts.Enemies.Megamothling
         [SerializeField] private float _fallGravityForce = .1f;
         private float _collisionRadius;
         private float _smoothTimeAllowed = 0;
-    
+        private float _attackSmoothTransitionLocalTime;
+        
         private Vector3 _position3D;
         // Debug only
         private Vector3 _prevPosition;
@@ -113,6 +116,7 @@ namespace _GAME.Scripts.Enemies.Megamothling
             _preAttackStateR.Started += OnPreAttackStateStarted;
             _preAttackStateL.Ended += OnPreAttackStateEnded;
             _preAttackStateR.Ended += OnPreAttackStateEnded;
+            _attackState.Started += OnAttackStateStarted;
             _deathState.Ended += OnDeathStateEnded;
         
             // Automatic State transitions
@@ -166,6 +170,7 @@ namespace _GAME.Scripts.Enemies.Megamothling
             _preAttackStateR.Started -= OnPreAttackStateStarted;
             _preAttackStateL.Ended -= OnPreAttackStateEnded;
             _preAttackStateR.Ended -= OnPreAttackStateEnded;
+            _attackState.Started -= OnAttackStateStarted;
             _deathState.Ended -= OnDeathStateEnded;
         }
 
@@ -238,7 +243,7 @@ namespace _GAME.Scripts.Enemies.Megamothling
             _stateDebug = _currentState.GetType().Name; // Debug only
             _stateMachine.SetState(_currentState);
         }
-    
+
         private void Update()
         {
             StashPreviousPositions();
@@ -324,11 +329,28 @@ namespace _GAME.Scripts.Enemies.Megamothling
         {
             if (_isSmoothDampEnabled)
             {
+                float currentSmoothTime = _smoothTimeAllowed;
+                
+                if (_currentState.Equals(_attackState))
+                {
+                    
+                    float transitionPhase = _attackSmoothTransitionLocalTime / _attackSmoothTransitionTime;
+                    if (transitionPhase > 1)
+                    {
+                        currentSmoothTime = _attackSmoothTime;
+                    }
+                    else
+                    {
+                        currentSmoothTime = Mathf.Lerp(_smoothTime, _attackSmoothTime, transitionPhase);
+                        _attackSmoothTransitionLocalTime += Time.deltaTime;    
+                    }
+                }
+                
                 transform.position = Vector3.SmoothDamp(
                     transform.position,
                     _position3D,
                     ref _velocity,
-                    _smoothTimeAllowed);
+                    currentSmoothTime);
             }
             else
             {
@@ -358,14 +380,14 @@ namespace _GAME.Scripts.Enemies.Megamothling
             spawnPosition.x *= direction;
             return spawnPosition;
         }
-    
+
         private void ApplyTransformToPosition2D()
         {
             Vector2 newPosition2D = Position2D;
             newPosition2D.x = Mathf.Abs(newPosition2D.x) * Mathf.Sign(transform.position.x);
             Position2D = newPosition2D;
         }
-    
+
         private IEnumerator SmoothDampDelay()
         {
             yield return _waitSmoothDamp;
@@ -390,6 +412,11 @@ namespace _GAME.Scripts.Enemies.Megamothling
         private void OnPreAttackStateEnded()
         {
             PreAttackEnded?.Invoke();
+        }
+
+        private void OnAttackStateStarted()
+        {
+            _attackSmoothTransitionLocalTime = 0;
         }
 
         private void OnDeathStateEnded()

@@ -1,3 +1,4 @@
+using System;
 using _GAME.Scripts.Lib.Interfaces;
 using UnityEngine;
 
@@ -31,6 +32,8 @@ namespace _GAME.Scripts.Enemies.Megamothling.MovementStates
             _positionDirectionProvider = positionDirectionProvider;
             _speed = speed;
         }
+        
+        public event Action Started;
     
         public override void Enter()
         {
