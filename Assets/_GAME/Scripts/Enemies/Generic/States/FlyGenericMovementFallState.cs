@@ -54,7 +54,7 @@ namespace _GAME.Scripts.Enemies.Generic.States
                          * (_fullLampCollisionRadius + _collisionRadius) 
                          + _lampPositionProviderService.GetLampPosition();
                      
-            DepthDirection = Vector3.zero;
+            DepthDirection = Vector3.Lerp(_positionDirectionProvider.DepthDirection, Vector3.zero, 0.2f);
         
             _bounceForce = position2DNormalized * _bounceForceMagnitude;
         

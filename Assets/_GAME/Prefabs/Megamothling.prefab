@@ -558,6 +558,8 @@ MonoBehaviour:
   _smoothTime: 0.39
   _attackSmoothTime: 0.05
   _attackSmoothTransitionTime: 0.2
+  _fallSmoothTime: 0.05
+  _fallSmoothTransitionTime: 0.1
   _isDepthEnabled: 1
   _stateDebug: 
   _sideDirection: 1
@@ -583,6 +585,7 @@ MonoBehaviour:
   _deathFlash: {fileID: 3911506502060828390}
   _healthIndication: {fileID: 7713113556221518775}
   _trailResetHandler: {fileID: 3160249216096790048}
+  _megamothlingBodyRotationHandler: {fileID: 1753445312540539101}
 --- !u!114 &2738434337644490967
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -672,7 +675,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d865f576c9bf8249a264c506d243002, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _movement: {fileID: 8402441229848806934}
   _bodyTransform: {fileID: 929595843417815311}
+  _smoothTime: 0.35
+  _attackSmoothTime: 0.01
+  _attackSmoothTransitionDuration: 0.1
+  _fallSmoothTime: 1
+  _fallSmoothTransitionDuration: 1
 --- !u!1001 &823084525879058148
 PrefabInstance:
   m_ObjectHideFlags: 0

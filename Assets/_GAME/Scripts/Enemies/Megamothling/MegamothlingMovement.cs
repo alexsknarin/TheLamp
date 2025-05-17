@@ -30,6 +30,8 @@ namespace _GAME.Scripts.Enemies.Megamothling
         [SerializeField] private float _smoothTime = .3f;
         [SerializeField] private float _attackSmoothTime = .05f;
         [SerializeField] private float _attackSmoothTransitionTime = .1f;
+        [SerializeField] private float _fallSmoothTime = .005f;
+        [SerializeField] private float _fallSmoothTransitionTime = .2f;
         [Header("---- Depth Settings ----")]
         [SerializeField] bool _isDepthEnabled;
         // Debug
@@ -41,7 +43,7 @@ namespace _GAME.Scripts.Enemies.Megamothling
         [SerializeField] private float _fallGravityForce = .1f;
         private float _collisionRadius;
         private float _smoothTimeAllowed = 0;
-        private float _attackSmoothTransitionLocalTime;
+        private float _smoothTransitionLocalTime;
         
         private Vector3 _position3D;
         // Debug only
@@ -75,6 +77,8 @@ namespace _GAME.Scripts.Enemies.Megamothling
         public event Action ReadyToAttackStateStarted;
         public event Action ReadyToAttackStateEnded;
         public event Action PreAttackStarted;
+        public event Action AttackStarted;
+        public event Action AttackEnded;
         public event Action PreAttackEnded;
         public event Action DeathStateEnded;
     
@@ -117,6 +121,7 @@ namespace _GAME.Scripts.Enemies.Megamothling
             _preAttackStateL.Ended += OnPreAttackStateEnded;
             _preAttackStateR.Ended += OnPreAttackStateEnded;
             _attackState.Started += OnAttackStateStarted;
+            _attackState.Ended += OnAttackStateEnded; 
             _deathState.Ended += OnDeathStateEnded;
         
             // Automatic State transitions
@@ -171,6 +176,7 @@ namespace _GAME.Scripts.Enemies.Megamothling
             _preAttackStateL.Ended -= OnPreAttackStateEnded;
             _preAttackStateR.Ended -= OnPreAttackStateEnded;
             _attackState.Started -= OnAttackStateStarted;
+            _attackState.Ended -= OnAttackStateEnded;
             _deathState.Ended -= OnDeathStateEnded;
         }
 
@@ -334,7 +340,7 @@ namespace _GAME.Scripts.Enemies.Megamothling
                 if (_currentState.Equals(_attackState))
                 {
                     
-                    float transitionPhase = _attackSmoothTransitionLocalTime / _attackSmoothTransitionTime;
+                    float transitionPhase = _smoothTransitionLocalTime / _attackSmoothTransitionTime;
                     if (transitionPhase > 1)
                     {
                         currentSmoothTime = _attackSmoothTime;
@@ -342,7 +348,21 @@ namespace _GAME.Scripts.Enemies.Megamothling
                     else
                     {
                         currentSmoothTime = Mathf.Lerp(_smoothTime, _attackSmoothTime, transitionPhase);
-                        _attackSmoothTransitionLocalTime += Time.deltaTime;    
+                        _smoothTransitionLocalTime += Time.deltaTime;    
+                    }
+                }
+                
+                if (_currentState.Equals(_fallState))
+                {
+                    float transitionPhase = _smoothTransitionLocalTime / _fallSmoothTransitionTime;
+                    if (transitionPhase > 1)
+                    {
+                        currentSmoothTime = _smoothTime;
+                    }
+                    else
+                    {
+                        currentSmoothTime = Mathf.Lerp(_fallSmoothTime, _smoothTime, transitionPhase);
+                        _smoothTransitionLocalTime += Time.deltaTime;    
                     }
                 }
                 
@@ -375,7 +395,6 @@ namespace _GAME.Scripts.Enemies.Megamothling
 
         private Vector2 GenerateSpawnPosition(int direction)
         {
-            // Vector2 spawnPosition = (Random.insideUnitCircle * _spawnAreaSize) + _spawnAreaCenter;
             Vector2 spawnPosition = _spawnAreaCenter;
             spawnPosition.x *= direction;
             return spawnPosition;
@@ -416,7 +435,14 @@ namespace _GAME.Scripts.Enemies.Megamothling
 
         private void OnAttackStateStarted()
         {
-            _attackSmoothTransitionLocalTime = 0;
+            _smoothTransitionLocalTime = 0;
+            AttackStarted?.Invoke();
+        }
+
+        private void OnAttackStateEnded()
+        {
+            _smoothTransitionLocalTime = 0;
+            AttackEnded?.Invoke();
         }
 
         private void OnDeathStateEnded()

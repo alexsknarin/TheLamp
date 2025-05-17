@@ -13,6 +13,7 @@ namespace _GAME.Scripts.Enemies.Megamothling
         [SerializeField] private DeathFlash _deathFlash;
         [SerializeField] private HealthIndication _healthIndication;
         [SerializeField] private TrailResetHandler _trailResetHandler;
+        [SerializeField] private MegamothlingBodyRotationHandler _megamothlingBodyRotationHandler;
     
         public void Initialize()
         {
@@ -20,6 +21,7 @@ namespace _GAME.Scripts.Enemies.Megamothling
             _damageFlash.Initialize();
             _deathFlash.Initialize();
             _healthIndication.Initialize();
+            _megamothlingBodyRotationHandler.Initialize();
         
             _movement.PreAttackStarted += OnPreAttackStarted;
             _movement.PreAttackEnded += OnPreAttackEnded;
