@@ -33,7 +33,6 @@ namespace _GAME.Scripts.Enemies.Megamothling
         // Debug
         [SerializeField] private string _stateDebug;
         [SerializeField] private int _sideDirection = 1;
-        [SerializeField] private int _depthSideDirection = 0;
         [Header("---- States Settings ----")]
         [SerializeField] private float _preAttackDuration = .45f;
         [SerializeField] private float _fallBounceForce = 2f;
@@ -54,6 +53,7 @@ namespace _GAME.Scripts.Enemies.Megamothling
         private EnemyMovementStateBase _currentState;
         private GenericIdleMovementState _idleState;
         private MegamothlingMovementEnterState _enterState;
+        private MegamothlingMovementReturnState _returnState;
         private FlyGenericMovementPatrolState  _patrolState;
         private FlyGenericMovementPreAttackStateL _preAttackStateL;
         private FlyGenericMovementPreAttackStateR _preAttackStateR;
@@ -98,6 +98,7 @@ namespace _GAME.Scripts.Enemies.Megamothling
             );
             _idleState = (GenericIdleMovementState)_stateFactory.Create(typeof(GenericIdleMovementState));
             _enterState = (MegamothlingMovementEnterState)_stateFactory.Create(typeof(MegamothlingMovementEnterState));
+            _returnState = (MegamothlingMovementReturnState)_stateFactory.Create(typeof(MegamothlingMovementReturnState));
             _patrolState = (FlyGenericMovementPatrolState)_stateFactory.Create(typeof(FlyGenericMovementPatrolState));
             _preAttackStateL = (FlyGenericMovementPreAttackStateL)_stateFactory.Create(typeof(FlyGenericMovementPreAttackStateL));
             _preAttackStateR = (FlyGenericMovementPreAttackStateR)_stateFactory.Create(typeof(FlyGenericMovementPreAttackStateR));
@@ -120,7 +121,8 @@ namespace _GAME.Scripts.Enemies.Megamothling
             At(_patrolState, _preAttackStateL, IsAttackStartedL());
             At(_preAttackStateR, _attackState, () => _preAttackStateR.IsReadyToSwitch);
             At(_preAttackStateL, _attackState, () => _preAttackStateL.IsReadyToSwitch);
-            At(_fallState, _enterState, IsFallEnded());
+            At(_fallState, _returnState, IsFallEnded());
+            At(_returnState, _patrolState, () => _returnState.IsReadyToSwitch);
         
             // Predicates
             Func<bool> IsAttackStartedR() => () =>
@@ -193,7 +195,6 @@ namespace _GAME.Scripts.Enemies.Megamothling
         private void SetInitialDirections()
         {
             _sideDirection = RandomDirection.Generate();
-            _depthSideDirection = RandomDirection.Generate();
         }
 
         public override void TriggerAttack()
@@ -259,6 +260,7 @@ namespace _GAME.Scripts.Enemies.Megamothling
         
             // Apply side direction Only for States that require Left/Right mirroring
             if (_currentState.Equals(_enterState)||
+                _currentState.Equals(_returnState)||
                 _currentState.Equals(_patrolState))
             {
                 _position3D.x *= _sideDirection;            
@@ -288,6 +290,12 @@ namespace _GAME.Scripts.Enemies.Megamothling
             Vector3 trajectoryNoise1 = TrajectoryNoise.Generate(_noise1Frequency);
             Vector3 trajectoryNoise2 = TrajectoryNoise.Generate(_noise2Frequency);
 
+            if (_currentState.Equals(_enterState))
+            {
+                trajectoryNoise1 *= 0.2f;
+                trajectoryNoise2 *= 0.2f;
+            }
+            
             if (_currentState.Equals(_attackState))
             {
                 float noiseMultiplier = 0.5f;
@@ -309,15 +317,7 @@ namespace _GAME.Scripts.Enemies.Megamothling
 
         private void AddDepth()
         {
-            int depthDirection = _depthSideDirection;
-            // Always Jump forward in depth for Attack
-            if (_currentState.Equals(_preAttackStateL) 
-                || _currentState.Equals(_preAttackStateR) 
-                || _currentState.Equals(_attackState))
-            {
-                depthDirection = 1;
-            }
-            _position3D += _currentState.DepthDirection * depthDirection;
+            _position3D += -_currentState.DepthDirection;
         }
 
         private void ApplySmoothDampIfEnabled()
@@ -353,7 +353,8 @@ namespace _GAME.Scripts.Enemies.Megamothling
 
         private Vector2 GenerateSpawnPosition(int direction)
         {
-            Vector2 spawnPosition = (Random.insideUnitCircle * _spawnAreaSize) + _spawnAreaCenter;
+            // Vector2 spawnPosition = (Random.insideUnitCircle * _spawnAreaSize) + _spawnAreaCenter;
+            Vector2 spawnPosition = _spawnAreaCenter;
             spawnPosition.x *= direction;
             return spawnPosition;
         }

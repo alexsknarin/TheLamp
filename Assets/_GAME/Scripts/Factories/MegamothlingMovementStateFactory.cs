@@ -63,7 +63,19 @@ namespace _GAME.Scripts.Factories
                     _positionDirectionProvider,
                     _speed,
                     _radius,
-                    _verticalAmplitude
+                    _verticalAmplitude,
+                    true
+                );
+            }
+            if (stateType == typeof(MegamothlingMovementReturnState))
+            {
+                return new MegamothlingMovementReturnState(
+                    _cameraTransform.position,
+                    _positionDirectionProvider,
+                    _speed,
+                    _radius,
+                    _verticalAmplitude,
+                    false
                 );
             }
             if (stateType == typeof(FlyGenericMovementPatrolState))

@@ -131,7 +131,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &6223620985770024484
 Transform:
   m_ObjectHideFlags: 0
@@ -287,7 +287,7 @@ TrailRenderer:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 1
+        value: 0.57159716
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -296,7 +296,7 @@ TrailRenderer:
         outWeight: 0.33333334
       - serializedVersion: 3
         time: 1
-        value: 0.32943726
+        value: 0.24279785
         inSlope: -1.0695319
         outSlope: -1.0695319
         tangentMode: 0
@@ -488,6 +488,7 @@ GameObject:
   - component: {fileID: 3911506502060828390}
   - component: {fileID: 7713113556221518775}
   - component: {fileID: 3160249216096790048}
+  - component: {fileID: 1753445312540539101}
   m_Layer: 0
   m_Name: Megamothling
   m_TagString: Untagged
@@ -508,6 +509,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 929595843417815311}
   - {fileID: 6223620985770024484}
   - {fileID: 3058865550652191627}
   - {fileID: 9050098559189834620}
@@ -542,22 +544,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1a4591e51bff214ab6432e5c1d12b05, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _speed: 0.77
+  _speed: 0.69
   _radius: 1.55
   _verticalAmplitude: 0.93
   _spawnAreaSize: 0.5
-  _spawnAreaCenter: {x: 3.6, y: -2.6}
+  _spawnAreaCenter: {x: 6, y: -3.1}
   _isNoiseEnabled: 1
   _noise1Frequency: 3
-  _noise1Amplitude: 0.05
+  _noise1Amplitude: 0.03
   _noise2Frequency: 1.33
-  _noise2Amplitude: 0.22
+  _noise2Amplitude: 0.013
   _isSmoothDampEnabled: 1
   _smoothTime: 0.05
   _isDepthEnabled: 1
   _stateDebug: 
   _sideDirection: 1
-  _depthSideDirection: 0
   _preAttackDuration: 0.45
   _fallBounceForce: 2
   _fallGravityForce: 0.1
@@ -592,7 +593,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d2e420a26cc356d4ba375c424a8b4a47, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _meshRenderer: {fileID: 5326005827175476531}
+  _meshRenderer:
+  - {fileID: 0}
   _enableTrailRenderer: 0
   _trailRenderer: {fileID: 9072531336393722836}
 --- !u!114 &8877426567015591888
@@ -607,7 +609,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 82b48caa50618aa45b9af6764f270329, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _meshRenderer: {fileID: 5326005827175476531}
+  _meshRenderer:
+  - {fileID: 0}
   _duration: 0.3
   _damageParticles: {fileID: 6140194451073794433}
 --- !u!114 &3911506502060828390
@@ -622,7 +625,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e8cdd3d044552e4f816511262c284c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _meshRenderer: {fileID: 5326005827175476531}
+  _meshRenderer:
+  - {fileID: 0}
   _duration: 3
   _deathParticles: {fileID: 6394648434549209939}
   _damageParticles: {fileID: 6140194451073794433}
@@ -638,7 +642,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c80910c756ff15447bcf47d84e0824bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _meshRenderer: {fileID: 5326005827175476531}
+  _meshRenderer:
+  - {fileID: 0}
   _remapMax: 0.801
 --- !u!114 &3160249216096790048
 MonoBehaviour:
@@ -653,3 +658,115 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _trailRenderer: {fileID: 9072531336393722836}
+--- !u!114 &1753445312540539101
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5720971850132087257}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4d865f576c9bf8249a264c506d243002, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _bodyTransform: {fileID: 929595843417815311}
+--- !u!1001 &823084525879058148
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 875900995518163745}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: ee1147ef9cf8de44f8c37f31047bdc0d,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.38
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: ee1147ef9cf8de44f8c37f31047bdc0d,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.38
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: ee1147ef9cf8de44f8c37f31047bdc0d,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.38
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: ee1147ef9cf8de44f8c37f31047bdc0d,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: ee1147ef9cf8de44f8c37f31047bdc0d,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: ee1147ef9cf8de44f8c37f31047bdc0d,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: ee1147ef9cf8de44f8c37f31047bdc0d,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: ee1147ef9cf8de44f8c37f31047bdc0d,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: ee1147ef9cf8de44f8c37f31047bdc0d,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: ee1147ef9cf8de44f8c37f31047bdc0d,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: ee1147ef9cf8de44f8c37f31047bdc0d,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: ee1147ef9cf8de44f8c37f31047bdc0d,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: ee1147ef9cf8de44f8c37f31047bdc0d,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: ee1147ef9cf8de44f8c37f31047bdc0d,
+        type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: ee1147ef9cf8de44f8c37f31047bdc0d,
+        type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 11b2367fff3ee15429dbf1ef17e24b28, type: 2}
+    - target: {fileID: 919132149155446097, guid: ee1147ef9cf8de44f8c37f31047bdc0d,
+        type: 3}
+      propertyPath: m_Name
+      value: Megamothling_v01
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: ee1147ef9cf8de44f8c37f31047bdc0d, type: 3}
+--- !u!4 &929595843417815311 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: ee1147ef9cf8de44f8c37f31047bdc0d,
+    type: 3}
+  m_PrefabInstance: {fileID: 823084525879058148}
+  m_PrefabAsset: {fileID: 0}
