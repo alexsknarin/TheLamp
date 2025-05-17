@@ -530,7 +530,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _maxHealth: 10
   _currentHealth: 0
-  _collisionRadius: 0.175
+  _collisionRadius: 0.22
   _movement: {fileID: 8402441229848806934}
 --- !u!114 &8402441229848806934
 MonoBehaviour:
@@ -544,7 +544,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1a4591e51bff214ab6432e5c1d12b05, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _speed: 0.69
+  _speed: 0.6
   _radius: 1.55
   _verticalAmplitude: 0.93
   _spawnAreaSize: 0.5
@@ -682,17 +682,17 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: ee1147ef9cf8de44f8c37f31047bdc0d,
         type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.38
+      value: 0.44
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: ee1147ef9cf8de44f8c37f31047bdc0d,
         type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.38
+      value: 0.44
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: ee1147ef9cf8de44f8c37f31047bdc0d,
         type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.38
+      value: 0.44
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: ee1147ef9cf8de44f8c37f31047bdc0d,
         type: 3}
