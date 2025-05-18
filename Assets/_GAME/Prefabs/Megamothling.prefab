@@ -760,16 +760,66 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: -8318018186243212284, guid: ee1147ef9cf8de44f8c37f31047bdc0d,
+        type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: ae952723e1551d84599ec8c5769f3b64, type: 2}
+    - target: {fileID: -8153278338899792561, guid: ee1147ef9cf8de44f8c37f31047bdc0d,
+        type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: ae952723e1551d84599ec8c5769f3b64, type: 2}
     - target: {fileID: -7511558181221131132, guid: ee1147ef9cf8de44f8c37f31047bdc0d,
         type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 11b2367fff3ee15429dbf1ef17e24b28, type: 2}
+    - target: {fileID: -4233490169348012416, guid: ee1147ef9cf8de44f8c37f31047bdc0d,
+        type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: a97f74e52042a6a4faab15cf59ae9b3e, type: 2}
+    - target: {fileID: -3077950381130128232, guid: ee1147ef9cf8de44f8c37f31047bdc0d,
+        type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: ae952723e1551d84599ec8c5769f3b64, type: 2}
+    - target: {fileID: -1235120344035260936, guid: ee1147ef9cf8de44f8c37f31047bdc0d,
+        type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: ae952723e1551d84599ec8c5769f3b64, type: 2}
+    - target: {fileID: -1183565440036914458, guid: ee1147ef9cf8de44f8c37f31047bdc0d,
+        type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: a97f74e52042a6a4faab15cf59ae9b3e, type: 2}
+    - target: {fileID: -227657298994682283, guid: ee1147ef9cf8de44f8c37f31047bdc0d,
+        type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: ae952723e1551d84599ec8c5769f3b64, type: 2}
     - target: {fileID: 919132149155446097, guid: ee1147ef9cf8de44f8c37f31047bdc0d,
         type: 3}
       propertyPath: m_Name
       value: Megamothling_v01
       objectReference: {fileID: 0}
+    - target: {fileID: 1912801936262029496, guid: ee1147ef9cf8de44f8c37f31047bdc0d,
+        type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: ae952723e1551d84599ec8c5769f3b64, type: 2}
+    - target: {fileID: 8190054779772378537, guid: ee1147ef9cf8de44f8c37f31047bdc0d,
+        type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: a97f74e52042a6a4faab15cf59ae9b3e, type: 2}
+    - target: {fileID: 8319631332475457504, guid: ee1147ef9cf8de44f8c37f31047bdc0d,
+        type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: a97f74e52042a6a4faab15cf59ae9b3e, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
