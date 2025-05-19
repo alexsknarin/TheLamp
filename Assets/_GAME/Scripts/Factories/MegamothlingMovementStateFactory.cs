@@ -88,18 +88,18 @@ namespace _GAME.Scripts.Factories
                     _verticalAmplitude
                 );
             }
-            if (stateType == typeof(FlyGenericMovementPreAttackStateL))
+            if (stateType == typeof(MegamothlingMovementPreAttackStateL))
             {
-                return new FlyGenericMovementPreAttackStateL(
+                return new MegamothlingMovementPreAttackStateL(
                     _cameraTransform.position,
                     _positionDirectionProvider,
                     _speed,
                     _preAttackDuration
                 );
             }
-            if (stateType == typeof(FlyGenericMovementPreAttackStateR))
+            if (stateType == typeof(MegamothlingMovementPreAttackStateR))
             {
-                return new FlyGenericMovementPreAttackStateR(
+                return new MegamothlingMovementPreAttackStateR(
                     _cameraTransform.position,
                     _positionDirectionProvider,
                     _speed,

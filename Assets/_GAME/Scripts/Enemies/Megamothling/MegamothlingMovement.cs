@@ -60,8 +60,8 @@ namespace _GAME.Scripts.Enemies.Megamothling
         private MegamothlingMovementEnterState _enterState;
         private MegamothlingMovementReturnState _returnState;
         private FlyGenericMovementPatrolState  _patrolState;
-        private FlyGenericMovementPreAttackStateL _preAttackStateL;
-        private FlyGenericMovementPreAttackStateR _preAttackStateR;
+        private MegamothlingMovementPreAttackStateL _preAttackStateL;
+        private MegamothlingMovementPreAttackStateR _preAttackStateR;
         private MegamothlingMovementAttackState _attackState;
         private FlyGenericMovementFallState _fallState;
         private MegamothlingMovementDeathState _deathState;
@@ -107,8 +107,8 @@ namespace _GAME.Scripts.Enemies.Megamothling
             _enterState = (MegamothlingMovementEnterState)_stateFactory.Create(typeof(MegamothlingMovementEnterState));
             _returnState = (MegamothlingMovementReturnState)_stateFactory.Create(typeof(MegamothlingMovementReturnState));
             _patrolState = (FlyGenericMovementPatrolState)_stateFactory.Create(typeof(FlyGenericMovementPatrolState));
-            _preAttackStateL = (FlyGenericMovementPreAttackStateL)_stateFactory.Create(typeof(FlyGenericMovementPreAttackStateL));
-            _preAttackStateR = (FlyGenericMovementPreAttackStateR)_stateFactory.Create(typeof(FlyGenericMovementPreAttackStateR));
+            _preAttackStateL = (MegamothlingMovementPreAttackStateL)_stateFactory.Create(typeof(MegamothlingMovementPreAttackStateL));
+            _preAttackStateR = (MegamothlingMovementPreAttackStateR)_stateFactory.Create(typeof(MegamothlingMovementPreAttackStateR));
             _attackState = (MegamothlingMovementAttackState)_stateFactory.Create(typeof(MegamothlingMovementAttackState));
             _fallState = (FlyGenericMovementFallState)_stateFactory.Create(typeof(FlyGenericMovementFallState));
             _deathState = (MegamothlingMovementDeathState)_stateFactory.Create(typeof(MegamothlingMovementDeathState));

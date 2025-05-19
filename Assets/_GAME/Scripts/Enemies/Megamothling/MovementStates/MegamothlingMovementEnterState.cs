@@ -9,6 +9,8 @@ namespace _GAME.Scripts.Enemies.Megamothling.MovementStates
         private const float ReturnDepthMultiplier = 2.0f;
         private const float FirstEnterDepthAdjustDuration = 0.1f;
         private const float ReturnDepthAdjustDuration = 0.45f;
+        private const float SpeedMultiplier = 1.5f;
+        
         
         // Dependencies
         private readonly Vector3 _cameraPosition;
@@ -38,7 +40,7 @@ namespace _GAME.Scripts.Enemies.Megamothling.MovementStates
         {
             _cameraPosition = cameraPosition;
             _positionDirectionProvider = positionDirectionProvider;
-            _speed = speed;
+            _speed = speed * SpeedMultiplier;
             _radius = radius;
             _verticalAmplitude = verticalAmplitude;
             _isFirstEnter = isFirstEnter;
