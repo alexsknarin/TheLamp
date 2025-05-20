@@ -489,6 +489,7 @@ GameObject:
   - component: {fileID: 7713113556221518775}
   - component: {fileID: 3160249216096790048}
   - component: {fileID: 1753445312540539101}
+  - component: {fileID: 7354382314626024235}
   m_Layer: 0
   m_Name: Megamothling
   m_TagString: Untagged
@@ -689,6 +690,20 @@ MonoBehaviour:
   _patrolUpYPositionMax: 1.844
   _noiseMagnitude: 0.33
   _noiseFrequency: 8
+--- !u!114 &7354382314626024235
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5720971850132087257}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e1dab4b12ef6d643b237f07b18502ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _legsTransform: {fileID: 4350416421440597675}
+  _bodyTransform: {fileID: 929595843417815311}
 --- !u!1001 &823084525879058148
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -974,6 +989,12 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!4 &4350416421440597675 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -5245594413394399153, guid: ee1147ef9cf8de44f8c37f31047bdc0d,
+    type: 3}
+  m_PrefabInstance: {fileID: 823084525879058148}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &5027669034880812383 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -3555045059677578309, guid: ee1147ef9cf8de44f8c37f31047bdc0d,
