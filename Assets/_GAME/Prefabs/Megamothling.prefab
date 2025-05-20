@@ -679,9 +679,13 @@ MonoBehaviour:
   _bodyTransform: {fileID: 929595843417815311}
   _rotationState: 0
   _patrolSmoothTime: 0.39
-  _attackSmoothTime: 0.01
-  _attackSmoothTransitionDuration: 0.1
-  _fallSmoothTransitionDuration: 1
+  _preAttackDuration: 0.51
+  _enterUpTarget: {x: 0, y: -1.12, z: -3.7}
+  _enterTransitionDuration: 0.5
+  _patrolUpTargetMin: {x: 0, y: 0.1, z: -0.1}
+  _patrolUpTargetMax: {x: 0, y: 2, z: -0.5}
+  _patrolUpYPositionMin: -1.19
+  _patrolUpYPositionMax: 1.844
 --- !u!1001 &823084525879058148
 PrefabInstance:
   m_ObjectHideFlags: 0

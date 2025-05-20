@@ -57,16 +57,16 @@ namespace _GAME.Scripts.Enemies.Megamothling.MovementStates
             if (_localTime < _duration)
             {
                 Position2D += _direction * (_speed * Time.deltaTime * (Mathf.PI / 2) * _acceleratedSpeed);
+                Position2D += Position2D.normalized * (_speed * Time.deltaTime);
+                
                 DepthDirection = -(_cameraPosition - (Vector3)Position2D).normalized * DepthMultiplier;
                 _acceleratedSpeed *= _acceleration;
             }
 
             if (_localTime > _duration)
             {
-                if (_localTime > _duration + PostPause)
-                {
-                    IsReadyToSwitch = true;
-                }
+                IsReadyToSwitch = true;
+                return;
             }
             
             _localTime += Time.deltaTime;
