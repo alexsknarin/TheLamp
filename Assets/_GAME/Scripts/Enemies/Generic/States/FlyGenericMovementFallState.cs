@@ -1,3 +1,4 @@
+using System;
 using _GAME.Scripts.Lib.Interfaces;
 using UnityEngine;
 
@@ -44,6 +45,8 @@ namespace _GAME.Scripts.Enemies.Generic.States
         
             _ySwitchDistance = -_radius * _verticalAmplitude * 1.1f;
         }
+        
+        public event Action Ended;
     
         public override void Enter()
         {
@@ -79,6 +82,11 @@ namespace _GAME.Scripts.Enemies.Generic.States
             {
                 IsReadyToSwitch = true;
             }
+        }
+        
+        public override void Exit()
+        {
+            Ended?.Invoke();
         }
     }
 }

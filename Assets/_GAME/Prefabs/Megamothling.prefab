@@ -586,6 +586,7 @@ MonoBehaviour:
   _healthIndication: {fileID: 7713113556221518775}
   _trailResetHandler: {fileID: 3160249216096790048}
   _megamothlingBodyRotationHandler: {fileID: 1753445312540539101}
+  _legsAnimator: {fileID: 4972576478363207920}
 --- !u!114 &2738434337644490967
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -870,6 +871,10 @@ PrefabInstance:
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: -3181452503744645242, guid: ee1147ef9cf8de44f8c37f31047bdc0d,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4972576478363207920}
     - targetCorrespondingSourceObject: {fileID: 3198896233827727512, guid: ee1147ef9cf8de44f8c37f31047bdc0d,
         type: 3}
       insertIndex: -1
@@ -1007,3 +1012,31 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _wingTransform: {fileID: 342564919735280285}
+--- !u!1 &6392044719221877090 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -3181452503744645242, guid: ee1147ef9cf8de44f8c37f31047bdc0d,
+    type: 3}
+  m_PrefabInstance: {fileID: 823084525879058148}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &4972576478363207920
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6392044719221877090}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 92500a773e088bd40b7d70c7087a69e5, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0

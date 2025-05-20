@@ -80,6 +80,7 @@ namespace _GAME.Scripts.Enemies.Megamothling
         public event Action AttackStarted;
         public event Action AttackEnded;
         public event Action PreAttackEnded;
+        public event Action FallStateEnded;
         public event Action DeathStateEnded;
     
         public Vector2 Position2D { get; private set; } 
@@ -121,7 +122,8 @@ namespace _GAME.Scripts.Enemies.Megamothling
             _preAttackStateL.Ended += OnPreAttackStateEnded;
             _preAttackStateR.Ended += OnPreAttackStateEnded;
             _attackState.Started += OnAttackStateStarted;
-            _attackState.Ended += OnAttackStateEnded; 
+            _attackState.Ended += OnAttackStateEnded;
+            _fallState.Ended += OnFallStateEnded;
             _deathState.Ended += OnDeathStateEnded;
         
             // Automatic State transitions
@@ -177,6 +179,7 @@ namespace _GAME.Scripts.Enemies.Megamothling
             _preAttackStateR.Ended -= OnPreAttackStateEnded;
             _attackState.Started -= OnAttackStateStarted;
             _attackState.Ended -= OnAttackStateEnded;
+            _fallState.Ended -= OnFallStateEnded;
             _deathState.Ended -= OnDeathStateEnded;
         }
 
@@ -443,6 +446,11 @@ namespace _GAME.Scripts.Enemies.Megamothling
         {
             _smoothTransitionLocalTime = 0;
             AttackEnded?.Invoke();
+        }
+
+        private void OnFallStateEnded()
+        {
+            FallStateEnded?.Invoke();
         }
 
         private void OnDeathStateEnded()
