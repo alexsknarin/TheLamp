@@ -110,9 +110,9 @@ Material:
     - _BumpScale: 1
     - _ClearCoatMask: 0
     - _ClearCoatSmoothness: 0
-    - _CracksAmountB: 0.125
-    - _CracksAmountL: 0.125
-    - _CracksAmountR: 0.125
+    - _CracksAmountB: 0.875
+    - _CracksAmountL: 0.375
+    - _CracksAmountR: 0.375
     - _CracksAmountR_1: 0
     - _CracksAmountR_2: 0
     - _Cull: 2
@@ -135,22 +135,22 @@ Material:
     - _EdgeEmission: 0.739
     - _EdgeEmissionPower: 6.11
     - _EdgeEmissionStrength: 1.54
-    - _EmissionStrength: 1.540059
+    - _EmissionStrength: 0.9798706
     - _EnvironmentReflections: 1
     - _GlassIOR: -0.21
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
     - _GlowEmissionStrength: 11.7
-    - _ImpactPoint01GlobalAngle: 0.78750855
-    - _ImpactPoint01LocalAngle: 2.8969073
-    - _ImpactPoint01Strength: 0.33
-    - _ImpactPoint02GlobalAngle: 4.0958805
-    - _ImpactPoint02LocalAngle: 1.1508403
-    - _ImpactPoint02Strength: 0.66
-    - _ImpactPoint03GlobalAngle: 2.1349134
-    - _ImpactPoint03LocalAngle: 5.8761735
-    - _ImpactPoint03Strength: 1
+    - _ImpactPoint01GlobalAngle: 5.0929346
+    - _ImpactPoint01LocalAngle: 1.7523737
+    - _ImpactPoint01Strength: 1
+    - _ImpactPoint02GlobalAngle: 3.4983008
+    - _ImpactPoint02LocalAngle: 2.8019133
+    - _ImpactPoint02Strength: 0.33
+    - _ImpactPoint03GlobalAngle: 4.436852
+    - _ImpactPoint03LocalAngle: 0.18068433
+    - _ImpactPoint03Strength: 0.66
     - _Metallic: 0
     - _OcclusionStrength: 1
     - _PamagePoint01LocalAngle: 0
