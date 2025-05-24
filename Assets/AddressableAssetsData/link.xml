@@ -69,6 +69,7 @@
     <type fullname="_GAME.Scripts.Enemies.FireFly.FireFly" preserve="all" />
     <type fullname="_GAME.Scripts.Enemies.FireFly.FireFlyPresentation" preserve="all" />
     <type fullname="_GAME.Scripts.Enemies.Fly.Fly" preserve="all" />
+    <type fullname="_GAME.Scripts.Enemies.Fly.FlyBodyRotationHandler" preserve="all" />
     <type fullname="_GAME.Scripts.Enemies.Fly.FlyMovement" preserve="all" />
     <type fullname="_GAME.Scripts.Enemies.Fly.FlyPresentation" preserve="all" />
     <type fullname="_GAME.Scripts.Enemies.Generic.Presentation.DamageEmitParticles" preserve="all" />
@@ -84,12 +85,16 @@
     <type fullname="_GAME.Scripts.Enemies.Megabeetle.MegabeetleMovement" preserve="all" />
     <type fullname="_GAME.Scripts.Enemies.Megabeetle.MegabeetlePresentation" preserve="all" />
     <type fullname="_GAME.Scripts.Enemies.Megamothling.Megamothling" preserve="all" />
+    <type fullname="_GAME.Scripts.Enemies.Megamothling.MegamothlingBodyRotationHandler" preserve="all" />
+    <type fullname="_GAME.Scripts.Enemies.Megamothling.MegamothlingFurMovement" preserve="all" />
+    <type fullname="_GAME.Scripts.Enemies.Megamothling.MegamothlingLegsGravity" preserve="all" />
     <type fullname="_GAME.Scripts.Enemies.Megamothling.MegamothlingMovement" preserve="all" />
     <type fullname="_GAME.Scripts.Enemies.Megamothling.MegamothlingPresentation" preserve="all" />
     <type fullname="_GAME.Scripts.Enemies.Moth.Moth" preserve="all" />
     <type fullname="_GAME.Scripts.Enemies.Moth.MothMovement" preserve="all" />
     <type fullname="_GAME.Scripts.Enemies.Moth.MothPresentation" preserve="all" />
     <type fullname="_GAME.Scripts.Enemies.Mothling.Mothling" preserve="all" />
+    <type fullname="_GAME.Scripts.Enemies.Mothling.MothlingBodyRotationHandler" preserve="all" />
     <type fullname="_GAME.Scripts.Enemies.Mothling.MothlingMovement" preserve="all" />
     <type fullname="_GAME.Scripts.Enemies.Mothling.MothlingPresentation" preserve="all" />
     <type fullname="_GAME.Scripts.Enemies.Spider.Spider" preserve="all" />
@@ -102,6 +107,7 @@
     <type fullname="_GAME.Scripts.Enemies.Wasp.WaspPresentation" preserve="all" />
     <type fullname="_GAME.Scripts.InGamePresentation.FX.FireflyExplosion" preserve="all" />
     <type fullname="_GAME.Scripts.Lib.TrailResetHandler" preserve="all" />
+    <type fullname="WingNormalDirectionProvider" preserve="all" />
   </assembly>
   <assembly fullname="Unity.Addressables, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null" preserve="all">
     <type fullname="UnityEngine.AddressableAssets.Addressables" preserve="all" />

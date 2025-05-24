@@ -33,14 +33,17 @@ namespace _GAME.Scripts.Enemies.Fly
         // Debug
         [SerializeField] private string _stateDebug;
         [SerializeField] private int _sideDirection = 1;
-        [SerializeField] private int _depthSideDirection = 0;
+        [SerializeField] private int _depthSideDirection;
         [Header("---- States Settings ----")]
         [SerializeField] private float _preAttackDuration = .35f;
         [SerializeField] private float _fallBounceForce = 2.3f;
         [SerializeField] private float _fallGravityForce = .16f;
+        [SerializeField] private bool _showGizmos = true;
     
         private float _collisionRadius;
         private Vector3 _position3D;
+        private Vector3 _position3DRaw;
+        
         // Debug only
         private Vector3 _prevPosition;
         private Vector3 _prevPosSmooth;
@@ -67,11 +70,12 @@ namespace _GAME.Scripts.Enemies.Fly
         {
             _stateFactory = stateFactory;
         }
-    
+        
         public event Action ReadyToAttackStateStarted;
         public event Action ReadyToAttackStateEnded;
         public event Action PreAttackStarted;
         public event Action PreAttackEnded;
+        public event Action AttackEnded;
         public event Action DeathStateEnded;
         public event Action SpreadStateEnded;
 
@@ -79,6 +83,9 @@ namespace _GAME.Scripts.Enemies.Fly
         public Vector3 DepthDirection { get; private set; }
     
         public override int SideDirection => _sideDirection;
+        public int DepthSideDirection => _depthSideDirection;
+        public Vector3 Position3DRaw => _position3DRaw;
+        public Vector3 PreviousPosition3DRaw { get; private set; }
     
         public override void Initialize()
         {
@@ -113,6 +120,7 @@ namespace _GAME.Scripts.Enemies.Fly
             _preAttackStateR.Ended += OnPreAttackStateEnded;
             _preAttackStateL.Started += OnPreAttackStateStarted;
             _preAttackStateL.Ended += OnPreAttackStateEnded;
+            _attackState.Ended += OnAttackStateEnded;
             _deathState.Ended += OnDeathStateEnded;
             _spreadState.Ended += OnSpreadStateEnded;
         
@@ -166,10 +174,11 @@ namespace _GAME.Scripts.Enemies.Fly
             _preAttackStateR.Ended -= OnPreAttackStateEnded;
             _preAttackStateL.Started -= OnPreAttackStateStarted;
             _preAttackStateL.Ended -= OnPreAttackStateEnded;
+            _attackState.Ended -= OnAttackStateEnded;
             _deathState.Ended -= OnDeathStateEnded;
             _spreadState.Ended -= OnSpreadStateEnded;
         }
-        
+
         public void SetCollisionRadius(float radius)
         {
             _collisionRadius = radius;
@@ -277,7 +286,8 @@ namespace _GAME.Scripts.Enemies.Fly
                 _currentState.Equals(_patrolState) 
                )
             {
-                _position3D.x *= _sideDirection;            
+                _position3D.x *= _sideDirection;
+                _position3DRaw.x *= _sideDirection;
             }
         
             if (_isSmoothDampEnabled && !_currentState.Equals(_attackState))
@@ -288,8 +298,11 @@ namespace _GAME.Scripts.Enemies.Fly
             {
                 transform.position = _position3D;
             }
-        
-            DrawDebugLines();
+            
+            if(_showGizmos)
+            {
+                DrawDebugLines();
+            }
         }
 
         private void ApplySmoothDamp()
@@ -304,6 +317,7 @@ namespace _GAME.Scripts.Enemies.Fly
             _currentState = (EnemyMovementStateBase)_stateMachine.CurrentState;
             _stateDebug = _currentState.GetType().Name; // Debug only
             Position2D = _currentState.Position2D;
+            _position3DRaw = Position2D;
             DepthDirection = _currentState.DepthDirection;
         }
 
@@ -311,6 +325,13 @@ namespace _GAME.Scripts.Enemies.Fly
         {
             _prevPosition = _position3D;
             _prevPosSmooth = transform.position;
+            PreviousPosition3DRaw = Position3DRaw;
+        }
+
+        private void AddMotionNoise()
+        {
+            Vector3 trajectoryNoise = TrajectoryNoise.Generate(_noiseFrequency);
+            _position3D = (Vector3)Position2D + trajectoryNoise * _noiseAmplitude;
         }
 
         private void AddDepth()
@@ -322,12 +343,7 @@ namespace _GAME.Scripts.Enemies.Fly
                 depthDirection = 1;
             }
             _position3D += _currentState.DepthDirection * depthDirection;
-        }
-
-        private void AddMotionNoise()
-        {
-            Vector3 trajectoryNoise = TrajectoryNoise.Generate(_noiseFrequency);
-            _position3D = (Vector3)Position2D + trajectoryNoise * _noiseAmplitude;
+            _position3DRaw += _currentState.DepthDirection * depthDirection;
         }
 
         private Vector2 GenerateSpawnPosition(int direction)
@@ -362,6 +378,11 @@ namespace _GAME.Scripts.Enemies.Fly
         {
             Debug.DrawLine(_prevPosition, _prevPosition + (_position3D-_prevPosition).normalized*0.02f, Color.cyan, 5f);
             Debug.DrawLine(_prevPosSmooth, _prevPosSmooth + (transform.position-_prevPosSmooth).normalized*0.02f, Color.yellow, 5f);
+        }
+
+        private void OnAttackStateEnded()
+        {
+            AttackEnded?.Invoke();
         }
 
         private void OnPatrolStateStarted()

@@ -11,6 +11,7 @@ namespace _GAME.Scripts.GameCoreSystems.EnemyManagement
     public class WaveEnemyDirector : MonoBehaviour, IInitializable, IProjectileDeactivatedProvider
     {
         [SerializeField] private Transform _cameraTransform;
+        [SerializeField] private bool _isAttackEnabled = true;
         private SpawnQueueGenerator _spawnQueueGenerator;
         private SpawnQueue _spawnQueue;
         private EnemyQueue _currentWaveEnemyQueue;
@@ -380,7 +381,9 @@ namespace _GAME.Scripts.GameCoreSystems.EnemyManagement
 
         private void Update()
         {
-            _enemyAttacker.Tick(Time.deltaTime);  
+            if (_isAttackEnabled)
+                _enemyAttacker.Tick(Time.deltaTime);
+            
             _fireflyExplosionEnemyDamager.Tick(Time.deltaTime);
 
             // TODO: added for tests - remove

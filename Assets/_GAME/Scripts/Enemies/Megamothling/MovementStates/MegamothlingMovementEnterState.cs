@@ -5,16 +5,24 @@ namespace _GAME.Scripts.Enemies.Megamothling.MovementStates
 {
     public class MegamothlingMovementEnterState : EnemyMovementStateBase
     {
+        private const float FirstEnterDepthMultiplier = 2.9f;
+        private const float ReturnDepthMultiplier = 2.0f;
+        private const float FirstEnterDepthAdjustDuration = 0.1f;
+        private const float ReturnDepthAdjustDuration = 0.45f;
+        private const float SpeedMultiplier = 1.5f;
+        
+        
         // Dependencies
         private readonly Vector3 _cameraPosition;
         private readonly IPositionDirectionProvider _positionDirectionProvider;
         private readonly float _speed;
         private readonly float _radius;
         private readonly float _verticalAmplitude;
-    
-        private readonly Vector2 _invertX = new Vector2(-1, 1);
-        private readonly float _depthMultiplier = 2f;
-        private readonly float _depthAdjustDuration = 0.6f;
+        private bool _isFirstEnter;
+        
+        private readonly Vector2 _invertX = new (-1, 1);
+        private float _depthMultiplier;
+        private float _depthAdjustDuration;
         private Vector2 _endPos = Vector2.zero;
         private Vector2 _enterDirection;
         private float _initialDistance;
@@ -26,19 +34,32 @@ namespace _GAME.Scripts.Enemies.Megamothling.MovementStates
             IPositionDirectionProvider positionDirectionProvider,
             float speed,
             float radius,
-            float verticalAmplitude
+            float verticalAmplitude,
+            bool isFirstEnter
         )
         {
             _cameraPosition = cameraPosition;
             _positionDirectionProvider = positionDirectionProvider;
-            _speed = speed;
+            _speed = speed * SpeedMultiplier;
             _radius = radius;
             _verticalAmplitude = verticalAmplitude;
+            _isFirstEnter = isFirstEnter;
         }
     
     
         public override void Enter()
         {
+            if (_isFirstEnter)
+            {
+                _depthMultiplier = FirstEnterDepthMultiplier;
+                _depthAdjustDuration = FirstEnterDepthAdjustDuration;
+            }
+            else
+            {
+                _depthMultiplier = ReturnDepthMultiplier;
+                _depthAdjustDuration = ReturnDepthAdjustDuration;
+            }
+            
             IsReadyToSwitch = false;
         
             Position2D = _positionDirectionProvider.Position2D;
@@ -70,6 +91,12 @@ namespace _GAME.Scripts.Enemies.Megamothling.MovementStates
             Position2D += _enterDirection * (_speed * Time.deltaTime * (Mathf.PI/2));
             // Depth To Camera
             float distancePhase = 1 - (_endPos - Position2D).magnitude / _initialDistance;
+
+            if (_isFirstEnter)
+            {
+                distancePhase = Mathf.Pow(distancePhase, 2.6f);    
+            }
+            
             Vector3 cameraDirection = (_cameraPosition - (Vector3)Position2D).normalized;
         
             float depthAdjustPhase = _depthAdjustLocalTime / _depthAdjustDuration;

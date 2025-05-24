@@ -1,3 +1,4 @@
+using System;
 using _GAME.Scripts.Lib.Interfaces;
 using UnityEngine;
 
@@ -44,6 +45,8 @@ namespace _GAME.Scripts.Enemies.Generic.States
         
             _ySwitchDistance = -_radius * _verticalAmplitude * 1.1f;
         }
+        
+        public event Action Ended;
     
         public override void Enter()
         {
@@ -54,7 +57,7 @@ namespace _GAME.Scripts.Enemies.Generic.States
                          * (_fullLampCollisionRadius + _collisionRadius) 
                          + _lampPositionProviderService.GetLampPosition();
                      
-            DepthDirection = Vector3.zero;
+            DepthDirection = Vector3.Lerp(_positionDirectionProvider.DepthDirection, Vector3.zero, 0.2f);
         
             _bounceForce = position2DNormalized * _bounceForceMagnitude;
         
@@ -79,6 +82,11 @@ namespace _GAME.Scripts.Enemies.Generic.States
             {
                 IsReadyToSwitch = true;
             }
+        }
+        
+        public override void Exit()
+        {
+            Ended?.Invoke();
         }
     }
 }

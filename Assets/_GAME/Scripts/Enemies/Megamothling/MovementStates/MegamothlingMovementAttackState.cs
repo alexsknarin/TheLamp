@@ -1,3 +1,4 @@
+using System;
 using _GAME.Scripts.Lib.Interfaces;
 using UnityEngine;
 
@@ -31,11 +32,15 @@ namespace _GAME.Scripts.Enemies.Megamothling.MovementStates
             _positionDirectionProvider = positionDirectionProvider;
             _speed = speed;
         }
+        
+        public event Action Started;
+        public event Action Ended;
     
         public override void Enter()
         {
             _acceleratedSpeed = 1f;
             _startDistance = _positionDirectionProvider.Position2D.magnitude - _startPositionDistance;
+            Started?.Invoke();
         }
 
         public override void Tick()
@@ -51,6 +56,11 @@ namespace _GAME.Scripts.Enemies.Megamothling.MovementStates
                 _minAttackProximityValue,
                 _maxAttackProximityValue);
             DepthDirection = cameraDirection * (_bvaseCameraDepthDistance * _depthDecrement * attackProximityGradient);
+        }
+        
+        public override void Exit()
+        {
+            Ended?.Invoke();
         }
     }
 }

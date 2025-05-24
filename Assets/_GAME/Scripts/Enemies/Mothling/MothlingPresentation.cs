@@ -13,12 +13,14 @@ namespace _GAME.Scripts.Enemies.Mothling
         [SerializeField] private DamageFlash _damageFlash;
         [SerializeField] private DeathFlash _deathFlash;
         [SerializeField] private TrailResetHandler _trailResetHandler;
+        [SerializeField] private MothlingBodyRotationHandler _mothlingBodyRotationHandler;
     
         public void Initialize()
         {
             _preAttackFlash.Initialize();
             _damageFlash.Initialize();
             _deathFlash.Initialize();
+            _mothlingBodyRotationHandler.Initialize();
         
             _movement.PreAttackStarted += OnPreAttackStarted;
             _movement.PreAttackEnded += OnPreAttackEnded;
@@ -43,6 +45,7 @@ namespace _GAME.Scripts.Enemies.Mothling
         {
             _trailResetHandler.Initialize();
             _deathFlash.Initialize();
+            _mothlingBodyRotationHandler.Reset();
         }
 
         private void OnPreAttackStarted()

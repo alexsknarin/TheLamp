@@ -28,19 +28,23 @@ namespace _GAME.Scripts.Enemies.Megamothling
         [Header("-- Smooth Damp Settings --")]
         [SerializeField] private bool _isSmoothDampEnabled;
         [SerializeField] private float _smoothTime = .3f;
+        [SerializeField] private float _attackSmoothTime = .05f;
+        [SerializeField] private float _attackSmoothTransitionTime = .1f;
+        [SerializeField] private float _fallSmoothTime = .005f;
+        [SerializeField] private float _fallSmoothTransitionTime = .2f;
         [Header("---- Depth Settings ----")]
         [SerializeField] bool _isDepthEnabled;
         // Debug
         [SerializeField] private string _stateDebug;
         [SerializeField] private int _sideDirection = 1;
-        [SerializeField] private int _depthSideDirection = 0;
         [Header("---- States Settings ----")]
         [SerializeField] private float _preAttackDuration = .45f;
         [SerializeField] private float _fallBounceForce = 2f;
         [SerializeField] private float _fallGravityForce = .1f;
         private float _collisionRadius;
         private float _smoothTimeAllowed = 0;
-    
+        private float _smoothTransitionLocalTime;
+        
         private Vector3 _position3D;
         // Debug only
         private Vector3 _prevPosition;
@@ -54,9 +58,10 @@ namespace _GAME.Scripts.Enemies.Megamothling
         private EnemyMovementStateBase _currentState;
         private GenericIdleMovementState _idleState;
         private MegamothlingMovementEnterState _enterState;
+        private MegamothlingMovementReturnState _returnState;
         private FlyGenericMovementPatrolState  _patrolState;
-        private FlyGenericMovementPreAttackStateL _preAttackStateL;
-        private FlyGenericMovementPreAttackStateR _preAttackStateR;
+        private MegamothlingMovementPreAttackStateL _preAttackStateL;
+        private MegamothlingMovementPreAttackStateR _preAttackStateR;
         private MegamothlingMovementAttackState _attackState;
         private FlyGenericMovementFallState _fallState;
         private MegamothlingMovementDeathState _deathState;
@@ -72,7 +77,10 @@ namespace _GAME.Scripts.Enemies.Megamothling
         public event Action ReadyToAttackStateStarted;
         public event Action ReadyToAttackStateEnded;
         public event Action PreAttackStarted;
+        public event Action AttackStarted;
+        public event Action AttackEnded;
         public event Action PreAttackEnded;
+        public event Action FallStateEnded;
         public event Action DeathStateEnded;
     
         public Vector2 Position2D { get; private set; } 
@@ -98,9 +106,10 @@ namespace _GAME.Scripts.Enemies.Megamothling
             );
             _idleState = (GenericIdleMovementState)_stateFactory.Create(typeof(GenericIdleMovementState));
             _enterState = (MegamothlingMovementEnterState)_stateFactory.Create(typeof(MegamothlingMovementEnterState));
+            _returnState = (MegamothlingMovementReturnState)_stateFactory.Create(typeof(MegamothlingMovementReturnState));
             _patrolState = (FlyGenericMovementPatrolState)_stateFactory.Create(typeof(FlyGenericMovementPatrolState));
-            _preAttackStateL = (FlyGenericMovementPreAttackStateL)_stateFactory.Create(typeof(FlyGenericMovementPreAttackStateL));
-            _preAttackStateR = (FlyGenericMovementPreAttackStateR)_stateFactory.Create(typeof(FlyGenericMovementPreAttackStateR));
+            _preAttackStateL = (MegamothlingMovementPreAttackStateL)_stateFactory.Create(typeof(MegamothlingMovementPreAttackStateL));
+            _preAttackStateR = (MegamothlingMovementPreAttackStateR)_stateFactory.Create(typeof(MegamothlingMovementPreAttackStateR));
             _attackState = (MegamothlingMovementAttackState)_stateFactory.Create(typeof(MegamothlingMovementAttackState));
             _fallState = (FlyGenericMovementFallState)_stateFactory.Create(typeof(FlyGenericMovementFallState));
             _deathState = (MegamothlingMovementDeathState)_stateFactory.Create(typeof(MegamothlingMovementDeathState));
@@ -112,6 +121,9 @@ namespace _GAME.Scripts.Enemies.Megamothling
             _preAttackStateR.Started += OnPreAttackStateStarted;
             _preAttackStateL.Ended += OnPreAttackStateEnded;
             _preAttackStateR.Ended += OnPreAttackStateEnded;
+            _attackState.Started += OnAttackStateStarted;
+            _attackState.Ended += OnAttackStateEnded;
+            _fallState.Ended += OnFallStateEnded;
             _deathState.Ended += OnDeathStateEnded;
         
             // Automatic State transitions
@@ -120,7 +132,8 @@ namespace _GAME.Scripts.Enemies.Megamothling
             At(_patrolState, _preAttackStateL, IsAttackStartedL());
             At(_preAttackStateR, _attackState, () => _preAttackStateR.IsReadyToSwitch);
             At(_preAttackStateL, _attackState, () => _preAttackStateL.IsReadyToSwitch);
-            At(_fallState, _enterState, IsFallEnded());
+            At(_fallState, _returnState, IsFallEnded());
+            At(_returnState, _patrolState, () => _returnState.IsReadyToSwitch);
         
             // Predicates
             Func<bool> IsAttackStartedR() => () =>
@@ -164,6 +177,9 @@ namespace _GAME.Scripts.Enemies.Megamothling
             _preAttackStateR.Started -= OnPreAttackStateStarted;
             _preAttackStateL.Ended -= OnPreAttackStateEnded;
             _preAttackStateR.Ended -= OnPreAttackStateEnded;
+            _attackState.Started -= OnAttackStateStarted;
+            _attackState.Ended -= OnAttackStateEnded;
+            _fallState.Ended -= OnFallStateEnded;
             _deathState.Ended -= OnDeathStateEnded;
         }
 
@@ -193,7 +209,6 @@ namespace _GAME.Scripts.Enemies.Megamothling
         private void SetInitialDirections()
         {
             _sideDirection = RandomDirection.Generate();
-            _depthSideDirection = RandomDirection.Generate();
         }
 
         public override void TriggerAttack()
@@ -237,7 +252,7 @@ namespace _GAME.Scripts.Enemies.Megamothling
             _stateDebug = _currentState.GetType().Name; // Debug only
             _stateMachine.SetState(_currentState);
         }
-    
+
         private void Update()
         {
             StashPreviousPositions();
@@ -259,6 +274,7 @@ namespace _GAME.Scripts.Enemies.Megamothling
         
             // Apply side direction Only for States that require Left/Right mirroring
             if (_currentState.Equals(_enterState)||
+                _currentState.Equals(_returnState)||
                 _currentState.Equals(_patrolState))
             {
                 _position3D.x *= _sideDirection;            
@@ -288,6 +304,12 @@ namespace _GAME.Scripts.Enemies.Megamothling
             Vector3 trajectoryNoise1 = TrajectoryNoise.Generate(_noise1Frequency);
             Vector3 trajectoryNoise2 = TrajectoryNoise.Generate(_noise2Frequency);
 
+            if (_currentState.Equals(_enterState))
+            {
+                trajectoryNoise1 *= 0.2f;
+                trajectoryNoise2 *= 0.2f;
+            }
+            
             if (_currentState.Equals(_attackState))
             {
                 float noiseMultiplier = 0.5f;
@@ -309,26 +331,49 @@ namespace _GAME.Scripts.Enemies.Megamothling
 
         private void AddDepth()
         {
-            int depthDirection = _depthSideDirection;
-            // Always Jump forward in depth for Attack
-            if (_currentState.Equals(_preAttackStateL) 
-                || _currentState.Equals(_preAttackStateR) 
-                || _currentState.Equals(_attackState))
-            {
-                depthDirection = 1;
-            }
-            _position3D += _currentState.DepthDirection * depthDirection;
+            _position3D += -_currentState.DepthDirection;
         }
 
         private void ApplySmoothDampIfEnabled()
         {
             if (_isSmoothDampEnabled)
             {
+                float currentSmoothTime = _smoothTimeAllowed;
+                
+                if (_currentState.Equals(_attackState))
+                {
+                    
+                    float transitionPhase = _smoothTransitionLocalTime / _attackSmoothTransitionTime;
+                    if (transitionPhase > 1)
+                    {
+                        currentSmoothTime = _attackSmoothTime;
+                    }
+                    else
+                    {
+                        currentSmoothTime = Mathf.Lerp(_smoothTime, _attackSmoothTime, transitionPhase);
+                        _smoothTransitionLocalTime += Time.deltaTime;    
+                    }
+                }
+                
+                if (_currentState.Equals(_fallState))
+                {
+                    float transitionPhase = _smoothTransitionLocalTime / _fallSmoothTransitionTime;
+                    if (transitionPhase > 1)
+                    {
+                        currentSmoothTime = _smoothTime;
+                    }
+                    else
+                    {
+                        currentSmoothTime = Mathf.Lerp(_fallSmoothTime, _smoothTime, transitionPhase);
+                        _smoothTransitionLocalTime += Time.deltaTime;    
+                    }
+                }
+                
                 transform.position = Vector3.SmoothDamp(
                     transform.position,
                     _position3D,
                     ref _velocity,
-                    _smoothTimeAllowed);
+                    currentSmoothTime);
             }
             else
             {
@@ -353,18 +398,18 @@ namespace _GAME.Scripts.Enemies.Megamothling
 
         private Vector2 GenerateSpawnPosition(int direction)
         {
-            Vector2 spawnPosition = (Random.insideUnitCircle * _spawnAreaSize) + _spawnAreaCenter;
+            Vector2 spawnPosition = _spawnAreaCenter;
             spawnPosition.x *= direction;
             return spawnPosition;
         }
-    
+
         private void ApplyTransformToPosition2D()
         {
             Vector2 newPosition2D = Position2D;
             newPosition2D.x = Mathf.Abs(newPosition2D.x) * Mathf.Sign(transform.position.x);
             Position2D = newPosition2D;
         }
-    
+
         private IEnumerator SmoothDampDelay()
         {
             yield return _waitSmoothDamp;
@@ -389,6 +434,23 @@ namespace _GAME.Scripts.Enemies.Megamothling
         private void OnPreAttackStateEnded()
         {
             PreAttackEnded?.Invoke();
+        }
+
+        private void OnAttackStateStarted()
+        {
+            _smoothTransitionLocalTime = 0;
+            AttackStarted?.Invoke();
+        }
+
+        private void OnAttackStateEnded()
+        {
+            _smoothTransitionLocalTime = 0;
+            AttackEnded?.Invoke();
+        }
+
+        private void OnFallStateEnded()
+        {
+            FallStateEnded?.Invoke();
         }
 
         private void OnDeathStateEnded()
