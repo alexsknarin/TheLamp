@@ -14,6 +14,7 @@ namespace _GAME.Scripts.Enemies.Megamothling
         [SerializeField] private HealthIndication _healthIndication;
         [SerializeField] private TrailResetHandler _trailResetHandler;
         [SerializeField] private MegamothlingBodyRotationHandler _megamothlingBodyRotationHandler;
+        [SerializeField] private MegamothlingFurMovement _furMovement;
         [Header("Animation")]
         [SerializeField] private Animator _legsAnimator;
     
@@ -24,6 +25,7 @@ namespace _GAME.Scripts.Enemies.Megamothling
             _deathFlash.Initialize();
             _healthIndication.Initialize();
             _megamothlingBodyRotationHandler.Initialize();
+            _furMovement.Initialize();
         
             _movement.PreAttackStarted += OnPreAttackStarted;
             _movement.PreAttackEnded += OnPreAttackEnded;
@@ -54,6 +56,7 @@ namespace _GAME.Scripts.Enemies.Megamothling
             _deathFlash.Initialize();
             _healthIndication.Initialize();
             _megamothlingBodyRotationHandler.Play();
+            _furMovement.Reset();
         }
 
         private void OnPreAttackStarted()
@@ -65,16 +68,20 @@ namespace _GAME.Scripts.Enemies.Megamothling
         {
             _preAttackFlash.PreAttackEnd();
             _legsAnimator.SetTrigger("AttackStart"); // TODO: cache
+            _furMovement.Attack();
         }
 
         private void OnAttackEnded()
         {
             _legsAnimator.SetTrigger("Fall");
+            _furMovement.Hit();
         }
 
         private void OnFallStateEnded()
         {
             _legsAnimator.SetTrigger("Return");
+            _furMovement.Reset();
+            
         }
 
         private void OnMothlingDamaged()
