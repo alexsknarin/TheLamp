@@ -1,6 +1,8 @@
+using System;
 using _GAME.Scripts.Lib;
 using _GAME.Scripts.Lib.Interfaces;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace _GAME.Scripts.Enemies.Moth.MovementStates
 {
@@ -35,7 +37,9 @@ namespace _GAME.Scripts.Enemies.Moth.MovementStates
             _speed = speed;
             _radius = radius;
             _verticalAmplitude = verticalAmplitude;
-        }    
+        }
+        
+        public event Action Started;
     
         public override void Enter()
         {
@@ -49,6 +53,8 @@ namespace _GAME.Scripts.Enemies.Moth.MovementStates
             _patrolStartOffsetAngle 
                 = Mathf.Acos(Vector3.Dot(horizontalVector.normalized, Position2D.normalized));
             _patrolStartOffsetAngle *= Mathf.Sign(Position2D.y);
+            
+            Started?.Invoke();
         }
 
         public override void Tick()

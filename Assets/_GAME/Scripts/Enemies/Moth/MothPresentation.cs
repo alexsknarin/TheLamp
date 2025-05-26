@@ -13,6 +13,7 @@ namespace _GAME.Scripts.Enemies.Moth
         [SerializeField] private DeathFlash _deathFlash;
         [SerializeField] private HealthIndication _healthIndication;
         [SerializeField] private TrailResetHandler _trailResetHandler;
+        [SerializeField] private MothBodyRotationHandler _mothBodyRotationHandler;
     
         public void Initialize()
         {
@@ -20,6 +21,7 @@ namespace _GAME.Scripts.Enemies.Moth
             _damageFlash.Initialize();
             _deathFlash.Initialize();
             _healthIndication.Initialize();
+            _mothBodyRotationHandler.Initialize();
         
             _movement.PreAttackStarted += OnPreAttackStarted;
             _movement.PreAttackEnded += OnPreAttackEnded;

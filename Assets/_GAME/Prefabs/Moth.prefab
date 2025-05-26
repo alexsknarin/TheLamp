@@ -289,8 +289,8 @@ TrailRenderer:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
-        time: 0.0015792847
-        value: 0.73472977
+        time: 0
+        value: 0.6125679
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -300,11 +300,11 @@ TrailRenderer:
       - serializedVersion: 3
         time: 1
         value: 0.32943726
-        inSlope: -1.0695319
-        outSlope: -1.0695319
+        inSlope: -0.7757708
+        outSlope: -0.7757708
         tangentMode: 0
         weightedMode: 0
-        inWeight: 0.07761723
+        inWeight: 0.128752
         outWeight: 0
       m_PreInfinity: 2
       m_PostInfinity: 2
@@ -454,6 +454,7 @@ MonoBehaviour:
   _deathFlash: {fileID: 4372800667913905655}
   _healthIndication: {fileID: 3415988607959295568}
   _trailResetHandler: {fileID: 621540195791621565}
+  _mothBodyRotationHandler: {fileID: 4128253448084304880}
 --- !u!114 &4915874410248072027
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -544,6 +545,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _bodyTransform: {fileID: 6512448886089193937}
+  _mothMovement: {fileID: 7545131710239933535}
+  _upTargetYMin: -1.5
+  _upTargetYMax: 1.5
+  _forwardDirectionTargetMin: {x: 0, y: -0.25, z: 1.35}
+  _forwardDirectionTargetMax: {x: 0, y: 0.4, z: -1}
+  _upTargetMin: {x: 0, y: 1.5, z: -2}
+  _upTargetMax: {x: 0, y: 3.5, z: -6}
+  _transitionDuration: 0.6
 --- !u!1 &7889257455686175236
 GameObject:
   m_ObjectHideFlags: 0
