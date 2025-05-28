@@ -65,19 +65,28 @@
             "m_Id": "9ea7b799f7734e1a8121a2086e3e9aa8"
         },
         {
+            "m_Id": "73e94a6dc9834c388dd5cd078ebfd9a1"
+        },
+        {
             "m_Id": "4c5b0fbac9ee4147bb2cee9f2c95b598"
         },
         {
-            "m_Id": "032dd1ec04714b2489c4d9a4d63d85a7"
+            "m_Id": "8deb09ba9ab54d379ffc470882ba9a92"
         },
         {
-            "m_Id": "74c1f43434bb49d1ab6fc2136525ab6e"
+            "m_Id": "ed9a6a93f3174104ab97a56e4e12de26"
+        },
+        {
+            "m_Id": "032dd1ec04714b2489c4d9a4d63d85a7"
         },
         {
             "m_Id": "e7e27efab828490cbc69170fd2f49ba2"
         },
         {
             "m_Id": "3a5ca9233fbb4dfbb90070ca09d511d9"
+        },
+        {
+            "m_Id": "74c1f43434bb49d1ab6fc2136525ab6e"
         }
     ],
     "m_Nodes": [
@@ -1971,7 +1980,7 @@
     "m_Title": "Apply Death Fade To Specular",
     "m_Position": {
         "x": 5765.33349609375,
-        "y": -50.00026321411133
+        "y": -50.0001220703125
     }
 }
 
@@ -3210,7 +3219,7 @@
     "m_Type": "UnityEditor.ShaderGraph.Texture2DMaterialSlot",
     "m_ObjectId": "17e99da4f7534cb8a1611d1f4ae819ae",
     "m_Id": 0,
-    "m_DisplayName": "BaseColorMap",
+    "m_DisplayName": "BaseMap",
     "m_SlotType": 1,
     "m_Hidden": false,
     "m_ShaderOutputName": "Out",
@@ -4357,8 +4366,8 @@
     "m_ObjectId": "30ea6b07b8564320b9a308aa2215ba6d",
     "m_Title": "ApplyPreAttack To Diffuse",
     "m_Position": {
-        "x": -189.3333282470703,
-        "y": -373.999755859375
+        "x": -189.33331298828126,
+        "y": -374.0
     }
 }
 
@@ -5013,7 +5022,7 @@
     "m_Title": "Apply Death Fade To Diffuse",
     "m_Position": {
         "x": 5535.99951171875,
-        "y": -312.0
+        "y": -312.0001220703125
     }
 }
 
@@ -5468,7 +5477,7 @@
     "m_ObjectId": "463e37decf25480a81d8fda900c7edca",
     "m_Title": "Damage Burn Pattern",
     "m_Position": {
-        "x": 1478.666748046875,
+        "x": 1478.6666259765625,
         "y": -1654.0
     }
 }
@@ -5831,31 +5840,13 @@
     "m_SGVersion": 0,
     "m_Type": "UnityEditor.ShaderGraph.CategoryData",
     "m_ObjectId": "4c5b0fbac9ee4147bb2cee9f2c95b598",
-    "m_Name": "Surface Controls",
+    "m_Name": "Translucence",
     "m_ChildObjectList": [
-        {
-            "m_Id": "31ba4b1d71ed42358572aeb473d42a4b"
-        },
-        {
-            "m_Id": "c10137d4443947a280130bb1e67e845e"
-        },
         {
             "m_Id": "e109346a2dab444fbb102599d3feac7b"
         },
         {
-            "m_Id": "04366e17554648da8e8824a910369154"
-        },
-        {
             "m_Id": "de5016a8f32e4e0b855f396c079f2491"
-        },
-        {
-            "m_Id": "1bad25638f9d4e98bf2ff9c2878845e7"
-        },
-        {
-            "m_Id": "174db370ae594da8a260bf86766886b6"
-        },
-        {
-            "m_Id": "043a83e286824b67951380fb858e9727"
         }
     ]
 }
@@ -7582,6 +7573,21 @@
 
 {
     "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.CategoryData",
+    "m_ObjectId": "73e94a6dc9834c388dd5cd078ebfd9a1",
+    "m_Name": "Diffuse",
+    "m_ChildObjectList": [
+        {
+            "m_Id": "c10137d4443947a280130bb1e67e845e"
+        },
+        {
+            "m_Id": "04366e17554648da8e8824a910369154"
+        }
+    ]
+}
+
+{
+    "m_SGVersion": 0,
     "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot",
     "m_ObjectId": "743eb6e24f754826ba7457cbf7af450d",
     "m_Id": 7,
@@ -8076,8 +8082,8 @@
     "m_ObjectId": "7caaf64397984b58be845d427906934d",
     "m_Title": "ApplyPreAttack To Emission",
     "m_Position": {
-        "x": 636.0001220703125,
-        "y": -1985.9998779296875
+        "x": 636.0,
+        "y": -1986.0
     }
 }
 
@@ -8889,6 +8895,24 @@
         "e32": 0.0,
         "e33": 1.0
     }
+}
+
+{
+    "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.CategoryData",
+    "m_ObjectId": "8deb09ba9ab54d379ffc470882ba9a92",
+    "m_Name": "Specular",
+    "m_ChildObjectList": [
+        {
+            "m_Id": "043a83e286824b67951380fb858e9727"
+        },
+        {
+            "m_Id": "174db370ae594da8a260bf86766886b6"
+        },
+        {
+            "m_Id": "1bad25638f9d4e98bf2ff9c2878845e7"
+        }
+    ]
 }
 
 {
@@ -10435,7 +10459,7 @@
     "m_ObjectId": "b5432735e91d42a4a2fb7526316b8216",
     "m_Title": "Apply Death Fade to Emission",
     "m_Position": {
-        "x": 5803.9990234375,
+        "x": 5803.99951171875,
         "y": -1888.0
     }
 }
@@ -10839,10 +10863,10 @@
     "m_Guid": {
         "m_GuidSerialized": "7668bd2a-c690-476b-ba9d-65eb7a88a97b"
     },
-    "m_Name": "BaseColorMap",
+    "m_Name": "BaseMap",
     "m_DefaultRefNameVersion": 1,
-    "m_RefNameGeneratedByDisplayName": "BaseColorMap",
-    "m_DefaultReferenceName": "_BaseColorMap",
+    "m_RefNameGeneratedByDisplayName": "BaseMap",
+    "m_DefaultReferenceName": "_BaseMap",
     "m_OverrideReferenceName": "",
     "m_GeneratePropertyBlock": true,
     "m_UseCustomSlotLabel": false,
@@ -11170,8 +11194,8 @@
     "m_ObjectId": "ca93b0e95e3847cb93b6284d9b5744e6",
     "m_Title": "ApplyPreAttack To Specular",
     "m_Position": {
-        "x": -105.33334350585938,
-        "y": 1692.000244140625
+        "x": -105.3333740234375,
+        "y": 1691.9998779296875
     }
 }
 
@@ -12214,10 +12238,10 @@
     "m_Guid": {
         "m_GuidSerialized": "ab72074f-e77a-410e-ad51-b54e2a4193d5"
     },
-    "m_Name": "TranslucenseIntensity",
+    "m_Name": "TranslucenseStrength",
     "m_DefaultRefNameVersion": 1,
-    "m_RefNameGeneratedByDisplayName": "TranslucenseIntensity",
-    "m_DefaultReferenceName": "_TranslucenseIntensity",
+    "m_RefNameGeneratedByDisplayName": "TranslucenseStrength",
+    "m_DefaultReferenceName": "_TranslucenseStrength",
     "m_OverrideReferenceName": "",
     "m_GeneratePropertyBlock": true,
     "m_UseCustomSlotLabel": false,
@@ -12377,10 +12401,10 @@
     "m_Guid": {
         "m_GuidSerialized": "7f784faa-95b4-4ca5-adfc-a0a558435bcd"
     },
-    "m_Name": "TranslucenseWrap",
+    "m_Name": "TranslucenceWrap",
     "m_DefaultRefNameVersion": 1,
-    "m_RefNameGeneratedByDisplayName": "TranslucenseWrap",
-    "m_DefaultReferenceName": "_TranslucenseWrap",
+    "m_RefNameGeneratedByDisplayName": "TranslucenceWrap",
+    "m_DefaultReferenceName": "_TranslucenceWrap",
     "m_OverrideReferenceName": "",
     "m_GeneratePropertyBlock": true,
     "m_UseCustomSlotLabel": false,
@@ -12740,6 +12764,18 @@
         "z": 0.0,
         "w": 0.0
     }
+}
+
+{
+    "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.CategoryData",
+    "m_ObjectId": "ed9a6a93f3174104ab97a56e4e12de26",
+    "m_Name": "Normal",
+    "m_ChildObjectList": [
+        {
+            "m_Id": "31ba4b1d71ed42358572aeb473d42a4b"
+        }
+    ]
 }
 
 {
