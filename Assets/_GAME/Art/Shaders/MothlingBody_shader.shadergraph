@@ -62,19 +62,19 @@
             "m_Id": "2123430e0df6488bb999059804a0c343"
         },
         {
+            "m_Id": "b15f78bdaa574b348051097142524c50"
+        },
+        {
             "m_Id": "4c1971359ebc49d0a2124fa4127870e7"
         },
         {
-            "m_Id": "b15f78bdaa574b348051097142524c50"
+            "m_Id": "4128f9c06ca2488fab8187037035e7c3"
         },
         {
             "m_Id": "10307c30ea454f6f92f44ffe8f459195"
         },
         {
             "m_Id": "0308112c8f8a4148a686f778c3c403f3"
-        },
-        {
-            "m_Id": "4128f9c06ca2488fab8187037035e7c3"
         }
     ],
     "m_Nodes": [
@@ -2395,10 +2395,10 @@
     "m_Guid": {
         "m_GuidSerialized": "f42e9e1c-1b0c-405b-a631-938d0307caf1"
     },
-    "m_Name": "RimLightIntensity",
+    "m_Name": "TranslucenseStrength",
     "m_DefaultRefNameVersion": 1,
-    "m_RefNameGeneratedByDisplayName": "RimLightIntensity",
-    "m_DefaultReferenceName": "_RimLightIntensity",
+    "m_RefNameGeneratedByDisplayName": "TranslucenseStrength",
+    "m_DefaultReferenceName": "_TranslucenseStrength",
     "m_OverrideReferenceName": "",
     "m_GeneratePropertyBlock": true,
     "m_UseCustomSlotLabel": false,
@@ -2476,7 +2476,7 @@
     "m_Title": "RimLight",
     "m_Position": {
         "x": -6662.66650390625,
-        "y": 1156.6661376953125
+        "y": 1156.66650390625
     }
 }
 
@@ -2912,7 +2912,7 @@
     "m_Title": "Apply Death Fade to Emission",
     "m_Position": {
         "x": -3241.999755859375,
-        "y": 1544.6663818359375
+        "y": 1544.666259765625
     }
 }
 
@@ -3615,10 +3615,10 @@
     "m_Name": "Specular",
     "m_ChildObjectList": [
         {
-            "m_Id": "512607ef15af42bf9d01264d66957c07"
+            "m_Id": "48d7347ef1344e109b8af131deb7b898"
         },
         {
-            "m_Id": "48d7347ef1344e109b8af131deb7b898"
+            "m_Id": "512607ef15af42bf9d01264d66957c07"
         }
     ]
 }
@@ -3917,10 +3917,10 @@
     "m_Guid": {
         "m_GuidSerialized": "4e2d5d79-5547-4219-9237-7a9654557584"
     },
-    "m_Name": "RimLightColorMultiplier",
+    "m_Name": "TranslucenceColor",
     "m_DefaultRefNameVersion": 1,
-    "m_RefNameGeneratedByDisplayName": "RimLightColorMultiplier",
-    "m_DefaultReferenceName": "_RimLightColorMultiplier",
+    "m_RefNameGeneratedByDisplayName": "TranslucenceColor",
+    "m_DefaultReferenceName": "_TranslucenceColor",
     "m_OverrideReferenceName": "",
     "m_GeneratePropertyBlock": true,
     "m_UseCustomSlotLabel": false,
@@ -3947,10 +3947,10 @@
     "m_Guid": {
         "m_GuidSerialized": "d6b4cfc6-8992-4f2d-af83-0cb52fcfbf06"
     },
-    "m_Name": "SpecRoughness",
+    "m_Name": "SpecularRoughness",
     "m_DefaultRefNameVersion": 1,
-    "m_RefNameGeneratedByDisplayName": "SpecRoughness",
-    "m_DefaultReferenceName": "_SpecRoughness",
+    "m_RefNameGeneratedByDisplayName": "SpecularRoughness",
+    "m_DefaultReferenceName": "_SpecularRoughness",
     "m_OverrideReferenceName": "",
     "m_GeneratePropertyBlock": true,
     "m_UseCustomSlotLabel": false,
@@ -4154,7 +4154,7 @@
     "m_Title": "ApplyPreAttack To Emission",
     "m_Position": {
         "x": -4304.00048828125,
-        "y": 1806.6663818359375
+        "y": 1806.666259765625
     }
 }
 
@@ -4360,8 +4360,8 @@
     "m_ObjectId": "5be5eb636642492aa930c12622729661",
     "m_Title": "Normal",
     "m_Position": {
-        "x": -2140.6669921875,
-        "y": 169.33322143554688
+        "x": -2140.66650390625,
+        "y": 169.33331298828126
     }
 }
 
@@ -4779,8 +4779,8 @@
     "m_ObjectId": "657c609862b34a16a1353eb683dd8264",
     "m_Title": "Apply Death Fade To Diffuse",
     "m_Position": {
-        "x": -2815.99951171875,
-        "y": -1402.0001220703125
+        "x": -2815.999755859375,
+        "y": -1402.0
     }
 }
 
@@ -4886,7 +4886,7 @@
     "m_Title": "Albedo Map",
     "m_Position": {
         "x": -7466.00048828125,
-        "y": -536.0001220703125
+        "y": -536.0
     }
 }
 
@@ -6273,7 +6273,7 @@
     "m_Title": "ApplyPreAttack To Diffuse",
     "m_Position": {
         "x": -3701.999755859375,
-        "y": -1471.3336181640625
+        "y": -1471.33349609375
     }
 }
 
@@ -6559,7 +6559,7 @@
     "m_Title": "Diffuse",
     "m_Position": {
         "x": -5842.00048828125,
-        "y": -1752.666748046875
+        "y": -1752.6666259765625
     }
 }
 
@@ -7150,19 +7150,19 @@
     "m_SGVersion": 0,
     "m_Type": "UnityEditor.ShaderGraph.CategoryData",
     "m_ObjectId": "b15f78bdaa574b348051097142524c50",
-    "m_Name": "RimLight",
+    "m_Name": "Translucence",
     "m_ChildObjectList": [
-        {
-            "m_Id": "1af315326b4844c487b08657bf407e67"
-        },
         {
             "m_Id": "4fb03ab6e5c14e209c2b7c162fac19c4"
         },
         {
-            "m_Id": "13b7fa9a59a94c67b347f95a653755b5"
+            "m_Id": "fa7ca14b4c2f430d89f95b63e76ec386"
         },
         {
-            "m_Id": "fa7ca14b4c2f430d89f95b63e76ec386"
+            "m_Id": "1af315326b4844c487b08657bf407e67"
+        },
+        {
+            "m_Id": "13b7fa9a59a94c67b347f95a653755b5"
         }
     ]
 }
@@ -7804,7 +7804,7 @@
     "m_Title": "Death Fade",
     "m_Position": {
         "x": -5256.66650390625,
-        "y": -239.3333740234375
+        "y": -239.33328247070313
     }
 }
 
@@ -8225,7 +8225,7 @@
     "m_Type": "UnityEditor.ShaderGraph.Texture2DMaterialSlot",
     "m_ObjectId": "dc06722e384f4e26979f9e3e3e02ae40",
     "m_Id": 0,
-    "m_DisplayName": "AlbedoMap",
+    "m_DisplayName": "BaseMap",
     "m_SlotType": 1,
     "m_Hidden": false,
     "m_ShaderOutputName": "Out",
@@ -8637,7 +8637,7 @@
     "m_Title": "ApplyPreAttack To Specular",
     "m_Position": {
         "x": -3304.666748046875,
-        "y": -493.33349609375
+        "y": -493.3333740234375
     }
 }
 
@@ -8893,7 +8893,7 @@
     "m_Title": "Apply Death Fade To  Specular",
     "m_Position": {
         "x": -2524.666748046875,
-        "y": -469.33349609375
+        "y": -469.3333740234375
     }
 }
 
@@ -8962,10 +8962,10 @@
     "m_Guid": {
         "m_GuidSerialized": "72baf9bc-d187-486c-8c4c-7d6d0d5ede77"
     },
-    "m_Name": "AlbedoMap",
+    "m_Name": "BaseMap",
     "m_DefaultRefNameVersion": 1,
-    "m_RefNameGeneratedByDisplayName": "AlbedoMap",
-    "m_DefaultReferenceName": "_AlbedoMap",
+    "m_RefNameGeneratedByDisplayName": "BaseMap",
+    "m_DefaultReferenceName": "_BaseMap",
     "m_OverrideReferenceName": "",
     "m_GeneratePropertyBlock": true,
     "m_UseCustomSlotLabel": false,
@@ -9146,10 +9146,10 @@
     "m_Guid": {
         "m_GuidSerialized": "899532e8-d804-4e9e-a7d7-79c71a0f3177"
     },
-    "m_Name": "RimLightWrap",
+    "m_Name": "TranslucenceWrap",
     "m_DefaultRefNameVersion": 1,
-    "m_RefNameGeneratedByDisplayName": "RimLightWrap",
-    "m_DefaultReferenceName": "_RimLightWrap",
+    "m_RefNameGeneratedByDisplayName": "TranslucenceWrap",
+    "m_DefaultReferenceName": "_TranslucenceWrap",
     "m_OverrideReferenceName": "",
     "m_GeneratePropertyBlock": true,
     "m_UseCustomSlotLabel": false,

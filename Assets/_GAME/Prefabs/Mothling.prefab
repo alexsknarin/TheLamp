@@ -473,7 +473,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 82b48caa50618aa45b9af6764f270329, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _meshRenderer: {fileID: 5762829527865845903}
+  _meshRenderer: []
   _duration: 0.5
   _damageParticles: {fileID: 6046826632051863022}
 --- !u!114 &8360452322571189457
@@ -987,6 +987,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _wingTransform: {fileID: 3543893748859519600}
+  _wingCustomNormalTransform: {fileID: 0}
+  _useCustomNormal: 0
 --- !u!1 &7207694131407543378 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -2700601835987033509, guid: b6f23da789e7d8e4f8f08de9ffa44a80,
@@ -1006,6 +1008,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _wingTransform: {fileID: 3543893748859519600}
+  _wingCustomNormalTransform: {fileID: 0}
+  _useCustomNormal: 0
 --- !u!23 &7830075573179992116 stripped
 MeshRenderer:
   m_CorrespondingSourceObject: {fileID: 5920354788919490109, guid: b6f23da789e7d8e4f8f08de9ffa44a80,
