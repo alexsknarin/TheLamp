@@ -98,7 +98,7 @@
             "m_Id": "97671d91df6c489e84119e87530324f2"
         },
         {
-            "m_Id": "299d20c618324eeda678974bf6482ce1"
+            "m_Id": "7755a1ec2cbb409199ea9b4ab48ed9b4"
         },
         {
             "m_Id": "27ac40be855f4a74a0f05f91175067b6"
@@ -110,7 +110,7 @@
             "m_Id": "4c8a5b28aba64d31bfb7ec7df2dd036c"
         },
         {
-            "m_Id": "7755a1ec2cbb409199ea9b4ab48ed9b4"
+            "m_Id": "299d20c618324eeda678974bf6482ce1"
         },
         {
             "m_Id": "245ade521a744a39a90d3656f21de67e"
@@ -119,13 +119,13 @@
             "m_Id": "6cbc451ac07243cdb52367d0780105e7"
         },
         {
-            "m_Id": "2eb9fd25626a4854b5da920e3e55af7c"
-        },
-        {
             "m_Id": "2a369f49b8bd46dc8018e3cfadc628bf"
         },
         {
             "m_Id": "05f6280fbccf468586d84694157e5462"
+        },
+        {
+            "m_Id": "2eb9fd25626a4854b5da920e3e55af7c"
         }
     ],
     "m_Nodes": [
@@ -3061,7 +3061,7 @@
     "m_ObjectId": "0adf04a1583044d387e6ea0e5fe9f6cd",
     "m_Title": "MASKS",
     "m_Position": {
-        "x": -10172.0,
+        "x": -10171.9990234375,
         "y": 527.3333740234375
     }
 }
@@ -4707,7 +4707,7 @@
     "m_SGVersion": 0,
     "m_Type": "UnityEditor.ShaderGraph.CategoryData",
     "m_ObjectId": "245ade521a744a39a90d3656f21de67e",
-    "m_Name": "Mask",
+    "m_Name": "UtilityMasks",
     "m_ChildObjectList": [
         {
             "m_Id": "42602d34c1e64629a7ee63f8976391e8"
@@ -5292,10 +5292,10 @@
     "m_Guid": {
         "m_GuidSerialized": "33c2446f-9bb4-4960-bcfb-e97cd6dde04f"
     },
-    "m_Name": "TranslucenseColor",
+    "m_Name": "TranslucenceColor",
     "m_DefaultRefNameVersion": 1,
-    "m_RefNameGeneratedByDisplayName": "TranslucenseColor",
-    "m_DefaultReferenceName": "_TranslucenseColor",
+    "m_RefNameGeneratedByDisplayName": "TranslucenceColor",
+    "m_DefaultReferenceName": "_TranslucenceColor",
     "m_OverrideReferenceName": "",
     "m_GeneratePropertyBlock": true,
     "m_UseCustomSlotLabel": false,
@@ -6251,7 +6251,7 @@
     "m_Type": "UnityEditor.ShaderGraph.Texture2DMaterialSlot",
     "m_ObjectId": "3b1b4585da0c429f8afe28edaa1ea54a",
     "m_Id": 0,
-    "m_DisplayName": "Mask",
+    "m_DisplayName": "Mask01",
     "m_SlotType": 1,
     "m_Hidden": false,
     "m_ShaderOutputName": "Out",
@@ -6810,10 +6810,10 @@
     "m_Guid": {
         "m_GuidSerialized": "37b386c0-afd5-4c5c-9119-446698c38a97"
     },
-    "m_Name": "Mask",
+    "m_Name": "Mask01",
     "m_DefaultRefNameVersion": 1,
-    "m_RefNameGeneratedByDisplayName": "Mask",
-    "m_DefaultReferenceName": "_Mask",
+    "m_RefNameGeneratedByDisplayName": "Mask01",
+    "m_DefaultReferenceName": "_Mask01",
     "m_OverrideReferenceName": "",
     "m_GeneratePropertyBlock": true,
     "m_UseCustomSlotLabel": false,
@@ -7144,10 +7144,10 @@
     "m_Guid": {
         "m_GuidSerialized": "7858c50c-67a5-430f-a69e-7c504b320e04"
     },
-    "m_Name": "EyeWrap",
+    "m_Name": "EyeSpecularWrap",
     "m_DefaultRefNameVersion": 1,
-    "m_RefNameGeneratedByDisplayName": "EyeWrap",
-    "m_DefaultReferenceName": "_EyeWrap",
+    "m_RefNameGeneratedByDisplayName": "EyeSpecularWrap",
+    "m_DefaultReferenceName": "_EyeSpecularWrap",
     "m_OverrideReferenceName": "",
     "m_GeneratePropertyBlock": true,
     "m_UseCustomSlotLabel": false,
@@ -7392,10 +7392,10 @@
     "m_Guid": {
         "m_GuidSerialized": "1e30ed70-6ff4-47c2-8cb5-5b89b5c5876e"
     },
-    "m_Name": "EyeSpecColor",
+    "m_Name": "EyeSpecularColor",
     "m_DefaultRefNameVersion": 1,
-    "m_RefNameGeneratedByDisplayName": "EyeSpecColor",
-    "m_DefaultReferenceName": "_EyeSpecColor",
+    "m_RefNameGeneratedByDisplayName": "EyeSpecularColor",
+    "m_DefaultReferenceName": "_EyeSpecularColor",
     "m_OverrideReferenceName": "",
     "m_GeneratePropertyBlock": true,
     "m_UseCustomSlotLabel": false,
@@ -7446,10 +7446,10 @@
     "m_Guid": {
         "m_GuidSerialized": "44871561-51da-4786-a2fb-2f5084460914"
     },
-    "m_Name": "TranslucenseWrap",
+    "m_Name": "TranslucenceWrap",
     "m_DefaultRefNameVersion": 1,
-    "m_RefNameGeneratedByDisplayName": "TranslucenseWrap",
-    "m_DefaultReferenceName": "_TranslucenseWrap",
+    "m_RefNameGeneratedByDisplayName": "TranslucenceWrap",
+    "m_DefaultReferenceName": "_TranslucenceWrap",
     "m_OverrideReferenceName": "",
     "m_GeneratePropertyBlock": true,
     "m_UseCustomSlotLabel": false,
@@ -7992,7 +7992,7 @@
     "m_Title": "Add Coating To base Color",
     "m_Position": {
         "x": -5470.00048828125,
-        "y": -1107.3333740234375
+        "y": -1107.33349609375
     }
 }
 
@@ -9405,7 +9405,7 @@
     "m_Title": "Damage Burn Pattern",
     "m_Position": {
         "x": -4532.66650390625,
-        "y": -456.6668701171875
+        "y": -456.66650390625
     }
 }
 
@@ -9821,7 +9821,7 @@
     "m_Title": "Apply Death Fade to Emission",
     "m_Position": {
         "x": 444.66650390625,
-        "y": 988.0
+        "y": 988.0001220703125
     }
 }
 
@@ -9912,7 +9912,7 @@
     "m_Type": "UnityEditor.ShaderGraph.Texture2DMaterialSlot",
     "m_ObjectId": "76c5e5b6e1d7404ba6425922b4faa26a",
     "m_Id": 0,
-    "m_DisplayName": "AlbedoMap",
+    "m_DisplayName": "BaseMap",
     "m_SlotType": 1,
     "m_Hidden": false,
     "m_ShaderOutputName": "Out",
@@ -10149,8 +10149,8 @@
     "m_ObjectId": "79227c40dcfc480aa68fb9dad432c718",
     "m_Title": "BaseColor",
     "m_Position": {
-        "x": -7169.333984375,
-        "y": -1244.6669921875
+        "x": -7169.33349609375,
+        "y": -1244.666748046875
     }
 }
 
@@ -10221,10 +10221,10 @@
     "m_Guid": {
         "m_GuidSerialized": "ecd9dc77-0f60-4474-b357-ced6a92f5070"
     },
-    "m_Name": "EyePower",
+    "m_Name": "EyeSpecularPower",
     "m_DefaultRefNameVersion": 1,
-    "m_RefNameGeneratedByDisplayName": "EyePower",
-    "m_DefaultReferenceName": "_EyePower",
+    "m_RefNameGeneratedByDisplayName": "EyeSpecularPower",
+    "m_DefaultReferenceName": "_EyeSpecularPower",
     "m_OverrideReferenceName": "",
     "m_GeneratePropertyBlock": true,
     "m_UseCustomSlotLabel": false,
@@ -10348,10 +10348,10 @@
     "m_Guid": {
         "m_GuidSerialized": "948f3fd0-5582-40ee-a399-5ba481aa57f1"
     },
-    "m_Name": "EyeSpotPower",
+    "m_Name": "EyeSpecularSpotPower",
     "m_DefaultRefNameVersion": 1,
-    "m_RefNameGeneratedByDisplayName": "EyeSpotPower",
-    "m_DefaultReferenceName": "_EyeSpotPower",
+    "m_RefNameGeneratedByDisplayName": "EyeSpecularSpotPower",
+    "m_DefaultReferenceName": "_EyeSpecularSpotPower",
     "m_OverrideReferenceName": "",
     "m_GeneratePropertyBlock": true,
     "m_UseCustomSlotLabel": false,
@@ -10843,8 +10843,8 @@
     "m_ObjectId": "8675b8b3befd4c449144da1b5c529492",
     "m_Title": "ApplyPreAttack To Diffuse",
     "m_Position": {
-        "x": -1322.66650390625,
-        "y": -1118.0
+        "x": -1322.666748046875,
+        "y": -1118.000244140625
     }
 }
 
@@ -11121,7 +11121,7 @@
     "m_Type": "UnityEditor.ShaderGraph.Vector4MaterialSlot",
     "m_ObjectId": "8c0fcda053f04b50b28eb2cf5e7b0f0a",
     "m_Id": 0,
-    "m_DisplayName": "DamageColor",
+    "m_DisplayName": "BurnColor",
     "m_SlotType": 1,
     "m_Hidden": false,
     "m_ShaderOutputName": "Out",
@@ -11625,10 +11625,10 @@
     "m_Guid": {
         "m_GuidSerialized": "6fc69f3a-9ab4-49a2-a3c6-378e8116c459"
     },
-    "m_Name": "AlbedoMap",
+    "m_Name": "BaseMap",
     "m_DefaultRefNameVersion": 1,
-    "m_RefNameGeneratedByDisplayName": "AlbedoMap",
-    "m_DefaultReferenceName": "_AlbedoMap",
+    "m_RefNameGeneratedByDisplayName": "BaseMap",
+    "m_DefaultReferenceName": "_BaseMap",
     "m_OverrideReferenceName": "",
     "m_GeneratePropertyBlock": true,
     "m_UseCustomSlotLabel": false,
@@ -11935,8 +11935,8 @@
     "m_ObjectId": "9c333e7f48db42c09e286caf6c12682d",
     "m_Title": "Apply Death Fade To Diffuse",
     "m_Position": {
-        "x": 405.33349609375,
-        "y": -1083.3333740234375
+        "x": 405.3330078125,
+        "y": -1083.33349609375
     }
 }
 
@@ -12415,10 +12415,10 @@
     "m_Guid": {
         "m_GuidSerialized": "4393af61-ec34-4574-84e2-c9ac4c85d366"
     },
-    "m_Name": "AdditionalTranslucenseFromMask",
+    "m_Name": "AdditionalTranslucenceFromMask",
     "m_DefaultRefNameVersion": 1,
-    "m_RefNameGeneratedByDisplayName": "AdditionalTranslucenseFromMask",
-    "m_DefaultReferenceName": "_AdditionalTranslucenseFromMask",
+    "m_RefNameGeneratedByDisplayName": "AdditionalTranslucenceFromMask",
+    "m_DefaultReferenceName": "_AdditionalTranslucenceFromMask",
     "m_OverrideReferenceName": "",
     "m_GeneratePropertyBlock": true,
     "m_UseCustomSlotLabel": false,
@@ -13285,7 +13285,7 @@
     "m_ObjectId": "b55d56ea151547e7bbccf4c0207eb4e5",
     "m_Title": "Applying Burn",
     "m_Position": {
-        "x": -2833.33349609375,
+        "x": -2833.333251953125,
         "y": 1216.0
     }
 }
@@ -13602,7 +13602,7 @@
     "m_Title": "Death Fade",
     "m_Position": {
         "x": -674.0,
-        "y": -138.666748046875
+        "y": -138.66650390625
     }
 }
 
@@ -14523,7 +14523,7 @@
     "m_ObjectId": "c7db7631f03f41be9b71df284424f7a0",
     "m_Title": "CustomLighting",
     "m_Position": {
-        "x": -7782.00146484375,
+        "x": -7782.00048828125,
         "y": 2759.333251953125
     }
 }
@@ -15570,10 +15570,10 @@
     "m_Guid": {
         "m_GuidSerialized": "741b4220-0862-4b96-ab10-5d52b55ba40d"
     },
-    "m_Name": "SpecRoughness",
+    "m_Name": "SpecularRoughness",
     "m_DefaultRefNameVersion": 1,
-    "m_RefNameGeneratedByDisplayName": "SpecRoughness",
-    "m_DefaultReferenceName": "_SpecRoughness",
+    "m_RefNameGeneratedByDisplayName": "SpecularRoughness",
+    "m_DefaultReferenceName": "_SpecularRoughness",
     "m_OverrideReferenceName": "",
     "m_GeneratePropertyBlock": true,
     "m_UseCustomSlotLabel": false,
@@ -15598,10 +15598,10 @@
     "m_Guid": {
         "m_GuidSerialized": "cf486261-dbe9-4624-b024-082ed86e5258"
     },
-    "m_Name": "EyeAdditionalTranslucense",
+    "m_Name": "EyeAdditionalTranslucence",
     "m_DefaultRefNameVersion": 1,
-    "m_RefNameGeneratedByDisplayName": "EyeAdditionalTranslucense",
-    "m_DefaultReferenceName": "_EyeAdditionalTranslucense",
+    "m_RefNameGeneratedByDisplayName": "EyeAdditionalTranslucence",
+    "m_DefaultReferenceName": "_EyeAdditionalTranslucence",
     "m_OverrideReferenceName": "",
     "m_GeneratePropertyBlock": true,
     "m_UseCustomSlotLabel": false,
@@ -16075,8 +16075,8 @@
     "m_ObjectId": "e49441f5f9674434a92fac0a09f96eee",
     "m_Title": "Apply Burn",
     "m_Position": {
-        "x": -2720.0,
-        "y": -1162.0001220703125
+        "x": -2719.999755859375,
+        "y": -1162.000244140625
     }
 }
 
