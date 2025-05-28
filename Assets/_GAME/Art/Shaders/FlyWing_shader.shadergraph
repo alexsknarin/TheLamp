@@ -56,28 +56,28 @@
             "m_Id": "3596edfd535b4fbfb4dc295ba19cc00e"
         },
         {
+            "m_Id": "912fe9476dd24598831e8e6b8e310942"
+        },
+        {
             "m_Id": "fef219131b9a49679bd04b002352cde3"
-        },
-        {
-            "m_Id": "d1f61ec0d8db4203bba7ece4e8b86b8c"
-        },
-        {
-            "m_Id": "3e3df172fc0a40e49d5b77d5405ab778"
-        },
-        {
-            "m_Id": "7977d7aeb7094abc9ce7c23b4f50a439"
         },
         {
             "m_Id": "55a989c27587487aae60f2f68bb5aeff"
         },
         {
+            "m_Id": "7977d7aeb7094abc9ce7c23b4f50a439"
+        },
+        {
+            "m_Id": "3e3df172fc0a40e49d5b77d5405ab778"
+        },
+        {
             "m_Id": "bb8506026dae4060906ce2f1ba873c92"
         },
         {
-            "m_Id": "24f91dccac934829aa832d002dd59ee6"
+            "m_Id": "561ec09c445c4d56bdaacd06672ae1e0"
         },
         {
-            "m_Id": "561ec09c445c4d56bdaacd06672ae1e0"
+            "m_Id": "24f91dccac934829aa832d002dd59ee6"
         }
     ],
     "m_Nodes": [
@@ -2250,7 +2250,7 @@
     "m_Title": "ApplyPreAttack To Emission",
     "m_Position": {
         "x": -3479.333251953125,
-        "y": 424.666748046875
+        "y": 424.66668701171877
     }
 }
 
@@ -2551,8 +2551,8 @@
     "m_ObjectId": "2150511bb3f34e12b78c844c52c98239",
     "m_Title": "Apply Death Fade to Emission",
     "m_Position": {
-        "x": -2100.666748046875,
-        "y": 233.33349609375
+        "x": -2100.66650390625,
+        "y": 233.3333282470703
     }
 }
 
@@ -3495,7 +3495,7 @@
     "m_SGVersion": 0,
     "m_Type": "UnityEditor.ShaderGraph.CategoryData",
     "m_ObjectId": "3e3df172fc0a40e49d5b77d5405ab778",
-    "m_Name": "MaskMap",
+    "m_Name": "UtilityMasks",
     "m_ChildObjectList": [
         {
             "m_Id": "6790d8f897fe4d59bd0a8a6e3ae9af43"
@@ -5147,7 +5147,7 @@
     "m_Title": "Apply DIffuse Colors To Translucense",
     "m_Position": {
         "x": -6047.33349609375,
-        "y": 347.33349609375
+        "y": 347.3333435058594
     }
 }
 
@@ -5641,7 +5641,7 @@
     "m_ObjectId": "7e0531685c1c42718f446d0e5a19d1fd",
     "m_Title": "Apply Death Fade To Specular",
     "m_Position": {
-        "x": -1776.0,
+        "x": -1776.00048828125,
         "y": 1570.0
     }
 }
@@ -6436,7 +6436,7 @@
     "m_Title": "Custom Lighting",
     "m_Position": {
         "x": -7283.33349609375,
-        "y": -263.333251953125
+        "y": -263.33331298828127
     }
 }
 
@@ -6620,6 +6620,18 @@
     "m_CustomColors": {
         "m_SerializableColors": []
     }
+}
+
+{
+    "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.CategoryData",
+    "m_ObjectId": "912fe9476dd24598831e8e6b8e310942",
+    "m_Name": "Diffuse",
+    "m_ChildObjectList": [
+        {
+            "m_Id": "80cf08d0318349bab644d1d7f525a7dc"
+        }
+    ]
 }
 
 {
@@ -7147,10 +7159,10 @@
     "m_Guid": {
         "m_GuidSerialized": "12b2cf43-c6fd-4cab-a6bd-ee264544ebb4"
     },
-    "m_Name": "TranslucenseWrap",
+    "m_Name": "TranslucenceWrap",
     "m_DefaultRefNameVersion": 1,
-    "m_RefNameGeneratedByDisplayName": "TranslucenseWrap",
-    "m_DefaultReferenceName": "_TranslucenseWrap",
+    "m_RefNameGeneratedByDisplayName": "TranslucenceWrap",
+    "m_DefaultReferenceName": "_TranslucenceWrap",
     "m_OverrideReferenceName": "",
     "m_GeneratePropertyBlock": true,
     "m_UseCustomSlotLabel": false,
@@ -8637,10 +8649,10 @@
     "m_Guid": {
         "m_GuidSerialized": "7e93540d-b4b1-49f4-9531-ed0c75874f53"
     },
-    "m_Name": "SpecRoughness",
+    "m_Name": "SpecularRoughness",
     "m_DefaultRefNameVersion": 1,
-    "m_RefNameGeneratedByDisplayName": "SpecRoughness",
-    "m_DefaultReferenceName": "_SpecRoughness",
+    "m_RefNameGeneratedByDisplayName": "SpecularRoughness",
+    "m_DefaultReferenceName": "_SpecularRoughness",
     "m_OverrideReferenceName": "",
     "m_GeneratePropertyBlock": true,
     "m_UseCustomSlotLabel": false,
@@ -8848,18 +8860,6 @@
 
 {
     "m_SGVersion": 0,
-    "m_Type": "UnityEditor.ShaderGraph.CategoryData",
-    "m_ObjectId": "d1f61ec0d8db4203bba7ece4e8b86b8c",
-    "m_Name": "Translucence",
-    "m_ChildObjectList": [
-        {
-            "m_Id": "9e3ba8df23c94d1ea772bf4219f5ef06"
-        }
-    ]
-}
-
-{
-    "m_SGVersion": 0,
     "m_Type": "UnityEditor.ShaderGraph.BlockNode",
     "m_ObjectId": "d20a62d1a5c545d6ae24216feb68764b",
     "m_Group": {
@@ -8914,10 +8914,10 @@
     "m_Guid": {
         "m_GuidSerialized": "71b5ad7f-019b-43a4-a06f-428f453e065f"
     },
-    "m_Name": "TranslucenseColor",
+    "m_Name": "TranslucenceColor",
     "m_DefaultRefNameVersion": 1,
-    "m_RefNameGeneratedByDisplayName": "TranslucenseColor",
-    "m_DefaultReferenceName": "_TranslucenseColor",
+    "m_RefNameGeneratedByDisplayName": "TranslucenceColor",
+    "m_DefaultReferenceName": "_TranslucenceColor",
     "m_OverrideReferenceName": "",
     "m_GeneratePropertyBlock": true,
     "m_UseCustomSlotLabel": false,
@@ -9206,7 +9206,7 @@
     "m_Title": "Damage",
     "m_Position": {
         "x": -5074.66650390625,
-        "y": -574.666748046875
+        "y": -574.6666870117188
     }
 }
 
@@ -10547,13 +10547,13 @@
     "m_SGVersion": 0,
     "m_Type": "UnityEditor.ShaderGraph.CategoryData",
     "m_ObjectId": "fef219131b9a49679bd04b002352cde3",
-    "m_Name": "DIffuse",
+    "m_Name": "Translucence",
     "m_ChildObjectList": [
         {
             "m_Id": "d33036857c6f40a7a095e55062403a22"
         },
         {
-            "m_Id": "80cf08d0318349bab644d1d7f525a7dc"
+            "m_Id": "9e3ba8df23c94d1ea772bf4219f5ef06"
         },
         {
             "m_Id": "26a6a5fa076d4130b1a60713a01cff1c"
@@ -10583,7 +10583,7 @@
     "m_Title": "Specular COlor",
     "m_Position": {
         "x": -3745.999755859375,
-        "y": 1734.0001220703125
+        "y": 1734.0
     }
 }
 

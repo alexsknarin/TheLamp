@@ -56,6 +56,9 @@
             "m_Id": "048c787285384a4a9ed418eba1191fff"
         },
         {
+            "m_Id": "555f512a14bf4b458a2ed0ad42f75d40"
+        },
+        {
             "m_Id": "876f0eae8313406f95e4ba4ca42589aa"
         },
         {
@@ -68,10 +71,10 @@
             "m_Id": "40a68fbed81747ba8e3edc5875d43fde"
         },
         {
-            "m_Id": "6fd2de7462c04c8a9cd5535f7e9e5690"
+            "m_Id": "7394f8c4e8f04215aa1d55182511fecd"
         },
         {
-            "m_Id": "7394f8c4e8f04215aa1d55182511fecd"
+            "m_Id": "6fd2de7462c04c8a9cd5535f7e9e5690"
         }
     ],
     "m_Nodes": [
@@ -1335,8 +1338,8 @@
     "m_ObjectId": "01e55739d20042d2b1baf1cf66751e25",
     "m_Title": "Death Fade",
     "m_Position": {
-        "x": -3554.666259765625,
-        "y": -26.0
+        "x": -3554.666748046875,
+        "y": -25.99993896484375
     }
 }
 
@@ -1527,9 +1530,6 @@
     "m_ChildObjectList": [
         {
             "m_Id": "8b122b267a2c47578d023992424a6cc4"
-        },
-        {
-            "m_Id": "94de09cf6043464d8b8c69757d4ae8c7"
         }
     ]
 }
@@ -2228,8 +2228,8 @@
     "m_ObjectId": "1fd6502d144f423aa3fb47e912778a8e",
     "m_Title": "Body Orientation Opacity",
     "m_Position": {
-        "x": -5803.3330078125,
-        "y": 3554.666748046875
+        "x": -5803.33349609375,
+        "y": 3554.6669921875
     }
 }
 
@@ -3869,8 +3869,8 @@
     "m_ObjectId": "52a63709538745fc9d821eac0e1d0b85",
     "m_Title": "Damage",
     "m_Position": {
-        "x": -3129.999755859375,
-        "y": 970.0
+        "x": -3130.0,
+        "y": 970.0001220703125
     }
 }
 
@@ -3910,6 +3910,18 @@
     "m_Value": 0.0,
     "m_DefaultValue": 0.0,
     "m_Labels": []
+}
+
+{
+    "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.CategoryData",
+    "m_ObjectId": "555f512a14bf4b458a2ed0ad42f75d40",
+    "m_Name": "Translucence",
+    "m_ChildObjectList": [
+        {
+            "m_Id": "94de09cf6043464d8b8c69757d4ae8c7"
+        }
+    ]
 }
 
 {
@@ -5971,10 +5983,10 @@
     "m_Guid": {
         "m_GuidSerialized": "7d039d0c-fce4-4fca-9864-c5228c44f037"
     },
-    "m_Name": "DiffuseWrap",
+    "m_Name": "TranslucenceWrap",
     "m_DefaultRefNameVersion": 1,
-    "m_RefNameGeneratedByDisplayName": "DiffuseWrap",
-    "m_DefaultReferenceName": "_DiffuseWrap",
+    "m_RefNameGeneratedByDisplayName": "TranslucenceWrap",
+    "m_DefaultReferenceName": "_TranslucenceWrap",
     "m_OverrideReferenceName": "",
     "m_GeneratePropertyBlock": true,
     "m_UseCustomSlotLabel": false,
@@ -6190,7 +6202,7 @@
     "m_ObjectId": "9e0a8850a8f34a0eb0cf71a7b7cc73f5",
     "m_Title": "ApplyPreAttack To Emission",
     "m_Position": {
-        "x": -3655.999267578125,
+        "x": -3656.0,
         "y": -933.9999389648438
     }
 }
@@ -6780,7 +6792,7 @@
     "m_ObjectId": "b2034b20260b4695b625bfdffd3b503b",
     "m_Title": "VerticalMotionBlur",
     "m_Position": {
-        "x": -6879.33251953125,
+        "x": -6879.33349609375,
         "y": 2325.33349609375
     }
 }
@@ -6897,8 +6909,8 @@
     "m_ObjectId": "bb00ba96a3cb4c2db3e8153dd337e4b3",
     "m_Title": "Translucense",
     "m_Position": {
-        "x": -5315.3330078125,
-        "y": -1504.66650390625
+        "x": -5315.33349609375,
+        "y": -1504.6666259765625
     }
 }
 
@@ -7616,8 +7628,8 @@
     "m_ObjectId": "cfc10855c809461281ce538c2bc87fc4",
     "m_Title": "Apply Death Fade to Emission",
     "m_Position": {
-        "x": -1490.6663818359375,
-        "y": 128.0
+        "x": -1490.6669921875,
+        "y": 128.00006103515626
     }
 }
 
@@ -8185,7 +8197,7 @@
     "m_ObjectId": "e3a2b912be9c4895bdf1eb4bffc1b280",
     "m_Title": "Ambient Light",
     "m_Position": {
-        "x": -4870.0,
+        "x": -4870.00048828125,
         "y": -597.9999389648438
     }
 }

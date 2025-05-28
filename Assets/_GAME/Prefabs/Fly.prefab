@@ -319,10 +319,6 @@ MonoBehaviour:
   - {fileID: 481809386967740473}
   - {fileID: 2310012743827522599}
   - {fileID: 3048528739006586305}
-  - {fileID: 4870632338709292926}
-  - {fileID: 4574473077500732556}
-  - {fileID: 6787118671285125059}
-  - {fileID: 1549311665557175509}
   _remapMax: 1
 --- !u!114 &2241749906381358168
 MonoBehaviour:
@@ -971,6 +967,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _wingTransform: {fileID: 7133631089270091464}
+  _wingCustomNormalTransform: {fileID: 0}
+  _useCustomNormal: 0
 --- !u!23 &1549311665557175509 stripped
 MeshRenderer:
   m_CorrespondingSourceObject: {fileID: 8706261373433654884, guid: 8bff6691b1650ca40996275760b08e43,
@@ -1026,6 +1024,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _wingTransform: {fileID: 7133631089270091464}
+  _wingCustomNormalTransform: {fileID: 0}
+  _useCustomNormal: 0
 --- !u!23 &4574473077500732556 stripped
 MeshRenderer:
   m_CorrespondingSourceObject: {fileID: 5920354788919490109, guid: 8bff6691b1650ca40996275760b08e43,
