@@ -30,7 +30,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BaseMap:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: d5898b1d0b1b6a847aec878ed74957ad, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BumpMap:
@@ -58,6 +58,10 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Mask:
+        m_Texture: {fileID: 2800000, guid: cfa2b2ea206c6e747ac0c22319430122, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Mask01:
         m_Texture: {fileID: 2800000, guid: cfa2b2ea206c6e747ac0c22319430122, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
@@ -96,6 +100,7 @@ Material:
     m_Ints: []
     m_Floats:
     - _AddPrecomputedVelocity: 0
+    - _AdditionalTranslucenceFromMask: 3.77
     - _AdditionalTranslucenseFromMask: 3.77
     - _AlphaClip: 0
     - _AlphaToMask: 0
@@ -120,8 +125,12 @@ Material:
     - _DstBlend: 0
     - _DstBlendAlpha: 0
     - _EnvironmentReflections: 1
+    - _EyeAdditionalTranslucence: 0.351
     - _EyeAdditionalTranslucense: 0.351
     - _EyePower: 36.51
+    - _EyeSpecularPower: 36.51
+    - _EyeSpecularSpotPower: 0.7
+    - _EyeSpecularWrap: 1.088
     - _EyeSpotPower: 0.7
     - _EyeWrap: 1.088
     - _GlossMapScale: 0
@@ -141,9 +150,11 @@ Material:
     - _SmoothnessTextureChannel: 0
     - _SpecRoughness: 0.444
     - _SpecularHighlights: 1
+    - _SpecularRoughness: 0.444
     - _SrcBlend: 1
     - _SrcBlendAlpha: 1
     - _Surface: 0
+    - _TranslucenceWrap: 0.451
     - _TranslucenseWrap: 0.451
     - _WorkflowMode: 1
     - _XRMotionVectorsPass: 1
@@ -155,8 +166,10 @@ Material:
     - _DamageColor: {r: 3.6886055, g: 0.13172902, b: 0, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _EyeSpecColor: {r: 0.472, g: 0.30483332, b: 0.22125, a: 1}
+    - _EyeSpecularColor: {r: 0.47058824, g: 0.30588236, b: 0.21960784, a: 1}
     - _PreAttackEmissionColor: {r: 2.958679, g: 0.07745238, b: 0.03098099, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
+    - _TranslucenceColor: {r: 0.7921569, g: 0.48235294, b: 0.37254903, a: 1}
     - _TranslucenseColor: {r: 0.792, g: 0.484, b: 0.37155557, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1

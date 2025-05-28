@@ -50,13 +50,22 @@
             "m_Id": "f882db20b8294f3a9c72dcd1a04f419b"
         },
         {
+            "m_Id": "ad1e241c404041b5a6cc417f7c0c2613"
+        },
+        {
+            "m_Id": "068914b5cc8b48aeab5188a25bc1d110"
+        },
+        {
+            "m_Id": "359ca61bf90a485ab3d914ee254f2038"
+        },
+        {
             "m_Id": "a9f56ed095e044609c13e7b551ac371b"
         },
         {
-            "m_Id": "b4e6af5156e64dd295b167a867629540"
+            "m_Id": "51ba2e9e5b40434685eb753139211ad4"
         },
         {
-            "m_Id": "51ba2e9e5b40434685eb753139211ad4"
+            "m_Id": "b4e6af5156e64dd295b167a867629540"
         },
         {
             "m_Id": "6c12684f4f9f42128d63c9c86fb1275c"
@@ -1525,6 +1534,18 @@
 
 {
     "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.CategoryData",
+    "m_ObjectId": "068914b5cc8b48aeab5188a25bc1d110",
+    "m_Name": "Translucence",
+    "m_ChildObjectList": [
+        {
+            "m_Id": "f9dd3bd8fb39451c9f4b718c7f5780cd"
+        }
+    ]
+}
+
+{
+    "m_SGVersion": 0,
     "m_Type": "UnityEditor.ShaderGraph.DynamicValueMaterialSlot",
     "m_ObjectId": "06dd85fd8e3f4158acd140311db2c482",
     "m_Id": 2,
@@ -2256,8 +2277,8 @@
     "m_ObjectId": "1c5575b38630424eb019d6d8bb0dcc67",
     "m_Title": "ApplyPreAttack To Emission",
     "m_Position": {
-        "x": -18.66650390625,
-        "y": 0.666778564453125
+        "x": -18.6669921875,
+        "y": 0.6666259765625
     }
 }
 
@@ -3096,6 +3117,18 @@
         "b": 0.5,
         "a": 1.0
     }
+}
+
+{
+    "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.CategoryData",
+    "m_ObjectId": "359ca61bf90a485ab3d914ee254f2038",
+    "m_Name": "UtilityMasks",
+    "m_ChildObjectList": [
+        {
+            "m_Id": "6bf00f94fdef442aa6dddaba74603b54"
+        }
+    ]
 }
 
 {
@@ -4534,10 +4567,10 @@
     "m_Guid": {
         "m_GuidSerialized": "93768753-207c-4439-80e8-3bfbb18f6b6e"
     },
-    "m_Name": "Masks",
+    "m_Name": "Masks01",
     "m_DefaultRefNameVersion": 1,
-    "m_RefNameGeneratedByDisplayName": "Masks",
-    "m_DefaultReferenceName": "_Masks",
+    "m_RefNameGeneratedByDisplayName": "Masks01",
+    "m_DefaultReferenceName": "_Masks01",
     "m_OverrideReferenceName": "",
     "m_GeneratePropertyBlock": true,
     "m_UseCustomSlotLabel": false,
@@ -6451,6 +6484,18 @@
 
 {
     "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.CategoryData",
+    "m_ObjectId": "ad1e241c404041b5a6cc417f7c0c2613",
+    "m_Name": "Diffuse",
+    "m_ChildObjectList": [
+        {
+            "m_Id": "e3728010882447a5aeb97ea1cd26af9f"
+        }
+    ]
+}
+
+{
+    "m_SGVersion": 0,
     "m_Type": "UnityEditor.ShaderGraph.RedirectNodeData",
     "m_ObjectId": "ae3dbb8f3883480ea5b75a02b9e62c64",
     "m_Group": {
@@ -7897,7 +7942,7 @@
     "m_ObjectId": "d74c045cf514470ca9b16d50e5c23dd2",
     "m_Title": "Apply Death Fade to Emission",
     "m_Position": {
-        "x": 1765.3333740234375,
+        "x": 1765.33349609375,
         "y": -655.333251953125
     }
 }
@@ -8447,10 +8492,10 @@
     "m_Guid": {
         "m_GuidSerialized": "8aeed652-efa2-4350-98b8-09880d90673c"
     },
-    "m_Name": "BaseColorMap",
+    "m_Name": "BaseMap",
     "m_DefaultRefNameVersion": 1,
-    "m_RefNameGeneratedByDisplayName": "BaseColorMap",
-    "m_DefaultReferenceName": "_BaseColorMap",
+    "m_RefNameGeneratedByDisplayName": "BaseMap",
+    "m_DefaultReferenceName": "_BaseMap",
     "m_OverrideReferenceName": "",
     "m_GeneratePropertyBlock": true,
     "m_UseCustomSlotLabel": false,
@@ -9194,17 +9239,7 @@
     "m_Type": "UnityEditor.ShaderGraph.CategoryData",
     "m_ObjectId": "f882db20b8294f3a9c72dcd1a04f419b",
     "m_Name": "",
-    "m_ChildObjectList": [
-        {
-            "m_Id": "e3728010882447a5aeb97ea1cd26af9f"
-        },
-        {
-            "m_Id": "6bf00f94fdef442aa6dddaba74603b54"
-        },
-        {
-            "m_Id": "f9dd3bd8fb39451c9f4b718c7f5780cd"
-        }
-    ]
+    "m_ChildObjectList": []
 }
 
 {
@@ -9287,10 +9322,10 @@
     "m_Guid": {
         "m_GuidSerialized": "59729fb7-a12a-4f67-81ed-c7e3ba997d3a"
     },
-    "m_Name": "TranslucenseWrap",
+    "m_Name": "TranslucenceWrap",
     "m_DefaultRefNameVersion": 1,
-    "m_RefNameGeneratedByDisplayName": "TranslucenseWrap",
-    "m_DefaultReferenceName": "_TranslucenseWrap",
+    "m_RefNameGeneratedByDisplayName": "TranslucenceWrap",
+    "m_DefaultReferenceName": "_TranslucenceWrap",
     "m_OverrideReferenceName": "",
     "m_GeneratePropertyBlock": true,
     "m_UseCustomSlotLabel": false,

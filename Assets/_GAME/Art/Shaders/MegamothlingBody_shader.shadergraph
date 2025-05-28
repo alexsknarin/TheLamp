@@ -89,6 +89,9 @@
             "m_Id": "9ef6450b503c48e885676b69d44968e1"
         },
         {
+            "m_Id": "839e3e5f136a493798a6cd9e49327883"
+        },
+        {
             "m_Id": "6d85e5e02c2f4af88a921b6acadc8680"
         },
         {
@@ -104,10 +107,10 @@
             "m_Id": "af3c235345ef4b769d7b7af62d4440a1"
         },
         {
-            "m_Id": "eb9739d4f7b9489c94795c066a12da0f"
+            "m_Id": "c219ded7a8ec4e5e9357b34f5976030a"
         },
         {
-            "m_Id": "c219ded7a8ec4e5e9357b34f5976030a"
+            "m_Id": "eb9739d4f7b9489c94795c066a12da0f"
         },
         {
             "m_Id": "fd50f06be71b4ff7a945b635b49bc22e"
@@ -3342,8 +3345,8 @@
     "m_ObjectId": "047b0ecd352f4a9f84efc7a83d6d12d5",
     "m_Title": "ApplyEyeMask",
     "m_Position": {
-        "x": -365.33380126953127,
-        "y": -294.66680908203127
+        "x": -365.333251953125,
+        "y": -294.66650390625
     }
 }
 
@@ -3557,10 +3560,10 @@
     "m_Guid": {
         "m_GuidSerialized": "8179a5ff-8c32-4a53-b84e-9cd0c0c49a34"
     },
-    "m_Name": "NormalMapStrengthTranslucensy",
+    "m_Name": "NormalMapStrengthTranslucency",
     "m_DefaultRefNameVersion": 1,
-    "m_RefNameGeneratedByDisplayName": "NormalMapStrengthTranslucensy",
-    "m_DefaultReferenceName": "_NormalMapStrengthTranslucensy",
+    "m_RefNameGeneratedByDisplayName": "NormalMapStrengthTranslucency",
+    "m_DefaultReferenceName": "_NormalMapStrengthTranslucency",
     "m_OverrideReferenceName": "",
     "m_GeneratePropertyBlock": true,
     "m_UseCustomSlotLabel": false,
@@ -4336,8 +4339,8 @@
     "m_ObjectId": "1056764e09574d8f801a908741ae6721",
     "m_Title": "Damage Burn Pattern",
     "m_Position": {
-        "x": -1456.0003662109375,
-        "y": -1875.999755859375
+        "x": -1456.0,
+        "y": -1875.9998779296875
     }
 }
 
@@ -4398,8 +4401,8 @@
     "m_ObjectId": "12334d106413494aa8044b71dd90eac8",
     "m_Title": "Applying Burn",
     "m_Position": {
-        "x": 643.9994506835938,
-        "y": 1742.6671142578125
+        "x": 644.0,
+        "y": 1742.66650390625
     }
 }
 
@@ -5501,8 +5504,8 @@
     "m_ObjectId": "2136f8a9f1c84c2d9184ed4459cd0b57",
     "m_Title": "Apply Custom DIffuse Lighting",
     "m_Position": {
-        "x": -913.333740234375,
-        "y": -554.6668090820313
+        "x": -913.333251953125,
+        "y": -554.66650390625
     }
 }
 
@@ -5775,8 +5778,8 @@
     "m_ObjectId": "23fb1881651c4bd5beeaad21ca2f64e5",
     "m_Title": "Apply Death Fade To Specular",
     "m_Position": {
-        "x": 1559.3338623046875,
-        "y": 1149.3336181640625
+        "x": 1559.33349609375,
+        "y": 1149.33349609375
     }
 }
 
@@ -6527,7 +6530,7 @@
     "m_Title": "Fur Pattern",
     "m_Position": {
         "x": -2905.999755859375,
-        "y": 391.99969482421877
+        "y": 392.000244140625
     }
 }
 
@@ -6537,8 +6540,8 @@
     "m_ObjectId": "2e89cb14b7914e7e92389e4c47357c93",
     "m_Title": "Applying Burn",
     "m_Position": {
-        "x": 129.3329620361328,
-        "y": -478.00006103515627
+        "x": 129.33349609375,
+        "y": -477.999755859375
     }
 }
 
@@ -6677,10 +6680,10 @@
     "m_Guid": {
         "m_GuidSerialized": "fa434b8f-f2cb-4cfd-80df-b41635495a41"
     },
-    "m_Name": "NormalMapStrength",
+    "m_Name": "NormalStrength",
     "m_DefaultRefNameVersion": 1,
-    "m_RefNameGeneratedByDisplayName": "NormalMapStrength",
-    "m_DefaultReferenceName": "_NormalMapStrength",
+    "m_RefNameGeneratedByDisplayName": "NormalStrength",
+    "m_DefaultReferenceName": "_NormalStrength",
     "m_OverrideReferenceName": "",
     "m_GeneratePropertyBlock": true,
     "m_UseCustomSlotLabel": false,
@@ -7121,7 +7124,7 @@
     "m_SGVersion": 0,
     "m_Type": "UnityEditor.ShaderGraph.CategoryData",
     "m_ObjectId": "3737057277034d9c91bb837c0f68e96a",
-    "m_Name": "Masks",
+    "m_Name": "UtilityMasks",
     "m_ChildObjectList": [
         {
             "m_Id": "7a770cd40c2548d0a1b9782d9207a3dd"
@@ -8202,13 +8205,13 @@
     "m_SGVersion": 0,
     "m_Type": "UnityEditor.ShaderGraph.CategoryData",
     "m_ObjectId": "4c24022ed0454161aaa3c442aca9d255",
-    "m_Name": "Normals",
+    "m_Name": "Normal",
     "m_ChildObjectList": [
         {
-            "m_Id": "321b3777b2ac4a92b8716fe4279abdd2"
+            "m_Id": "076340906e544e0f9ff59281f4ee9deb"
         },
         {
-            "m_Id": "076340906e544e0f9ff59281f4ee9deb"
+            "m_Id": "321b3777b2ac4a92b8716fe4279abdd2"
         }
     ]
 }
@@ -8571,7 +8574,7 @@
     "m_Type": "UnityEditor.ShaderGraph.Texture2DMaterialSlot",
     "m_ObjectId": "52db6fd1ca8840dbbd78f8435bfe9d6c",
     "m_Id": 0,
-    "m_DisplayName": "BaseColor",
+    "m_DisplayName": "BaseMap",
     "m_SlotType": 1,
     "m_Hidden": false,
     "m_ShaderOutputName": "Out",
@@ -11596,8 +11599,8 @@
     "m_ObjectId": "7a11c20ddfe24aad8e9083b3b6d0a1ae",
     "m_Title": "Applying FIre",
     "m_Position": {
-        "x": 617.3330078125,
-        "y": -469.33355712890627
+        "x": 617.33349609375,
+        "y": -469.333251953125
     }
 }
 
@@ -11608,10 +11611,10 @@
     "m_Guid": {
         "m_GuidSerialized": "0040fb5d-570b-4c46-8271-c71b1047a07d"
     },
-    "m_Name": "Masks",
+    "m_Name": "Masks01",
     "m_DefaultRefNameVersion": 1,
-    "m_RefNameGeneratedByDisplayName": "Masks",
-    "m_DefaultReferenceName": "_Masks",
+    "m_RefNameGeneratedByDisplayName": "Masks01",
+    "m_DefaultReferenceName": "_Masks01",
     "m_OverrideReferenceName": "",
     "m_GeneratePropertyBlock": true,
     "m_UseCustomSlotLabel": false,
@@ -11791,8 +11794,8 @@
     "m_ObjectId": "7cd30b8ecd5d4397a05dc7532c8ecd5e",
     "m_Title": "ApplyPreAttack To Specular",
     "m_Position": {
-        "x": 185.999755859375,
-        "y": 1835.3341064453125
+        "x": 186.0,
+        "y": 1835.33349609375
     }
 }
 
@@ -11819,8 +11822,8 @@
     "m_ObjectId": "7ddc268f93e54017b9666c0c012ce4b4",
     "m_Title": "ApplyPreAttack To Specular",
     "m_Position": {
-        "x": 181.333251953125,
-        "y": 2334.0
+        "x": 181.33349609375,
+        "y": 2334.00048828125
     }
 }
 
@@ -11936,7 +11939,7 @@
     "m_ObjectId": "7f6f5a499ef14b3fb81c6a305e286f68",
     "m_Title": "AddNoise TO Death Fade",
     "m_Position": {
-        "x": 1076.666259765625,
+        "x": 1076.666748046875,
         "y": -2291.999755859375
     }
 }
@@ -12031,8 +12034,8 @@
     "m_ObjectId": "807c02abe6984c90a762ba869f6d148f",
     "m_Title": "Apply Death Fade to Emission",
     "m_Position": {
-        "x": 3784.000244140625,
-        "y": -540.6668090820313
+        "x": 3784.00048828125,
+        "y": -540.66650390625
     }
 }
 
@@ -12140,6 +12143,21 @@
     "m_CustomColors": {
         "m_SerializableColors": []
     }
+}
+
+{
+    "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.CategoryData",
+    "m_ObjectId": "839e3e5f136a493798a6cd9e49327883",
+    "m_Name": "Translucence",
+    "m_ChildObjectList": [
+        {
+            "m_Id": "aeb18405f774494b9fa0824fb610346e"
+        },
+        {
+            "m_Id": "06eb3396bd9347c78c613332a8a84647"
+        }
+    ]
 }
 
 {
@@ -12725,8 +12743,8 @@
     "m_ObjectId": "8bf6a643c7d34218a2a9ba73379c5729",
     "m_Title": "Death Fade Emission",
     "m_Position": {
-        "x": 720.6664428710938,
-        "y": -3207.332763671875
+        "x": 720.666748046875,
+        "y": -3207.3330078125
     }
 }
 
@@ -13024,8 +13042,8 @@
     "m_ObjectId": "8e75e47df13c4e2e9dc3553d7397e9b9",
     "m_Title": "Specular Roughness",
     "m_Position": {
-        "x": -1904.000244140625,
-        "y": 3571.999267578125
+        "x": -1904.0,
+        "y": 3572.00048828125
     }
 }
 
@@ -13036,7 +13054,7 @@
     "m_Title": "BaseFurColor",
     "m_Position": {
         "x": -2988.666748046875,
-        "y": -749.3333129882813
+        "y": -749.3331298828125
     }
 }
 
@@ -13523,8 +13541,8 @@
     "m_ObjectId": "9723bff89c2b45bb9f43b998883ef674",
     "m_Title": "Applying Burn",
     "m_Position": {
-        "x": 684.66650390625,
-        "y": 2272.0
+        "x": 684.666748046875,
+        "y": 2272.00048828125
     }
 }
 
@@ -13907,8 +13925,8 @@
     "m_ObjectId": "9c52be9f4cbe42b989983c2cd41b9dff",
     "m_Title": "Occlusion",
     "m_Position": {
-        "x": -409.33349609375,
-        "y": 1927.3336181640625
+        "x": -409.333251953125,
+        "y": 1927.33349609375
     }
 }
 
@@ -14027,12 +14045,6 @@
     "m_ChildObjectList": [
         {
             "m_Id": "ebf4091dbc544edcb6da086064318aff"
-        },
-        {
-            "m_Id": "aeb18405f774494b9fa0824fb610346e"
-        },
-        {
-            "m_Id": "06eb3396bd9347c78c613332a8a84647"
         }
     ]
 }
@@ -14860,10 +14872,10 @@
     "m_Guid": {
         "m_GuidSerialized": "6688b280-b515-4e4b-b506-394987bfc990"
     },
-    "m_Name": "TranslucenseWrap",
+    "m_Name": "TranslucenceWrap",
     "m_DefaultRefNameVersion": 1,
-    "m_RefNameGeneratedByDisplayName": "TranslucenseWrap",
-    "m_DefaultReferenceName": "_TranslucenseWrap",
+    "m_RefNameGeneratedByDisplayName": "TranslucenceWrap",
+    "m_DefaultReferenceName": "_TranslucenceWrap",
     "m_OverrideReferenceName": "",
     "m_GeneratePropertyBlock": true,
     "m_UseCustomSlotLabel": false,
@@ -15676,7 +15688,7 @@
     "m_ObjectId": "bc56228c99f0416480acee8d0b8f9a6b",
     "m_Title": "FUR wind Offset",
     "m_Position": {
-        "x": -834.000244140625,
+        "x": -833.9998779296875,
         "y": -4914.66650390625
     }
 }
@@ -15928,8 +15940,8 @@
     "m_ObjectId": "c16bf74c2aa047e8a319b5063966863d",
     "m_Title": "WindNoise",
     "m_Position": {
-        "x": -1550.0003662109375,
-        "y": -6889.333984375
+        "x": -1550.0,
+        "y": -6889.33349609375
     }
 }
 
@@ -16917,8 +16929,8 @@
     "m_ObjectId": "d1657f270b5d4b7cbd49c1db71d6337b",
     "m_Title": "ApplyPreAttack To Emission",
     "m_Position": {
-        "x": 1992.0003662109375,
-        "y": -272.66680908203127
+        "x": 1992.0,
+        "y": -272.66650390625
     }
 }
 
@@ -17680,8 +17692,8 @@
     "m_ObjectId": "db10053a93d74921a1d8ab8392bb08e0",
     "m_Title": "Damage",
     "m_Position": {
-        "x": 151.9997100830078,
-        "y": 509.33319091796877
+        "x": 152.0,
+        "y": 509.33349609375
     }
 }
 
@@ -17691,8 +17703,8 @@
     "m_ObjectId": "db48c1a20192462990ceaedc07db0ccb",
     "m_Title": "Custom Lighting",
     "m_Position": {
-        "x": -3720.666748046875,
-        "y": -1575.999755859375
+        "x": -3720.66650390625,
+        "y": -1575.9998779296875
     }
 }
 
@@ -18400,7 +18412,7 @@
     "m_ObjectId": "e8111e2c538d4bdeac484e105395c584",
     "m_Title": "SpecularCOlor",
     "m_Position": {
-        "x": -500.666748046875,
+        "x": -500.6666259765625,
         "y": 2324.6669921875
     }
 }
@@ -18840,10 +18852,10 @@
     "m_Guid": {
         "m_GuidSerialized": "f7b8302c-1d66-4556-bab5-f3160c2e9368"
     },
-    "m_Name": "BaseColor",
+    "m_Name": "BaseMap",
     "m_DefaultRefNameVersion": 1,
-    "m_RefNameGeneratedByDisplayName": "BaseColor",
-    "m_DefaultReferenceName": "_BaseColor",
+    "m_RefNameGeneratedByDisplayName": "BaseMap",
+    "m_DefaultReferenceName": "_BaseMap",
     "m_OverrideReferenceName": "",
     "m_GeneratePropertyBlock": true,
     "m_UseCustomSlotLabel": false,
@@ -19294,8 +19306,8 @@
     "m_ObjectId": "f1d11ce0f0a24bbeafbbcca1533351be",
     "m_Title": "Apply Death Fade To Specular",
     "m_Position": {
-        "x": 1551.3338623046875,
-        "y": 1754.00048828125
+        "x": 1551.33349609375,
+        "y": 1754.0
     }
 }
 
