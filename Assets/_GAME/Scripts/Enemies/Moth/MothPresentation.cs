@@ -13,6 +13,9 @@ namespace _GAME.Scripts.Enemies.Moth
         [SerializeField] private DeathFlash _deathFlash;
         [SerializeField] private HealthIndication _healthIndication;
         [SerializeField] private TrailResetHandler _trailResetHandler;
+        [SerializeField] private MothBodyRotationHandler _mothBodyRotationHandler;
+        [Header("Animation")]
+        [SerializeField] private Animator _wingsAnimator;
     
         public void Initialize()
         {
@@ -20,10 +23,17 @@ namespace _GAME.Scripts.Enemies.Moth
             _damageFlash.Initialize();
             _deathFlash.Initialize();
             _healthIndication.Initialize();
+            _mothBodyRotationHandler.Initialize();
         
             _movement.PreAttackStarted += OnPreAttackStarted;
             _movement.PreAttackEnded += OnPreAttackEnded;
             _movement.SpreadStateEnded += _trailResetHandler.Initialize;
+            
+            _movement.FallStateStarted += OnFallStateStarted;
+            _movement.DeathStateStarted += OnFallStateStarted;
+            _movement.FallStateEnded += OnFallStateEnded;
+            _movement.DeathStateEnded += OnFallStateEnded;
+            
             _moth.Started += OnFlyStarted;
             _moth.Damaged += OnFlyDamaged;
             _moth.HealthChanged += _healthIndication.Refresh;
@@ -36,6 +46,12 @@ namespace _GAME.Scripts.Enemies.Moth
             _movement.PreAttackStarted -= OnPreAttackStarted;
             _movement.PreAttackEnded -= OnPreAttackEnded;
             _movement.SpreadStateEnded -= _trailResetHandler.Initialize;
+            
+            _movement.FallStateStarted += OnFallStateStarted;
+            _movement.DeathStateStarted += OnFallStateStarted;
+            _movement.FallStateEnded += OnFallStateEnded;
+            _movement.DeathStateEnded += OnFallStateEnded;
+            
             _moth.Started -= OnFlyStarted;
             _moth.Damaged -= OnFlyDamaged;
             _moth.HealthChanged -= _healthIndication.Refresh;
@@ -56,6 +72,16 @@ namespace _GAME.Scripts.Enemies.Moth
         private void OnPreAttackEnded()
         {
             _preAttackFlash.PreAttackEnd();
+        }
+
+        private void OnFallStateStarted()
+        {
+            _wingsAnimator.SetTrigger("StartFall");
+        }
+
+        private void OnFallStateEnded()
+        {
+            _wingsAnimator.SetTrigger("EndFall");
         }
 
         private void OnFlyDamaged()

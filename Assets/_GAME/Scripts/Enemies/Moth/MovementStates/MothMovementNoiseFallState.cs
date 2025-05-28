@@ -26,7 +26,6 @@ namespace _GAME.Scripts.Enemies.Moth.MovementStates
         private readonly float _noiseAmplitude = 0.015f;
         private readonly float _duration = 1.5f;
         
-        
         private Vector2 _bounceForce;
         private Vector2 _gravityForce;
         private float _localTime;
@@ -56,6 +55,7 @@ namespace _GAME.Scripts.Enemies.Moth.MovementStates
             _yPositionToSwitch = -_radius * _verticalAmplitude * 1.1f;
         }
 
+        public event Action Started;
         public event Action Ended;
     
         public override void Enter()
@@ -79,6 +79,8 @@ namespace _GAME.Scripts.Enemies.Moth.MovementStates
         
             _gravityForce = Vector3.zero;
             _localTime = 0;
+            
+            Started?.Invoke();
         }
 
         public override void Tick()

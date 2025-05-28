@@ -23,7 +23,8 @@ namespace _GAME.Scripts.Enemies.Moth.MovementStates
         {
             _positionDirectionProvider = positionDirectionProvider;
         }
-
+        
+        public event Action Started;
         public event Action Ended;
     
         public override void Enter()
@@ -32,6 +33,7 @@ namespace _GAME.Scripts.Enemies.Moth.MovementStates
             DepthDirection = Vector3.zero;
             _bounceForce = Position2D.normalized * _bounceForceMagnitude;
             _gravityForce = Vector3.zero;
+            Started?.Invoke();
         }
 
         public override void Tick()

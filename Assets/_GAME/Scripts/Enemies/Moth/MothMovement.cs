@@ -23,7 +23,7 @@ namespace _GAME.Scripts.Enemies.Moth
         // Debug
         [SerializeField] private string _stateDebug;
         [SerializeField] private int _sideDirection = 1;
-        [SerializeField] private int _depthSideDirection = 0;
+        [SerializeField] private int _depthSideDirection;
         private float _collisionRadius;
         // Debug
         private Vector3 _position3d;
@@ -55,9 +55,14 @@ namespace _GAME.Scripts.Enemies.Moth
         public event Action ReadyToAttackStateEnded;
         public event Action PreAttackStarted;
         public event Action PreAttackEnded;
-        public event Action DeathStateEnded;
         public event Action SpreadStateEnded;
-
+        public event Action HoverStateStarted;
+        public event Action PatrolStateStarted;
+        public event Action FallStateStarted;
+        public event Action FallStateEnded;
+        public event Action DeathStateStarted;
+        public event Action DeathStateEnded;
+        
         public Vector2 Position2D { get; private set; }
         public Vector3 DepthDirection { get; private set; }
         public override int SideDirection => _sideDirection;
@@ -74,15 +79,17 @@ namespace _GAME.Scripts.Enemies.Moth
             _fallState = (MothMovementNoiseFallState)_stateFactory.Create(typeof(MothMovementNoiseFallState));
             _deathState = (MothMovementNoiseDeathState)_stateFactory.Create(typeof(MothMovementNoiseDeathState));
             _spreadState = (MothMovementNoiseSpreadState)_stateFactory.Create(typeof(MothMovementNoiseSpreadState));
-        
+
+            _patrolState.Started += OnPatrolStateStarted;
             _hoverState.Started += OnHoverStateStarted;
             _hoverState.Ended += OnHoverStateEnded;
             _preAttackState.Started += OnPreAttackStateStarted;
             _preAttackState.Ended += OnPreAttackStateEnded;
-            _fallState.Ended += OnFallStateEnded;
-            _deathState.Ended += OnDeathStateEnded;
             _spreadState.Ended += OnSpreadStateEnded;
-        
+            _fallState.Started += OnFallStateStarted;
+            _fallState.Ended += OnFallStateEnded;
+            _deathState.Started += OnDeathStateStarted;
+            _deathState.Ended += OnDeathStateEnded;
         
             At(_enterState, _hoverState, () => _enterState.IsReadyToSwitch);
             At(_hoverState, _patrolState, () => _hoverState.IsReadyToSwitch);
@@ -106,15 +113,18 @@ namespace _GAME.Scripts.Enemies.Moth
 
         private void OnDestroy()
         {
-            _fallState.Ended -= OnFallStateEnded;
+            _patrolState.Started -= OnPatrolStateStarted;
             _hoverState.Started -= OnHoverStateStarted;
             _hoverState.Ended -= OnHoverStateEnded;
             _preAttackState.Started -= OnPreAttackStateStarted;
             _preAttackState.Ended -= OnPreAttackStateEnded;
-            _deathState.Ended -= OnDeathStateEnded;
             _spreadState.Ended -= OnSpreadStateEnded;
+            _fallState.Started -= OnFallStateStarted;
+            _fallState.Ended -= OnFallStateEnded;
+            _deathState.Started -= OnDeathStateStarted;
+            _deathState.Ended -= OnDeathStateEnded;
         }
-        
+
         public void SetCollisionRadius(float radius)
         {
             _collisionRadius = radius;
@@ -140,7 +150,7 @@ namespace _GAME.Scripts.Enemies.Moth
         private void SetInitialDirections()
         {
             _sideDirection = RandomDirection.Generate();
-            _depthSideDirection = RandomDirection.Generate();
+            _depthSideDirection = -1;
         }
 
         public override void TriggerAttack()
@@ -256,6 +266,11 @@ namespace _GAME.Scripts.Enemies.Moth
             Position2D = newPosition2D;
         }
 
+        private void OnPatrolStateStarted()
+        {
+            PatrolStateStarted?.Invoke();
+        }
+
         private void OnHoverStateStarted()
         {
             if (_isAfterSpreadAttackSkipFinished)
@@ -263,6 +278,7 @@ namespace _GAME.Scripts.Enemies.Moth
                 ReadyToAttackStateStarted?.Invoke();    
             }
             _isPatrolEnterChecked = false;
+            HoverStateStarted?.Invoke();
         }
 
         private void OnHoverStateEnded()
@@ -281,6 +297,16 @@ namespace _GAME.Scripts.Enemies.Moth
             PreAttackEnded?.Invoke();
         }
 
+        private void OnSpreadStateEnded()
+        {
+            SpreadStateEnded?.Invoke();
+        }
+
+        private void OnFallStateStarted()
+        {
+            FallStateStarted?.Invoke();
+        }
+
         private void OnFallStateEnded()
         {
             _sideDirection = RandomDirection.Generate();
@@ -292,16 +318,18 @@ namespace _GAME.Scripts.Enemies.Moth
             _currentState = _patrolState;
             _stateDebug = _currentState.GetType().Name; // Debug only
             _stateMachine.SetState(_currentState);
+            
+            FallStateEnded?.Invoke();
+        }
+
+        private void OnDeathStateStarted()
+        {
+            DeathStateStarted?.Invoke();
         }
 
         private void OnDeathStateEnded()
         {
             DeathStateEnded?.Invoke();
-        }
-
-        private void OnSpreadStateEnded()
-        {
-            SpreadStateEnded?.Invoke();
         }
     }
 }
