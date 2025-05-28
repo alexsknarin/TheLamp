@@ -22,17 +22,27 @@ namespace _GAME.Scripts.Enemies.Moth
         private Vector3 _previousPosition;
         private float _localTime;
         private bool _isMovingToHover;
+        private bool _isFalling;
 
         public void Initialize()
         {
             _mothMovement.PatrolStateStarted += OnPatrolStateStarted;
             _mothMovement.HoverStateStarted += OnHoverStateStarted;
+            _mothMovement.FallStateStarted += OnFallStateStarted;
+            _mothMovement.DeathStateStarted += OnFallStateStarted;
+            _mothMovement.FallStateEnded += OnFallStateEnded;
+            _mothMovement.DeathStateEnded += OnFallStateEnded;
+            _isFalling = false;
         }
 
         private void OnDestroy()
         {
             _mothMovement.PatrolStateStarted -= OnPatrolStateStarted;
             _mothMovement.HoverStateStarted -= OnHoverStateStarted;
+            _mothMovement.FallStateStarted -= OnFallStateStarted;
+            _mothMovement.DeathStateStarted -= OnFallStateStarted;
+            _mothMovement.FallStateEnded -= OnFallStateEnded;
+            _mothMovement.DeathStateEnded -= OnFallStateEnded;
         }
 
         void Update()
@@ -61,6 +71,12 @@ namespace _GAME.Scripts.Enemies.Moth
                 }
                 _localTime += Time.deltaTime;
             }
+
+            if (_isFalling)
+            {
+                Vector3 velocityForward = (transform.position - _previousPosition).normalized;
+                forwardDirection = velocityForward;
+            }
         
             _bodyTransform.LookAt(transform.position + forwardDirection, up);
             
@@ -76,6 +92,16 @@ namespace _GAME.Scripts.Enemies.Moth
         {
             _isMovingToHover = true;
             _localTime = 0;
+        }
+
+        private void OnFallStateStarted()
+        {
+            _isFalling = true;
+        }
+
+        private void OnFallStateEnded()
+        {
+            _isFalling = false;
         }
     }
 }

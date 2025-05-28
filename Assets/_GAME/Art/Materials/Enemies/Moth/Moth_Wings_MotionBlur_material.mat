@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-8027514259185790659
+--- !u!114 &-2655381442683853473
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}
@@ -20,8 +20,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Moth_Body_material
-  m_Shader: {fileID: -6465566751694194690, guid: 3f5fbfe17ce527543acc205f22af590b,
+  m_Name: Moth_Wings_MotionBlur_material
+  m_Shader: {fileID: -6465566751694194690, guid: 283d840686aa7d141b166e3f6139e216,
     type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -38,12 +38,8 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
-    - _BaseColorMap:
-        m_Texture: {fileID: 2800000, guid: ef4882fc1f6c72149a06c2d4c2bd2852, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
     - _BaseMap:
-        m_Texture: {fileID: 2800000, guid: ef4882fc1f6c72149a06c2d4c2bd2852, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BumpMap:
@@ -59,7 +55,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _DetailNormalMap:
-        m_Texture: {fileID: 2800000, guid: dfac7b6b3e979ef44a6ce911f47743c6, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _EmissionMap:
@@ -67,7 +63,11 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: ef4882fc1f6c72149a06c2d4c2bd2852, type: 3}
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Mask:
+        m_Texture: {fileID: 2800000, guid: b28a390cff7269f4c9461be3ddb52df5, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
@@ -75,7 +75,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _NormalMap:
-        m_Texture: {fileID: 2800000, guid: dfac7b6b3e979ef44a6ce911f47743c6, type: 3}
+        m_Texture: {fileID: 2800000, guid: 966c43e9a93a1394b8df195230efce49, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _OcclusionMap:
@@ -87,7 +87,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SpecGlossMap:
-        m_Texture: {fileID: 2800000, guid: ef4882fc1f6c72149a06c2d4c2bd2852, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:
@@ -111,7 +111,6 @@ Material:
     - _Blend: 0
     - _BlendModePreserveSpecular: 1
     - _BumpScale: 1
-    - _BurnEdgeSize: 0
     - _ClearCoatMask: 0
     - _ClearCoatSmoothness: 0
     - _Cull: 2
@@ -120,43 +119,42 @@ Material:
     - _DeathFade: 0
     - _DetailAlbedoMapScale: 1
     - _DetailNormalMapScale: 1
-    - _DiffuseIntensity: 0.041
+    - _DiffuseWrap: 1.162
     - _DstBlend: 0
     - _DstBlendAlpha: 0
     - _EnvironmentReflections: 1
-    - _FlakesSize: 40.14
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
-    - _Health: 1
+    - _HorizontalBlurIntensity: 0.599
+    - _Horizontal_Blur_Power: 1
     - _Metallic: 0
-    - _NoiseSize: 52.05
     - _OcclusionStrength: 1
     - _Parallax: 0.005
     - _PreAttackIntensity: 1
     - _QueueControl: 0
     - _QueueOffset: 0
     - _ReceiveShadows: 1
-    - _Smoothness: 0.422
+    - _Smoothness: 0.5
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
-    - _SpecularIntensity: 1
-    - _SpecularRoughness: 0.486
     - _SrcBlend: 1
     - _SrcBlendAlpha: 1
     - _Surface: 0
-    - _TranslucenseIntensity: 1.92
-    - _TranslucenseWrap: 0.553
-    - _WorkflowMode: 0
+    - _VerticalBlurIntensity: 0.691
+    - _VerticalBlurPower: 2.49
+    - _VerticalBlurShift: 1
+    - _WorkflowMode: 1
     - _XRMotionVectorsPass: 1
     - _ZWrite: 1
     m_Colors:
-    - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
-    - _BurnColor: {r: 8.47419, g: 0.18880121, b: 0, a: 1}
+    - _BaseColor: {r: 0.35408992, g: 0.38364768, b: 0.30764198, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _CustomWorldNormal: {r: 0, g: 1, b: 0, a: 0}
     - _DamageColor: {r: 3.688606, g: 0.131729, b: 0, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _PreAttackEmissionColor: {r: 2.958679, g: 0.07745238, b: 0.03098099, a: 1}
-    - _SpecColor: {r: 0.7735849, g: 0.7735849, b: 0.7735849, a: 1}
+    - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
+    - _WingNormal: {r: 0, g: 1, b: 0, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
