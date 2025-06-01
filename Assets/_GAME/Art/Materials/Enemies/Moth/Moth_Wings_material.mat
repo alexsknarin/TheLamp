@@ -142,6 +142,7 @@ Material:
     - _GlossyReflections: 0
     - _Health: 1
     - _Metallic: 0
+    - _MotionBlurCurve: 2.67
     - _OcclusionStrength: 1
     - _Parallax: 0.005
     - _PreAttackIntensity: 1
@@ -169,6 +170,7 @@ Material:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _DamageColor: {r: 3.688606, g: 0.131729, b: 0, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _MotionBlurRemap: {r: 0, g: 0.33, b: 0, a: 0}
     - _PreAttackEmissionColor: {r: 2.958679, g: 0.07745238, b: 0.03098099, a: 1}
     - _SpecColor: {r: 0.7735849, g: 0.7735849, b: 0.7735849, a: 1}
   m_BuildTextureStacks: []
