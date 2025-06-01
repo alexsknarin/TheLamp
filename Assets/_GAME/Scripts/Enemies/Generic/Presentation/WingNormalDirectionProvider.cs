@@ -18,11 +18,11 @@ public class WingNormalDirectionProvider : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        _wingMotionBlurMaterial.SetVector("_WingNormal", _wingTransform.up);
+        _wingMotionBlurMaterial.SetVector("_BodyNormal", _wingTransform.up);
 
         if (_useCustomNormal)
         {
-            _wingMotionBlurMaterial.SetVector("_CustomWorldNormal", _wingCustomNormalTransform.up);
+            _wingMotionBlurMaterial.SetVector("_CustomNormal", _wingCustomNormalTransform.up);
         }
     }
 }

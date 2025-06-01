@@ -141,6 +141,7 @@ Material:
     - _SrcBlend: 1
     - _SrcBlendAlpha: 1
     - _Surface: 0
+    - _TranslucenceWrap: 0.772
     - _VerticalBlurIntensity: 0.691
     - _VerticalBlurPower: 2.49
     - _VerticalBlurShift: 1
@@ -148,8 +149,10 @@ Material:
     - _XRMotionVectorsPass: 1
     - _ZWrite: 1
     m_Colors:
-    - _BaseColor: {r: 0.35408992, g: 0.38364768, b: 0.30764198, a: 1}
+    - _BaseColor: {r: 0.26632652, g: 0.29, b: 0.23081632, a: 1}
+    - _BodyNormal: {r: 0, g: 1, b: 0, a: 0}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _CustomNormal: {r: 0, g: 1, b: 0, a: 0}
     - _CustomWorldNormal: {r: 0, g: 1, b: 0, a: 0}
     - _DamageColor: {r: 3.688606, g: 0.131729, b: 0, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}

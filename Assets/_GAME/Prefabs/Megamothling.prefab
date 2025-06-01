@@ -644,13 +644,9 @@ MonoBehaviour:
   - {fileID: 1290153998761311836}
   - {fileID: 575433276750013152}
   - {fileID: 7329563952441973532}
-  - {fileID: 8654066484970819844}
   - {fileID: 5457077714542188689}
-  - {fileID: 7277551479648412674}
   - {fileID: 5511169531675555954}
-  - {fileID: 5644048396739352676}
   - {fileID: 7473251227240713312}
-  - {fileID: 8846411545299043149}
   - {fileID: 4886725854954668130}
   _duration: 0.3
   _damageParticles: {fileID: 6140194451073794433}
@@ -709,14 +705,6 @@ MonoBehaviour:
   - {fileID: 1290153998761311836}
   - {fileID: 575433276750013152}
   - {fileID: 7329563952441973532}
-  - {fileID: 8654066484970819844}
-  - {fileID: 5457077714542188689}
-  - {fileID: 7277551479648412674}
-  - {fileID: 5511169531675555954}
-  - {fileID: 5644048396739352676}
-  - {fileID: 7473251227240713312}
-  - {fileID: 8846411545299043149}
-  - {fileID: 4886725854954668130}
   _remapMax: 0.801
 --- !u!114 &3160249216096790048
 MonoBehaviour:
@@ -1107,6 +1095,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _wingTransform: {fileID: 342564919735280285}
+  _wingCustomNormalTransform: {fileID: 0}
+  _useCustomNormal: 0
 --- !u!1 &1699302747738909793 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2087715138491052677, guid: ee1147ef9cf8de44f8c37f31047bdc0d,
@@ -1126,6 +1116,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _wingTransform: {fileID: 342564919735280285}
+  _wingCustomNormalTransform: {fileID: 0}
+  _useCustomNormal: 0
 --- !u!23 &2066513009576428128 stripped
 MeshRenderer:
   m_CorrespondingSourceObject: {fileID: -7511558181221131132, guid: ee1147ef9cf8de44f8c37f31047bdc0d,
@@ -1191,6 +1183,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _wingTransform: {fileID: 342564919735280285}
+  _wingCustomNormalTransform: {fileID: 0}
+  _useCustomNormal: 0
 --- !u!1 &5247075160580074263 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4881185170339853811, guid: ee1147ef9cf8de44f8c37f31047bdc0d,
@@ -1210,6 +1204,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _wingTransform: {fileID: 342564919735280285}
+  _wingCustomNormalTransform: {fileID: 0}
+  _useCustomNormal: 0
 --- !u!23 &5457077714542188689 stripped
 MeshRenderer:
   m_CorrespondingSourceObject: {fileID: 4672273813446624885, guid: ee1147ef9cf8de44f8c37f31047bdc0d,

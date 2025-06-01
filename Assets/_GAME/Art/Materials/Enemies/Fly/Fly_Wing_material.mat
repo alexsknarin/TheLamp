@@ -122,9 +122,11 @@ Material:
     - _SmoothnessTextureChannel: 0
     - _SpecRoughness: 0.418
     - _SpecularHighlights: 1
+    - _SpecularRoughness: 0.418
     - _SrcBlend: 1
     - _SrcBlendAlpha: 1
     - _Surface: 0
+    - _TranslucenceWrap: 2
     - _TranslucenseWrap: 2
     - _WorkflowMode: 1
     - _XRMotionVectorsPass: 1
@@ -137,6 +139,7 @@ Material:
     - _PreAttackEmissionColor: {r: 2.958679, g: 0.07745238, b: 0.03098099, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
     - _SpecularColor: {r: 0.23899364, g: 0.23899364, b: 0.23899364, a: 1}
+    - _TranslucenceColor: {r: 1, g: 1, b: 1, a: 1}
     - _TranslucenseColor: {r: 1, g: 1, b: 1, a: 1}
     - _VeinsColor: {r: 0.3962264, g: 0.2977928, b: 0.2977928, a: 1}
   m_BuildTextureStacks: []
