@@ -14,6 +14,9 @@ namespace _GAME.Scripts.Enemies.Ladybug
         [SerializeField] private DeathFlash _deathFlash;
         [SerializeField] private HealthIndication _healthIndication;
         [SerializeField] private TrailResetHandler _trailResetHandler;
+        
+        [Header("Animation")]
+        [SerializeField] private Animator _animator;
 
         public void Initialize()
         {
@@ -26,6 +29,7 @@ namespace _GAME.Scripts.Enemies.Ladybug
             _movement.PreAttackStarted += OnPreAttackStarted;
             _movement.PreAttackEnded += OnPreAttackEnded;
             _movement.SpreadStateEnded += OnSpreadStateEnded;
+            _movement.StickStarted += OnStickStarted;
             _ladybug.Started += OnLadybugStarted;
             _ladybug.Damaged += OnLadybugDamaged;
             _ladybug.HealthChanged += _healthIndication.Refresh;
@@ -37,6 +41,7 @@ namespace _GAME.Scripts.Enemies.Ladybug
             _movement.PreAttackStarted -= OnPreAttackStarted;
             _movement.PreAttackEnded -= OnPreAttackEnded;
             _movement.SpreadStateEnded -= OnSpreadStateEnded;
+            _movement.StickStarted -= OnStickStarted;
             _ladybug.Started -= OnLadybugStarted;
             _ladybug.Damaged -= OnLadybugDamaged;
             _ladybug.HealthChanged -= _healthIndication.Refresh;
@@ -47,11 +52,13 @@ namespace _GAME.Scripts.Enemies.Ladybug
         {
             _trailResetHandler.Initialize();
             _deathFlash.Initialize();
+            _animator.SetTrigger("Start");
         }
 
         private void OnLadybugDamaged()
         {
             _damageFlash.Play();
+            _animator.SetTrigger("Damage");
         }
 
         private void OnPreAttackStarted()
@@ -63,11 +70,17 @@ namespace _GAME.Scripts.Enemies.Ladybug
         private void OnPreAttackEnded()
         {
             _preAttackFlash.PreAttackEnd();
+            _animator.SetTrigger("AttackStart");
         }
 
         private void OnLadybugDead()
         {
             _deathFlash.Play();
+        }
+
+        private void OnStickStarted()
+        {
+            _animator.SetTrigger("AttackEnd");
         }
 
         private void OnSpreadStateEnded()

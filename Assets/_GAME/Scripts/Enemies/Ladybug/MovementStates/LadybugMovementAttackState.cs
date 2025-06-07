@@ -30,6 +30,7 @@ namespace _GAME.Scripts.Enemies.Ladybug.MovementStates
         }
 
         public event Action Started;
+        public event Action Ended;
     
         public override void Enter()
         {
@@ -44,6 +45,11 @@ namespace _GAME.Scripts.Enemies.Ladybug.MovementStates
             Position2D = newPosition;
             Vector3 cameraDirection = (_cameraPosition - (Vector3)Position2D).normalized;
             DepthDirection = cameraDirection * _depth;
+        }
+        
+        public override void Exit()
+        {
+            Ended?.Invoke();
         }
     }
 }

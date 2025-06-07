@@ -423,6 +423,7 @@ MonoBehaviour:
   _deathFlash: {fileID: 7597187612154324614}
   _healthIndication: {fileID: 1095850155634771219}
   _trailResetHandler: {fileID: 673024186809223316}
+  _animator: {fileID: 5508868694527251657}
 --- !u!114 &3390639587391673169
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -595,9 +596,9 @@ MonoBehaviour:
   _enterForwardTargetNear: {x: 0, y: -0.14, z: -1.67}
   _enterForwardMaxDistanceToLamp: 2
   _enterForwardMinDistanceToLamp: 0.8
-  _upVectorTarget01: {fileID: 0}
-  _upVectorTarget02: {fileID: 0}
-  _upVectorTarget03: {fileID: 0}
+  _enterUpTarget: {x: 0, y: 2.419, z: -2.626}
+  _preAttackDuration: 0.21
+  _attackDuration: 0.35
 --- !u!1 &6307263982823282891
 GameObject:
   m_ObjectHideFlags: 0
@@ -937,6 +938,16 @@ PrefabInstance:
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: a3b96b04f0cfb3d4eb34c9f1c4c0b22c, type: 2}
+    - target: {fileID: -4243628848102042167, guid: 381a0fe1fdffe474bb9393293969daa3,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.06710985
+      objectReference: {fileID: 0}
+    - target: {fileID: -4243628848102042167, guid: 381a0fe1fdffe474bb9393293969daa3,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.05607769
+      objectReference: {fileID: 0}
     - target: {fileID: -4042159621689017177, guid: 381a0fe1fdffe474bb9393293969daa3,
         type: 3}
       propertyPath: m_CastShadows
@@ -957,6 +968,16 @@ PrefabInstance:
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: a3b96b04f0cfb3d4eb34c9f1c4c0b22c, type: 2}
+    - target: {fileID: -395741156260295072, guid: 381a0fe1fdffe474bb9393293969daa3,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.01145308
+      objectReference: {fileID: 0}
+    - target: {fileID: -395741156260295072, guid: 381a0fe1fdffe474bb9393293969daa3,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.137077
+      objectReference: {fileID: 0}
     - target: {fileID: -315964353629321800, guid: 381a0fe1fdffe474bb9393293969daa3,
         type: 3}
       propertyPath: m_CastShadows
@@ -982,6 +1003,36 @@ PrefabInstance:
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: a3b96b04f0cfb3d4eb34c9f1c4c0b22c, type: 2}
+    - target: {fileID: 2504154759692074410, guid: 381a0fe1fdffe474bb9393293969daa3,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.03960185
+      objectReference: {fileID: 0}
+    - target: {fileID: 2504154759692074410, guid: 381a0fe1fdffe474bb9393293969daa3,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.06573009
+      objectReference: {fileID: 0}
+    - target: {fileID: 5618216693193018542, guid: 381a0fe1fdffe474bb9393293969daa3,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.03948313
+      objectReference: {fileID: 0}
+    - target: {fileID: 5618216693193018542, guid: 381a0fe1fdffe474bb9393293969daa3,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.02538958
+      objectReference: {fileID: 0}
+    - target: {fileID: 6709621337518596387, guid: 381a0fe1fdffe474bb9393293969daa3,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.03948313
+      objectReference: {fileID: 0}
+    - target: {fileID: 6709621337518596387, guid: 381a0fe1fdffe474bb9393293969daa3,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.02538958
+      objectReference: {fileID: 0}
     - target: {fileID: 7972316401025114660, guid: 381a0fe1fdffe474bb9393293969daa3,
         type: 3}
       propertyPath: m_CastShadows
@@ -1002,6 +1053,16 @@ PrefabInstance:
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: a3b96b04f0cfb3d4eb34c9f1c4c0b22c, type: 2}
+    - target: {fileID: 9171321296687297210, guid: 381a0fe1fdffe474bb9393293969daa3,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.01145308
+      objectReference: {fileID: 0}
+    - target: {fileID: 9171321296687297210, guid: 381a0fe1fdffe474bb9393293969daa3,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.137077
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
