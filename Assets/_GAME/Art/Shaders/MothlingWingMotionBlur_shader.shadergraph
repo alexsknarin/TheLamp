@@ -1250,8 +1250,8 @@
     "m_ObjectId": "01e55739d20042d2b1baf1cf66751e25",
     "m_Title": "Death Fade",
     "m_Position": {
-        "x": -3554.667236328125,
-        "y": 242.00003051757813
+        "x": -3554.666748046875,
+        "y": 242.0
     }
 }
 
@@ -2066,7 +2066,7 @@
     "m_ObjectId": "1fd6502d144f423aa3fb47e912778a8e",
     "m_Title": "Body Orientation Opacity",
     "m_Position": {
-        "x": -5803.333984375,
+        "x": -5803.33349609375,
         "y": 3554.6669921875
     }
 }
@@ -3461,7 +3461,7 @@
     "m_Title": "Damage",
     "m_Position": {
         "x": -2940.0,
-        "y": 1006.000244140625
+        "y": 1005.9999389648438
     }
 }
 
@@ -4579,7 +4579,7 @@
     "m_Type": "UnityEditor.ShaderGraph.Vector3MaterialSlot",
     "m_ObjectId": "7b4b26d538b0437bb8a04b854a560b01",
     "m_Id": 0,
-    "m_DisplayName": "WingNormal",
+    "m_DisplayName": "BodyNormal",
     "m_SlotType": 1,
     "m_Hidden": false,
     "m_ShaderOutputName": "Out",
@@ -5435,8 +5435,8 @@
     "m_ObjectId": "9e0a8850a8f34a0eb0cf71a7b7cc73f5",
     "m_Title": "ApplyPreAttack To Emission",
     "m_Position": {
-        "x": -3654.666259765625,
-        "y": -864.6666259765625
+        "x": -3654.666748046875,
+        "y": -864.6666870117188
     }
 }
 
@@ -5933,8 +5933,8 @@
     "m_ObjectId": "b2034b20260b4695b625bfdffd3b503b",
     "m_Title": "VerticalMotionBlur",
     "m_Position": {
-        "x": -6879.333984375,
-        "y": 2325.33349609375
+        "x": -6879.33349609375,
+        "y": 2325.333251953125
     }
 }
 
@@ -6120,7 +6120,7 @@
     "m_ObjectId": "bb00ba96a3cb4c2db3e8153dd337e4b3",
     "m_Title": "Translucense",
     "m_Position": {
-        "x": -5315.333984375,
+        "x": -5315.33349609375,
         "y": -1504.6666259765625
     }
 }
@@ -6759,8 +6759,8 @@
     "m_ObjectId": "cfc10855c809461281ce538c2bc87fc4",
     "m_Title": "Apply Death Fade to Emission",
     "m_Position": {
-        "x": -1518.666748046875,
-        "y": 489.3334045410156
+        "x": -1518.6669921875,
+        "y": 489.3333435058594
     }
 }
 
@@ -7122,10 +7122,10 @@
     "m_Guid": {
         "m_GuidSerialized": "0f962d1c-2b35-4dff-a306-23910e20c8d7"
     },
-    "m_Name": "WingNormal",
+    "m_Name": "BodyNormal",
     "m_DefaultRefNameVersion": 1,
-    "m_RefNameGeneratedByDisplayName": "WingNormal",
-    "m_DefaultReferenceName": "_WingNormal",
+    "m_RefNameGeneratedByDisplayName": "BodyNormal",
+    "m_DefaultReferenceName": "_BodyNormal",
     "m_OverrideReferenceName": "",
     "m_GeneratePropertyBlock": true,
     "m_UseCustomSlotLabel": false,
@@ -7149,8 +7149,8 @@
     "m_ObjectId": "e3a2b912be9c4895bdf1eb4bffc1b280",
     "m_Title": "Ambient Light",
     "m_Position": {
-        "x": -4870.0009765625,
-        "y": -598.0001220703125
+        "x": -4870.00048828125,
+        "y": -598.0
     }
 }
 
