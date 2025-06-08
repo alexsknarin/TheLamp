@@ -338,6 +338,7 @@ GameObject:
   - component: {fileID: 1095850155634771219}
   - component: {fileID: 673024186809223316}
   - component: {fileID: 5470566707935183008}
+  - component: {fileID: 3313953765456258023}
   m_Layer: 0
   m_Name: Ladybug
   m_TagString: Untagged
@@ -424,6 +425,7 @@ MonoBehaviour:
   _healthIndication: {fileID: 1095850155634771219}
   _trailResetHandler: {fileID: 673024186809223316}
   _ladybugBodyRotationHandler: {fileID: 5470566707935183008}
+  _ladybugBodyTranslucenseController: {fileID: 3313953765456258023}
   _animator: {fileID: 5508868694527251657}
 --- !u!114 &3390639587391673169
 MonoBehaviour:
@@ -641,6 +643,22 @@ MonoBehaviour:
   _preAttackDuration: 0.21
   _attackDuration: 0.35
   _deathTransitionDuration: 0.5
+--- !u!114 &3313953765456258023
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5232608860218532571}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e77d118387395249bf0025a6a696e16, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _meshRenderer:
+  - {fileID: 6468599736198982932}
+  - {fileID: 4315425410137315897}
+  - {fileID: 6708684920221437915}
 --- !u!1 &6307263982823282891
 GameObject:
   m_ObjectHideFlags: 0

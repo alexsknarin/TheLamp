@@ -1,16 +1,39 @@
+using System.Collections.Generic;
+using _GAME.Scripts.Lib.Interfaces;
 using UnityEngine;
 
-public class LadybugBodyTranslucenseController : MonoBehaviour
+public class LadybugBodyTranslucenseController : MonoBehaviour, IInitializable
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    [SerializeField] private List<MeshRenderer> _meshRenderer;
+    private List<Material> _materials = new ();
+    
+    public void Initialize()
     {
-        
+        foreach (var meshRenderer in _meshRenderer)
+        {
+            if (meshRenderer == null) continue;
+            var material = meshRenderer.material;
+            _materials.Add(material);
+        }
     }
 
-    // Update is called once per frame
-    void Update()
+    public void SetRegular()
     {
-        
+        for (int i=0; i < _materials.Count; i++)
+        {
+            _materials[i].SetFloat("_TranslucenceWrap" , 0.7f);
+            _materials[i].SetFloat("_TranslucenseStrength" , 1.0f);
+            
+        }
+    }
+    
+    public void SetStick()
+    {
+        for (int i=0; i < _materials.Count; i++)
+        {
+            _materials[i].SetFloat("_TranslucenceWrap" , 0.93f);
+            _materials[i].SetFloat("_TranslucenseStrength" , 1.8f);
+            
+        }
     }
 }

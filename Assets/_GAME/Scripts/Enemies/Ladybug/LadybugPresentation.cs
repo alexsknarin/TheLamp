@@ -15,6 +15,7 @@ namespace _GAME.Scripts.Enemies.Ladybug
         [SerializeField] private HealthIndication _healthIndication;
         [SerializeField] private TrailResetHandler _trailResetHandler;
         [SerializeField] private LadybugBodyRotationHandler _ladybugBodyRotationHandler;
+        [SerializeField] private LadybugBodyTranslucenseController _ladybugBodyTranslucenseController;
         
         [Header("Animation")]
         [SerializeField] private Animator _animator;
@@ -27,6 +28,7 @@ namespace _GAME.Scripts.Enemies.Ladybug
             _healthIndication.Initialize();
             _trailResetHandler.Initialize();
             _ladybugBodyRotationHandler.Initialize();
+            _ladybugBodyTranslucenseController.Initialize();
         
             _movement.PreAttackStarted += OnPreAttackStarted;
             _movement.PreAttackEnded += OnPreAttackEnded;
@@ -56,6 +58,7 @@ namespace _GAME.Scripts.Enemies.Ladybug
             _deathFlash.Initialize();
             _animator.SetTrigger("Start");
             _ladybugBodyRotationHandler.Play();
+            _ladybugBodyTranslucenseController.SetRegular();
         }
 
         private void OnLadybugDamaged()
@@ -85,6 +88,7 @@ namespace _GAME.Scripts.Enemies.Ladybug
         private void OnStickStarted()
         {
             _animator.SetTrigger("AttackEnd");
+            _ladybugBodyTranslucenseController.SetStick();
         }
 
         private void OnSpreadStateEnded()
