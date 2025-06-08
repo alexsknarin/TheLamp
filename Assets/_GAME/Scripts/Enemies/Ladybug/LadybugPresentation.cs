@@ -16,6 +16,7 @@ namespace _GAME.Scripts.Enemies.Ladybug
         [SerializeField] private TrailResetHandler _trailResetHandler;
         [SerializeField] private LadybugBodyRotationHandler _ladybugBodyRotationHandler;
         [SerializeField] private LadybugBodyTranslucenseController _ladybugBodyTranslucenseController;
+        [SerializeField] private LadybugDamageNoiseRandomizer _ladybugDamageNoiseRandomizer;
         
         [Header("Animation")]
         [SerializeField] private Animator _animator;
@@ -29,6 +30,7 @@ namespace _GAME.Scripts.Enemies.Ladybug
             _trailResetHandler.Initialize();
             _ladybugBodyRotationHandler.Initialize();
             _ladybugBodyTranslucenseController.Initialize();
+            _ladybugDamageNoiseRandomizer.Initialize();
         
             _movement.PreAttackStarted += OnPreAttackStarted;
             _movement.PreAttackEnded += OnPreAttackEnded;

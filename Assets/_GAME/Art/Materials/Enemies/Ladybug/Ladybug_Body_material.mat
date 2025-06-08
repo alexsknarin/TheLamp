@@ -98,7 +98,7 @@ Material:
     - _Blend: 0
     - _BlendModePreserveSpecular: 1
     - _BumpScale: 1
-    - _BurnEdgeSize: 0.095
+    - _BurnEdgeSize: 0.033
     - _ClearCoatMask: 0
     - _ClearCoatSmoothness: 0
     - _Cull: 0
@@ -114,9 +114,10 @@ Material:
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
-    - _Health: 1
+    - _Health: 0.358
     - _Metallic: 0
-    - _NoiseSize: 92.16
+    - _NoiseOffset: 0
+    - _NoiseSize: 48.6
     - _OcclusionStrength: 1
     - _Parallax: 0.005
     - _PreAttackIntensity: 1

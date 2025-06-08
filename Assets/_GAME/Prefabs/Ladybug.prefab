@@ -282,7 +282,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4214864062028180617}
-  m_Enabled: 0
+  m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -339,6 +339,7 @@ GameObject:
   - component: {fileID: 673024186809223316}
   - component: {fileID: 5470566707935183008}
   - component: {fileID: 3313953765456258023}
+  - component: {fileID: 4895975702244090845}
   m_Layer: 0
   m_Name: Ladybug
   m_TagString: Untagged
@@ -426,6 +427,7 @@ MonoBehaviour:
   _trailResetHandler: {fileID: 673024186809223316}
   _ladybugBodyRotationHandler: {fileID: 5470566707935183008}
   _ladybugBodyTranslucenseController: {fileID: 3313953765456258023}
+  _ladybugDamageNoiseRandomizer: {fileID: 4895975702244090845}
   _animator: {fileID: 5508868694527251657}
 --- !u!114 &3390639587391673169
 MonoBehaviour:
@@ -657,6 +659,30 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _meshRenderer:
   - {fileID: 6468599736198982932}
+  - {fileID: 4315425410137315897}
+  - {fileID: 6708684920221437915}
+--- !u!114 &4895975702244090845
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5232608860218532571}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3c9c6e18a8951374f9c53e58f7e43222, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _meshRenderer:
+  - {fileID: 6468599736198982932}
+  - {fileID: 7543996283550556163}
+  - {fileID: 4216799168447824212}
+  - {fileID: 712656898121108791}
+  - {fileID: 3862391426512647208}
+  - {fileID: 6468179310278134845}
+  - {fileID: 3176597265075659662}
+  - {fileID: 6120141231352880974}
+  - {fileID: 2353090221566759860}
   - {fileID: 4315425410137315897}
   - {fileID: 6708684920221437915}
 --- !u!1 &6307263982823282891
