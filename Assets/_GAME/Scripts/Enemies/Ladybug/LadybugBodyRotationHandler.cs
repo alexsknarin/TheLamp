@@ -1,15 +1,25 @@
 using System;
+using _GAME.Scripts.Lib.Interfaces;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
 namespace _GAME.Scripts.Enemies.Ladybug
 {
-    public class LadybugBodyRotationHandler : MonoBehaviour
+    public class LadybugBodyRotationHandler : MonoBehaviour, IInitializable
     {
+        private enum RotationState
+        {
+            Enter,
+            PreAttack,
+            Attack,
+            Stick
+        }
+        
         // TODO: Inject lamp position provider
         private const float EnterUpLowVelocityMix = 0.35f;
         [SerializeField] private Transform _bodyTransform;
         [SerializeField] private LadybugMovement _movement;
+        [SerializeField] private RotationState _rotationState;
         [Header("Enter Settings")]
         [SerializeField] private float _enterForwardYMin = -0.5f;
         [SerializeField] private float _enterForwardYMax = 1.5f;
@@ -27,10 +37,6 @@ namespace _GAME.Scripts.Enemies.Ladybug
         
         private Vector3 _previousPosition;
         private bool _isGoingUp;
-
-        private bool _isEnter; // TODO: enum
-        private bool _isPreAttacking;
-        private bool _isAttacking;
         
         private float _localTime;
         
@@ -46,34 +52,39 @@ namespace _GAME.Scripts.Enemies.Ladybug
         private Vector3 _attackUpEndDirection;
         private float _attackEndAngle;
 
-        private void Awake()
+        public void Initialize()
         {
-            _isEnter = true; // TODO: enum
-            _isPreAttacking = false;
-            _isAttacking = false;
-
+            _rotationState = RotationState.Enter;
             _movement.PreAttackStarted += OnPreattackStarted;
             _movement.PreAttackEnded += OnPreattackEnded;
-            _movement.AttackEnded += OnAttackEnded;
         }
 
         private void OnDestroy()
         {
             _movement.PreAttackStarted -= OnPreattackStarted;
             _movement.PreAttackEnded -= OnPreattackEnded;
-            _movement.AttackEnded -= OnAttackEnded;
+        }
+        
+        public void Play()
+        {
+            _rotationState = RotationState.Enter;
+            _localTime = 0;
         }
 
         void Update()
         {
-            if (_isEnter)
-                EnterState();
-
-            if (_isPreAttacking)
-                PreAttackState();
-            
-            if (_isAttacking)
-                AttackState();
+            switch (_rotationState)
+            {
+                case RotationState.Enter:
+                    EnterState();
+                    break;
+                case RotationState.PreAttack:
+                    PreAttackState();
+                    break;
+                case RotationState.Attack:
+                    AttackState();
+                    break;
+            }
         
             Debug.DrawLine(transform.position, transform.position + _forward.normalized, Color.red);
             Debug.DrawLine(transform.position, transform.position + _up.normalized, Color.green);
@@ -158,19 +169,14 @@ namespace _GAME.Scripts.Enemies.Ladybug
 
             if (phase > 1f)
             {
-                _isEnter = false; // TODO: enum
-                _isPreAttacking = false;
-                _isAttacking = false;
+                _rotationState = RotationState.Stick;
             }
             _localTime += Time.deltaTime;
         }
 
         private void OnPreattackStarted()
         {
-            _isEnter = false; // TODO: enum
-            _isPreAttacking = true;
-            _isAttacking = false;
-
+            _rotationState = RotationState.PreAttack;
             _localTime = 0;
             
             _preAttackForwardStartDirection = -transform.position.normalized;
@@ -179,10 +185,7 @@ namespace _GAME.Scripts.Enemies.Ladybug
 
         private void OnPreattackEnded()
         {
-            _isEnter = false; // TODO: enum
-            _isPreAttacking = false;
-            _isAttacking = true;
-
+            _rotationState = RotationState.Attack;
             _localTime = 0;
             
             // Prepare Attack state
@@ -191,10 +194,6 @@ namespace _GAME.Scripts.Enemies.Ladybug
             Vector3 crossVector = Vector3.Cross(_attackUpStartDirection, _attackForwardStartDirection);
             _attackForwardEndDirection = Vector3.Cross(crossVector, _attackUpStartDirection);
             _attackEndAngle = Random.Range(-45f, 45f);
-        }
-
-        private void OnAttackEnded()
-        {
         }
     }
 }
