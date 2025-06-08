@@ -55,7 +55,7 @@ namespace _GAME.Scripts.Enemies.Ladybug
     
         public event Action PreAttackStarted;
         public event Action PreAttackEnded;
-        public event Action AttackEnded;
+        public event Action DeathStateStarted;
         public event Action DeathStateEnded;
         public event Action SpreadStateEnded;
         public event Action EnteredAttackRange;
@@ -83,7 +83,7 @@ namespace _GAME.Scripts.Enemies.Ladybug
             _preAttackStateR.Ended += OnPreAttackStateEnded;
             _preAttackStateL.Started += OnPreAttackStateStarted;
             _preAttackStateL.Ended += OnPreAttackStateEnded;
-            _attackState.Ended += OnAttackStateEnded;
+            _deathFallState.Started += OnDeathFallStateStarted;
             _deathFallState.Ended += OnDeathFallStateEnded;
             _spreadState.Ended += OnSpreadStateEnded;
             _patrolStateR.EnteredAttackRange += OnEnteredAttackRange;
@@ -106,7 +106,7 @@ namespace _GAME.Scripts.Enemies.Ladybug
             _preAttackStateR.Ended -= OnPreAttackStateEnded;
             _preAttackStateL.Started -= OnPreAttackStateStarted;
             _preAttackStateL.Ended -= OnPreAttackStateEnded;
-            _attackState.Ended -= OnAttackStateEnded;
+            _deathFallState.Started -= OnDeathFallStateStarted;
             _deathFallState.Ended -= OnDeathFallStateEnded;
             _spreadState.Ended -= OnSpreadStateEnded;
             _patrolStateR.EnteredAttackRange -= OnEnteredAttackRange;
@@ -253,9 +253,9 @@ namespace _GAME.Scripts.Enemies.Ladybug
             PreAttackEnded?.Invoke();
         }
 
-        private void OnAttackStateEnded()
+        private void OnDeathFallStateStarted()
         {
-            AttackEnded?.Invoke();
+            DeathStateStarted?.Invoke();
         }
 
         private void OnDeathFallStateEnded()

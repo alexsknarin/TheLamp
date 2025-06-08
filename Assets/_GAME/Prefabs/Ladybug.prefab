@@ -640,6 +640,7 @@ MonoBehaviour:
   _enterUpTarget: {x: 0, y: 2.419, z: -2.626}
   _preAttackDuration: 0.21
   _attackDuration: 0.35
+  _deathTransitionDuration: 0.5
 --- !u!1 &6307263982823282891
 GameObject:
   m_ObjectHideFlags: 0
