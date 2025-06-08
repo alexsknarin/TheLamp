@@ -94,13 +94,17 @@ Material:
     - _AddPrecomputedVelocity: 0
     - _AlphaClip: 0
     - _AlphaToMask: 0
+    - _AttackSemaphore: 0
     - _Blend: 0
     - _BlendModePreserveSpecular: 1
     - _BumpScale: 1
+    - _BurnEdgeSize: 0.095
     - _ClearCoatMask: 0
     - _ClearCoatSmoothness: 0
     - _Cull: 0
     - _Cutoff: 0.5
+    - _DamageFade: 0
+    - _DeathFade: 0
     - _DetailAlbedoMapScale: 1
     - _DetailNormalMapScale: 1
     - _DiffuseIntensity: 0.107
@@ -110,9 +114,12 @@ Material:
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
+    - _Health: 1
     - _Metallic: 0
+    - _NoiseSize: 92.16
     - _OcclusionStrength: 1
     - _Parallax: 0.005
+    - _PreAttackIntensity: 1
     - _QueueControl: 0
     - _QueueOffset: 0
     - _ReceiveShadows: 1
@@ -125,7 +132,7 @@ Material:
     - _SrcBlend: 1
     - _SrcBlendAlpha: 1
     - _Surface: 0
-    - _TranslucenceWrap: 0.961
+    - _TranslucenceWrap: 0.75
     - _TranslucenceWrapMapExtra: 0.528
     - _TranslucensePower: 2.29
     - _TranslucenseStrength: 1.93
@@ -134,8 +141,11 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
+    - _BurnColor: {r: 7.3094354, g: 0.162851, b: 0, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _DamageColor: {r: 3.688606, g: 0.131729, b: 0, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _PreAttackEmissionColor: {r: 2.958679, g: 0.07745238, b: 0.03098099, a: 1}
     - _SpecColor: {r: 0.12578613, g: 0.12578613, b: 0.12578613, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
