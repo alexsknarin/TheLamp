@@ -61,6 +61,7 @@ namespace _GAME.Scripts.Enemies.Ladybug
         private void OnLadybugDamaged()
         {
             _damageFlash.Play();
+            _animator.SetInteger("DamageType", Random.Range(0, 5));
             _animator.SetTrigger("Damage");
         }
 
