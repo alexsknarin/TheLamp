@@ -7,11 +7,11 @@ namespace _GAME.Scripts.Enemies.Generic.Presentation
     public class LadybugDamageFlash : DamageIndication
     {
         [SerializeField] private List<MeshRenderer> _meshRenderer;
-        [SerializeField] private MeshRenderer _attackZone;
+        [SerializeField] private GameObject _damageEnergy;
         [SerializeField] private float _duration = 0.5f;
         [SerializeField] private VisualEffect _damageParticles;
         private List<Material> _bodyMaterials = new ();
-        private Material _attackZoneMaterial;
+        private Material _damageEnergyMaterial;
         private float _localTime;
 
         public override void Initialize()
@@ -25,12 +25,13 @@ namespace _GAME.Scripts.Enemies.Generic.Presentation
             }
             
             enabled = false;
-            _attackZoneMaterial = _attackZone.material;
-            _attackZoneMaterial.SetFloat("_Alpha", 0f);
+            _damageEnergyMaterial = _damageEnergy.GetComponent<MeshRenderer>().material;
+            _damageEnergy.SetActive(false);
         }
 
         public override void Play()
         {
+            _damageEnergy.SetActive(true);
             enabled = true;
             _localTime = 0;
         
@@ -46,11 +47,11 @@ namespace _GAME.Scripts.Enemies.Generic.Presentation
             {
                 enabled = false;
                 SetDamageMaterialPhase(0);
-                _attackZoneMaterial.SetFloat("_Alpha", 0f);
+                _damageEnergy.SetActive(false);   
                 return;
             }
             SetDamageMaterialPhase(1 - phase);
-            _attackZoneMaterial.SetFloat("_Alpha", 1-Mathf.Clamp(phase*3f, 0, 1));
+            _damageEnergyMaterial.SetFloat("_Phase", Mathf.Clamp01(phase*1.45f));
             _localTime += Time.deltaTime;
         }
         
