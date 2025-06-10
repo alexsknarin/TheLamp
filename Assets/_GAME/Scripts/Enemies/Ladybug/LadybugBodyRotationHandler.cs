@@ -17,7 +17,6 @@ namespace _GAME.Scripts.Enemies.Ladybug
             Idle
         }
         
-        // TODO: Inject lamp position provider
         private const float EnterUpLowVelocityMix = 0.35f;
         [SerializeField] private Transform _bodyTransform;
         [SerializeField] private LadybugMovement _movement;
@@ -55,6 +54,14 @@ namespace _GAME.Scripts.Enemies.Ladybug
         private Vector3 _attackUpStartDirection;
         private Vector3 _attackUpEndDirection;
         private float _attackEndAngle;
+        
+        // Dependencies
+        private ILampPositionProviderService _lampPositionProvider;
+        
+        public void Construct(ILampPositionProviderService lampPositionProvider)
+        {
+            _lampPositionProvider = lampPositionProvider;
+        }
 
         public void Initialize()
         {
@@ -161,9 +168,7 @@ namespace _GAME.Scripts.Enemies.Ladybug
 
         private void PerformAttackState()
         {
-            // TODO: use distance as a phase instead of duration.
-            // TODO: use real lamp position
-            _up = transform.position.normalized;
+            _up = GetCurrentDirectionFromLamp(transform.position);
             float phase = _localTime / _attackDuration;
             if (phase > 1f)
             {
@@ -172,16 +177,13 @@ namespace _GAME.Scripts.Enemies.Ladybug
                 return;
             }
             
-            Vector3 crossVector = Vector3.Cross(transform.position.normalized, _attackForwardEndDirection);
+            Vector3 crossVector = Vector3.Cross(_up, _attackForwardEndDirection);
             Debug.DrawLine(transform.position, transform.position + crossVector, Color.darkBlue);
             
-            _attackForwardEndDirection = Vector3.Cross(crossVector, transform.position.normalized);
+            _attackForwardEndDirection = Vector3.Cross(crossVector, _up);
             Vector3 forwardEndDirectionRotated = Quaternion.AngleAxis(_attackEndAngle, _up) * _attackForwardEndDirection;
-            
             _forward = Vector3.Lerp(_attackForwardStartDirection, forwardEndDirectionRotated, phase);
-            
             _bodyTransform.LookAt(transform.position + _forward, _up);
-
             
             _localTime += Time.deltaTime;
         }
@@ -226,6 +228,11 @@ namespace _GAME.Scripts.Enemies.Ladybug
         {
             _rotationState = RotationState.Death;
             _localTime = 0;
+        }
+
+        private Vector3 GetCurrentDirectionFromLamp(Vector3 currentPosition)
+        {
+            return (currentPosition - (Vector3)_lampPositionProvider.GetLampPosition()).normalized;
         }
     }
 }
