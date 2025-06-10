@@ -55,6 +55,7 @@ namespace _GAME.Scripts.Enemies.Ladybug
     
         public event Action PreAttackStarted;
         public event Action PreAttackEnded;
+        public event Action DeathStateStarted;
         public event Action DeathStateEnded;
         public event Action SpreadStateEnded;
         public event Action EnteredAttackRange;
@@ -82,6 +83,7 @@ namespace _GAME.Scripts.Enemies.Ladybug
             _preAttackStateR.Ended += OnPreAttackStateEnded;
             _preAttackStateL.Started += OnPreAttackStateStarted;
             _preAttackStateL.Ended += OnPreAttackStateEnded;
+            _deathFallState.Started += OnDeathFallStateStarted;
             _deathFallState.Ended += OnDeathFallStateEnded;
             _spreadState.Ended += OnSpreadStateEnded;
             _patrolStateR.EnteredAttackRange += OnEnteredAttackRange;
@@ -97,13 +99,14 @@ namespace _GAME.Scripts.Enemies.Ladybug
         
             void At(IState from, IState to, Func<bool> condition) => _stateMachine.AddTransition(from, to, condition);
         }
-        
+
         private void OnDestroy()
         {
             _preAttackStateR.Started -= OnPreAttackStateStarted;
             _preAttackStateR.Ended -= OnPreAttackStateEnded;
             _preAttackStateL.Started -= OnPreAttackStateStarted;
             _preAttackStateL.Ended -= OnPreAttackStateEnded;
+            _deathFallState.Started -= OnDeathFallStateStarted;
             _deathFallState.Ended -= OnDeathFallStateEnded;
             _spreadState.Ended -= OnSpreadStateEnded;
             _patrolStateR.EnteredAttackRange -= OnEnteredAttackRange;
@@ -111,12 +114,12 @@ namespace _GAME.Scripts.Enemies.Ladybug
             _stickState.Ended -= OnStickStateEnded;
             transform.parent = null;
         }
-        
+
         public void SetCollisionRadius(float radius)
         {
             _collisionRadius = radius;
         }
-        
+
         public override void Play()
         {
             _stateMachine.SetState(_idleState);
@@ -220,6 +223,7 @@ namespace _GAME.Scripts.Enemies.Ladybug
 
 
         // Sticky specific stuff
+
         public void TriggerStick(Transform target)
         {
             _currentState = _stickState;
@@ -249,6 +253,11 @@ namespace _GAME.Scripts.Enemies.Ladybug
             PreAttackEnded?.Invoke();
         }
 
+        private void OnDeathFallStateStarted()
+        {
+            DeathStateStarted?.Invoke();
+        }
+
         private void OnDeathFallStateEnded()
         {
             DeathStateEnded?.Invoke();
@@ -258,12 +267,12 @@ namespace _GAME.Scripts.Enemies.Ladybug
         {
             SpreadStateEnded?.Invoke();
         }
-        
+
         private void OnEnteredAttackRange()
         {
             EnteredAttackRange?.Invoke();
         }
-        
+
         private void OnStickStateStarted()
         {
             StickStarted?.Invoke();

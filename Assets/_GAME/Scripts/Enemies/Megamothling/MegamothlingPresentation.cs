@@ -6,6 +6,9 @@ namespace _GAME.Scripts.Enemies.Megamothling
 {
     public class MegamothlingPresentation : MonoBehaviour
     {
+        private static readonly int AttackStart = Animator.StringToHash("AttackStart");
+        private static readonly int Fall = Animator.StringToHash("Fall");
+        private static readonly int Return = Animator.StringToHash("Return");
         [SerializeField] private Megamothling _megamothling;
         [SerializeField] private MegamothlingMovement _movement;
         [SerializeField] private PreAttackFlash _preAttackFlash;
@@ -67,19 +70,19 @@ namespace _GAME.Scripts.Enemies.Megamothling
         private void OnPreAttackEnded()
         {
             _preAttackFlash.PreAttackEnd();
-            _legsAnimator.SetTrigger("AttackStart"); // TODO: cache
+            _legsAnimator.SetTrigger(AttackStart); // TODO: cache
             _furMovement.Attack();
         }
 
         private void OnAttackEnded()
         {
-            _legsAnimator.SetTrigger("Fall");
+            _legsAnimator.SetTrigger(Fall);
             _furMovement.Hit();
         }
 
         private void OnFallStateEnded()
         {
-            _legsAnimator.SetTrigger("Return");
+            _legsAnimator.SetTrigger(Return);
             _furMovement.Reset();
             
         }

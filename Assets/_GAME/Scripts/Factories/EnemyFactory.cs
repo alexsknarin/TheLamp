@@ -289,9 +289,9 @@ namespace _GAME.Scripts.Factories
         private Enemy CreateLadybugInstance(GameObject prefab)
         {
             GameObject enemyInstance = Object.Instantiate(prefab);
-            enemyInstance.GetComponent<LadybugMovement>().Construct(
-                _ladybugMovementStateFactory);
+            enemyInstance.GetComponent<LadybugMovement>().Construct(_ladybugMovementStateFactory);
             enemyInstance.GetComponent<LadybugPresentation>().Initialize();
+            enemyInstance.GetComponent<LadybugBodyRotationHandler>().Construct(_lampPositionProviderService);
             var enemy = enemyInstance.GetComponent<Ladybug>();
             enemy.Initialize();
         

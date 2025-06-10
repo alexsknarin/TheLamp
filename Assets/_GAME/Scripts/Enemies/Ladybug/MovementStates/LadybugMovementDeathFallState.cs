@@ -35,6 +35,7 @@ namespace _GAME.Scripts.Enemies.Ladybug.MovementStates
             _depth = depth;
         }
     
+        public event Action Started;
         public event Action Ended;
 
         public override void Enter()
@@ -46,6 +47,8 @@ namespace _GAME.Scripts.Enemies.Ladybug.MovementStates
             DepthDirection = _positionDirectionProvider.DepthDirection;
             
             _lampPositionsHolder.FreeLandingPosition(Position2D);
+            
+            Started?.Invoke();
         }
 
         public override void Tick()

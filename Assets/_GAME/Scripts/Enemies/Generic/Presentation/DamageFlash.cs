@@ -6,6 +6,7 @@ namespace _GAME.Scripts.Enemies.Generic.Presentation
 {
     public class DamageFlash : DamageIndication
     {
+        private static readonly int DamageFade = Shader.PropertyToID("_DamageFade");
         [SerializeField] private List<MeshRenderer> _meshRenderer;
         [SerializeField] private float _duration = 0.5f;
         [SerializeField] private VisualEffect _damageParticles;
@@ -19,7 +20,7 @@ namespace _GAME.Scripts.Enemies.Generic.Presentation
                 if (meshRenderer == null) continue;
                 var material = meshRenderer.material;
                 _materials.Add(material);
-                material.SetFloat("_DamageFade", 0f);
+                material.SetFloat(DamageFade, 0f);
             }
             _damageParticles.gameObject.SetActive(false);
             enabled = false;
@@ -53,7 +54,7 @@ namespace _GAME.Scripts.Enemies.Generic.Presentation
         {
             for (int i=0; i < _materials.Count; i++)
             {
-                _materials[i].SetFloat("_DamageFade", phase);
+                _materials[i].SetFloat(DamageFade, phase);
             }
         }
     }

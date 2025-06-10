@@ -45,5 +45,6 @@ namespace _GAME.Scripts.Enemies.Ladybug.MovementStates
             Vector3 cameraDirection = (_cameraPosition - (Vector3)Position2D).normalized;
             DepthDirection = cameraDirection * _depth;
         }
+        
     }
 }

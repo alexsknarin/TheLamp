@@ -6,6 +6,8 @@ namespace _GAME.Scripts.Enemies.Moth
 {
     public class MothPresentation : MonoBehaviour
     {
+        private static readonly int StartFall = Animator.StringToHash("StartFall");
+        private static readonly int EndFall = Animator.StringToHash("EndFall");
         [SerializeField] private Moth _moth;
         [SerializeField] private MothMovement _movement;
         [SerializeField] private PreAttackFlash _preAttackFlash;
@@ -76,12 +78,12 @@ namespace _GAME.Scripts.Enemies.Moth
 
         private void OnFallStateStarted()
         {
-            _wingsAnimator.SetTrigger("StartFall");
+            _wingsAnimator.SetTrigger(StartFall);
         }
 
         private void OnFallStateEnded()
         {
-            _wingsAnimator.SetTrigger("EndFall");
+            _wingsAnimator.SetTrigger(EndFall);
         }
 
         private void OnFlyDamaged()
