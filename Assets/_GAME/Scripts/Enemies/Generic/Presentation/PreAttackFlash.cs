@@ -6,6 +6,8 @@ namespace _GAME.Scripts.Enemies.Generic.Presentation
 {
     public class PreAttackFlash : MonoBehaviour, IInitializable
     {
+        private static readonly int AttackSemaphore = Shader.PropertyToID("_AttackSemaphore");
+        private static readonly int EmissionMultipler = Shader.PropertyToID("_EmissionMultipler");
         [SerializeField] private List<MeshRenderer> _meshRenderer;
         [SerializeField] private bool _enableTrailRenderer;
         [SerializeField] private TrailRenderer _trailRenderer;
@@ -19,13 +21,13 @@ namespace _GAME.Scripts.Enemies.Generic.Presentation
                 if (meshRenderer == null) continue;
                 var material = meshRenderer.material;
                 _bodyMaterials.Add(material);
-                material.SetFloat("_AttackSemaphore", 0f);
+                material.SetFloat(AttackSemaphore, 0f);
             }
 
             if (_enableTrailRenderer)
             {
                 _trailMaterial = _trailRenderer.material;
-                _trailMaterial.SetFloat("_EmissionMultipler", 0f);
+                _trailMaterial.SetFloat(EmissionMultipler, 0f);
             }
         }
 
@@ -34,7 +36,7 @@ namespace _GAME.Scripts.Enemies.Generic.Presentation
             SetBodyAttackSemaphore(1f);
             if (_enableTrailRenderer)
             {
-                _trailMaterial.SetFloat("_EmissionMultipler", .1f);    
+                _trailMaterial.SetFloat(EmissionMultipler, .1f);    
             }
         }
 
@@ -43,7 +45,7 @@ namespace _GAME.Scripts.Enemies.Generic.Presentation
             SetBodyAttackSemaphore(0f);
             if (_enableTrailRenderer)
             {
-                _trailMaterial.SetFloat("_EmissionMultipler", 0f);    
+                _trailMaterial.SetFloat(EmissionMultipler, 0f);    
             }
         
         }
@@ -52,7 +54,7 @@ namespace _GAME.Scripts.Enemies.Generic.Presentation
         {
             for (int i=0; i < _bodyMaterials.Count; i++)
             {
-                _bodyMaterials[i].SetFloat("_AttackSemaphore", value);
+                _bodyMaterials[i].SetFloat(AttackSemaphore, value);
             }
         }
     }

@@ -65,8 +65,8 @@ namespace _GAME.Scripts.Enemies.Mothling
             {
                 DoUpVectorTransition();
             }
-            
-            Vector3 forwardVelocity = Vector3.zero;
+
+            Vector3 forwardVelocity;
             if (_isPreAttacking)
             {
                 forwardVelocity = -transform.position.normalized;

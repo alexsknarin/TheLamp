@@ -6,6 +6,8 @@ namespace _GAME.Scripts.Enemies.Generic.Presentation
 {
     public class LadybugDamageFlash : DamageIndication
     {
+        private static readonly int DamageFade = Shader.PropertyToID("_DamageFade");
+        private static readonly int Phase = Shader.PropertyToID("_Phase");
         [SerializeField] private List<MeshRenderer> _meshRenderer;
         [SerializeField] private GameObject _damageEnergy;
         [SerializeField] private float _duration = 0.5f;
@@ -21,7 +23,7 @@ namespace _GAME.Scripts.Enemies.Generic.Presentation
                 if (meshRenderer == null) continue;
                 var material = meshRenderer.material;
                 _bodyMaterials.Add(material);
-                material.SetFloat("_DamageFade", 0f);
+                material.SetFloat(DamageFade, 0f);
             }
             
             enabled = false;
@@ -51,7 +53,7 @@ namespace _GAME.Scripts.Enemies.Generic.Presentation
                 return;
             }
             SetDamageMaterialPhase(1 - phase);
-            _damageEnergyMaterial.SetFloat("_Phase", Mathf.Clamp01(phase*1.45f));
+            _damageEnergyMaterial.SetFloat(Phase, Mathf.Clamp01(phase*1.45f));
             _localTime += Time.deltaTime;
         }
         
@@ -59,7 +61,7 @@ namespace _GAME.Scripts.Enemies.Generic.Presentation
         {
             for (int i=0; i < _bodyMaterials.Count; i++)
             {
-                _bodyMaterials[i].SetFloat("_DamageFade", phase);
+                _bodyMaterials[i].SetFloat(DamageFade, phase);
             }
         }
     }

@@ -6,6 +6,7 @@ namespace _GAME.Scripts.Enemies.Generic.Presentation
 {
     public class HealthIndication : MonoBehaviour, IInitializable
     {
+        private static readonly int Health = Shader.PropertyToID("_Health");
         [SerializeField] private List<MeshRenderer> _meshRenderer;
         [SerializeField] private float _remapMax = 1f;
         private List<Material> _materials = new ();
@@ -17,7 +18,7 @@ namespace _GAME.Scripts.Enemies.Generic.Presentation
                 if (meshRenderer == null) continue;
                 var material = meshRenderer.material;
                 _materials.Add(material);
-                material.SetFloat("_Health", 1f);
+                material.SetFloat(Health, 1f);
             }
         }
 
@@ -25,7 +26,7 @@ namespace _GAME.Scripts.Enemies.Generic.Presentation
         {
             for (int i=0; i < _materials.Count; i++)
             {
-                _materials[i].SetFloat("_Health", ((float)currentHealth / maxHealth) * _remapMax);
+                _materials[i].SetFloat(Health, ((float)currentHealth / maxHealth) * _remapMax);
             }
         }
     }

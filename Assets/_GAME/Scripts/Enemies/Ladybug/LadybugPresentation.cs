@@ -7,6 +7,11 @@ namespace _GAME.Scripts.Enemies.Ladybug
 {
     public class LadybugPresentation : MonoBehaviour, IInitializable
     {
+        private static readonly int Start = Animator.StringToHash("Start");
+        private static readonly int DamageType = Animator.StringToHash("DamageType");
+        private static readonly int Damage = Animator.StringToHash("Damage");
+        private static readonly int AttackStart = Animator.StringToHash("AttackStart");
+        private static readonly int AttackEnd = Animator.StringToHash("AttackEnd");
         [SerializeField] private Ladybug _ladybug;
         [SerializeField] private LadybugMovement _movement;
         [SerializeField] private PreAttackFlash _preAttackFlash;
@@ -58,7 +63,7 @@ namespace _GAME.Scripts.Enemies.Ladybug
         {
             _trailResetHandler.Initialize();
             _deathFlash.Initialize();
-            _animator.SetTrigger("Start");
+            _animator.SetTrigger(Start);
             _ladybugBodyRotationHandler.Play();
             _ladybugBodyTranslucenseController.SetRegular();
         }
@@ -66,8 +71,8 @@ namespace _GAME.Scripts.Enemies.Ladybug
         private void OnLadybugDamaged()
         {
             _damageFlash.Play();
-            _animator.SetInteger("DamageType", Random.Range(0, 5));
-            _animator.SetTrigger("Damage");
+            _animator.SetInteger(DamageType, Random.Range(0, 5));
+            _animator.SetTrigger(Damage);
         }
 
         private void OnPreAttackStarted()
@@ -79,7 +84,7 @@ namespace _GAME.Scripts.Enemies.Ladybug
         private void OnPreAttackEnded()
         {
             _preAttackFlash.PreAttackEnd();
-            _animator.SetTrigger("AttackStart");
+            _animator.SetTrigger(AttackStart);
         }
 
         private void OnLadybugDead()
@@ -89,7 +94,7 @@ namespace _GAME.Scripts.Enemies.Ladybug
 
         private void OnStickStarted()
         {
-            _animator.SetTrigger("AttackEnd");
+            _animator.SetTrigger(AttackEnd);
             _ladybugBodyTranslucenseController.SetStick();
         }
 

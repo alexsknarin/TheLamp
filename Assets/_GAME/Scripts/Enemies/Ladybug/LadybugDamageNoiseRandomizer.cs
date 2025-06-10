@@ -6,6 +6,7 @@ namespace _GAME.Scripts.Enemies.Ladybug
 {
     public class LadybugDamageNoiseRandomizer : MonoBehaviour, IInitializable
     {
+        private static readonly int NoiseOffset = Shader.PropertyToID("_NoiseOffset");
         [SerializeField] private List<MeshRenderer> _meshRenderer;
     
         public void Initialize()
@@ -14,7 +15,7 @@ namespace _GAME.Scripts.Enemies.Ladybug
             {
                 if (meshRenderer == null) continue;
                 var material = meshRenderer.material;
-                material.SetFloat("_NoiseOffset", Random.Range(0f, 100f));
+                material.SetFloat(NoiseOffset, Random.Range(0f, 100f));
             }
         }
     }

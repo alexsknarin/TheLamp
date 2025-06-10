@@ -6,6 +6,8 @@ namespace _GAME.Scripts.Enemies.Generic.Presentation
 {
     public class DeathFlash : DamageIndication
     {
+        private static readonly int DeathFade = Shader.PropertyToID("_DeathFade");
+        private static readonly int Damage = Shader.PropertyToID("_Damage");
         [SerializeField] private List<MeshRenderer> _meshRenderer;
         [SerializeField] private float _duration = 1.7f;
         [SerializeField] private VisualEffect _deathParticles;
@@ -22,8 +24,8 @@ namespace _GAME.Scripts.Enemies.Generic.Presentation
                 if (meshRenderer == null) continue;
                 var material = meshRenderer.material;
                 _materials.Add(material);
-                material.SetFloat("_DeathFade", 0f);
-                material.SetFloat("_Damage", 1f);
+                material.SetFloat(DeathFade, 0f);
+                material.SetFloat(Damage, 1f);
             }
             _deathParticles.gameObject.SetActive(false);
         }
@@ -59,7 +61,7 @@ namespace _GAME.Scripts.Enemies.Generic.Presentation
         {
             for (int i=0; i < _materials.Count; i++)
             {
-                _materials[i].SetFloat("_DeathFade", phase);
+                _materials[i].SetFloat(DeathFade, phase);
             }
         }
     }
