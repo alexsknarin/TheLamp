@@ -98,7 +98,7 @@ Material:
     - _Blend: 0
     - _BlendModePreserveSpecular: 1
     - _BumpScale: 1
-    - _BurnEdgeSize: 0.05
+    - _BurnEdgeSize: 0.12
     - _ClearCoatMask: 0
     - _ClearCoatSmoothness: 0
     - _Cull: 2
@@ -107,7 +107,7 @@ Material:
     - _DeathFade: 0
     - _DetailAlbedoMapScale: 1
     - _DetailNormalMapScale: 1
-    - _DiffuseIntensity: 1
+    - _DiffuseIntensity: 0.659
     - _DstBlend: 0
     - _DstBlendAlpha: 0
     - _EmissionStrength: 19.8
@@ -117,7 +117,7 @@ Material:
     - _GlossyReflections: 0
     - _Health: 1
     - _Metallic: 0
-    - _NoiseSize: 39.81
+    - _NoiseSize: 68.87
     - _OcclusionStrength: 1
     - _Parallax: 0.005
     - _PreAttackIntensity: 1
@@ -130,21 +130,21 @@ Material:
     - _SrcBlend: 1
     - _SrcBlendAlpha: 1
     - _Surface: 0
-    - _TailEmissionTranslucenseStrength: 2.03
-    - _TranslucenceWrap: 1.387
-    - _TranslucenseStrength: 0.704
+    - _TailEmissionTranslucenseStrength: 0.5
+    - _TranslucenceWrap: 0.355
+    - _TranslucenseStrength: 3
     - _WorkflowMode: 1
     - _XRMotionVectorsPass: 1
     - _ZWrite: 1
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
-    - _BurnColor: {r: 7.906698, g: 0.17615776, b: 0, a: 1}
+    - _BurnColor: {r: 1.720795, g: 0.038338557, b: 0, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _DamageColor: {r: 3.688606, g: 0.131729, b: 0, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _PreAttackEmissionColor: {r: 2.958679, g: 0.07745238, b: 0.03098099, a: 1}
+    - _PreAttackEmissionColor: {r: 3.2111173, g: 0.08406071, b: 0.03362433, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
-    - _TailEmissionColor: {r: 22.363523, g: 18.660122, b: 6.5402727, a: 1}
+    - _TailEmissionColor: {r: 4.8671427, g: 4.061144, b: 1.423409, a: 1}
     - _TailEmissionTranslucenseTint: {r: 1, g: 0.61320746, b: 0.61320746, a: 1}
     - _TranslucenceColor: {r: 0.8553459, g: 0.6059192, b: 0.5567817, a: 1}
   m_BuildTextureStacks: []
