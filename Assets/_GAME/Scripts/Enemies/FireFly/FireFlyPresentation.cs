@@ -14,6 +14,7 @@ namespace _GAME.Scripts.Enemies.FireFly
         [SerializeField] private DeathFlash _deathFlash;
         [SerializeField] private HealthIndication _healthIndication;
         [SerializeField] private TrailResetHandler _trailResetHandler;
+        [SerializeField] private FlyBodyRotationHandler _flyBodyRotationHandler;
     
         public void Initialize()
         {
@@ -21,6 +22,7 @@ namespace _GAME.Scripts.Enemies.FireFly
             _damageFlash.Initialize();
             _deathFlash.Initialize();
             _healthIndication.Initialize();
+            _flyBodyRotationHandler.Initialize();
         
             _movement.PreAttackStarted += OnPreAttackStarted;
             _movement.PreAttackEnded += OnPreAttackEnded;
