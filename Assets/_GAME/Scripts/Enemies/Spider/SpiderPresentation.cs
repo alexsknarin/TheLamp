@@ -18,7 +18,6 @@ namespace _GAME.Scripts.Enemies.Spider
 
         [SerializeField] private Animator _animator;
         private bool _isEnterEnded;
-        
     
         public void Initialize()
         {
@@ -31,7 +30,10 @@ namespace _GAME.Scripts.Enemies.Spider
             
             _movement.PreAttackStarted += OnPreAttackStarted;
             _movement.PreAttackEnded += OnPreAttackEnded;
-            _movement.AttackEnded += OnAttackEnded; 
+            _movement.AttackEnded += OnAttackEnded;
+            _movement.SpreadStateStarted += OnSpreadStateStarted;
+            _movement.SpreadStateEnded += OnSpreadStateEnded;
+            
             _spider.Started += OnSpiderStarted;
             _spider.Damaged += OnSpiderDamaged;
             _spider.HealthChanged += _healthIndication.Refresh;
@@ -44,10 +46,23 @@ namespace _GAME.Scripts.Enemies.Spider
             _movement.PreAttackStarted -= OnPreAttackStarted;
             _movement.PreAttackEnded -= OnPreAttackEnded;
             _movement.AttackEnded -= OnAttackEnded;
+            _movement.SpreadStateStarted -= OnSpreadStateStarted;
+            _movement.SpreadStateEnded -= OnSpreadStateEnded;
             _spider.Started -= OnSpiderStarted;
             _spider.Damaged -= OnSpiderDamaged;
             _spider.HealthChanged -= _healthIndication.Refresh;
             _spider.Dead -= OnSpiderDead;
+        }
+
+        private void OnSpreadStateStarted()
+        {
+            _animator.SetTrigger("Spread");
+        }
+
+        private void OnSpreadStateEnded()
+        {
+            _animator.SetTrigger("EnterStart");
+            _isEnterEnded = false;
         }
 
         private void Update()

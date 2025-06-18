@@ -26,6 +26,7 @@ namespace _GAME.Scripts.Enemies.Spider.MovementStates
             _hangingPoint.y = height;
         }
         
+        public event Action Started;
         public event Action Ended;
     
         public override void Enter()
@@ -35,6 +36,7 @@ namespace _GAME.Scripts.Enemies.Spider.MovementStates
             _startY = Position2D.y;
             _startX = Position2D.x;
             _localTime = 0;
+            Started?.Invoke();
         }
 
         public override void Tick()

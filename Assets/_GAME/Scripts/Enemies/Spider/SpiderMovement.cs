@@ -61,6 +61,7 @@ namespace _GAME.Scripts.Enemies.Spider
         public event Action PreAttackEnded;
         public event Action AttackEnded;
         public event Action DeathStateEnded;
+        public event Action SpreadStateStarted;
         public event Action SpreadStateEnded;
 
         public Vector2 Position2D { get; private set; } 
@@ -88,6 +89,7 @@ namespace _GAME.Scripts.Enemies.Spider
             _preAttackState.Ended += OnPreAttackStateEnded;
             _attackState.Ended += OnAttackStateEnded;
             _deathState.Ended += OnDeathStateEnded;
+            _climbUpState.Started += OnSpreadStateStarted;
             _climbUpState.Ended += OnSpreadStateEnded;
         
             At(_enterState, _patrolState, () => _enterState.IsReadyToSwitch);
@@ -119,6 +121,7 @@ namespace _GAME.Scripts.Enemies.Spider
             _preAttackState.Ended -= OnPreAttackStateEnded;
             _attackState.Ended -= OnAttackStateEnded;
             _deathState.Ended -= OnDeathStateEnded;
+            _climbUpState.Started -= OnSpreadStateStarted;
             _climbUpState.Ended += OnSpreadStateEnded;
         }
 
@@ -233,6 +236,11 @@ namespace _GAME.Scripts.Enemies.Spider
         {
             _sideDirectionProvider.ReleasePoint(this);
             DeathStateEnded?.Invoke();
+        }
+
+        private void OnSpreadStateStarted()
+        {
+            SpreadStateStarted?.Invoke();
         }
 
         private void OnSpreadStateEnded()
