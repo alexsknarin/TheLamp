@@ -1,3 +1,4 @@
+using System;
 using _GAME.Scripts.Enemies.Generic.Presentation;
 using _GAME.Scripts.Lib;
 using UnityEngine;
@@ -14,6 +15,10 @@ namespace _GAME.Scripts.Enemies.Spider
         [SerializeField] private HealthIndication _healthIndication;
         [SerializeField] private TrailResetHandler _trailResetHandler;
         [SerializeField] private SpiderWebController _spiderWeb;
+
+        [SerializeField] private Animator _animator;
+        private bool _isEnterEnded;
+        
     
         public void Initialize()
         {
@@ -22,9 +27,11 @@ namespace _GAME.Scripts.Enemies.Spider
             _deathFlash.Initialize();
             _healthIndication.Initialize();
             _spiderWeb.Initialize();
-        
+            _isEnterEnded = false;
+            
             _movement.PreAttackStarted += OnPreAttackStarted;
             _movement.PreAttackEnded += OnPreAttackEnded;
+            _movement.AttackEnded += OnAttackEnded; 
             _spider.Started += OnSpiderStarted;
             _spider.Damaged += OnSpiderDamaged;
             _spider.HealthChanged += _healthIndication.Refresh;
@@ -36,27 +43,66 @@ namespace _GAME.Scripts.Enemies.Spider
         {
             _movement.PreAttackStarted -= OnPreAttackStarted;
             _movement.PreAttackEnded -= OnPreAttackEnded;
+            _movement.AttackEnded -= OnAttackEnded;
             _spider.Started -= OnSpiderStarted;
             _spider.Damaged -= OnSpiderDamaged;
             _spider.HealthChanged -= _healthIndication.Refresh;
             _spider.Dead -= OnSpiderDead;
         }
-    
+
+        private void Update()
+        {
+            if (!_isEnterEnded)
+            {
+                if (transform.position.y < 1.0f)
+                {
+                    _isEnterEnded = true;
+                    _animator.SetTrigger("EnterEnd");
+                }
+            }
+        }
+
         private void OnSpiderStarted()
         {
             _trailResetHandler.Initialize();
             _deathFlash.Initialize();
             _spiderWeb.Play();
+            _isEnterEnded = false;
+            _animator.SetTrigger("EnterStart");
         }
 
         private void OnPreAttackStarted()
         {
             _preAttackFlash.PreAttackStart();
+
+            if (transform.position.x > 0)
+            {
+                _animator.SetTrigger("PreAttackR");                
+            }
+            else
+            {
+                _animator.SetTrigger("PreAttackL");
+            }
+            
         }
 
         private void OnPreAttackEnded()
         {
             _preAttackFlash.PreAttackEnd();
+            
+            if (transform.position.x > 0)
+            {
+                _animator.SetTrigger("AttackR");                
+            }
+            else
+            {
+                _animator.SetTrigger("AttackL");
+            }
+        }
+
+        private void OnAttackEnded()
+        {
+            _animator.SetTrigger("AttackEnd");
         }
 
         private void OnSpiderDamaged()

@@ -59,6 +59,7 @@ namespace _GAME.Scripts.Enemies.Spider
         public event Action ReadyToAttackStateEnded;
         public event Action PreAttackStarted;
         public event Action PreAttackEnded;
+        public event Action AttackEnded;
         public event Action DeathStateEnded;
         public event Action SpreadStateEnded;
 
@@ -85,6 +86,7 @@ namespace _GAME.Scripts.Enemies.Spider
             _patrolState.Ended += OnPatrolStateEnded;
             _preAttackState.Started += OnPreAttackStateStarted;
             _preAttackState.Ended += OnPreAttackStateEnded;
+            _attackState.Ended += OnAttackStateEnded;
             _deathState.Ended += OnDeathStateEnded;
             _climbUpState.Ended += OnSpreadStateEnded;
         
@@ -115,6 +117,7 @@ namespace _GAME.Scripts.Enemies.Spider
             _patrolState.Ended += OnPatrolStateEnded;
             _preAttackState.Started -= OnPreAttackStateStarted;
             _preAttackState.Ended -= OnPreAttackStateEnded;
+            _attackState.Ended -= OnAttackStateEnded;
             _deathState.Ended -= OnDeathStateEnded;
             _climbUpState.Ended += OnSpreadStateEnded;
         }
@@ -135,7 +138,7 @@ namespace _GAME.Scripts.Enemies.Spider
             _isAttacking = false;
             enabled = true;
         }
-        
+
         public void Restart()
         {
             SwitchToStateAndApply(_enterState);
@@ -219,6 +222,11 @@ namespace _GAME.Scripts.Enemies.Spider
         private void OnPreAttackStateEnded()
         {
             PreAttackEnded?.Invoke();
+        }
+
+        private void OnAttackStateEnded()
+        {
+            AttackEnded?.Invoke();
         }
 
         private void OnDeathStateEnded()

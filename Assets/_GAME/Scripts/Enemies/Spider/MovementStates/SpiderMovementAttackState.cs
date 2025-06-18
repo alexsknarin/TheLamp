@@ -1,3 +1,4 @@
+using System;
 using _GAME.Scripts.Lib.Interfaces;
 using UnityEngine;
 
@@ -20,6 +21,8 @@ namespace _GAME.Scripts.Enemies.Spider.MovementStates
             _hangingPoint.y = height;
             _speed = speed;
         }
+
+        public event Action Ended;
     
         public override void Enter()
         {
@@ -38,6 +41,11 @@ namespace _GAME.Scripts.Enemies.Spider.MovementStates
         
             _acceleratedSpeed += _acceleration*Time.deltaTime;
             Position2D = newPosition;
+        }
+
+        public override void Exit()
+        {
+            Ended?.Invoke();
         }
     }
 }
