@@ -61,7 +61,7 @@ public class SpiderBodyRotationHandler : MonoBehaviour, IInitializable
     }
 
 
-    private void Update()
+    private void LateUpdate()
     {
         switch (_rotationState)
         {

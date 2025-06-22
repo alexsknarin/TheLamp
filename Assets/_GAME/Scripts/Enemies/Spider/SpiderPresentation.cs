@@ -7,6 +7,16 @@ namespace _GAME.Scripts.Enemies.Spider
 {
     public class SpiderPresentation: MonoBehaviour
     {
+        private static readonly int Spread = Animator.StringToHash("Spread");
+        private static readonly int EnterStart = Animator.StringToHash("EnterStart");
+        private static readonly int EnterEnd = Animator.StringToHash("EnterEnd");
+        private static readonly int PreAttackR = Animator.StringToHash("PreAttackR");
+        private static readonly int PreAttackL = Animator.StringToHash("PreAttackL");
+        private static readonly int AttackR = Animator.StringToHash("AttackR");
+        private static readonly int AttackL = Animator.StringToHash("AttackL");
+        private static readonly int AttackEnd = Animator.StringToHash("AttackEnd");
+        private static readonly int Damaged = Animator.StringToHash("Damaged");
+        private static readonly int Dead = Animator.StringToHash("Dead");
         [SerializeField] private Spider _spider;
         [SerializeField] private SpiderMovement _movement;
         [SerializeField] private PreAttackFlash _preAttackFlash;
@@ -58,12 +68,12 @@ namespace _GAME.Scripts.Enemies.Spider
 
         private void OnSpreadStateStarted()
         {
-            _animator.SetTrigger("Spread");
+            _animator.SetTrigger(Spread);
         }
 
         private void OnSpreadStateEnded()
         {
-            _animator.SetTrigger("EnterStart");
+            _animator.SetTrigger(EnterStart);
             _isEnterEnded = false;
         }
 
@@ -74,7 +84,7 @@ namespace _GAME.Scripts.Enemies.Spider
                 if (transform.position.y < 1.0f)
                 {
                     _isEnterEnded = true;
-                    _animator.SetTrigger("EnterEnd");
+                    _animator.SetTrigger(EnterEnd);
                 }
             }
         }
@@ -85,7 +95,7 @@ namespace _GAME.Scripts.Enemies.Spider
             _deathFlash.Initialize();
             _spiderWeb.Play();
             _isEnterEnded = false;
-            _animator.SetTrigger("EnterStart");
+            _animator.SetTrigger(EnterStart);
         }
 
         private void OnPreAttackStarted()
@@ -94,11 +104,11 @@ namespace _GAME.Scripts.Enemies.Spider
 
             if (transform.position.x > 0)
             {
-                _animator.SetTrigger("PreAttackR");                
+                _animator.SetTrigger(PreAttackR);                
             }
             else
             {
-                _animator.SetTrigger("PreAttackL");
+                _animator.SetTrigger(PreAttackL);
             }
             
         }
@@ -109,28 +119,30 @@ namespace _GAME.Scripts.Enemies.Spider
             
             if (transform.position.x > 0)
             {
-                _animator.SetTrigger("AttackR");                
+                _animator.SetTrigger(AttackR);                
             }
             else
             {
-                _animator.SetTrigger("AttackL");
+                _animator.SetTrigger(AttackL);
             }
         }
 
         private void OnAttackEnded()
         {
-            _animator.SetTrigger("AttackEnd");
+            _animator.SetTrigger(AttackEnd);
         }
 
         private void OnSpiderDamaged()
         {
             _damageFlash.Play();
+            _animator.SetTrigger(Damaged);
         }
 
         private void OnSpiderDead()
         {
             _deathFlash.Play();
             _spiderWeb.StartShrink(true);
+            _animator.SetTrigger(Dead);
         }
     }
 }
