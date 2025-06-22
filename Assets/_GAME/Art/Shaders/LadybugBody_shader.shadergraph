@@ -1964,8 +1964,8 @@
     "m_ObjectId": "0f97ff4406fb4c579a1aa739ee769c23",
     "m_Title": "ApplyPreAttack To Emission",
     "m_Position": {
-        "x": -2052.6669921875,
-        "y": -62.0
+        "x": -2052.666748046875,
+        "y": -62.000030517578128
     }
 }
 
@@ -2198,10 +2198,10 @@
     "m_SGVersion": 0,
     "m_Type": "UnityEditor.ShaderGraph.GroupData",
     "m_ObjectId": "159555e7959c4cb4bfd37d3deef3b522",
-    "m_Title": "ApplyPreAttack To Diffuse",
+    "m_Title": "ApplyPreAttack To Specular",
     "m_Position": {
-        "x": -2503.999755859375,
-        "y": -2220.0
+        "x": -2365.999755859375,
+        "y": -2236.666748046875
     }
 }
 
@@ -3974,7 +3974,7 @@
     "m_Title": "Damage",
     "m_Position": {
         "x": -1306.000244140625,
-        "y": 380.6666259765625
+        "y": 380.6666564941406
     }
 }
 
@@ -4465,9 +4465,9 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": -2256.666259765625,
-            "y": -1997.333251953125,
-            "width": 131.3330078125,
+            "x": -2118.666259765625,
+            "y": -2013.9998779296875,
+            "width": 131.333251953125,
             "height": 96.0
         }
     },
@@ -6218,10 +6218,10 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": -2014.6663818359375,
-            "y": -2161.3330078125,
-            "width": 209.3330078125,
-            "height": 304.0
+            "x": -1876.66650390625,
+            "y": -2178.0,
+            "width": 209.3333740234375,
+            "height": 304.000244140625
         }
     },
     "m_Slots": [
@@ -7423,9 +7423,9 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": -2478.66650390625,
-            "y": -1980.6666259765625,
-            "width": 173.33349609375,
+            "x": -2340.666259765625,
+            "y": -1997.3333740234375,
+            "width": 173.333251953125,
             "height": 36.0
         }
     },

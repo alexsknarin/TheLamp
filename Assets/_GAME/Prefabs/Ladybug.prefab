@@ -427,7 +427,7 @@ MonoBehaviour:
   _trailResetHandler: {fileID: 673024186809223316}
   _ladybugBodyRotationHandler: {fileID: 5470566707935183008}
   _ladybugBodyTranslucenseController: {fileID: 3313953765456258023}
-  _ladybugDamageNoiseRandomizer: {fileID: 4895975702244090845}
+  _damageNoiseRandomizer: {fileID: 4895975702244090845}
   _animator: {fileID: 5508868694527251657}
 --- !u!114 &3390639587391673169
 MonoBehaviour:

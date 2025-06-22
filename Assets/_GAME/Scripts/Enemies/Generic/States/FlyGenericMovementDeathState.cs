@@ -29,7 +29,8 @@ namespace _GAME.Scripts.Enemies.Generic.States
             _positionDirectionProvider = positionDirectionProvider;
             _isDeathByTimer = isDeathByTimer;
         }
-
+        
+        public event Action Started;
         public event Action Ended;
     
         public override void Enter()
@@ -41,6 +42,7 @@ namespace _GAME.Scripts.Enemies.Generic.States
         
             IsReadyToSwitch = false;
             _localTime = 0;
+            Started?.Invoke();
         }
 
         public override void Tick()

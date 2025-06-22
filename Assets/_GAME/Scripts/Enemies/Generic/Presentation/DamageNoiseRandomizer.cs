@@ -2,9 +2,9 @@ using System.Collections.Generic;
 using _GAME.Scripts.Lib.Interfaces;
 using UnityEngine;
 
-namespace _GAME.Scripts.Enemies.Ladybug
+namespace _GAME.Scripts.Enemies.Generic.Presentation
 {
-    public class LadybugDamageNoiseRandomizer : MonoBehaviour, IInitializable
+    public class DamageNoiseRandomizer : MonoBehaviour, IInitializable
     {
         private static readonly int NoiseOffset = Shader.PropertyToID("_NoiseOffset");
         [SerializeField] private List<MeshRenderer> _meshRenderer;

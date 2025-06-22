@@ -1,3 +1,4 @@
+using System;
 using _GAME.Scripts.Lib.Interfaces;
 using UnityEngine;
 
@@ -41,7 +42,8 @@ namespace _GAME.Scripts.Enemies.Spider.MovementStates
             _collisionThreshold = collisionThreshold;
             _collisionRadius = collisionRadius;
         }
-    
+        public event Action Started;
+        
         public override void Enter()
         {
             Position2D 
@@ -57,6 +59,7 @@ namespace _GAME.Scripts.Enemies.Spider.MovementStates
             _localTime = 0;
         
             IsReadyToSwitch = false;
+            Started?.Invoke();
         }
 
         public override void Tick()
