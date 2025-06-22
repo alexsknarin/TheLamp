@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace _GAME.Scripts.Enemies.Spider.MovementStates
@@ -15,12 +16,15 @@ namespace _GAME.Scripts.Enemies.Spider.MovementStates
             _hangingPoint.x = xCenter;
             _hangingPoint.y = height;
         }
+        
+        public event Action Started;
     
         public override void Enter()
         {
             IsReadyToSwitch = false;
             Position2D = _hangingPoint; 
             _localTime = 0;
+            Started?.Invoke();
         }
 
         public override void Tick()

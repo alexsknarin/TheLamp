@@ -15,9 +15,8 @@ namespace _GAME.Scripts.Enemies.Spider
         // Debug
         [SerializeField] private string _stateDebug;
         [SerializeField] private int _sideDirection = 1;
-        [SerializeField] private float _height = 5f;
+        [SerializeField] private float _height = 5f; // TODO: move to config
         [SerializeField] private float _xCenter = 1.12f;
-    
         private ILampPositionProviderService _lampPositionProviderService;
         private Vector3 _position3D;
 
@@ -55,11 +54,14 @@ namespace _GAME.Scripts.Enemies.Spider
             _collisionThreshold = collisionThreshold;
         }
     
+        public event Action EnterStateStarted;
         public event Action ReadyToAttackStateStarted;
         public event Action ReadyToAttackStateEnded;
         public event Action PreAttackStarted;
         public event Action PreAttackEnded;
         public event Action AttackEnded;
+        public event Action Bounced;
+        public event Action DeathStateStarted;
         public event Action DeathStateEnded;
         public event Action SpreadStateStarted;
         public event Action SpreadStateEnded;
@@ -83,11 +85,14 @@ namespace _GAME.Scripts.Enemies.Spider
             _climbUpState = (SpiderMovementClimbUpState)_stateFactory.Create(typeof(SpiderMovementClimbUpState));
        
             // Subscribe to state events
+            _enterState.Started += OnEnterStateStarted;
             _patrolState.Started += OnPatrolStateStarted; 
             _patrolState.Ended += OnPatrolStateEnded;
             _preAttackState.Started += OnPreAttackStateStarted;
             _preAttackState.Ended += OnPreAttackStateEnded;
+            _returnState.Started += OnReturnStateStarted; 
             _attackState.Ended += OnAttackStateEnded;
+            _deathState.Started += OnDeathStateStarted;
             _deathState.Ended += OnDeathStateEnded;
             _climbUpState.Started += OnSpreadStateStarted;
             _climbUpState.Ended += OnSpreadStateEnded;
@@ -115,11 +120,14 @@ namespace _GAME.Scripts.Enemies.Spider
 
         private void OnDestroy()
         {
+            _enterState.Started -= OnEnterStateStarted;
             _patrolState.Started += OnPatrolStateStarted; 
             _patrolState.Ended += OnPatrolStateEnded;
             _preAttackState.Started -= OnPreAttackStateStarted;
             _preAttackState.Ended -= OnPreAttackStateEnded;
+            _returnState.Started -= OnReturnStateStarted;
             _attackState.Ended -= OnAttackStateEnded;
+            _deathState.Started -= OnDeathStateStarted;
             _deathState.Ended -= OnDeathStateEnded;
             _climbUpState.Started -= OnSpreadStateStarted;
             _climbUpState.Ended += OnSpreadStateEnded;
@@ -207,6 +215,11 @@ namespace _GAME.Scripts.Enemies.Spider
                 _lampCollisionRadius + _collisionRadius + _collisionThreshold);
         }
 
+        private void OnEnterStateStarted()
+        {
+            EnterStateStarted?.Invoke();       
+        }
+
         private void OnPatrolStateStarted()
         {
             ReadyToAttackStateStarted?.Invoke();
@@ -227,9 +240,19 @@ namespace _GAME.Scripts.Enemies.Spider
             PreAttackEnded?.Invoke();
         }
 
+        private void OnReturnStateStarted()
+        {
+            Bounced?.Invoke();       
+        }
+
         private void OnAttackStateEnded()
         {
             AttackEnded?.Invoke();
+        }
+
+        private void OnDeathStateStarted()
+        {
+            DeathStateStarted?.Invoke();
         }
 
         private void OnDeathStateEnded()

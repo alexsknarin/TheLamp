@@ -15,6 +15,7 @@ namespace _GAME.Scripts.Enemies.Spider
         [SerializeField] private HealthIndication _healthIndication;
         [SerializeField] private TrailResetHandler _trailResetHandler;
         [SerializeField] private SpiderWebController _spiderWeb;
+        [SerializeField] private SpiderBodyRotationHandler _spiderBodyRotationHandler;
 
         [SerializeField] private Animator _animator;
         private bool _isEnterEnded;
@@ -26,6 +27,7 @@ namespace _GAME.Scripts.Enemies.Spider
             _deathFlash.Initialize();
             _healthIndication.Initialize();
             _spiderWeb.Initialize();
+            _spiderBodyRotationHandler.Initialize();
             _isEnterEnded = false;
             
             _movement.PreAttackStarted += OnPreAttackStarted;

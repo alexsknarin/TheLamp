@@ -251,6 +251,7 @@ GameObject:
   - component: {fileID: 1893102143145034647}
   - component: {fileID: 2033668645556359160}
   - component: {fileID: 938775239884403839}
+  - component: {fileID: -9031120941137963548}
   m_Layer: 0
   m_Name: Spider
   m_TagString: Untagged
@@ -332,6 +333,7 @@ MonoBehaviour:
   _healthIndication: {fileID: 2033668645556359160}
   _trailResetHandler: {fileID: 938775239884403839}
   _spiderWeb: {fileID: 4791740720141696685}
+  _spiderBodyRotationHandler: {fileID: -9031120941137963548}
   _animator: {fileID: 7310874766495989249}
 --- !u!114 &68635372375071861
 MonoBehaviour:
@@ -410,6 +412,54 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _trailRenderer: {fileID: 1681945591781613915}
+--- !u!114 &-9031120941137963548
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1917559448214591876}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a94235be1d590cf46bccf5d6e0939261, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _bodyTransform: {fileID: 2515685583775491153}
+  _movement: {fileID: 7275382372816787956}
+  _rotationState: 0
+  _height: 5
+  _xCenter: 1.12
+  _preAttackTransitionDuration: 0.22
+  _attackTransitionDuration: 0.3
+  _preAttackUpTarget: {x: 0, y: -0.25, z: -3}
+  _attackUpTargetL: {x: -1.5, y: -0.25, z: -3}
+  _attackUpTargetR: {x: 1.5, y: -0.25, z: -3}
+  _damageTransitionDuration: 2
+  _damageRotationCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 1493.4036
+      outSlope: 1493.4036
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.024536207
+    - serializedVersion: 3
+      time: 1
+      value: 720
+      inSlope: 46.47158
+      outSlope: 46.47158
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.092160344
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _deathRotationSpeed: 250
 --- !u!1 &2195654601382465300
 GameObject:
   m_ObjectHideFlags: 0
