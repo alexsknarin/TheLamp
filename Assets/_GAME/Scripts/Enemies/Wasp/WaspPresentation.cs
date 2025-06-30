@@ -10,6 +10,7 @@ namespace _GAME.Scripts.Enemies.Wasp
     public class WaspPresentation : MonoBehaviour, IInitializable
     {
         [SerializeField] private Wasp _wasp;
+        [SerializeField] private WaspMovement _movement;
         [SerializeField] private WaspAnimationClipEventListener _animationClipEventListener;
         [SerializeField] private MeshRenderer _waspBodyMeshRenderer;
         [SerializeField] private TrailResetHandler _trailResetHandler;
@@ -17,6 +18,7 @@ namespace _GAME.Scripts.Enemies.Wasp
         [SerializeField] private VisualEffect _damageEmitParticles;
         [SerializeField] private Transform _bodyTransform;
         [SerializeField] private float _deathDuration;
+        [SerializeField] private Animator _wingsAnimator;
         private bool _isDead;
         private bool _isDamaged;
         private Material _waspBodyMaterial;
@@ -31,7 +33,12 @@ namespace _GAME.Scripts.Enemies.Wasp
             _wasp.HealthChanged += OnHealthChanged;
             _wasp.Dead += OnDead;
             _wasp.Damaged += OnDamaged;
+
+            _movement.DeathStateStarted += OnDeathStateStarted;
+            _movement.FailStateStarted += OnFailStateStarted;
+            
             _animationClipEventListener.TrailReset += ResetTrail;
+            _animationClipEventListener.StartFlying += OnStartFlying;
             
             _waspBodyMaterial = _waspBodyMeshRenderer.material;
         }
@@ -42,7 +49,12 @@ namespace _GAME.Scripts.Enemies.Wasp
             _wasp.HealthChanged -= OnHealthChanged;
             _wasp.Dead -= OnDead;
             _wasp.Damaged -= OnDamaged;
+            
+            _movement.DeathStateStarted -= OnDeathStateStarted;
+            _movement.FailStateStarted -= OnFailStateStarted;
+            
             _animationClipEventListener.TrailReset -= ResetTrail;
+            _animationClipEventListener.StartFlying -= OnStartFlying;
         }
 
         private void OnStarted()
@@ -54,6 +66,8 @@ namespace _GAME.Scripts.Enemies.Wasp
             _waspBodyMaterial.SetFloat("_DamagePhase", 0);
             _waspBodyMaterial.SetInt("_isDamaged", 0);
             _waspBodyMaterial.SetFloat("_DeathPhase", 0);
+            
+            _wingsAnimator.SetTrigger("StartFly");
         
             _damageEmitParticles.SendEvent("OnEndEmit");
             _damageEmitParticles.SetFloat("Rate", 0);
@@ -140,6 +154,21 @@ namespace _GAME.Scripts.Enemies.Wasp
         {
             _waspBodyMeshRenderer.gameObject.SetActive(false);
             _trailResetHandler.Initialize();
+        }
+
+        private void OnDeathStateStarted()
+        {
+            _wingsAnimator.SetTrigger("StopFly");
+        }
+
+        private void OnFailStateStarted()
+        {
+            _wingsAnimator.SetTrigger("StopFly");
+        }
+
+        private void OnStartFlying()
+        {
+            _wingsAnimator.SetTrigger("StartFly");
         }
     }
 }

@@ -157,7 +157,9 @@ namespace _GAME.Scripts.Enemies.Wasp
         }
 
         public event Action AttackStateStarted;
+        public event Action FailStateStarted;
         public event Action SuccessStateEnded;
+        public event Action DeathStateStarted;
         public event Action DeathStateEnded;
 
         public Vector3 Position => transform.position;
@@ -176,6 +178,15 @@ namespace _GAME.Scripts.Enemies.Wasp
             _attack04LState.Started += OnBossAttackStarted;
             _attack04RState.Started += OnBossAttackStarted;
         
+            _attack01DeathLState.Started += OnDeathStateStarted;
+            _attack01DeathRState.Started += OnDeathStateStarted;
+            _attack02DeathLState.Started += OnDeathStateStarted;
+            _attack02DeathRState.Started += OnDeathStateStarted;
+            _attack03DeathLState.Started += OnDeathStateStarted;
+            _attack03DeathRState.Started += OnDeathStateStarted;
+            _attack04DeathLState.Started += OnDeathStateStarted;
+            _attack04DeathRState.Started += OnDeathStateStarted;
+            
             _attack01DeathLState.Ended += OnDeathStateEnded;
             _attack01DeathRState.Ended += OnDeathStateEnded;
             _attack02DeathLState.Ended += OnDeathStateEnded;
@@ -184,6 +195,17 @@ namespace _GAME.Scripts.Enemies.Wasp
             _attack03DeathRState.Ended += OnDeathStateEnded;
             _attack04DeathLState.Ended += OnDeathStateEnded;
             _attack04DeathRState.Ended += OnDeathStateEnded;
+            
+            _attack01Fail01LState.Started += OnFailStarted;
+            _attack01Fail01RState.Started += OnFailStarted;
+            _attack02Fail01LState.Started += OnFailStarted;
+            _attack02Fail01RState.Started += OnFailStarted;
+            _attack02Fail02LState.Started += OnFailStarted;
+            _attack02Fail02RState.Started += OnFailStarted;
+            _attack03Fail01LState.Started += OnFailStarted;
+            _attack03Fail01RState.Started += OnFailStarted;
+            _attack04Fail01LState.Started += OnFailStarted;
+            _attack04Fail01RState.Started += OnFailStarted;
             
             _attack01Success01LState.Ended += OnSuccessStateEnded;
             _attack01Success01RState.Ended += OnSuccessStateEnded;
@@ -226,6 +248,15 @@ namespace _GAME.Scripts.Enemies.Wasp
             _attack03RState.Started -= OnBossAttackStarted;
             _attack04LState.Started -= OnBossAttackStarted;
             _attack04RState.Started -= OnBossAttackStarted;
+            
+            _attack01DeathLState.Started -= OnDeathStateStarted;
+            _attack01DeathRState.Started -= OnDeathStateStarted;
+            _attack02DeathLState.Started -= OnDeathStateStarted;
+            _attack02DeathRState.Started -= OnDeathStateStarted;
+            _attack03DeathLState.Started -= OnDeathStateStarted;
+            _attack03DeathRState.Started -= OnDeathStateStarted;
+            _attack04DeathLState.Started -= OnDeathStateStarted;
+            _attack04DeathRState.Started -= OnDeathStateStarted;
         
             _attack01DeathLState.Ended -= OnDeathStateEnded;
             _attack01DeathRState.Ended -= OnDeathStateEnded;
@@ -235,6 +266,17 @@ namespace _GAME.Scripts.Enemies.Wasp
             _attack03DeathRState.Ended -= OnDeathStateEnded;
             _attack04DeathLState.Ended -= OnDeathStateEnded;
             _attack04DeathRState.Ended -= OnDeathStateEnded;
+
+            _attack01Fail01LState.Started -= OnFailStarted;
+            _attack01Fail01RState.Started -= OnFailStarted;
+            _attack02Fail01LState.Started -= OnFailStarted;
+            _attack02Fail01RState.Started -= OnFailStarted;
+            _attack02Fail02LState.Started -= OnFailStarted;
+            _attack02Fail02RState.Started -= OnFailStarted;
+            _attack03Fail01LState.Started -= OnFailStarted;
+            _attack03Fail01RState.Started -= OnFailStarted;
+            _attack04Fail01LState.Started -= OnFailStarted;
+            _attack04Fail01RState.Started -= OnFailStarted;
             
             _attack01Success01LState.Ended -= OnSuccessStateEnded;
             _attack01Success01RState.Ended -= OnSuccessStateEnded;
@@ -746,7 +788,9 @@ namespace _GAME.Scripts.Enemies.Wasp
             transform.position = newPosition;
         }
 
+
         // Event Handle Methods
+
         private void OnDeathStateEnded()
         {
             enabled = false;
@@ -761,6 +805,16 @@ namespace _GAME.Scripts.Enemies.Wasp
         private void OnSuccessStateEnded()
         {
             SuccessStateEnded?.Invoke();
+        }
+
+        private void OnFailStarted()
+        {
+            FailStateStarted?.Invoke();
+        }
+
+        private void OnDeathStateStarted()
+        {
+            DeathStateStarted?.Invoke();
         }
     }
 }
