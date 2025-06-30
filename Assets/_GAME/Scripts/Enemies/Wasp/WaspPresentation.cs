@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using _GAME.Scripts.Lib;
 using _GAME.Scripts.Lib.Interfaces;
 using UnityEngine;
@@ -39,8 +40,8 @@ namespace _GAME.Scripts.Enemies.Wasp
             
             _animationClipEventListener.TrailReset += ResetTrail;
             _animationClipEventListener.StartFlying += OnStartFlying;
-            
-            _waspBodyMaterial = _waspBodyMeshRenderer.material;
+
+            _waspBodyMaterial = _waspBodyMeshRenderer.sharedMaterial;
         }
 
         private void OnDestroy()
@@ -55,6 +56,8 @@ namespace _GAME.Scripts.Enemies.Wasp
             
             _animationClipEventListener.TrailReset -= ResetTrail;
             _animationClipEventListener.StartFlying -= OnStartFlying;
+            
+            _waspBodyMaterial.SetFloat("_DeathFade", 0);
         }
 
         private void OnStarted()
@@ -63,9 +66,9 @@ namespace _GAME.Scripts.Enemies.Wasp
             _localTime = 0;
             _isDead = false;
             
-            _waspBodyMaterial.SetFloat("_DamagePhase", 0);
+            _waspBodyMaterial.SetFloat("_Health", 1);
             _waspBodyMaterial.SetInt("_isDamaged", 0);
-            _waspBodyMaterial.SetFloat("_DeathPhase", 0);
+            _waspBodyMaterial.SetFloat("_DeathFade", 0);
             
             _wingsAnimator.SetTrigger("StartFly");
         
@@ -75,13 +78,13 @@ namespace _GAME.Scripts.Enemies.Wasp
 
         private void OnHealthChanged(int currentHealth, int maxHealth)
         {
-            _damagePhase = 1 - (float)currentHealth/maxHealth;
+            _damagePhase = (float)currentHealth/maxHealth;
             if (_damagePhase > 0)
             {
                 _damagePhase += 0.2f;
             }
             
-            _waspBodyMaterial.SetFloat("_DamagePhase", _damagePhase);
+            _waspBodyMaterial.SetFloat("_Health", _damagePhase);
         }
 
         private void OnDamaged()
@@ -129,12 +132,12 @@ namespace _GAME.Scripts.Enemies.Wasp
             if (_isDead)
             {
                 float phase = _localTime / _deathDuration;
-                _waspBodyMaterial.SetFloat("_DeathPhase", phase);
+                _waspBodyMaterial.SetFloat("_DeathFade", phase);
             
                 if (phase > 1)
                 {
                     _isDead = false;
-                    _waspBodyMaterial.SetFloat("_DeathPhase", 1);
+                    _waspBodyMaterial.SetFloat("_DeathFade", 1);
                     _damageEmitParticles.SendEvent("OnEndEmit");
                     _damageEmitParticles.SetFloat("Rate", 0);
                     _trailResetHandler.Initialize();

@@ -139,6 +139,7 @@ Material:
     - _WorkflowMode: 1
     - _XRMotionVectorsPass: 1
     - _ZWrite: 1
+    - _isDamaged: 0
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _BurnColor: {r: 22.36352, g: 0.4708109, b: 0, a: 1}
