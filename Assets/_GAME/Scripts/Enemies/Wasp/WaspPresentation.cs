@@ -24,6 +24,7 @@ namespace _GAME.Scripts.Enemies.Wasp
         private bool _isDamaged;
         private Material _waspBodyMaterial;
         private WaitForSeconds _damageFlashDuration = new WaitForSeconds(0.8f);
+        private WaitForSeconds _preattackFlashDuration = new WaitForSeconds(0.2f);
         private float _localTime;
         
         private float _damagePhase;
@@ -40,6 +41,7 @@ namespace _GAME.Scripts.Enemies.Wasp
             
             _animationClipEventListener.TrailReset += ResetTrail;
             _animationClipEventListener.StartFlying += OnStartFlying;
+            _animationClipEventListener.PreAttackStarted += OnPreAttackStarted;
 
             _waspBodyMaterial = _waspBodyMeshRenderer.sharedMaterial;
         }
@@ -56,6 +58,7 @@ namespace _GAME.Scripts.Enemies.Wasp
             
             _animationClipEventListener.TrailReset -= ResetTrail;
             _animationClipEventListener.StartFlying -= OnStartFlying;
+            _animationClipEventListener.PreAttackStarted -= OnPreAttackStarted; 
             
             _waspBodyMaterial.SetFloat("_DeathFade", 0);
         }
@@ -97,6 +100,12 @@ namespace _GAME.Scripts.Enemies.Wasp
             StartCoroutine(WaitForDamageFlashEnd());
             
             EmitDamageParticles();
+        }
+
+        private IEnumerator WaitForPreattackEnd()
+        {
+            yield return _preattackFlashDuration;
+            _waspBodyMaterial.SetInt("_AttackSemaphore", 0);
         }
 
         private IEnumerator WaitForDamageFlashEnd()
@@ -172,6 +181,12 @@ namespace _GAME.Scripts.Enemies.Wasp
         private void OnStartFlying()
         {
             _wingsAnimator.SetTrigger("StartFly");
+        }
+
+        private void OnPreAttackStarted()
+        {
+            _waspBodyMaterial.SetInt("_AttackSemaphore", 1);
+            StartCoroutine(WaitForPreattackEnd());
         }
     }
 }

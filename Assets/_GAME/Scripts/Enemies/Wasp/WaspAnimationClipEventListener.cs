@@ -7,6 +7,7 @@ namespace _GAME.Scripts.Enemies.Wasp
     {
         public event Action ClipEnded;
         public event Action SpreadTgiggered;
+        public event Action PreAttackStarted;
         public event Action AttackStarted;
         public event Action TrailReset;
         public event Action ScreenLeft;
@@ -40,6 +41,11 @@ namespace _GAME.Scripts.Enemies.Wasp
         public void HandleStartFlying()
         {
             StartFlying?.Invoke();
+        }
+
+        public void HandlePreAttackStart()
+        {
+            PreAttackStarted?.Invoke();
         }
     }
 }
