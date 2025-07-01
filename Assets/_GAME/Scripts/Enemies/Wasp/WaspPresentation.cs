@@ -10,10 +10,17 @@ namespace _GAME.Scripts.Enemies.Wasp
 {
     public class WaspPresentation : MonoBehaviour, IInitializable
     {
+        private static readonly int DeathFade = Shader.PropertyToID("_DeathFade");
+        private static readonly int Health = Shader.PropertyToID("_Health");
+        private static readonly int IsDamaged = Shader.PropertyToID("_isDamaged");
+        private static readonly int StartFly = Animator.StringToHash("StartFly");
+        private static readonly int AttackSemaphore = Shader.PropertyToID("_AttackSemaphore");
+        private static readonly int StopFly = Animator.StringToHash("StopFly");
         [SerializeField] private Wasp _wasp;
         [SerializeField] private WaspMovement _movement;
         [SerializeField] private WaspAnimationClipEventListener _animationClipEventListener;
         [SerializeField] private MeshRenderer _waspBodyMeshRenderer;
+        [SerializeField] private GameObject _wings;
         [SerializeField] private TrailResetHandler _trailResetHandler;
         [SerializeField] private VisualEffect _damageParticles;
         [SerializeField] private VisualEffect _damageEmitParticles;
@@ -44,6 +51,7 @@ namespace _GAME.Scripts.Enemies.Wasp
             _animationClipEventListener.PreAttackStarted += OnPreAttackStarted;
 
             _waspBodyMaterial = _waspBodyMeshRenderer.sharedMaterial;
+            _wings.SetActive(true);
         }
 
         private void OnDestroy()
@@ -60,7 +68,8 @@ namespace _GAME.Scripts.Enemies.Wasp
             _animationClipEventListener.StartFlying -= OnStartFlying;
             _animationClipEventListener.PreAttackStarted -= OnPreAttackStarted; 
             
-            _waspBodyMaterial.SetFloat("_DeathFade", 0);
+            _waspBodyMaterial.SetFloat(DeathFade, 0);
+            _wings.SetActive(true);
         }
 
         private void OnStarted()
@@ -69,11 +78,11 @@ namespace _GAME.Scripts.Enemies.Wasp
             _localTime = 0;
             _isDead = false;
             
-            _waspBodyMaterial.SetFloat("_Health", 1);
-            _waspBodyMaterial.SetInt("_isDamaged", 0);
-            _waspBodyMaterial.SetFloat("_DeathFade", 0);
+            _waspBodyMaterial.SetFloat(Health, 1);
+            _waspBodyMaterial.SetInt(IsDamaged, 0);
+            _waspBodyMaterial.SetFloat(DeathFade, 0);
             
-            _wingsAnimator.SetTrigger("StartFly");
+            _wingsAnimator.SetTrigger(StartFly);
         
             _damageEmitParticles.SendEvent("OnEndEmit");
             _damageEmitParticles.SetFloat("Rate", 0);
@@ -87,12 +96,12 @@ namespace _GAME.Scripts.Enemies.Wasp
                 _damagePhase += 0.2f;
             }
             
-            _waspBodyMaterial.SetFloat("_Health", _damagePhase);
+            _waspBodyMaterial.SetFloat(Health, _damagePhase);
         }
 
         private void OnDamaged()
         {
-            _waspBodyMaterial.SetInt("_isDamaged", 1);
+            _waspBodyMaterial.SetInt(IsDamaged, 1);
             float damagePhase = Mathf.Clamp(_damagePhase, 0, 1);
             float emitRate = damagePhase * 22;
             _damageEmitParticles.SendEvent("OnStartEmit");
@@ -105,13 +114,13 @@ namespace _GAME.Scripts.Enemies.Wasp
         private IEnumerator WaitForPreattackEnd()
         {
             yield return _preattackFlashDuration;
-            _waspBodyMaterial.SetInt("_AttackSemaphore", 0);
+            _waspBodyMaterial.SetInt(AttackSemaphore, 0);
         }
 
         private IEnumerator WaitForDamageFlashEnd()
         {
             yield return _damageFlashDuration;
-            _waspBodyMaterial.SetInt("_isDamaged", 0);
+            _waspBodyMaterial.SetInt(IsDamaged, 0);
         }
 
         private void OnDead()
@@ -120,7 +129,7 @@ namespace _GAME.Scripts.Enemies.Wasp
             _localTime = 0;
             _damageEmitParticles.SendEvent("OnStartEmit");
             _damageEmitParticles.SetFloat("Rate", 35);
-            
+            _wings.SetActive(false);
             EmitDamageParticles();
         }
 
@@ -141,12 +150,12 @@ namespace _GAME.Scripts.Enemies.Wasp
             if (_isDead)
             {
                 float phase = _localTime / _deathDuration;
-                _waspBodyMaterial.SetFloat("_DeathFade", phase);
+                _waspBodyMaterial.SetFloat(DeathFade, phase);
             
                 if (phase > 1)
                 {
                     _isDead = false;
-                    _waspBodyMaterial.SetFloat("_DeathFade", 1);
+                    _waspBodyMaterial.SetFloat(DeathFade, 1);
                     _damageEmitParticles.SendEvent("OnEndEmit");
                     _damageEmitParticles.SetFloat("Rate", 0);
                     _trailResetHandler.Initialize();
@@ -170,22 +179,22 @@ namespace _GAME.Scripts.Enemies.Wasp
 
         private void OnDeathStateStarted()
         {
-            _wingsAnimator.SetTrigger("StopFly");
+            _wingsAnimator.SetTrigger(StopFly);
         }
 
         private void OnFailStateStarted()
         {
-            _wingsAnimator.SetTrigger("StopFly");
+            _wingsAnimator.SetTrigger(StopFly);
         }
 
         private void OnStartFlying()
         {
-            _wingsAnimator.SetTrigger("StartFly");
+            _wingsAnimator.SetTrigger(StartFly);
         }
 
         private void OnPreAttackStarted()
         {
-            _waspBodyMaterial.SetInt("_AttackSemaphore", 1);
+            _waspBodyMaterial.SetInt(AttackSemaphore, 1);
             StartCoroutine(WaitForPreattackEnd());
         }
     }
