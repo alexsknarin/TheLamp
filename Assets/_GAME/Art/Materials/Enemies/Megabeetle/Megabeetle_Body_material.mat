@@ -135,6 +135,11 @@ Material:
     - _SrcBlend: 1
     - _SrcBlendAlpha: 1
     - _Surface: 0
+    - _TranslucenceColorMix: 0.014
+    - _TranslucenceWrap: 0.652
+    - _TranslucenceWrapMapExtra: 2
+    - _TranslucensePower: 1.39
+    - _TranslucenseStrength: 3
     - _WorkflowMode: 1
     - _XRMotionVectorsPass: 1
     - _ZWrite: 1
@@ -143,5 +148,6 @@ Material:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
+    - _TranslucenceColor: {r: 0.91194963, g: 0.48815885, b: 0.11757835, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
