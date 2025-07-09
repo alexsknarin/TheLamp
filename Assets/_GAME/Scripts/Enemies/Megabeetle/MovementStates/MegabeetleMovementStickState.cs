@@ -1,3 +1,4 @@
+using System;
 using _GAME.Scripts.Lib.Interfaces;
 using UnityEngine;
 
@@ -16,7 +17,8 @@ namespace _GAME.Scripts.Enemies.Megabeetle.MovementStates
         {
             _positionDirectionProvider = positionDirectionProvider;
         }
-    
+        
+        public event Action Started;
         public override void Enter()
         {
         
@@ -25,6 +27,8 @@ namespace _GAME.Scripts.Enemies.Megabeetle.MovementStates
             DepthDirection = _positionDirectionProvider.DepthDirection;
             _localTime = 0;
             _phase = 0;
+            
+            Started?.Invoke();
         }
 
         public override void Tick()

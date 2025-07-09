@@ -62,6 +62,8 @@ namespace _GAME.Scripts.Enemies.Megabeetle
         public event Action DeathStateEnded;
         public event Action AttackStarted;
         public event Action StickyAttackEnded;
+        public event Action StickStarted;
+        public event Action StickEnded;
         public event Action FallEnded;
     
         public Vector2 Position2D { get; private set; }
@@ -98,11 +100,13 @@ namespace _GAME.Scripts.Enemies.Megabeetle
             _patrolStateL.EnteredAttackRange += OnEnteredAttackRange;
             _preAttackStateR.Started += OnPreAttackStarted;
             _preAttackStateR.Ended += OnPreAttackEnded;
+            _stickState.Started += OnStickStateStarted;
             _stickPreAttackPauseState.Started += OnPreAttackStarted;
             _stickPreAttackPauseState.Ended += OnPreAttackEnded;
             _attackState.Started += OnAttackStarted;
             _deathState.Ended += OnDeathStateEnded;
             _stickAttackState.Ended += OnStickAttackEnded;
+            _fallState.Started += OnFallStateStarted; 
             _fallState.Ended += OnFallStateEnded;
             
             At(_enterStateR, _preAttackStateR, () => _enterStateR.IsReadyToSwitch);
@@ -133,19 +137,21 @@ namespace _GAME.Scripts.Enemies.Megabeetle
             _patrolStateL.EnteredAttackRange -= OnEnteredAttackRange;
             _preAttackStateR.Started -= OnPreAttackStarted;
             _preAttackStateR.Ended -= OnPreAttackEnded;
+            _stickState.Started -= OnStickStateStarted;
             _stickPreAttackPauseState.Started -= OnPreAttackStarted;
             _stickPreAttackPauseState.Ended -= OnPreAttackEnded;
             _attackState.Started -= OnAttackStarted;
             _deathState.Ended -= OnDeathStateEnded;
             _stickAttackState.Ended += OnStickAttackEnded;
             _fallState.Ended -= OnFallStateEnded;
+            _fallState.Started -= OnFallStateStarted;
         }
-        
+
         public void SetCollisionRadius(float radius)
         {
             _collisionRadius = radius;
         }
-        
+
         public override void Play()
         {
             StartMovement(_enterStateR, _enterStateL);
@@ -183,13 +189,13 @@ namespace _GAME.Scripts.Enemies.Megabeetle
             transform.parent = null;
             SwitchToStateAndApply(_fallState);
         }
-        
+
         public void TriggerFallOnLampDestroyed()
         {
             transform.parent = null;
             StartCoroutine(SwitchToFallAfterDelay());
         }
-        
+
         private IEnumerator SwitchToFallAfterDelay()
         {
             yield return null;
@@ -235,8 +241,7 @@ namespace _GAME.Scripts.Enemies.Megabeetle
         
             Debug.DrawLine(_prevPosition, transform.position, Color.cyan, 10f);
         }
-    
-    
+
 
         private Vector2 GenerateSpawnPosition(float distance, int direction)
         {
@@ -258,7 +263,7 @@ namespace _GAME.Scripts.Enemies.Megabeetle
             transform.position = newPosition;
             _stateDebug = _currentState.GetType().Name;
         }
-    
+
         private void OnFallStateEnded()
         {
             StartMovement(_patrolStateR, _patrolStateL);
@@ -289,10 +294,20 @@ namespace _GAME.Scripts.Enemies.Megabeetle
         {
             AttackStarted?.Invoke();
         }
-    
+
         private void OnStickAttackEnded()
         {
             StickyAttackEnded?.Invoke();
+        }
+
+        private void OnStickStateStarted()
+        {
+            StickStarted?.Invoke();
+        }
+
+        private void OnFallStateStarted()
+        {
+            StickEnded?.Invoke();
         }
     }
 }

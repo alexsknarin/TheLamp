@@ -9,7 +9,7 @@ namespace _GAME.Scripts.Enemies.Megabeetle
         [SerializeField] private Megabeetle _megabeetle;
         [SerializeField] private MegabeetleMovement _movement;
         [SerializeField] private PreAttackFlash _preAttackFlash;
-        [SerializeField] private LadybugDamageFlash _damageFlash;
+        [SerializeField] private MegabeetleDamageFlash _damageFlash;
         [SerializeField] private DamageEmitParticles _damageEmitParticles;
         [SerializeField] private DeathFlash _deathFlash;
         [SerializeField] private HealthIndication _healthIndication;
