@@ -24,6 +24,7 @@ namespace _GAME.Scripts.Enemies.Megabeetle.MovementStates
             _positionDirectionProvider = positionDirectionProvider;
         }
 
+        public event Action Started;
         public event Action Ended;
     
         public override void Enter()
@@ -34,6 +35,8 @@ namespace _GAME.Scripts.Enemies.Megabeetle.MovementStates
             _gravityForce = Vector2.zero;
             _localTime = 0f;
             _phase = 0f;
+            
+            Started?.Invoke();
         }
 
         public override void Tick()

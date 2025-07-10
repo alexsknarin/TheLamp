@@ -159,6 +159,7 @@ GameObject:
   - component: {fileID: 7063367196882183815}
   - component: {fileID: 2976665749094176296}
   - component: {fileID: 7082083045579080373}
+  - component: {fileID: -3276349774154278592}
   - component: {fileID: 8720077902891963357}
   - component: {fileID: 1543391340745178251}
   - component: {fileID: 610616958638192394}
@@ -251,6 +252,106 @@ MonoBehaviour:
   _deathFlash: {fileID: 610616958638192394}
   _healthIndication: {fileID: 2275359814806011941}
   _trailResetHandler: {fileID: 8884187750621584628}
+--- !u!114 &-3276349774154278592
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1100340921205773827}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b666a2b48be31504bab82f974fe94a97, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _bodyTransform: {fileID: 3463613213052150078}
+  _movement: {fileID: 2976665749094176296}
+  _rotationState: 0
+  _enterForwardYMin: -0.5
+  _enterForwardYMax: 1.5
+  _enterDownForwardTargetMixCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 6.1731424
+      outSlope: 6.1731424
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.12012899
+      value: 0.74157333
+      inSlope: 1.47232
+      outSlope: 1.47232
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.079770796
+    - serializedVersion: 3
+      time: 0.77447027
+      value: 0.85346335
+      inSlope: -0.91521066
+      outSlope: -0.91521066
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.13791299
+      outWeight: 0.14365111
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: -3.784261
+      outSlope: -3.784261
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _enterDownForwardAngleMixCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0.35
+      inSlope: 0.5421462
+      outSlope: 0.5421462
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.16319266
+    - serializedVersion: 3
+      time: 0.56989664
+      value: 0.7504959
+      inSlope: -0.07076506
+      outSlope: -0.07076506
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.09272034
+      outWeight: 0.14586942
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: -0.24290998
+      outSlope: -0.24290998
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.1433484
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _enterForwardTargetFar: {x: 0, y: -0.14, z: 1.88}
+  _enterForwardTargetNear: {x: 0, y: -0.14, z: -1.67}
+  _enterForwardMaxDistanceToLamp: 2
+  _enterForwardMinDistanceToLamp: 0.8
+  _enterUpTarget: {x: 0, y: 2.419, z: -2.626}
+  _preAttackDuration: 0.21
+  _attackDuration: 0.35
+  _deathTransitionDuration: 0.5
 --- !u!114 &8720077902891963357
 MonoBehaviour:
   m_ObjectHideFlags: 0

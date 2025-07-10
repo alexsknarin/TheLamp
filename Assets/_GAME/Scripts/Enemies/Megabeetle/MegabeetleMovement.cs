@@ -59,6 +59,7 @@ namespace _GAME.Scripts.Enemies.Megabeetle
         public event Action EnteredAttackRange;
         public event Action PreAttackStarted;
         public event Action PreAttackEnded;
+        public event Action DeathStateStarted;
         public event Action DeathStateEnded;
         public event Action AttackStarted;
         public event Action StickyAttackEnded;
@@ -104,6 +105,7 @@ namespace _GAME.Scripts.Enemies.Megabeetle
             _stickPreAttackPauseState.Started += OnPreAttackStarted;
             _stickPreAttackPauseState.Ended += OnPreAttackEnded;
             _attackState.Started += OnAttackStarted;
+            _deathState.Started -= OnSeathStateStarted; 
             _deathState.Ended += OnDeathStateEnded;
             _stickAttackState.Ended += OnStickAttackEnded;
             _fallState.Started += OnFallStateStarted; 
@@ -128,7 +130,6 @@ namespace _GAME.Scripts.Enemies.Megabeetle
         }
 
 
-
         private void OnDestroy()
         {
             _enterStateR.EnteredAttackRange -= OnEnteredAttackRange;
@@ -141,6 +142,7 @@ namespace _GAME.Scripts.Enemies.Megabeetle
             _stickPreAttackPauseState.Started -= OnPreAttackStarted;
             _stickPreAttackPauseState.Ended -= OnPreAttackEnded;
             _attackState.Started -= OnAttackStarted;
+            _deathState.Started += OnSeathStateStarted;
             _deathState.Ended -= OnDeathStateEnded;
             _stickAttackState.Ended += OnStickAttackEnded;
             _fallState.Ended -= OnFallStateEnded;
@@ -308,6 +310,11 @@ namespace _GAME.Scripts.Enemies.Megabeetle
         private void OnFallStateStarted()
         {
             StickEnded?.Invoke();
+        }
+
+        private void OnSeathStateStarted()
+        {
+            DeathStateStarted?.Invoke();
         }
     }
 }
