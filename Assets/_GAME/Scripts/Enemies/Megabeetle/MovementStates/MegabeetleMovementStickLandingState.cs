@@ -1,3 +1,4 @@
+using System;
 using _GAME.Scripts.Lib.Interfaces;
 using UnityEngine;
 
@@ -19,7 +20,9 @@ namespace _GAME.Scripts.Enemies.Megabeetle.MovementStates
         {
             _positionDirectionProvider = positionDirectionProvider;
         }
-    
+        
+        public event Action Started;
+        
         public override void Enter()
         {
             IsReadyToSwitch = false;
@@ -29,6 +32,8 @@ namespace _GAME.Scripts.Enemies.Megabeetle.MovementStates
             _phase = 0;
             _startPosition = Position2D.normalized * _startDistance;
             _endPosition = Position2D.normalized * _endDistance;
+            
+            Started?.Invoke();
         
         }
 

@@ -8,9 +8,9 @@ namespace _GAME.Scripts.Enemies.Megabeetle
         private enum RotationState
         {
             Enter,
-            PreAttack,
             Attack,
             Stick,
+            Fall,
             Death,
             Idle
         }
@@ -32,7 +32,7 @@ namespace _GAME.Scripts.Enemies.Megabeetle
         [Header("PreAttack Settings")] 
         [SerializeField] private float _preAttackDuration;
         [Header("Attack Settings")] 
-        [SerializeField] private float _attackDuration;
+        [SerializeField] private float _attackDuration; // TODO REMOVE???
         [Header("Death Settings")] 
         [SerializeField] private float _deathTransitionDuration;
         
@@ -64,16 +64,14 @@ namespace _GAME.Scripts.Enemies.Megabeetle
         public void Initialize()
         {
             _rotationState = RotationState.Enter;
-            _movement.PreAttackStarted += OnPreattackStarted;
-            _movement.PreAttackEnded += OnPreattackEnded;
-            _movement.DeathStateStarted += OnDeathStateStarted;
+            _movement.PreAttackEnded += OnPreAttackEnded;
+            _movement.StickStarted += OnStickStarted;
         }
 
         private void OnDestroy()
         {
-            _movement.PreAttackStarted -= OnPreattackStarted;
-            _movement.PreAttackEnded -= OnPreattackEnded;
-            _movement.DeathStateStarted += OnDeathStateStarted;
+            _movement.PreAttackEnded -= OnPreAttackEnded;
+            _movement.StickStarted -= OnStickStarted;
         }
 
         public void Play()
@@ -89,11 +87,10 @@ namespace _GAME.Scripts.Enemies.Megabeetle
                 case RotationState.Enter:
                     PerformEnterState();
                     break;
-                case RotationState.PreAttack:
-                    PerformPreAttackState();
-                    break;
                 case RotationState.Attack:
                     PerformAttackState();
+                    break;
+                case RotationState.Stick:
                     break;
                 case RotationState.Death:
                     PerformDeathState();
@@ -149,41 +146,14 @@ namespace _GAME.Scripts.Enemies.Megabeetle
             _bodyTransform.LookAt(transform.position + _forward, _up);
             
             _previousPosition = transform.position;
-        }
-
-        private void PerformPreAttackState()
-        {
-            float phase = _localTime / _preAttackDuration;
-            _forward = Vector3.LerpUnclamped(
-                _preAttackForwardStartDirection,
-                _preAttackForwardEndDirection, 
-                phase);
-            _up = transform.position.normalized;
-            _bodyTransform.LookAt(transform.position + _forward, _up);
-
-            _localTime += Time.deltaTime;
+            
         }
 
         private void PerformAttackState()
         {
-            _up = GetCurrentDirectionFromLamp(transform.position);
-            float phase = _localTime / _attackDuration;
-            if (phase > 1f)
-            {
-                _rotationState = RotationState.Stick;
-                _attackUpEndDirection = _up;
-                return;
-            }
-            
-            Vector3 crossVector = Vector3.Cross(_up, _attackForwardEndDirection);
-            Debug.DrawLine(transform.position, transform.position + crossVector, Color.darkBlue);
-            
-            _attackForwardEndDirection = Vector3.Cross(crossVector, _up);
-            Vector3 forwardEndDirectionRotated = Quaternion.AngleAxis(_attackEndAngle, _up) * _attackForwardEndDirection;
-            _forward = Vector3.Lerp(_attackForwardStartDirection, forwardEndDirectionRotated, phase);
+            // Forward
+            _forward = ((Vector3)_lampPositionProvider.GetLampPosition() - transform.position).normalized;
             _bodyTransform.LookAt(transform.position + _forward, _up);
-            
-            _localTime += Time.deltaTime;
         }
 
         private void PerformDeathState()
@@ -200,26 +170,18 @@ namespace _GAME.Scripts.Enemies.Megabeetle
             _localTime += Time.deltaTime;
         }
 
-        private void OnPreattackStarted()
-        {
-            _rotationState = RotationState.PreAttack;
-            _localTime = 0;
-            
-            _preAttackForwardStartDirection = -transform.position.normalized;
-            _preAttackForwardEndDirection = Vector3.back;
-        }
 
-        private void OnPreattackEnded()
+        private void OnPreAttackEnded()
         {
             _rotationState = RotationState.Attack;
-            _localTime = 0;
-            
-            // Prepare Attack state
-            _attackUpStartDirection = transform.position.normalized;
-            _attackForwardStartDirection = _forward;
-            Vector3 crossVector = Vector3.Cross(_attackUpStartDirection, _attackForwardStartDirection);
-            _attackForwardEndDirection = Vector3.Cross(crossVector, _attackUpStartDirection);
-            _attackEndAngle = Random.Range(-45f, 45f);
+            _up.z *= 0.25f; // TODO: MAGIC NUMBER
+            _up.Normalize();
+            _bodyTransform.LookAt(transform.position + _forward, _up);
+        }
+
+        private void OnStickStarted()
+        {
+            _rotationState = RotationState.Stick;
         }
 
         private void OnDeathStateStarted()
