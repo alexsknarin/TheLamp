@@ -28,14 +28,16 @@ namespace _GAME.Scripts.Enemies.Megabeetle
             _healthIndication.Initialize();
             _trailResetHandler.Initialize();
             _bodyRotationHandler.Initialize();
-            
+
+            _movement.EnterStarted += OnEnterStarted;
             _movement.PreAttackStarted += OnPreAttackStarted;
             _movement.PreAttackEnded += OnPreAttackEnded;
             _movement.LandingStarted += OnLandingStarted;
             _movement.StickStarted += OnStickStarted;
             _movement.StickyPreAttackStarted += OnStickyPreAttackStarted;
             _movement.StickyPreAttackPauseStarted += OnStickyPreAttackPauseStarted;
-            _movement.StickyAttackStarted += OnStickyAttackStarted; 
+            _movement.StickyAttackStarted += OnStickyAttackStarted;
+            _movement.FallStarted += OnFallStarted;
             
             _movement.FallEnded += _trailResetHandler.Initialize;
             _movement.DeathStateEnded += _damageEmitParticles.HandleDeathEnd;
@@ -49,6 +51,7 @@ namespace _GAME.Scripts.Enemies.Megabeetle
 
         private void OnDestroy()
         {
+            _movement.EnterStarted -= OnEnterStarted;
             _movement.PreAttackStarted -= OnPreAttackStarted;
             _movement.PreAttackEnded -= OnPreAttackEnded;
             _movement.LandingStarted -= OnLandingStarted;
@@ -56,6 +59,7 @@ namespace _GAME.Scripts.Enemies.Megabeetle
             _movement.StickyPreAttackStarted -= OnStickyPreAttackStarted;
             _movement.StickyPreAttackPauseStarted -= OnStickyPreAttackPauseStarted;
             _movement.StickyAttackStarted -= OnStickyAttackStarted;
+            _movement.FallStarted -= OnFallStarted;
             
             _movement.FallEnded -= _trailResetHandler.Initialize;
             _movement.DeathStateEnded -= _damageEmitParticles.HandleDeathEnd;
@@ -73,7 +77,13 @@ namespace _GAME.Scripts.Enemies.Megabeetle
             _deathFlash.Initialize();
             _bodyRotationHandler.Play();
             
+            // _animator.SetTrigger("Started");
+        }
+
+        private void OnEnterStarted()
+        {
             _animator.SetTrigger("Started");
+            Debug.Break();
         }
 
         private void OnPreAttackStarted()
@@ -86,6 +96,11 @@ namespace _GAME.Scripts.Enemies.Megabeetle
         {
             _preAttackFlash.PreAttackEnd();
             _animator.SetTrigger("ToAttack");
+        }
+
+        private void OnFallStarted()
+        {
+            _animator.SetTrigger("ToFall");
         }
 
         private void OnLandingStarted()
