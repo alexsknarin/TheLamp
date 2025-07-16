@@ -121,7 +121,7 @@ namespace _GAME.Scripts.Enemies.Megabeetle
             _stickPreAttackPauseState.Started += OnPreAttackStarted;
             _stickPreAttackPauseState.Ended += OnPreAttackEnded;
             _attackState.Started += OnAttackStarted;
-            _deathState.Started -= OnSeathStateStarted; 
+            _deathState.Started += OnDeathStateStarted; 
             _deathState.Ended += OnDeathStateEnded;
             _stickAttackState.Started += OnStickAttackStateStarted; 
             _stickAttackState.Ended += OnStickAttackEnded;
@@ -168,7 +168,7 @@ namespace _GAME.Scripts.Enemies.Megabeetle
             _stickPreAttackPauseState.Started -= OnPreAttackStarted;
             _stickPreAttackPauseState.Ended -= OnPreAttackEnded;
             _attackState.Started -= OnAttackStarted;
-            _deathState.Started -= OnSeathStateStarted;
+            _deathState.Started -= OnDeathStateStarted;
             _deathState.Ended -= OnDeathStateEnded;
             _stickAttackState.Started -= OnStickAttackStateStarted;
             _stickAttackState.Ended -= OnStickAttackEnded;
@@ -269,11 +269,6 @@ namespace _GAME.Scripts.Enemies.Megabeetle
             }
         
             Debug.DrawLine(_prevPosition, transform.position, Color.cyan, 10f);
-
-            if (_currentState.GetType() == typeof(MegabeetleMovementStickLandingState))
-            {
-                Debug.Log(transform.localPosition.magnitude);
-            }
         }
 
 
@@ -357,7 +352,7 @@ namespace _GAME.Scripts.Enemies.Megabeetle
             FallStarted?.Invoke();
         }
 
-        private void OnSeathStateStarted()
+        private void OnDeathStateStarted()
         {
             DeathStateStarted?.Invoke();
         }

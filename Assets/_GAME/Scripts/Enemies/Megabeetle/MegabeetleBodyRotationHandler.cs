@@ -1,3 +1,4 @@
+using System;
 using _GAME.Scripts.Lib.Interfaces;
 using UnityEngine;
 
@@ -29,12 +30,10 @@ namespace _GAME.Scripts.Enemies.Megabeetle
         [SerializeField] private float _enterForwardMaxDistanceToLamp;
         [SerializeField] private float _enterForwardMinDistanceToLamp;
         [SerializeField] private Vector3 _enterUpTarget;
-        [Header("PreAttack Settings")] 
-        [SerializeField] private float _preAttackDuration;
-        [Header("Attack Settings")] 
-        [SerializeField] private float _attackDuration; // TODO REMOVE???
-        [Header("Death Settings")] 
-        [SerializeField] private float _deathTransitionDuration;
+        [Header("Fall Settings")]
+        [SerializeField] private float _fallRotationSpeed;
+        [Header("Death Settings")]
+        [SerializeField] private float _deathRotationSpeed;
         
         private Vector3 _previousPosition;
         private bool _isGoingUp;
@@ -53,6 +52,9 @@ namespace _GAME.Scripts.Enemies.Megabeetle
         private Vector3 _attackUpEndDirection;
         private float _attackEndAngle;
         
+        private Vector3 _fallAxis = Vector3.back;
+        private int _fallSign = 1;
+        
         // Dependencies
         private ILampPositionProviderService _lampPositionProvider;
         
@@ -67,6 +69,8 @@ namespace _GAME.Scripts.Enemies.Megabeetle
             _movement.PreAttackEnded += OnPreAttackEnded;
             _movement.StickStarted += OnStickStarted;
             _movement.PatrolStarted += OnPatrolStarted;
+            _movement.FallStarted += OnFallStateStarted;
+            _movement.DeathStateStarted += OnDeathStateStarted;
         }
 
         private void OnDestroy()
@@ -74,6 +78,8 @@ namespace _GAME.Scripts.Enemies.Megabeetle
             _movement.PreAttackEnded -= OnPreAttackEnded;
             _movement.StickStarted -= OnStickStarted;
             _movement.PatrolStarted -= OnPatrolStarted;
+            _movement.FallStarted -= OnFallStateStarted;
+            _movement.DeathStateStarted -= OnDeathStateStarted;
         }
 
         public void Play()
@@ -93,6 +99,9 @@ namespace _GAME.Scripts.Enemies.Megabeetle
                     PerformAttackState();
                     break;
                 case RotationState.Stick:
+                    break;
+                case RotationState.Fall:
+                    PerformFallState();
                     break;
                 case RotationState.Death:
                     PerformDeathState();
@@ -158,20 +167,15 @@ namespace _GAME.Scripts.Enemies.Megabeetle
             _bodyTransform.LookAt(transform.position + _forward, _up);
         }
 
-        private void PerformDeathState()
+        private void PerformFallState()
         {
-            float phase = _localTime / _deathTransitionDuration;
-            if (phase > 1f)
-            {
-                _rotationState = RotationState.Idle;
-                return;
-            }
-            
-            _up = Vector3.Lerp(_attackUpEndDirection, Vector3.down, phase);
-            _bodyTransform.LookAt(transform.position + _forward, _up);
-            _localTime += Time.deltaTime;
+            RotateBodyFall(_fallRotationSpeed);
         }
 
+        private void PerformDeathState()
+        {
+            RotateBodyFall(_deathRotationSpeed);
+        }
 
         private void OnPreAttackEnded()
         {
@@ -186,21 +190,32 @@ namespace _GAME.Scripts.Enemies.Megabeetle
             _rotationState = RotationState.Stick;
         }
 
+        private void OnFallStateStarted()
+        {
+            _rotationState = RotationState.Fall;
+            _fallSign = (int)Mathf.Sign(transform.position.x);
+        }
+
         private void OnDeathStateStarted()
         {
             _rotationState = RotationState.Death;
-            _localTime = 0;
-        }
-
-        private Vector3 GetCurrentDirectionFromLamp(Vector3 currentPosition)
-        {
-            return (currentPosition - (Vector3)_lampPositionProvider.GetLampPosition()).normalized;
+            _fallSign = (int)Mathf.Sign(transform.position.x);
         }
 
         private void OnPatrolStarted()
         {
             _rotationState = RotationState.Enter;
             _localTime = 0;
+        }
+
+        private void RotateBodyFall(float rotationSpeed)
+        {
+            float angle = _fallRotationSpeed * Time.deltaTime;
+            
+            _forward = Quaternion.AngleAxis(angle * _fallSign, _fallAxis) * _forward;
+            _up = Quaternion.AngleAxis(angle * _fallSign, _fallAxis) * _up;
+            
+            _bodyTransform.LookAt(transform.position + _forward, _up);
         }
     }
 }

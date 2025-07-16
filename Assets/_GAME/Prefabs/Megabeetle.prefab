@@ -351,9 +351,8 @@ MonoBehaviour:
   _enterForwardMaxDistanceToLamp: 2
   _enterForwardMinDistanceToLamp: 0.8
   _enterUpTarget: {x: 0, y: 2.419, z: -2.626}
-  _preAttackDuration: 0.21
-  _attackDuration: 0.35
-  _deathTransitionDuration: 0.5
+  _fallRotationSpeed: 250
+  _deathRotationSpeed: 95
 --- !u!114 &8720077902891963357
 MonoBehaviour:
   m_ObjectHideFlags: 0
