@@ -38,6 +38,7 @@ namespace _GAME.Scripts.Enemies.Megabeetle
             _movement.StickyPreAttackPauseStarted += OnStickyPreAttackPauseStarted;
             _movement.StickyAttackStarted += OnStickyAttackStarted;
             _movement.FallStarted += OnFallStarted;
+            _movement.PatrolStarted += OnPatrolStarted;
             
             _movement.FallEnded += _trailResetHandler.Initialize;
             _movement.DeathStateEnded += _damageEmitParticles.HandleDeathEnd;
@@ -60,6 +61,7 @@ namespace _GAME.Scripts.Enemies.Megabeetle
             _movement.StickyPreAttackPauseStarted -= OnStickyPreAttackPauseStarted;
             _movement.StickyAttackStarted -= OnStickyAttackStarted;
             _movement.FallStarted -= OnFallStarted;
+            _movement.PatrolStarted -= OnPatrolStarted;
             
             _movement.FallEnded -= _trailResetHandler.Initialize;
             _movement.DeathStateEnded -= _damageEmitParticles.HandleDeathEnd;
@@ -83,7 +85,6 @@ namespace _GAME.Scripts.Enemies.Megabeetle
         private void OnEnterStarted()
         {
             _animator.SetTrigger("Started");
-            Debug.Break();
         }
 
         private void OnPreAttackStarted()
@@ -126,6 +127,13 @@ namespace _GAME.Scripts.Enemies.Megabeetle
         private void OnStickyAttackStarted()
         {
             _animator.SetTrigger("ToStickAttack");
+        }
+
+        private void OnPatrolStarted()
+        {
+            _animator.ResetTrigger("ToPreAttack");
+            _animator.ResetTrigger("ToAttack");
+            _animator.SetTrigger("Started");
         }
     }
 }

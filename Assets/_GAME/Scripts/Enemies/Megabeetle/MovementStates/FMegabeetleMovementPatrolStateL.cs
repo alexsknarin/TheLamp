@@ -1,3 +1,4 @@
+using System;
 using _GAME.Scripts.Lib.Interfaces;
 using UnityEngine;
 
@@ -19,7 +20,7 @@ namespace _GAME.Scripts.Enemies.Megabeetle.MovementStates
                 verticalAmplitude)
         {
         }
-
+        
         public override void Enter()
         {
             HandleEnter(-1);

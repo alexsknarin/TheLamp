@@ -57,6 +57,7 @@ namespace _GAME.Scripts.Enemies.Megabeetle
         }
     
         public event Action EnterStarted;
+        public event Action PatrolStarted;
         public event Action EnteredAttackRange;
         public event Action PreAttackStarted;
         public event Action PreAttackEnded;
@@ -107,6 +108,8 @@ namespace _GAME.Scripts.Enemies.Megabeetle
             _enterStateL.EnteredAttackRange += OnEnteredAttackRange;
             _patrolStateR.EnteredAttackRange += OnEnteredAttackRange;
             _patrolStateL.EnteredAttackRange += OnEnteredAttackRange;
+            _patrolStateR.Started += OnPatrolStarted;
+            _patrolStateL.Started += OnPatrolStarted;
             _preAttackStateR.Started += OnPreAttackStarted;
             _preAttackStateR.Ended += OnPreAttackEnded;
             _preAttackStateL.Started += OnPreAttackStarted;
@@ -152,6 +155,8 @@ namespace _GAME.Scripts.Enemies.Megabeetle
             _enterStateL.EnteredAttackRange -= OnEnteredAttackRange;
             _patrolStateR.EnteredAttackRange -= OnEnteredAttackRange;
             _patrolStateL.EnteredAttackRange -= OnEnteredAttackRange;
+            _patrolStateR.Started -= OnPatrolStarted;
+            _patrolStateL.Started -= OnPatrolStarted;
             _preAttackStateR.Started -= OnPreAttackStarted;
             _preAttackStateR.Ended -= OnPreAttackEnded;
             _preAttackStateL.Started -= OnPreAttackStarted;
@@ -370,6 +375,11 @@ namespace _GAME.Scripts.Enemies.Megabeetle
         private void OnStickAttackStateStarted()
         {
             StickyAttackStarted?.Invoke();
+        }
+
+        private void OnPatrolStarted()
+        {
+            PatrolStarted?.Invoke();       
         }
     }
 }

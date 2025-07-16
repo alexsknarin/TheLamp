@@ -66,12 +66,14 @@ namespace _GAME.Scripts.Enemies.Megabeetle
             _rotationState = RotationState.Enter;
             _movement.PreAttackEnded += OnPreAttackEnded;
             _movement.StickStarted += OnStickStarted;
+            _movement.PatrolStarted += OnPatrolStarted;
         }
 
         private void OnDestroy()
         {
             _movement.PreAttackEnded -= OnPreAttackEnded;
             _movement.StickStarted -= OnStickStarted;
+            _movement.PatrolStarted -= OnPatrolStarted;
         }
 
         public void Play()
@@ -193,6 +195,12 @@ namespace _GAME.Scripts.Enemies.Megabeetle
         private Vector3 GetCurrentDirectionFromLamp(Vector3 currentPosition)
         {
             return (currentPosition - (Vector3)_lampPositionProvider.GetLampPosition()).normalized;
+        }
+
+        private void OnPatrolStarted()
+        {
+            _rotationState = RotationState.Enter;
+            _localTime = 0;
         }
     }
 }
