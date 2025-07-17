@@ -6,6 +6,15 @@ namespace _GAME.Scripts.Enemies.Megabeetle
 {
     public class MegabeetlePresentation : MonoBehaviour
     {
+        private static readonly int Started = Animator.StringToHash("Started");
+        private static readonly int ToPreAttack = Animator.StringToHash("ToPreAttack");
+        private static readonly int ToAttack = Animator.StringToHash("ToAttack");
+        private static readonly int ToFall = Animator.StringToHash("ToFall");
+        private static readonly int ToLanding = Animator.StringToHash("ToLanding");
+        private static readonly int ToStick = Animator.StringToHash("ToStick");
+        private static readonly int ToStickPreAttack = Animator.StringToHash("ToStickPreAttack");
+        private static readonly int ToStickPreAttackPause = Animator.StringToHash("ToStickPreAttackPause");
+        private static readonly int ToStickAttack = Animator.StringToHash("ToStickAttack");
         [SerializeField] private Megabeetle _megabeetle;
         [SerializeField] private MegabeetleMovement _movement;
         [SerializeField] private PreAttackFlash _preAttackFlash;
@@ -28,7 +37,7 @@ namespace _GAME.Scripts.Enemies.Megabeetle
             _healthIndication.Initialize();
             _trailResetHandler.Initialize();
             _bodyRotationHandler.Initialize();
-
+            
             _movement.EnterStarted += OnEnterStarted;
             _movement.PreAttackStarted += OnPreAttackStarted;
             _movement.PreAttackEnded += OnPreAttackEnded;
@@ -78,62 +87,60 @@ namespace _GAME.Scripts.Enemies.Megabeetle
             _trailResetHandler.Initialize();
             _deathFlash.Initialize();
             _bodyRotationHandler.Play();
-            
-            // _animator.SetTrigger("Started");
         }
 
         private void OnEnterStarted()
         {
-            _animator.SetTrigger("Started");
+            _animator.SetTrigger(Started);
         }
 
         private void OnPreAttackStarted()
         {
             _preAttackFlash.PreAttackStart();
-            _animator.SetTrigger("ToPreAttack");
+            _animator.SetTrigger(ToPreAttack);
         }
 
         private void OnPreAttackEnded()
         {
             _preAttackFlash.PreAttackEnd();
-            _animator.SetTrigger("ToAttack");
+            _animator.SetTrigger(ToAttack);
         }
 
         private void OnFallStarted()
         {
-            _animator.SetTrigger("ToFall");
+            _animator.SetTrigger(ToFall);
         }
 
         private void OnLandingStarted()
         {
-            _animator.SetTrigger("ToLanding");
+            _animator.SetTrigger(ToLanding);
         }
 
         private void OnStickStarted()
         {
-            _animator.SetTrigger("ToStick");
+            _animator.SetTrigger(ToStick);
         }
 
         private void OnStickyPreAttackStarted()
         {
-            _animator.SetTrigger("ToStickPreAttack");
+            _animator.SetTrigger(ToStickPreAttack);
         }
 
         private void OnStickyPreAttackPauseStarted()
         {
-            _animator.SetTrigger("ToStickPreAttackPause");
+            _animator.SetTrigger(ToStickPreAttackPause);
         }
 
         private void OnStickyAttackStarted()
         {
-            _animator.SetTrigger("ToStickAttack");
+            _animator.SetTrigger(ToStickAttack);
         }
 
         private void OnPatrolStarted()
         {
-            _animator.ResetTrigger("ToPreAttack");
-            _animator.ResetTrigger("ToAttack");
-            _animator.SetTrigger("Started");
+            _animator.ResetTrigger(ToPreAttack);
+            _animator.ResetTrigger(ToAttack);
+            _animator.SetTrigger(Started);
         }
     }
 }

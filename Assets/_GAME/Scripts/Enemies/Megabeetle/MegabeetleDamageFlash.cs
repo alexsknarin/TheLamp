@@ -15,6 +15,7 @@ namespace _GAME.Scripts.Enemies.Megabeetle
         [SerializeField] private GameObject _damageEnergy;
         [SerializeField] private float _duration = 0.5f;
         [SerializeField] private VisualEffect _damageParticles;
+        [SerializeField] private MegabeetleDamageFXRotationHandler _damageFXRotationHandler;
         private List<Material> _bodyMaterials = new ();
         private Material _damageEnergyMaterial;
         private float _localTime;
@@ -22,6 +23,7 @@ namespace _GAME.Scripts.Enemies.Megabeetle
 
         public override void Initialize()
         {
+            _damageFXRotationHandler.Initialize();
             foreach (var meshRenderer in _meshRenderer)
             {
                 if (meshRenderer == null) continue;
@@ -46,6 +48,7 @@ namespace _GAME.Scripts.Enemies.Megabeetle
 
         public override void Play()
         {
+            _damageFXRotationHandler.Play();
             _damageEnergy.SetActive(true);
             enabled = true;
             _localTime = 0;
@@ -63,6 +66,7 @@ namespace _GAME.Scripts.Enemies.Megabeetle
             {
                 enabled = false;
                 SetDamageMaterialPhase(0);
+                _damageFXRotationHandler.Stop();
                 _damageEnergy.SetActive(false);   
                 return;
             }

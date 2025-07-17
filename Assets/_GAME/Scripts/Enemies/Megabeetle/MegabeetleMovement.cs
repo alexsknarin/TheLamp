@@ -343,7 +343,6 @@ namespace _GAME.Scripts.Enemies.Megabeetle
         private void OnStickStateStarted()
         {
             StickStarted?.Invoke();
-            Debug.Log("Landing Ended: " + transform.localPosition.magnitude);
         }
 
         private void OnFallStateStarted()
