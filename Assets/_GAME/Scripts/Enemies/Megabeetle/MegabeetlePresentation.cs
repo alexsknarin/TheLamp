@@ -6,14 +6,27 @@ namespace _GAME.Scripts.Enemies.Megabeetle
 {
     public class MegabeetlePresentation : MonoBehaviour
     {
+        private static readonly int Started = Animator.StringToHash("Started");
+        private static readonly int ToPreAttack = Animator.StringToHash("ToPreAttack");
+        private static readonly int ToAttack = Animator.StringToHash("ToAttack");
+        private static readonly int ToFall = Animator.StringToHash("ToFall");
+        private static readonly int ToLanding = Animator.StringToHash("ToLanding");
+        private static readonly int ToStick = Animator.StringToHash("ToStick");
+        private static readonly int ToStickPreAttack = Animator.StringToHash("ToStickPreAttack");
+        private static readonly int ToStickPreAttackPause = Animator.StringToHash("ToStickPreAttackPause");
+        private static readonly int ToStickAttack = Animator.StringToHash("ToStickAttack");
         [SerializeField] private Megabeetle _megabeetle;
         [SerializeField] private MegabeetleMovement _movement;
         [SerializeField] private PreAttackFlash _preAttackFlash;
-        [SerializeField] private LadybugDamageFlash _damageFlash;
+        [SerializeField] private MegabeetleDamageFlash _damageFlash;
         [SerializeField] private DamageEmitParticles _damageEmitParticles;
         [SerializeField] private DeathFlash _deathFlash;
         [SerializeField] private HealthIndication _healthIndication;
         [SerializeField] private TrailResetHandler _trailResetHandler;
+        [SerializeField] private MegabeetleBodyRotationHandler _bodyRotationHandler;
+        
+        [Header("Animation")]
+        [SerializeField] private Animator _animator;
 
         public void Initialize()
         {
@@ -23,9 +36,19 @@ namespace _GAME.Scripts.Enemies.Megabeetle
             _damageEmitParticles.Initialize();
             _healthIndication.Initialize();
             _trailResetHandler.Initialize();
-        
-            _movement.PreAttackStarted += _preAttackFlash.PreAttackStart;
-            _movement.PreAttackEnded += _preAttackFlash.PreAttackEnd;
+            _bodyRotationHandler.Initialize();
+            
+            _movement.EnterStarted += OnEnterStarted;
+            _movement.PreAttackStarted += OnPreAttackStarted;
+            _movement.PreAttackEnded += OnPreAttackEnded;
+            _movement.LandingStarted += OnLandingStarted;
+            _movement.StickStarted += OnStickStarted;
+            _movement.StickyPreAttackStarted += OnStickyPreAttackStarted;
+            _movement.StickyPreAttackPauseStarted += OnStickyPreAttackPauseStarted;
+            _movement.StickyAttackStarted += OnStickyAttackStarted;
+            _movement.FallStarted += OnFallStarted;
+            _movement.PatrolStarted += OnPatrolStarted;
+            
             _movement.FallEnded += _trailResetHandler.Initialize;
             _movement.DeathStateEnded += _damageEmitParticles.HandleDeathEnd;
             _megabeetle.Started += OnLadybugStarted;
@@ -38,8 +61,17 @@ namespace _GAME.Scripts.Enemies.Megabeetle
 
         private void OnDestroy()
         {
-            _movement.PreAttackStarted -= _preAttackFlash.PreAttackStart;
-            _movement.PreAttackEnded -= _preAttackFlash.PreAttackEnd;
+            _movement.EnterStarted -= OnEnterStarted;
+            _movement.PreAttackStarted -= OnPreAttackStarted;
+            _movement.PreAttackEnded -= OnPreAttackEnded;
+            _movement.LandingStarted -= OnLandingStarted;
+            _movement.StickStarted -= OnStickStarted;
+            _movement.StickyPreAttackStarted -= OnStickyPreAttackStarted;
+            _movement.StickyPreAttackPauseStarted -= OnStickyPreAttackPauseStarted;
+            _movement.StickyAttackStarted -= OnStickyAttackStarted;
+            _movement.FallStarted -= OnFallStarted;
+            _movement.PatrolStarted -= OnPatrolStarted;
+            
             _movement.FallEnded -= _trailResetHandler.Initialize;
             _movement.DeathStateEnded -= _damageEmitParticles.HandleDeathEnd;
             _megabeetle.Started -= OnLadybugStarted;
@@ -54,6 +86,61 @@ namespace _GAME.Scripts.Enemies.Megabeetle
         {
             _trailResetHandler.Initialize();
             _deathFlash.Initialize();
+            _bodyRotationHandler.Play();
+        }
+
+        private void OnEnterStarted()
+        {
+            _animator.SetTrigger(Started);
+        }
+
+        private void OnPreAttackStarted()
+        {
+            _preAttackFlash.PreAttackStart();
+            _animator.SetTrigger(ToPreAttack);
+        }
+
+        private void OnPreAttackEnded()
+        {
+            _preAttackFlash.PreAttackEnd();
+            _animator.SetTrigger(ToAttack);
+        }
+
+        private void OnFallStarted()
+        {
+            _animator.SetTrigger(ToFall);
+        }
+
+        private void OnLandingStarted()
+        {
+            _animator.SetTrigger(ToLanding);
+        }
+
+        private void OnStickStarted()
+        {
+            _animator.SetTrigger(ToStick);
+        }
+
+        private void OnStickyPreAttackStarted()
+        {
+            _animator.SetTrigger(ToStickPreAttack);
+        }
+
+        private void OnStickyPreAttackPauseStarted()
+        {
+            _animator.SetTrigger(ToStickPreAttackPause);
+        }
+
+        private void OnStickyAttackStarted()
+        {
+            _animator.SetTrigger(ToStickAttack);
+        }
+
+        private void OnPatrolStarted()
+        {
+            _animator.ResetTrigger(ToPreAttack);
+            _animator.ResetTrigger(ToAttack);
+            _animator.SetTrigger(Started);
         }
     }
 }

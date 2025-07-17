@@ -1,3 +1,4 @@
+using System;
 using _GAME.Scripts.Lib.Interfaces;
 using UnityEngine;
 
@@ -17,6 +18,9 @@ namespace _GAME.Scripts.Enemies.Megabeetle.MovementStates
         {
             _positionDirectionProvider = positionDirectionProvider;
         }
+        
+        public event Action Started;
+        public event Action Ended;
     
         public override void Enter()
         {
@@ -28,6 +32,7 @@ namespace _GAME.Scripts.Enemies.Megabeetle.MovementStates
             _endPosition = Position2D.normalized * 0.66f;
             _localTime = 0;
             _phase = 0;
+            Started?.Invoke();
         }
 
         public override void Tick()
@@ -35,10 +40,11 @@ namespace _GAME.Scripts.Enemies.Megabeetle.MovementStates
             _phase  = _localTime / _duration;
             Position2D = Vector2.Lerp(_startPosition, _endPosition, Mathf.Pow(_phase, 0.45f));
             _localTime += Time.deltaTime;
-        
+            
             if (_phase > 1)
             {
                 IsReadyToSwitch = true;
+                Ended?.Invoke();
             }
         }
     }

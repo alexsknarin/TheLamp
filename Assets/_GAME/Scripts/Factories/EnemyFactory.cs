@@ -326,6 +326,8 @@ namespace _GAME.Scripts.Factories
             GameObject enemyInstance = Object.Instantiate(prefab);
             enemyInstance.GetComponent<MegabeetleMovement>().Construct(_megabeetleMovementStateFactory);
             enemyInstance.GetComponent<MegabeetlePresentation>().Initialize();
+            enemyInstance.GetComponent<MegabeetleBodyRotationHandler>().Construct(_lampPositionProviderService);
+            enemyInstance.GetComponent<MegabeetleDamageFXRotationHandler>().Construct(_lampPositionProviderService);
             var enemy = enemyInstance.GetComponent<Megabeetle>();
             enemy.Initialize();
         

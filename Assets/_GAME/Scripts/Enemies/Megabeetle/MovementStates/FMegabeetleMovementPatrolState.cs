@@ -41,7 +41,8 @@ namespace _GAME.Scripts.Enemies.Megabeetle.MovementStates
         }
     
         public event Action EnteredAttackRange;
-    
+        public event Action Started;
+         
         protected void HandleEnter(int sideDirection)
         {
             IsReadyToSwitch = false;
@@ -55,6 +56,8 @@ namespace _GAME.Scripts.Enemies.Megabeetle.MovementStates
             horizontalVector.x *= sideDirection;
             _patrolStartOffsetAngle = Mathf.Acos(Vector2.Dot(horizontalVector.normalized, Position2D.normalized));
             _patrolStartOffsetAngle *= Mathf.Sign(Position2D.y);
+
+            Started?.Invoke();
         }
     
         protected void HandleTick(int sideDirection)

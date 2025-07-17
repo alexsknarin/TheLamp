@@ -19,7 +19,8 @@ namespace _GAME.Scripts.Enemies.Megabeetle.MovementStates
         {
             _positionDirectionProvider = positionDirectionProvider;
         }
-    
+        
+        public event Action Started;
         public event Action Ended;
     
         public override void Enter()
@@ -30,6 +31,7 @@ namespace _GAME.Scripts.Enemies.Megabeetle.MovementStates
             _endPosition = Position2D.normalized * 0.38f; 
             _localTime = 0;
             _phase = 0;
+            Started?.Invoke();
         }
 
         public override void Tick()
