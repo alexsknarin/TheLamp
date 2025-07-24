@@ -621,7 +621,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e8cdd3d044552e4f816511262c284c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _meshRenderer: {fileID: 7461982664473396699}
+  _meshRenderer:
+  - {fileID: 0}
   _duration: 1.7
   _deathParticles: {fileID: 6160620973126151762}
   _damageParticles: {fileID: 7393887853467320325}
@@ -1325,7 +1326,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e8cdd3d044552e4f816511262c284c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _meshRenderer: {fileID: 8122911618965001455}
+  _meshRenderer:
+  - {fileID: 0}
   _duration: 1.7
   _deathParticles: {fileID: 2223294123319362783}
   _damageParticles: {fileID: 3122568163564090892}
@@ -2913,7 +2915,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e8cdd3d044552e4f816511262c284c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _meshRenderer: {fileID: 8793422785118890465}
+  _meshRenderer:
+  - {fileID: 0}
   _duration: 1.7
   _deathParticles: {fileID: 4669361875091420575}
   _damageParticles: {fileID: 7776313656372616071}
@@ -2929,7 +2932,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d2e420a26cc356d4ba375c424a8b4a47, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _meshRenderer: {fileID: 8793422785118890465}
+  _meshRenderer:
+  - {fileID: 0}
   _enableTrailRenderer: 0
   _trailRenderer: {fileID: 0}
 --- !u!114 &3748036601195776459
@@ -3658,7 +3662,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e8cdd3d044552e4f816511262c284c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _meshRenderer: {fileID: 3122377044642608093}
+  _meshRenderer:
+  - {fileID: 0}
   _duration: 1.7
   _deathParticles: {fileID: 4809329114279676982}
   _damageParticles: {fileID: 8545207741374415364}
