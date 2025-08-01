@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Dragonfly_Body3_material
-  m_Shader: {fileID: -6465566751694194690, guid: 5d710b8c48645b14c8a7455c591f3121,
+  m_Name: Dragonfly_Wing_MotionBlur_material
+  m_Shader: {fileID: -6465566751694194690, guid: 9913a41b081c19843900ab3207fa2abf,
     type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -26,11 +26,11 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _BaseMap:
-        m_Texture: {fileID: 2800000, guid: a0565250b968370409d5d2f82ca60380, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BumpMap:
-        m_Texture: {fileID: 2800000, guid: c15097ee4e506054c838d40e1a5e8874, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _DetailAlbedoMap:
@@ -50,19 +50,11 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: a0565250b968370409d5d2f82ca60380, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _Mask01:
-        m_Texture: {fileID: 2800000, guid: 54e7544458b674d4581fa3182ce943cb, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
         m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _NormalMap:
-        m_Texture: {fileID: 2800000, guid: c15097ee4e506054c838d40e1a5e8874, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _OcclusionMap:
@@ -75,10 +67,6 @@ Material:
         m_Offset: {x: 0, y: 0}
     - _SpecGlossMap:
         m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _TranslucenceMap:
-        m_Texture: {fileID: 2800000, guid: 646340b24e90e454b8ca67dbf1e1d2f8, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:
@@ -102,68 +90,55 @@ Material:
     - _Blend: 0
     - _BlendModePreserveSpecular: 1
     - _BumpScale: 1
-    - _BurnEdgeSize: 0.05
     - _ClearCoatMask: 0
     - _ClearCoatSmoothness: 0
-    - _CoatingSpecularPower: 11.06
-    - _CoatingSpecularStrength: 0.918
-    - _CoatingSpecularWrap: 1.354
-    - _CoatingStrength: 0.208
     - _Cull: 2
     - _Cutoff: 0.5
     - _DamageFade: 0
     - _DeathFade: 0
     - _DetailAlbedoMapScale: 1
     - _DetailNormalMapScale: 1
-    - _DiffuseIntensity: 0.525
+    - _DiffuseWrap: 1.012
     - _DstBlend: 0
     - _DstBlendAlpha: 0
     - _EnvironmentReflections: 1
-    - _EyeAdditionalTranslucence: 0
-    - _EyeSpecularPower: 46.7
-    - _EyeSpecularSpotPower: 0.8
-    - _EyeSpecularWrap: 1.093
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
-    - _Health: 1
-    - _Metallic: 0.67
-    - _NoiseOffset: 0.78
-    - _NoiseSize: 55.55
+    - _HorizontalBlurIntensity: 0.78
+    - _Horizontal_Blur_Power: 1.92
+    - _Metallic: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.005
     - _PreAttackIntensity: 1
     - _QueueControl: 0
     - _QueueOffset: 0
     - _ReceiveShadows: 1
-    - _Smoothness: 0.586
+    - _Smoothness: 0.5
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
-    - _SpecularRoughness: 0.383
     - _SrcBlend: 1
     - _SrcBlendAlpha: 1
     - _Surface: 0
-    - _TranslucenceWrap: 1.183
-    - _TranslucenceWrapMapExtra: 0
-    - _TranslucenseColorMix: 0.037
-    - _TranslucensePower: 1.44
-    - _TranslucenseStrength: 0.35
+    - _TranslucenceWrap: 1.012
+    - _VerticalBlurIntensity: 0.24
+    - _VerticalBlurPower: 2.45
+    - _VerticalBlurShift: 1
     - _WorkflowMode: 1
     - _XRMotionVectorsPass: 1
     - _ZWrite: 1
     m_Colors:
-    - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
-    - _BurnColor: {r: 1.8273586, g: 0.040712748, b: 0, a: 1}
+    - _BaseColor: {r: 0.6415094, g: 0.6415094, b: 0.6415094, a: 1}
+    - _BodyNormal: {r: 0, g: 1, b: 0, a: 0}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _DamageColor: {r: 3.688606, g: 0.131729, b: 0, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _EyeSpecularColor: {r: 0.26889753, g: 0.27554286, b: 0.27672952, a: 1}
     - _PreAttackEmissionColor: {r: 2.958679, g: 0.07745238, b: 0.03098099, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
-    - _TranslucenseColor: {r: 0.9693476, g: 1, b: 0, a: 1}
+    - _WingNormal: {r: 0, g: 1, b: 0, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
---- !u!114 &4038928842055567691
+--- !u!114 &2346665390121776449
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}

@@ -1,5 +1,18 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-2435395766672105953
+MonoBehaviour:
+  m_ObjectHideFlags: 11
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0353a89b1f911e48b9e16bdc9f2e058, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  version: 9
 --- !u!21 &2100000
 Material:
   serializedVersion: 8
@@ -7,8 +20,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Dragonfly_Body3_material
-  m_Shader: {fileID: -6465566751694194690, guid: 5d710b8c48645b14c8a7455c591f3121,
+  m_Name: Dragonfly_Wing_material
+  m_Shader: {fileID: -6465566751694194690, guid: bef8b1417bd7a3141940ad6fc12e71d5,
     type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -26,11 +39,11 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _BaseMap:
-        m_Texture: {fileID: 2800000, guid: a0565250b968370409d5d2f82ca60380, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BumpMap:
-        m_Texture: {fileID: 2800000, guid: c15097ee4e506054c838d40e1a5e8874, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _DetailAlbedoMap:
@@ -50,11 +63,15 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: a0565250b968370409d5d2f82ca60380, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Mask01:
-        m_Texture: {fileID: 2800000, guid: 54e7544458b674d4581fa3182ce943cb, type: 3}
+        m_Texture: {fileID: 2800000, guid: a7f64a12dac8be74d8a5b8daf412be7e, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Mask02:
+        m_Texture: {fileID: 2800000, guid: 8b2e900f9324f434b9813d03811acf92, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
@@ -62,7 +79,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _NormalMap:
-        m_Texture: {fileID: 2800000, guid: c15097ee4e506054c838d40e1a5e8874, type: 3}
+        m_Texture: {fileID: 2800000, guid: 21d97a6057a451e4e8c1567e45abeff6, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _OcclusionMap:
@@ -75,10 +92,6 @@ Material:
         m_Offset: {x: 0, y: 0}
     - _SpecGlossMap:
         m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _TranslucenceMap:
-        m_Texture: {fileID: 2800000, guid: 646340b24e90e454b8ca67dbf1e1d2f8, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:
@@ -98,81 +111,50 @@ Material:
     - _AddPrecomputedVelocity: 0
     - _AlphaClip: 0
     - _AlphaToMask: 0
-    - _AttackSemaphore: 0
     - _Blend: 0
     - _BlendModePreserveSpecular: 1
     - _BumpScale: 1
-    - _BurnEdgeSize: 0.05
     - _ClearCoatMask: 0
     - _ClearCoatSmoothness: 0
-    - _CoatingSpecularPower: 11.06
-    - _CoatingSpecularStrength: 0.918
-    - _CoatingSpecularWrap: 1.354
-    - _CoatingStrength: 0.208
     - _Cull: 2
     - _Cutoff: 0.5
-    - _DamageFade: 0
-    - _DeathFade: 0
     - _DetailAlbedoMapScale: 1
     - _DetailNormalMapScale: 1
-    - _DiffuseIntensity: 0.525
     - _DstBlend: 0
     - _DstBlendAlpha: 0
     - _EnvironmentReflections: 1
-    - _EyeAdditionalTranslucence: 0
-    - _EyeSpecularPower: 46.7
-    - _EyeSpecularSpotPower: 0.8
-    - _EyeSpecularWrap: 1.093
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
-    - _Health: 1
-    - _Metallic: 0.67
-    - _NoiseOffset: 0.78
-    - _NoiseSize: 55.55
+    - _Metallic: 0
+    - _NormalStrength: 1
     - _OcclusionStrength: 1
     - _Parallax: 0.005
-    - _PreAttackIntensity: 1
     - _QueueControl: 0
     - _QueueOffset: 0
     - _ReceiveShadows: 1
-    - _Smoothness: 0.586
+    - _Smoothness: 0.5
     - _SmoothnessTextureChannel: 0
+    - _SpecularGradientMix: 0.684
     - _SpecularHighlights: 1
-    - _SpecularRoughness: 0.383
+    - _SpecularRoughness: 0.319
+    - _SpecularStrength: 0.451
     - _SrcBlend: 1
     - _SrcBlendAlpha: 1
     - _Surface: 0
-    - _TranslucenceWrap: 1.183
-    - _TranslucenceWrapMapExtra: 0
-    - _TranslucenseColorMix: 0.037
-    - _TranslucensePower: 1.44
-    - _TranslucenseStrength: 0.35
+    - _TranslucenceWrap: 0.308
+    - _TranslucenseIridiscenseMix: 0.116
+    - _TranslucensePower: 3.71
+    - _TranslucenseStrength: 0.23
+    - _VeinsOpacity: 0.433
     - _WorkflowMode: 1
     - _XRMotionVectorsPass: 1
     - _ZWrite: 1
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
-    - _BurnColor: {r: 1.8273586, g: 0.040712748, b: 0, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
-    - _DamageColor: {r: 3.688606, g: 0.131729, b: 0, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _EyeSpecularColor: {r: 0.26889753, g: 0.27554286, b: 0.27672952, a: 1}
-    - _PreAttackEmissionColor: {r: 2.958679, g: 0.07745238, b: 0.03098099, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
-    - _TranslucenseColor: {r: 0.9693476, g: 1, b: 0, a: 1}
+    - _SpecularBaseColor: {r: 0.557, g: 0.557, b: 0.557, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
---- !u!114 &4038928842055567691
-MonoBehaviour:
-  m_ObjectHideFlags: 11
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d0353a89b1f911e48b9e16bdc9f2e058, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  version: 9
