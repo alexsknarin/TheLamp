@@ -1959,6 +1959,7 @@ MonoBehaviour:
   _deathFlash: {fileID: 3890820807162266275}
   _preAttackFlash: {fileID: 9185911319585977721}
   _swarmCallFX: {fileID: 6112219141313886415}
+  _animatorBody: {fileID: 7286796928778897807}
 --- !u!114 &1980114250451078023
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9367,6 +9368,31 @@ PrefabInstance:
         type: 3}
       propertyPath: m_CastShadows
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2607633886372417562, guid: e8b2b8b5fc6e81449836e880a010c42b,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.9947288
+      objectReference: {fileID: 0}
+    - target: {fileID: 2607633886372417562, guid: e8b2b8b5fc6e81449836e880a010c42b,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2607633886372417562, guid: e8b2b8b5fc6e81449836e880a010c42b,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2607633886372417562, guid: e8b2b8b5fc6e81449836e880a010c42b,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.10254073
+      objectReference: {fileID: 0}
+    - target: {fileID: 2607633886372417562, guid: e8b2b8b5fc6e81449836e880a010c42b,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 11.771
       objectReference: {fileID: 0}
     - target: {fileID: 3321682981756065978, guid: e8b2b8b5fc6e81449836e880a010c42b,
         type: 3}

@@ -103,8 +103,9 @@ namespace _GAME.Scripts.Enemies.Dragonfly
         public event Action<IState> ReadyHoverToAttackStateEntered; 
         public event Action<IState> ReadyToSwarmAttackStateEntered;
         public event Action<IState> AfterAttackExitEnded;
-        public event Action AttackStarted;
         public event Action PreAttackStarted;
+        public event Action AttackStarted;
+        public event Action BounceStarted;
         public event Action AttackEnded;
         public event Action<int> CatchSpiderStarted;
         public event Action ReadyToSpiderAttackStateStarted;
@@ -112,14 +113,15 @@ namespace _GAME.Scripts.Enemies.Dragonfly
         public event Action SwarmCalled;
         public event Action CollisionPhaseReached;
         
+        
+        
         // State Events
         public event Action AttackHeadStarted;
         public event Action AttackHeadSuccessStarted;
         public event Action AttackHoverStarted;
         public event Action AttackTailFailLStarted;
         public event Action AttackTailFailRStarted;
-        public event Action AttackTailLStarted;
-        public event Action AttackTailRStarted;
+        public event Action AttackTailLRStarted;
         public event Action AttackTailSuccessLStarted;
         public event Action AttackTailSuccessRStarted;
         public event Action BounceHeadStarted;
@@ -141,13 +143,10 @@ namespace _GAME.Scripts.Enemies.Dragonfly
         public event Action MoveToHoverStarted;
         public event Action MoveToPatrolLStarted;
         public event Action MoveToPatrolRStarted;
-        public event Action PatrolLStarted;
-        public event Action PatrolRStarted;
-        public event Action PreAttackHeadLStarted;
-        public event Action PreAttackHeadRStarted;
+        public event Action PatrolLRStarted;
+        public event Action PreAttackHeadLRStarted;
         public event Action PreAttackHoverStarted;
-        public event Action PreAttackTailLStarted;
-        public event Action PreAttackTailRStarted;
+        public event Action PreAttackTailLRStarted;
         public event Action ReturnHoverStarted;
         public event Action ReturnTransitionLRBTStarted;
         public event Action ReturnTransitionLRTBStarted;
@@ -202,6 +201,12 @@ namespace _GAME.Scripts.Enemies.Dragonfly
             _attackTailStateL.Started += OnAttackStarted;
             _attackTailStateR.Started += OnAttackStarted;
             _attackHoverState.Started += OnAttackStarted;
+            
+            _bounceHeadState.Started += OnBounceStarted;
+            _bounceHoverState.Started += OnBounceStarted;
+            _bounceTailStateL.Started += OnBounceStarted;
+            _bounceTailStateR.Started += OnBounceStarted;
+                
         
             _deathHeadState.Started += OnAttackEnded;
             _deathTailStateL.Started += OnAttackEnded;
@@ -311,6 +316,11 @@ namespace _GAME.Scripts.Enemies.Dragonfly
             _attackTailStateL.Started -= OnAttackStarted;
             _attackTailStateR.Started -= OnAttackStarted;
             _attackHoverState.Started -= OnAttackStarted;
+            
+            _bounceHeadState.Started -= OnBounceStarted;
+            _bounceHoverState.Started -= OnBounceStarted;
+            _bounceTailStateL.Started -= OnBounceStarted;
+            _bounceTailStateR.Started -= OnBounceStarted;
         
             _deathHeadState.Started -= OnAttackEnded;
             _deathTailStateL.Started -= OnAttackEnded;
@@ -521,7 +531,7 @@ namespace _GAME.Scripts.Enemies.Dragonfly
             _currentStateType = resolvedState?.ToString().Replace("FDragonfly", ""); // DEBUG
 #endif 
         }
-    
+
         public void TriggerBounce()
         {
             _isBounced = true;
@@ -536,7 +546,7 @@ namespace _GAME.Scripts.Enemies.Dragonfly
         {
             _isLampDestroyed = true;
         }
-    
+
         private void SetMovementStatesDependencies()
         { 
             _attackHeadState.SetDependencies(_visibleBodyTransform, transform);
@@ -833,6 +843,7 @@ namespace _GAME.Scripts.Enemies.Dragonfly
         }
 
         // Event Handle Methods
+
         private void OnAnimClipEnded()
         {
             _isAnimClipEnded = true;
@@ -883,6 +894,11 @@ namespace _GAME.Scripts.Enemies.Dragonfly
             AttackEnded?.Invoke();
         }
 
+        private void OnBounceStarted()
+        {
+            BounceStarted?.Invoke();
+        }
+
         private void OnAfterAttackExitEnded()
         {
             AfterAttackExitEnded?.Invoke(_stateMachine.CurrentState);
@@ -925,12 +941,12 @@ namespace _GAME.Scripts.Enemies.Dragonfly
 
         private void OnAttackTailLStarted()
         {
-            AttackTailLStarted?.Invoke();
+            AttackTailLRStarted?.Invoke();
         }
 
         private void OnAttackTailRStarted()
         {
-            AttackTailRStarted?.Invoke();
+            AttackTailLRStarted?.Invoke();
         }
 
         private void OnAttackTailSuccessLStarted()
@@ -1040,22 +1056,22 @@ namespace _GAME.Scripts.Enemies.Dragonfly
 
         private void OnPatrolLStarted()
         {
-            PatrolLStarted?.Invoke();
+            PatrolLRStarted?.Invoke();
         }
 
         private void OnPatrolRStarted()
         {
-            PatrolRStarted?.Invoke();
+            PatrolLRStarted?.Invoke();
         }
 
         private void OnPreAttackHeadLStarted()
         {
-            PreAttackHeadLStarted?.Invoke();
+            PreAttackHeadLRStarted?.Invoke();
         }
 
         private void OnPreAttackHeadRStarted()
         {
-            PreAttackHeadRStarted?.Invoke();
+            PreAttackHeadLRStarted?.Invoke();
         }
 
         private void OnPreAttackHoverStarted()
@@ -1065,12 +1081,12 @@ namespace _GAME.Scripts.Enemies.Dragonfly
 
         private void OnPreAttackTailLStarted()
         {
-            PreAttackTailLStarted?.Invoke();
+            PreAttackTailLRStarted?.Invoke();
         }
 
         private void OnPreAttackTailRStarted()
         {
-            PreAttackTailRStarted?.Invoke();
+            PreAttackTailLRStarted?.Invoke();
         }
 
         private void OnReturnHoverStarted()
