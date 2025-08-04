@@ -32,6 +32,9 @@ namespace _GAME.Scripts.Enemies.Dragonfly.Presentation
             _dragonfly.HealthChanged += OnHealthChanged;
             _dragonfly.SwarmCalled += OnSwarmCalled;
             _dragonfly.ColliderTransformChanged += OnColliderTransformChanged;
+            
+            // Anim Events
+            
         }
 
         private void OnDestroy()
@@ -53,6 +56,9 @@ namespace _GAME.Scripts.Enemies.Dragonfly.Presentation
             _deathFlash.Reset();
             _preAttackFlash.Reset();
             _swarmCallFX.Reset();
+            
+            _animatorBody.SetTrigger("Reset");
+
         }
 
         private void OnPreAttackStarted()
