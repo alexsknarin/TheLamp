@@ -13,6 +13,9 @@ namespace _GAME.Scripts.Enemies.Dragonfly.Presentation
         [SerializeField] private DragonflyPreAttackFlash _preAttackFlash;
         [SerializeField] private DragonflySwarmCallFX _swarmCallFX;
         
+        [Header("------ Animation ------")]
+        [SerializeField] private Animator _animatorBody;
+        
         public void Initialize()
         {
             _damageIndication.Initialize();

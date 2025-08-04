@@ -18,8 +18,6 @@ namespace _GAME.Scripts.Enemies.Dragonfly.FMovementStates
         private Transform _visibleBodyTransform;
         private Transform _spiderPatrolTransform;
         private DragonflyPatrolRotator _spiderPatrolRotator;
-    
-        public event Action Ended;
 
         public bool ReadyToSwitch => _readyToSwitch;
 
@@ -30,7 +28,10 @@ namespace _GAME.Scripts.Enemies.Dragonfly.FMovementStates
             _spiderPatrolTransform = spiderPatrolTransform;
             _spiderPatrolRotator = spiderPatrolRotator;
         }
-    
+
+        public event Action Started;
+        public event Action Ended;
+
         public void Enter()
         {
             Vector3 currentPosition = _visibleBodyTransform.position;
@@ -44,6 +45,8 @@ namespace _GAME.Scripts.Enemies.Dragonfly.FMovementStates
             _localTime = 0f;
             _phase = 0f;
             _readyToSwitch = false;
+            
+            Started?.Invoke();
         }
     
         public void Tick()

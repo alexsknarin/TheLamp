@@ -111,6 +111,54 @@ namespace _GAME.Scripts.Enemies.Dragonfly
         public event Action DeathAnimationEnded;
         public event Action SwarmCalled;
         public event Action CollisionPhaseReached;
+        
+        // State Events
+        public event Action AttackHeadStarted;
+        public event Action AttackHeadSuccessStarted;
+        public event Action AttackHoverStarted;
+        public event Action AttackTailFailLStarted;
+        public event Action AttackTailFailRStarted;
+        public event Action AttackTailLStarted;
+        public event Action AttackTailRStarted;
+        public event Action AttackTailSuccessLStarted;
+        public event Action AttackTailSuccessRStarted;
+        public event Action BounceHeadStarted;
+        public event Action BounceHoverStarted;
+        public event Action BounceTailLStarted;
+        public event Action BounceTailRStarted;
+        public event Action CatchSpiderLStarted;
+        public event Action CatchSpiderRStarted;
+        public event Action DeathHeadStarted;
+        public event Action DeathTailLStarted;
+        public event Action DeathTailRStarted;
+        public event Action EnterToHoverLStarted;
+        public event Action EnterToHoverRStarted;
+        public event Action EnterToPatrolLStarted;
+        public event Action EnterToPatrolRStarted;
+        public event Action FallHeadStarted;
+        public event Action HoverStarted;
+        public event Action GameoverHoverStarted;
+        public event Action MoveToHoverStarted;
+        public event Action MoveToPatrolLStarted;
+        public event Action MoveToPatrolRStarted;
+        public event Action PatrolLStarted;
+        public event Action PatrolRStarted;
+        public event Action PreAttackHeadLStarted;
+        public event Action PreAttackHeadRStarted;
+        public event Action PreAttackHoverStarted;
+        public event Action PreAttackTailLStarted;
+        public event Action PreAttackTailRStarted;
+        public event Action ReturnHoverStarted;
+        public event Action ReturnTransitionLRBTStarted;
+        public event Action ReturnTransitionLRTBStarted;
+        public event Action ReturnTransitionRLBTStarted;
+        public event Action ReturnTransitionRLTBStarted;
+        public event Action SpiderPatrolLStarted;
+        public event Action SpiderPatrolRStarted;
+        public event Action SpiderPreattackHeadTransitionLStarted;
+        public event Action SpiderPreattackHeadTransitionRStarted;
+        public event Action SpiderPushLStarted;
+        public event Action SpiderPushRStarted;
     
     
         public IState MovementState => _stateMachine.CurrentState;
@@ -186,6 +234,53 @@ namespace _GAME.Scripts.Enemies.Dragonfly
             _attackTailStateR.CollisionPhaseReached += OnCollisionPhaseReached;
             _attackHeadState.CollisionPhaseReached += OnCollisionPhaseReached;
             _attackHoverState.CollisionPhaseReached += OnCollisionPhaseReached;
+            
+            // State events
+            _attackHeadState.Started += OnAttackHeadStarted;
+            _attackHeadSuccessState.Started += OnAttackHeadSuccessStarted;
+            _attackHoverState.Started += OnAttackHoverStarted;
+            _attackTailFailL.Started += OnAttackTailFailLStarted; 
+            _attackTailFailR.Started += OnAttackTailFailRStarted;
+            _attackTailStateL.Started += OnAttackTailLStarted;
+            _attackTailStateR.Started += OnAttackTailRStarted;
+            _attackTailSuccessL.Started += OnAttackTailSuccessLStarted; 
+            _attackTailSuccessR.Started += OnAttackTailSuccessRStarted; 
+            _bounceHeadState.Started += OnBounceHeadStarted;
+            _bounceHoverState.Started += OnBounceHoverStarted;
+            _bounceTailStateL.Started += OnBounceTailLStarted;
+            _bounceTailStateR.Started += OnBounceTailRStarted;
+            _catchSpiderStateL.Started += OnCatchSpiderLStarted;
+            _catchSpiderStateR.Started += OnCatchSpiderRStarted;
+            _deathHeadState.Started += OnDeathHeadStarted;
+            _deathTailStateL.Started += OnDeathTailLStarted;
+            _deathTailStateR.Started += OnDeathTailRStarted;
+            _enterToHoverStateL.Started += OnEnterToHoverLStarted;
+            _enterToHoverStateR.Started += OnEnterToHoverRStarted;
+            _enterToPatrolStateL.Started += OnEnterToPatrolLStarted;
+            _enterToPatrolStateR.Started += OnEnterToPatrolRStarted;
+            _fallHeadState.Started += OnFallHeadStarted;
+            _hoverState.Started += OnHoverStarted;
+            _moveToHoverState.Started += OnMoveToHoverStarted;
+            _moveToPatrolStateL.Started += OnMoveToPatrolLStarted;
+            _moveToPatrolStateR.Started += OnMoveToPatrolRStarted;
+            _patrolStateL.Started += OnPatrolLStarted;
+            _patrolStateR.Started += OnPatrolRStarted;
+            _preAttackHeadStateL.Started += OnPreAttackHeadLStarted;
+            _preAttackHeadStateR.Started += OnPreAttackHeadRStarted;
+            _preAttackHoverState.Started += OnPreAttackHoverStarted;
+            _preAttackTailStateL.Started += OnPreAttackTailLStarted;
+            _preAttackTailStateR.Started += OnPreAttackTailRStarted;
+            _returnHoverState.Started += OnReturnHoverStarted;
+            _returnTransitionLRBTState.Started += OnReturnTransitionLRBTStarted;
+            _returnTransitionLRTBState.Started += OnReturnTransitionLRTBStarted;
+            _returnTransitionRLBTState.Started += OnReturnTransitionRLBTStarted;
+            _returnTransitionRLTBState.Started += OnReturnTransitionRLTBStarted;
+            _spiderPatrolStateL.Started += OnSpiderPatrolLStarted;
+            _spiderPatrolStateR.Started += OnSpiderPatrolRStarted;
+            _spiderPreAttackHeadTransitionStateL.Started += OnSpiderPreattackHeadTransitionLStarted;
+            _spiderPreAttackHeadTransitionStateR.Started += OnSpiderPreattackHeadTransitionRStarted;
+            _spiderPushStateL.Started += OnSpiderPushLStarted;
+            _spiderPushStateR.Started += OnSpiderPushRStarted;
         }
 
         private void OnDestroy()
@@ -248,6 +343,53 @@ namespace _GAME.Scripts.Enemies.Dragonfly
             _attackTailStateR.CollisionPhaseReached -= OnCollisionPhaseReached;
             _attackHeadState.CollisionPhaseReached -= OnCollisionPhaseReached;
             _attackHoverState.CollisionPhaseReached -= OnCollisionPhaseReached;
+            
+            // State events
+            _attackHeadState.Started -= OnAttackHeadStarted;
+            _attackHeadSuccessState.Started -= OnAttackHeadSuccessStarted;
+            _attackHoverState.Started -= OnAttackHoverStarted;
+            _attackTailFailL.Started -= OnAttackTailFailLStarted; 
+            _attackTailFailR.Started -= OnAttackTailFailRStarted;
+            _attackTailStateL.Started -= OnAttackTailLStarted;
+            _attackTailStateR.Started -= OnAttackTailRStarted;
+            _attackTailSuccessL.Started -= OnAttackTailSuccessLStarted; 
+            _attackTailSuccessR.Started -= OnAttackTailSuccessRStarted; 
+            _bounceHeadState.Started -= OnBounceHeadStarted;
+            _bounceHoverState.Started -= OnBounceHoverStarted;
+            _bounceTailStateL.Started -= OnBounceTailLStarted;
+            _bounceTailStateR.Started -= OnBounceTailRStarted;
+            _catchSpiderStateL.Started -= OnCatchSpiderLStarted;
+            _catchSpiderStateR.Started -= OnCatchSpiderRStarted;
+            _deathHeadState.Started -= OnDeathHeadStarted;
+            _deathTailStateL.Started -= OnDeathTailLStarted;
+            _deathTailStateR.Started -= OnDeathTailRStarted;
+            _enterToHoverStateL.Started -= OnEnterToHoverLStarted;
+            _enterToHoverStateR.Started -= OnEnterToHoverRStarted;
+            _enterToPatrolStateL.Started -= OnEnterToPatrolLStarted;
+            _enterToPatrolStateR.Started -= OnEnterToPatrolRStarted;
+            _fallHeadState.Started -= OnFallHeadStarted;
+            _hoverState.Started -= OnHoverStarted;
+            _moveToHoverState.Started -= OnMoveToHoverStarted;
+            _moveToPatrolStateL.Started -= OnMoveToPatrolLStarted;
+            _moveToPatrolStateR.Started -= OnMoveToPatrolRStarted;
+            _patrolStateL.Started -= OnPatrolLStarted;
+            _patrolStateR.Started -= OnPatrolRStarted;
+            _preAttackHeadStateL.Started -= OnPreAttackHeadLStarted;
+            _preAttackHeadStateR.Started -= OnPreAttackHeadRStarted;
+            _preAttackHoverState.Started -= OnPreAttackHoverStarted;
+            _preAttackTailStateL.Started -= OnPreAttackTailLStarted;
+            _preAttackTailStateR.Started -= OnPreAttackTailRStarted;
+            _returnHoverState.Started -= OnReturnHoverStarted;
+            _returnTransitionLRBTState.Started -= OnReturnTransitionLRBTStarted;
+            _returnTransitionLRTBState.Started -= OnReturnTransitionLRTBStarted;
+            _returnTransitionRLBTState.Started -= OnReturnTransitionRLBTStarted;
+            _returnTransitionRLTBState.Started -= OnReturnTransitionRLTBStarted;
+            _spiderPatrolStateL.Started -= OnSpiderPatrolLStarted;
+            _spiderPatrolStateR.Started -= OnSpiderPatrolRStarted;
+            _spiderPreAttackHeadTransitionStateL.Started -= OnSpiderPreattackHeadTransitionLStarted;
+            _spiderPreAttackHeadTransitionStateR.Started -= OnSpiderPreattackHeadTransitionRStarted;
+            _spiderPushStateL.Started -= OnSpiderPushLStarted;
+            _spiderPushStateR.Started -= OnSpiderPushRStarted;
         }
 
         public void Play(EnterType state, int sideDirection)
@@ -754,6 +896,236 @@ namespace _GAME.Scripts.Enemies.Dragonfly
         private void OnCollisionPhaseReached()
         {
             CollisionPhaseReached?.Invoke();
+        }
+        
+        // State Events
+        private void OnAttackHeadStarted()
+        {
+            AttackHeadStarted?.Invoke();
+        }
+        private void OnAttackHeadSuccessStarted()
+        {
+            AttackHeadSuccessStarted?.Invoke();
+        }
+
+        private void OnAttackHoverStarted()
+        {
+            AttackHoverStarted?.Invoke();
+        }
+
+        private void OnAttackTailFailLStarted()
+        {
+            AttackTailFailLStarted?.Invoke();
+        }
+
+        private void OnAttackTailFailRStarted()
+        {
+            AttackTailFailRStarted?.Invoke();
+        }
+
+        private void OnAttackTailLStarted()
+        {
+            AttackTailLStarted?.Invoke();
+        }
+
+        private void OnAttackTailRStarted()
+        {
+            AttackTailRStarted?.Invoke();
+        }
+
+        private void OnAttackTailSuccessLStarted()
+        {
+            AttackTailSuccessLStarted?.Invoke();
+        }
+
+        private void OnAttackTailSuccessRStarted()
+        {
+            AttackTailSuccessRStarted?.Invoke();
+        }
+
+        private void OnBounceHeadStarted()
+        {
+            BounceHeadStarted?.Invoke();
+        }
+
+        private void OnBounceHoverStarted()
+        {
+            BounceHoverStarted?.Invoke();
+        }
+
+        private void OnBounceTailLStarted()
+        {
+            BounceTailLStarted?.Invoke();
+        }
+
+        private void OnBounceTailRStarted()
+        {
+            BounceTailRStarted?.Invoke();
+        }
+
+        private void OnCatchSpiderLStarted()
+        {
+            CatchSpiderLStarted?.Invoke();
+        }
+
+        private void OnCatchSpiderRStarted()
+        {
+            CatchSpiderRStarted?.Invoke();
+        }
+
+        private void OnDeathHeadStarted()
+        {
+            DeathHeadStarted?.Invoke();
+        }
+
+        private void OnDeathTailLStarted()
+        {
+            DeathTailLStarted?.Invoke();
+        }
+
+        private void OnDeathTailRStarted()
+        {
+            DeathTailRStarted?.Invoke();
+        }
+
+        private void OnEnterToHoverLStarted()
+        {
+            EnterToHoverLStarted?.Invoke();
+        }
+
+        private void OnEnterToHoverRStarted()
+        {
+            EnterToHoverRStarted?.Invoke();
+        }
+
+        private void OnEnterToPatrolLStarted()
+        {
+            EnterToPatrolLStarted?.Invoke();
+        }
+
+        private void OnEnterToPatrolRStarted()
+        {
+            EnterToPatrolRStarted?.Invoke();
+        }
+
+        private void OnFallHeadStarted()
+        {
+            FallHeadStarted?.Invoke();
+        }
+
+        private void OnHoverStarted()
+        {
+            HoverStarted?.Invoke();
+        }
+
+        private void OnGameoverHoverStarted()
+        {
+            GameoverHoverStarted?.Invoke();
+        }
+
+        private void OnMoveToHoverStarted()
+        {
+            MoveToHoverStarted?.Invoke();
+        }
+
+        private void OnMoveToPatrolLStarted()
+        {
+            MoveToPatrolLStarted?.Invoke();
+        }
+
+        private void OnMoveToPatrolRStarted()
+        {
+            MoveToPatrolRStarted?.Invoke();
+        }
+
+        private void OnPatrolLStarted()
+        {
+            PatrolLStarted?.Invoke();
+        }
+
+        private void OnPatrolRStarted()
+        {
+            PatrolRStarted?.Invoke();
+        }
+
+        private void OnPreAttackHeadLStarted()
+        {
+            PreAttackHeadLStarted?.Invoke();
+        }
+
+        private void OnPreAttackHeadRStarted()
+        {
+            PreAttackHeadRStarted?.Invoke();
+        }
+
+        private void OnPreAttackHoverStarted()
+        {
+            PreAttackHoverStarted?.Invoke();
+        }
+
+        private void OnPreAttackTailLStarted()
+        {
+            PreAttackTailLStarted?.Invoke();
+        }
+
+        private void OnPreAttackTailRStarted()
+        {
+            PreAttackTailRStarted?.Invoke();
+        }
+
+        private void OnReturnHoverStarted()
+        {
+            ReturnHoverStarted?.Invoke();
+        }
+
+        private void OnReturnTransitionLRBTStarted()
+        {
+            ReturnTransitionLRBTStarted?.Invoke();
+        }
+
+        private void OnReturnTransitionLRTBStarted()
+        {
+            ReturnTransitionLRTBStarted?.Invoke();
+        }
+
+        private void OnReturnTransitionRLBTStarted()
+        {
+            ReturnTransitionRLBTStarted?.Invoke();
+        }
+
+        private void OnReturnTransitionRLTBStarted()
+        {
+            ReturnTransitionRLTBStarted?.Invoke();
+        }
+
+        private void OnSpiderPatrolLStarted()
+        {
+            SpiderPatrolLStarted?.Invoke();
+        }
+
+        private void OnSpiderPatrolRStarted()
+        {
+            SpiderPatrolRStarted?.Invoke();
+        }
+
+        private void OnSpiderPreattackHeadTransitionLStarted()
+        {
+            SpiderPreattackHeadTransitionLStarted?.Invoke();
+        }
+
+        private void OnSpiderPreattackHeadTransitionRStarted()
+        {
+            SpiderPreattackHeadTransitionRStarted?.Invoke();
+        }
+
+        private void OnSpiderPushLStarted()
+        {
+            SpiderPushLStarted?.Invoke();
+        }
+
+        private void OnSpiderPushRStarted()
+        {
+            SpiderPushRStarted?.Invoke();
         }
     }
 }

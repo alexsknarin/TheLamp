@@ -1,3 +1,4 @@
+using System;
 using _GAME.Scripts.Lib.Interfaces;
 using UnityEngine;
 
@@ -11,7 +12,9 @@ namespace _GAME.Scripts.Enemies.Dragonfly.FMovementStates
         // Dependencies
         private Transform _visibleBodyTransform;
         private Transform _baseTransform;
-    
+        
+        public event Action Started;
+        
         public void SetDependencies(Transform visibleBodyTransform, Transform baseTransform)
         {
             _visibleBodyTransform = visibleBodyTransform;
@@ -22,6 +25,7 @@ namespace _GAME.Scripts.Enemies.Dragonfly.FMovementStates
         {
             _visibleBodyTransform.SetParent(_baseTransform);
             _attackDirection = -_visibleBodyTransform.position.normalized;
+            Started?.Invoke();
         }
 
         public void Tick()
