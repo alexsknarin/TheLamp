@@ -46,6 +46,25 @@ namespace _GAME.Scripts.Enemies.Dragonfly.Presentation
             _dragonflyMovement.HoverStarted += OnHoverStarted;
             _dragonflyMovement.PreAttackHoverStarted += OnPreAttackHoverStarted;
             _dragonflyMovement.ReturnHoverStarted += OnReturnHoverStarted;
+
+            _dragonflyMovement.AttackSucceded += OnAttackSucceded;
+            _dragonflyMovement.AttackFailed += OnAttackFailed;
+            _dragonflyMovement.DeathStarted += OnDeathStarted;
+
+            _dragonflyMovement.MoveToHoverStarted += OnMoveToHoverStarted;
+            _dragonflyMovement.MoveToPatrolLStarted += OnMoveToPatrolLStarted;
+            _dragonflyMovement.MoveToPatrolRStarted += OnMoveToPatrolRStarted;
+            
+            _dragonflyMovement.CatchSpiderLStarted += OnCatchSpiderLStarted;
+            _dragonflyMovement.CatchSpiderRStarted += OnCatchSpiderRStarted;
+            _dragonflyMovement.SpiderPatrolLRStarted += OnSpiderPatrolLRStarted;
+            _dragonflyMovement.SpiderPushLRStarted += OnSpiderPushLRStarted;
+            _dragonflyMovement.SpiderPreattackHeadTransitionLRStarted += OnSpiderPreattackHeadTransitionLRStarted;
+
+            _dragonflyMovement.ReturnTransitionLRTBStarted += OnReturnTransitionLRTBStarted;
+            _dragonflyMovement.ReturnTransitionRLTBStarted += OnReturnTransitionRLTBStarted;
+            _dragonflyMovement.ReturnTransitionLRBTStarted += OnReturnTransitionLRBTStarted;
+            _dragonflyMovement.ReturnTransitionRLBTStarted += OnReturnTransitionRLBTStarted;
         }
 
         private void OnDestroy()
@@ -72,6 +91,25 @@ namespace _GAME.Scripts.Enemies.Dragonfly.Presentation
             _dragonflyMovement.HoverStarted -= OnHoverStarted;
             _dragonflyMovement.PreAttackHoverStarted -= OnPreAttackHoverStarted;
             _dragonflyMovement.ReturnHoverStarted -= OnReturnHoverStarted;
+            
+            _dragonflyMovement.AttackSucceded -= OnAttackSucceded;
+            _dragonflyMovement.AttackFailed -= OnAttackFailed;
+            _dragonflyMovement.DeathStarted -= OnDeathStarted;
+            
+            _dragonflyMovement.MoveToHoverStarted -= OnMoveToHoverStarted;
+            _dragonflyMovement.MoveToPatrolLStarted -= OnMoveToPatrolLStarted;
+            _dragonflyMovement.MoveToPatrolRStarted -= OnMoveToPatrolRStarted;
+
+            _dragonflyMovement.CatchSpiderLStarted -= OnCatchSpiderLStarted;
+            _dragonflyMovement.CatchSpiderRStarted -= OnCatchSpiderRStarted;
+            _dragonflyMovement.SpiderPatrolLRStarted -= OnSpiderPatrolLRStarted;
+            _dragonflyMovement.SpiderPushLRStarted -= OnSpiderPushLRStarted;
+            _dragonflyMovement.SpiderPreattackHeadTransitionLRStarted -= OnSpiderPreattackHeadTransitionLRStarted;
+            
+            _dragonflyMovement.ReturnTransitionLRTBStarted -= OnReturnTransitionLRTBStarted;
+            _dragonflyMovement.ReturnTransitionRLTBStarted -= OnReturnTransitionRLTBStarted;
+            _dragonflyMovement.ReturnTransitionLRBTStarted -= OnReturnTransitionLRBTStarted;
+            _dragonflyMovement.ReturnTransitionRLBTStarted -= OnReturnTransitionRLBTStarted;
         }
 
         private void OnDragonflyStarted()
@@ -91,7 +129,6 @@ namespace _GAME.Scripts.Enemies.Dragonfly.Presentation
         {
             _animatorBody.ResetTrigger("Reset");
             _animatorBody.ResetTrigger("ToAttack");
-            _animatorBody.ResetTrigger("ToEnterToPatrolL");
             _animatorBody.ResetTrigger("ToEnterToPatrolR");
             _animatorBody.ResetTrigger("ToPatrol");
             _animatorBody.ResetTrigger("ToPreAttackHead");
@@ -102,6 +139,17 @@ namespace _GAME.Scripts.Enemies.Dragonfly.Presentation
             _animatorBody.ResetTrigger("ToHover");
             _animatorBody.ResetTrigger("ToPreAttackHover");
             _animatorBody.ResetTrigger("ToHoverReturn");
+            _animatorBody.ResetTrigger("ToSuccess");
+            _animatorBody.ResetTrigger("ToFail");
+            _animatorBody.ResetTrigger("ToDeath");
+            _animatorBody.ResetTrigger("ToMoveToHover");
+            _animatorBody.ResetTrigger("ToMoveToPatrolL");
+            _animatorBody.ResetTrigger("ToMoveToPatrolR");
+            _animatorBody.ResetTrigger("ToCatchSpiderL");
+            _animatorBody.ResetTrigger("ToCatchSpiderR");
+            _animatorBody.ResetTrigger("ToSpiderPatrol");
+            _animatorBody.ResetTrigger("ToSpiderPush");
+            _animatorBody.ResetTrigger("ToSpiderPatrolTransition");
         }
 
         private void OnPreAttackStarted()
@@ -209,6 +257,96 @@ namespace _GAME.Scripts.Enemies.Dragonfly.Presentation
         {
             ResetBodyAnimationTriggers();
             _animatorBody.SetTrigger("ToHoverReturn");
+        }
+
+        private void OnAttackSucceded()
+        {
+            ResetBodyAnimationTriggers();
+            _animatorBody.SetTrigger("ToSuccess");
+        }
+
+        private void OnAttackFailed()
+        {
+            ResetBodyAnimationTriggers();
+            _animatorBody.SetTrigger("ToFail");
+        }
+
+        private void OnDeathStarted()
+        {
+            ResetBodyAnimationTriggers();
+            _animatorBody.SetTrigger("ToDeath");
+        }
+
+        private void OnMoveToHoverStarted()
+        {
+            ResetBodyAnimationTriggers();
+            _animatorBody.SetTrigger("ToMoveToHover");
+        }
+
+        private void OnMoveToPatrolLStarted()
+        {
+            ResetBodyAnimationTriggers();
+            _animatorBody.SetTrigger("ToMoveToPatrolL");
+        }
+
+        private void OnMoveToPatrolRStarted()
+        {
+            ResetBodyAnimationTriggers();
+            _animatorBody.SetTrigger("ToMoveToPatrolR");
+        }
+
+        private void OnCatchSpiderLStarted()
+        {
+            ResetBodyAnimationTriggers();
+            _animatorBody.SetTrigger("ToCatchSpiderL");
+        }
+
+        private void OnCatchSpiderRStarted()
+        {
+            ResetBodyAnimationTriggers();
+            _animatorBody.SetTrigger("ToCatchSpiderR");
+        }
+
+        private void OnSpiderPatrolLRStarted()
+        {
+            ResetBodyAnimationTriggers();
+            _animatorBody.SetTrigger("ToSpiderPatrol");
+        }
+
+        private void OnSpiderPushLRStarted()
+        {
+            ResetBodyAnimationTriggers();
+            _animatorBody.SetTrigger("ToSpiderPush");
+        }
+
+        private void OnSpiderPreattackHeadTransitionLRStarted()
+        {
+            ResetBodyAnimationTriggers();
+            _animatorBody.SetTrigger("ToSpiderPatrolTransition");
+        }
+
+        private void OnReturnTransitionLRTBStarted()
+        {
+            ResetBodyAnimationTriggers();
+            _animatorBody.SetTrigger("ToLRTB");
+        }
+        
+        private void OnReturnTransitionRLTBStarted()
+        {
+            ResetBodyAnimationTriggers();
+            _animatorBody.SetTrigger("ToRLTB");
+        }
+        
+        private void OnReturnTransitionLRBTStarted()
+        {
+            ResetBodyAnimationTriggers();
+            _animatorBody.SetTrigger("ToLRBT");
+        }
+        
+        private void OnReturnTransitionRLBTStarted()
+        {
+            ResetBodyAnimationTriggers();
+            _animatorBody.SetTrigger("ToRLBT");
         }
     }
 }

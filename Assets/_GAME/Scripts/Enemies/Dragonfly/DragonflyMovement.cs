@@ -117,27 +117,30 @@ namespace _GAME.Scripts.Enemies.Dragonfly
         
         // State Events
         public event Action AttackHeadStarted;
-        public event Action AttackHeadSuccessStarted;
+        // public event Action AttackHeadSuccessStarted;
+        public event Action AttackSucceded;
         public event Action AttackHoverStarted;
-        public event Action AttackTailFailLStarted;
-        public event Action AttackTailFailRStarted;
+        // public event Action AttackTailFailLStarted;
+        // public event Action AttackTailFailRStarted;
+        public event Action AttackFailed;
         public event Action AttackTailLRStarted;
-        public event Action AttackTailSuccessLStarted;
-        public event Action AttackTailSuccessRStarted;
+        // public event Action AttackTailSuccessLStarted;
+        // public event Action AttackTailSuccessRStarted;
         public event Action BounceHeadStarted;
         public event Action BounceHoverStarted;
         public event Action BounceTailLStarted;
         public event Action BounceTailRStarted;
         public event Action CatchSpiderLStarted;
         public event Action CatchSpiderRStarted;
-        public event Action DeathHeadStarted;
-        public event Action DeathTailLStarted;
-        public event Action DeathTailRStarted;
+        public event Action DeathStarted;
+        // public event Action DeathHeadStarted;
+        // public event Action DeathTailLStarted;
+        // public event Action DeathTailRStarted;
         public event Action EnterToHoverLStarted;
         public event Action EnterToHoverRStarted;
         public event Action EnterToPatrolLStarted;
         public event Action EnterToPatrolRStarted;
-        public event Action FallHeadStarted;
+        // public event Action FallHeadStarted;
         public event Action HoverStarted;
         public event Action GameoverHoverStarted;
         public event Action MoveToHoverStarted;
@@ -152,12 +155,11 @@ namespace _GAME.Scripts.Enemies.Dragonfly
         public event Action ReturnTransitionLRTBStarted;
         public event Action ReturnTransitionRLBTStarted;
         public event Action ReturnTransitionRLTBStarted;
-        public event Action SpiderPatrolLStarted;
-        public event Action SpiderPatrolRStarted;
-        public event Action SpiderPreattackHeadTransitionLStarted;
-        public event Action SpiderPreattackHeadTransitionRStarted;
-        public event Action SpiderPushLStarted;
-        public event Action SpiderPushRStarted;
+        public event Action SpiderPatrolLRStarted;
+        public event Action SpiderPreattackHeadTransitionLRStarted;
+        // public event Action SpiderPreattackHeadTransitionRStarted;
+        public event Action SpiderPushLRStarted;
+        // public event Action SpiderPushRStarted;
     
     
         public IState MovementState => _stateMachine.CurrentState;
@@ -921,7 +923,7 @@ namespace _GAME.Scripts.Enemies.Dragonfly
         }
         private void OnAttackHeadSuccessStarted()
         {
-            AttackHeadSuccessStarted?.Invoke();
+            AttackSucceded?.Invoke();
         }
 
         private void OnAttackHoverStarted()
@@ -931,12 +933,12 @@ namespace _GAME.Scripts.Enemies.Dragonfly
 
         private void OnAttackTailFailLStarted()
         {
-            AttackTailFailLStarted?.Invoke();
+            AttackFailed?.Invoke();
         }
 
         private void OnAttackTailFailRStarted()
         {
-            AttackTailFailRStarted?.Invoke();
+            AttackFailed?.Invoke();
         }
 
         private void OnAttackTailLStarted()
@@ -951,12 +953,12 @@ namespace _GAME.Scripts.Enemies.Dragonfly
 
         private void OnAttackTailSuccessLStarted()
         {
-            AttackTailSuccessLStarted?.Invoke();
+            AttackSucceded?.Invoke();
         }
 
         private void OnAttackTailSuccessRStarted()
         {
-            AttackTailSuccessRStarted?.Invoke();
+            AttackSucceded?.Invoke();
         }
 
         private void OnBounceHeadStarted()
@@ -991,17 +993,17 @@ namespace _GAME.Scripts.Enemies.Dragonfly
 
         private void OnDeathHeadStarted()
         {
-            DeathHeadStarted?.Invoke();
+            DeathStarted?.Invoke();
         }
 
         private void OnDeathTailLStarted()
         {
-            DeathTailLStarted?.Invoke();
+            DeathStarted?.Invoke();
         }
 
         private void OnDeathTailRStarted()
         {
-            DeathTailRStarted?.Invoke();
+            DeathStarted?.Invoke();
         }
 
         private void OnEnterToHoverLStarted()
@@ -1026,7 +1028,7 @@ namespace _GAME.Scripts.Enemies.Dragonfly
 
         private void OnFallHeadStarted()
         {
-            FallHeadStarted?.Invoke();
+            AttackFailed?.Invoke();
         }
 
         private void OnHoverStarted()
@@ -1116,32 +1118,32 @@ namespace _GAME.Scripts.Enemies.Dragonfly
 
         private void OnSpiderPatrolLStarted()
         {
-            SpiderPatrolLStarted?.Invoke();
+            SpiderPatrolLRStarted?.Invoke();
         }
 
         private void OnSpiderPatrolRStarted()
         {
-            SpiderPatrolRStarted?.Invoke();
+            SpiderPatrolLRStarted?.Invoke();
         }
 
         private void OnSpiderPreattackHeadTransitionLStarted()
         {
-            SpiderPreattackHeadTransitionLStarted?.Invoke();
+            SpiderPreattackHeadTransitionLRStarted?.Invoke();
         }
 
         private void OnSpiderPreattackHeadTransitionRStarted()
         {
-            SpiderPreattackHeadTransitionRStarted?.Invoke();
+            SpiderPreattackHeadTransitionLRStarted?.Invoke();
         }
 
         private void OnSpiderPushLStarted()
         {
-            SpiderPushLStarted?.Invoke();
+            SpiderPushLRStarted?.Invoke();
         }
 
         private void OnSpiderPushRStarted()
         {
-            SpiderPushRStarted?.Invoke();
+            SpiderPushLRStarted?.Invoke();
         }
     }
 }
