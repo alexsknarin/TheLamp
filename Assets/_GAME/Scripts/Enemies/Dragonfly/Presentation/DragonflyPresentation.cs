@@ -5,6 +5,37 @@ namespace _GAME.Scripts.Enemies.Dragonfly.Presentation
 {
     public class DragonflyPresentation : MonoBehaviour, IInitializable
     {
+        private static readonly int Reset = Animator.StringToHash("Reset");
+        private static readonly int ToFly = Animator.StringToHash("ToFly");
+        private static readonly int ToAttack = Animator.StringToHash("ToAttack");
+        private static readonly int ToEnterToPatrolL = Animator.StringToHash("ToEnterToPatrolL");
+        private static readonly int ToEnterToPatrolR = Animator.StringToHash("ToEnterToPatrolR");
+        private static readonly int ToPatrol = Animator.StringToHash("ToPatrol");
+        private static readonly int ToPreAttackHead = Animator.StringToHash("ToPreAttackHead");
+        private static readonly int ToBounce = Animator.StringToHash("ToBounce");
+        private static readonly int ToPreAttackTail = Animator.StringToHash("ToPreAttackTail");
+        private static readonly int ToEnterToHoverL = Animator.StringToHash("ToEnterToHoverL");
+        private static readonly int ToEnterToHoverR = Animator.StringToHash("ToEnterToHoverR");
+        private static readonly int ToHover = Animator.StringToHash("ToHover");
+        private static readonly int ToPreAttackHover = Animator.StringToHash("ToPreAttackHover");
+        private static readonly int ToHoverReturn = Animator.StringToHash("ToHoverReturn");
+        private static readonly int ToSuccess = Animator.StringToHash("ToSuccess");
+        private static readonly int ToFail = Animator.StringToHash("ToFail");
+        private static readonly int Index = Animator.StringToHash("Index");
+        private static readonly int ToStop = Animator.StringToHash("ToStop");
+        private static readonly int ToDeath = Animator.StringToHash("ToDeath");
+        private static readonly int ToMoveToHover = Animator.StringToHash("ToMoveToHover");
+        private static readonly int ToMoveToPatrolL = Animator.StringToHash("ToMoveToPatrolL");
+        private static readonly int ToMoveToPatrolR = Animator.StringToHash("ToMoveToPatrolR");
+        private static readonly int ToCatchSpiderL = Animator.StringToHash("ToCatchSpiderL");
+        private static readonly int ToCatchSpiderR = Animator.StringToHash("ToCatchSpiderR");
+        private static readonly int ToSpiderPatrol = Animator.StringToHash("ToSpiderPatrol");
+        private static readonly int ToSpiderPush = Animator.StringToHash("ToSpiderPush");
+        private static readonly int ToSpiderPatrolTransition = Animator.StringToHash("ToSpiderPatrolTransition");
+        private static readonly int ToLrtb = Animator.StringToHash("ToLRTB");
+        private static readonly int ToRltb = Animator.StringToHash("ToRLTB");
+        private static readonly int ToLrbt = Animator.StringToHash("ToLRBT");
+        private static readonly int ToRlbt = Animator.StringToHash("ToRLBT");
         [SerializeField] private Dragonfly _dragonfly;
         [SerializeField] private DragonflyMovement _dragonflyMovement;
         [SerializeField] private DragonflyDamageFlash _damageIndication;
@@ -124,8 +155,8 @@ namespace _GAME.Scripts.Enemies.Dragonfly.Presentation
             _swarmCallFX.Reset();
 
             ResetBodyAnimationTriggers();
-            _animatorBody.SetTrigger("Reset");
-            _animatorWings.SetTrigger("ToFly");
+            _animatorBody.SetTrigger(Reset);
+            _animatorWings.SetTrigger(ToFly);
 
         }
 
@@ -158,8 +189,8 @@ namespace _GAME.Scripts.Enemies.Dragonfly.Presentation
         
         private void ResetWingsAnimationTriggers()
         {
-            _animatorBody.ResetTrigger("ToFly");
-            _animatorBody.ResetTrigger("ToStop");
+            _animatorWings.ResetTrigger("ToFly");
+            _animatorWings.ResetTrigger("ToStop");
         }
         
 
@@ -173,12 +204,12 @@ namespace _GAME.Scripts.Enemies.Dragonfly.Presentation
             _preAttackFlash.PreAttackEnd();
             
             ResetBodyAnimationTriggers();
-            _animatorBody.SetTrigger("ToAttack");
+            _animatorBody.SetTrigger(ToAttack);
         }
 
-        private void OnColliderTransformChanged(Transform transform)
+        private void OnColliderTransformChanged(Transform colliderTransform)
         {
-            _damageIndication.SetContactCollisionTransform(transform);
+            _damageIndication.SetContactCollisionTransform(colliderTransform);
         }
 
         private void OnDamaged()
@@ -206,181 +237,181 @@ namespace _GAME.Scripts.Enemies.Dragonfly.Presentation
         private void OnEnterToPatrolLStarted()
         {
             ResetBodyAnimationTriggers();
-            _animatorBody.SetTrigger("ToEnterToPatrolL");
+            _animatorBody.SetTrigger(ToEnterToPatrolL);
         }
 
         private void OnEnterToPatrolRStarted()
         {
             ResetBodyAnimationTriggers();
-            _animatorBody.SetTrigger("ToEnterToPatrolR");
+            _animatorBody.SetTrigger(ToEnterToPatrolR);
         }
 
         private void OnToPatrolLRStarted()
         {
             ResetBodyAnimationTriggers();
-            _animatorBody.SetTrigger("ToPatrol");
+            _animatorBody.SetTrigger(ToPatrol);
         }
 
         private void OnPreAttackHeadLRStarted()
         {
             ResetBodyAnimationTriggers();
-            _animatorBody.SetTrigger("ToPreAttackHead");
+            _animatorBody.SetTrigger(ToPreAttackHead);
         }
 
         private void OnBounceStarted()
         {
             ResetBodyAnimationTriggers();
-            _animatorBody.SetTrigger("ToBounce");
+            _animatorBody.SetTrigger(ToBounce);
         }
 
         private void OnPreAttackTailLRStarted()
         {
             ResetBodyAnimationTriggers();
-            _animatorBody.SetTrigger("ToPreAttackTail");
+            _animatorBody.SetTrigger(ToPreAttackTail);
         }
 
         private void OnEnterToHoverLStarted()
         {
             ResetBodyAnimationTriggers();
-            _animatorBody.SetTrigger("ToEnterToHoverL");
+            _animatorBody.SetTrigger(ToEnterToHoverL);
         }
 
         private void OnEnterToHoverRStarted()
         {
             ResetBodyAnimationTriggers();
-            _animatorBody.SetTrigger("ToEnterToHoverR");
+            _animatorBody.SetTrigger(ToEnterToHoverR);
         }
 
         private void OnHoverStarted()
         {
             ResetBodyAnimationTriggers();
-            _animatorBody.SetTrigger("ToHover");
+            _animatorBody.SetTrigger(ToHover);
         }
 
         private void OnPreAttackHoverStarted()
         {
             ResetBodyAnimationTriggers();
-            _animatorBody.SetTrigger("ToPreAttackHover");
+            _animatorBody.SetTrigger(ToPreAttackHover);
         }
 
         private void OnReturnHoverStarted()
         {
             ResetBodyAnimationTriggers();
-            _animatorBody.SetTrigger("ToHoverReturn");
+            _animatorBody.SetTrigger(ToHoverReturn);
         }
 
         private void OnAttackSucceded()
         {
             ResetBodyAnimationTriggers();
-            _animatorBody.SetTrigger("ToSuccess");
+            _animatorBody.SetTrigger(ToSuccess);
         }
 
         private void OnAttackFailed()
         {
             ResetBodyAnimationTriggers();
-            _animatorBody.SetTrigger("ToFail");
+            _animatorBody.SetTrigger(ToFail);
             ResetWingsAnimationTriggers();
-            _animatorWings.SetInteger("Index", Random.Range(0, _stopWingsIndexNumber));
-            _animatorWings.SetTrigger("ToStop");
+            _animatorWings.SetInteger(Index, Random.Range(0, _stopWingsIndexNumber));
+            _animatorWings.SetTrigger(ToStop);
         }
 
         private void OnDeathStarted()
         {
             ResetBodyAnimationTriggers();
-            _animatorBody.SetTrigger("ToDeath");
+            _animatorBody.SetTrigger(ToDeath);
             ResetWingsAnimationTriggers();
-            _animatorWings.SetInteger("Index", Random.Range(0, _stopWingsIndexNumber));
-            _animatorWings.SetTrigger("ToStop");
+            _animatorWings.SetInteger(Index, Random.Range(0, _stopWingsIndexNumber));
+            _animatorWings.SetTrigger(ToStop);
         }
 
         private void OnMoveToHoverStarted()
         {
             ResetBodyAnimationTriggers();
-            _animatorBody.SetTrigger("ToMoveToHover");
+            _animatorBody.SetTrigger(ToMoveToHover);
             ResetWingsAnimationTriggers();
-            _animatorWings.SetTrigger("ToFly");
+            _animatorWings.SetTrigger(ToFly);
         }
 
         private void OnMoveToPatrolLStarted()
         {
             ResetBodyAnimationTriggers();
-            _animatorBody.SetTrigger("ToMoveToPatrolL");
+            _animatorBody.SetTrigger(ToMoveToPatrolL);
             ResetWingsAnimationTriggers();
-            _animatorWings.SetTrigger("ToFly");
+            _animatorWings.SetTrigger(ToFly);
         }
 
         private void OnMoveToPatrolRStarted()
         {
             ResetBodyAnimationTriggers();
-            _animatorBody.SetTrigger("ToMoveToPatrolR");
+            _animatorBody.SetTrigger(ToMoveToPatrolR);
             ResetWingsAnimationTriggers();
-            _animatorWings.SetTrigger("ToFly");
+            _animatorWings.SetTrigger(ToFly);
         }
 
         private void OnCatchSpiderLStarted()
         {
             ResetBodyAnimationTriggers();
-            _animatorBody.SetTrigger("ToCatchSpiderL");
+            _animatorBody.SetTrigger(ToCatchSpiderL);
             ResetWingsAnimationTriggers();
-            _animatorWings.SetTrigger("ToFly");
+            _animatorWings.SetTrigger(ToFly);
         }
 
         private void OnCatchSpiderRStarted()
         {
             ResetBodyAnimationTriggers();
-            _animatorBody.SetTrigger("ToCatchSpiderR");
+            _animatorBody.SetTrigger(ToCatchSpiderR);
             ResetWingsAnimationTriggers();
-            _animatorWings.SetTrigger("ToFly");
+            _animatorWings.SetTrigger(ToFly);
         }
 
         private void OnSpiderPatrolLRStarted()
         {
             ResetBodyAnimationTriggers();
-            _animatorBody.SetTrigger("ToSpiderPatrol");
+            _animatorBody.SetTrigger(ToSpiderPatrol);
         }
 
         private void OnSpiderPushLRStarted()
         {
             ResetBodyAnimationTriggers();
-            _animatorBody.SetTrigger("ToSpiderPush");
+            _animatorBody.SetTrigger(ToSpiderPush);
         }
 
         private void OnSpiderPreattackHeadTransitionLRStarted()
         {
             ResetBodyAnimationTriggers();
-            _animatorBody.SetTrigger("ToSpiderPatrolTransition");
+            _animatorBody.SetTrigger(ToSpiderPatrolTransition);
         }
 
         private void OnReturnTransitionLRTBStarted()
         {
             ResetBodyAnimationTriggers();
-            _animatorBody.SetTrigger("ToLRTB");
+            _animatorBody.SetTrigger(ToLrtb);
             ResetWingsAnimationTriggers();
-            _animatorWings.SetTrigger("ToFly");
+            _animatorWings.SetTrigger(ToFly);
         }
         
         private void OnReturnTransitionRLTBStarted()
         {
             ResetBodyAnimationTriggers();
-            _animatorBody.SetTrigger("ToRLTB");
+            _animatorBody.SetTrigger(ToRltb);
             ResetWingsAnimationTriggers();
-            _animatorWings.SetTrigger("ToFly");
+            _animatorWings.SetTrigger(ToFly);
         }
         
         private void OnReturnTransitionLRBTStarted()
         {
             ResetBodyAnimationTriggers();
-            _animatorBody.SetTrigger("ToLRBT");
+            _animatorBody.SetTrigger(ToLrbt);
             ResetWingsAnimationTriggers();
-            _animatorWings.SetTrigger("ToFly");
+            _animatorWings.SetTrigger(ToFly);
         }
         
         private void OnReturnTransitionRLBTStarted()
         {
             ResetBodyAnimationTriggers();
-            _animatorBody.SetTrigger("ToRLBT");
+            _animatorBody.SetTrigger(ToRlbt);
             ResetWingsAnimationTriggers();
-            _animatorWings.SetTrigger("ToFly");
+            _animatorWings.SetTrigger(ToFly);
         }
     }
 }

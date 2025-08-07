@@ -8,6 +8,7 @@ namespace _GAME.Scripts.Enemies.Dragonfly.Presentation
 {
     public class DragonflyHealthIndication : MonoBehaviour, IInitializable
     {
+        private static readonly int Health = Shader.PropertyToID("_Health");
         [SerializeField] private List<MeshRenderer> _meshRenderer;
         [SerializeField] private VisualEffect _damageEmitParticles;
         [SerializeField] private float _damageEmitRate = 22f;
@@ -25,7 +26,7 @@ namespace _GAME.Scripts.Enemies.Dragonfly.Presentation
                 if (meshRenderer == null) continue;
                 var material = meshRenderer.material;
                 _materials.Add(material);
-                material.SetFloat("_Health", 1f);
+                material.SetFloat(Health, 1f);
             }
   
             Reset();
@@ -35,7 +36,7 @@ namespace _GAME.Scripts.Enemies.Dragonfly.Presentation
         {
             for (int i=0; i < _materials.Count; i++)
             {
-                _materials[i].SetFloat("_Health", 1f);
+                _materials[i].SetFloat(Health, 1f);
             }
             
             _isParticleSystemActive = false;
@@ -70,7 +71,7 @@ namespace _GAME.Scripts.Enemies.Dragonfly.Presentation
         {
             for (int i=0; i < _materials.Count; i++)
             {
-                _materials[i].SetFloat("_Health", ((float)currentHealth / maxHealth) * _remapMax);
+                _materials[i].SetFloat(Health, ((float)currentHealth / maxHealth) * _remapMax);
             }
         }
     }

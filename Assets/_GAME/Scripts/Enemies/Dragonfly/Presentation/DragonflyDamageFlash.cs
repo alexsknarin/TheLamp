@@ -9,6 +9,8 @@ namespace _GAME.Scripts.Enemies.Dragonfly.Presentation
 {
     public class DragonflyDamageFlash : DamageIndication
     {
+        private static readonly int AttackSemaphore = Shader.PropertyToID("_AttackSemaphore");
+        private static readonly int DamageFade = Shader.PropertyToID("_DamageFade");
         [SerializeField] private List<MeshRenderer> _meshRenderer;
         [SerializeField] private float _duration = 1.2f;
         [SerializeField] private VisualEffect _damageParticles;
@@ -24,7 +26,7 @@ namespace _GAME.Scripts.Enemies.Dragonfly.Presentation
                 if (meshRenderer == null) continue;
                 var material = meshRenderer.material;
                 _materials.Add(material);
-                material.SetFloat("_AttackSemaphore", 0f);
+                material.SetFloat(AttackSemaphore, 0f);
             }
             
             _damageFlashDuration = new WaitForSeconds(_duration);
@@ -74,7 +76,7 @@ namespace _GAME.Scripts.Enemies.Dragonfly.Presentation
         {
             for (int i=0; i < _materials.Count; i++)
             {
-                _materials[i].SetFloat("_AttackSemaphore", value);
+                _materials[i].SetFloat(AttackSemaphore, value);
             }
         }
         
@@ -82,7 +84,7 @@ namespace _GAME.Scripts.Enemies.Dragonfly.Presentation
         {
             for (int i=0; i < _materials.Count; i++)
             {
-                _materials[i].SetFloat("_DamageFade", phase);
+                _materials[i].SetFloat(DamageFade, phase);
             }
         }
     }

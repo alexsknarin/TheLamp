@@ -7,6 +7,7 @@ namespace _GAME.Scripts.Enemies.Dragonfly.Presentation
 {
     public class DragonflyPreAttackFlash : MonoBehaviour, IInitializable
     {
+        private static readonly int AttackSemaphore = Shader.PropertyToID("_AttackSemaphore");
         [SerializeField] private List<MeshRenderer> _meshRenderer;
         private List<Material> _materials = new ();
 
@@ -17,7 +18,7 @@ namespace _GAME.Scripts.Enemies.Dragonfly.Presentation
                 if (meshRenderer == null) continue;
                 var material = meshRenderer.material;
                 _materials.Add(material);
-                material.SetFloat("_AttackSemaphore", 0f);
+                material.SetFloat(AttackSemaphore, 0f);
             }
         
             Reset();
@@ -43,7 +44,7 @@ namespace _GAME.Scripts.Enemies.Dragonfly.Presentation
         {
             for (int i=0; i < _materials.Count; i++)
             {
-                _materials[i].SetFloat("_AttackSemaphore", value);
+                _materials[i].SetFloat(AttackSemaphore, value);
             }
         }
     }
