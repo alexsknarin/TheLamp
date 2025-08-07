@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using _GAME.Scripts.Lib.Interfaces;
 using UnityEngine;
 using UnityEngine.VFX;
@@ -7,28 +8,36 @@ namespace _GAME.Scripts.Enemies.Dragonfly.Presentation
 {
     public class DragonflyHealthIndication : MonoBehaviour, IInitializable
     {
-        [SerializeField] private MeshRenderer _bodyMeshRenderer;
-        [SerializeField] private MeshRenderer _wingsMeshRenderer;
+        [SerializeField] private List<MeshRenderer> _meshRenderer;
         [SerializeField] private VisualEffect _damageEmitParticles;
         [SerializeField] private float _damageEmitRate = 22f;
         [SerializeField] private float _damageLifeMin = 0.1f;
         [SerializeField] private float _damageLifeMax = 0.45f;
-        private Material _bodyMaterial;
-        private Material _wingsMaterial;
+        [SerializeField] private float _remapMax = 1f;
+        private List<Material> _materials = new ();
+
         private bool _isParticleSystemActive = false;
 
         public void Initialize()
         {
-            _bodyMaterial = _bodyMeshRenderer.material;
-            _wingsMaterial = _wingsMeshRenderer.material;
+            foreach (var meshRenderer in _meshRenderer)
+            {
+                if (meshRenderer == null) continue;
+                var material = meshRenderer.material;
+                _materials.Add(material);
+                material.SetFloat("_Health", 1f);
+            }
+  
             Reset();
         }
 
         public void Reset()
         {
-            _bodyMaterial.SetFloat("_DamagePhase", 0f);
-            _wingsMaterial.SetFloat("_DamagePhase", 0f);
-        
+            for (int i=0; i < _materials.Count; i++)
+            {
+                _materials[i].SetFloat("_Health", 1f);
+            }
+            
             _isParticleSystemActive = false;
             _damageEmitParticles.SendEvent("OnEndEmit");
             _damageEmitParticles.SetFloat("Rate", 0);
@@ -39,9 +48,9 @@ namespace _GAME.Scripts.Enemies.Dragonfly.Presentation
 
         public void Refresh(int currentHealth, int maxHealth)
         {
+            SetHealth(currentHealth, maxHealth);
+            
             float damagePhase = ((float)(maxHealth - currentHealth) / maxHealth) * 0.5f;
-            _bodyMaterial.SetFloat("_DamagePhase", damagePhase);
-            _wingsMaterial.SetFloat("_DamagePhase", damagePhase);
 
             if (damagePhase > 0.05f && !_isParticleSystemActive)
             {
@@ -54,6 +63,14 @@ namespace _GAME.Scripts.Enemies.Dragonfly.Presentation
             if (_isParticleSystemActive)
             {
                 _damageEmitParticles.SetFloat("Rate", damagePhase * _damageEmitRate);
+            }
+        }
+
+        private void SetHealth(int currentHealth, int maxHealth)
+        {
+            for (int i=0; i < _materials.Count; i++)
+            {
+                _materials[i].SetFloat("_Health", ((float)currentHealth / maxHealth) * _remapMax);
             }
         }
     }
