@@ -38,8 +38,11 @@ namespace _GAME.Scripts.Enemies.DragonflyProjectileMoth
         {
             _lampPositionProviderService = lampPositionProvider;
         }
-        
+
+        public event Action AttackStarted;
+        public event Action FallStarted;
         public event Action FallEnded;
+        public event Action<Vector3> FleeStarted;
         
         public void SetCollisionRadius(float radius)
         {
@@ -64,6 +67,7 @@ namespace _GAME.Scripts.Enemies.DragonflyProjectileMoth
             _sideGoal *= 0.95f;
        
             _attackDirection = (_sideGoal - transform.position).normalized;
+            AttackStarted?.Invoke();
         }
     
         public void TriggerFall()
@@ -81,6 +85,8 @@ namespace _GAME.Scripts.Enemies.DragonflyProjectileMoth
                 transform.position = lampPosition + lampDirection * (LampCollisionRadius + _collisionRadius + _collisionThreshold);
                 
             }
+            
+            FallStarted?.Invoke();
         }
 
         public void TriggerGameOver()
@@ -93,7 +99,7 @@ namespace _GAME.Scripts.Enemies.DragonflyProjectileMoth
                     _fleeGoal.x = -_fleeGoal.x;
                 }
                 _fleeDirection = (_fleeGoal - transform.position).normalized;
-            
+                FleeStarted?.Invoke(_fleeDirection); 
                 _isFalling = false;
                 _isAttacking = false;
                 _isFleeing = true;

@@ -1,8 +1,9 @@
+using _GAME.Scripts.Lib.Interfaces;
 using UnityEngine;
 
 namespace _GAME.Scripts.Enemies.Fly
 {
-    public class FlyBodyRotationHandler : MonoBehaviour
+    public class FlyBodyRotationHandler : MonoBehaviour, IInitializable
     {
         [SerializeField] private FlyMovement _movement;
         [SerializeField] private Transform _bodyTransform;
