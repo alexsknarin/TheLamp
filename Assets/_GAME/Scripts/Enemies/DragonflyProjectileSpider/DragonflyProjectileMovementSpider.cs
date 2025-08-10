@@ -27,7 +27,9 @@ namespace _GAME.Scripts.Enemies.DragonflyProjectileSpider
         // Debug 
         private Vector3 _previousPosition;
     
+        public event Action<Vector3> Started;
         public event Action EnterAnimationEnded;
+        public event Action FallStarted;
         public event Action FallEnded;
 
 
@@ -41,6 +43,8 @@ namespace _GAME.Scripts.Enemies.DragonflyProjectileSpider
             _currentEndPosition.x *= direction;
             _startPosition = _currentEndPosition + Vector3.up * _startHeight;
             transform.position = _startPosition;
+            
+            Started?.Invoke(_startPosition);
         }
 
         public void TriggerAttack()
@@ -66,7 +70,9 @@ namespace _GAME.Scripts.Enemies.DragonflyProjectileSpider
                 _isFallPlaying = true;
                 _localTime = 0f;
                 _startPosition = transform.localPosition;
-                _bounceSpeed = _attackSpeed/10f;  
+                _bounceSpeed = _attackSpeed/10f;
+                
+                FallStarted?.Invoke();
             }
         }
     
