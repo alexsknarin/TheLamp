@@ -6,7 +6,6 @@ namespace _GAME.Scripts.Enemies.Dragonfly.Presentation
     {
         [SerializeField] private GameObject _swarmWave1Object;
         [SerializeField] private float duration = 1.7f;
-        [SerializeField] private float _maxSize = 3f;
         [SerializeField] private AnimationCurve _sizeCurve;
         private Material _material1;
         private bool _isActive = false;
@@ -20,7 +19,7 @@ namespace _GAME.Scripts.Enemies.Dragonfly.Presentation
 
         public void Reset()
         {
-            _material1.SetFloat("_Transparency", 0f);
+            _material1.SetFloat("_Phase", 0f);
             _swarmWave1Object.SetActive(false);
             _isActive = false;
         }
@@ -50,13 +49,11 @@ namespace _GAME.Scripts.Enemies.Dragonfly.Presentation
                 if (phase > 1)
                 {
                     _isActive = false;
-                    _material1.SetFloat("_Transparency", 0f);
+                    _material1.SetFloat("_Phase", 0f);
                     _swarmWave1Object.SetActive(false);
                     return;
                 }
-                _material1.SetFloat("_Transparency", 1-phase);
-                Vector3 scale = Vector3.one * (_sizeCurve.Evaluate(phase) * _maxSize);
-                _swarmWave1Object.transform.localScale = scale;
+                _material1.SetFloat("_Phase", -phase);
                 _localTime += Time.deltaTime;
             }
         }
