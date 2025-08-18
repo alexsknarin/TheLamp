@@ -2212,45 +2212,56 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _swarmWave1Object: {fileID: 1199736790350985069}
   duration: 1
-  _maxSize: 1.5
-  _sizeCurve:
+  _rendererFeature: {fileID: -8954332255568375338, guid: c40be3174f62c4acf8c1216858c64956,
+    type: 2}
+  _emitterTransform: {fileID: 7952171381142345348}
+  _shockWaveCurve:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0.90228456
-      outSlope: 0.90228456
+      time: 0.09874344
+      value: 0.004638672
+      inSlope: 5.303214
+      outSlope: 5.303214
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
-      outWeight: 0.13055916
+      outWeight: 0.026451878
     - serializedVersion: 3
-      time: 0.27519003
-      value: 0.9921417
-      inSlope: 0.11390528
-      outSlope: 0.11390528
+      time: 0.5122782
+      value: 0.99700856
+      inSlope: 1.205992
+      outSlope: -119.725235
+      tangentMode: 65
+      weightedMode: 0
+      inWeight: 0.08243559
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.5205818
+      value: 0.0028601885
+      inSlope: -119.725235
+      outSlope: 0.0012095928
+      tangentMode: 69
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.5833602
+      value: 0.0029361248
+      inSlope: 0.0012095928
+      outSlope: 2.3931077
+      tangentMode: 69
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0.8533233
+      outSlope: 0.8533233
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0.41428044
-      outWeight: 0.39527467
-    - serializedVersion: 3
-      time: 0.6625366
-      value: 0.9953837
-      inSlope: -0.033816002
-      outSlope: -0.033816002
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.23783861
-      outWeight: 0.10171891
-    - serializedVersion: 3
-      time: 1.0006104
-      value: 0.7524872
-      inSlope: -1.8819332
-      outSlope: -1.8819332
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.22144574
+      inWeight: 0.14447781
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
@@ -10507,6 +10518,12 @@ MeshRenderer:
 --- !u!23 &7628989336539085214 stripped
 MeshRenderer:
   m_CorrespondingSourceObject: {fileID: 4997464495082614378, guid: e8b2b8b5fc6e81449836e880a010c42b,
+    type: 3}
+  m_PrefabInstance: {fileID: 3207990215144708084}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &7952171381142345348 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -4404841872017243792, guid: e8b2b8b5fc6e81449836e880a010c42b,
     type: 3}
   m_PrefabInstance: {fileID: 3207990215144708084}
   m_PrefabAsset: {fileID: 0}
