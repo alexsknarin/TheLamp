@@ -2212,7 +2212,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _swarmWave1Object: {fileID: 1199736790350985069}
   duration: 1
-  _rendererFeature: {fileID: -8954332255568375338, guid: c40be3174f62c4acf8c1216858c64956,
+  _rendererFeatureEditor: {fileID: -8954332255568375338, guid: c40be3174f62c4acf8c1216858c64956,
+    type: 2}
+  _rendererFeatureAndroid: {fileID: 9221949258494055818, guid: e634585d5c4544dd297acaee93dc2beb,
     type: 2}
   _emitterTransform: {fileID: 7952171381142345348}
   _shockWaveCurve:
