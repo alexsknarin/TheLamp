@@ -2212,10 +2212,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _swarmWave1Object: {fileID: 1199736790350985069}
   duration: 1
-  _rendererFeatureEditor: {fileID: -8954332255568375338, guid: c40be3174f62c4acf8c1216858c64956,
-    type: 2}
-  _rendererFeatureAndroid: {fileID: 9221949258494055818, guid: e634585d5c4544dd297acaee93dc2beb,
-    type: 2}
   _emitterTransform: {fileID: 7952171381142345348}
   _shockWaveCurve:
     serializedVersion: 2
@@ -2268,6 +2264,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  _shockWaveMaterial: {fileID: 2100000, guid: 4c18eab34040a504abbbcda98533e3eb, type: 2}
 --- !u!114 &2373099942957532617
 MonoBehaviour:
   m_ObjectHideFlags: 0
