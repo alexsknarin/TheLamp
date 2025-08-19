@@ -490,8 +490,8 @@ namespace _GAME.Scripts.Enemies.Dragonfly
 
         private void OnReadyToSwarmAttackStateEntered(IState movementState)
         {
-            // _patrolAttackMode = (PatrolAttackMode)Random.Range(0, 2);
-            _patrolAttackMode = PatrolAttackMode.Tail;
+            _patrolAttackMode = (PatrolAttackMode)Random.Range(0, 2);
+            // _patrolAttackMode = PatrolAttackMode.Tail; // TODO: test remove
             _movementState = movementState;
         }
 

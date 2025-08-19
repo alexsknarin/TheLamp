@@ -12,6 +12,7 @@ using _GAME.Scripts.Enemies.Mothling;
 using _GAME.Scripts.Enemies.Spider;
 using _GAME.Scripts.Enemies.Wasp;
 using _GAME.Scripts.Lib.Interfaces;
+using _GAME.Scripts.ServicesGlobal;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
@@ -32,6 +33,8 @@ namespace _GAME.Scripts.Factories
         private readonly DragonflyBehaviourStateFactory _dragonflyBehaviourStateFactory;
         private readonly IGameConfigService _gameConfigService;
         private readonly ISpiderSideDirectionProvider _spiderSideDirectionProvider;
+        private readonly FullscreenRendererFeatureProvider _fullscreenRendererFeatureProvider;
+        private readonly Camera _camera;
     
         AsyncOperationHandle<GameObject> _mothlingEnemyAssetHandle;
         AsyncOperationHandle<GameObject> _flyEnemyAssetHandle;
@@ -56,7 +59,9 @@ namespace _GAME.Scripts.Factories
             DragonflyBehaviourStateFactory dragonflyBehaviourStateFactory,
             ILampPositionProviderService lampPositionProviderService,
             IGameConfigService gameConfigService,
-            ISpiderSideDirectionProvider spiderSideDirectionProvider
+            ISpiderSideDirectionProvider spiderSideDirectionProvider,
+            FullscreenRendererFeatureProvider fullscreenRendererFeatureProvider,
+            Camera currentCamera
             )
         {
             _mothlingMovementStateFactory = mothlingMovementStateFactory;
@@ -70,6 +75,8 @@ namespace _GAME.Scripts.Factories
             _megabeetleMovementStateFactory = megabeetleMovementStateFactory;
             _gameConfigService = gameConfigService;
             _spiderSideDirectionProvider = spiderSideDirectionProvider;
+            _fullscreenRendererFeatureProvider = fullscreenRendererFeatureProvider;
+            _camera = currentCamera;
         
             IsMothlingLoaded = false;
             IsFlyLoaded = false;
@@ -340,6 +347,10 @@ namespace _GAME.Scripts.Factories
             var enemy = enemyInstance.GetComponent<Dragonfly>();
             enemy.Construct(_dragonflyBehaviourStateFactory, _lampPositionProviderService);
             enemy.Initialize();
+            enemyInstance.GetComponent<DragonflySwarmCallFX>().Construct(
+                _fullscreenRendererFeatureProvider.Get(), 
+                _camera
+                );
             enemyInstance.GetComponent<DragonflyPresentation>().Initialize();
 
             return enemy;

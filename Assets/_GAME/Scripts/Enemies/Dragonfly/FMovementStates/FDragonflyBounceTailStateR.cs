@@ -1,3 +1,4 @@
+using System;
 using _GAME.Scripts.Lib.Interfaces;
 using UnityEngine;
 
@@ -20,6 +21,8 @@ namespace _GAME.Scripts.Enemies.Dragonfly.FMovementStates
             _patrolTransform = patrolTransform;
             _patrolRotator = patrolRotator;
         }
+        
+        public event Action Started;
     
         public void Enter()
         {
@@ -28,6 +31,8 @@ namespace _GAME.Scripts.Enemies.Dragonfly.FMovementStates
             _patrolRotator.Play(_sideDirection);
         
             _visibleBodyTransform.SetParent(_patrolTransform, false);
+            
+            Started?.Invoke();
         }
     
         public void Tick()

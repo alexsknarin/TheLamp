@@ -1,5 +1,7 @@
+using System;
 using _GAME.Scripts.Lib.Interfaces;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace _GAME.Scripts.Enemies.Dragonfly.FMovementStates
 {
@@ -34,6 +36,8 @@ namespace _GAME.Scripts.Enemies.Dragonfly.FMovementStates
             _visibleBodyTransform = visibleBodyTransform;
             _baseTransform = baseTransform;
         }
+        
+        public event Action Started;
     
         public void Enter()
         {
@@ -61,6 +65,8 @@ namespace _GAME.Scripts.Enemies.Dragonfly.FMovementStates
             _normalizedDuration = Mathf.Lerp(_farDuration, _closeDuration, zPhase);
         
             _readyToSwitch = false;
+            
+            Started?.Invoke();
         }
     
         public void Tick()

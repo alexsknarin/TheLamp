@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using _GAME.Scripts.Enemies.Generic.Presentation;
 using UnityEngine;
 using UnityEngine.VFX;
@@ -8,35 +9,41 @@ namespace _GAME.Scripts.Enemies.Dragonfly.Presentation
 {
     public class DragonflyDamageFlash : DamageIndication
     {
-        [SerializeField] private MeshRenderer _bodyMeshRenderer;
-        [SerializeField] private MeshRenderer _wingsMeshRenderer;
+        private static readonly int AttackSemaphore = Shader.PropertyToID("_AttackSemaphore");
+        private static readonly int DamageFade = Shader.PropertyToID("_DamageFade");
+        [SerializeField] private List<MeshRenderer> _meshRenderer;
         [SerializeField] private float _duration = 1.2f;
         [SerializeField] private VisualEffect _damageParticles;
-        private Material _bodyMaterial;
-        private Material _wingsMaterial;
+        private List<Material> _materials = new ();
         private WaitForSeconds _damageFlashDuration;
         private Transform _contactCollisionTransform;
-
+        private float _localTime;
+        
         public override void Initialize()
         {
-            _bodyMaterial = _bodyMeshRenderer.material;
-            _wingsMaterial = _wingsMeshRenderer.material;
+            foreach (var meshRenderer in _meshRenderer)
+            {
+                if (meshRenderer == null) continue;
+                var material = meshRenderer.material;
+                _materials.Add(material);
+                material.SetFloat(AttackSemaphore, 0f);
+            }
+            
             _damageFlashDuration = new WaitForSeconds(_duration);
-            _bodyMaterial.SetFloat("_AttackSemaphore", 0f);
-            _wingsMaterial.SetFloat("_AttackSemaphore", 0f);
+            enabled = false;
+            _damageParticles.gameObject.SetActive(false);
         }
 
         public void Reset()
         {
-            _bodyMaterial.SetFloat("_AttackSemaphore", 0f);
-            _wingsMaterial.SetFloat("_AttackSemaphore", 0f);
+            SetAttackSemaphore(0);
         }
 
         public override void Play()
         {
-            _bodyMaterial.SetInt("_isDamaged", 1);
-            _wingsMaterial.SetInt("_isDamaged", 1);
-            StartCoroutine(WaitForDamageFlashEnd());
+            enabled = true;
+            _damageParticles.gameObject.SetActive(true);
+            _localTime = 0;
         
             if (_contactCollisionTransform != null)
             {
@@ -51,12 +58,34 @@ namespace _GAME.Scripts.Enemies.Dragonfly.Presentation
         {
             _contactCollisionTransform = contactCollisionTransform;
         }
-
-        private IEnumerator WaitForDamageFlashEnd()
+        
+        private void Update()
         {
-            yield return _damageFlashDuration;
-            _bodyMaterial.SetInt("_isDamaged", 0);
-            _wingsMaterial.SetInt("_isDamaged", 0);
+            float phase = _localTime / _duration;
+            if (phase > 1)
+            {
+                enabled = false;
+                SetDamageMaterialPhase(0);
+                return;
+            }
+            SetDamageMaterialPhase(1 - phase);
+            _localTime += Time.deltaTime;
+        }
+
+        private void SetAttackSemaphore(float value)
+        {
+            for (int i=0; i < _materials.Count; i++)
+            {
+                _materials[i].SetFloat(AttackSemaphore, value);
+            }
+        }
+        
+        private void SetDamageMaterialPhase(float phase)
+        {
+            for (int i=0; i < _materials.Count; i++)
+            {
+                _materials[i].SetFloat(DamageFade, phase);
+            }
         }
     }
 }

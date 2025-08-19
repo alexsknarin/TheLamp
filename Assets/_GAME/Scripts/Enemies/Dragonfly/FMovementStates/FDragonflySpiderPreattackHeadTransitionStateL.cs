@@ -1,3 +1,4 @@
+using System;
 using _GAME.Scripts.Lib.Interfaces;
 using UnityEngine;
 
@@ -30,6 +31,8 @@ namespace _GAME.Scripts.Enemies.Dragonfly.FMovementStates
             _patrolRotator = patrolRotator;
             _spiderPatrolRotator = spiderPatrolRotator;
         }
+        
+        public event Action Started;
     
         public void Enter()
         {
@@ -48,6 +51,8 @@ namespace _GAME.Scripts.Enemies.Dragonfly.FMovementStates
             _localTime = 0;
             _phase = 0;
             _readyToSwitch = false;
+            
+            Started?.Invoke();
         }
     
         public void Tick()

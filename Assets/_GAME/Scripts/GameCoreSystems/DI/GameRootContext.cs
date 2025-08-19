@@ -60,7 +60,7 @@ namespace _GAME.Scripts.GameCoreSystems.DI
         [SerializeField] private LadybugLampPositionsHolder _ladybugLampPositionsHolder;
 
         private CoroutineHost _coroutineHost;
-    
+
         private IGameSettingsProviderService _gameSettingsProviderService;
         private AdvertisementBaseService _advertisementService;
         private GameSettingsService _gameSettingsService;
@@ -70,6 +70,7 @@ namespace _GAME.Scripts.GameCoreSystems.DI
         private HapticFeedbackService _hapticFeedbackService;
         private UnityAnalyticsService _unityAnalyticsService;
         private SpiderPositionHolder _spiderPositionHolder;
+        private FullscreenRendererFeatureProvider _fullscreenRendererFeatureProvider;
     
         private CameraShakeEventListener _cameraShakeEventListener;
         private PlayerAttackCooldownHandler _playerAttackCooldownHandler;
@@ -162,6 +163,10 @@ namespace _GAME.Scripts.GameCoreSystems.DI
             _gameSettingsModel = new GameSettingsModel(_gameSettingsProviderService.Get());
             _gameSettingsService = new GameSettingsService(_gameSettingsProviderService, _gameSettingsModel);
             _gameSettingsService.Initialize();
+            
+            // FullScreen Feature
+            _fullscreenRendererFeatureProvider = new();
+            _fullscreenRendererFeatureProvider.Initialize();
         
             // Game Services - Analytics
             _ugsAuthenticationService = new UGSAuthenticationService();
@@ -260,7 +265,9 @@ namespace _GAME.Scripts.GameCoreSystems.DI
                 _dragonflyBehaviourStateFactory,
                 _lampPositionProviderService,
                 _gameConfigService,
-                _spiderPositionHolder
+                _spiderPositionHolder,
+                _fullscreenRendererFeatureProvider,
+                Camera.main
             );
             _enemyPool = new EnemyPool(_enemyFactory);
             _enemyPool.Initialize();
