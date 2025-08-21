@@ -26,8 +26,8 @@ MonoBehaviour:
     type: 2}
   <DragonflyTailAttackPositionBase>k__BackingField: {x: -0.9991122, y: -0.7506288,
     z: -1.272415}
-  <DragonflyPatrolWaitMin>k__BackingField: 0
-  <DragonflyPatrolWaitMax>k__BackingField: 0.5
+  <DragonflyPatrolHeadWaitMin>k__BackingField: 0
+  <DragonflyPatrolHeadWaitMax>k__BackingField: 0.5
   <DragonflyPatrolTailWaitMin>k__BackingField: 0
   <DragonflyPatrolTailWaitMax>k__BackingField: 0.5
   <DragonflyHoverWaitMin>k__BackingField: 0.5
@@ -35,7 +35,7 @@ MonoBehaviour:
   <DragonflySpiderAttackPositionBase>k__BackingField: {x: 0.68, y: -0.4, z: -0.62}
   <DragonflySpiderPatrolWaitMin>k__BackingField: 1.05
   <DragonflySpiderPatrolWaitMax>k__BackingField: 1.8
-  <IntroStageSkip>k__BackingField: 0
+  <IntroStageSkip>k__BackingField: 1
   <IntroStageDuration>k__BackingField: 2
   <PrepareInStageSkip>k__BackingField: 0
   <PrepareInStageDuration>k__BackingField: 0.5
