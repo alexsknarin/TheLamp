@@ -8,7 +8,11 @@ namespace _GAME.Scripts.Factories
 {
     public class MegaSpiderMovementStateFactory
     {
-        private readonly int _enterL = Animator.StringToHash("MegaSpider_Enter01");
+        private readonly int _enter = Animator.StringToHash("MegaSpider_Enter01");
+        private readonly int _zigzagAttack = Animator.StringToHash("MegaSpider_ZigzagAttack01");
+        private readonly int _projectileBottomAttack = Animator.StringToHash("MegaSpider_ProjectileBottomAttack01");
+        
+        
         
         private Animator _animator;
         private Transform _visibleBodyTransform;
@@ -37,11 +41,61 @@ namespace _GAME.Scripts.Factories
             {
                 return new MegaSpiderEnterLState(
                     _animator,
-                    _enterL,
+                    _enter,
                     _visibleBodyTransform,
                     _animatedTransform,
                     true
                     );
+            }
+            if (stateType == typeof(MegaSpiderEnterRState))
+            {
+                return new MegaSpiderEnterRState(
+                    _animator,
+                    _enter,
+                    _visibleBodyTransform,
+                    _animatedTransform,
+                    false
+                );
+            }
+            if (stateType == typeof(MegaSpiderZigzagAttackLState))
+            {
+                return new MegaSpiderZigzagAttackLState(
+                    _animator,
+                    _zigzagAttack,
+                    _visibleBodyTransform,
+                    _animatedTransform,
+                    true
+                );
+            }
+            if (stateType == typeof(MegaSpiderZigzagAttackRState))
+            {
+                return new MegaSpiderZigzagAttackRState(
+                    _animator,
+                    _zigzagAttack,
+                    _visibleBodyTransform,
+                    _animatedTransform,
+                    false
+                );
+            }
+            if (stateType == typeof(MegaSpiderProjectileBottomLAttackState))
+            {
+                return new MegaSpiderProjectileBottomLAttackState(
+                    _animator,
+                    _projectileBottomAttack,
+                    _visibleBodyTransform,
+                    _animatedTransform,
+                    true
+                );
+            }
+            if (stateType == typeof(MegaSpiderProjectileBottomRAttackState))
+            {
+                return new MegaSpiderProjectileBottomRAttackState(
+                    _animator,
+                    _projectileBottomAttack,
+                    _visibleBodyTransform,
+                    _animatedTransform,
+                    false
+                );
             }
             return null;
         }

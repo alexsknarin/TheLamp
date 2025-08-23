@@ -14,6 +14,12 @@ namespace _GAME.Scripts.Enemies.MegaSpider
         // States
         private MegaSpiderMovementStateFactory _stateFactory;
         private MegaSpiderEnterLState _enterLState;
+        private MegaSpiderEnterRState _enterRState;
+        private MegaSpiderZigzagAttackLState _zigzagAttackLState;
+        private MegaSpiderZigzagAttackRState _zigzagAttackRState;
+        private MegaSpiderProjectileBottomLAttackState _projectileBottomLAttackState;
+        private MegaSpiderProjectileBottomRAttackState _projectileBottomRAttackState;
+        
     
         public void Initialize()
         {
@@ -21,14 +27,18 @@ namespace _GAME.Scripts.Enemies.MegaSpider
             _stateFactory.SetEnemyDependencies(_animator, _visibleBodyTransform, _animatedTransform);
         
             _enterLState = (MegaSpiderEnterLState)_stateFactory.Create(typeof(MegaSpiderEnterLState));
-
-            
+            _enterRState = (MegaSpiderEnterRState)_stateFactory.Create(typeof(MegaSpiderEnterRState));
+            _zigzagAttackLState = (MegaSpiderZigzagAttackLState)_stateFactory.Create(typeof(MegaSpiderZigzagAttackLState));
+            _zigzagAttackRState = (MegaSpiderZigzagAttackRState)_stateFactory.Create(typeof(MegaSpiderZigzagAttackRState));
+            _projectileBottomLAttackState = (MegaSpiderProjectileBottomLAttackState)_stateFactory.Create(typeof(MegaSpiderProjectileBottomLAttackState));
+            _projectileBottomRAttackState = (MegaSpiderProjectileBottomRAttackState)_stateFactory.Create(typeof(MegaSpiderProjectileBottomRAttackState));
+ 
         }
 
         public void Play()
         {
             Debug.Log("Play");
-            _enterLState.Enter();
+            _projectileBottomRAttackState.Enter();
         }
     }
 }
