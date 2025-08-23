@@ -35,7 +35,7 @@ namespace _GAME.Scripts.Enemies.Dragonfly
         [SerializeField] private DragonflySwarm _swarm;
         [SerializeField] private float _swarmAttackDuration;
         [Header("Spider")]
-        [SerializeField] private DragonflyProjectileSpider.DragonflyProjectileSpider _spider;
+        [SerializeField] private DragonflyProjectileSpider.DragonflyProjectileSpider _spider; // TODO: fix
         // Serialized for debug
         [SerializeField] private bool _isCollidedWithLamp;
         
