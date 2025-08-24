@@ -2,9 +2,9 @@ using UnityEngine;
 
 namespace _GAME.Scripts.Enemies.MegaSpider.MovementStates
 {
-    public class MegaSpiderProjectileBottomLAttackState : MegaSpiderAnimBaseState
+    public class MegaSpiderProjectileTopAttackLState : MegaSpiderAnimBaseState
     {
-        public MegaSpiderProjectileBottomLAttackState(
+        public MegaSpiderProjectileTopAttackLState(
             Animator animator, 
             int clipHash, 
             Transform visibleBodyTransform, 
