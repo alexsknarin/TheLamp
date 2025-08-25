@@ -40,7 +40,8 @@ namespace _GAME.Scripts.Enemies.MegaSpider.MovementStates
         public override void Tick() { }
 
         public override void Exit() { }
-
+    
+        // TODO: extract to library as a static method 
         private void ParentVisibleBodyToAnimatedTransform()
         {
             _visibleBodyTransform.SetParent(_animatedTransform, false);

@@ -1,3 +1,4 @@
+using System;
 using _GAME.Scripts.Enemies.MegaSpider.MovementStates;
 using _GAME.Scripts.Factories;
 using _GAME.Scripts.Lib.Interfaces;
@@ -9,7 +10,14 @@ namespace _GAME.Scripts.Enemies.MegaSpider
     {
         [SerializeField] private Transform _visibleBodyTransform;
         [SerializeField] private Transform _animatedTransform;
+        [SerializeField] private Transform _calculatedTransform;
         [SerializeField] private Animator _animator;
+        [Header("Tangle Attack Settings")]
+        private const float LampRadius = 0.5f; // TODO: DI
+        [SerializeField] private float _spiderRadius = 0.325f; // TODO: provide from spider
+        [SerializeField] private Transform _lampTransform; // TODO: DI
+        [SerializeField] private AnimationCurve _swingCurve;
+        [SerializeField] private AnimationCurve _dropCurve;
     
         // States
         private MegaSpiderMovementStateFactory _stateFactory;
@@ -29,12 +37,21 @@ namespace _GAME.Scripts.Enemies.MegaSpider
         private MegaSpiderProjectileTopAttackRState _projectileTopAttackRState;
         private MegaSpiderProjectileDoubleDownAttackLState _projectileDoubleDownAttackLState;
         private MegaSpiderProjectileDoubleDownAttackRState _projectileDoubleDownAttackRState;
-        
+        private MegaSpiderTangleAttackLState _tangleAttackLState;
+        private MegaSpiderTangleAttackRState _tangleAttackRState;
     
         public void Initialize()
         {
             _stateFactory = new();
-            _stateFactory.SetEnemyDependencies(_animator, _visibleBodyTransform, _animatedTransform);
+            _stateFactory.SetEnemyDependencies(
+                _animator, 
+                _visibleBodyTransform, 
+                _animatedTransform,
+                _calculatedTransform,
+                _lampTransform,
+                _swingCurve,
+                _dropCurve
+                );
         
             _enterLState = (MegaSpiderEnterLState)_stateFactory.Create(typeof(MegaSpiderEnterLState));
             _enterRState = (MegaSpiderEnterRState)_stateFactory.Create(typeof(MegaSpiderEnterRState));
@@ -52,13 +69,19 @@ namespace _GAME.Scripts.Enemies.MegaSpider
             _projectileTopAttackRState = (MegaSpiderProjectileTopAttackRState)_stateFactory.Create(typeof(MegaSpiderProjectileTopAttackRState));
             _projectileDoubleDownAttackLState = (MegaSpiderProjectileDoubleDownAttackLState)_stateFactory.Create(typeof(MegaSpiderProjectileDoubleDownAttackLState));
             _projectileDoubleDownAttackRState = (MegaSpiderProjectileDoubleDownAttackRState)_stateFactory.Create(typeof(MegaSpiderProjectileDoubleDownAttackRState));
+            _tangleAttackLState = (MegaSpiderTangleAttackLState)_stateFactory.Create(typeof(MegaSpiderTangleAttackLState));
+            _tangleAttackRState = (MegaSpiderTangleAttackRState)_stateFactory.Create(typeof(MegaSpiderTangleAttackRState));
  
         }
 
         public void Play()
         {
-            Debug.Log("Play");
-            _projectileDoubleDownAttackLState.Enter();
+            _tangleAttackRState.Enter();
+        }
+
+        private void Update()
+        {
+            _tangleAttackRState.Tick();
         }
     }
 }

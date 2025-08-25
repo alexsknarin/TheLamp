@@ -18,10 +18,14 @@ namespace _GAME.Scripts.Factories
         private readonly int _projectileDoubleDownAttack = Animator.StringToHash("MegaSpider_ProjectileDoubleDownAttack01");
         
         
-        
+        // Dependencies
         private Animator _animator;
         private Transform _visibleBodyTransform;
         private Transform _animatedTransform;
+        private Transform _calculatedTransform;
+        private Transform _lampTransform;
+        private AnimationCurve _swingCurve;
+        private AnimationCurve _dropCurve;
         
         // TODO: WILL BE LOCAL
         private bool _isLeftSide;
@@ -32,12 +36,20 @@ namespace _GAME.Scripts.Factories
         public void SetEnemyDependencies(
             Animator animator,
             Transform visibleBodyTransform,
-            Transform animatedTransform
+            Transform animatedTransform,
+            Transform calculatedTransform,
+            Transform lampTransform,
+            AnimationCurve swingCurve,
+            AnimationCurve dropCurve
         )
         {
             _animator = animator;
             _visibleBodyTransform = visibleBodyTransform;
             _animatedTransform = animatedTransform;
+            _calculatedTransform = calculatedTransform;
+            _lampTransform = lampTransform;
+            _swingCurve = swingCurve;
+            _dropCurve = dropCurve;
         }
 
         public EnemyMovementStateBase Create(Type stateType)
@@ -203,6 +215,30 @@ namespace _GAME.Scripts.Factories
                 );
             }
             
+            if (stateType == typeof(MegaSpiderTangleAttackLState))
+            {
+                return new MegaSpiderTangleAttackLState(
+                    _lampTransform,
+                    _visibleBodyTransform,
+                    _calculatedTransform,
+                    _swingCurve,
+                    _dropCurve,
+                    true
+                );
+            }
+            
+            if (stateType == typeof(MegaSpiderTangleAttackRState))
+            {
+                return new MegaSpiderTangleAttackRState(
+                    _lampTransform,
+                    _visibleBodyTransform,
+                    _calculatedTransform,
+                    _swingCurve,
+                    _dropCurve,
+                    false
+                );
+            }
+
             return null;
         }
     }
