@@ -13,8 +13,6 @@ namespace _GAME.Scripts.Enemies.MegaSpider
         [SerializeField] private Transform _calculatedTransform;
         [SerializeField] private Animator _animator;
         [Header("Tangle Attack Settings")]
-        private const float LampRadius = 0.5f; // TODO: DI
-        [SerializeField] private float _spiderRadius = 0.325f; // TODO: provide from spider
         [SerializeField] private Transform _lampTransform; // TODO: DI
         [SerializeField] private AnimationCurve _swingCurve;
         [SerializeField] private AnimationCurve _dropCurve;

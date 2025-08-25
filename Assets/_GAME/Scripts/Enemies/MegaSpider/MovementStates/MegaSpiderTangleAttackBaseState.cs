@@ -41,6 +41,7 @@ namespace _GAME.Scripts.Enemies.MegaSpider.MovementStates
         private Vector3 _currentPositionOnEnd;
         private Vector3 _lampWorldPosition;
         private bool _isLeftSide;
+        private int _side;
 
         public MegaSpiderTangleAttackBaseState(
             Transform lampTransform, 
@@ -57,6 +58,10 @@ namespace _GAME.Scripts.Enemies.MegaSpider.MovementStates
             _swingCurve = swingCurve;
             _dropCurve = dropCurve;
             _isLeftSide = isLeftSide;
+            _side = isLeftSide ? 1 : -1;
+            
+            _hangPoint = HangPoint;
+            _hangPoint.x *= _side;
         }
         
         public override void Enter()
@@ -68,10 +73,7 @@ namespace _GAME.Scripts.Enemies.MegaSpider.MovementStates
         public override void Tick()
         {
             _lampWorldPosition = _lampTransform.position;
-            if (!_isLeftSide)
-                _lampWorldPosition.x *= -1;
             
-
             if (_state == TangleStates.Enter)
             {
                 HandleEnterState();
@@ -98,15 +100,15 @@ namespace _GAME.Scripts.Enemies.MegaSpider.MovementStates
         private void HandleEnterState()
         {
             // All Intersection calculations are in the world space
-            _currentPosition = CalculateSwingPosition(HangPoint);
-            Vector3 currentPointToPivot = _currentPosition - HangPoint;
-            _currentPositionOnEnd = HangPoint + currentPointToPivot.normalized * ( currentPointToPivot.magnitude + SpiderRadius);
+            _currentPosition = CalculateSwingPosition(_hangPoint);
+            Vector3 currentPointToPivot = _currentPosition - _hangPoint;
+            _currentPositionOnEnd = _hangPoint + currentPointToPivot.normalized * ( currentPointToPivot.magnitude + SpiderRadius);
         
             _localTime += Time.deltaTime;
         
             bool isIntersecting = FindCollisionPoints(
                 _currentPosition, 
-                HangPoint, 
+                _hangPoint, 
                 _lampWorldPosition, 
                 0.4f,
                 true);
@@ -135,7 +137,12 @@ namespace _GAME.Scripts.Enemies.MegaSpider.MovementStates
             // Rotate around the pivot
             Vector3 currentPositionLocalized = _currentPositionLocalized - _collisionPointsLocalized[^1];
             _tangleSpeedAccelerated += TangleAcceleration * Time.deltaTime;
-            currentPositionLocalized = Quaternion.AngleAxis(_tangleSpeedAccelerated * Time.deltaTime, Vector3.forward) * currentPositionLocalized;
+
+            Vector3 axis = Vector3.back;
+            if (_isLeftSide)
+                axis = Vector3.forward;
+            
+            currentPositionLocalized = Quaternion.AngleAxis(_tangleSpeedAccelerated * Time.deltaTime, axis) * currentPositionLocalized;
             _currentPositionLocalized = currentPositionLocalized + _collisionPointsLocalized[^1];
                 
                 
@@ -204,7 +211,7 @@ namespace _GAME.Scripts.Enemies.MegaSpider.MovementStates
                     out correctedCurrentDirection
                 );
             
-                // TODO: extract method
+                // TODO: extract as method
                 if (isWorldSpace)
                 {
                     _currentPosition = pivot + correctedCurrentDirection;
@@ -263,7 +270,11 @@ namespace _GAME.Scripts.Enemies.MegaSpider.MovementStates
             out Vector3 correctedDirection)
         {
             float differenceAngle = referenceAngle - currentAngle;
-            correctedDirection = Quaternion.AngleAxis(differenceAngle, Vector3.back) * currentPositionFromPivot;
+            
+            Vector3 axis = Vector3.forward;
+            if (_isLeftSide)
+                axis = Vector3.back;
+            correctedDirection = Quaternion.AngleAxis(differenceAngle, axis) * currentPositionFromPivot;
             Vector3 tangentPoint = pivot + correctedDirection.normalized * distancePivotToIntersectExpected;
             
             // Push tangent Point outside
@@ -278,7 +289,7 @@ namespace _GAME.Scripts.Enemies.MegaSpider.MovementStates
         {
             Vector3 pos = pivot;
             pos.y = pivot.y + _dropCurve.Evaluate(_localTime);
-            pos.x = pivot.x + _swingCurve.Evaluate(_localTime);
+            pos.x = pivot.x + _swingCurve.Evaluate(_localTime) * _side;
             return pos;
         }
         
@@ -290,7 +301,7 @@ namespace _GAME.Scripts.Enemies.MegaSpider.MovementStates
                 {
                     Debug.DrawLine(_lampWorldPosition, point, Color.green);
                 }
-                Debug.DrawLine(HangPoint, _collisionPoints[0], Color.red);
+                Debug.DrawLine(_hangPoint, _collisionPoints[0], Color.red);
                 Debug.DrawLine(_collisionPoints[^1], _currentPosition, Color.red);
 
                 if (_collisionPoints.Count > 1)
@@ -303,7 +314,7 @@ namespace _GAME.Scripts.Enemies.MegaSpider.MovementStates
             }
             else
             {
-                Debug.DrawLine(HangPoint, _currentPosition, Color.red);
+                Debug.DrawLine(_hangPoint, _currentPosition, Color.red);
             }
         }
         
