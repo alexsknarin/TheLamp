@@ -9,6 +9,7 @@ namespace _GAME.Scripts.GameCoreSystems.DataManagement.DataTypes
         [field:Header("Analytics Settings")]
         [field:SerializeField] public float AnalyticsTimeOutTime { get; private set; } = 10f;
         [field:Header("General Enemy Controller Settings")]
+        [field:SerializeField] public bool IsSpawnDisabled { get; private set; } = false;
         [field:SerializeField] public bool IsTestStartWave { get; private set; } = false;
         [field:SerializeField] public int TestStartWave { get; private set; } = 0;
         [field:Header("Firefly Explosion Settings")]
