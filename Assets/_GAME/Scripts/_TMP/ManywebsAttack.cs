@@ -1,14 +1,10 @@
 using System;
 using System.Collections.Generic;
+using _GAME.Scripts.Lib;
 using UnityEngine;
 using Random = UnityEngine.Random;
-// TODO: guided random - to avoid having wires close to each other
-// TODO: find exit point
-// TODO: what to do if all wire are damaged before Spider Collided
-// TODO: dirty flag on wire to be sure that they won;t be reactivated by accident
-// TODO: Normalize wire lengths ???
+
 // TODO: collision in camera space
-// TODO: add acceleration to spider attack
 
 
 public class ManywebsAttack : MonoBehaviour
@@ -20,9 +16,12 @@ public class ManywebsAttack : MonoBehaviour
         PreAttackPause,
         MainAttack
     }
-    
+    private const float LampRadius = 0.5f;
+    private const float SpiderRadius = 0.325f;
+    private const float CollisionThreshold = 0.00001f;
     [SerializeField] private SpiderwebSpawnRange[] _webStartPositionsRanges;
     [SerializeField] private Transform _lampTransform;
+    [SerializeField] private GameObject _cameraObject; 
     [SerializeField] private Vector3 _lampEndPoint;
     [SerializeField] private int _numberOfWires;
     [SerializeField] private float _attackTimeInterval;
@@ -31,23 +30,54 @@ public class ManywebsAttack : MonoBehaviour
     [SerializeField] private WireStates _wireState = WireStates.Inactive;
     [SerializeField] private float _mainAttackDuration;
     [SerializeField] private float _mainAttackAcceleration;
-    private SpiderwebAttackWire _mainAttackWire;
     
+    private SpiderwebAttackWire _mainAttackWire;
+    private float _collisionDistance;
     private Vector3 _currentPosition;
     
-    
+        
 
     private bool _isWireAttacking = false;
     private bool _isSpiderAttacking = false;
     private int _currentAttackingWireIndex = 0;
+    private int _destroyedWiresCount = 0;
     
     private float _localTime;
+
+    private List<int> _availableWireRangeIndices = new();
 
     private List<SpiderwebAttackWire> _attackWires = new();
     private List<int> _activeWireIndices = new();
 
+    private void Update()
+    {
+        if (_wireState == WireStates.WireAttack)
+        {
+            HandleWiresAttack();
+        }
+        else if (_wireState == WireStates.PreAttackPause)
+        {
+            HandlePreAttackPause();
+        }
+        else if (_wireState == WireStates.MainAttack)
+        {
+            HandleMainAttack();
+        }
+
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            ReceiveWireDamage(3);
+        }
+
+        foreach (var wire in _attackWires)
+        {
+            wire.UpdateEndPosition(_lampTransform);
+        }
+    }
+
     private void Awake()
     {
+        _collisionDistance = SpiderRadius + LampRadius + CollisionThreshold;
         _wireState = WireStates.Inactive;
         _currentPosition = _inactivePosition;
         CreateEmptyAttackWireVariables();
@@ -60,10 +90,11 @@ public class ManywebsAttack : MonoBehaviour
         {
             Debug.DrawLine(range.p1, range.p2, Color.red, 10);
         }
+        _destroyedWiresCount = 0;
         InitializeAttackWires();
         StartWireAttack();
     }
-    
+
     private void StartWireAttack()
     {
         _currentAttackingWireIndex = 0;
@@ -108,64 +139,104 @@ public class ManywebsAttack : MonoBehaviour
         _localTime = 0;
         _wireState = WireStates.MainAttack;
         RefreshActiveWiresList();
+        if (_activeWireIndices.Count == 0)
+        {
+            Debug.Break();
+            return;       
+        }
         _mainAttackWire = _attackWires[_activeWireIndices[Random.Range(0, _activeWireIndices.Count)]];
         Debug.DrawLine(_mainAttackWire.StartPosition, _mainAttackWire.EndPosition, Color.orangeRed, 10);
     }
 
     private void HandleMainAttack()
     {
-        Debug.Log("Main Attack:");
+        if (_mainAttackWire == null)
+        {
+            return;
+        }
+
         float phase = _localTime / _mainAttackDuration;
-        Debug.Log("phase : " + phase);
-        
         _currentPosition = Vector3.Lerp(
             _mainAttackWire.StartPosition, 
             _mainAttackWire.EndPosition, 
             Mathf.Pow(phase, _mainAttackAcceleration));
+    
+        CheckForCollision();
         
-        Debug.Log("Current Position : " + _currentPosition);
+        _localTime += Time.deltaTime;    
+        
+    }
 
-        if ((_lampTransform.position - _currentPosition).magnitude < (0.5f + 0.325f))
+    private void CheckForCollision()
+    {
+        Vector3 cameraPos = _cameraObject.transform.position;
+        Vector3 projectedPos = CameraProjection.ProjectPointOnXYPlane(cameraPos, _currentPosition);
+        
+        Vector3 collisionDirection = (_lampTransform.position - projectedPos).normalized;
+        Vector3 collisionPoint = projectedPos + collisionDirection * SpiderRadius;
+        collisionPoint = CameraProjection.ProjectPointOnXYPlane(cameraPos, collisionPoint);
+
+
+        float projectedDistance = (_lampTransform.position - collisionPoint).magnitude; 
+        if (projectedDistance < (LampRadius + CollisionThreshold))
         {
+            // Push Back to resolve penetration
+            Vector3 correctedProjectedPosition = (projectedPos - _lampTransform.position).normalized  * _collisionDistance;
+            float correctionShift = _collisionDistance - projectedDistance;
+            
+            Vector3 lampEndPos = _lampTransform.TransformPoint(_lampEndPoint);
+            Vector3 outDir = (correctedProjectedPosition - lampEndPos).normalized;
+            Vector3 currentToLampDir = (lampEndPos - _currentPosition).normalized;
+            Vector3 origCorrectedToCamera = cameraPos - correctedProjectedPosition;
+            Vector3 correctedToCameraDir = origCorrectedToCamera.normalized;
+            
+            float angleC = Vector3.Angle(outDir, -currentToLampDir);
+            float angleB = Vector3.Angle(-outDir, correctedToCameraDir);
+            float angleA = 180 - angleC - angleB;
+
+            float excessiveLength =
+                correctionShift * Mathf.Sin(Mathf.Deg2Rad * angleC) / Mathf.Sin(Mathf.Deg2Rad * angleA);
+
+            Vector3 correctedCameraVector = -correctedToCameraDir * (origCorrectedToCamera.magnitude - excessiveLength);
+            
+            float distanceToCameraFraction = (_currentPosition - cameraPos).magnitude / (projectedPos - cameraPos).magnitude;
+            
+            _currentPosition = cameraPos + correctedCameraVector * distanceToCameraFraction;
+            
+            Debug.DrawLine(cameraPos, cameraPos + correctedCameraVector, Color.cyan);
+            
+            
+            Debug.DrawLine(_lampTransform.position, correctedProjectedPosition, Color.dodgerBlue);
+
+            DrawDebugCross(projectedPos, 0.1f, Color.grey);
+            DrawDebugCross(correctedProjectedPosition, 0.1f, Color.red);
+            
+
+            
             Debug.Break();
         }
-        _localTime += Time.deltaTime;
     }
-    
 
-    private void Update()
-    {
-        if (_wireState == WireStates.WireAttack)
-        {
-            HandleWiresAttack();
-        }
-        else if (_wireState == WireStates.PreAttackPause)
-        {
-            HandlePreAttackPause();
-        }
-        else if (_wireState == WireStates.MainAttack)
-        {
-            HandleMainAttack();
-        }
-
-        
-        // TODO: Extract into method
-        if (Input.GetKeyDown(KeyCode.A))
-        {
-            ReceiveWireDamage(3);
-        }
-
-        foreach (var wire in _attackWires)
-        {
-            wire.UpdateEndPosition(_lampTransform);
-        }
-    }
 
     private void ReceiveWireDamage(int power)
     {
         RefreshActiveWiresList();
 
-        _attackWires[_activeWireIndices[Random.Range(0, _activeWireIndices.Count)]].ReceiveDamage(power);
+        if (_activeWireIndices.Count == 0 && _destroyedWiresCount == _numberOfWires)
+        {
+            Debug.Break();
+            return;
+        }
+        
+        if (_activeWireIndices.Count == 0)
+            return;
+        
+        SpiderwebAttackWire wire = _attackWires[_activeWireIndices[Random.Range(0, _activeWireIndices.Count)]];
+        wire.ReceiveDamage(power);
+        if (wire.IsDestroyed)
+        {
+            _destroyedWiresCount++;
+        }
     }
 
     private void RefreshActiveWiresList()
@@ -180,8 +251,6 @@ public class ManywebsAttack : MonoBehaviour
             }
         }
     }
-
-
     private void CreateEmptyAttackWireVariables()
     {
         for (int i = 0; i < _numberOfWires; i++)
@@ -193,9 +262,14 @@ public class ManywebsAttack : MonoBehaviour
 
     private void InitializeAttackWires() 
     {
+        for (int i = 0; i < _webStartPositionsRanges.Length; i++)
+            _availableWireRangeIndices.Add(i);
+        
         for (int i = 0; i < _numberOfWires; i++)
         {
-            int randomIndex = Random.Range(0, _webStartPositionsRanges.Length);
+            int randomRange = Random.Range(0, _availableWireRangeIndices.Count);
+            int randomIndex = _availableWireRangeIndices[randomRange];
+            _availableWireRangeIndices.RemoveAt(randomRange);
             
             Vector3 startPoint = Vector3.Lerp(
                 _webStartPositionsRanges[randomIndex].p1,
@@ -234,4 +308,15 @@ public class ManywebsAttack : MonoBehaviour
         Gizmos.color = Color.cyan;
         Gizmos.DrawWireSphere(_currentPosition, 0.325f);
     }
+
+    private void DrawDebugCross(Vector3 position, float size, Color color)
+    {
+        Debug.DrawLine(position, position + Vector3.up * size, color, 5f);
+        Debug.DrawLine(position, position + Vector3.down * size, color, 5f);
+        Debug.DrawLine(position, position + Vector3.left * size, color, 5f);
+        Debug.DrawLine(position, position + Vector3.right * size, color, 5f);
+        Debug.DrawLine(position, position + Vector3.back * size, color, 5f);
+        Debug.DrawLine(position, position + Vector3.forward * size, color, 5f);
+    }
+
 }

@@ -11,10 +11,12 @@ public class SpiderwebAttackWire
     private bool _isActive = false;
     private int _hitPoints = 6;
     private bool _isDamaged = false;
+    private bool _isDestroyed = false;
 
     public Vector3 StartPosition => _startPosition;
     public Vector3 EndPosition => _endPositionTransformed;
     public bool IsActive => _isActive;
+    public bool IsDestroyed => _isDestroyed;
     
     public void Initialize(Vector3 startPosition, Vector3 endPosition)
     {
@@ -22,6 +24,7 @@ public class SpiderwebAttackWire
         _endPosition = endPosition;
         _endPositionTransformed = Vector3.zero;
         _hitPoints = 6;
+        _isDestroyed = false;
     }
     
     public void UpdateEndPosition(Transform lampTransform)
@@ -45,7 +48,8 @@ public class SpiderwebAttackWire
     
     public void SetActive(bool isActive)
     {
-        _isActive = isActive;
+        if (!_isDestroyed)
+            _isActive = isActive;
     }
     
     public void ReceiveDamage(int damage)
@@ -55,6 +59,7 @@ public class SpiderwebAttackWire
         if (_hitPoints <= 0)
         {
             _isActive = false;
+            _isDestroyed = true;
         }
     }
 }
