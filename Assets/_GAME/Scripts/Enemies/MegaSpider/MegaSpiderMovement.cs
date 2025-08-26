@@ -50,6 +50,7 @@ namespace _GAME.Scripts.Enemies.MegaSpider
         private MegaSpiderDropFallState _dropFallState;
         private MegaSpiderSwingLState _swingLState;
         private MegaSpiderSwingRState _swingRState;
+        private MegaSpiderClimbState _climbState;
         
         
         public void Initialize()
@@ -64,7 +65,8 @@ namespace _GAME.Scripts.Enemies.MegaSpider
                 _swingCurve,
                 _dropCurve,
                 _cameraTransform,
-                _bounceSpeed
+                _bounceSpeed,
+                _climbCurve
                 );
         
             _enterLState = (MegaSpiderEnterLState)_stateFactory.Create(typeof(MegaSpiderEnterLState));
@@ -92,6 +94,7 @@ namespace _GAME.Scripts.Enemies.MegaSpider
             _dropFallState = (MegaSpiderDropFallState)_stateFactory.Create(typeof(MegaSpiderDropFallState));
             _swingLState = (MegaSpiderSwingLState)_stateFactory.Create(typeof(MegaSpiderSwingLState));
             _swingRState = (MegaSpiderSwingRState)_stateFactory.Create(typeof(MegaSpiderSwingRState));
+            _climbState = (MegaSpiderClimbState)_stateFactory.Create(typeof(MegaSpiderClimbState));
             
             enabled = false;
         }
@@ -99,12 +102,12 @@ namespace _GAME.Scripts.Enemies.MegaSpider
         public void Play()
         {
             enabled = true;
-            _swingRState.Enter();
+            _climbState.Enter();
         }
 
         private void Update()
         {
-            _swingRState.Tick();
+            _climbState.Tick();
         }
     }
 }

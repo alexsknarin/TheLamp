@@ -5549,7 +5549,7 @@ Transform:
   m_GameObject: {fileID: 1146916225}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -3.92, y: -1.9100001, z: 0}
+  m_LocalPosition: {x: -0.93, y: 3.44, z: 0}
   m_LocalScale: {x: 0.65, y: 0.65, z: 0.65}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -10936,8 +10936,28 @@ PrefabInstance:
       objectReference: {fileID: 330585546}
     - target: {fileID: 5885945323400971088, guid: 2c6c558d3119107489c1db144aa0d181,
         type: 3}
+      propertyPath: _climbCurve.m_Curve.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5885945323400971088, guid: 2c6c558d3119107489c1db144aa0d181,
+        type: 3}
       propertyPath: _swingCurve.m_Curve.Array.size
       value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5885945323400971088, guid: 2c6c558d3119107489c1db144aa0d181,
+        type: 3}
+      propertyPath: _climbCurve.m_Curve.Array.data[0].time
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5885945323400971088, guid: 2c6c558d3119107489c1db144aa0d181,
+        type: 3}
+      propertyPath: _climbCurve.m_Curve.Array.data[1].time
+      value: 0.12929657
+      objectReference: {fileID: 0}
+    - target: {fileID: 5885945323400971088, guid: 2c6c558d3119107489c1db144aa0d181,
+        type: 3}
+      propertyPath: _climbCurve.m_Curve.Array.data[2].time
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5885945323400971088, guid: 2c6c558d3119107489c1db144aa0d181,
         type: 3}
@@ -10946,8 +10966,88 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5885945323400971088, guid: 2c6c558d3119107489c1db144aa0d181,
         type: 3}
+      propertyPath: _climbCurve.m_Curve.Array.data[0].value
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5885945323400971088, guid: 2c6c558d3119107489c1db144aa0d181,
+        type: 3}
+      propertyPath: _climbCurve.m_Curve.Array.data[1].value
+      value: -0.31597257
+      objectReference: {fileID: 0}
+    - target: {fileID: 5885945323400971088, guid: 2c6c558d3119107489c1db144aa0d181,
+        type: 3}
+      propertyPath: _climbCurve.m_Curve.Array.data[2].value
+      value: 5.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5885945323400971088, guid: 2c6c558d3119107489c1db144aa0d181,
+        type: 3}
       propertyPath: _swingCurve.m_Curve.Array.data[3].value
       value: 3.4500964
+      objectReference: {fileID: 0}
+    - target: {fileID: 5885945323400971088, guid: 2c6c558d3119107489c1db144aa0d181,
+        type: 3}
+      propertyPath: _climbCurve.m_Curve.Array.data[0].inSlope
+      value: -5.9705963
+      objectReference: {fileID: 0}
+    - target: {fileID: 5885945323400971088, guid: 2c6c558d3119107489c1db144aa0d181,
+        type: 3}
+      propertyPath: _climbCurve.m_Curve.Array.data[1].inSlope
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5885945323400971088, guid: 2c6c558d3119107489c1db144aa0d181,
+        type: 3}
+      propertyPath: _climbCurve.m_Curve.Array.data[2].inSlope
+      value: 4.0222073
+      objectReference: {fileID: 0}
+    - target: {fileID: 5885945323400971088, guid: 2c6c558d3119107489c1db144aa0d181,
+        type: 3}
+      propertyPath: _climbCurve.m_Curve.Array.data[0].outSlope
+      value: -5.9705963
+      objectReference: {fileID: 0}
+    - target: {fileID: 5885945323400971088, guid: 2c6c558d3119107489c1db144aa0d181,
+        type: 3}
+      propertyPath: _climbCurve.m_Curve.Array.data[1].inWeight
+      value: 0.33333334
+      objectReference: {fileID: 0}
+    - target: {fileID: 5885945323400971088, guid: 2c6c558d3119107489c1db144aa0d181,
+        type: 3}
+      propertyPath: _climbCurve.m_Curve.Array.data[1].outSlope
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5885945323400971088, guid: 2c6c558d3119107489c1db144aa0d181,
+        type: 3}
+      propertyPath: _climbCurve.m_Curve.Array.data[2].inWeight
+      value: 0.115018435
+      objectReference: {fileID: 0}
+    - target: {fileID: 5885945323400971088, guid: 2c6c558d3119107489c1db144aa0d181,
+        type: 3}
+      propertyPath: _climbCurve.m_Curve.Array.data[2].outSlope
+      value: 4.0222073
+      objectReference: {fileID: 0}
+    - target: {fileID: 5885945323400971088, guid: 2c6c558d3119107489c1db144aa0d181,
+        type: 3}
+      propertyPath: _climbCurve.m_Curve.Array.data[0].outWeight
+      value: 0.4585867
+      objectReference: {fileID: 0}
+    - target: {fileID: 5885945323400971088, guid: 2c6c558d3119107489c1db144aa0d181,
+        type: 3}
+      propertyPath: _climbCurve.m_Curve.Array.data[1].outWeight
+      value: 0.33333334
+      objectReference: {fileID: 0}
+    - target: {fileID: 5885945323400971088, guid: 2c6c558d3119107489c1db144aa0d181,
+        type: 3}
+      propertyPath: _climbCurve.m_Curve.Array.data[0].tangentMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5885945323400971088, guid: 2c6c558d3119107489c1db144aa0d181,
+        type: 3}
+      propertyPath: _climbCurve.m_Curve.Array.data[1].tangentMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5885945323400971088, guid: 2c6c558d3119107489c1db144aa0d181,
+        type: 3}
+      propertyPath: _climbCurve.m_Curve.Array.data[2].tangentMode
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
