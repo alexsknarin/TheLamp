@@ -4,9 +4,6 @@ using _GAME.Scripts.Lib;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-// TODO: collision in camera space
-
-
 public class ManywebsAttack : MonoBehaviour
 {
     private enum WireStates
@@ -182,37 +179,14 @@ public class ManywebsAttack : MonoBehaviour
         {
             // Push Back to resolve penetration
             Vector3 correctedProjectedPosition = (projectedPos - _lampTransform.position).normalized  * _collisionDistance;
-            float correctionShift = _collisionDistance - projectedDistance;
-            
             Vector3 lampEndPos = _lampTransform.TransformPoint(_lampEndPoint);
-            Vector3 outDir = (correctedProjectedPosition - lampEndPos).normalized;
-            Vector3 currentToLampDir = (lampEndPos - _currentPosition).normalized;
-            Vector3 origCorrectedToCamera = cameraPos - correctedProjectedPosition;
-            Vector3 correctedToCameraDir = origCorrectedToCamera.normalized;
-            
-            float angleC = Vector3.Angle(outDir, -currentToLampDir);
-            float angleB = Vector3.Angle(-outDir, correctedToCameraDir);
-            float angleA = 180 - angleC - angleB;
 
-            float excessiveLength =
-                correctionShift * Mathf.Sin(Mathf.Deg2Rad * angleC) / Mathf.Sin(Mathf.Deg2Rad * angleA);
-
-            Vector3 correctedCameraVector = -correctedToCameraDir * (origCorrectedToCamera.magnitude - excessiveLength);
+            float fullSideA = (correctedProjectedPosition - lampEndPos).magnitude;
+            float sideA1 = (projectedPos - lampEndPos).magnitude;
             
-            float distanceToCameraFraction = (_currentPosition - cameraPos).magnitude / (projectedPos - cameraPos).magnitude;
-            
-            _currentPosition = cameraPos + correctedCameraVector * distanceToCameraFraction;
-            
-            Debug.DrawLine(cameraPos, cameraPos + correctedCameraVector, Color.cyan);
-            
-            
-            Debug.DrawLine(_lampTransform.position, correctedProjectedPosition, Color.dodgerBlue);
-
-            DrawDebugCross(projectedPos, 0.1f, Color.grey);
-            DrawDebugCross(correctedProjectedPosition, 0.1f, Color.red);
-            
-
-            
+            float sideB1 = (lampEndPos - _currentPosition).magnitude;
+            float fullSideB = (fullSideA * sideB1) / sideA1;
+            _currentPosition = lampEndPos + (_currentPosition - lampEndPos).normalized * fullSideB;
             Debug.Break();
         }
     }
@@ -308,15 +282,4 @@ public class ManywebsAttack : MonoBehaviour
         Gizmos.color = Color.cyan;
         Gizmos.DrawWireSphere(_currentPosition, 0.325f);
     }
-
-    private void DrawDebugCross(Vector3 position, float size, Color color)
-    {
-        Debug.DrawLine(position, position + Vector3.up * size, color, 5f);
-        Debug.DrawLine(position, position + Vector3.down * size, color, 5f);
-        Debug.DrawLine(position, position + Vector3.left * size, color, 5f);
-        Debug.DrawLine(position, position + Vector3.right * size, color, 5f);
-        Debug.DrawLine(position, position + Vector3.back * size, color, 5f);
-        Debug.DrawLine(position, position + Vector3.forward * size, color, 5f);
-    }
-
 }
