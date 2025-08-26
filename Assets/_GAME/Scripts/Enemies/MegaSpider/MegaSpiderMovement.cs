@@ -16,6 +16,8 @@ namespace _GAME.Scripts.Enemies.MegaSpider
         [SerializeField] private Transform _lampTransform; // TODO: DI
         [SerializeField] private AnimationCurve _swingCurve;
         [SerializeField] private AnimationCurve _dropCurve;
+        [Header("Wire Attack Settings")]
+        [SerializeField] private Transform _cameraTransform;
     
         // States
         private MegaSpiderMovementStateFactory _stateFactory;
@@ -37,6 +39,7 @@ namespace _GAME.Scripts.Enemies.MegaSpider
         private MegaSpiderProjectileDoubleDownAttackRState _projectileDoubleDownAttackRState;
         private MegaSpiderTangleAttackLState _tangleAttackLState;
         private MegaSpiderTangleAttackRState _tangleAttackRState;
+        private MegaSpiderWireAttackState _wireAttackState;
     
         public void Initialize()
         {
@@ -48,7 +51,8 @@ namespace _GAME.Scripts.Enemies.MegaSpider
                 _calculatedTransform,
                 _lampTransform,
                 _swingCurve,
-                _dropCurve
+                _dropCurve,
+                _cameraTransform
                 );
         
             _enterLState = (MegaSpiderEnterLState)_stateFactory.Create(typeof(MegaSpiderEnterLState));
@@ -69,17 +73,18 @@ namespace _GAME.Scripts.Enemies.MegaSpider
             _projectileDoubleDownAttackRState = (MegaSpiderProjectileDoubleDownAttackRState)_stateFactory.Create(typeof(MegaSpiderProjectileDoubleDownAttackRState));
             _tangleAttackLState = (MegaSpiderTangleAttackLState)_stateFactory.Create(typeof(MegaSpiderTangleAttackLState));
             _tangleAttackRState = (MegaSpiderTangleAttackRState)_stateFactory.Create(typeof(MegaSpiderTangleAttackRState));
+            _wireAttackState = (MegaSpiderWireAttackState)_stateFactory.Create(typeof(MegaSpiderWireAttackState));
  
         }
 
         public void Play()
         {
-            _tangleAttackRState.Enter();
+            _wireAttackState.Enter();
         }
 
         private void Update()
         {
-            _tangleAttackRState.Tick();
+            _wireAttackState.Tick();
         }
     }
 }

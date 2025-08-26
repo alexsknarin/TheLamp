@@ -10710,6 +10710,11 @@ PrefabInstance:
       objectReference: {fileID: 1934066241}
     - target: {fileID: 5885945323400971088, guid: 2c6c558d3119107489c1db144aa0d181,
         type: 3}
+      propertyPath: _cameraTransform
+      value: 
+      objectReference: {fileID: 330585546}
+    - target: {fileID: 5885945323400971088, guid: 2c6c558d3119107489c1db144aa0d181,
+        type: 3}
       propertyPath: _swingCurve.m_Curve.Array.size
       value: 4
       objectReference: {fileID: 0}

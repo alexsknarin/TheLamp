@@ -18,7 +18,7 @@ public class ManywebsAttack : MonoBehaviour
     private const float CollisionThreshold = 0.00001f;
     [SerializeField] private SpiderwebSpawnRange[] _webStartPositionsRanges;
     [SerializeField] private Transform _lampTransform;
-    [SerializeField] private GameObject _cameraObject; 
+    [SerializeField] private Transform _cameraTransform; 
     [SerializeField] private Vector3 _lampEndPoint;
     [SerializeField] private int _numberOfWires;
     [SerializeField] private float _attackTimeInterval;
@@ -29,22 +29,38 @@ public class ManywebsAttack : MonoBehaviour
     [SerializeField] private float _mainAttackAcceleration;
     
     private SpiderwebAttackWire _mainAttackWire;
-    private float _collisionDistance;
+    private float _fullCollisionDistance;
     private Vector3 _currentPosition;
     
-        
-
-    private bool _isWireAttacking = false;
-    private bool _isSpiderAttacking = false;
     private int _currentAttackingWireIndex = 0;
     private int _destroyedWiresCount = 0;
     
     private float _localTime;
 
-    private List<int> _availableWireRangeIndices = new();
+    private readonly List<int> _availableWireRangeIndices = new();
 
     private List<SpiderwebAttackWire> _attackWires = new();
     private List<int> _activeWireIndices = new();
+
+    private void Awake()
+    {
+        _fullCollisionDistance = SpiderRadius + LampRadius + CollisionThreshold;
+        _wireState = WireStates.Inactive;
+        _currentPosition = _inactivePosition;
+        CreateEmptyAttackWireVariables();
+    }
+
+    private void Start()
+    {
+        // Show source ranges
+        foreach (var range in _webStartPositionsRanges)
+        {
+            Debug.DrawLine(range.p1, range.p2, Color.red, 10);
+        }
+        _destroyedWiresCount = 0;
+        InitializeAttackWires();
+        StartWireAttack();
+    }
 
     private void Update()
     {
@@ -70,26 +86,6 @@ public class ManywebsAttack : MonoBehaviour
         {
             wire.UpdateEndPosition(_lampTransform);
         }
-    }
-
-    private void Awake()
-    {
-        _collisionDistance = SpiderRadius + LampRadius + CollisionThreshold;
-        _wireState = WireStates.Inactive;
-        _currentPosition = _inactivePosition;
-        CreateEmptyAttackWireVariables();
-    }
-
-    private void Start()
-    {
-        // Show source ranges
-        foreach (var range in _webStartPositionsRanges)
-        {
-            Debug.DrawLine(range.p1, range.p2, Color.red, 10);
-        }
-        _destroyedWiresCount = 0;
-        InitializeAttackWires();
-        StartWireAttack();
     }
 
     private void StartWireAttack()
@@ -166,7 +162,7 @@ public class ManywebsAttack : MonoBehaviour
 
     private void CheckForCollision()
     {
-        Vector3 cameraPos = _cameraObject.transform.position;
+        Vector3 cameraPos = _cameraTransform.position;
         Vector3 projectedPos = CameraProjection.ProjectPointOnXYPlane(cameraPos, _currentPosition);
         
         Vector3 collisionDirection = (_lampTransform.position - projectedPos).normalized;
@@ -178,7 +174,7 @@ public class ManywebsAttack : MonoBehaviour
         if (projectedDistance < (LampRadius + CollisionThreshold))
         {
             // Push Back to resolve penetration
-            Vector3 correctedProjectedPosition = (projectedPos - _lampTransform.position).normalized  * _collisionDistance;
+            Vector3 correctedProjectedPosition = (projectedPos - _lampTransform.position).normalized  * _fullCollisionDistance;
             Vector3 lampEndPos = _lampTransform.TransformPoint(_lampEndPoint);
 
             float fullSideA = (correctedProjectedPosition - lampEndPos).magnitude;
