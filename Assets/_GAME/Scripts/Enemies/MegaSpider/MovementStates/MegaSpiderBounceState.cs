@@ -4,7 +4,6 @@ namespace _GAME.Scripts.Enemies.MegaSpider.MovementStates
 {
     public class MegaSpiderBounceState : EnemyMovementStateBase
     {
-
         private Vector3 _direction;
         
         // Dependencies
@@ -31,7 +30,7 @@ namespace _GAME.Scripts.Enemies.MegaSpider.MovementStates
             
             // TODO: TEMP for tests - remove later
             Vector3 position = Vector3.up * (0.51f+0.325f);
-            float angle = 45f;
+            float angle = 145f;
             Quaternion rotation = Quaternion.AngleAxis(angle, Vector3.forward);
             position = rotation * position + _lampTransform.position;
             _visibleBodyTransform.position = position;

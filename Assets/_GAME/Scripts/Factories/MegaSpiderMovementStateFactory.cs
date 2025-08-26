@@ -265,7 +265,56 @@ namespace _GAME.Scripts.Factories
                 );
             }
             
-
+            if (stateType == typeof(MegaSpiderFallState))
+            {
+                return new MegaSpiderFallState(
+                    _visibleBodyTransform,
+                    _calculatedTransform,
+                    _lampTransform,
+                    -3.5f, // TODO: use config
+                    false
+                    );
+            }
+            
+            if (stateType == typeof(MegaSpiderSuccessFallState))
+            {
+                return new MegaSpiderSuccessFallState(
+                    _visibleBodyTransform,
+                    _calculatedTransform,
+                    _lampTransform,
+                    -1.6f, // TODO: use config
+                    false
+                );
+            }
+            
+            if (stateType == typeof(MegaSpiderDropFallState))
+            {
+                return new MegaSpiderDropFallState(
+                    _visibleBodyTransform,
+                    _calculatedTransform,
+                    _lampTransform,
+                    -1.6f, // TODO: use config
+                    true
+                );
+            }
+            
+            if (stateType == typeof(MegaSpiderSwingLState))
+            {
+                return new MegaSpiderSwingLState(
+                    _visibleBodyTransform,
+                    _calculatedTransform,
+                    true
+                );
+            }
+            
+            if (stateType == typeof(MegaSpiderSwingRState))
+            {
+                return new MegaSpiderSwingRState(
+                    _visibleBodyTransform,
+                    _calculatedTransform,
+                    false
+                );
+            }
             return null;
         }
     }

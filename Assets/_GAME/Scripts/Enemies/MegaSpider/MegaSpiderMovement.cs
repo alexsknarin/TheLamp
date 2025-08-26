@@ -20,6 +20,8 @@ namespace _GAME.Scripts.Enemies.MegaSpider
         [SerializeField] private Transform _cameraTransform;
         [Header("Bounce Settings")]
         [SerializeField] private float _bounceSpeed;
+        [Header("Climb Settings")]
+        [SerializeField] private AnimationCurve _climbCurve;
         
         // States
         private MegaSpiderMovementStateFactory _stateFactory;
@@ -43,7 +45,13 @@ namespace _GAME.Scripts.Enemies.MegaSpider
         private MegaSpiderTangleAttackRState _tangleAttackRState;
         private MegaSpiderWireAttackState _wireAttackState;
         private MegaSpiderBounceState _bounceState;
-    
+        private MegaSpiderFallState _fallState;
+        private MegaSpiderSuccessFallState _successFallState;
+        private MegaSpiderDropFallState _dropFallState;
+        private MegaSpiderSwingLState _swingLState;
+        private MegaSpiderSwingRState _swingRState;
+        
+        
         public void Initialize()
         {
             _stateFactory = new();
@@ -79,17 +87,24 @@ namespace _GAME.Scripts.Enemies.MegaSpider
             _tangleAttackRState = (MegaSpiderTangleAttackRState)_stateFactory.Create(typeof(MegaSpiderTangleAttackRState));
             _wireAttackState = (MegaSpiderWireAttackState)_stateFactory.Create(typeof(MegaSpiderWireAttackState));
             _bounceState = (MegaSpiderBounceState)_stateFactory.Create(typeof(MegaSpiderBounceState));
- 
+            _fallState = (MegaSpiderFallState)_stateFactory.Create(typeof(MegaSpiderFallState));
+            _successFallState = (MegaSpiderSuccessFallState)_stateFactory.Create(typeof(MegaSpiderSuccessFallState));
+            _dropFallState = (MegaSpiderDropFallState)_stateFactory.Create(typeof(MegaSpiderDropFallState));
+            _swingLState = (MegaSpiderSwingLState)_stateFactory.Create(typeof(MegaSpiderSwingLState));
+            _swingRState = (MegaSpiderSwingRState)_stateFactory.Create(typeof(MegaSpiderSwingRState));
+            
+            enabled = false;
         }
 
         public void Play()
         {
-            _bounceState.Enter();
+            enabled = true;
+            _swingRState.Enter();
         }
 
         private void Update()
         {
-            _bounceState.Tick();
+            _swingRState.Tick();
         }
     }
 }
