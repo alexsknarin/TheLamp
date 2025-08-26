@@ -18,7 +18,9 @@ namespace _GAME.Scripts.Enemies.MegaSpider
         [SerializeField] private AnimationCurve _dropCurve;
         [Header("Wire Attack Settings")]
         [SerializeField] private Transform _cameraTransform;
-    
+        [Header("Bounce Settings")]
+        [SerializeField] private float _bounceSpeed;
+        
         // States
         private MegaSpiderMovementStateFactory _stateFactory;
         private MegaSpiderEnterLState _enterLState;
@@ -40,6 +42,7 @@ namespace _GAME.Scripts.Enemies.MegaSpider
         private MegaSpiderTangleAttackLState _tangleAttackLState;
         private MegaSpiderTangleAttackRState _tangleAttackRState;
         private MegaSpiderWireAttackState _wireAttackState;
+        private MegaSpiderBounceState _bounceState;
     
         public void Initialize()
         {
@@ -52,7 +55,8 @@ namespace _GAME.Scripts.Enemies.MegaSpider
                 _lampTransform,
                 _swingCurve,
                 _dropCurve,
-                _cameraTransform
+                _cameraTransform,
+                _bounceSpeed
                 );
         
             _enterLState = (MegaSpiderEnterLState)_stateFactory.Create(typeof(MegaSpiderEnterLState));
@@ -74,17 +78,18 @@ namespace _GAME.Scripts.Enemies.MegaSpider
             _tangleAttackLState = (MegaSpiderTangleAttackLState)_stateFactory.Create(typeof(MegaSpiderTangleAttackLState));
             _tangleAttackRState = (MegaSpiderTangleAttackRState)_stateFactory.Create(typeof(MegaSpiderTangleAttackRState));
             _wireAttackState = (MegaSpiderWireAttackState)_stateFactory.Create(typeof(MegaSpiderWireAttackState));
+            _bounceState = (MegaSpiderBounceState)_stateFactory.Create(typeof(MegaSpiderBounceState));
  
         }
 
         public void Play()
         {
-            _wireAttackState.Enter();
+            _bounceState.Enter();
         }
 
         private void Update()
         {
-            _wireAttackState.Tick();
+            _bounceState.Tick();
         }
     }
 }

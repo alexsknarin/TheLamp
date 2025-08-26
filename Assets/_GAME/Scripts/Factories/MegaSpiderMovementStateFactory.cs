@@ -27,6 +27,7 @@ namespace _GAME.Scripts.Factories
         private AnimationCurve _swingCurve;
         private AnimationCurve _dropCurve;
         private Transform _cameraTransform;
+        private float _bounceSpeed;
         
         // TODO: WILL BE LOCAL
         private bool _isLeftSide;
@@ -42,7 +43,8 @@ namespace _GAME.Scripts.Factories
             Transform lampTransform,
             AnimationCurve swingCurve,
             AnimationCurve dropCurve,
-            Transform cameraTransform
+            Transform cameraTransform,
+            float bounceSpeed // TODO: move to config
         )
         {
             _animator = animator;
@@ -53,6 +55,7 @@ namespace _GAME.Scripts.Factories
             _swingCurve = swingCurve;
             _dropCurve = dropCurve;
             _cameraTransform = cameraTransform;
+            _bounceSpeed = bounceSpeed;
         }
 
         public EnemyMovementStateBase Create(Type stateType)
@@ -239,7 +242,7 @@ namespace _GAME.Scripts.Factories
                     _swingCurve,
                     _dropCurve,
                     false
-                );
+                    );
             }
 
             if (stateType == typeof(MegaSpiderWireAttackState))
@@ -251,6 +254,17 @@ namespace _GAME.Scripts.Factories
                     _cameraTransform
                     );
             }
+            
+            if (stateType == typeof(MegaSpiderBounceState))
+            {
+                return new MegaSpiderBounceState(
+                    _visibleBodyTransform,
+                    _calculatedTransform,
+                    _lampTransform,
+                    _bounceSpeed
+                );
+            }
+            
 
             return null;
         }

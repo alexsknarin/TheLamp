@@ -10705,6 +10705,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5885945323400971088, guid: 2c6c558d3119107489c1db144aa0d181,
         type: 3}
+      propertyPath: _bounceSpeed
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5885945323400971088, guid: 2c6c558d3119107489c1db144aa0d181,
+        type: 3}
       propertyPath: _lampTransform
       value: 
       objectReference: {fileID: 1934066241}
