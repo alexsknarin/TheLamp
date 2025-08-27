@@ -165,15 +165,15 @@ namespace _GAME.Scripts.Enemies.MegaSpider.MovementStates
             }
                 
             // Check For Collision
-            if (Vector3.Distance(_currentPositionOnEnd, _lampWorldPosition) < SpiderRadius + LampRadius)
-            {
-                // Fix collision
-                _currentPositionOnEnd = 
-                    (_currentPositionOnEnd - _lampWorldPosition).normalized 
-                    * (SpiderRadius + LampRadius) + _lampWorldPosition;
-                    
-                Debug.Break();
-            }
+            // if (Vector3.Distance(_currentPositionOnEnd, _lampWorldPosition) < SpiderRadius + LampRadius)
+            // {
+            //     // Fix collision
+            //     _currentPositionOnEnd = 
+            //         (_currentPositionOnEnd - _lampWorldPosition).normalized 
+            //         * (SpiderRadius + LampRadius) + _lampWorldPosition;
+            //         
+            //     Debug.Break();
+            // }
                 
             _localTime += Time.deltaTime;
         }

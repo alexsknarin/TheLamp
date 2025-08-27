@@ -39,14 +39,9 @@ namespace _GAME.Scripts.Enemies.MegaSpider.MovementStates
         
         public override void Enter()
         {
+            IsReadyToSwitch = false;
+                
             _visibleBodyTransform.SetParent(null);
-            
-            // TODO: TEMP for tests - remove later
-            Vector3 position = Vector3.up * (0.51f+0.325f + 0.25f);
-            float angle = 45f;
-            Quaternion rotation = Quaternion.AngleAxis(angle, Vector3.forward);
-            position = rotation * position + _lampTransform.position;
-            _visibleBodyTransform.position = position;
             
             _calculatedTransform.position = _visibleBodyTransform.position;
             _visibleBodyTransform.SetParent(_calculatedTransform);
@@ -63,12 +58,12 @@ namespace _GAME.Scripts.Enemies.MegaSpider.MovementStates
         {
             if (_isFreeFall)
             {
-                _calculatedTransform.position += Vector3.down * _fallForceMagnitude * Time.deltaTime;
+                _calculatedTransform.position += Vector3.down * (_fallForceMagnitude * Time.deltaTime);
             }
             else
             {
-                _calculatedTransform.position += _initialDirection * _outForceMagnitude * Time.deltaTime 
-                                                 + Vector3.down * _fallForceMagnitude * Time.deltaTime;    
+                _calculatedTransform.position += _initialDirection * (_outForceMagnitude * Time.deltaTime) 
+                                                 + Vector3.down * (_fallForceMagnitude * Time.deltaTime);    
             }
                 
             _outForceMagnitude -= OutForceIncrement * Time.deltaTime;
@@ -78,7 +73,7 @@ namespace _GAME.Scripts.Enemies.MegaSpider.MovementStates
             
             if (_calculatedTransform.position.y < _exitYCoordinate)
             {
-                Debug.Break();
+                IsReadyToSwitch = true;
             }
         }
     }

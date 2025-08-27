@@ -63,7 +63,11 @@ namespace _GAME.Scripts.Factories
 
         public EnemyMovementStateBase Create(Type stateType)
         {
-            if (stateType == typeof(MegaSpiderEnterLState))
+            if (stateType == typeof(MegaSpiderIdleState))
+            {
+                return new MegaSpiderIdleState(_visibleBodyTransform);
+            }
+            else if (stateType == typeof(MegaSpiderEnterLState))
             {
                 return new MegaSpiderEnterLState(
                     _animator,
@@ -73,7 +77,7 @@ namespace _GAME.Scripts.Factories
                     true
                     );
             }
-            if (stateType == typeof(MegaSpiderEnterRState))
+            else if (stateType == typeof(MegaSpiderEnterRState))
             {
                 return new MegaSpiderEnterRState(
                     _animator,
@@ -83,7 +87,7 @@ namespace _GAME.Scripts.Factories
                     false
                 );
             }
-            if (stateType == typeof(MegaSpiderZigzagAttackLState))
+            else if (stateType == typeof(MegaSpiderZigzagAttackLState))
             {
                 return new MegaSpiderZigzagAttackLState(
                     _animator,
@@ -93,7 +97,7 @@ namespace _GAME.Scripts.Factories
                     true
                 );
             }
-            if (stateType == typeof(MegaSpiderZigzagAttackRState))
+            else if (stateType == typeof(MegaSpiderZigzagAttackRState))
             {
                 return new MegaSpiderZigzagAttackRState(
                     _animator,
@@ -103,7 +107,7 @@ namespace _GAME.Scripts.Factories
                     false
                 );
             }
-            if (stateType == typeof(MegaSpiderProjectileBottomAttackLState))
+            else if (stateType == typeof(MegaSpiderProjectileBottomAttackLState))
             {
                 return new MegaSpiderProjectileBottomAttackLState(
                     _animator,
@@ -113,7 +117,7 @@ namespace _GAME.Scripts.Factories
                     true
                 );
             }
-            if (stateType == typeof(MegaSpiderProjectileBottomAttackRState))
+            else if (stateType == typeof(MegaSpiderProjectileBottomAttackRState))
             {
                 return new MegaSpiderProjectileBottomAttackRState(
                     _animator,
@@ -296,7 +300,7 @@ namespace _GAME.Scripts.Factories
                     _visibleBodyTransform,
                     _calculatedTransform,
                     _lampTransform,
-                    -1.6f, // TODO: use config
+                    -2.2f, // TODO: use config
                     true
                 );
             }

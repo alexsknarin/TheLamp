@@ -76,6 +76,8 @@ namespace _GAME.Scripts.Enemies.MegaSpider.MovementStates
             _currentPosition = _inactivePosition;
             CreateEmptyAttackWireVariables();
         }
+
+        public bool IsDropped { get; protected set; }
         
         public override void Enter()
         {
@@ -88,6 +90,9 @@ namespace _GAME.Scripts.Enemies.MegaSpider.MovementStates
                 // TODO: remove later
                 Debug.DrawLine(range.p1, range.p2, Color.red, 10);
             }
+            
+            IsDropped = false;
+            IsReadyToSwitch = false;
             _destroyedWiresCount = 0;
             InitializeAttackWires();
             StartWireAttack();
@@ -95,6 +100,10 @@ namespace _GAME.Scripts.Enemies.MegaSpider.MovementStates
 
         public override void Tick()
         {
+            if(Input.GetKeyDown(KeyCode.C))
+                IsDropped = true;
+            
+            
             if (_wireState == WireStates.WireAttack)
             {
                 HandleWiresAttack();
@@ -167,8 +176,7 @@ namespace _GAME.Scripts.Enemies.MegaSpider.MovementStates
             RefreshActiveWiresList();
             if (_activeWireIndices.Count == 0)
             {
-                Debug.Log("Active Indices Break");
-                Debug.Break();
+                IsDropped = true;
                 return;       
             }
             _mainAttackWire = _attackWires[_activeWireIndices[Random.Range(0, _activeWireIndices.Count)]];
@@ -218,8 +226,8 @@ namespace _GAME.Scripts.Enemies.MegaSpider.MovementStates
                 float sideB1 = (lampEndPos - _currentPosition).magnitude;
                 float fullSideB = (fullSideA * sideB1) / sideA1;
                 _currentPosition = lampEndPos + (_currentPosition - lampEndPos).normalized * fullSideB;
-                Debug.Log("Collision Break");
-                Debug.Break();
+                
+                IsReadyToSwitch = true;
             }
         }
         
@@ -230,8 +238,7 @@ namespace _GAME.Scripts.Enemies.MegaSpider.MovementStates
 
             if (_activeWireIndices.Count == 0 && _destroyedWiresCount == NumberOfWires)
             {
-                Debug.Log("Destroy Break");   
-                Debug.Break();
+                IsDropped = true;
                 return;
             }
         

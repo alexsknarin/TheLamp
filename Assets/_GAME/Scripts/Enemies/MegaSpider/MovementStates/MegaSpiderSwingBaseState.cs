@@ -43,6 +43,7 @@ namespace _GAME.Scripts.Enemies.MegaSpider.MovementStates
         
         public override void Enter()
         {
+            IsReadyToSwitch = false;
             _visibleBodyTransform.SetParent(null);
             
             // TODO: TEMP for tests - remove later
@@ -77,9 +78,9 @@ namespace _GAME.Scripts.Enemies.MegaSpider.MovementStates
 
         public override void Tick()
         {
-            _calculatedTransform.position += _initialDirection * _fallForceMagnitude * Time.deltaTime * OverallSpedFactor
-                + _swingDirection * _swingForceMagnitude * Time.deltaTime * OverallSpedFactor
-                + Vector3.down * _swingDownForceMagnitude * Time.deltaTime * OverallSpedFactor;
+            _calculatedTransform.position += _initialDirection * (_fallForceMagnitude * Time.deltaTime * OverallSpedFactor)
+                + _swingDirection * (_swingForceMagnitude * Time.deltaTime * OverallSpedFactor)
+                + Vector3.down * (_swingDownForceMagnitude * Time.deltaTime * OverallSpedFactor);
             
             _fallForceMagnitude -= FallForceIncrement * Time.deltaTime;
             _fallForceMagnitude = Mathf.Clamp(_fallForceMagnitude, 0f, InitialFallForceMagnitude);
@@ -90,11 +91,11 @@ namespace _GAME.Scripts.Enemies.MegaSpider.MovementStates
             
             if (_isLeftSide && _calculatedTransform.position.x < -ExitDistance)
             {
-                Debug.Break();
+                IsReadyToSwitch = true;
             }
             else if (!_isLeftSide && _calculatedTransform.position.x > ExitDistance)
             {
-                Debug.Break();
+                IsReadyToSwitch = true;
             }
         }
 

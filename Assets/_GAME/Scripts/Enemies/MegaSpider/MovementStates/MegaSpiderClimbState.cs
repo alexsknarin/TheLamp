@@ -27,11 +27,9 @@ namespace _GAME.Scripts.Enemies.MegaSpider.MovementStates
         
         public override void Enter()
         {
-            _visibleBodyTransform.SetParent(null);
+            IsReadyToSwitch = false;
             
-            // TODO: TEMP for tests - remove later
-            Vector3 position = new Vector3(-0.16f, -1.91f, 0);
-            _visibleBodyTransform.position = position;
+            _visibleBodyTransform.SetParent(null);
             
             _calculatedTransform.position = _visibleBodyTransform.position;
             _visibleBodyTransform.SetParent(_calculatedTransform);
@@ -46,7 +44,7 @@ namespace _GAME.Scripts.Enemies.MegaSpider.MovementStates
             float phase = _localTime / ClimbDuration;
             if (phase > 1)
             {
-                Debug.Break();
+                IsReadyToSwitch = true;
             }
             
             Vector3 newPosition = _calculatedTransform.position;

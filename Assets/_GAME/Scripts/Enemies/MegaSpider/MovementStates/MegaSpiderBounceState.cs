@@ -27,20 +27,12 @@ namespace _GAME.Scripts.Enemies.MegaSpider.MovementStates
         public override void Enter()
         {
             _visibleBodyTransform.SetParent(null);
-            
-            // TODO: TEMP for tests - remove later
-            Vector3 position = Vector3.up * (0.51f+0.325f);
-            float angle = 145f;
-            Quaternion rotation = Quaternion.AngleAxis(angle, Vector3.forward);
-            position = rotation * position + _lampTransform.position;
-            _visibleBodyTransform.position = position;
-            
-            
+           
             _calculatedTransform.position = _visibleBodyTransform.position;
             _visibleBodyTransform.SetParent(_calculatedTransform);
             _visibleBodyTransform.localPosition = Vector3.zero;
 
-            _direction = (position - _lampTransform.position).normalized;
+            _direction = (_calculatedTransform.position - _lampTransform.position).normalized;
         }
 
         public override void Tick()

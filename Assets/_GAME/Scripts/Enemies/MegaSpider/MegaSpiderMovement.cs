@@ -1,8 +1,14 @@
 using System;
+using System.Collections;
 using _GAME.Scripts.Enemies.MegaSpider.MovementStates;
 using _GAME.Scripts.Factories;
+using _GAME.Scripts.Lib;
 using _GAME.Scripts.Lib.Interfaces;
 using UnityEngine;
+using Random = UnityEngine.Random;
+
+// TODO: Add cord attack
+// TODO: Add Death state
 
 namespace _GAME.Scripts.Enemies.MegaSpider
 {
@@ -12,6 +18,9 @@ namespace _GAME.Scripts.Enemies.MegaSpider
         [SerializeField] private Transform _animatedTransform;
         [SerializeField] private Transform _calculatedTransform;
         [SerializeField] private Animator _animator;
+        [SerializeField] private MegaSpiderAnimationClipEventListener _animationClipEvents;
+        [Header( "Movement States")]
+        [SerializeField] private string _stateDebug;
         [Header("Tangle Attack Settings")]
         [SerializeField] private Transform _lampTransform; // TODO: DI
         [SerializeField] private AnimationCurve _swingCurve;
@@ -24,7 +33,11 @@ namespace _GAME.Scripts.Enemies.MegaSpider
         [SerializeField] private AnimationCurve _climbCurve;
         
         // States
+        private readonly StateMachine _stateMachine = new();
         private MegaSpiderMovementStateFactory _stateFactory;
+        private EnemyMovementStateBase _currentState;
+        
+        private MegaSpiderIdleState _idleState;
         private MegaSpiderEnterLState _enterLState;
         private MegaSpiderEnterRState _enterRState;
         private MegaSpiderZigzagAttackLState _zigzagAttackLState;
@@ -51,10 +64,18 @@ namespace _GAME.Scripts.Enemies.MegaSpider
         private MegaSpiderSwingLState _swingLState;
         private MegaSpiderSwingRState _swingRState;
         private MegaSpiderClimbState _climbState;
+
+        private bool _isAnimClipEnded = false;
+        private bool _isCollided = false;
+        private bool _isAttackZoneExited = false;
+        private bool _isAttackSuccess = false;
         
         
         public void Initialize()
         {
+            enabled = false;
+            _animationClipEvents.AnimClipEnded += OnAnimClipEnded;
+            
             _stateFactory = new();
             _stateFactory.SetEnemyDependencies(
                 _animator, 
@@ -69,6 +90,307 @@ namespace _GAME.Scripts.Enemies.MegaSpider
                 _climbCurve
                 );
         
+            CreateMovementStates();
+            
+            // Initialize StateMachine 
+            // Enter to Attacks
+            At(_enterLState, _wireAttackState, IsAnimationEndedRandom0Of4());
+            At(_enterLState, _zigzagAttackLState, IsAnimationEndedRandom1Of4());
+            At(_enterLState, _projectileBottomAttackLState, IsAnimationEndedRandom2Of4());
+            At(_enterLState, _projectileDoubleUpAttackLState, IsAnimationEndedRandom3Of4());
+            
+            At(_enterRState, _wireAttackState, IsAnimationEndedRandom0Of4());
+            At(_enterRState, _zigzagAttackRState, IsAnimationEndedRandom1Of4());
+            At(_enterRState, _projectileBottomAttackRState, IsAnimationEndedRandom2Of4());
+            At(_enterRState, _projectileDoubleUpAttackRState, IsAnimationEndedRandom3Of4());
+            
+            // Wire Attack Transitions
+            At(_wireAttackState, _bounceState, () => _wireAttackState.IsReadyToSwitch);
+            At(_wireAttackState, _dropFallState, () => _wireAttackState.IsDropped);
+            
+            // Zigzag Attack Transitions
+            At(_zigzagAttackLState, _bounceState, IsCollided());
+            At(_zigzagAttackRState, _bounceState, IsCollided());
+            
+            // Projectile Bottom Transitions
+            At(_projectileBottomAttackLState, _wireAttackState, IsAnimationEndedRandom0Of4());
+            At(_projectileBottomAttackRState, _wireAttackState, IsAnimationEndedRandom0Of4());
+            At(_projectileBottomAttackLState, _projectileBottomAttackRState, IsAnimationEndedRandom1Of4());
+            At(_projectileBottomAttackRState, _projectileBottomAttackLState, IsAnimationEndedRandom1Of4());
+            At(_projectileBottomAttackLState, _projectileTopAttackRState, IsAnimationEndedRandom2Of4());
+            At(_projectileBottomAttackRState, _projectileTopAttackLState, IsAnimationEndedRandom2Of4());
+            At(_projectileBottomAttackLState, _hangJumpAttackRState, IsAnimationEndedRandom3Of4());
+            At(_projectileBottomAttackRState, _hangJumpAttackLState, IsAnimationEndedRandom3Of4());
+            
+            // Projectile Double Up Transitions
+            At(_projectileDoubleUpAttackLState, _wireAttackState, IsAnimationEndedRandom0Of6());
+            At(_projectileDoubleUpAttackRState, _wireAttackState, IsAnimationEndedRandom0Of6());
+            At(_projectileDoubleUpAttackLState, _hangAttackLState, IsAnimationEndedRandom1Of6());
+            At(_projectileDoubleUpAttackRState, _hangAttackRState, IsAnimationEndedRandom1Of6());
+            At(_projectileDoubleUpAttackLState, _hangJumpAttackLState, IsAnimationEndedRandom2Of6());
+            At(_projectileDoubleUpAttackRState, _hangJumpAttackRState, IsAnimationEndedRandom2Of6());
+            At(_projectileDoubleUpAttackLState, _tangleAttackLState, IsAnimationEndedRandom3Of6());
+            At(_projectileDoubleUpAttackRState, _tangleAttackRState, IsAnimationEndedRandom3Of6());
+            At(_projectileDoubleUpAttackLState, _projectileTopAttackLState, IsAnimationEndedRandom4Of6());
+            At(_projectileDoubleUpAttackRState, _projectileTopAttackRState, IsAnimationEndedRandom4Of6());
+            At(_projectileDoubleUpAttackLState, _projectileDoubleDownAttackLState, IsAnimationEndedRandom5Of6());
+            At(_projectileDoubleUpAttackRState, _projectileDoubleDownAttackRState, IsAnimationEndedRandom5Of6());
+            
+            // Hang Attack Transitions
+            At(_hangAttackLState, _bounceState, IsCollided());
+            At(_hangAttackRState, _bounceState, IsCollided());
+            
+            // Hang Jump Attack Transitions
+            At(_hangJumpAttackLState, _bounceState, IsCollided());
+            At(_hangJumpAttackRState, _bounceState, IsCollided());
+            
+            // Tangle Attack Transitions
+            At(_tangleAttackLState, _bounceState, IsCollided());
+            At(_tangleAttackRState, _bounceState, IsCollided());
+            
+            // Projectile Top Attack Transitions
+            At(_projectileTopAttackLState, _projectileDoubleDownAttackRState, IsCollidedRandom0Of4());
+            At(_projectileTopAttackRState, _projectileDoubleDownAttackLState, IsCollidedRandom0Of4());
+            At(_projectileTopAttackLState, _projectileTopAttackRState, IsCollidedRandom1Of4());
+            At(_projectileTopAttackRState, _projectileTopAttackLState, IsCollidedRandom1Of4());
+            At(_projectileTopAttackLState, _hangJumpAttackRState, IsCollidedRandom2Of4());
+            At(_projectileTopAttackRState, _hangJumpAttackLState, IsCollidedRandom2Of4());
+            At(_projectileTopAttackLState, _hangAttackRState, IsCollidedRandom3Of4());
+            At(_projectileTopAttackRState, _hangAttackLState, IsCollidedRandom3Of4());
+            
+            // Projectile Double Down Attack Transitions
+            At(_projectileDoubleDownAttackLState, _wireAttackState, IsAnimationEndedRandom0Of4());
+            At(_projectileDoubleDownAttackRState, _wireAttackState, IsAnimationEndedRandom0Of4());
+            At(_projectileDoubleDownAttackLState, _zigzagAttackLState, IsAnimationEndedRandom1Of4());
+            At(_projectileDoubleDownAttackRState, _zigzagAttackRState, IsAnimationEndedRandom1Of4());
+            At(_projectileDoubleDownAttackLState, _projectileBottomAttackLState, IsAnimationEndedRandom2Of4());
+            At(_projectileDoubleDownAttackRState, _projectileBottomAttackRState, IsAnimationEndedRandom2Of4());
+            At(_projectileDoubleDownAttackLState, _projectileDoubleUpAttackLState, IsAnimationEndedRandom3Of4());
+            At(_projectileDoubleDownAttackRState, _projectileDoubleUpAttackRState, IsAnimationEndedRandom3Of4());
+            
+            // Bounce Transitions
+            At(_bounceState, _fallState, IsAttackEndedFail());
+            At(_bounceState, _successFallState, IsAttackEndedSuccess());
+            
+            // Fall Transitions
+            At(_fallState, _swingLState, () => _fallState.IsReadyToSwitch && transform.position.x < -1.11f);
+            At(_fallState, _swingRState, () => _fallState.IsReadyToSwitch && transform.position.x > 1.11f);
+            At(_fallState, _climbState, () => _fallState.IsReadyToSwitch && (transform.position.x > -1.11f && transform.position.x < 1.11f));
+            
+            // Success Fall Transitions
+            At(_successFallState, _swingLState, () => _successFallState.IsReadyToSwitch && transform.position.x < -1.11f);
+            At(_successFallState, _swingRState, () => _successFallState.IsReadyToSwitch && transform.position.x > 1.11f);
+            At(_successFallState, _climbState, () => _successFallState.IsReadyToSwitch && (transform.position.x > -1.11f && transform.position.x < 1.11f));
+            
+            // Drop Fall Transitions
+            At(_dropFallState, _swingLState, () => _dropFallState.IsReadyToSwitch && transform.position.x < -1.11f);
+            At(_dropFallState, _swingRState, () => _dropFallState.IsReadyToSwitch && transform.position.x > 1.11f);
+            At(_dropFallState, _climbState, () => _dropFallState.IsReadyToSwitch && (transform.position.x > -1.11f && transform.position.x < 1.11f));
+            
+            // Swing Transitions
+            At(_swingLState, _wireAttackState, () => _swingLState.IsReadyToSwitch && Random.Range(0,4) == 0);
+            At(_swingRState, _wireAttackState, () => _swingRState.IsReadyToSwitch && Random.Range(0,4) == 0);
+            At(_swingLState, _zigzagAttackLState, () => _swingLState.IsReadyToSwitch && Random.Range(0,4) == 1);
+            At(_swingRState, _zigzagAttackRState, () => _swingRState.IsReadyToSwitch && Random.Range(0,4) == 1);
+            At(_swingLState, _projectileBottomAttackLState, () => _swingLState.IsReadyToSwitch && Random.Range(0,4) == 2);
+            At(_swingRState, _projectileBottomAttackRState, () => _swingRState.IsReadyToSwitch && Random.Range(0,4) == 2);
+            At(_swingLState, _projectileDoubleUpAttackLState, () => _swingLState.IsReadyToSwitch && Random.Range(0,4) == 3);
+            At(_swingRState, _projectileDoubleUpAttackRState, () => _swingRState.IsReadyToSwitch && Random.Range(0,4) == 3);
+            
+            // Climb Transitions
+            At(_climbState, _hangAttackLState, () => _climbState.IsReadyToSwitch && transform.position.x < 0 && Random.Range(0,5) == 0);
+            At(_climbState, _hangAttackRState, () => _climbState.IsReadyToSwitch && transform.position.x > 0 && Random.Range(0,5) == 0);
+            At(_climbState, _hangJumpAttackLState, () => _climbState.IsReadyToSwitch && transform.position.x < 0 && Random.Range(0,5) == 1);
+            At(_climbState, _hangJumpAttackRState, () => _climbState.IsReadyToSwitch && transform.position.x > 0 && Random.Range(0,5) == 1);
+            At(_climbState, _tangleAttackLState, () => _climbState.IsReadyToSwitch && transform.position.x < 0 && Random.Range(0,5) == 2);
+            At(_climbState, _tangleAttackRState, () => _climbState.IsReadyToSwitch && transform.position.x > 0 && Random.Range(0,5) == 3);
+            At(_climbState, _projectileTopAttackLState, () => _climbState.IsReadyToSwitch && transform.position.x < 0 && Random.Range(0,5) == 3);
+            At(_climbState, _projectileTopAttackRState, () => _climbState.IsReadyToSwitch && transform.position.x > 0 && Random.Range(0,5) == 3);
+            At(_climbState, _projectileDoubleDownAttackLState, () => _climbState.IsReadyToSwitch && transform.position.x < 0 && Random.Range(0,5) == 4);
+            At(_climbState, _projectileDoubleDownAttackRState, () => _climbState.IsReadyToSwitch && transform.position.x > 0 && Random.Range(0,5) == 4);
+
+            
+            
+            // Transition helper methods
+            void At(IState from, IState to, Func<bool> condition) => _stateMachine.AddTransition(from, to, condition);
+            
+            // Predicates 
+            Func<bool> IsAnimationEndedRandom0Of4() => () =>
+            {
+                if (_isAnimClipEnded && Random.Range(0, 4) == 0)
+                {
+                    _isAnimClipEnded = false;
+                    return true;
+                }
+                return false;
+            };
+            
+            Func<bool> IsAnimationEndedRandom1Of4() => () =>
+            {
+                if (_isAnimClipEnded && Random.Range(0, 4) == 1)
+                {
+                    _isAnimClipEnded = false;
+                    return true;
+                }
+                return false;
+            };
+            
+            Func<bool> IsAnimationEndedRandom2Of4() => () =>
+            {
+                if (_isAnimClipEnded && Random.Range(0, 4) == 2)
+                {
+                    _isAnimClipEnded = false;
+                    return true;
+                }
+                return false;
+            };
+            
+            Func<bool> IsAnimationEndedRandom3Of4() => () =>
+            {
+                if (_isAnimClipEnded && Random.Range(0, 4) == 3)
+                {
+                    _isAnimClipEnded = false;
+                    return true;
+                }
+                return false;
+            };
+            
+            Func<bool> IsAnimationEndedRandom0Of6() => () =>
+            {
+                if (_isAnimClipEnded && Random.Range(0, 6) == 0)
+                {
+                    _isAnimClipEnded = false;
+                    return true;
+                }
+                return false;
+            };
+            
+            Func<bool> IsAnimationEndedRandom1Of6() => () =>
+            {
+                if (_isAnimClipEnded && Random.Range(0, 6) == 1)
+                {
+                    _isAnimClipEnded = false;
+                    return true;
+                }
+                return false;
+            };
+            
+            Func<bool> IsAnimationEndedRandom2Of6() => () =>
+            {
+                if (_isAnimClipEnded && Random.Range(0, 6) == 2)
+                {
+                    _isAnimClipEnded = false;
+                    return true;
+                }
+                return false;
+            };
+            
+            Func<bool> IsAnimationEndedRandom3Of6() => () =>
+            {
+                if (_isAnimClipEnded && Random.Range(0, 6) == 3)
+                {
+                    _isAnimClipEnded = false;
+                    return true;
+                }
+                return false;
+            };
+            
+            Func<bool> IsAnimationEndedRandom4Of6() => () =>
+            {
+                if (_isAnimClipEnded && Random.Range(0, 6) == 4)
+                {
+                    _isAnimClipEnded = false;
+                    return true;
+                }
+                return false;
+            };
+            
+            Func<bool> IsAnimationEndedRandom5Of6() => () =>
+            {
+                if (_isAnimClipEnded && Random.Range(0, 6) == 5)
+                {
+                    _isAnimClipEnded = false;
+                    return true;
+                }
+                return false;
+            };
+            
+            Func<bool> IsCollided() => () =>
+            {
+                if (_isCollided)
+                {
+                    _isCollided = false;
+                    return true;
+                }
+                return false;
+            };
+            
+            Func<bool> IsCollidedRandom0Of4() => () =>
+            {
+                if (_isCollided && Random.Range(0, 4) == 0)
+                {
+                    _isCollided = false;
+                    return true;
+                }
+                return false;
+            };
+            
+            Func<bool> IsCollidedRandom1Of4() => () =>
+            {
+                if (_isCollided && Random.Range(0, 4) == 1)
+                {
+                    _isCollided = false;
+                    return true;
+                }
+                return false;
+            };
+            
+            Func<bool> IsCollidedRandom2Of4() => () =>
+            {
+                if (_isCollided && Random.Range(0, 4) == 2)
+                {
+                    _isCollided = false;
+                    return true;
+                }
+                return false;
+            };
+            Func<bool> IsCollidedRandom3Of4() => () =>
+            {
+                if (_isCollided && Random.Range(0, 4) == 3)
+                {
+                    _isCollided = false;
+                    return true;
+                }
+                return false;
+            };
+            
+            Func<bool> IsAttackEndedSuccess() => () =>
+            {
+                if (_isAttackZoneExited && _isAttackSuccess)
+                {
+                    _isAttackZoneExited = false;
+                    _isAttackSuccess = false;
+                    return true;
+                }
+                return false;
+            };
+            
+            Func<bool> IsAttackEndedFail() => () =>
+            {
+                if (_isAttackZoneExited && !_isAttackSuccess)
+                {
+                    _isAttackZoneExited = false;
+                    _isAttackSuccess = false;
+                    return true;
+                }
+                return false;
+            };
+        }
+        
+
+        private void CreateMovementStates()
+        {
+            _idleState = (MegaSpiderIdleState)_stateFactory.Create(typeof(MegaSpiderIdleState));
             _enterLState = (MegaSpiderEnterLState)_stateFactory.Create(typeof(MegaSpiderEnterLState));
             _enterRState = (MegaSpiderEnterRState)_stateFactory.Create(typeof(MegaSpiderEnterRState));
             _zigzagAttackLState = (MegaSpiderZigzagAttackLState)_stateFactory.Create(typeof(MegaSpiderZigzagAttackLState));
@@ -95,19 +417,55 @@ namespace _GAME.Scripts.Enemies.MegaSpider
             _swingLState = (MegaSpiderSwingLState)_stateFactory.Create(typeof(MegaSpiderSwingLState));
             _swingRState = (MegaSpiderSwingRState)_stateFactory.Create(typeof(MegaSpiderSwingRState));
             _climbState = (MegaSpiderClimbState)_stateFactory.Create(typeof(MegaSpiderClimbState));
-            
-            enabled = false;
         }
 
         public void Play()
         {
             enabled = true;
-            _climbState.Enter();
+            OnEnterStarted();
+        }
+        
+        public void Collide()
+        {
+            _isCollided = true;
+            StartCoroutine(ResetCollided());
+        }
+        
+        public void OnAttackZoneExit()
+        {
+            _isAttackZoneExited = true;
+            _isAttackSuccess = false;
+        }
+
+        private IEnumerator ResetCollided()
+        {
+            yield return null;
+            _isCollided = false;
         }
 
         private void Update()
         {
-            _climbState.Tick();
+            _stateMachine.Tick();
+            _currentState = (EnemyMovementStateBase)_stateMachine.CurrentState;
+            _stateDebug = _currentState.GetType().Name;
         }
+
+        private void OnEnterStarted()
+        {
+            int side = Random.Range(0, 2);
+            
+            if (side == 0)
+                _stateMachine.SetState(_enterLState);
+            else
+                _stateMachine.SetState(_enterRState);
+        }
+
+        private void OnAnimClipEnded()
+        {
+            Debug.Log("AnimClipEnded");
+            _isAnimClipEnded = true;
+        }
+
+        
     }
 }

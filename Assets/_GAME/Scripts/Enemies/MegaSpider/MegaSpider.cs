@@ -35,5 +35,15 @@ namespace _GAME.Scripts.Enemies.MegaSpider
         {
             _movement.Play();
         }
+
+        public void Collide()
+        {
+            _movement.Collide();
+        }
+
+        public void AttackZoneExit()
+        {
+            _movement.OnAttackZoneExit();
+        }
     }
 }

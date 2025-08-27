@@ -34,12 +34,17 @@ namespace _GAME.Scripts.Enemies.MegaSpider.MovementStates
             }
             _animatedTransform.parent.localScale = scale;
             ParentVisibleBodyToAnimatedTransform();
+            _animator.enabled = true;
             _animator.Play(_clipHash, -1, 0);
         }
 
         public override void Tick() { }
 
-        public override void Exit() { }
+        public override void Exit()
+        {
+            _animator.enabled = false;
+            Debug.Log("Exiting Animation State");
+        }
     
         // TODO: extract to library as a static method 
         private void ParentVisibleBodyToAnimatedTransform()
@@ -48,5 +53,7 @@ namespace _GAME.Scripts.Enemies.MegaSpider.MovementStates
             _visibleBodyTransform.localPosition = Vector3.zero;
             _visibleBodyTransform.localRotation = Quaternion.identity;
         }
+        
+        
     }
 }

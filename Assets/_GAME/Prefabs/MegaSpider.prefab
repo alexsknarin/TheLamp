@@ -68,7 +68,8 @@ MonoBehaviour:
   _animatedTransform: {fileID: 1444277948395558880}
   _calculatedTransform: {fileID: 7908883935352720286}
   _animator: {fileID: 3519394517638303247}
-  _spiderRadius: 0.325
+  _animationClipEvents: {fileID: 6309120008655084617}
+  _stateDebug: 
   _lampTransform: {fileID: 0}
   _swingCurve:
     serializedVersion: 2
@@ -100,6 +101,15 @@ MonoBehaviour:
       weightedMode: 0
       inWeight: 0.02116601
       outWeight: 0
+    - serializedVersion: 3
+      time: 1.6875178
+      value: 3.4500964
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
@@ -127,6 +137,41 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  _cameraTransform: {fileID: 0}
+  _bounceSpeed: 2
+  _climbCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: -5.9705963
+      outSlope: -5.9705963
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.4585867
+    - serializedVersion: 3
+      time: 0.12929657
+      value: -0.31597257
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 5.5
+      inSlope: 4.0222073
+      outSlope: 4.0222073
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.115018435
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &1569569308862950355
 GameObject:
   m_ObjectHideFlags: 0
@@ -137,6 +182,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1444277948395558880}
   - component: {fileID: 3519394517638303247}
+  - component: {fileID: 6309120008655084617}
   m_Layer: 0
   m_Name: AnimatedTransform
   m_TagString: Untagged
@@ -182,6 +228,18 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &6309120008655084617
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1569569308862950355}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e865d4917669b394aa6039db99618a9d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2840899317319584481
 GameObject:
   m_ObjectHideFlags: 0
