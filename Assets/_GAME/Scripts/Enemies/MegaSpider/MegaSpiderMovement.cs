@@ -36,7 +36,7 @@ namespace _GAME.Scripts.Enemies.MegaSpider
         
         // States
         private readonly StateMachine _stateMachine = new();
-        private MegaSpiderMovementStateFactory _stateFactory;
+        private MegaSpiderMovementStateFactory _stateFactory; // DI it later
         private EnemyMovementStateBase _currentState;
         
         private MegaSpiderIdleState _idleState;
@@ -321,45 +321,6 @@ namespace _GAME.Scripts.Enemies.MegaSpider
             Func<bool> IsCollided() => () =>
             {
                 if (_isCollided)
-                {
-                    _isCollided = false;
-                    return true;
-                }
-                return false;
-            };
-            
-            Func<bool> IsCollidedRandom0Of4() => () =>
-            {
-                if (_isCollided && Random.Range(0, 4) == 0)
-                {
-                    _isCollided = false;
-                    return true;
-                }
-                return false;
-            };
-            
-            Func<bool> IsCollidedRandom1Of4() => () =>
-            {
-                if (_isCollided && Random.Range(0, 4) == 1)
-                {
-                    _isCollided = false;
-                    return true;
-                }
-                return false;
-            };
-            
-            Func<bool> IsCollidedRandom2Of4() => () =>
-            {
-                if (_isCollided && Random.Range(0, 4) == 2)
-                {
-                    _isCollided = false;
-                    return true;
-                }
-                return false;
-            };
-            Func<bool> IsCollidedRandom3Of4() => () =>
-            {
-                if (_isCollided && Random.Range(0, 4) == 3)
                 {
                     _isCollided = false;
                     return true;

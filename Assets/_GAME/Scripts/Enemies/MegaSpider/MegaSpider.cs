@@ -11,9 +11,12 @@ namespace _GAME.Scripts.Enemies.MegaSpider
         [SerializeField] private int _currentHealth;
         [Header("-- Movement --")]
         [SerializeField] private MegaSpiderMovement _movement;
+        [Header("Swarm")]
+        [SerializeField] private MegaSpiderSwarm _swarm;
 
         private void Awake()
         {
+            // TODO:
             Initialize();
             
         }
@@ -23,6 +26,11 @@ namespace _GAME.Scripts.Enemies.MegaSpider
             if (Input.GetKeyDown(KeyCode.L))
             {
                 Play();
+            }
+            
+            if (Input.GetKeyDown(KeyCode.I))
+            {
+                _swarm.Initialize();
             }
         }
 

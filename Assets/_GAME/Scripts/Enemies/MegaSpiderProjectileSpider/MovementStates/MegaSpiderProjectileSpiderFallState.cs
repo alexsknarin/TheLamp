@@ -1,8 +1,8 @@
 using UnityEngine;
 
-namespace _GAME.Scripts.Enemies.MegaSpider.MovementStates
+namespace _GAME.Scripts.Enemies.MegaSpiderProjectileSpider.MovementStates
 {
-    public class MegaSpiderFallState : EnemyMovementStateBase
+    public class MegaSpiderProjectileSpiderFallState : EnemyMovementStateBase
     {
         // TODO: Extract fall logic into a static class Methods - move to library
         
@@ -18,21 +18,18 @@ namespace _GAME.Scripts.Enemies.MegaSpider.MovementStates
         
         
         // Dependencies
-        private Transform _visibleBodyTransform;
-        private Transform _calculatedTransform;
+        private Transform _bodyTransform;
         private Transform _lampTransform;
         private float _exitYCoordinate;
 
-        public MegaSpiderFallState(
-            Transform visibleBodyTransform, 
-            Transform calculatedTransform,  
+        public MegaSpiderProjectileSpiderFallState(
+            Transform bodyTransform, 
             Transform lampTransform,
             float exitYCoordinate,
             bool isFreeFall
             )
         {
-            _visibleBodyTransform = visibleBodyTransform;
-            _calculatedTransform = calculatedTransform;
+            _bodyTransform = bodyTransform;
             _lampTransform = lampTransform;
             _exitYCoordinate = exitYCoordinate;
             _isFreeFall = isFreeFall;
@@ -42,15 +39,8 @@ namespace _GAME.Scripts.Enemies.MegaSpider.MovementStates
         public override void Enter()
         {
             IsReadyToSwitch = false;
-                
-            _visibleBodyTransform.SetParent(null);
             
-            _calculatedTransform.position = _visibleBodyTransform.position;
-            _visibleBodyTransform.SetParent(_calculatedTransform);
-            _visibleBodyTransform.localPosition = Vector3.zero;
-            
-            
-            _initialDirection = (_calculatedTransform.position - _lampTransform.position).normalized;
+            _initialDirection = (_bodyTransform.position - _lampTransform.position).normalized;
             _outForceMagnitude = InitialOutForceMagnitude;
             _fallForceMagnitude = 0f;
 
@@ -60,12 +50,12 @@ namespace _GAME.Scripts.Enemies.MegaSpider.MovementStates
         {
             if (_isFreeFall)
             {
-                _calculatedTransform.position += Vector3.down * (_fallForceMagnitude * Time.deltaTime);
+                _bodyTransform.position += Vector3.down * (_fallForceMagnitude * Time.deltaTime);
             }
             else
             {
-                _calculatedTransform.position += _initialDirection * (_outForceMagnitude * Time.deltaTime) 
-                                                 + Vector3.down * (_fallForceMagnitude * Time.deltaTime);    
+                _bodyTransform.position += _initialDirection * (_outForceMagnitude * Time.deltaTime) 
+                                           + Vector3.down * (_fallForceMagnitude * Time.deltaTime);    
             }
                 
             _outForceMagnitude -= OutForceIncrement * Time.deltaTime;
@@ -73,9 +63,8 @@ namespace _GAME.Scripts.Enemies.MegaSpider.MovementStates
             
             _fallForceMagnitude += FallForceIncrement * Time.deltaTime;
             
-            if (_calculatedTransform.position.y < _exitYCoordinate)
+            if (_bodyTransform.position.y < _exitYCoordinate)
             {
-                Debug.Log("MegaSpider FallState: Exiting");
                 IsReadyToSwitch = true;
             }
         }
