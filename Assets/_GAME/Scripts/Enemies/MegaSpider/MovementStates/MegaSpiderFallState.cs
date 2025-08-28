@@ -73,6 +73,7 @@ namespace _GAME.Scripts.Enemies.MegaSpider.MovementStates
             
             if (_calculatedTransform.position.y < _exitYCoordinate)
             {
+                Debug.Log("MegaSpider FallState: Exiting");
                 IsReadyToSwitch = true;
             }
         }

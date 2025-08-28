@@ -9,6 +9,8 @@ using Random = UnityEngine.Random;
 
 // TODO: Add cord attack
 // TODO: Add Death state
+// TODO: Fix Swing State - take camera into a consideration to decide on bottom Y for Fall/Sucess/Dropfall
+// TODO: Fix Swing State - move spiderweb pivot to another position
 
 namespace _GAME.Scripts.Enemies.MegaSpider
 {
@@ -94,120 +96,121 @@ namespace _GAME.Scripts.Enemies.MegaSpider
             
             // Initialize StateMachine 
             // Enter to Attacks
-            At(_enterLState, _wireAttackState, IsAnimationEndedRandom0Of4());
-            At(_enterLState, _zigzagAttackLState, IsAnimationEndedRandom1Of4());
-            At(_enterLState, _projectileBottomAttackLState, IsAnimationEndedRandom2Of4());
-            At(_enterLState, _projectileDoubleUpAttackLState, IsAnimationEndedRandom3Of4());
+            At(_enterLState, _wireAttackState, IsAnimationEndedRandom0Of4()); //+
+            At(_enterLState, _zigzagAttackLState, IsAnimationEndedRandom1Of4());//+
+            At(_enterLState, _projectileBottomAttackLState, IsAnimationEndedRandom2Of4());//+
+            At(_enterLState, _projectileDoubleUpAttackLState, IsAnimationEndedRandom3Of4());//+
             
-            At(_enterRState, _wireAttackState, IsAnimationEndedRandom0Of4());
-            At(_enterRState, _zigzagAttackRState, IsAnimationEndedRandom1Of4());
-            At(_enterRState, _projectileBottomAttackRState, IsAnimationEndedRandom2Of4());
-            At(_enterRState, _projectileDoubleUpAttackRState, IsAnimationEndedRandom3Of4());
+            At(_enterRState, _wireAttackState, IsAnimationEndedRandom0Of4());//+
+            At(_enterRState, _zigzagAttackRState, IsAnimationEndedRandom1Of4());//+
+            At(_enterRState, _projectileBottomAttackRState, IsAnimationEndedRandom2Of4());//+
+            At(_enterRState, _projectileDoubleUpAttackRState, IsAnimationEndedRandom3Of4());//+
             
             // Wire Attack Transitions
-            At(_wireAttackState, _bounceState, () => _wireAttackState.IsReadyToSwitch);
-            At(_wireAttackState, _dropFallState, () => _wireAttackState.IsDropped);
+            At(_wireAttackState, _bounceState, () => _wireAttackState.IsReadyToSwitch); //+
+            At(_wireAttackState, _dropFallState, () => _wireAttackState.IsDropped); 
             
             // Zigzag Attack Transitions
-            At(_zigzagAttackLState, _bounceState, IsCollided());
-            At(_zigzagAttackRState, _bounceState, IsCollided());
+            At(_zigzagAttackLState, _bounceState, IsCollided()); //+
+            At(_zigzagAttackRState, _bounceState, IsCollided()); //+
             
             // Projectile Bottom Transitions
-            At(_projectileBottomAttackLState, _wireAttackState, IsAnimationEndedRandom0Of4());
-            At(_projectileBottomAttackRState, _wireAttackState, IsAnimationEndedRandom0Of4());
-            At(_projectileBottomAttackLState, _projectileBottomAttackRState, IsAnimationEndedRandom1Of4());
-            At(_projectileBottomAttackRState, _projectileBottomAttackLState, IsAnimationEndedRandom1Of4());
-            At(_projectileBottomAttackLState, _projectileTopAttackRState, IsAnimationEndedRandom2Of4());
-            At(_projectileBottomAttackRState, _projectileTopAttackLState, IsAnimationEndedRandom2Of4());
-            At(_projectileBottomAttackLState, _hangJumpAttackRState, IsAnimationEndedRandom3Of4());
-            At(_projectileBottomAttackRState, _hangJumpAttackLState, IsAnimationEndedRandom3Of4());
+            At(_projectileBottomAttackLState, _wireAttackState, IsAnimationEndedRandom0Of4()); //+
+            At(_projectileBottomAttackRState, _wireAttackState, IsAnimationEndedRandom0Of4()); //+
+            At(_projectileBottomAttackLState, _projectileBottomAttackRState, IsAnimationEndedRandom1Of4()); //+
+            At(_projectileBottomAttackRState, _projectileBottomAttackLState, IsAnimationEndedRandom1Of4()); //+
+            At(_projectileBottomAttackLState, _projectileTopAttackRState, IsAnimationEndedRandom2Of4()); //+
+            At(_projectileBottomAttackRState, _projectileTopAttackLState, IsAnimationEndedRandom2Of4()); //+
+            At(_projectileBottomAttackLState, _hangJumpAttackRState, IsAnimationEndedRandom3Of4()); //+
+            At(_projectileBottomAttackRState, _hangJumpAttackLState, IsAnimationEndedRandom3Of4()); //+
             
             // Projectile Double Up Transitions
-            At(_projectileDoubleUpAttackLState, _wireAttackState, IsAnimationEndedRandom0Of6());
-            At(_projectileDoubleUpAttackRState, _wireAttackState, IsAnimationEndedRandom0Of6());
-            At(_projectileDoubleUpAttackLState, _hangAttackLState, IsAnimationEndedRandom1Of6());
-            At(_projectileDoubleUpAttackRState, _hangAttackRState, IsAnimationEndedRandom1Of6());
-            At(_projectileDoubleUpAttackLState, _hangJumpAttackLState, IsAnimationEndedRandom2Of6());
-            At(_projectileDoubleUpAttackRState, _hangJumpAttackRState, IsAnimationEndedRandom2Of6());
-            At(_projectileDoubleUpAttackLState, _tangleAttackLState, IsAnimationEndedRandom3Of6());
-            At(_projectileDoubleUpAttackRState, _tangleAttackRState, IsAnimationEndedRandom3Of6());
-            At(_projectileDoubleUpAttackLState, _projectileTopAttackLState, IsAnimationEndedRandom4Of6());
-            At(_projectileDoubleUpAttackRState, _projectileTopAttackRState, IsAnimationEndedRandom4Of6());
-            At(_projectileDoubleUpAttackLState, _projectileDoubleDownAttackLState, IsAnimationEndedRandom5Of6());
-            At(_projectileDoubleUpAttackRState, _projectileDoubleDownAttackRState, IsAnimationEndedRandom5Of6());
+            At(_projectileDoubleUpAttackLState, _wireAttackState, IsAnimationEndedRandom0Of6()); //+
+            At(_projectileDoubleUpAttackRState, _wireAttackState, IsAnimationEndedRandom0Of6()); //+
+            At(_projectileDoubleUpAttackLState, _hangAttackLState, IsAnimationEndedRandom1Of6()); //+
+            At(_projectileDoubleUpAttackRState, _hangAttackRState, IsAnimationEndedRandom1Of6()); //+
+            At(_projectileDoubleUpAttackLState, _hangJumpAttackLState, IsAnimationEndedRandom2Of6()); //+
+            At(_projectileDoubleUpAttackRState, _hangJumpAttackRState, IsAnimationEndedRandom2Of6()); //+
+            At(_projectileDoubleUpAttackLState, _tangleAttackLState, IsAnimationEndedRandom3Of6()); //+
+            At(_projectileDoubleUpAttackRState, _tangleAttackRState, IsAnimationEndedRandom3Of6()); //+
+            At(_projectileDoubleUpAttackLState, _projectileTopAttackLState, IsAnimationEndedRandom4Of6()); //+
+            At(_projectileDoubleUpAttackRState, _projectileTopAttackRState, IsAnimationEndedRandom4Of6()); //+
+            At(_projectileDoubleUpAttackLState, _projectileDoubleDownAttackLState, IsAnimationEndedRandom5Of6()); //+
+            At(_projectileDoubleUpAttackRState, _projectileDoubleDownAttackRState, IsAnimationEndedRandom5Of6()); //+
             
             // Hang Attack Transitions
-            At(_hangAttackLState, _bounceState, IsCollided());
-            At(_hangAttackRState, _bounceState, IsCollided());
+            At(_hangAttackLState, _bounceState, IsCollided()); //+
+            At(_hangAttackRState, _bounceState, IsCollided()); //+
             
             // Hang Jump Attack Transitions
-            At(_hangJumpAttackLState, _bounceState, IsCollided());
-            At(_hangJumpAttackRState, _bounceState, IsCollided());
+            At(_hangJumpAttackLState, _bounceState, IsCollided()); //+
+            At(_hangJumpAttackRState, _bounceState, IsCollided()); //+
             
             // Tangle Attack Transitions
-            At(_tangleAttackLState, _bounceState, IsCollided());
-            At(_tangleAttackRState, _bounceState, IsCollided());
+            At(_tangleAttackLState, _bounceState, IsCollided()); //+
+            At(_tangleAttackRState, _bounceState, IsCollided()); //+
             
             // Projectile Top Attack Transitions
-            At(_projectileTopAttackLState, _projectileDoubleDownAttackRState, IsCollidedRandom0Of4());
-            At(_projectileTopAttackRState, _projectileDoubleDownAttackLState, IsCollidedRandom0Of4());
-            At(_projectileTopAttackLState, _projectileTopAttackRState, IsCollidedRandom1Of4());
-            At(_projectileTopAttackRState, _projectileTopAttackLState, IsCollidedRandom1Of4());
-            At(_projectileTopAttackLState, _hangJumpAttackRState, IsCollidedRandom2Of4());
-            At(_projectileTopAttackRState, _hangJumpAttackLState, IsCollidedRandom2Of4());
-            At(_projectileTopAttackLState, _hangAttackRState, IsCollidedRandom3Of4());
-            At(_projectileTopAttackRState, _hangAttackLState, IsCollidedRandom3Of4());
+            At(_projectileTopAttackLState, _projectileDoubleDownAttackRState, IsAnimationEndedRandom0Of4()); //+
+            At(_projectileTopAttackRState, _projectileDoubleDownAttackLState, IsAnimationEndedRandom0Of4()); //+
+            At(_projectileTopAttackLState, _projectileTopAttackRState, IsAnimationEndedRandom1Of4()); //+
+            At(_projectileTopAttackRState, _projectileTopAttackLState, IsAnimationEndedRandom1Of4()); //+
+            At(_projectileTopAttackLState, _hangJumpAttackRState, IsAnimationEndedRandom2Of4()); //+
+            At(_projectileTopAttackRState, _hangJumpAttackLState, IsAnimationEndedRandom2Of4()); //+
+            At(_projectileTopAttackLState, _hangAttackRState, IsAnimationEndedRandom3Of4()); //+
+            At(_projectileTopAttackRState, _hangAttackLState, IsAnimationEndedRandom3Of4()); //+
             
             // Projectile Double Down Attack Transitions
-            At(_projectileDoubleDownAttackLState, _wireAttackState, IsAnimationEndedRandom0Of4());
-            At(_projectileDoubleDownAttackRState, _wireAttackState, IsAnimationEndedRandom0Of4());
-            At(_projectileDoubleDownAttackLState, _zigzagAttackLState, IsAnimationEndedRandom1Of4());
-            At(_projectileDoubleDownAttackRState, _zigzagAttackRState, IsAnimationEndedRandom1Of4());
-            At(_projectileDoubleDownAttackLState, _projectileBottomAttackLState, IsAnimationEndedRandom2Of4());
-            At(_projectileDoubleDownAttackRState, _projectileBottomAttackRState, IsAnimationEndedRandom2Of4());
-            At(_projectileDoubleDownAttackLState, _projectileDoubleUpAttackLState, IsAnimationEndedRandom3Of4());
-            At(_projectileDoubleDownAttackRState, _projectileDoubleUpAttackRState, IsAnimationEndedRandom3Of4());
+            At(_projectileDoubleDownAttackLState, _wireAttackState, IsAnimationEndedRandom0Of4()); //+
+            At(_projectileDoubleDownAttackRState, _wireAttackState, IsAnimationEndedRandom0Of4()); //+
+            At(_projectileDoubleDownAttackLState, _zigzagAttackLState, IsAnimationEndedRandom1Of4()); //+
+            At(_projectileDoubleDownAttackRState, _zigzagAttackRState, IsAnimationEndedRandom1Of4()); //+
+            At(_projectileDoubleDownAttackLState, _projectileBottomAttackLState, IsAnimationEndedRandom2Of4());//+
+            At(_projectileDoubleDownAttackRState, _projectileBottomAttackRState, IsAnimationEndedRandom2Of4()); //+
+            At(_projectileDoubleDownAttackLState, _projectileDoubleUpAttackLState, IsAnimationEndedRandom3Of4()); //+
+            At(_projectileDoubleDownAttackRState, _projectileDoubleUpAttackRState, IsAnimationEndedRandom3Of4()); //+
             
             // Bounce Transitions
-            At(_bounceState, _fallState, IsAttackEndedFail());
+            At(_bounceState, _fallState, IsAttackEndedFail()); //+
             At(_bounceState, _successFallState, IsAttackEndedSuccess());
             
             // Fall Transitions
-            At(_fallState, _swingLState, () => _fallState.IsReadyToSwitch && transform.position.x < -1.11f);
-            At(_fallState, _swingRState, () => _fallState.IsReadyToSwitch && transform.position.x > 1.11f);
-            At(_fallState, _climbState, () => _fallState.IsReadyToSwitch && (transform.position.x > -1.11f && transform.position.x < 1.11f));
+            // TODO: fix magic numbers - tune number to make swing more often
+            At(_fallState, _swingLState, () => _fallState.IsReadyToSwitch && (_calculatedTransform.position.x > -0.9f && _calculatedTransform.position.x < 0f)); //+
+            At(_fallState, _swingRState, () => _fallState.IsReadyToSwitch && (_calculatedTransform.position.x > 0f && _calculatedTransform.position.x < 0.9f));
+            At(_fallState, _climbState, () => _fallState.IsReadyToSwitch && (_calculatedTransform.position.x < -0.9f || _calculatedTransform.position.x > 0.9f)); //+
             
             // Success Fall Transitions
-            At(_successFallState, _swingLState, () => _successFallState.IsReadyToSwitch && transform.position.x < -1.11f);
-            At(_successFallState, _swingRState, () => _successFallState.IsReadyToSwitch && transform.position.x > 1.11f);
-            At(_successFallState, _climbState, () => _successFallState.IsReadyToSwitch && (transform.position.x > -1.11f && transform.position.x < 1.11f));
+            At(_successFallState, _swingLState, () => _successFallState.IsReadyToSwitch && (_calculatedTransform.position.x > -0.9f && _calculatedTransform.position.x < 0f));
+            At(_successFallState, _swingRState, () => _successFallState.IsReadyToSwitch && (_calculatedTransform.position.x > 0f && _calculatedTransform.position.x < 0.9f));
+            At(_successFallState, _climbState, () => _successFallState.IsReadyToSwitch && (_calculatedTransform.position.x < -0.9f || _calculatedTransform.position.x > 0.9f));
             
             // Drop Fall Transitions
-            At(_dropFallState, _swingLState, () => _dropFallState.IsReadyToSwitch && transform.position.x < -1.11f);
-            At(_dropFallState, _swingRState, () => _dropFallState.IsReadyToSwitch && transform.position.x > 1.11f);
-            At(_dropFallState, _climbState, () => _dropFallState.IsReadyToSwitch && (transform.position.x > -1.11f && transform.position.x < 1.11f));
+            At(_dropFallState, _swingLState, () => _dropFallState.IsReadyToSwitch && (_calculatedTransform.position.x > -0.9f && _calculatedTransform.position.x < 0f));
+            At(_dropFallState, _swingRState, () => _dropFallState.IsReadyToSwitch && (_calculatedTransform.position.x > 0f && _calculatedTransform.position.x < 0.9f));
+            At(_dropFallState, _climbState, () => _dropFallState.IsReadyToSwitch && (_calculatedTransform.position.x < -0.9f || _calculatedTransform.position.x > 0.9f));
             
             // Swing Transitions
-            At(_swingLState, _wireAttackState, () => _swingLState.IsReadyToSwitch && Random.Range(0,4) == 0);
-            At(_swingRState, _wireAttackState, () => _swingRState.IsReadyToSwitch && Random.Range(0,4) == 0);
-            At(_swingLState, _zigzagAttackLState, () => _swingLState.IsReadyToSwitch && Random.Range(0,4) == 1);
-            At(_swingRState, _zigzagAttackRState, () => _swingRState.IsReadyToSwitch && Random.Range(0,4) == 1);
-            At(_swingLState, _projectileBottomAttackLState, () => _swingLState.IsReadyToSwitch && Random.Range(0,4) == 2);
-            At(_swingRState, _projectileBottomAttackRState, () => _swingRState.IsReadyToSwitch && Random.Range(0,4) == 2);
-            At(_swingLState, _projectileDoubleUpAttackLState, () => _swingLState.IsReadyToSwitch && Random.Range(0,4) == 3);
-            At(_swingRState, _projectileDoubleUpAttackRState, () => _swingRState.IsReadyToSwitch && Random.Range(0,4) == 3);
+            At(_swingLState, _wireAttackState, () => _swingLState.IsReadyToSwitch && Random.Range(0,4) == 0); //+
+            At(_swingRState, _wireAttackState, () => _swingRState.IsReadyToSwitch && Random.Range(0,4) == 0); //+
+            At(_swingLState, _zigzagAttackLState, () => _swingLState.IsReadyToSwitch && Random.Range(0,4) == 1); //+
+            At(_swingRState, _zigzagAttackRState, () => _swingRState.IsReadyToSwitch && Random.Range(0,4) == 1); //+
+            At(_swingLState, _projectileBottomAttackLState, () => _swingLState.IsReadyToSwitch && Random.Range(0,4) == 2); //+
+            At(_swingRState, _projectileBottomAttackRState, () => _swingRState.IsReadyToSwitch && Random.Range(0,4) == 2); //+
+            At(_swingLState, _projectileDoubleUpAttackLState, () => _swingLState.IsReadyToSwitch && Random.Range(0,4) == 3); //+
+            At(_swingRState, _projectileDoubleUpAttackRState, () => _swingRState.IsReadyToSwitch && Random.Range(0,4) == 3); //+
             
             // Climb Transitions
-            At(_climbState, _hangAttackLState, () => _climbState.IsReadyToSwitch && transform.position.x < 0 && Random.Range(0,5) == 0);
-            At(_climbState, _hangAttackRState, () => _climbState.IsReadyToSwitch && transform.position.x > 0 && Random.Range(0,5) == 0);
-            At(_climbState, _hangJumpAttackLState, () => _climbState.IsReadyToSwitch && transform.position.x < 0 && Random.Range(0,5) == 1);
-            At(_climbState, _hangJumpAttackRState, () => _climbState.IsReadyToSwitch && transform.position.x > 0 && Random.Range(0,5) == 1);
-            At(_climbState, _tangleAttackLState, () => _climbState.IsReadyToSwitch && transform.position.x < 0 && Random.Range(0,5) == 2);
-            At(_climbState, _tangleAttackRState, () => _climbState.IsReadyToSwitch && transform.position.x > 0 && Random.Range(0,5) == 3);
-            At(_climbState, _projectileTopAttackLState, () => _climbState.IsReadyToSwitch && transform.position.x < 0 && Random.Range(0,5) == 3);
-            At(_climbState, _projectileTopAttackRState, () => _climbState.IsReadyToSwitch && transform.position.x > 0 && Random.Range(0,5) == 3);
-            At(_climbState, _projectileDoubleDownAttackLState, () => _climbState.IsReadyToSwitch && transform.position.x < 0 && Random.Range(0,5) == 4);
-            At(_climbState, _projectileDoubleDownAttackRState, () => _climbState.IsReadyToSwitch && transform.position.x > 0 && Random.Range(0,5) == 4);
+            At(_climbState, _hangAttackLState, () => _climbState.IsReadyToSwitch && _calculatedTransform.position.x < 0 && Random.Range(0,5) == 0); //+
+            At(_climbState, _hangAttackRState, () => _climbState.IsReadyToSwitch && _calculatedTransform.position.x > 0 && Random.Range(0,5) == 0); //+
+            At(_climbState, _hangJumpAttackLState, () => _climbState.IsReadyToSwitch && _calculatedTransform.position.x < 0 && Random.Range(0,5) == 1); //+
+            At(_climbState, _hangJumpAttackRState, () => _climbState.IsReadyToSwitch && _calculatedTransform.position.x > 0 && Random.Range(0,5) == 1);
+            At(_climbState, _tangleAttackLState, () => _climbState.IsReadyToSwitch && _calculatedTransform.position.x < 0 && Random.Range(0,5) == 2); //+
+            At(_climbState, _tangleAttackRState, () => _climbState.IsReadyToSwitch && _calculatedTransform.position.x > 0 && Random.Range(0,5) == 3); //+
+            At(_climbState, _projectileTopAttackLState, () => _climbState.IsReadyToSwitch && _calculatedTransform.position.x < 0 && Random.Range(0,5) == 3); //+
+            At(_climbState, _projectileTopAttackRState, () => _climbState.IsReadyToSwitch && _calculatedTransform.position.x > 0 && Random.Range(0,5) == 3); //+
+            At(_climbState, _projectileDoubleDownAttackLState, () => _climbState.IsReadyToSwitch && _calculatedTransform.position.x < 0 && Random.Range(0,5) == 4); //+
+            At(_climbState, _projectileDoubleDownAttackRState, () => _climbState.IsReadyToSwitch && _calculatedTransform.position.x > 0 && Random.Range(0,5) == 4); //+
 
             
             
@@ -437,6 +440,18 @@ namespace _GAME.Scripts.Enemies.MegaSpider
             _isAttackSuccess = false;
         }
 
+        private void OnEnterStarted()
+        {
+            // int side = Random.Range(0, 2);
+            //
+            // if (side == 0)
+            //     _stateMachine.SetState(_enterLState);
+            // else
+            //     _stateMachine.SetState(_enterRState);
+            
+            _stateMachine.SetState(_climbState);
+        }
+
         private IEnumerator ResetCollided()
         {
             yield return null;
@@ -448,16 +463,6 @@ namespace _GAME.Scripts.Enemies.MegaSpider
             _stateMachine.Tick();
             _currentState = (EnemyMovementStateBase)_stateMachine.CurrentState;
             _stateDebug = _currentState.GetType().Name;
-        }
-
-        private void OnEnterStarted()
-        {
-            int side = Random.Range(0, 2);
-            
-            if (side == 0)
-                _stateMachine.SetState(_enterLState);
-            else
-                _stateMachine.SetState(_enterRState);
         }
 
         private void OnAnimClipEnded()

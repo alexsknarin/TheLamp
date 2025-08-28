@@ -77,7 +77,7 @@ namespace _GAME.Scripts.Enemies.MegaSpider.MovementStates
             CreateEmptyAttackWireVariables();
         }
 
-        public bool IsDropped { get; protected set; }
+        public bool IsDropped { get; private set; }
         
         public override void Enter()
         {
@@ -91,9 +91,12 @@ namespace _GAME.Scripts.Enemies.MegaSpider.MovementStates
                 Debug.DrawLine(range.p1, range.p2, Color.red, 10);
             }
             
+            _wireState = WireStates.Inactive;
+            
             IsDropped = false;
             IsReadyToSwitch = false;
             _destroyedWiresCount = 0;
+            _localTime = 0;
             InitializeAttackWires();
             StartWireAttack();
         }
@@ -227,7 +230,7 @@ namespace _GAME.Scripts.Enemies.MegaSpider.MovementStates
                 float fullSideB = (fullSideA * sideB1) / sideA1;
                 _currentPosition = lampEndPos + (_currentPosition - lampEndPos).normalized * fullSideB;
                 
-                IsReadyToSwitch = true;
+                IsReadyToSwitch = true; // TODO: External collision Detection!
             }
         }
         
@@ -264,6 +267,8 @@ namespace _GAME.Scripts.Enemies.MegaSpider.MovementStates
         
         private void InitializeAttackWires() 
         {
+            _availableWireRangeIndices.Clear();
+            
             for (int i = 0; i < _webStartPositionsRanges.Length; i++)
                 _availableWireRangeIndices.Add(i);
         

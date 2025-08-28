@@ -4,7 +4,7 @@ namespace _GAME.Scripts.Enemies.MegaSpider.MovementStates
 {
     public class MegaSpiderClimbState : EnemyMovementStateBase
     {
-        private const float ClimbDuration = 2f;
+        private const float ClimbDuration = 2.25f;
         
         private float _originalHeight;
         private float _localTime;
