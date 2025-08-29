@@ -4327,7 +4327,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &932654138
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4335,7 +4335,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 932654137}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 60cb705c576f5df428a7679f73c2580f, type: 3}
   m_Name: 
@@ -4348,6 +4348,7 @@ MonoBehaviour:
   _projectile01Transform: {fileID: 74244558}
   _projectileSpider02: {fileID: 787929176}
   _projectile02Transform: {fileID: 787929174}
+  _isEnteredAttackZone: 0
 --- !u!4 &932654139
 Transform:
   m_ObjectHideFlags: 0

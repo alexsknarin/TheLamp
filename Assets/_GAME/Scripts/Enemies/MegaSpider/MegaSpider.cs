@@ -49,7 +49,6 @@ namespace _GAME.Scripts.Enemies.MegaSpider
 
         public void Play()
         {
-            Debug.Log("MainSpider Play");
             _movement.Play();
         }
 
