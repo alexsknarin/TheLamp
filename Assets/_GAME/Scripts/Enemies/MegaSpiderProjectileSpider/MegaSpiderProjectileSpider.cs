@@ -11,11 +11,21 @@ namespace _GAME.Scripts.Enemies.MegaSpiderProjectileSpider
         public void Initialize()
         {
             _movement.Initialize();
+            _movement.FallEnded += OnFallEnded;
+        }
+
+        private void OnDestroy()
+        {
+            _movement.FallEnded -= OnFallEnded;
+        }
+
+        private void OnFallEnded()
+        {
+            gameObject.SetActive(false);
         }
 
         public void Play()
         {
-            Debug.Log("-- p");
             _movement.Play();
         }
 

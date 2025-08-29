@@ -13,11 +13,13 @@ namespace _GAME.Scripts.Enemies.MegaSpider
         [SerializeField] private MegaSpiderMovement _movement;
         [Header("Swarm")]
         [SerializeField] private MegaSpiderSwarm _swarm;
+        [SerializeField] private MegaSpiderAnimationClipEventListener _animationClipEvents;
 
         private void Awake()
         {
             // TODO:
             Initialize();
+            _swarm.Initialize();
             
         }
 
@@ -27,20 +29,27 @@ namespace _GAME.Scripts.Enemies.MegaSpider
             {
                 Play();
             }
-            
-            if (Input.GetKeyDown(KeyCode.I))
-            {
-                _swarm.Initialize();
-            }
         }
 
         public void Initialize()
         {
             _movement.Initialize();
+            
+            _animationClipEvents.ProjectileResetCalled += _swarm.Reset;
+            _animationClipEvents.ProjectileAttack01Called += _swarm.Attack01;
+            _animationClipEvents.ProjectileAttack02Called += _swarm.Attack02;
         }
-        
+
+        private void OnDestroy()
+        {
+            _animationClipEvents.ProjectileResetCalled -= _swarm.Reset;
+            _animationClipEvents.ProjectileAttack01Called -= _swarm.Attack01;
+            _animationClipEvents.ProjectileAttack02Called -= _swarm.Attack02;
+        }
+
         public void Play()
         {
+            Debug.Log("MainSpider Play");
             _movement.Play();
         }
 

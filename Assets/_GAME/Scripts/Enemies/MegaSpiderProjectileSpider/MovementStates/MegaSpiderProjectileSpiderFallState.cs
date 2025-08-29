@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace _GAME.Scripts.Enemies.MegaSpiderProjectileSpider.MovementStates
@@ -14,8 +15,6 @@ namespace _GAME.Scripts.Enemies.MegaSpiderProjectileSpider.MovementStates
         private float _outForceMagnitude;
         private float _fallForceMagnitude;
         private bool _isFreeFall;
-        
-        
         
         // Dependencies
         private Transform _bodyTransform;
@@ -35,6 +34,7 @@ namespace _GAME.Scripts.Enemies.MegaSpiderProjectileSpider.MovementStates
             _isFreeFall = isFreeFall;
         }
         
+        public event Action Ended;
         
         public override void Enter()
         {
@@ -67,6 +67,12 @@ namespace _GAME.Scripts.Enemies.MegaSpiderProjectileSpider.MovementStates
             {
                 IsReadyToSwitch = true;
             }
+        }
+
+        public override void Exit()
+        {
+            base.Exit();
+            Ended?.Invoke();
         }
     }
 }

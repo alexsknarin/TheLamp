@@ -12,12 +12,13 @@ public class TestCollider : MonoBehaviour
     [SerializeField] private float _projectileCollisionDistance;
     [SerializeField] private MegaSpiderProjectileSpider _projectileSpider01;
     [SerializeField] private Transform _projectile01Transform;
-    // [Header("Projectile02")]
-    // [SerializeField] private MegaSpiderProjectileSpider _projectileSpider02;
-    // [SerializeField] private Transform _projectile02;
+    [SerializeField] private MegaSpiderProjectileSpider _projectileSpider02;
+    [SerializeField] private Transform _projectile02Transform;
 
-    private bool _isEnteredAttackZone;
+
+    [SerializeField]  private bool _isEnteredAttackZone;
     private bool _isP01EnteredAttackZone;
+    private bool _isP02EnteredAttackZone;
     
     
     void Update()
@@ -54,6 +55,23 @@ public class TestCollider : MonoBehaviour
         if (_projectile01Transform.position.magnitude < _projectileCollisionDistance)
         {
             _projectileSpider01.Collide();
+        }
+        
+        // Projectile02
+        if (_projectile02Transform.position.magnitude < _projectileCollisionDistance+0.1f && !_isP02EnteredAttackZone)
+        {
+            _isP02EnteredAttackZone = true;
+        }
+        
+        if (_projectile02Transform.position.magnitude > _projectileCollisionDistance + 0.1f && _isP02EnteredAttackZone)
+        {
+            _projectileSpider02.AttackZoneExit();
+            _isP02EnteredAttackZone = false;
+        }
+        
+        if (_projectile02Transform.position.magnitude < _projectileCollisionDistance)
+        {
+            _projectileSpider02.Collide();
         }
     }
 }

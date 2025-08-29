@@ -6,7 +6,7 @@ namespace _GAME.Scripts.Enemies.MegaSpiderProjectileSpider.MovementStates
     {
         private const float TransitionDuration = 0.33f;
         private const float Speed = 5f;
-        private const float Gravity = 6.5f; // TODO: - remove if on top
+        private const float Gravity = 3.5f; // TODO: - remove if on top
 
         private float _localTime;
         private float _gravityMagnitude;
@@ -32,6 +32,8 @@ namespace _GAME.Scripts.Enemies.MegaSpiderProjectileSpider.MovementStates
 
         public override void Enter()
         {
+            _bodyTransform.SetParent(null);
+            
             Vector3 currentPosition = _bodyTransform.position;
             Vector3 lampPosition = _lampTransform.position;
             

@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace _GAME.Scripts.Enemies.MegaSpiderProjectileSpider.MovementStates
@@ -21,6 +22,8 @@ namespace _GAME.Scripts.Enemies.MegaSpiderProjectileSpider.MovementStates
             _lampTransform = lampTransform;
         }
         
+        public event Action Ended;
+        
         public override void Enter()
         {
             _direction = (_bodyTransform.position - _lampTransform.position).normalized;
@@ -32,6 +35,11 @@ namespace _GAME.Scripts.Enemies.MegaSpiderProjectileSpider.MovementStates
             newPosition += _direction * (Speed * Time.deltaTime);
             
             _bodyTransform.position = newPosition;
+        }
+        
+        public override void Exit()
+        {
+            Ended?.Invoke();
         }
     }
 }

@@ -385,6 +385,7 @@ namespace _GAME.Scripts.Enemies.MegaSpider
 
         public void Play()
         {
+            Debug.Log("Movement Play");
             enabled = true;
             OnEnterStarted();
         }
@@ -403,14 +404,14 @@ namespace _GAME.Scripts.Enemies.MegaSpider
 
         private void OnEnterStarted()
         {
-            // int side = Random.Range(0, 2);
-            //
-            // if (side == 0)
-            //     _stateMachine.SetState(_enterLState);
-            // else
-            //     _stateMachine.SetState(_enterRState);
+            int side = Random.Range(0, 2);
             
-            _stateMachine.SetState(_climbState);
+            if (side == 0)
+                _stateMachine.SetState(_enterLState);
+            else
+                _stateMachine.SetState(_enterRState);
+            
+            // _stateMachine.SetState(_projectileTopAttackRState);
         }
 
         private IEnumerator ResetCollided()
