@@ -72,6 +72,8 @@ namespace _GAME.Scripts.InGamePresentation.CameraShake
         
             if (_isStrategyEnabled)
             {
+                if (_cameraShakeStrategy == null)
+                    return;
                 _displaceVector = _cameraShakeStrategy.Execute();
                 transform.localPosition = _originalPos + _displaceVector;
             }
