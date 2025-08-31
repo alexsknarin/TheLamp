@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace _GAME.Scripts.Enemies.MegaSpider.MovementStates
@@ -17,6 +18,14 @@ namespace _GAME.Scripts.Enemies.MegaSpider.MovementStates
                 animatedTransform, 
                 isLeftSide)
         {
+        }
+
+        public event Action Started;
+
+        public override void Enter()
+        {
+            base.Enter();
+            Started?.Invoke();
         }
     }
 }

@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using _GAME.Scripts.Enemies.Dragonfly;
 using _GAME.Scripts.Enemies.MegaSpider.MovementStates;
 using _GAME.Scripts.Factories;
 using _GAME.Scripts.Lib;
@@ -27,8 +28,6 @@ namespace _GAME.Scripts.Enemies.MegaSpider
         [SerializeField] private Transform _lampTransform; // TODO: DI
         [SerializeField] private AnimationCurve _swingCurve;
         [SerializeField] private AnimationCurve _dropCurve;
-        [Header("Wire Attack Settings")]
-        [SerializeField] private Transform _cameraTransform;
         [Header("Bounce Settings")]
         [SerializeField] private float _bounceSpeed;
         [Header("Climb Settings")]
@@ -36,7 +35,6 @@ namespace _GAME.Scripts.Enemies.MegaSpider
         
         // States
         private readonly StateMachine _stateMachine = new();
-        private MegaSpiderMovementStateFactory _stateFactory; // DI it later
         private EnemyMovementStateBase _currentState;
         
         private MegaSpiderIdleState _idleState;
@@ -68,32 +66,106 @@ namespace _GAME.Scripts.Enemies.MegaSpider
         private MegaSpiderClimbState _climbState;
 
         private bool _isAnimClipEnded = false;
-        private bool _isCollided = false;
-        private bool _isAttackZoneExited = false;
-        private bool _isAttackSuccess = false;
+        private bool _isBounced = false;
+        private AttackResult _attackResult;
+
+        // Dependencies
+        private Transform _cameraTransform;
+        private MegaSpiderMovementStateFactory _stateFactory;
         
+        public void Construct(Transform cameraTransform, MegaSpiderMovementStateFactory stateFactory)
+        {
+            _cameraTransform = cameraTransform;
+            _stateFactory = stateFactory;
+        }
+        
+        public event Action AnimatedAttackStarted;
         
         public void Initialize()
         {
             enabled = false;
-            _animationClipEvents.AnimClipEnded += OnAnimClipEnded;
-            
-            _stateFactory = new();
             _stateFactory.SetEnemyDependencies(
                 _animator, 
                 _visibleBodyTransform, 
                 _animatedTransform,
                 _calculatedTransform,
-                _lampTransform,
                 _swingCurve,
                 _dropCurve,
-                _cameraTransform,
                 _bounceSpeed,
                 _climbCurve
                 );
-        
+
             CreateMovementStates();
+            CreateStateTransitions();
+
+            _animationClipEvents.AnimClipEnded += OnAnimClipEnded;
+
+            _zigzagAttackLState.Started += OnAnimatedAttackStarted;
+            _zigzagAttackRState.Started += OnAnimatedAttackStarted;
+            _hangAttackLState.Started += OnAnimatedAttackStarted;
+            _hangAttackRState.Started += OnAnimatedAttackStarted;
+            _hangJumpAttackLState.Started += OnAnimatedAttackStarted;
+            _hangJumpAttackRState.Started += OnAnimatedAttackStarted;
+            _tangleAttackLState.Started += OnAnimatedAttackStarted;
+            _tangleAttackRState.Started += OnAnimatedAttackStarted;
+            _wireAttackState.Started += OnAnimatedAttackStarted;
+
+
+        }
+
+        private void OnDestroy()
+        {
+            _animationClipEvents.AnimClipEnded -= OnAnimClipEnded;
             
+            _zigzagAttackLState.Started -= OnAnimatedAttackStarted;
+            _zigzagAttackRState.Started -= OnAnimatedAttackStarted;
+            _hangAttackLState.Started -= OnAnimatedAttackStarted;
+            _hangAttackRState.Started -= OnAnimatedAttackStarted;
+            _hangJumpAttackLState.Started -= OnAnimatedAttackStarted;
+            _hangJumpAttackRState.Started -= OnAnimatedAttackStarted;
+            _tangleAttackLState.Started -= OnAnimatedAttackStarted;
+            _tangleAttackRState.Started -= OnAnimatedAttackStarted;
+            _wireAttackState.Started -= OnAnimatedAttackStarted;
+        }
+
+        private void OnAnimatedAttackStarted()
+        {
+            AnimatedAttackStarted?.Invoke();
+        }
+
+        private void CreateMovementStates()
+        {
+            _idleState = (MegaSpiderIdleState)_stateFactory.Create(typeof(MegaSpiderIdleState));
+            _enterLState = (MegaSpiderEnterLState)_stateFactory.Create(typeof(MegaSpiderEnterLState));
+            _enterRState = (MegaSpiderEnterRState)_stateFactory.Create(typeof(MegaSpiderEnterRState));
+            _zigzagAttackLState = (MegaSpiderZigzagAttackLState)_stateFactory.Create(typeof(MegaSpiderZigzagAttackLState));
+            _zigzagAttackRState = (MegaSpiderZigzagAttackRState)_stateFactory.Create(typeof(MegaSpiderZigzagAttackRState));
+            _projectileBottomAttackLState = (MegaSpiderProjectileBottomAttackLState)_stateFactory.Create(typeof(MegaSpiderProjectileBottomAttackLState));
+            _projectileBottomAttackRState = (MegaSpiderProjectileBottomAttackRState)_stateFactory.Create(typeof(MegaSpiderProjectileBottomAttackRState));
+            _projectileDoubleUpAttackLState = (MegaSpiderProjectileDoubleUpAttackLState)_stateFactory.Create(typeof(MegaSpiderProjectileDoubleUpAttackLState));
+            _projectileDoubleUpAttackRState = (MegaSpiderProjectileDoubleUpAttackRState)_stateFactory.Create(typeof(MegaSpiderProjectileDoubleUpAttackRState));
+            _hangAttackLState = (MegaSpiderHangAttackLState)_stateFactory.Create(typeof(MegaSpiderHangAttackLState));
+            _hangAttackRState = (MegaSpiderHangAttackRState)_stateFactory.Create(typeof(MegaSpiderHangAttackRState));
+            _hangJumpAttackLState = (MegaSpiderHangJumpAttackLState)_stateFactory.Create(typeof(MegaSpiderHangJumpAttackLState));
+            _hangJumpAttackRState = (MegaSpiderHangJumpAttackRState)_stateFactory.Create(typeof(MegaSpiderHangJumpAttackRState));
+            _projectileTopAttackLState = (MegaSpiderProjectileTopAttackLState)_stateFactory.Create(typeof(MegaSpiderProjectileTopAttackLState));
+            _projectileTopAttackRState = (MegaSpiderProjectileTopAttackRState)_stateFactory.Create(typeof(MegaSpiderProjectileTopAttackRState));
+            _projectileDoubleDownAttackLState = (MegaSpiderProjectileDoubleDownAttackLState)_stateFactory.Create(typeof(MegaSpiderProjectileDoubleDownAttackLState));
+            _projectileDoubleDownAttackRState = (MegaSpiderProjectileDoubleDownAttackRState)_stateFactory.Create(typeof(MegaSpiderProjectileDoubleDownAttackRState));
+            _tangleAttackLState = (MegaSpiderTangleAttackLState)_stateFactory.Create(typeof(MegaSpiderTangleAttackLState));
+            _tangleAttackRState = (MegaSpiderTangleAttackRState)_stateFactory.Create(typeof(MegaSpiderTangleAttackRState));
+            _wireAttackState = (MegaSpiderWireAttackState)_stateFactory.Create(typeof(MegaSpiderWireAttackState));
+            _bounceState = (MegaSpiderBounceState)_stateFactory.Create(typeof(MegaSpiderBounceState));
+            _fallState = (MegaSpiderFallState)_stateFactory.Create(typeof(MegaSpiderFallState));
+            _successFallState = (MegaSpiderSuccessFallState)_stateFactory.Create(typeof(MegaSpiderSuccessFallState));
+            _dropFallState = (MegaSpiderDropFallState)_stateFactory.Create(typeof(MegaSpiderDropFallState));
+            _swingLState = (MegaSpiderSwingLState)_stateFactory.Create(typeof(MegaSpiderSwingLState));
+            _swingRState = (MegaSpiderSwingRState)_stateFactory.Create(typeof(MegaSpiderSwingRState));
+            _climbState = (MegaSpiderClimbState)_stateFactory.Create(typeof(MegaSpiderClimbState));
+        }
+
+        private void CreateStateTransitions()
+        {
             // Initialize StateMachine 
             // Enter to Attacks
             At(_enterLState, _wireAttackState, IsAnimationEndedRandom0Of4()); //+
@@ -108,11 +180,14 @@ namespace _GAME.Scripts.Enemies.MegaSpider
             
             // Wire Attack Transitions
             At(_wireAttackState, _bounceState, () => _wireAttackState.IsReadyToSwitch); //+
+            At(_wireAttackState, _fallState, IsAttackEndedFail()); //+
             At(_wireAttackState, _dropFallState, () => _wireAttackState.IsDropped); 
             
             // Zigzag Attack Transitions
-            At(_zigzagAttackLState, _bounceState, IsCollided()); //+
-            At(_zigzagAttackRState, _bounceState, IsCollided()); //+
+            At(_zigzagAttackLState, _bounceState, IsBounced()); //+
+            At(_zigzagAttackLState, _fallState, IsAttackEndedFail());          
+            At(_zigzagAttackRState, _bounceState, IsBounced()); //+
+            At(_zigzagAttackRState, _fallState, IsAttackEndedFail());         
             
             // Projectile Bottom Transitions
             At(_projectileBottomAttackLState, _wireAttackState, IsAnimationEndedRandom0Of4()); //+
@@ -139,16 +214,22 @@ namespace _GAME.Scripts.Enemies.MegaSpider
             At(_projectileDoubleUpAttackRState, _projectileDoubleDownAttackRState, IsAnimationEndedRandom5Of6()); //+
             
             // Hang Attack Transitions
-            At(_hangAttackLState, _bounceState, IsCollided()); //+
-            At(_hangAttackRState, _bounceState, IsCollided()); //+
+            At(_hangAttackLState, _bounceState, IsBounced()); //+
+            At(_hangAttackLState, _fallState, IsAttackEndedFail());         
+            At(_hangAttackRState, _bounceState, IsBounced()); //+
+            At(_hangAttackRState, _fallState, IsAttackEndedFail());    
             
             // Hang Jump Attack Transitions
-            At(_hangJumpAttackLState, _bounceState, IsCollided()); //+
-            At(_hangJumpAttackRState, _bounceState, IsCollided()); //+
+            At(_hangJumpAttackLState, _bounceState, IsBounced()); //+
+            At(_hangJumpAttackLState, _fallState, IsAttackEndedFail());    
+            At(_hangJumpAttackRState, _bounceState, IsBounced()); //+
+            At(_hangJumpAttackRState, _fallState, IsAttackEndedFail());    
             
             // Tangle Attack Transitions
-            At(_tangleAttackLState, _bounceState, IsCollided()); //+
-            At(_tangleAttackRState, _bounceState, IsCollided()); //+
+            At(_tangleAttackLState, _bounceState, IsBounced()); //+
+            At(_tangleAttackLState, _fallState, IsAttackEndedFail());    
+            At(_tangleAttackRState, _bounceState, IsBounced()); //+
+            At(_tangleAttackRState, _fallState, IsAttackEndedFail());
             
             // Projectile Top Attack Transitions
             At(_projectileTopAttackLState, _projectileDoubleDownAttackRState, IsAnimationEndedRandom0Of4()); //+
@@ -318,11 +399,11 @@ namespace _GAME.Scripts.Enemies.MegaSpider
                 return false;
             };
             
-            Func<bool> IsCollided() => () =>
+            Func<bool> IsBounced() => () =>
             {
-                if (_isCollided)
+                if (_isBounced)
                 {
-                    _isCollided = false;
+                    _isBounced = false;
                     return true;
                 }
                 return false;
@@ -330,10 +411,9 @@ namespace _GAME.Scripts.Enemies.MegaSpider
             
             Func<bool> IsAttackEndedSuccess() => () =>
             {
-                if (_isAttackZoneExited && _isAttackSuccess)
+                if (_attackResult == AttackResult.Success)
                 {
-                    _isAttackZoneExited = false;
-                    _isAttackSuccess = false;
+                    _attackResult = AttackResult.None;
                     return true;
                 }
                 return false;
@@ -341,65 +421,41 @@ namespace _GAME.Scripts.Enemies.MegaSpider
             
             Func<bool> IsAttackEndedFail() => () =>
             {
-                if (_isAttackZoneExited && !_isAttackSuccess)
+                if (_attackResult == AttackResult.Fail)
                 {
-                    _isAttackZoneExited = false;
-                    _isAttackSuccess = false;
+                    _attackResult = AttackResult.None;
+                    return true;
+                }
+                return false;
+            };
+            
+            Func<bool> IsAttackEndedDeath() => () =>
+            {
+                if (_attackResult == AttackResult.Death)
+                {
+                    _attackResult = AttackResult.None;
                     return true;
                 }
                 return false;
             };
         }
-        
-
-        private void CreateMovementStates()
-        {
-            _idleState = (MegaSpiderIdleState)_stateFactory.Create(typeof(MegaSpiderIdleState));
-            _enterLState = (MegaSpiderEnterLState)_stateFactory.Create(typeof(MegaSpiderEnterLState));
-            _enterRState = (MegaSpiderEnterRState)_stateFactory.Create(typeof(MegaSpiderEnterRState));
-            _zigzagAttackLState = (MegaSpiderZigzagAttackLState)_stateFactory.Create(typeof(MegaSpiderZigzagAttackLState));
-            _zigzagAttackRState = (MegaSpiderZigzagAttackRState)_stateFactory.Create(typeof(MegaSpiderZigzagAttackRState));
-            _projectileBottomAttackLState = (MegaSpiderProjectileBottomAttackLState)_stateFactory.Create(typeof(MegaSpiderProjectileBottomAttackLState));
-            _projectileBottomAttackRState = (MegaSpiderProjectileBottomAttackRState)_stateFactory.Create(typeof(MegaSpiderProjectileBottomAttackRState));
-            _projectileDoubleUpAttackLState = (MegaSpiderProjectileDoubleUpAttackLState)_stateFactory.Create(typeof(MegaSpiderProjectileDoubleUpAttackLState));
-            _projectileDoubleUpAttackRState = (MegaSpiderProjectileDoubleUpAttackRState)_stateFactory.Create(typeof(MegaSpiderProjectileDoubleUpAttackRState));
-            _hangAttackLState = (MegaSpiderHangAttackLState)_stateFactory.Create(typeof(MegaSpiderHangAttackLState));
-            _hangAttackRState = (MegaSpiderHangAttackRState)_stateFactory.Create(typeof(MegaSpiderHangAttackRState));
-            _hangJumpAttackLState = (MegaSpiderHangJumpAttackLState)_stateFactory.Create(typeof(MegaSpiderHangJumpAttackLState));
-            _hangJumpAttackRState = (MegaSpiderHangJumpAttackRState)_stateFactory.Create(typeof(MegaSpiderHangJumpAttackRState));
-            _projectileTopAttackLState = (MegaSpiderProjectileTopAttackLState)_stateFactory.Create(typeof(MegaSpiderProjectileTopAttackLState));
-            _projectileTopAttackRState = (MegaSpiderProjectileTopAttackRState)_stateFactory.Create(typeof(MegaSpiderProjectileTopAttackRState));
-            _projectileDoubleDownAttackLState = (MegaSpiderProjectileDoubleDownAttackLState)_stateFactory.Create(typeof(MegaSpiderProjectileDoubleDownAttackLState));
-            _projectileDoubleDownAttackRState = (MegaSpiderProjectileDoubleDownAttackRState)_stateFactory.Create(typeof(MegaSpiderProjectileDoubleDownAttackRState));
-            _tangleAttackLState = (MegaSpiderTangleAttackLState)_stateFactory.Create(typeof(MegaSpiderTangleAttackLState));
-            _tangleAttackRState = (MegaSpiderTangleAttackRState)_stateFactory.Create(typeof(MegaSpiderTangleAttackRState));
-            _wireAttackState = (MegaSpiderWireAttackState)_stateFactory.Create(typeof(MegaSpiderWireAttackState));
-            _bounceState = (MegaSpiderBounceState)_stateFactory.Create(typeof(MegaSpiderBounceState));
-            _fallState = (MegaSpiderFallState)_stateFactory.Create(typeof(MegaSpiderFallState));
-            _successFallState = (MegaSpiderSuccessFallState)_stateFactory.Create(typeof(MegaSpiderSuccessFallState));
-            _dropFallState = (MegaSpiderDropFallState)_stateFactory.Create(typeof(MegaSpiderDropFallState));
-            _swingLState = (MegaSpiderSwingLState)_stateFactory.Create(typeof(MegaSpiderSwingLState));
-            _swingRState = (MegaSpiderSwingRState)_stateFactory.Create(typeof(MegaSpiderSwingRState));
-            _climbState = (MegaSpiderClimbState)_stateFactory.Create(typeof(MegaSpiderClimbState));
-        }
 
         public void Play()
         {
-            Debug.Log("Movement Play");
+            _isBounced = false;
+            _attackResult = AttackResult.None;
             enabled = true;
             OnEnterStarted();
         }
         
-        public void Collide()
+        public void TriggerFall(AttackResult attackResult)
         {
-            _isCollided = true;
-            StartCoroutine(ResetCollided());
+            _attackResult = attackResult;
         }
         
-        public void OnAttackZoneExit()
+        public void TriggerBounce()
         {
-            _isAttackZoneExited = true;
-            _isAttackSuccess = false;
+            _isBounced = true;
         }
 
         private void OnEnterStarted()
@@ -412,12 +468,6 @@ namespace _GAME.Scripts.Enemies.MegaSpider
                 _stateMachine.SetState(_enterRState);
             
             // _stateMachine.SetState(_projectileTopAttackRState);
-        }
-
-        private IEnumerator ResetCollided()
-        {
-            yield return null;
-            _isCollided = false;
         }
 
         private void Update()

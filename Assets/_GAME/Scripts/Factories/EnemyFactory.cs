@@ -7,6 +7,7 @@ using _GAME.Scripts.Enemies.Fly;
 using _GAME.Scripts.Enemies.Ladybug;
 using _GAME.Scripts.Enemies.Megabeetle;
 using _GAME.Scripts.Enemies.Megamothling;
+using _GAME.Scripts.Enemies.MegaSpider;
 using _GAME.Scripts.Enemies.Moth;
 using _GAME.Scripts.Enemies.Mothling;
 using _GAME.Scripts.Enemies.Spider;
@@ -31,6 +32,7 @@ namespace _GAME.Scripts.Factories
         private readonly MegamothlingMovementStateFactory _megamothlingMovementStateFactory;
         private readonly MegabeetleMovementStateFactory _megabeetleMovementStateFactory;
         private readonly DragonflyBehaviourStateFactory _dragonflyBehaviourStateFactory;
+        private readonly MegaSpiderMovementStateFactory _megaSpiderMovementStateFactory;
         private readonly IGameConfigService _gameConfigService;
         private readonly ISpiderSideDirectionProvider _spiderSideDirectionProvider;
         private readonly FullscreenRendererFeatureProvider _fullscreenRendererFeatureProvider;
@@ -46,6 +48,7 @@ namespace _GAME.Scripts.Factories
         AsyncOperationHandle<GameObject> _waspEnemyAssetHandle;
         AsyncOperationHandle<GameObject> _megabeetleEnemyAssetHandle;
         AsyncOperationHandle<GameObject> _dragonflyEnemyAssetHandle;
+        AsyncOperationHandle<GameObject> _megaspiderEnemyAssetHandle;
     
     
         public EnemyFactory(
@@ -57,6 +60,7 @@ namespace _GAME.Scripts.Factories
             MegamothlingMovementStateFactory megamothlingMovementStateFactory,
             MegabeetleMovementStateFactory megabeetleMovementStateFactory,
             DragonflyBehaviourStateFactory dragonflyBehaviourStateFactory,
+            MegaSpiderMovementStateFactory megaSpiderMovementStateFactory,
             ILampPositionProviderService lampPositionProviderService,
             IGameConfigService gameConfigService,
             ISpiderSideDirectionProvider spiderSideDirectionProvider,
@@ -71,6 +75,7 @@ namespace _GAME.Scripts.Factories
             _ladybugMovementStateFactory = ladybugMovementStateFactory;
             _megamothlingMovementStateFactory = megamothlingMovementStateFactory;
             _dragonflyBehaviourStateFactory = dragonflyBehaviourStateFactory;
+            _megaSpiderMovementStateFactory = megaSpiderMovementStateFactory;
             _lampPositionProviderService = lampPositionProviderService;
             _megabeetleMovementStateFactory = megabeetleMovementStateFactory;
             _gameConfigService = gameConfigService;
@@ -87,6 +92,7 @@ namespace _GAME.Scripts.Factories
             IsWaspLoaded = false;
             IsMegabeetleLoaded = false;
             IsDragonflyLoaded = false;
+            IsMegaSpiderLoaded = false;
         }
     
         public bool IsMothlingLoaded { get; private set; }
@@ -99,6 +105,7 @@ namespace _GAME.Scripts.Factories
         public bool IsWaspLoaded { get; private set; }
         public bool IsMegabeetleLoaded { get; private set; }
         public bool IsDragonflyLoaded { get; private set; }
+        public bool IsMegaSpiderLoaded { get; private set; }
     
     
 
@@ -172,6 +179,13 @@ namespace _GAME.Scripts.Factories
                 await _dragonflyEnemyAssetHandle.Task;
                 IsDragonflyLoaded = true;
             }
+            
+            if (type == typeof(MegaSpider))
+            {
+                _megaspiderEnemyAssetHandle = Addressables.LoadAssetAsync<GameObject>("Boss/MegaSpider.prefab");
+                await _megaspiderEnemyAssetHandle.Task;
+                IsMegaSpiderLoaded = true;
+            }
         }
     
         public Enemy CreateEnemy(Type type)
@@ -224,6 +238,11 @@ namespace _GAME.Scripts.Factories
             if (type == typeof(Dragonfly) && _dragonflyEnemyAssetHandle.IsValid())
             {
                 var prefab = _dragonflyEnemyAssetHandle.Result;
+                return CreateDragonflyInstance(prefab);    
+            }
+            if (type == typeof(MegaSpider) && _megaspiderEnemyAssetHandle.IsValid())
+            {
+                var prefab = _megaspiderEnemyAssetHandle.Result;
                 return CreateDragonflyInstance(prefab);    
             }
             else
@@ -353,6 +372,17 @@ namespace _GAME.Scripts.Factories
                 );
             enemyInstance.GetComponent<DragonflyPresentation>().Initialize();
 
+            return enemy;
+        }
+        
+        private Enemy CreateMegaspiderInstance(GameObject prefab)
+        {
+            GameObject enemyInstance = Object.Instantiate(prefab);
+            var enemy = enemyInstance.GetComponent<MegaSpider>();
+            enemy.Construct(_camera.transform);
+            enemyInstance.GetComponent<MegaSpiderMovement>().Construct(_camera.transform,  _megaSpiderMovementStateFactory);
+            
+            enemy.Initialize();
             return enemy;
         }
     }

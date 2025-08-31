@@ -2,6 +2,7 @@ using System;
 using _GAME.Scripts.Enemies;
 using _GAME.Scripts.Enemies.Generic.States;
 using _GAME.Scripts.Enemies.MegaSpider.MovementStates;
+using _GAME.Scripts.Lib.Interfaces;
 using UnityEngine;
 
 namespace _GAME.Scripts.Factories
@@ -19,32 +20,39 @@ namespace _GAME.Scripts.Factories
         
         
         // Dependencies
+        private Transform _cameraTransform;
+        private Transform _lampTransform;
+        
         private Animator _animator;
         private Transform _visibleBodyTransform;
         private Transform _animatedTransform;
         private Transform _calculatedTransform;
-        private Transform _lampTransform;
         private AnimationCurve _swingCurve;
         private AnimationCurve _dropCurve;
-        private Transform _cameraTransform;
-        private float _bounceSpeed;
         private AnimationCurve _climbCurve;
-        
+        private float _bounceSpeed;
+
         // TODO: WILL BE LOCAL
         private bool _isLeftSide;
         private int _clipHash; 
         
         // TODO: Constructor (LATER)
+        public MegaSpiderMovementStateFactory(
+            Transform cameraTransform,
+            Transform lampTransform
+            )
+        {
+            _cameraTransform = cameraTransform;
+            _lampTransform = lampTransform;
+        }
         
         public void SetEnemyDependencies(
             Animator animator,
             Transform visibleBodyTransform,
             Transform animatedTransform,
             Transform calculatedTransform,
-            Transform lampTransform,
             AnimationCurve swingCurve,
             AnimationCurve dropCurve,
-            Transform cameraTransform,
             float bounceSpeed, // TODO: move to config
             AnimationCurve climbCurve
         )
@@ -53,10 +61,8 @@ namespace _GAME.Scripts.Factories
             _visibleBodyTransform = visibleBodyTransform;
             _animatedTransform = animatedTransform;
             _calculatedTransform = calculatedTransform;
-            _lampTransform = lampTransform;
             _swingCurve = swingCurve;
             _dropCurve = dropCurve;
-            _cameraTransform = cameraTransform;
             _bounceSpeed = bounceSpeed;
             _climbCurve = climbCurve;
         }

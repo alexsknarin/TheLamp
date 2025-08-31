@@ -58,6 +58,7 @@ namespace _GAME.Scripts.GameCoreSystems.DI
         [Header("Scene References")]
         [SerializeField] private Transform _cameraTransform;
         [SerializeField] private LadybugLampPositionsHolder _ladybugLampPositionsHolder;
+        [SerializeField] private Transform _lampTransform;
 
         private CoroutineHost _coroutineHost;
 
@@ -105,6 +106,7 @@ namespace _GAME.Scripts.GameCoreSystems.DI
         private MegamothlingMovementStateFactory _megamothlingMovementStateFactory;
         private MegabeetleMovementStateFactory _megabeetleMovementStateFactory;
         private DragonflyBehaviourStateFactory _dragonflyBehaviourStateFactory;
+        private MegaSpiderMovementStateFactory _megaSpiderMovementStateFactory;
         private EnemyFactory _enemyFactory;
         private FXFactory _fxFactory;   
     
@@ -253,6 +255,11 @@ namespace _GAME.Scripts.GameCoreSystems.DI
                 _gameConfigService
             );
             _dragonflyBehaviourStateFactory.Initialize();
+
+            _megaSpiderMovementStateFactory = new MegaSpiderMovementStateFactory(
+                _cameraTransform,
+                _lampTransform
+            );
         
             _enemyFactory = new EnemyFactory(
                 _mothlingMovementStateFactory, 
@@ -263,6 +270,7 @@ namespace _GAME.Scripts.GameCoreSystems.DI
                 _megamothlingMovementStateFactory,
                 _megabeetleMovementStateFactory,
                 _dragonflyBehaviourStateFactory,
+                _megaSpiderMovementStateFactory,
                 _lampPositionProviderService,
                 _gameConfigService,
                 _spiderPositionHolder,

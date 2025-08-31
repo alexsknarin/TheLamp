@@ -1,6 +1,8 @@
+using System;
 using System.Collections.Generic;
 using _GAME.Scripts.Lib;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace _GAME.Scripts.Enemies.MegaSpider.MovementStates
 {
@@ -76,7 +78,8 @@ namespace _GAME.Scripts.Enemies.MegaSpider.MovementStates
             _currentPosition = _inactivePosition;
             CreateEmptyAttackWireVariables();
         }
-
+        public event Action Started;
+        
         public bool IsDropped { get; private set; }
         
         public override void Enter()
@@ -184,6 +187,7 @@ namespace _GAME.Scripts.Enemies.MegaSpider.MovementStates
             }
             _mainAttackWire = _attackWires[_activeWireIndices[Random.Range(0, _activeWireIndices.Count)]];
             Debug.DrawLine(_mainAttackWire.StartPosition, _mainAttackWire.EndPosition, Color.orangeRed, 10);
+            Started?.Invoke();
         }
         
         private void HandleMainAttack()
