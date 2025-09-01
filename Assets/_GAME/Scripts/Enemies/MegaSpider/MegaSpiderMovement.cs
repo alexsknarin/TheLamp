@@ -17,6 +17,7 @@ namespace _GAME.Scripts.Enemies.MegaSpider
 {
     public class MegaSpiderMovement : MonoBehaviour, IInitializable
     {
+        private const float CollisionThreshold = 0.0001f; // TODO: move to config
         [SerializeField] private Transform _visibleBodyTransform;
         [SerializeField] private Transform _animatedTransform;
         [SerializeField] private Transform _calculatedTransform;
@@ -25,7 +26,6 @@ namespace _GAME.Scripts.Enemies.MegaSpider
         [Header( "Movement States")]
         [SerializeField] private string _stateDebug;
         [Header("Tangle Attack Settings")]
-        [SerializeField] private Transform _lampTransform; // TODO: DI
         [SerializeField] private AnimationCurve _swingCurve;
         [SerializeField] private AnimationCurve _dropCurve;
         [Header("Bounce Settings")]
@@ -68,22 +68,41 @@ namespace _GAME.Scripts.Enemies.MegaSpider
         private bool _isAnimClipEnded = false;
         private bool _isBounced = false;
         private AttackResult _attackResult;
+        private float _collisionRadius;
+        private float _fullCollisionDistance;
+        [SerializeField] private bool _isAttackStateBeforeCollision = false;
 
         // Dependencies
         private Transform _cameraTransform;
+        private Transform _lampTransform;
         private MegaSpiderMovementStateFactory _stateFactory;
         
-        public void Construct(Transform cameraTransform, MegaSpiderMovementStateFactory stateFactory)
+        
+        public void Construct(
+            Transform cameraTransform, 
+            Transform lampTransform, 
+            MegaSpiderMovementStateFactory stateFactory)
         {
             _cameraTransform = cameraTransform;
+            _lampTransform = lampTransform;
             _stateFactory = stateFactory;
         }
         
         public event Action AnimatedAttackStarted;
+
+        public Vector2 Position => _visibleBodyTransform.position;
+
+        public void SetCollisionRadius(float radius)
+        {
+            _collisionRadius = radius;
+        }
         
         public void Initialize()
         {
             enabled = false;
+            _fullCollisionDistance = _collisionRadius + 0.49f;
+            Debug.Log($"Full Collision Distance: {_fullCollisionDistance}");
+            _isAttackStateBeforeCollision = false;
             _stateFactory.SetEnemyDependencies(
                 _animator, 
                 _visibleBodyTransform, 
@@ -110,6 +129,8 @@ namespace _GAME.Scripts.Enemies.MegaSpider
             _tangleAttackRState.Started += OnAnimatedAttackStarted;
             _wireAttackState.Started += OnAnimatedAttackStarted;
 
+            _bounceState.Ended += OnBounceStateEnded;
+
 
         }
 
@@ -126,10 +147,14 @@ namespace _GAME.Scripts.Enemies.MegaSpider
             _tangleAttackLState.Started -= OnAnimatedAttackStarted;
             _tangleAttackRState.Started -= OnAnimatedAttackStarted;
             _wireAttackState.Started -= OnAnimatedAttackStarted;
+            
+            _bounceState.Ended -= OnBounceStateEnded;
         }
 
         private void OnAnimatedAttackStarted()
         {
+            _isAttackStateBeforeCollision = true;
+            _isBounced = false;
             AnimatedAttackStarted?.Invoke();
         }
 
@@ -168,12 +193,12 @@ namespace _GAME.Scripts.Enemies.MegaSpider
         {
             // Initialize StateMachine 
             // Enter to Attacks
-            At(_enterLState, _wireAttackState, IsAnimationEndedRandom0Of4()); //+
+            At(_enterLState, _wireAttackState, IsAnimationEndedRandom0Of4()); //++
             At(_enterLState, _zigzagAttackLState, IsAnimationEndedRandom1Of4());//+
             At(_enterLState, _projectileBottomAttackLState, IsAnimationEndedRandom2Of4());//+
-            At(_enterLState, _projectileDoubleUpAttackLState, IsAnimationEndedRandom3Of4());//+
+            At(_enterLState, _projectileDoubleUpAttackLState, IsAnimationEndedRandom3Of4());//++
             
-            At(_enterRState, _wireAttackState, IsAnimationEndedRandom0Of4());//+
+            At(_enterRState, _wireAttackState, IsAnimationEndedRandom0Of4());//++
             At(_enterRState, _zigzagAttackRState, IsAnimationEndedRandom1Of4());//+
             At(_enterRState, _projectileBottomAttackRState, IsAnimationEndedRandom2Of4());//+
             At(_enterRState, _projectileDoubleUpAttackRState, IsAnimationEndedRandom3Of4());//+
@@ -447,12 +472,12 @@ namespace _GAME.Scripts.Enemies.MegaSpider
             enabled = true;
             OnEnterStarted();
         }
-        
+
         public void TriggerFall(AttackResult attackResult)
         {
             _attackResult = attackResult;
         }
-        
+
         public void TriggerBounce()
         {
             _isBounced = true;
@@ -474,7 +499,25 @@ namespace _GAME.Scripts.Enemies.MegaSpider
         {
             _stateMachine.Tick();
             _currentState = (EnemyMovementStateBase)_stateMachine.CurrentState;
+            // Debug.Log(_stateMachine.CurrentState + " : _isBounced = " + _isBounced);
             _stateDebug = _currentState.GetType().Name;
+        }
+
+        private void LateUpdate()
+        {
+            // Fix Movement Penetrations TODO: extract to a separate class?
+            // Check Only in Attack State
+            if (_isAttackStateBeforeCollision)
+            {
+                Vector3 currentToLamp = _visibleBodyTransform.position - _lampTransform.position;
+                if (currentToLamp.magnitude < _fullCollisionDistance)
+                {
+                    _visibleBodyTransform.position = 
+                        _lampTransform.position 
+                        + currentToLamp.normalized 
+                        * (_fullCollisionDistance - CollisionThreshold);
+                }
+            }
         }
 
         private void OnAnimClipEnded()
@@ -483,6 +526,9 @@ namespace _GAME.Scripts.Enemies.MegaSpider
             _isAnimClipEnded = true;
         }
 
-        
+        private void OnBounceStateEnded()
+        {
+            _isAttackStateBeforeCollision = false;
+        }
     }
 }

@@ -1,3 +1,4 @@
+using _GAME.Scripts.Enemies.MegaSpiderProjectileSpider;
 using _GAME.Scripts.Lib.Interfaces;
 using UnityEngine;
 
@@ -7,11 +8,22 @@ namespace _GAME.Scripts.Enemies.MegaSpider
     {
         [SerializeField] private Transform _projectilePosition01;
         [SerializeField] private Transform _projectilePosition02;
+        // TODO: find out why it is happening:
         [SerializeField] private MegaSpiderProjectileSpider.MegaSpiderProjectileSpider _projectile01;
         [SerializeField] private MegaSpiderProjectileSpider.MegaSpiderProjectileSpider _projectile02;
         [SerializeField] private Transform _projectile01Transform;
         [SerializeField] private Transform _projectile02Transform;
-    
+        
+        // Dependencies
+        private Transform _lampTransform;
+
+        public void Construct(Transform lampTransform)
+        {
+            _lampTransform = lampTransform;
+            _projectile01.GetComponent<MegaSpiderProjectileSpiderMovement>().Construct(_lampTransform);
+            _projectile02.GetComponent<MegaSpiderProjectileSpiderMovement>().Construct(_lampTransform);
+        } 
+        
         public void Initialize()
         {
             _projectile01.Initialize();

@@ -20,6 +20,7 @@ namespace _GAME.Scripts.Enemies.MegaSpider
         [Header("Swarm")]
         [SerializeField] private MegaSpiderSwarm _swarm;
         [SerializeField] private MegaSpiderAnimationClipEventListener _animationClipEvents;
+        [SerializeField] private Transform _visibleBodyTransform;
 
         private bool _isLampDestroyed;
         [SerializeField] private AttackResult _attackResult;
@@ -32,18 +33,20 @@ namespace _GAME.Scripts.Enemies.MegaSpider
         public event Action Damaged;
         public event Action<int, int> HealthChanged;
         public event Action Died;
+        public event Action SpreadRequested;
 
+        // TODO: need special treatment for the wire Attack
+        public override Vector2 Position => CameraProjection.ProjectPointOnXYPlane(_cameraTransform.position, _visibleBodyTransform.position);
+        
         public void Construct(Transform cameraTransform)
         {
             _cameraTransform = cameraTransform;
         }
         
-        // TODO: need special treatment for the wire Attack
-        public override Vector2 Position => CameraProjection.ProjectPointOnXYPlane(_cameraTransform.position, transform.position);
-
         public override void Initialize()
         {
             Radius = _collisionRadius;
+            _movement.SetCollisionRadius(_collisionRadius);
             _movement.Initialize();
             _swarm.Initialize();
             enabled = false;
@@ -136,12 +139,21 @@ namespace _GAME.Scripts.Enemies.MegaSpider
             
             _isLampDestroyed = true;
         }
+        
+        public override Vector3 ProvideImpactPoint()
+        {
+            return _visibleBodyTransform.position;
+        }
 
         private void OnAnimatedAttackStarted()
         {
             AnimatedAttackStarted?.Invoke(this);
         }
-
-        public event Action SpreadRequested;
+        
+        private void OnDrawGizmos()
+        {
+            Gizmos.color = Color.cyan;
+            Gizmos.DrawWireSphere(_visibleBodyTransform.position, _collisionRadius);
+        }
     }
 }

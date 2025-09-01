@@ -54,9 +54,12 @@ MonoBehaviour:
   _stateDebug: 
   _maxHealth: 24
   _currentHealth: 24
+  _collisionRadius: 0.325
   _movement: {fileID: 5885945323400971088}
   _swarm: {fileID: 4562466805752491100}
   _animationClipEvents: {fileID: 6309120008655084617}
+  _visibleBodyTransform: {fileID: 5860806800229500125}
+  _attackResult: 0
 --- !u!114 &5885945323400971088
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -75,7 +78,6 @@ MonoBehaviour:
   _animator: {fileID: 3519394517638303247}
   _animationClipEvents: {fileID: 6309120008655084617}
   _stateDebug: 
-  _lampTransform: {fileID: 0}
   _swingCurve:
     serializedVersion: 2
     m_Curve:
@@ -142,7 +144,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  _cameraTransform: {fileID: 0}
   _bounceSpeed: 2
   _climbCurve:
     serializedVersion: 2
@@ -322,7 +323,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02bff58ed753fe04ea287761d8a32543, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _lampTransform: {fileID: 0}
 --- !u!1 &2840899317319584481
 GameObject:
   m_ObjectHideFlags: 0
@@ -792,7 +792,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02bff58ed753fe04ea287761d8a32543, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _lampTransform: {fileID: 0}
 --- !u!1 &8587058885311348819
 GameObject:
   m_ObjectHideFlags: 0

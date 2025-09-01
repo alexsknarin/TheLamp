@@ -11,7 +11,6 @@ namespace _GAME.Scripts.Enemies.MegaSpiderProjectileSpider
 {
     public class MegaSpiderProjectileSpiderMovement : MonoBehaviour, IInitializable
     {
-        [SerializeField] private Transform _lampTransform;
         private float _startDistance;
         private float _startZ;
         private bool _isCollided;
@@ -31,6 +30,14 @@ namespace _GAME.Scripts.Enemies.MegaSpiderProjectileSpider
         private MegaSpiderProjectileSpiderAttackState _attackState;
         private MegaSpiderProjectileSpiderBounceState _bounceState;
         private MegaSpiderProjectileSpiderFallState _fallState;
+        
+        // Dependencies
+        private Transform _lampTransform;
+        
+        public void Construct(Transform lampTransform)
+        {
+            _lampTransform = lampTransform;
+        }
 
         public event Action FallEnded;
         

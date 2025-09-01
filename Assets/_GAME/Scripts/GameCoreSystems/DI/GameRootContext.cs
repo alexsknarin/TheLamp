@@ -107,6 +107,7 @@ namespace _GAME.Scripts.GameCoreSystems.DI
         private MegabeetleMovementStateFactory _megabeetleMovementStateFactory;
         private DragonflyBehaviourStateFactory _dragonflyBehaviourStateFactory;
         private MegaSpiderMovementStateFactory _megaSpiderMovementStateFactory;
+        private MegaSpiderProjectileSpiderMovementStateFactory _megaSpiderProjectileSpiderMovementStateFactory;
         private EnemyFactory _enemyFactory;
         private FXFactory _fxFactory;   
     
@@ -260,6 +261,10 @@ namespace _GAME.Scripts.GameCoreSystems.DI
                 _cameraTransform,
                 _lampTransform
             );
+
+            _megaSpiderProjectileSpiderMovementStateFactory = new MegaSpiderProjectileSpiderMovementStateFactory(
+                
+            );
         
             _enemyFactory = new EnemyFactory(
                 _mothlingMovementStateFactory, 
@@ -275,7 +280,8 @@ namespace _GAME.Scripts.GameCoreSystems.DI
                 _gameConfigService,
                 _spiderPositionHolder,
                 _fullscreenRendererFeatureProvider,
-                Camera.main
+                Camera.main,
+                _lampTransform
             );
             _enemyPool = new EnemyPool(_enemyFactory);
             _enemyPool.Initialize();

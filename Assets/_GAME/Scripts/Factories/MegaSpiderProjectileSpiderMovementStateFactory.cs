@@ -1,6 +1,5 @@
 using System;
 using _GAME.Scripts.Enemies;
-using _GAME.Scripts.Enemies.MegaSpider.MovementStates;
 using _GAME.Scripts.Enemies.MegaSpiderProjectileSpider.MovementStates;
 using UnityEngine;
 

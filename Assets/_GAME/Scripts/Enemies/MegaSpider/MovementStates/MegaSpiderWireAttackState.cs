@@ -106,6 +106,7 @@ namespace _GAME.Scripts.Enemies.MegaSpider.MovementStates
 
         public override void Tick()
         {
+            // TODO: test later and remove
             if(Input.GetKeyDown(KeyCode.C))
                 IsDropped = true;
             
@@ -135,7 +136,21 @@ namespace _GAME.Scripts.Enemies.MegaSpider.MovementStates
             
             _calculatedTransform.position = _currentPosition;
         }
-        
+
+        public override void Exit()
+        {
+            _localTime = 0;
+            _availableWireRangeIndices.Clear();
+            _activeWireIndices.Clear();
+            foreach (var wire in _attackWires)
+            {
+                wire.SetActive(false);
+            }
+
+            _currentPosition = _inactivePosition;
+            _wireState = WireStates.Inactive;
+        }
+
         private void StartWireAttack()
         {
             _currentAttackingWireIndex = 0;

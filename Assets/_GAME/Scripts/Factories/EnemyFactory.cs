@@ -37,6 +37,7 @@ namespace _GAME.Scripts.Factories
         private readonly ISpiderSideDirectionProvider _spiderSideDirectionProvider;
         private readonly FullscreenRendererFeatureProvider _fullscreenRendererFeatureProvider;
         private readonly Camera _camera;
+        private readonly Transform _lampTransform;
     
         AsyncOperationHandle<GameObject> _mothlingEnemyAssetHandle;
         AsyncOperationHandle<GameObject> _flyEnemyAssetHandle;
@@ -65,7 +66,8 @@ namespace _GAME.Scripts.Factories
             IGameConfigService gameConfigService,
             ISpiderSideDirectionProvider spiderSideDirectionProvider,
             FullscreenRendererFeatureProvider fullscreenRendererFeatureProvider,
-            Camera currentCamera
+            Camera currentCamera,
+            Transform lampTransform
             )
         {
             _mothlingMovementStateFactory = mothlingMovementStateFactory;
@@ -82,6 +84,7 @@ namespace _GAME.Scripts.Factories
             _spiderSideDirectionProvider = spiderSideDirectionProvider;
             _fullscreenRendererFeatureProvider = fullscreenRendererFeatureProvider;
             _camera = currentCamera;
+            _lampTransform = lampTransform;
         
             IsMothlingLoaded = false;
             IsFlyLoaded = false;
@@ -243,7 +246,7 @@ namespace _GAME.Scripts.Factories
             if (type == typeof(MegaSpider) && _megaspiderEnemyAssetHandle.IsValid())
             {
                 var prefab = _megaspiderEnemyAssetHandle.Result;
-                return CreateDragonflyInstance(prefab);    
+                return CreateMegaspiderInstance(prefab);    
             }
             else
             {
@@ -380,8 +383,12 @@ namespace _GAME.Scripts.Factories
             GameObject enemyInstance = Object.Instantiate(prefab);
             var enemy = enemyInstance.GetComponent<MegaSpider>();
             enemy.Construct(_camera.transform);
-            enemyInstance.GetComponent<MegaSpiderMovement>().Construct(_camera.transform,  _megaSpiderMovementStateFactory);
-            
+            enemyInstance.GetComponent<MegaSpiderMovement>().Construct(
+                _camera.transform,
+                _lampTransform, 
+                _megaSpiderMovementStateFactory
+                );
+            enemyInstance.GetComponent<MegaSpiderSwarm>().Construct(_lampTransform);
             enemy.Initialize();
             return enemy;
         }

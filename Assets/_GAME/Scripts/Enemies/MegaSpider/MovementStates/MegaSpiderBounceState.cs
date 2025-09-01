@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace _GAME.Scripts.Enemies.MegaSpider.MovementStates
@@ -24,6 +25,8 @@ namespace _GAME.Scripts.Enemies.MegaSpider.MovementStates
             _speed = speed;
         }
         
+        public event Action Ended;
+        
         public override void Enter()
         {
             _visibleBodyTransform.SetParent(null);
@@ -41,6 +44,11 @@ namespace _GAME.Scripts.Enemies.MegaSpider.MovementStates
             newPosition += _direction * _speed * Time.deltaTime;
             
             _calculatedTransform.position = newPosition;
+        }
+        
+        public override void Exit()
+        {
+            Ended?.Invoke();
         }
     }
 }
