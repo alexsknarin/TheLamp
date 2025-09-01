@@ -1,16 +1,16 @@
-using _GAME.Scripts.Enemies.MegaSpiderProjectileSpider;
+using _GAME.Scripts.Enemies.MegaspiderProjectileSpider;
 using _GAME.Scripts.Lib.Interfaces;
 using UnityEngine;
 
-namespace _GAME.Scripts.Enemies.MegaSpider
+namespace _GAME.Scripts.Enemies.Megaspider
 {
-    public class MegaSpiderSwarm : MonoBehaviour, IInitializable
+    public class MegaspiderSwarm : MonoBehaviour, IInitializable
     {
         [SerializeField] private Transform _projectilePosition01;
         [SerializeField] private Transform _projectilePosition02;
         // TODO: find out why it is happening:
-        [SerializeField] private MegaSpiderProjectileSpider.MegaSpiderProjectileSpider _projectile01;
-        [SerializeField] private MegaSpiderProjectileSpider.MegaSpiderProjectileSpider _projectile02;
+        [SerializeField] private MegaspiderProjectileSpider.MegaspiderProjectileSpider _projectile01;
+        [SerializeField] private MegaspiderProjectileSpider.MegaspiderProjectileSpider _projectile02;
         [SerializeField] private Transform _projectile01Transform;
         [SerializeField] private Transform _projectile02Transform;
         
@@ -20,8 +20,8 @@ namespace _GAME.Scripts.Enemies.MegaSpider
         public void Construct(Transform lampTransform)
         {
             _lampTransform = lampTransform;
-            _projectile01.GetComponent<MegaSpiderProjectileSpiderMovement>().Construct(_lampTransform);
-            _projectile02.GetComponent<MegaSpiderProjectileSpiderMovement>().Construct(_lampTransform);
+            _projectile01.GetComponent<MegaspiderProjectileSpiderMovement>().Construct(_lampTransform);
+            _projectile02.GetComponent<MegaspiderProjectileSpiderMovement>().Construct(_lampTransform);
         } 
         
         public void Initialize()
@@ -35,7 +35,7 @@ namespace _GAME.Scripts.Enemies.MegaSpider
         public void Reset()
         {
             // TODO: potentially disable or do something else with swarm when in non swarm attack state
-            Debug.Log("MegaSpiderSwarm Reset");
+            Debug.Log("MegaspiderSwarm Reset");
             _projectile01Transform.SetParent(_projectilePosition01);
             _projectile01Transform.localPosition = Vector3.zero;
             _projectile01.gameObject.SetActive(true);

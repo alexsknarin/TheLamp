@@ -1,7 +1,7 @@
 using System;
 using System.Collections;
 using _GAME.Scripts.Enemies.Dragonfly;
-using _GAME.Scripts.Enemies.MegaSpider.MovementStates;
+using _GAME.Scripts.Enemies.Megaspider.MovementStates;
 using _GAME.Scripts.Factories;
 using _GAME.Scripts.Lib;
 using _GAME.Scripts.Lib.Interfaces;
@@ -13,16 +13,16 @@ using Random = UnityEngine.Random;
 // TODO: Fix Swing State - take camera into a consideration to decide on bottom Y for Fall/Sucess/Dropfall
 // TODO: Fix Swing State - move spiderweb pivot to another position
 
-namespace _GAME.Scripts.Enemies.MegaSpider
+namespace _GAME.Scripts.Enemies.Megaspider
 {
-    public class MegaSpiderMovement : MonoBehaviour, IInitializable
+    public class MegaspiderMovement : MonoBehaviour, IInitializable
     {
         private const float CollisionThreshold = 0.0001f; // TODO: move to config
         [SerializeField] private Transform _visibleBodyTransform;
         [SerializeField] private Transform _animatedTransform;
         [SerializeField] private Transform _calculatedTransform;
         [SerializeField] private Animator _animator;
-        [SerializeField] private MegaSpiderAnimationClipEventListener _animationClipEvents;
+        [SerializeField] private MegaspiderAnimationClipEventListener _animationClipEvents;
         [Header( "Movement States")]
         [SerializeField] private string _stateDebug;
         [Header("Tangle Attack Settings")]
@@ -37,33 +37,33 @@ namespace _GAME.Scripts.Enemies.MegaSpider
         private readonly StateMachine _stateMachine = new();
         private EnemyMovementStateBase _currentState;
         
-        private MegaSpiderIdleState _idleState;
-        private MegaSpiderEnterLState _enterLState;
-        private MegaSpiderEnterRState _enterRState;
-        private MegaSpiderZigzagAttackLState _zigzagAttackLState;
-        private MegaSpiderZigzagAttackRState _zigzagAttackRState;
-        private MegaSpiderProjectileBottomAttackLState _projectileBottomAttackLState;
-        private MegaSpiderProjectileBottomAttackRState _projectileBottomAttackRState;
-        private MegaSpiderProjectileDoubleUpAttackLState _projectileDoubleUpAttackLState;
-        private MegaSpiderProjectileDoubleUpAttackRState _projectileDoubleUpAttackRState;
-        private MegaSpiderHangAttackLState _hangAttackLState;
-        private MegaSpiderHangAttackRState _hangAttackRState;
-        private MegaSpiderHangJumpAttackLState _hangJumpAttackLState;
-        private MegaSpiderHangJumpAttackRState _hangJumpAttackRState;
-        private MegaSpiderProjectileTopAttackLState _projectileTopAttackLState;
-        private MegaSpiderProjectileTopAttackRState _projectileTopAttackRState;
-        private MegaSpiderProjectileDoubleDownAttackLState _projectileDoubleDownAttackLState;
-        private MegaSpiderProjectileDoubleDownAttackRState _projectileDoubleDownAttackRState;
-        private MegaSpiderTangleAttackLState _tangleAttackLState;
-        private MegaSpiderTangleAttackRState _tangleAttackRState;
-        private MegaSpiderWireAttackState _wireAttackState;
-        private MegaSpiderBounceState _bounceState;
-        private MegaSpiderFallState _fallState;
-        private MegaSpiderSuccessFallState _successFallState;
-        private MegaSpiderDropFallState _dropFallState;
-        private MegaSpiderSwingLState _swingLState;
-        private MegaSpiderSwingRState _swingRState;
-        private MegaSpiderClimbState _climbState;
+        private MegaspiderIdleState _idleState;
+        private MegaspiderEnterLState _enterLState;
+        private MegaspiderEnterRState _enterRState;
+        private MegaspiderZigzagAttackLState _zigzagAttackLState;
+        private MegaspiderZigzagAttackRState _zigzagAttackRState;
+        private MegaspiderProjectileBottomAttackLState _projectileBottomAttackLState;
+        private MegaspiderProjectileBottomAttackRState _projectileBottomAttackRState;
+        private MegaspiderProjectileDoubleUpAttackLState _projectileDoubleUpAttackLState;
+        private MegaspiderProjectileDoubleUpAttackRState _projectileDoubleUpAttackRState;
+        private MegaspiderHangAttackLState _hangAttackLState;
+        private MegaspiderHangAttackRState _hangAttackRState;
+        private MegaspiderHangJumpAttackLState _hangJumpAttackLState;
+        private MegaspiderHangJumpAttackRState _hangJumpAttackRState;
+        private MegaspiderProjectileTopAttackLState _projectileTopAttackLState;
+        private MegaspiderProjectileTopAttackRState _projectileTopAttackRState;
+        private MegaspiderProjectileDoubleDownAttackLState _projectileDoubleDownAttackLState;
+        private MegaspiderProjectileDoubleDownAttackRState _projectileDoubleDownAttackRState;
+        private MegaspiderTangleAttackLState _tangleAttackLState;
+        private MegaspiderTangleAttackRState _tangleAttackRState;
+        private MegaspiderWireAttackState _wireAttackState;
+        private MegaspiderBounceState _bounceState;
+        private MegaspiderFallState _fallState;
+        private MegaspiderSuccessFallState _successFallState;
+        private MegaspiderDropFallState _dropFallState;
+        private MegaspiderSwingLState _swingLState;
+        private MegaspiderSwingRState _swingRState;
+        private MegaspiderClimbState _climbState;
 
         private bool _isAnimClipEnded = false;
         private bool _isBounced = false;
@@ -75,13 +75,13 @@ namespace _GAME.Scripts.Enemies.MegaSpider
         // Dependencies
         private Transform _cameraTransform;
         private Transform _lampTransform;
-        private MegaSpiderMovementStateFactory _stateFactory;
+        private MegaspiderMovementStateFactory _stateFactory;
         
         
         public void Construct(
             Transform cameraTransform, 
             Transform lampTransform, 
-            MegaSpiderMovementStateFactory stateFactory)
+            MegaspiderMovementStateFactory stateFactory)
         {
             _cameraTransform = cameraTransform;
             _lampTransform = lampTransform;
@@ -160,33 +160,33 @@ namespace _GAME.Scripts.Enemies.MegaSpider
 
         private void CreateMovementStates()
         {
-            _idleState = (MegaSpiderIdleState)_stateFactory.Create(typeof(MegaSpiderIdleState));
-            _enterLState = (MegaSpiderEnterLState)_stateFactory.Create(typeof(MegaSpiderEnterLState));
-            _enterRState = (MegaSpiderEnterRState)_stateFactory.Create(typeof(MegaSpiderEnterRState));
-            _zigzagAttackLState = (MegaSpiderZigzagAttackLState)_stateFactory.Create(typeof(MegaSpiderZigzagAttackLState));
-            _zigzagAttackRState = (MegaSpiderZigzagAttackRState)_stateFactory.Create(typeof(MegaSpiderZigzagAttackRState));
-            _projectileBottomAttackLState = (MegaSpiderProjectileBottomAttackLState)_stateFactory.Create(typeof(MegaSpiderProjectileBottomAttackLState));
-            _projectileBottomAttackRState = (MegaSpiderProjectileBottomAttackRState)_stateFactory.Create(typeof(MegaSpiderProjectileBottomAttackRState));
-            _projectileDoubleUpAttackLState = (MegaSpiderProjectileDoubleUpAttackLState)_stateFactory.Create(typeof(MegaSpiderProjectileDoubleUpAttackLState));
-            _projectileDoubleUpAttackRState = (MegaSpiderProjectileDoubleUpAttackRState)_stateFactory.Create(typeof(MegaSpiderProjectileDoubleUpAttackRState));
-            _hangAttackLState = (MegaSpiderHangAttackLState)_stateFactory.Create(typeof(MegaSpiderHangAttackLState));
-            _hangAttackRState = (MegaSpiderHangAttackRState)_stateFactory.Create(typeof(MegaSpiderHangAttackRState));
-            _hangJumpAttackLState = (MegaSpiderHangJumpAttackLState)_stateFactory.Create(typeof(MegaSpiderHangJumpAttackLState));
-            _hangJumpAttackRState = (MegaSpiderHangJumpAttackRState)_stateFactory.Create(typeof(MegaSpiderHangJumpAttackRState));
-            _projectileTopAttackLState = (MegaSpiderProjectileTopAttackLState)_stateFactory.Create(typeof(MegaSpiderProjectileTopAttackLState));
-            _projectileTopAttackRState = (MegaSpiderProjectileTopAttackRState)_stateFactory.Create(typeof(MegaSpiderProjectileTopAttackRState));
-            _projectileDoubleDownAttackLState = (MegaSpiderProjectileDoubleDownAttackLState)_stateFactory.Create(typeof(MegaSpiderProjectileDoubleDownAttackLState));
-            _projectileDoubleDownAttackRState = (MegaSpiderProjectileDoubleDownAttackRState)_stateFactory.Create(typeof(MegaSpiderProjectileDoubleDownAttackRState));
-            _tangleAttackLState = (MegaSpiderTangleAttackLState)_stateFactory.Create(typeof(MegaSpiderTangleAttackLState));
-            _tangleAttackRState = (MegaSpiderTangleAttackRState)_stateFactory.Create(typeof(MegaSpiderTangleAttackRState));
-            _wireAttackState = (MegaSpiderWireAttackState)_stateFactory.Create(typeof(MegaSpiderWireAttackState));
-            _bounceState = (MegaSpiderBounceState)_stateFactory.Create(typeof(MegaSpiderBounceState));
-            _fallState = (MegaSpiderFallState)_stateFactory.Create(typeof(MegaSpiderFallState));
-            _successFallState = (MegaSpiderSuccessFallState)_stateFactory.Create(typeof(MegaSpiderSuccessFallState));
-            _dropFallState = (MegaSpiderDropFallState)_stateFactory.Create(typeof(MegaSpiderDropFallState));
-            _swingLState = (MegaSpiderSwingLState)_stateFactory.Create(typeof(MegaSpiderSwingLState));
-            _swingRState = (MegaSpiderSwingRState)_stateFactory.Create(typeof(MegaSpiderSwingRState));
-            _climbState = (MegaSpiderClimbState)_stateFactory.Create(typeof(MegaSpiderClimbState));
+            _idleState = (MegaspiderIdleState)_stateFactory.Create(typeof(MegaspiderIdleState));
+            _enterLState = (MegaspiderEnterLState)_stateFactory.Create(typeof(MegaspiderEnterLState));
+            _enterRState = (MegaspiderEnterRState)_stateFactory.Create(typeof(MegaspiderEnterRState));
+            _zigzagAttackLState = (MegaspiderZigzagAttackLState)_stateFactory.Create(typeof(MegaspiderZigzagAttackLState));
+            _zigzagAttackRState = (MegaspiderZigzagAttackRState)_stateFactory.Create(typeof(MegaspiderZigzagAttackRState));
+            _projectileBottomAttackLState = (MegaspiderProjectileBottomAttackLState)_stateFactory.Create(typeof(MegaspiderProjectileBottomAttackLState));
+            _projectileBottomAttackRState = (MegaspiderProjectileBottomAttackRState)_stateFactory.Create(typeof(MegaspiderProjectileBottomAttackRState));
+            _projectileDoubleUpAttackLState = (MegaspiderProjectileDoubleUpAttackLState)_stateFactory.Create(typeof(MegaspiderProjectileDoubleUpAttackLState));
+            _projectileDoubleUpAttackRState = (MegaspiderProjectileDoubleUpAttackRState)_stateFactory.Create(typeof(MegaspiderProjectileDoubleUpAttackRState));
+            _hangAttackLState = (MegaspiderHangAttackLState)_stateFactory.Create(typeof(MegaspiderHangAttackLState));
+            _hangAttackRState = (MegaspiderHangAttackRState)_stateFactory.Create(typeof(MegaspiderHangAttackRState));
+            _hangJumpAttackLState = (MegaspiderHangJumpAttackLState)_stateFactory.Create(typeof(MegaspiderHangJumpAttackLState));
+            _hangJumpAttackRState = (MegaspiderHangJumpAttackRState)_stateFactory.Create(typeof(MegaspiderHangJumpAttackRState));
+            _projectileTopAttackLState = (MegaspiderProjectileTopAttackLState)_stateFactory.Create(typeof(MegaspiderProjectileTopAttackLState));
+            _projectileTopAttackRState = (MegaspiderProjectileTopAttackRState)_stateFactory.Create(typeof(MegaspiderProjectileTopAttackRState));
+            _projectileDoubleDownAttackLState = (MegaspiderProjectileDoubleDownAttackLState)_stateFactory.Create(typeof(MegaspiderProjectileDoubleDownAttackLState));
+            _projectileDoubleDownAttackRState = (MegaspiderProjectileDoubleDownAttackRState)_stateFactory.Create(typeof(MegaspiderProjectileDoubleDownAttackRState));
+            _tangleAttackLState = (MegaspiderTangleAttackLState)_stateFactory.Create(typeof(MegaspiderTangleAttackLState));
+            _tangleAttackRState = (MegaspiderTangleAttackRState)_stateFactory.Create(typeof(MegaspiderTangleAttackRState));
+            _wireAttackState = (MegaspiderWireAttackState)_stateFactory.Create(typeof(MegaspiderWireAttackState));
+            _bounceState = (MegaspiderBounceState)_stateFactory.Create(typeof(MegaspiderBounceState));
+            _fallState = (MegaspiderFallState)_stateFactory.Create(typeof(MegaspiderFallState));
+            _successFallState = (MegaspiderSuccessFallState)_stateFactory.Create(typeof(MegaspiderSuccessFallState));
+            _dropFallState = (MegaspiderDropFallState)_stateFactory.Create(typeof(MegaspiderDropFallState));
+            _swingLState = (MegaspiderSwingLState)_stateFactory.Create(typeof(MegaspiderSwingLState));
+            _swingRState = (MegaspiderSwingRState)_stateFactory.Create(typeof(MegaspiderSwingRState));
+            _climbState = (MegaspiderClimbState)_stateFactory.Create(typeof(MegaspiderClimbState));
         }
 
         private void CreateStateTransitions()

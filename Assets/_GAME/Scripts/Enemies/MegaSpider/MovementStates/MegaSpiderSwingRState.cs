@@ -1,10 +1,10 @@
 using UnityEngine;
 
-namespace _GAME.Scripts.Enemies.MegaSpider.MovementStates
+namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
 {
-    public class MegaSpiderSwingRState : MegaSpiderSwingBaseState
+    public class MegaspiderSwingRState : MegaspiderSwingBaseState
     {
-        public MegaSpiderSwingRState(
+        public MegaspiderSwingRState(
             Transform visibleBodyTransform, 
             Transform calculatedTransform, 
             bool isLeftSide

@@ -4,9 +4,9 @@ using _GAME.Scripts.Lib;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-namespace _GAME.Scripts.Enemies.MegaSpider.MovementStates
+namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
 {
-    public class MegaSpiderWireAttackState : EnemyMovementStateBase
+    public class MegaspiderWireAttackState : EnemyMovementStateBase
     {
         private enum WireStates
         {
@@ -62,7 +62,7 @@ namespace _GAME.Scripts.Enemies.MegaSpider.MovementStates
         private Transform _lampTransform;
         private Transform _cameraTransform;
         
-        public MegaSpiderWireAttackState(
+        public MegaspiderWireAttackState(
             Transform visibleBodyTransform, 
             Transform calculatedTransform,  
             Transform lampTransform, 

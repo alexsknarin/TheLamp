@@ -1,8 +1,8 @@
 using UnityEngine;
 
-namespace _GAME.Scripts.Enemies.MegaSpider.MovementStates
+namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
 {
-    public class MegaSpiderFallState : EnemyMovementStateBase
+    public class MegaspiderFallState : EnemyMovementStateBase
     {
         // TODO: Extract fall logic into a static class Methods - move to library
         
@@ -23,7 +23,7 @@ namespace _GAME.Scripts.Enemies.MegaSpider.MovementStates
         private Transform _lampTransform;
         private float _exitYCoordinate;
 
-        public MegaSpiderFallState(
+        public MegaspiderFallState(
             Transform visibleBodyTransform, 
             Transform calculatedTransform,  
             Transform lampTransform,
@@ -75,7 +75,7 @@ namespace _GAME.Scripts.Enemies.MegaSpider.MovementStates
             
             if (_calculatedTransform.position.y < _exitYCoordinate)
             {
-                Debug.Log("MegaSpider FallState: Exiting");
+                Debug.Log("Megaspider FallState: Exiting");
                 IsReadyToSwitch = true;
             }
         }

@@ -1,9 +1,9 @@
 using _GAME.Scripts.Lib.Interfaces;
 using UnityEngine;
 
-namespace _GAME.Scripts.Enemies.MegaSpider.MovementStates
+namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
 {
-    public class MegaSpiderAnimBaseState: EnemyMovementStateBase
+    public class MegaspiderAnimBaseState: EnemyMovementStateBase
     {
         protected Animator _animator;
         protected int _clipHash;
@@ -11,7 +11,7 @@ namespace _GAME.Scripts.Enemies.MegaSpider.MovementStates
         private Transform _animatedTransform;
         private bool _isLeftSide;
 
-        public MegaSpiderAnimBaseState(
+        public MegaspiderAnimBaseState(
             Animator animator, 
             int clipHash, 
             Transform visibleBodyTransform, 

@@ -1,9 +1,9 @@
 using System;
 using UnityEngine;
 
-namespace _GAME.Scripts.Enemies.MegaSpider.MovementStates
+namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
 {
-    public class MegaSpiderBounceState : EnemyMovementStateBase
+    public class MegaspiderBounceState : EnemyMovementStateBase
     {
         private Vector3 _direction;
         
@@ -13,7 +13,7 @@ namespace _GAME.Scripts.Enemies.MegaSpider.MovementStates
         private Transform _lampTransform;
         private float _speed;
         
-        public MegaSpiderBounceState(
+        public MegaspiderBounceState(
             Transform visibleBodyTransform, 
             Transform calculatedTransform,  
             Transform lampTransform,

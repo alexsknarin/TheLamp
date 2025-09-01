@@ -1,5 +1,5 @@
 using System;
-using _GAME.Scripts.Enemies.MegaSpiderProjectileSpider.MovementStates;
+using _GAME.Scripts.Enemies.MegaspiderProjectileSpider.MovementStates;
 using _GAME.Scripts.Factories;
 using _GAME.Scripts.Lib;
 using _GAME.Scripts.Lib.Interfaces;
@@ -7,9 +7,9 @@ using UnityEngine;
 
 // TODO: Add gravity acceleration
 
-namespace _GAME.Scripts.Enemies.MegaSpiderProjectileSpider
+namespace _GAME.Scripts.Enemies.MegaspiderProjectileSpider
 {
-    public class MegaSpiderProjectileSpiderMovement : MonoBehaviour, IInitializable
+    public class MegaspiderProjectileSpiderMovement : MonoBehaviour, IInitializable
     {
         private float _startDistance;
         private float _startZ;
@@ -23,13 +23,13 @@ namespace _GAME.Scripts.Enemies.MegaSpiderProjectileSpider
         private bool _isAttacking;
         
         // States
-        private MegaSpiderProjectileSpiderMovementStateFactory _stateFactory; // DI it later
+        private MegaspiderProjectileSpiderMovementStateFactory _stateFactory; // DI it later
         private readonly StateMachine _stateMachine = new ();
-        private MegaSpiderProjectileSpiderIdleState _idleState;
-        private MegaSpiderProjectileSpiderPreAttackState _preAttackState;
-        private MegaSpiderProjectileSpiderAttackState _attackState;
-        private MegaSpiderProjectileSpiderBounceState _bounceState;
-        private MegaSpiderProjectileSpiderFallState _fallState;
+        private MegaspiderProjectileSpiderIdleState _idleState;
+        private MegaspiderProjectileSpiderPreAttackState _preAttackState;
+        private MegaspiderProjectileSpiderAttackState _attackState;
+        private MegaspiderProjectileSpiderBounceState _bounceState;
+        private MegaspiderProjectileSpiderFallState _fallState;
         
         // Dependencies
         private Transform _lampTransform;
@@ -60,11 +60,11 @@ namespace _GAME.Scripts.Enemies.MegaSpiderProjectileSpider
 
         private void CreateStates()
         {
-            _idleState = (MegaSpiderProjectileSpiderIdleState)_stateFactory.Create(typeof(MegaSpiderProjectileSpiderIdleState));
-            _preAttackState = (MegaSpiderProjectileSpiderPreAttackState)_stateFactory.Create(typeof(MegaSpiderProjectileSpiderPreAttackState));
-            _attackState =  (MegaSpiderProjectileSpiderAttackState)_stateFactory.Create(typeof(MegaSpiderProjectileSpiderAttackState));
-            _bounceState =  (MegaSpiderProjectileSpiderBounceState)_stateFactory.Create(typeof(MegaSpiderProjectileSpiderBounceState));
-            _fallState =  (MegaSpiderProjectileSpiderFallState)_stateFactory.Create(typeof(MegaSpiderProjectileSpiderFallState));
+            _idleState = (MegaspiderProjectileSpiderIdleState)_stateFactory.Create(typeof(MegaspiderProjectileSpiderIdleState));
+            _preAttackState = (MegaspiderProjectileSpiderPreAttackState)_stateFactory.Create(typeof(MegaspiderProjectileSpiderPreAttackState));
+            _attackState =  (MegaspiderProjectileSpiderAttackState)_stateFactory.Create(typeof(MegaspiderProjectileSpiderAttackState));
+            _bounceState =  (MegaspiderProjectileSpiderBounceState)_stateFactory.Create(typeof(MegaspiderProjectileSpiderBounceState));
+            _fallState =  (MegaspiderProjectileSpiderFallState)_stateFactory.Create(typeof(MegaspiderProjectileSpiderFallState));
         }
 
         private void ConfigureStateTransitions()

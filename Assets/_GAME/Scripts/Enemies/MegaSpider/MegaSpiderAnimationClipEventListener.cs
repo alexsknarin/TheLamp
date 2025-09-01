@@ -1,9 +1,9 @@
 using System;
 using UnityEngine;
 
-namespace _GAME.Scripts.Enemies.MegaSpider
+namespace _GAME.Scripts.Enemies.Megaspider
 {
-    public class MegaSpiderAnimationClipEventListener : MonoBehaviour
+    public class MegaspiderAnimationClipEventListener : MonoBehaviour
     {
         public event Action AnimClipEnded;
         public event Action ProjectileAttack01Called;

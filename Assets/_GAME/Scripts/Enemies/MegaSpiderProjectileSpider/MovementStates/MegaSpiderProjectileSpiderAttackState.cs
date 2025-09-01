@@ -1,8 +1,8 @@
 using UnityEngine;
 
-namespace _GAME.Scripts.Enemies.MegaSpiderProjectileSpider.MovementStates
+namespace _GAME.Scripts.Enemies.MegaspiderProjectileSpider.MovementStates
 {
-    public class MegaSpiderProjectileSpiderAttackState : EnemyMovementStateBase
+    public class MegaspiderProjectileSpiderAttackState : EnemyMovementStateBase
     {
         private const float TransitionDuration = 0.33f;
         private const float Speed = 5f;
@@ -20,7 +20,7 @@ namespace _GAME.Scripts.Enemies.MegaSpiderProjectileSpider.MovementStates
         private Transform _bodyTransform;
         private Transform _lampTransform;
 
-        public MegaSpiderProjectileSpiderAttackState(
+        public MegaspiderProjectileSpiderAttackState(
                 Transform bodyTransform,
                 Transform lampTransform
             )

@@ -106,8 +106,8 @@ namespace _GAME.Scripts.GameCoreSystems.DI
         private MegamothlingMovementStateFactory _megamothlingMovementStateFactory;
         private MegabeetleMovementStateFactory _megabeetleMovementStateFactory;
         private DragonflyBehaviourStateFactory _dragonflyBehaviourStateFactory;
-        private MegaSpiderMovementStateFactory _megaSpiderMovementStateFactory;
-        private MegaSpiderProjectileSpiderMovementStateFactory _megaSpiderProjectileSpiderMovementStateFactory;
+        private MegaspiderMovementStateFactory _megaspiderMovementStateFactory;
+        private MegaspiderProjectileSpiderMovementStateFactory _megaspiderProjectileSpiderMovementStateFactory;
         private EnemyFactory _enemyFactory;
         private FXFactory _fxFactory;   
     
@@ -257,12 +257,12 @@ namespace _GAME.Scripts.GameCoreSystems.DI
             );
             _dragonflyBehaviourStateFactory.Initialize();
 
-            _megaSpiderMovementStateFactory = new MegaSpiderMovementStateFactory(
+            _megaspiderMovementStateFactory = new MegaspiderMovementStateFactory(
                 _cameraTransform,
                 _lampTransform
             );
 
-            _megaSpiderProjectileSpiderMovementStateFactory = new MegaSpiderProjectileSpiderMovementStateFactory(
+            _megaspiderProjectileSpiderMovementStateFactory = new MegaspiderProjectileSpiderMovementStateFactory(
                 
             );
         
@@ -275,7 +275,7 @@ namespace _GAME.Scripts.GameCoreSystems.DI
                 _megamothlingMovementStateFactory,
                 _megabeetleMovementStateFactory,
                 _dragonflyBehaviourStateFactory,
-                _megaSpiderMovementStateFactory,
+                _megaspiderMovementStateFactory,
                 _lampPositionProviderService,
                 _gameConfigService,
                 _spiderPositionHolder,

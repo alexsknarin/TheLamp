@@ -1,9 +1,9 @@
 using System;
 using UnityEngine;
 
-namespace _GAME.Scripts.Enemies.MegaSpiderProjectileSpider.MovementStates
+namespace _GAME.Scripts.Enemies.MegaspiderProjectileSpider.MovementStates
 {
-    public class MegaSpiderProjectileSpiderFallState : EnemyMovementStateBase
+    public class MegaspiderProjectileSpiderFallState : EnemyMovementStateBase
     {
         // TODO: Extract fall logic into a static class Methods - move to library
         
@@ -21,7 +21,7 @@ namespace _GAME.Scripts.Enemies.MegaSpiderProjectileSpider.MovementStates
         private Transform _lampTransform;
         private float _exitYCoordinate;
 
-        public MegaSpiderProjectileSpiderFallState(
+        public MegaspiderProjectileSpiderFallState(
             Transform bodyTransform, 
             Transform lampTransform,
             float exitYCoordinate,

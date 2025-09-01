@@ -1,8 +1,8 @@
 using UnityEngine;
 
-namespace _GAME.Scripts.Enemies.MegaSpider.MovementStates
+namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
 {
-    public class MegaSpiderClimbState : EnemyMovementStateBase
+    public class MegaspiderClimbState : EnemyMovementStateBase
     {
         private const float ClimbDuration = 2.25f;
         
@@ -14,7 +14,7 @@ namespace _GAME.Scripts.Enemies.MegaSpider.MovementStates
         private Transform _calculatedTransform;
         private AnimationCurve _climbCurve;
 
-        public MegaSpiderClimbState(
+        public MegaspiderClimbState(
             Transform visibleBodyTransform, 
             Transform calculatedTransform,
             AnimationCurve climbCurve

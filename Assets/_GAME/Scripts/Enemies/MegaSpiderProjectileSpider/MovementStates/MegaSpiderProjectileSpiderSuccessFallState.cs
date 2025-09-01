@@ -1,6 +1,6 @@
-namespace _GAME.Scripts.Enemies.MegaSpiderProjectileSpider.MovementStates
+namespace _GAME.Scripts.Enemies.MegaspiderProjectileSpider.MovementStates
 {
-    public class MegaSpiderProjectileSpiderSuccessFallState
+    public class MegaspiderProjectileSpiderSuccessFallState
     {
     
     }

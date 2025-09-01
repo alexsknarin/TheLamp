@@ -1,22 +1,22 @@
 using System;
 using _GAME.Scripts.Enemies;
 using _GAME.Scripts.Enemies.Generic.States;
-using _GAME.Scripts.Enemies.MegaSpider.MovementStates;
+using _GAME.Scripts.Enemies.Megaspider.MovementStates;
 using _GAME.Scripts.Lib.Interfaces;
 using UnityEngine;
 
 namespace _GAME.Scripts.Factories
 {
-    public class MegaSpiderMovementStateFactory
+    public class MegaspiderMovementStateFactory
     {
-        private readonly int _enter = Animator.StringToHash("MegaSpider_Enter01");
-        private readonly int _zigzagAttack = Animator.StringToHash("MegaSpider_ZigzagAttack01");
-        private readonly int _projectileBottomAttack = Animator.StringToHash("MegaSpider_ProjectileBottomAttack01");
-        private readonly int _projectileDoubleUpAttack = Animator.StringToHash("MegaSpider_ProjectileDoubleUpAttack01");
-        private readonly int _hangAttack = Animator.StringToHash("MegaSpider_HangAttack01");
-        private readonly int _hangJumpAttack = Animator.StringToHash("MegaSpider_HangJumpAttack01");
-        private readonly int _projectileTopAttack = Animator.StringToHash("MegaSpider_ProjectileTopAttack01");
-        private readonly int _projectileDoubleDownAttack = Animator.StringToHash("MegaSpider_ProjectileDoubleDownAttack01");
+        private readonly int _enter = Animator.StringToHash("Megaspider_Enter01");
+        private readonly int _zigzagAttack = Animator.StringToHash("Megaspider_ZigzagAttack01");
+        private readonly int _projectileBottomAttack = Animator.StringToHash("Megaspider_ProjectileBottomAttack01");
+        private readonly int _projectileDoubleUpAttack = Animator.StringToHash("Megaspider_ProjectileDoubleUpAttack01");
+        private readonly int _hangAttack = Animator.StringToHash("Megaspider_HangAttack01");
+        private readonly int _hangJumpAttack = Animator.StringToHash("Megaspider_HangJumpAttack01");
+        private readonly int _projectileTopAttack = Animator.StringToHash("Megaspider_ProjectileTopAttack01");
+        private readonly int _projectileDoubleDownAttack = Animator.StringToHash("Megaspider_ProjectileDoubleDownAttack01");
         
         
         // Dependencies
@@ -37,7 +37,7 @@ namespace _GAME.Scripts.Factories
         private int _clipHash; 
         
         // TODO: Constructor (LATER)
-        public MegaSpiderMovementStateFactory(
+        public MegaspiderMovementStateFactory(
             Transform cameraTransform,
             Transform lampTransform
             )
@@ -69,13 +69,13 @@ namespace _GAME.Scripts.Factories
 
         public EnemyMovementStateBase Create(Type stateType)
         {
-            if (stateType == typeof(MegaSpiderIdleState))
+            if (stateType == typeof(MegaspiderIdleState))
             {
-                return new MegaSpiderIdleState(_visibleBodyTransform);
+                return new MegaspiderIdleState(_visibleBodyTransform);
             }
-            else if (stateType == typeof(MegaSpiderEnterLState))
+            else if (stateType == typeof(MegaspiderEnterLState))
             {
-                return new MegaSpiderEnterLState(
+                return new MegaspiderEnterLState(
                     _animator,
                     _enter,
                     _visibleBodyTransform,
@@ -83,9 +83,9 @@ namespace _GAME.Scripts.Factories
                     true
                     );
             }
-            else if (stateType == typeof(MegaSpiderEnterRState))
+            else if (stateType == typeof(MegaspiderEnterRState))
             {
-                return new MegaSpiderEnterRState(
+                return new MegaspiderEnterRState(
                     _animator,
                     _enter,
                     _visibleBodyTransform,
@@ -93,9 +93,9 @@ namespace _GAME.Scripts.Factories
                     false
                 );
             }
-            else if (stateType == typeof(MegaSpiderZigzagAttackLState))
+            else if (stateType == typeof(MegaspiderZigzagAttackLState))
             {
-                return new MegaSpiderZigzagAttackLState(
+                return new MegaspiderZigzagAttackLState(
                     _animator,
                     _zigzagAttack,
                     _visibleBodyTransform,
@@ -103,9 +103,9 @@ namespace _GAME.Scripts.Factories
                     true
                 );
             }
-            else if (stateType == typeof(MegaSpiderZigzagAttackRState))
+            else if (stateType == typeof(MegaspiderZigzagAttackRState))
             {
-                return new MegaSpiderZigzagAttackRState(
+                return new MegaspiderZigzagAttackRState(
                     _animator,
                     _zigzagAttack,
                     _visibleBodyTransform,
@@ -113,9 +113,9 @@ namespace _GAME.Scripts.Factories
                     false
                 );
             }
-            else if (stateType == typeof(MegaSpiderProjectileBottomAttackLState))
+            else if (stateType == typeof(MegaspiderProjectileBottomAttackLState))
             {
-                return new MegaSpiderProjectileBottomAttackLState(
+                return new MegaspiderProjectileBottomAttackLState(
                     _animator,
                     _projectileBottomAttack,
                     _visibleBodyTransform,
@@ -123,9 +123,9 @@ namespace _GAME.Scripts.Factories
                     true
                 );
             }
-            else if (stateType == typeof(MegaSpiderProjectileBottomAttackRState))
+            else if (stateType == typeof(MegaspiderProjectileBottomAttackRState))
             {
-                return new MegaSpiderProjectileBottomAttackRState(
+                return new MegaspiderProjectileBottomAttackRState(
                     _animator,
                     _projectileBottomAttack,
                     _visibleBodyTransform,
@@ -133,9 +133,9 @@ namespace _GAME.Scripts.Factories
                     false
                 );
             }
-            if (stateType == typeof(MegaSpiderProjectileDoubleUpAttackLState))
+            if (stateType == typeof(MegaspiderProjectileDoubleUpAttackLState))
             {
-                return new MegaSpiderProjectileDoubleUpAttackLState(
+                return new MegaspiderProjectileDoubleUpAttackLState(
                     _animator,
                     _projectileDoubleUpAttack,
                     _visibleBodyTransform,
@@ -143,9 +143,9 @@ namespace _GAME.Scripts.Factories
                     true
                 );
             }
-            if (stateType == typeof(MegaSpiderProjectileDoubleUpAttackRState))
+            if (stateType == typeof(MegaspiderProjectileDoubleUpAttackRState))
             {
-                return new MegaSpiderProjectileDoubleUpAttackRState(
+                return new MegaspiderProjectileDoubleUpAttackRState(
                     _animator,
                     _projectileDoubleUpAttack,
                     _visibleBodyTransform,
@@ -153,9 +153,9 @@ namespace _GAME.Scripts.Factories
                     false
                 );
             }
-            if (stateType == typeof(MegaSpiderHangAttackLState))
+            if (stateType == typeof(MegaspiderHangAttackLState))
             {
-                return new MegaSpiderHangAttackLState(
+                return new MegaspiderHangAttackLState(
                     _animator,
                     _hangAttack,
                     _visibleBodyTransform,
@@ -163,9 +163,9 @@ namespace _GAME.Scripts.Factories
                     true
                 );
             }
-            if (stateType == typeof(MegaSpiderHangAttackRState))
+            if (stateType == typeof(MegaspiderHangAttackRState))
             {
-                return new MegaSpiderHangAttackRState(
+                return new MegaspiderHangAttackRState(
                     _animator,
                     _hangAttack,
                     _visibleBodyTransform,
@@ -173,9 +173,9 @@ namespace _GAME.Scripts.Factories
                     false
                 );
             }
-            if (stateType == typeof(MegaSpiderHangJumpAttackLState))
+            if (stateType == typeof(MegaspiderHangJumpAttackLState))
             {
-                return new MegaSpiderHangJumpAttackLState(
+                return new MegaspiderHangJumpAttackLState(
                     _animator,
                     _hangJumpAttack,
                     _visibleBodyTransform,
@@ -183,9 +183,9 @@ namespace _GAME.Scripts.Factories
                     true
                 );
             }
-            if (stateType == typeof(MegaSpiderHangJumpAttackRState))
+            if (stateType == typeof(MegaspiderHangJumpAttackRState))
             {
-                return new MegaSpiderHangJumpAttackRState(
+                return new MegaspiderHangJumpAttackRState(
                     _animator,
                     _hangJumpAttack,
                     _visibleBodyTransform,
@@ -193,9 +193,9 @@ namespace _GAME.Scripts.Factories
                     false
                 );
             }
-            if (stateType == typeof(MegaSpiderProjectileTopAttackLState))
+            if (stateType == typeof(MegaspiderProjectileTopAttackLState))
             {
-                return new MegaSpiderProjectileTopAttackLState(
+                return new MegaspiderProjectileTopAttackLState(
                     _animator,
                     _projectileTopAttack,
                     _visibleBodyTransform,
@@ -203,9 +203,9 @@ namespace _GAME.Scripts.Factories
                     true
                 );
             }
-            if (stateType == typeof(MegaSpiderProjectileTopAttackRState))
+            if (stateType == typeof(MegaspiderProjectileTopAttackRState))
             {
-                return new MegaSpiderProjectileTopAttackRState(
+                return new MegaspiderProjectileTopAttackRState(
                     _animator,
                     _projectileTopAttack,
                     _visibleBodyTransform,
@@ -213,9 +213,9 @@ namespace _GAME.Scripts.Factories
                     false
                 );
             }
-            if (stateType == typeof(MegaSpiderProjectileDoubleDownAttackLState))
+            if (stateType == typeof(MegaspiderProjectileDoubleDownAttackLState))
             {
-                return new MegaSpiderProjectileDoubleDownAttackLState(
+                return new MegaspiderProjectileDoubleDownAttackLState(
                     _animator,
                     _projectileDoubleDownAttack,
                     _visibleBodyTransform,
@@ -223,9 +223,9 @@ namespace _GAME.Scripts.Factories
                     true
                 );
             }
-            if (stateType == typeof(MegaSpiderProjectileDoubleDownAttackRState))
+            if (stateType == typeof(MegaspiderProjectileDoubleDownAttackRState))
             {
-                return new MegaSpiderProjectileDoubleDownAttackRState(
+                return new MegaspiderProjectileDoubleDownAttackRState(
                     _animator,
                     _projectileDoubleDownAttack,
                     _visibleBodyTransform,
@@ -234,9 +234,9 @@ namespace _GAME.Scripts.Factories
                 );
             }
             
-            if (stateType == typeof(MegaSpiderTangleAttackLState))
+            if (stateType == typeof(MegaspiderTangleAttackLState))
             {
-                return new MegaSpiderTangleAttackLState(
+                return new MegaspiderTangleAttackLState(
                     _lampTransform,
                     _visibleBodyTransform,
                     _calculatedTransform,
@@ -246,9 +246,9 @@ namespace _GAME.Scripts.Factories
                 );
             }
             
-            if (stateType == typeof(MegaSpiderTangleAttackRState))
+            if (stateType == typeof(MegaspiderTangleAttackRState))
             {
-                return new MegaSpiderTangleAttackRState(
+                return new MegaspiderTangleAttackRState(
                     _lampTransform,
                     _visibleBodyTransform,
                     _calculatedTransform,
@@ -258,9 +258,9 @@ namespace _GAME.Scripts.Factories
                     );
             }
 
-            if (stateType == typeof(MegaSpiderWireAttackState))
+            if (stateType == typeof(MegaspiderWireAttackState))
             {
-                return new MegaSpiderWireAttackState(
+                return new MegaspiderWireAttackState(
                     _visibleBodyTransform,
                     _calculatedTransform,
                     _lampTransform,
@@ -268,9 +268,9 @@ namespace _GAME.Scripts.Factories
                     );
             }
             
-            if (stateType == typeof(MegaSpiderBounceState))
+            if (stateType == typeof(MegaspiderBounceState))
             {
-                return new MegaSpiderBounceState(
+                return new MegaspiderBounceState(
                     _visibleBodyTransform,
                     _calculatedTransform,
                     _lampTransform,
@@ -278,9 +278,9 @@ namespace _GAME.Scripts.Factories
                 );
             }
             
-            if (stateType == typeof(MegaSpiderFallState))
+            if (stateType == typeof(MegaspiderFallState))
             {
-                return new MegaSpiderFallState(
+                return new MegaspiderFallState(
                     _visibleBodyTransform,
                     _calculatedTransform,
                     _lampTransform,
@@ -289,9 +289,9 @@ namespace _GAME.Scripts.Factories
                     );
             }
             
-            if (stateType == typeof(MegaSpiderSuccessFallState))
+            if (stateType == typeof(MegaspiderSuccessFallState))
             {
-                return new MegaSpiderSuccessFallState(
+                return new MegaspiderSuccessFallState(
                     _visibleBodyTransform,
                     _calculatedTransform,
                     _lampTransform,
@@ -300,9 +300,9 @@ namespace _GAME.Scripts.Factories
                 );
             }
             
-            if (stateType == typeof(MegaSpiderDropFallState))
+            if (stateType == typeof(MegaspiderDropFallState))
             {
-                return new MegaSpiderDropFallState(
+                return new MegaspiderDropFallState(
                     _visibleBodyTransform,
                     _calculatedTransform,
                     _lampTransform,
@@ -311,27 +311,27 @@ namespace _GAME.Scripts.Factories
                 );
             }
             
-            if (stateType == typeof(MegaSpiderSwingLState))
+            if (stateType == typeof(MegaspiderSwingLState))
             {
-                return new MegaSpiderSwingLState(
+                return new MegaspiderSwingLState(
                     _visibleBodyTransform,
                     _calculatedTransform,
                     true
                 );
             }
             
-            if (stateType == typeof(MegaSpiderSwingRState))
+            if (stateType == typeof(MegaspiderSwingRState))
             {
-                return new MegaSpiderSwingRState(
+                return new MegaspiderSwingRState(
                     _visibleBodyTransform,
                     _calculatedTransform,
                     false
                 );
             }
             
-            if (stateType == typeof(MegaSpiderClimbState))
+            if (stateType == typeof(MegaspiderClimbState))
             {
-                return new MegaSpiderClimbState(
+                return new MegaspiderClimbState(
                     _visibleBodyTransform,
                     _calculatedTransform,
                     _climbCurve

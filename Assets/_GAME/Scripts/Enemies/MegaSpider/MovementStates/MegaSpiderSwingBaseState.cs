@@ -1,8 +1,8 @@
 using UnityEngine;
 
-namespace _GAME.Scripts.Enemies.MegaSpider.MovementStates
+namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
 {
-    public class MegaSpiderSwingBaseState : EnemyMovementStateBase
+    public class MegaspiderSwingBaseState : EnemyMovementStateBase
     {
         private const float OverallSpedFactor = 1.5f;
         private const float InitialFallForceMagnitude = .9f;
@@ -30,7 +30,7 @@ namespace _GAME.Scripts.Enemies.MegaSpider.MovementStates
         private Transform _calculatedTransform;
         private bool _isLeftSide;
 
-        public MegaSpiderSwingBaseState(
+        public MegaspiderSwingBaseState(
             Transform visibleBodyTransform, 
             Transform calculatedTransform,
             bool isLeftSide

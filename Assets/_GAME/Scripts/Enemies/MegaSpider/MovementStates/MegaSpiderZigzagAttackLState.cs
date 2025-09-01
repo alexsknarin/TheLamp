@@ -1,11 +1,11 @@
 using System;
 using UnityEngine;
 
-namespace _GAME.Scripts.Enemies.MegaSpider.MovementStates
+namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
 {
-    public class MegaSpiderZigzagAttackLState : MegaSpiderAnimBaseState
+    public class MegaspiderZigzagAttackLState : MegaspiderAnimBaseState
     {
-        public MegaSpiderZigzagAttackLState(
+        public MegaspiderZigzagAttackLState(
             Animator animator, 
             int clipHash, 
             Transform visibleBodyTransform, 

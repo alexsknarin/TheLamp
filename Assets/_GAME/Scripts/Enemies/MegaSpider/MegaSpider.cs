@@ -6,9 +6,9 @@ using _GAME.Scripts.Lib.Enums;
 using _GAME.Scripts.Lib.Interfaces;
 using UnityEngine;
 
-namespace _GAME.Scripts.Enemies.MegaSpider
+namespace _GAME.Scripts.Enemies.Megaspider
 {
-    public class MegaSpider : CollidableEnemy, IAnimatedEnemy, IBoss, ILampDestroyedDependable //IProjectileShooter
+    public class Megaspider : CollidableEnemy, IAnimatedEnemy, IBoss, ILampDestroyedDependable //IProjectileShooter
     {
         [SerializeField] private string _stateDebug;
         [Header("-- Attributes --")]
@@ -16,10 +16,10 @@ namespace _GAME.Scripts.Enemies.MegaSpider
         [SerializeField] private int _currentHealth;
         [SerializeField] private float _collisionRadius = 0.325f;
         [Header("-- Movement --")]
-        [SerializeField] private MegaSpiderMovement _movement;
+        [SerializeField] private MegaspiderMovement _movement;
         [Header("Swarm")]
-        [SerializeField] private MegaSpiderSwarm _swarm;
-        [SerializeField] private MegaSpiderAnimationClipEventListener _animationClipEvents;
+        [SerializeField] private MegaspiderSwarm _swarm;
+        [SerializeField] private MegaspiderAnimationClipEventListener _animationClipEvents;
         [SerializeField] private Transform _visibleBodyTransform;
 
         private bool _isLampDestroyed;

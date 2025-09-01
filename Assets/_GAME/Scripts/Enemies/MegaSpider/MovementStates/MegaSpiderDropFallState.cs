@@ -1,10 +1,10 @@
 using UnityEngine;
 
-namespace _GAME.Scripts.Enemies.MegaSpider.MovementStates
+namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
 {
-    public class MegaSpiderDropFallState : MegaSpiderFallState
+    public class MegaspiderDropFallState : MegaspiderFallState
     {
-        public MegaSpiderDropFallState(
+        public MegaspiderDropFallState(
             Transform visibleBodyTransform,
             Transform calculatedTransform,
             Transform lampTransform,

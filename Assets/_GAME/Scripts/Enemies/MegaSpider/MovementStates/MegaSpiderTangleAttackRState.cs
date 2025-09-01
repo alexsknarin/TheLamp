@@ -1,11 +1,11 @@
 using System;
 using UnityEngine;
 
-namespace _GAME.Scripts.Enemies.MegaSpider.MovementStates
+namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
 {
-    public class MegaSpiderTangleAttackRState : MegaSpiderTangleAttackBaseState
+    public class MegaspiderTangleAttackRState : MegaspiderTangleAttackBaseState
     {
-        public MegaSpiderTangleAttackRState(
+        public MegaspiderTangleAttackRState(
             Transform lampTransform,
             Transform visibleBody,
             Transform calculatedTransform,

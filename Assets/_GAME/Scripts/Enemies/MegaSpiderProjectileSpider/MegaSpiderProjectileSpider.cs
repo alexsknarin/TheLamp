@@ -2,11 +2,11 @@ using System;
 using _GAME.Scripts.Lib.Interfaces;
 using UnityEngine;
 
-namespace _GAME.Scripts.Enemies.MegaSpiderProjectileSpider
+namespace _GAME.Scripts.Enemies.MegaspiderProjectileSpider
 {
-    public class MegaSpiderProjectileSpider : MonoBehaviour, IInitializable
+    public class MegaspiderProjectileSpider : MonoBehaviour, IInitializable
     {
-        [SerializeField] private MegaSpiderProjectileSpiderMovement _movement;
+        [SerializeField] private MegaspiderProjectileSpiderMovement _movement;
     
         public void Initialize()
         {

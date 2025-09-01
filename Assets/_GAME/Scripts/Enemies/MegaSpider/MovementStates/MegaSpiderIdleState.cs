@@ -1,12 +1,12 @@
 using UnityEngine;
 
-namespace _GAME.Scripts.Enemies.MegaSpider.MovementStates
+namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
 {
-    public class MegaSpiderIdleState : EnemyMovementStateBase
+    public class MegaspiderIdleState : EnemyMovementStateBase
     {
         private Transform _visibleBodyTransform;
         
-        public MegaSpiderIdleState(Transform visibleBodyTransform)
+        public MegaspiderIdleState(Transform visibleBodyTransform)
         {
             _visibleBodyTransform = visibleBodyTransform;
         }

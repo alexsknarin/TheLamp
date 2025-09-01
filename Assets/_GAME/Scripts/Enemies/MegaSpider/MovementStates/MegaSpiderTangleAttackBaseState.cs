@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace _GAME.Scripts.Enemies.MegaSpider.MovementStates
+namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
 {
-    public class MegaSpiderTangleAttackBaseState: EnemyMovementStateBase
+    public class MegaspiderTangleAttackBaseState: EnemyMovementStateBase
     {
         private enum TangleStates
         {
@@ -43,7 +43,7 @@ namespace _GAME.Scripts.Enemies.MegaSpider.MovementStates
         private bool _isLeftSide;
         private int _side;
 
-        public MegaSpiderTangleAttackBaseState(
+        public MegaspiderTangleAttackBaseState(
             Transform lampTransform, 
             Transform visibleBody, 
             Transform calculatedTransform,  
