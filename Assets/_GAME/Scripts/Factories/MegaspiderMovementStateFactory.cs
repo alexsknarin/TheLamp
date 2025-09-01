@@ -27,6 +27,7 @@ namespace _GAME.Scripts.Factories
         private Transform _visibleBodyTransform;
         private Transform _animatedTransform;
         private Transform _calculatedTransform;
+        private Transform _rootTransform;
         private AnimationCurve _swingCurve;
         private AnimationCurve _dropCurve;
         private AnimationCurve _climbCurve;
@@ -51,6 +52,7 @@ namespace _GAME.Scripts.Factories
             Transform visibleBodyTransform,
             Transform animatedTransform,
             Transform calculatedTransform,
+            Transform rootTransform,
             AnimationCurve swingCurve,
             AnimationCurve dropCurve,
             float bounceSpeed, // TODO: move to config
@@ -61,6 +63,7 @@ namespace _GAME.Scripts.Factories
             _visibleBodyTransform = visibleBodyTransform;
             _animatedTransform = animatedTransform;
             _calculatedTransform = calculatedTransform;
+            _rootTransform = rootTransform;
             _swingCurve = swingCurve;
             _dropCurve = dropCurve;
             _bounceSpeed = bounceSpeed;
@@ -274,6 +277,7 @@ namespace _GAME.Scripts.Factories
                     _visibleBodyTransform,
                     _calculatedTransform,
                     _lampTransform,
+                    _rootTransform,
                     _bounceSpeed
                 );
             }
@@ -284,6 +288,7 @@ namespace _GAME.Scripts.Factories
                     _visibleBodyTransform,
                     _calculatedTransform,
                     _lampTransform,
+                    _rootTransform,    
                     -3.5f, // TODO: use config
                     false
                     );
@@ -295,6 +300,7 @@ namespace _GAME.Scripts.Factories
                     _visibleBodyTransform,
                     _calculatedTransform,
                     _lampTransform,
+                    _rootTransform,   
                     -1.6f, // TODO: use config
                     false
                 );
@@ -306,6 +312,7 @@ namespace _GAME.Scripts.Factories
                     _visibleBodyTransform,
                     _calculatedTransform,
                     _lampTransform,
+                    _rootTransform,   
                     -2.2f, // TODO: use config
                     true
                 );
@@ -316,6 +323,7 @@ namespace _GAME.Scripts.Factories
                 return new MegaspiderSwingLState(
                     _visibleBodyTransform,
                     _calculatedTransform,
+                    _rootTransform,
                     true
                 );
             }
@@ -325,6 +333,7 @@ namespace _GAME.Scripts.Factories
                 return new MegaspiderSwingRState(
                     _visibleBodyTransform,
                     _calculatedTransform,
+                    _rootTransform,
                     false
                 );
             }
@@ -334,6 +343,7 @@ namespace _GAME.Scripts.Factories
                 return new MegaspiderClimbState(
                     _visibleBodyTransform,
                     _calculatedTransform,
+                    _rootTransform,
                     _climbCurve
                 );
             }

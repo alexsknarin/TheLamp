@@ -11,17 +11,20 @@ namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
         private Transform _visibleBodyTransform;
         private Transform _calculatedTransform;
         private Transform _lampTransform;
+        private Transform _rootTransform;
         private float _speed;
         
         public MegaspiderBounceState(
             Transform visibleBodyTransform, 
             Transform calculatedTransform,  
             Transform lampTransform,
+            Transform rootTransform,
             float speed)
         {
             _visibleBodyTransform = visibleBodyTransform;
             _calculatedTransform = calculatedTransform;
             _lampTransform = lampTransform;
+            _rootTransform = rootTransform;
             _speed = speed;
         }
         
@@ -29,7 +32,7 @@ namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
         
         public override void Enter()
         {
-            _visibleBodyTransform.SetParent(null);
+            _visibleBodyTransform.SetParent(_rootTransform);
            
             _calculatedTransform.position = _visibleBodyTransform.position;
             _visibleBodyTransform.SetParent(_calculatedTransform);

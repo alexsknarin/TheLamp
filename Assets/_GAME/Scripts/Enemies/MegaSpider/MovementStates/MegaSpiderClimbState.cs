@@ -12,16 +12,19 @@ namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
         // Dependencies
         private Transform _visibleBodyTransform;
         private Transform _calculatedTransform;
+        private Transform _rootTransform;
         private AnimationCurve _climbCurve;
 
         public MegaspiderClimbState(
             Transform visibleBodyTransform, 
             Transform calculatedTransform,
+            Transform rootTransform,
             AnimationCurve climbCurve
             )
         {
             _visibleBodyTransform = visibleBodyTransform;
             _calculatedTransform = calculatedTransform;
+            _rootTransform = rootTransform;
             _climbCurve = climbCurve;
         }
         
@@ -29,7 +32,7 @@ namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
         {
             IsReadyToSwitch = false;
             
-            _visibleBodyTransform.SetParent(null);
+            _visibleBodyTransform.SetParent(_rootTransform);
             
             _calculatedTransform.position = _visibleBodyTransform.position;
             _visibleBodyTransform.SetParent(_calculatedTransform);

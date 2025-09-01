@@ -19,20 +19,23 @@ namespace _GAME.Scripts.Enemies.MegaspiderProjectileSpider.MovementStates
         // Dependencies
         private Transform _bodyTransform;
         private Transform _lampTransform;
+        private Transform _rootTransform;
 
         public MegaspiderProjectileSpiderAttackState(
                 Transform bodyTransform,
-                Transform lampTransform
+                Transform lampTransform,
+                Transform rootTransform
             )
         {
             _bodyTransform = bodyTransform;
             _lampTransform = lampTransform;
+            _rootTransform = rootTransform;
         }
 
 
         public override void Enter()
         {
-            _bodyTransform.SetParent(null);
+            _bodyTransform.SetParent(_rootTransform);
             
             Vector3 currentPosition = _bodyTransform.position;
             Vector3 lampPosition = _lampTransform.position;

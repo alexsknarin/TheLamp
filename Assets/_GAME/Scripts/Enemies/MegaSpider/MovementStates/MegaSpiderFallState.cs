@@ -21,12 +21,14 @@ namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
         private Transform _visibleBodyTransform;
         private Transform _calculatedTransform;
         private Transform _lampTransform;
+        private Transform _rootTransform;
         private float _exitYCoordinate;
 
         public MegaspiderFallState(
             Transform visibleBodyTransform, 
             Transform calculatedTransform,  
             Transform lampTransform,
+            Transform rootTransform,
             float exitYCoordinate,
             bool isFreeFall
             )
@@ -34,6 +36,7 @@ namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
             _visibleBodyTransform = visibleBodyTransform;
             _calculatedTransform = calculatedTransform;
             _lampTransform = lampTransform;
+            _rootTransform = rootTransform;
             _exitYCoordinate = exitYCoordinate;
             _isFreeFall = isFreeFall;
         }
@@ -43,7 +46,7 @@ namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
         {
             IsReadyToSwitch = false;
                 
-            _visibleBodyTransform.SetParent(null);
+            _visibleBodyTransform.SetParent(_rootTransform);
             
             _calculatedTransform.position = _visibleBodyTransform.position;
             _visibleBodyTransform.SetParent(_calculatedTransform);

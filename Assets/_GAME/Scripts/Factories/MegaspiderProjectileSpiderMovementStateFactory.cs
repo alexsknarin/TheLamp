@@ -10,13 +10,15 @@ namespace _GAME.Scripts.Factories
         // Dependencies
         private Transform _bodyTransform;
         private Transform _lampTransform;
+        private Transform _rootTransform;
         
         // Constructor
         // Set Dependencies 
-        public void SetEnemyDependencies(Transform bodyTransform, Transform lampTransform)
+        public void SetEnemyDependencies(Transform bodyTransform, Transform lampTransform, Transform rootTransform)
         {
             _bodyTransform = bodyTransform;
             _lampTransform = lampTransform;
+            _rootTransform = rootTransform;       
         }
 
         public EnemyMovementStateBase Create(Type stateType)
@@ -31,7 +33,7 @@ namespace _GAME.Scripts.Factories
             }
             else if (stateType == typeof(MegaspiderProjectileSpiderAttackState))
             {
-                return new MegaspiderProjectileSpiderAttackState(_bodyTransform, _lampTransform);
+                return new MegaspiderProjectileSpiderAttackState(_bodyTransform, _lampTransform, _rootTransform);
             }
             else if (stateType == typeof(MegaspiderProjectileSpiderBounceState))
             {

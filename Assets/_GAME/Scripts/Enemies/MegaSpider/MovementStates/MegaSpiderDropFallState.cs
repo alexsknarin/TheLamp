@@ -8,12 +8,14 @@ namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
             Transform visibleBodyTransform,
             Transform calculatedTransform,
             Transform lampTransform,
+            Transform rootTransform,
             float exitYCoordinate,
             bool isFreeFall
             ) : base(
                 visibleBodyTransform, 
                 calculatedTransform,
                 lampTransform,
+                rootTransform,
                 exitYCoordinate,
                 isFreeFall
                 )

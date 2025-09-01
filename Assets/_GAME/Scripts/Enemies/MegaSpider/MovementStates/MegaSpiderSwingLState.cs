@@ -6,11 +6,13 @@ namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
     {
         public MegaspiderSwingLState(
             Transform visibleBodyTransform, 
-            Transform calculatedTransform, 
+            Transform calculatedTransform,
+            Transform rootTransform,
             bool isLeftSide
             ) : base(
             visibleBodyTransform, 
             calculatedTransform,
+            rootTransform,
             isLeftSide
             )
         {

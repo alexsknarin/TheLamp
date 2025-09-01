@@ -70,7 +70,7 @@ namespace _GAME.Scripts.Enemies.Megaspider
         private AttackResult _attackResult;
         private float _collisionRadius;
         private float _fullCollisionDistance;
-        [SerializeField] private bool _isAttackStateBeforeCollision = false;
+        private bool _isAttackStateBeforeCollision = false;
 
         // Dependencies
         private Transform _cameraTransform;
@@ -108,6 +108,7 @@ namespace _GAME.Scripts.Enemies.Megaspider
                 _visibleBodyTransform, 
                 _animatedTransform,
                 _calculatedTransform,
+                transform,
                 _swingCurve,
                 _dropCurve,
                 _bounceSpeed,

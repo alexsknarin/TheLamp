@@ -11,6 +11,7 @@ namespace _GAME.Scripts.Enemies.MegaspiderProjectileSpider
 {
     public class MegaspiderProjectileSpiderMovement : MonoBehaviour, IInitializable
     {
+        [SerializeField] private Transform _rootTransform;
         private float _startDistance;
         private float _startZ;
         private bool _isCollided;
@@ -47,7 +48,8 @@ namespace _GAME.Scripts.Enemies.MegaspiderProjectileSpider
             _stateFactory = new();
             _stateFactory.SetEnemyDependencies(
                 transform,
-                _lampTransform
+                _lampTransform,
+                _rootTransform
                 );
             
             CreateStates();

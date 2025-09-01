@@ -28,23 +28,26 @@ namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
         // Dependencies
         private Transform _visibleBodyTransform;
         private Transform _calculatedTransform;
+        private Transform _rootTransform;
         private bool _isLeftSide;
 
         public MegaspiderSwingBaseState(
             Transform visibleBodyTransform, 
             Transform calculatedTransform,
+            Transform rootTransform,
             bool isLeftSide
             )
         {
             _visibleBodyTransform = visibleBodyTransform;
             _calculatedTransform = calculatedTransform;
+            _rootTransform = rootTransform;
             _isLeftSide = isLeftSide;
         }
         
         public override void Enter()
         {
             IsReadyToSwitch = false;
-            _visibleBodyTransform.SetParent(null);
+            _visibleBodyTransform.SetParent(_rootTransform);
             
             // TODO: TEMP for tests - remove later
             Vector3 position = new Vector3(-0.16f, -1.91f, 0);
