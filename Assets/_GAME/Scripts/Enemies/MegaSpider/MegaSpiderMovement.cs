@@ -64,6 +64,7 @@ namespace _GAME.Scripts.Enemies.Megaspider
         private MegaspiderSwingLState _swingLState;
         private MegaspiderSwingRState _swingRState;
         private MegaspiderClimbState _climbState;
+        private MegaspiderDeathFallState _deathFallState;
 
         private bool _isAnimClipEnded = false;
         private bool _isBounced = false;
@@ -89,6 +90,7 @@ namespace _GAME.Scripts.Enemies.Megaspider
         }
         
         public event Action AnimatedAttackStarted;
+        public event Action DeathStateEnded;
 
         public Vector2 Position => _visibleBodyTransform.position;
 
@@ -131,6 +133,7 @@ namespace _GAME.Scripts.Enemies.Megaspider
             _wireAttackState.Started += OnAnimatedAttackStarted;
 
             _bounceState.Ended += OnBounceStateEnded;
+            _deathFallState.Ended += OnDeathStateEnded;
 
 
         }
@@ -150,6 +153,7 @@ namespace _GAME.Scripts.Enemies.Megaspider
             _wireAttackState.Started -= OnAnimatedAttackStarted;
             
             _bounceState.Ended -= OnBounceStateEnded;
+            _deathFallState.Ended -= OnDeathStateEnded;
         }
 
         private void OnAnimatedAttackStarted()
@@ -188,6 +192,7 @@ namespace _GAME.Scripts.Enemies.Megaspider
             _swingLState = (MegaspiderSwingLState)_stateFactory.Create(typeof(MegaspiderSwingLState));
             _swingRState = (MegaspiderSwingRState)_stateFactory.Create(typeof(MegaspiderSwingRState));
             _climbState = (MegaspiderClimbState)_stateFactory.Create(typeof(MegaspiderClimbState));
+            _deathFallState = (MegaspiderDeathFallState)_stateFactory.Create(typeof(MegaspiderDeathFallState));
         }
 
         private void CreateStateTransitions()
@@ -207,13 +212,16 @@ namespace _GAME.Scripts.Enemies.Megaspider
             // Wire Attack Transitions
             At(_wireAttackState, _bounceState, () => _wireAttackState.IsReadyToSwitch); //+
             At(_wireAttackState, _fallState, IsAttackEndedFail()); //+
+            At(_wireAttackState, _deathFallState, IsAttackEndedDeath()); //+
             At(_wireAttackState, _dropFallState, () => _wireAttackState.IsDropped); 
             
             // Zigzag Attack Transitions
             At(_zigzagAttackLState, _bounceState, IsBounced()); //+
             At(_zigzagAttackLState, _fallState, IsAttackEndedFail());          
+            At(_zigzagAttackLState, _deathFallState, IsAttackEndedDeath());          
             At(_zigzagAttackRState, _bounceState, IsBounced()); //+
-            At(_zigzagAttackRState, _fallState, IsAttackEndedFail());         
+            At(_zigzagAttackRState, _fallState, IsAttackEndedFail());
+            At(_zigzagAttackRState, _deathFallState, IsAttackEndedDeath());   
             
             // Projectile Bottom Transitions
             At(_projectileBottomAttackLState, _wireAttackState, IsAnimationEndedRandom0Of4()); //+
@@ -241,21 +249,27 @@ namespace _GAME.Scripts.Enemies.Megaspider
             
             // Hang Attack Transitions
             At(_hangAttackLState, _bounceState, IsBounced()); //+
-            At(_hangAttackLState, _fallState, IsAttackEndedFail());         
+            At(_hangAttackLState, _fallState, IsAttackEndedFail());
+            At(_hangAttackLState, _deathFallState, IsAttackEndedDeath());
             At(_hangAttackRState, _bounceState, IsBounced()); //+
             At(_hangAttackRState, _fallState, IsAttackEndedFail());    
+            At(_hangAttackRState, _deathFallState, IsAttackEndedDeath());
             
             // Hang Jump Attack Transitions
             At(_hangJumpAttackLState, _bounceState, IsBounced()); //+
             At(_hangJumpAttackLState, _fallState, IsAttackEndedFail());    
+            At(_hangJumpAttackLState, _deathFallState, IsAttackEndedDeath());    
             At(_hangJumpAttackRState, _bounceState, IsBounced()); //+
             At(_hangJumpAttackRState, _fallState, IsAttackEndedFail());    
+            At(_hangJumpAttackRState, _deathFallState, IsAttackEndedDeath());
             
             // Tangle Attack Transitions
             At(_tangleAttackLState, _bounceState, IsBounced()); //+
             At(_tangleAttackLState, _fallState, IsAttackEndedFail());    
+            At(_tangleAttackLState, _deathFallState, IsAttackEndedDeath());    
             At(_tangleAttackRState, _bounceState, IsBounced()); //+
             At(_tangleAttackRState, _fallState, IsAttackEndedFail());
+            At(_tangleAttackRState, _deathFallState, IsAttackEndedDeath());
             
             // Projectile Top Attack Transitions
             At(_projectileTopAttackLState, _projectileDoubleDownAttackRState, IsAnimationEndedRandom0Of4()); //+
@@ -280,6 +294,7 @@ namespace _GAME.Scripts.Enemies.Megaspider
             // Bounce Transitions
             At(_bounceState, _fallState, IsAttackEndedFail()); //+
             At(_bounceState, _successFallState, IsAttackEndedSuccess());
+            At(_bounceState, _deathFallState, IsAttackEndedDeath());
             
             // Fall Transitions
             // TODO: fix magic numbers - tune number to make swing more often
@@ -319,6 +334,8 @@ namespace _GAME.Scripts.Enemies.Megaspider
             At(_climbState, _projectileDoubleDownAttackLState, () => _climbState.IsReadyToSwitch && _calculatedTransform.position.x < 0 && Random.Range(0,5) == 4); //+
             At(_climbState, _projectileDoubleDownAttackRState, () => _climbState.IsReadyToSwitch && _calculatedTransform.position.x > 0 && Random.Range(0,5) == 4); //+
 
+            // Death Fall Transitions
+            At(_deathFallState, _idleState, () => _deathFallState.IsReadyToSwitch); //+
             
             
             // Transition helper methods
@@ -530,6 +547,11 @@ namespace _GAME.Scripts.Enemies.Megaspider
         private void OnBounceStateEnded()
         {
             _isAttackStateBeforeCollision = false;
+        }
+
+        private void OnDeathStateEnded()
+        {
+            DeathStateEnded?.Invoke();
         }
     }
 }

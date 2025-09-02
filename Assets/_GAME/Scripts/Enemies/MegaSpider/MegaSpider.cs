@@ -56,6 +56,7 @@ namespace _GAME.Scripts.Enemies.Megaspider
             _animationClipEvents.ProjectileAttack02Called += _swarm.Attack02;
 
             _movement.AnimatedAttackStarted += OnAnimatedAttackStarted;
+            _movement.DeathStateEnded += OnDeathStateEnded;
         }
 
         private void OnDestroy()
@@ -65,6 +66,7 @@ namespace _GAME.Scripts.Enemies.Megaspider
             _animationClipEvents.ProjectileAttack02Called -= _swarm.Attack02;
             
             _movement.AnimatedAttackStarted -= OnAnimatedAttackStarted;
+            _movement.DeathStateEnded -= OnDeathStateEnded;
         }
 
         public override void Play()

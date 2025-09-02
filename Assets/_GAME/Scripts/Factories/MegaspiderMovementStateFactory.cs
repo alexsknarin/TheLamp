@@ -306,6 +306,18 @@ namespace _GAME.Scripts.Factories
                 );
             }
             
+            if (stateType == typeof(MegaspiderDeathFallState))
+            {
+                return new MegaspiderDeathFallState(
+                    _visibleBodyTransform,
+                    _calculatedTransform,
+                    _lampTransform,
+                    _rootTransform,    
+                    -3.5f, // TODO: use config
+                    false
+                );
+            }
+            
             if (stateType == typeof(MegaspiderDropFallState))
             {
                 return new MegaspiderDropFallState(

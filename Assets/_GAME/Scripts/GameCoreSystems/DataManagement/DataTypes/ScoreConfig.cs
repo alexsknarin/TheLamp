@@ -18,5 +18,7 @@ namespace _GAME.Scripts.GameCoreSystems.DataManagement.DataTypes
         [field: SerializeField] public int DragonflyProjectileSpiderScorePrice { get; private set; } = 1;
         [field: SerializeField] public int DragonflyProjectileMothScorePrice { get; private set; } = 1;
         [field: SerializeField] public int Dragonfly { get; private set; } = 100;
+        [field: SerializeField] public int Megaspider { get; private set; } = 100;
+        [field: SerializeField] public int MegaspiderProjectileSpider { get; private set; } = 1;
     }
 }
