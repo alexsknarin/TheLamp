@@ -1,7 +1,6 @@
 using System;
 using _GAME.Scripts.Enemies.Dragonfly;
 using _GAME.Scripts.Lib.Enums;
-using _GAME.Scripts.Lib.Interfaces;
 using UnityEngine;
 
 namespace _GAME.Scripts.Enemies.MegaspiderProjectileSpider
@@ -11,13 +10,16 @@ namespace _GAME.Scripts.Enemies.MegaspiderProjectileSpider
         [SerializeField] private MegaspiderProjectileSpiderMovement _movement;
         [SerializeField] private float _collisionRadius = 0.075f; 
         [SerializeField] private bool _isAttackStarted = false;
+        
+        public event Action FallEnded;
+        
         public bool IsAttackStarted => _isAttackStarted;
         public bool IsDamaged { get; private set; }
         public override float Radius => _collisionRadius;
         public override Vector2 Position => transform.position;
-        
-        public event Action FallEnded;
-        
+        public override string CollidableName => gameObject.name;
+
+
         public override void Initialize()
         {
             _movement.Initialize();
@@ -54,18 +56,9 @@ namespace _GAME.Scripts.Enemies.MegaspiderProjectileSpider
         {
             _movement.TriggerFall(AttackResult.Fail);
         }
-        
-        // TODO: remaove later
-        public override void HandleEnterAttackZone()
-        {
-            Debug.Log(gameObject.name + " Enter Attack Zone");
-            CollisionState = CollidableState.InAttackZone;
-            IsReadyForDamage = true;
-        }
 
         public override void HandleCollision()
         {
-            Debug.Log(gameObject.name + " Collision");
             CollisionState = CollidableState.AfterCollision;
             IsReadyForDamage = true;
             _movement.TriggerCollide();
@@ -73,7 +66,6 @@ namespace _GAME.Scripts.Enemies.MegaspiderProjectileSpider
         
         public override void HandleExitAttackZone()
         {
-            Debug.Log(gameObject.name + " Exit Attack Zone");
             CollisionState = CollidableState.Outside;
             IsReadyForDamage = false;
             _movement.TriggerFall(AttackResult.Success);

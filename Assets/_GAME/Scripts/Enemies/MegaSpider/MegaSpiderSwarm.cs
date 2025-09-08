@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using _GAME.Scripts.Enemies.MegaspiderProjectileSpider;
 using _GAME.Scripts.Lib.Interfaces;
 using UnityEngine;
@@ -63,20 +64,29 @@ namespace _GAME.Scripts.Enemies.Megaspider
         public void Reset()
         {
             if (_projectile01.IsAttackStarted)
-                Projecile01FallEnded?.Invoke(_projectile01.IsDamaged);
+            {
+                Debug.LogError("Projectile01 Force Fall");
+                Debug.Break();
+            }
+            
             _projectile01Transform.SetParent(_projectilePosition01);
             _projectile01Transform.localPosition = Vector3.zero;
             _projectile01.gameObject.SetActive(true);
             _projectile01.Play();
-            
+
             if (_projectile02.IsAttackStarted)
-                Projecile02FallEnded?.Invoke(_projectile02.IsDamaged);
+            {
+                Debug.LogError("Projectile02 Force Fall");
+                Debug.Break();
+            }
+            
             _projectile02Transform.SetParent(_projectilePosition02);
             _projectile02Transform.localPosition = Vector3.zero;
             _projectile02.gameObject.SetActive(true);
             _projectile02.Play();
+            
         }
-
+        
         public void Attack01()
         {
             _projectile01.Attack();

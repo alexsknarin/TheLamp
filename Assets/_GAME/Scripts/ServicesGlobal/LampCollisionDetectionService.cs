@@ -97,7 +97,7 @@ namespace _GAME.Scripts.ServicesGlobal
             _collidableItems = "";
             foreach (var collidable in _collidables)
             {
-                _collidableItems = _collidableItems + ", " + collidable.GetType().ToString();
+                _collidableItems = _collidableItems + ", " + collidable.CollidableName;
             }
         }
 
@@ -110,7 +110,7 @@ namespace _GAME.Scripts.ServicesGlobal
                     RemoveCollidable(collidable);
                 }
                 _collidablesToRemove.Clear();
-            
+                
                 if (_collidables.Count == 0)
                 {
                     _collidableItems = "";

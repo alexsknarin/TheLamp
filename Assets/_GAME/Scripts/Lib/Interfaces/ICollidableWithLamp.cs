@@ -7,6 +7,7 @@ namespace _GAME.Scripts.Lib.Interfaces
     {
         public float Radius { get; }
         public Vector2 Position { get; }
+        public string CollidableName { get; }
         public bool IsReceivedLampAttackDamage { get; }
         public CollidableState CollisionState { get; }
         public void HandleEnterAttackZone();

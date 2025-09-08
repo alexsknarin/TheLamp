@@ -39,7 +39,8 @@ namespace _GAME.Scripts.Enemies.Megaspider
         public event Action<Enemy, bool> ProjectileDeactivated;
 
         public override Vector2 Position => CameraProjection.ProjectPointOnXYPlane(_cameraTransform.position, _visibleBodyTransform.position);
-        
+        public override string CollidableName => gameObject.name;
+
         public void Construct(Transform cameraTransform)
         {
             _cameraTransform = cameraTransform;
@@ -165,12 +166,14 @@ namespace _GAME.Scripts.Enemies.Megaspider
 
         private void OnProjectileAttack01Called()
         {
+            Debug.Log("Projectile01 Attack Called");
             ProjectileShot?.Invoke(_swarm.Projectile01);
             _swarm.Attack01();
         }
         
         private void OnProjectileAttack02Called()
         {
+            Debug.Log("Projectile02 Attack Called");
             ProjectileShot?.Invoke(_swarm.Projectile02);
             _swarm.Attack02();
         }
