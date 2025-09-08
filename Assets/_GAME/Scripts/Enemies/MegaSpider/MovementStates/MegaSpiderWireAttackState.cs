@@ -20,12 +20,11 @@ namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
         private const float SpiderRadius = 0.325f;
         private const float CollisionThreshold = 0.00001f;
         private const int NumberOfWires = 5;
-        private const float WireAttackTimeInterval = 0.45f; // TODO: to config
-        private const float SpiderAttackDelay = 1.5f;       // TODO: to config
+        private const float WireAttackTimeInterval = 0.45f; 
+        private const float SpiderAttackDelay = 1.5f;       
         private const float MainAttackDuration = 1f;
         private const float MainAttackAcceleration = 3f;
         
-        // TODO: extract to a config
         private readonly SpiderwebSpawnRange[] _webStartPositionsRanges = new []
         {
             new SpiderwebSpawnRange(-0.1696585f, -1.571486f, -5.533077f, -0.5621628f, -1.601049f, -5.457012f),
@@ -90,7 +89,6 @@ namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
             // Show source ranges
             foreach (var range in _webStartPositionsRanges)
             {
-                // TODO: remove later
                 Debug.DrawLine(range.p1, range.p2, Color.red, 10);
             }
             
@@ -253,7 +251,6 @@ namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
             }
         }
         
-        // TODO: DI to make this class recieve lamp attacks!
         private void ReceiveWireDamage(int power)
         {
             RefreshActiveWiresList();
@@ -342,7 +339,6 @@ namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
             }
         }
         
-        // TODO: extract to library as a static method 
         private void ParentVisibleBodyToAnimatedTransform()
         {
             _visibleBodyTransform.SetParent(_calculatedTransform, false);

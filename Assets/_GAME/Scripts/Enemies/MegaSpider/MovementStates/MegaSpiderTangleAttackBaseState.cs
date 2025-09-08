@@ -13,11 +13,10 @@ namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
         }
 
         private const float WireThickness = 0.03f;
-        private const float LampRadius = 0.5f; // TODO: Replace by DI
-        private const float SpiderRadius = 0.325f;  // TODO: Replace by DI
-        private static readonly Vector3 HangPoint = new Vector3(-0.96f, 3.13f, 0); // TODO: move to config
+        private const float LampRadius = 0.5f; 
+        private const float SpiderRadius = 0.325f;
+        private static readonly Vector3 HangPoint = new Vector3(-0.96f, 3.13f, 0);
 
-        // TODO: read from config
         private const float EnterDuration = 1f;
         private const float TangleSpeed = 330f;
         private const float TangleAcceleration = 280f;
@@ -163,18 +162,7 @@ namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
             {
                 StartTangleState();
             }
-                
-            // Check For Collision
-            // if (Vector3.Distance(_currentPositionOnEnd, _lampWorldPosition) < SpiderRadius + LampRadius)
-            // {
-            //     // Fix collision
-            //     _currentPositionOnEnd = 
-            //         (_currentPositionOnEnd - _lampWorldPosition).normalized 
-            //         * (SpiderRadius + LampRadius) + _lampWorldPosition;
-            //         
-            //     Debug.Break();
-            // }
-                
+               
             _localTime += Time.deltaTime;
         }
         
@@ -211,7 +199,6 @@ namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
                     out correctedCurrentDirection
                 );
             
-                // TODO: extract as method
                 if (isWorldSpace)
                 {
                     _currentPosition = pivot + correctedCurrentDirection;
@@ -318,7 +305,6 @@ namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
             }
         }
         
-        // TODO: extract to library as a static method 
         private void ParentVisibleBodyToAnimatedTransform()
         {
             _visibleBodyTransform.SetParent(_calculatedTransform, false);

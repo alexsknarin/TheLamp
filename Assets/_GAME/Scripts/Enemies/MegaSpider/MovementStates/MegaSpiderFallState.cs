@@ -4,8 +4,6 @@ namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
 {
     public class MegaspiderFallState : EnemyMovementStateBase
     {
-        // TODO: Extract fall logic into a static class Methods - move to library
-        
         private const float InitialOutForceMagnitude = 1.8f;
         private const float OutForceIncrement = 5f;
         private const float FallForceIncrement = 6f;

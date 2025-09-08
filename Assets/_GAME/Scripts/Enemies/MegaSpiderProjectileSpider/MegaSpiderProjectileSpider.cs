@@ -1,14 +1,24 @@
 using System;
+using _GAME.Scripts.Enemies.Dragonfly;
+using _GAME.Scripts.Lib.Enums;
 using _GAME.Scripts.Lib.Interfaces;
 using UnityEngine;
 
 namespace _GAME.Scripts.Enemies.MegaspiderProjectileSpider
 {
-    public class MegaspiderProjectileSpider : MonoBehaviour, IInitializable
+    public class MegaspiderProjectileSpider : CollidableEnemy
     {
         [SerializeField] private MegaspiderProjectileSpiderMovement _movement;
-    
-        public void Initialize()
+        [SerializeField] private float _collisionRadius = 0.075f; 
+        [SerializeField] private bool _isAttackStarted = false;
+        public bool IsAttackStarted => _isAttackStarted;
+        public bool IsDamaged { get; private set; }
+        public override float Radius => _collisionRadius;
+        public override Vector2 Position => transform.position;
+        
+        public event Action FallEnded;
+        
+        public override void Initialize()
         {
             _movement.Initialize();
             _movement.FallEnded += OnFallEnded;
@@ -19,30 +29,61 @@ namespace _GAME.Scripts.Enemies.MegaspiderProjectileSpider
             _movement.FallEnded -= OnFallEnded;
         }
 
+        public override void Play()
+        {
+            _movement.Play();
+            IsDamaged = false;
+            _isAttackStarted = false;
+        }
+
+        public override void ReceiveDamage(int damageAmount)
+        {
+            if (damageAmount < 1f) return;
+            IsDamaged = true;
+            _movement.TriggerFall(AttackResult.Fail);
+            IsReceivedLampAttackDamage = true;
+        }
+
+        public override void Attack()
+        {
+            _movement.TriggerAttack();
+            _isAttackStarted = true;
+        }
+
+        public override void DoDeath()
+        {
+            _movement.TriggerFall(AttackResult.Fail);
+        }
+        
+        // TODO: remaove later
+        public override void HandleEnterAttackZone()
+        {
+            Debug.Log(gameObject.name + " Enter Attack Zone");
+            CollisionState = CollidableState.InAttackZone;
+            IsReadyForDamage = true;
+        }
+
+        public override void HandleCollision()
+        {
+            Debug.Log(gameObject.name + " Collision");
+            CollisionState = CollidableState.AfterCollision;
+            IsReadyForDamage = true;
+            _movement.TriggerCollide();
+        }
+        
+        public override void HandleExitAttackZone()
+        {
+            Debug.Log(gameObject.name + " Exit Attack Zone");
+            CollisionState = CollidableState.Outside;
+            IsReadyForDamage = false;
+            _movement.TriggerFall(AttackResult.Success);
+        }
+
         private void OnFallEnded()
         {
             gameObject.SetActive(false);
+            _isAttackStarted = false;
+            FallEnded?.Invoke();
         }
-
-        public void Play()
-        {
-            _movement.Play();
-        }
-
-        public void Attack()
-        {
-            _movement.StartAttack();
-        }
-        
-        public void Collide()
-        {
-            _movement.Collide();
-        }
-
-        public void AttackZoneExit()
-        {
-            _movement.OnAttackZoneExit();
-        }
-
     }
 }

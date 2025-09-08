@@ -113,6 +113,7 @@ namespace _GAME.Scripts.ServicesGlobal
             
                 if (_collidables.Count == 0)
                 {
+                    _collidableItems = "";
                     enabled = false;
                 }
             }

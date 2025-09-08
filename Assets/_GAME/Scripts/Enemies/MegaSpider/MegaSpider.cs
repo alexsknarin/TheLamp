@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace _GAME.Scripts.Enemies.Megaspider
 {
-    public class Megaspider : CollidableEnemy, IAnimatedEnemy, IBoss, ILampDestroyedDependable //IProjectileShooter
+    public class Megaspider : CollidableEnemy, IAnimatedEnemy, IBoss, ILampDestroyedDependable, IProjectileShooter
     {
         [SerializeField] private string _stateDebug;
         [Header("-- Attributes --")]
@@ -34,8 +34,10 @@ namespace _GAME.Scripts.Enemies.Megaspider
         public event Action<int, int> HealthChanged;
         public event Action Died;
         public event Action SpreadRequested;
+        
+        public event Action<CollidableEnemy> ProjectileShot;
+        public event Action<Enemy, bool> ProjectileDeactivated;
 
-        // TODO: need special treatment for the wire Attack
         public override Vector2 Position => CameraProjection.ProjectPointOnXYPlane(_cameraTransform.position, _visibleBodyTransform.position);
         
         public void Construct(Transform cameraTransform)
@@ -49,29 +51,33 @@ namespace _GAME.Scripts.Enemies.Megaspider
             _movement.SetCollisionRadius(_collisionRadius);
             _movement.Initialize();
             _swarm.Initialize();
-            enabled = false;
             
             _animationClipEvents.ProjectileResetCalled += _swarm.Reset;
-            _animationClipEvents.ProjectileAttack01Called += _swarm.Attack01;
-            _animationClipEvents.ProjectileAttack02Called += _swarm.Attack02;
+            _animationClipEvents.ProjectileAttack01Called += OnProjectileAttack01Called;
+            _animationClipEvents.ProjectileAttack02Called += OnProjectileAttack02Called;
 
             _movement.AnimatedAttackStarted += OnAnimatedAttackStarted;
             _movement.DeathStateEnded += OnDeathStateEnded;
+
+            _swarm.Projecile01FallEnded += OnProjecile01FallEnded;
+            _swarm.Projecile02FallEnded += OnProjecile02FallEnded;
         }
 
         private void OnDestroy()
         {
             _animationClipEvents.ProjectileResetCalled -= _swarm.Reset;
-            _animationClipEvents.ProjectileAttack01Called -= _swarm.Attack01;
-            _animationClipEvents.ProjectileAttack02Called -= _swarm.Attack02;
+            _animationClipEvents.ProjectileAttack01Called -= OnProjectileAttack01Called;
+            _animationClipEvents.ProjectileAttack02Called -= OnProjectileAttack02Called;
             
             _movement.AnimatedAttackStarted -= OnAnimatedAttackStarted;
             _movement.DeathStateEnded -= OnDeathStateEnded;
+            
+            _swarm.Projecile01FallEnded -= OnProjecile01FallEnded;
+            _swarm.Projecile02FallEnded -= OnProjecile02FallEnded;
         }
 
         public override void Play()
         {
-            enabled = true; // TODO: remove if not needed
             IsGameOver = false;
             _isLampDestroyed = false;
             
@@ -135,13 +141,12 @@ namespace _GAME.Scripts.Enemies.Megaspider
 
         public void HandleLampDestroyed()
         {
-            // TODO: properly handle lamp destroyed behaviour in movement
             // _movement.SetLampDestroyed();
             // _swarm.TriggerGameover();
             
             _isLampDestroyed = true;
         }
-        
+
         public override Vector3 ProvideImpactPoint()
         {
             return _visibleBodyTransform.position;
@@ -151,11 +156,33 @@ namespace _GAME.Scripts.Enemies.Megaspider
         {
             AnimatedAttackStarted?.Invoke(this);
         }
-        
+
         private void OnDrawGizmos()
         {
             Gizmos.color = Color.cyan;
             Gizmos.DrawWireSphere(_visibleBodyTransform.position, _collisionRadius);
+        }
+
+        private void OnProjectileAttack01Called()
+        {
+            ProjectileShot?.Invoke(_swarm.Projectile01);
+            _swarm.Attack01();
+        }
+        
+        private void OnProjectileAttack02Called()
+        {
+            ProjectileShot?.Invoke(_swarm.Projectile02);
+            _swarm.Attack02();
+        }
+
+        private void OnProjecile01FallEnded(bool damaged)
+        {
+            ProjectileDeactivated?.Invoke(_swarm.Projectile01, damaged);
+        }
+
+        private void OnProjecile02FallEnded(bool dameged)
+        {
+            ProjectileDeactivated?.Invoke(_swarm.Projectile02, dameged);
         }
     }
 }

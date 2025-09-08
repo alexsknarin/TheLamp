@@ -6,7 +6,7 @@ namespace _GAME.Scripts.Enemies.MegaspiderProjectileSpider.MovementStates
     {
         private const float TransitionDuration = 0.33f;
         private const float Speed = 5f;
-        private const float Gravity = 3.5f; // TODO: - remove if on top
+        private const float Gravity = 3.5f;
 
         private float _localTime;
         private float _gravityMagnitude;
@@ -50,7 +50,7 @@ namespace _GAME.Scripts.Enemies.MegaspiderProjectileSpider.MovementStates
         
             // Shift Attack Aim Center
             float side = Mathf.Sign(currentPosition.x);
-            float sideFraction = Mathf.Abs(currentPosition.x) / 1.4f; // TODO: take camera into consideration - should be in the screen space
+            float sideFraction = Mathf.Abs(currentPosition.x) / 1.4f; 
             float lampShift = Mathf.Lerp(0.0f, 0.36f, sideFraction) * side;
             lampPosition.x += lampShift;
         

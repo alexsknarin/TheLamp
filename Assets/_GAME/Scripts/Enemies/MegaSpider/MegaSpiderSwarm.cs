@@ -1,3 +1,4 @@
+using System;
 using _GAME.Scripts.Enemies.MegaspiderProjectileSpider;
 using _GAME.Scripts.Lib.Interfaces;
 using UnityEngine;
@@ -8,7 +9,6 @@ namespace _GAME.Scripts.Enemies.Megaspider
     {
         [SerializeField] private Transform _projectilePosition01;
         [SerializeField] private Transform _projectilePosition02;
-        // TODO: find out why it is happening:
         [SerializeField] private MegaspiderProjectileSpider.MegaspiderProjectileSpider _projectile01;
         [SerializeField] private MegaspiderProjectileSpider.MegaspiderProjectileSpider _projectile02;
         [SerializeField] private Transform _projectile01Transform;
@@ -17,6 +17,13 @@ namespace _GAME.Scripts.Enemies.Megaspider
         // Dependencies
         private Transform _lampTransform;
 
+        public event Action<bool> Projecile01FallEnded; // TODO: create delegate to name bool properly
+        public event Action<bool> Projecile02FallEnded;
+        
+        public CollidableEnemy Projectile01 => _projectile01;
+        public CollidableEnemy Projectile02 => _projectile02;
+        
+        
         public void Construct(Transform lampTransform)
         {
             _lampTransform = lampTransform;
@@ -28,18 +35,42 @@ namespace _GAME.Scripts.Enemies.Megaspider
         {
             _projectile01.Initialize();
             _projectile02.Initialize();
-        
+
+            _projectile01.FallEnded += OnProjectile01FallEnded;
+            _projectile02.FallEnded += OnProjectile02FallEnded;
+            
+            
+            
             Reset();
+        }
+
+        private void OnProjectile01FallEnded()
+        {
+            Projecile01FallEnded?.Invoke(_projectile01.IsDamaged);
+        }
+
+        private void OnProjectile02FallEnded()
+        {
+            Projecile02FallEnded?.Invoke(_projectile02.IsDamaged);
+        }
+
+        private void OnDestroy()
+        {
+            _projectile01.FallEnded -= OnProjectile01FallEnded;
+            _projectile02.FallEnded -= OnProjectile02FallEnded;
         }
 
         public void Reset()
         {
-            // TODO: potentially disable or do something else with swarm when in non swarm attack state
-            Debug.Log("MegaspiderSwarm Reset");
+            if (_projectile01.IsAttackStarted)
+                Projecile01FallEnded?.Invoke(_projectile01.IsDamaged);
             _projectile01Transform.SetParent(_projectilePosition01);
             _projectile01Transform.localPosition = Vector3.zero;
             _projectile01.gameObject.SetActive(true);
             _projectile01.Play();
+            
+            if (_projectile02.IsAttackStarted)
+                Projecile02FallEnded?.Invoke(_projectile02.IsDamaged);
             _projectile02Transform.SetParent(_projectilePosition02);
             _projectile02Transform.localPosition = Vector3.zero;
             _projectile02.gameObject.SetActive(true);

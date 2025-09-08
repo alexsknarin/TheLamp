@@ -1,6 +1,5 @@
 using System;
-using System.Collections;
-using _GAME.Scripts.Enemies.Dragonfly;
+using _GAME.Scripts.Enemies.Dragonfly; // TODO: move to library
 using _GAME.Scripts.Enemies.Megaspider.MovementStates;
 using _GAME.Scripts.Factories;
 using _GAME.Scripts.Lib;
@@ -8,16 +7,11 @@ using _GAME.Scripts.Lib.Interfaces;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-// TODO: Add cord attack
-// TODO: Add Death state
-// TODO: Fix Swing State - take camera into a consideration to decide on bottom Y for Fall/Sucess/Dropfall
-// TODO: Fix Swing State - move spiderweb pivot to another position
-
 namespace _GAME.Scripts.Enemies.Megaspider
 {
     public class MegaspiderMovement : MonoBehaviour, IInitializable
     {
-        private const float CollisionThreshold = 0.0001f; // TODO: move to config
+        private const float CollisionThreshold = 0.0001f;
         [SerializeField] private Transform _visibleBodyTransform;
         [SerializeField] private Transform _animatedTransform;
         [SerializeField] private Transform _calculatedTransform;
@@ -297,7 +291,6 @@ namespace _GAME.Scripts.Enemies.Megaspider
             At(_bounceState, _deathFallState, IsAttackEndedDeath());
             
             // Fall Transitions
-            // TODO: fix magic numbers - tune number to make swing more often
             At(_fallState, _swingLState, () => _fallState.IsReadyToSwitch && (_calculatedTransform.position.x > -0.9f && _calculatedTransform.position.x < 0f)); //+
             At(_fallState, _swingRState, () => _fallState.IsReadyToSwitch && (_calculatedTransform.position.x > 0f && _calculatedTransform.position.x < 0.9f));
             At(_fallState, _climbState, () => _fallState.IsReadyToSwitch && (_calculatedTransform.position.x < -0.9f || _calculatedTransform.position.x > 0.9f)); //+
@@ -523,7 +516,7 @@ namespace _GAME.Scripts.Enemies.Megaspider
 
         private void LateUpdate()
         {
-            // Fix Movement Penetrations TODO: extract to a separate class?
+            // Fix Movement Penetrations
             // Check Only in Attack State
             if (_isAttackStateBeforeCollision)
             {

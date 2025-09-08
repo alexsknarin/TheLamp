@@ -3,9 +3,8 @@ using _GAME.Scripts.Enemies.MegaspiderProjectileSpider.MovementStates;
 using _GAME.Scripts.Factories;
 using _GAME.Scripts.Lib;
 using _GAME.Scripts.Lib.Interfaces;
+using _GAME.Scripts.Enemies.Dragonfly;
 using UnityEngine;
-
-// TODO: Add gravity acceleration
 
 namespace _GAME.Scripts.Enemies.MegaspiderProjectileSpider
 {
@@ -15,11 +14,11 @@ namespace _GAME.Scripts.Enemies.MegaspiderProjectileSpider
         private float _startDistance;
         private float _startZ;
         private bool _isCollided;
-        private bool _isAttackZoneExited = false;
-        private bool _isAttackSuccess = false;
+
+        private AttackResult _attackResult;
     
         private float _localTime;
-        private Vector3 prevPos;
+        private Vector3 _prevPos;
         private float _gravityMagnitude;
         private bool _isAttacking;
         
@@ -58,6 +57,26 @@ namespace _GAME.Scripts.Enemies.MegaspiderProjectileSpider
             _isAttacking = false;
             _isCollided = false;
             enabled = false;
+            _attackResult = AttackResult.None;
+        }
+
+        public void Play()
+        {
+            _isAttacking = false;
+            _isCollided = false;
+            enabled = true;
+            _stateMachine.SetState(_idleState);
+            _attackResult = AttackResult.None;
+        }
+
+        public void TriggerFall(AttackResult attackResult)
+        {
+            _attackResult = attackResult;
+        }
+
+        public void TriggerCollide()
+        {
+            _isCollided = true;
         }
 
         private void CreateStates()
@@ -73,8 +92,11 @@ namespace _GAME.Scripts.Enemies.MegaspiderProjectileSpider
         {
             At(_idleState, _preAttackState, IsAttacked());
             At(_preAttackState, _attackState, () => _preAttackState.IsReadyToSwitch);
+            At(_attackState, _fallState, IsAttackFail());
+            
             At(_attackState, _bounceState, IsCollided());
-            At(_bounceState, _fallState, IsAttackEndedFail());
+            At(_bounceState, _fallState, IsAttackFail());
+            At(_bounceState, _fallState, IsAttackSuccess());
             At(_fallState, _idleState, () => _fallState.IsReadyToSwitch);
             
             
@@ -103,16 +125,26 @@ namespace _GAME.Scripts.Enemies.MegaspiderProjectileSpider
                 return false;
             };
             
-            Func<bool> IsAttackEndedFail() => () =>
+            Func<bool> IsAttackFail() => () =>
             {
-                if (_isAttackZoneExited && !_isAttackSuccess)
+                if (_attackResult == AttackResult.Fail)
                 {
-                    _isAttackZoneExited = false;
-                    _isAttackSuccess = false;
+                    _attackResult = AttackResult.None;
                     return true;
                 }
                 return false;
             };
+            
+            Func<bool> IsAttackSuccess() => () =>
+            {
+                if (_attackResult == AttackResult.Success)
+                {
+                    _attackResult = AttackResult.None;
+                    return true;
+                }
+                return false;
+            };
+            
 
             _fallState.Ended += OnFallStateEnded;
             _bounceState.Ended += OnBounceStateEnded;// TODO: remove later
@@ -135,26 +167,9 @@ namespace _GAME.Scripts.Enemies.MegaspiderProjectileSpider
             _isCollided = false; // TODO: remove later
         }
 
-        public void Play()
-        {
-            enabled = true;
-            _stateMachine.SetState(_idleState);
-        }
-
-        public void StartAttack()
+        public void TriggerAttack()
         {
             _isAttacking = true;            
-        }
-        
-        public void Collide()
-        {
-            _isCollided = true;
-        }
-        
-        public void OnAttackZoneExit()
-        {
-            _isAttackZoneExited = true;
-            _isAttackSuccess = false;
         }
 
         private void Update()

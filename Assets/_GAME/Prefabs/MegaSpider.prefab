@@ -311,6 +311,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _movement: {fileID: 5781309945799557912}
+  _collisionRadius: 0.075
 --- !u!114 &5781309945799557912
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -781,6 +782,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _movement: {fileID: 7537086714196788647}
+  _collisionRadius: 0.075
 --- !u!114 &7537086714196788647
 MonoBehaviour:
   m_ObjectHideFlags: 0

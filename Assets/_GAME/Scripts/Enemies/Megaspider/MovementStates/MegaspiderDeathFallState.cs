@@ -5,7 +5,6 @@ namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
 {
     public class MegaspiderDeathFallState: MegaspiderFallState
     {
-        // TODO: custom Death movement behaviour
         public MegaspiderDeathFallState(
             Transform visibleBodyTransform,
             Transform calculatedTransform,

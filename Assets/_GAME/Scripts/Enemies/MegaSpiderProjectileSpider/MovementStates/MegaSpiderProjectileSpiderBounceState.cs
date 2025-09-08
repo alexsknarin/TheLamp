@@ -5,7 +5,7 @@ namespace _GAME.Scripts.Enemies.MegaspiderProjectileSpider.MovementStates
 {
     public class MegaspiderProjectileSpiderBounceState : EnemyMovementStateBase
     {
-        private const float Speed = 2.5f; // TODO: To Config
+        private const float Speed = 2.5f;
 
         private Vector3 _direction;
 

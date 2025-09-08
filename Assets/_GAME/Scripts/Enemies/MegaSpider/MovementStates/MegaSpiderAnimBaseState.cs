@@ -46,7 +46,6 @@ namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
             Debug.Log("Exiting Animation State");
         }
     
-        // TODO: extract to library as a static method 
         private void ParentVisibleBodyToAnimatedTransform()
         {
             _visibleBodyTransform.SetParent(_animatedTransform, false);
