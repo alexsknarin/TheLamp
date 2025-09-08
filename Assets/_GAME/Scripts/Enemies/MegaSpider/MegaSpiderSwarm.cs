@@ -84,7 +84,12 @@ namespace _GAME.Scripts.Enemies.Megaspider
             _projectile02Transform.localPosition = Vector3.zero;
             _projectile02.gameObject.SetActive(true);
             _projectile02.Play();
-            
+        }
+
+        public void HideProjectiles()
+        {
+            _projectile01.gameObject.SetActive(false);
+            _projectile02.gameObject.SetActive(false);
         }
         
         public void Attack01()

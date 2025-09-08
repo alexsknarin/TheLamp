@@ -87,6 +87,8 @@ namespace _GAME.Scripts.Enemies.Megaspider
             
             _movement.Play();
             Started?.Invoke();
+            
+            _swarm.HideProjectiles();
         }
 
         public override void ReceiveDamage(int damageAmount)
@@ -155,6 +157,7 @@ namespace _GAME.Scripts.Enemies.Megaspider
 
         private void OnAnimatedAttackStarted()
         {
+            _swarm.HideProjectiles();
             AnimatedAttackStarted?.Invoke(this);
         }
 
@@ -170,7 +173,7 @@ namespace _GAME.Scripts.Enemies.Megaspider
             ProjectileShot?.Invoke(_swarm.Projectile01);
             _swarm.Attack01();
         }
-        
+
         private void OnProjectileAttack02Called()
         {
             Debug.Log("Projectile02 Attack Called");
