@@ -1,4 +1,5 @@
 using System;
+using _GAME.Scripts.Lib;
 using UnityEngine;
 
 namespace _GAME.Scripts.Enemies.MegaspiderProjectileSpider.MovementStates
@@ -48,20 +49,15 @@ namespace _GAME.Scripts.Enemies.MegaspiderProjectileSpider.MovementStates
 
         public override void Tick()
         {
-            if (_isFreeFall)
-            {
-                _bodyTransform.position += Vector3.down * (_fallForceMagnitude * Time.deltaTime);
-            }
-            else
-            {
-                _bodyTransform.position += _initialDirection * (_outForceMagnitude * Time.deltaTime) 
-                                           + Vector3.down * (_fallForceMagnitude * Time.deltaTime);    
-            }
-                
-            _outForceMagnitude -= OutForceIncrement * Time.deltaTime;
-            _outForceMagnitude = Mathf.Clamp(_outForceMagnitude, 0f, InitialOutForceMagnitude);
-            
-            _fallForceMagnitude += FallForceIncrement * Time.deltaTime;
+            _bodyTransform.position += SimplePhysics.Fall(
+                _initialDirection, 
+                ref _outForceMagnitude, 
+                ref _fallForceMagnitude, 
+                _isFreeFall,
+                InitialOutForceMagnitude,
+                OutForceIncrement,
+                FallForceIncrement
+                );
             
             if (_bodyTransform.position.y < _exitYCoordinate)
             {

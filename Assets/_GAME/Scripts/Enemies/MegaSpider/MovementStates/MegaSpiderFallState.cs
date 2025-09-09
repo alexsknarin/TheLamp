@@ -1,3 +1,4 @@
+using _GAME.Scripts.Lib;
 using UnityEngine;
 
 namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
@@ -59,20 +60,15 @@ namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
 
         public override void Tick()
         {
-            if (_isFreeFall)
-            {
-                _calculatedTransform.position += Vector3.down * (_fallForceMagnitude * Time.deltaTime);
-            }
-            else
-            {
-                _calculatedTransform.position += _initialDirection * (_outForceMagnitude * Time.deltaTime) 
-                                                 + Vector3.down * (_fallForceMagnitude * Time.deltaTime);    
-            }
-                
-            _outForceMagnitude -= OutForceIncrement * Time.deltaTime;
-            _outForceMagnitude = Mathf.Clamp(_outForceMagnitude, 0f, InitialOutForceMagnitude);
-            
-            _fallForceMagnitude += FallForceIncrement * Time.deltaTime;
+            _calculatedTransform.position += SimplePhysics.Fall(
+                _initialDirection, 
+                ref _outForceMagnitude, 
+                ref _fallForceMagnitude, 
+                _isFreeFall,
+                InitialOutForceMagnitude,
+                OutForceIncrement,
+                FallForceIncrement
+                );
             
             if (_calculatedTransform.position.y < _exitYCoordinate)
             {

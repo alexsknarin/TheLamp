@@ -1,9 +1,12 @@
 using UnityEngine;
 
-public abstract class RandomDirection
+namespace _GAME.Scripts.Lib
 {
-    public static int Generate()
+    public abstract class RandomDirection
     {
-        return Random.Range(0, 2) * 2 - 1;
+        public static int Generate()
+        {
+            return Random.Range(0, 2) * 2 - 1;
+        }
     }
 }
