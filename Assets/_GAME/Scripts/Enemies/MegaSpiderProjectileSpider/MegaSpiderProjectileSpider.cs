@@ -14,7 +14,6 @@ namespace _GAME.Scripts.Enemies.MegaspiderProjectileSpider
         public event Action FallEnded;
         
         public bool IsAttackStarted => _isAttackStarted;
-        public bool IsDamaged { get; private set; }
         public override float Radius => _collisionRadius;
         public override Vector2 Position => transform.position;
         public override string CollidableName => gameObject.name;
@@ -34,16 +33,15 @@ namespace _GAME.Scripts.Enemies.MegaspiderProjectileSpider
         public override void Play()
         {
             _movement.Play();
-            IsDamaged = false;
+            IsReceivedLampAttackDamage = false;
             _isAttackStarted = false;
         }
 
         public override void ReceiveDamage(int damageAmount)
         {
             if (damageAmount < 1f) return;
-            IsDamaged = true;
-            _movement.TriggerFall(AttackResult.Fail);
             IsReceivedLampAttackDamage = true;
+            _movement.TriggerFall(AttackResult.Fail);
         }
 
         public override void Attack()

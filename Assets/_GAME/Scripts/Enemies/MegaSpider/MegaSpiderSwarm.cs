@@ -47,12 +47,12 @@ namespace _GAME.Scripts.Enemies.Megaspider
 
         private void OnProjectile01FallEnded()
         {
-            Projecile01FallEnded?.Invoke(_projectile01.IsDamaged);
+            Projecile01FallEnded?.Invoke(_projectile01.IsReceivedLampAttackDamage);
         }
 
         private void OnProjectile02FallEnded()
         {
-            Projecile02FallEnded?.Invoke(_projectile02.IsDamaged);
+            Projecile02FallEnded?.Invoke(_projectile02.IsReceivedLampAttackDamage);
         }
 
         private void OnDestroy()
