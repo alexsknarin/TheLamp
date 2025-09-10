@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using _GAME.Scripts.Enemies.MegaspiderProjectileSpider;
+using _GAME.Scripts.Factories;
 using _GAME.Scripts.Lib.Interfaces;
 using UnityEngine;
 
@@ -25,11 +26,11 @@ namespace _GAME.Scripts.Enemies.Megaspider
         public CollidableEnemy Projectile02 => _projectile02;
         
         
-        public void Construct(Transform lampTransform)
+        public void Construct(Transform lampTransform, MegaspiderProjectileSpiderMovementStateFactory stateFactory)
         {
             _lampTransform = lampTransform;
-            _projectile01.GetComponent<MegaspiderProjectileSpiderMovement>().Construct(_lampTransform);
-            _projectile02.GetComponent<MegaspiderProjectileSpiderMovement>().Construct(_lampTransform);
+            _projectile01.GetComponent<MegaspiderProjectileSpiderMovement>().Construct(_lampTransform, stateFactory);
+            _projectile02.GetComponent<MegaspiderProjectileSpiderMovement>().Construct(_lampTransform, stateFactory);
         } 
         
         public void Initialize()

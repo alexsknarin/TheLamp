@@ -264,7 +264,7 @@ namespace _GAME.Scripts.GameCoreSystems.DI
             );
 
             _megaspiderProjectileSpiderMovementStateFactory = new MegaspiderProjectileSpiderMovementStateFactory(
-                
+                _gameConfigService
             );
         
             _enemyFactory = new EnemyFactory(
@@ -277,6 +277,7 @@ namespace _GAME.Scripts.GameCoreSystems.DI
                 _megabeetleMovementStateFactory,
                 _dragonflyBehaviourStateFactory,
                 _megaspiderMovementStateFactory,
+                _megaspiderProjectileSpiderMovementStateFactory,
                 _lampPositionProviderService,
                 _gameConfigService,
                 _spiderPositionHolder,

@@ -33,6 +33,7 @@ namespace _GAME.Scripts.Factories
         private readonly MegabeetleMovementStateFactory _megabeetleMovementStateFactory;
         private readonly DragonflyBehaviourStateFactory _dragonflyBehaviourStateFactory;
         private readonly MegaspiderMovementStateFactory _megaspiderMovementStateFactory;
+        private readonly MegaspiderProjectileSpiderMovementStateFactory _megaspiderProjectileSpiderMovementStateFactory;
         private readonly IGameConfigService _gameConfigService;
         private readonly ISpiderSideDirectionProvider _spiderSideDirectionProvider;
         private readonly FullscreenRendererFeatureProvider _fullscreenRendererFeatureProvider;
@@ -62,6 +63,7 @@ namespace _GAME.Scripts.Factories
             MegabeetleMovementStateFactory megabeetleMovementStateFactory,
             DragonflyBehaviourStateFactory dragonflyBehaviourStateFactory,
             MegaspiderMovementStateFactory megaspiderMovementStateFactory,
+            MegaspiderProjectileSpiderMovementStateFactory megaspiderProjectileSpiderMovementStateFactory,
             ILampPositionProviderService lampPositionProviderService,
             IGameConfigService gameConfigService,
             ISpiderSideDirectionProvider spiderSideDirectionProvider,
@@ -77,9 +79,10 @@ namespace _GAME.Scripts.Factories
             _ladybugMovementStateFactory = ladybugMovementStateFactory;
             _megamothlingMovementStateFactory = megamothlingMovementStateFactory;
             _dragonflyBehaviourStateFactory = dragonflyBehaviourStateFactory;
-            _megaspiderMovementStateFactory = megaspiderMovementStateFactory;
-            _lampPositionProviderService = lampPositionProviderService;
             _megabeetleMovementStateFactory = megabeetleMovementStateFactory;
+            _megaspiderMovementStateFactory = megaspiderMovementStateFactory;
+            _megaspiderProjectileSpiderMovementStateFactory = megaspiderProjectileSpiderMovementStateFactory;
+            _lampPositionProviderService = lampPositionProviderService;
             _gameConfigService = gameConfigService;
             _spiderSideDirectionProvider = spiderSideDirectionProvider;
             _fullscreenRendererFeatureProvider = fullscreenRendererFeatureProvider;
@@ -388,7 +391,7 @@ namespace _GAME.Scripts.Factories
                 _lampTransform, 
                 _megaspiderMovementStateFactory
                 );
-            enemyInstance.GetComponent<MegaspiderSwarm>().Construct(_lampTransform);
+            enemyInstance.GetComponent<MegaspiderSwarm>().Construct(_lampTransform, _megaspiderProjectileSpiderMovementStateFactory);
             enemy.Initialize();
             return enemy;
         }

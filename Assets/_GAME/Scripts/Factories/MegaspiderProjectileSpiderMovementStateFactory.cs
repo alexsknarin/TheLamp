@@ -1,6 +1,7 @@
 using System;
 using _GAME.Scripts.Enemies;
 using _GAME.Scripts.Enemies.MegaspiderProjectileSpider.MovementStates;
+using _GAME.Scripts.Lib.Interfaces;
 using UnityEngine;
 
 namespace _GAME.Scripts.Factories
@@ -11,8 +12,14 @@ namespace _GAME.Scripts.Factories
         private Transform _bodyTransform;
         private Transform _lampTransform;
         private Transform _rootTransform;
+        private IGameConfigService _gameConfigService;
         
         // Constructor
+        public MegaspiderProjectileSpiderMovementStateFactory(IGameConfigService gameConfigService)
+        {
+            _gameConfigService = gameConfigService;
+        }
+        
         // Set Dependencies 
         public void SetEnemyDependencies(Transform bodyTransform, Transform lampTransform, Transform rootTransform)
         {
@@ -33,7 +40,7 @@ namespace _GAME.Scripts.Factories
             }
             else if (stateType == typeof(MegaspiderProjectileSpiderAttackState))
             {
-                return new MegaspiderProjectileSpiderAttackState(_bodyTransform, _lampTransform, _rootTransform);
+                return new MegaspiderProjectileSpiderAttackState(_bodyTransform, _lampTransform, _rootTransform, _gameConfigService);
             }
             else if (stateType == typeof(MegaspiderProjectileSpiderBounceState))
             {

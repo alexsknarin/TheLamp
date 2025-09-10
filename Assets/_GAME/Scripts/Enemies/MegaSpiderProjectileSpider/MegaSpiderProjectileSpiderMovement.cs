@@ -34,8 +34,9 @@ namespace _GAME.Scripts.Enemies.MegaspiderProjectileSpider
         // Dependencies
         private Transform _lampTransform;
         
-        public void Construct(Transform lampTransform)
+        public void Construct(Transform lampTransform, MegaspiderProjectileSpiderMovementStateFactory stateFactory)
         {
+            _stateFactory = stateFactory;
             _lampTransform = lampTransform;
         }
 
@@ -44,7 +45,6 @@ namespace _GAME.Scripts.Enemies.MegaspiderProjectileSpider
         public void Initialize()
         {
             Debug.Log("Initialize Movement");
-            _stateFactory = new();
             _stateFactory.SetEnemyDependencies(
                 transform,
                 _lampTransform,

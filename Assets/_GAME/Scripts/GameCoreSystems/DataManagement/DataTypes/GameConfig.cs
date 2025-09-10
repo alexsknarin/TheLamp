@@ -60,6 +60,9 @@ namespace _GAME.Scripts.GameCoreSystems.DataManagement.DataTypes
         [field:SerializeField] public float MegaspiderWireAttackMainAttackAcceleration { get; private set; } = 3.0f;
         [field:SerializeField] public SpiderwebSpawnRange[] MegaspiderWebStartPositionRanges { get; private set; }
         
-
+        [field:Header("Megaspider Projectile Spider Settings")]
+        [field:SerializeField] public float MegaspiderProjectileSpiderTransitionDuration { get; private set; } = 0.33f;
+        [field:SerializeField] public float MegaspiderProjectileSpiderSpeed { get; private set; } = 5f;
+        [field:SerializeField] public float MegaspiderProjectileSpiderGravity { get; private set; } = 3.5f;
     }
 }
