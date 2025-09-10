@@ -259,7 +259,8 @@ namespace _GAME.Scripts.GameCoreSystems.DI
 
             _megaspiderMovementStateFactory = new MegaspiderMovementStateFactory(
                 _cameraTransform,
-                _lampTransform
+                _lampTransform,
+                _gameConfigService
             );
 
             _megaspiderProjectileSpiderMovementStateFactory = new MegaspiderProjectileSpiderMovementStateFactory(

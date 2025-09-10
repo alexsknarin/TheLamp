@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using _GAME.Scripts.Lib;
+using _GAME.Scripts.Lib.Interfaces;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -15,29 +16,8 @@ namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
             PreAttackPause,
             MainAttack
         }
-        
-        private const float LampRadius = 0.5f;
-        private const float SpiderRadius = 0.325f;
-        private const float CollisionThreshold = 0.00001f;
-        private const int NumberOfWires = 5;
-        private const float WireAttackTimeInterval = 0.45f; 
-        private const float SpiderAttackDelay = 1.5f;       
-        private const float MainAttackDuration = 1f;
-        private const float MainAttackAcceleration = 3f;
-        
-        private readonly SpiderwebSpawnRange[] _webStartPositionsRanges = new []
-        {
-            new SpiderwebSpawnRange(-0.1696585f, -1.571486f, -5.533077f, -0.5621628f, -1.601049f, -5.457012f),
-            new SpiderwebSpawnRange(-0.5621628f, -1.601049f, -5.457012f, -0.8296229f, -1.489632f, -4.630661f),
-            new SpiderwebSpawnRange(-0.8296229f, -1.489632f, -4.630661f, -1.097083f, -1.378216f, -3.80431f),
-            new SpiderwebSpawnRange(-2.991441f, 2.364229f, 1.8949f, -3.222974f, 3.461487f, 3.060626f),
-            new SpiderwebSpawnRange(-3.222974f, 3.461487f, 3.060626f, -3.454506f, 4.558745f, 4.226351f),
-            new SpiderwebSpawnRange(0.1696585f, -1.571486f, -5.533077f, 0.5621628f, -1.601049f, -5.457012f),
-            new SpiderwebSpawnRange(0.5621628f, -1.601049f, -5.457012f, 0.8296229f, -1.489632f, -4.630661f),
-            new SpiderwebSpawnRange(0.8296229f, -1.489632f, -4.630661f, 1.097083f, -1.378216f, -3.80431f),
-            new SpiderwebSpawnRange(2.991441f, 2.364229f, 1.8949f, 3.222974f, 3.461487f, 3.060626f),
-            new SpiderwebSpawnRange(3.222974f, 3.461487f, 3.060626f, 3.454506f, 4.558745f, 4.226351f)
-        };
+
+        private readonly SpiderwebSpawnRange[] _webStartPositionsRanges;
         
         private readonly Vector3 _lampEndPoint = new (0.0f, -0.35f, 0);
         private readonly Vector3 _inactivePosition = new (0.0f, -10.0f, 0);
@@ -60,19 +40,40 @@ namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
         private Transform _calculatedTransform;
         private Transform _lampTransform;
         private Transform _cameraTransform;
+
+        private readonly float _spiderRadius;
+        private readonly float _lampRadius;
+        private readonly float _collisionThreshold;
+        private readonly int _numberOfWires;
+        private readonly float _wireAttackTimeInterval; 
+        private readonly float _spiderAttackDelay;       
+        private readonly float _mainAttackDuration;
+        private readonly float _mainAttackAcceleration;
         
         public MegaspiderWireAttackState(
             Transform visibleBodyTransform, 
             Transform calculatedTransform,  
             Transform lampTransform, 
-            Transform cameraTransform)
+            Transform cameraTransform,
+            IGameConfigService configService,
+            float spiderRadius
+            )
         {
             _visibleBodyTransform = visibleBodyTransform;
             _calculatedTransform = calculatedTransform;
             _lampTransform = lampTransform;
             _cameraTransform = cameraTransform;
             
-            _fullCollisionDistance = SpiderRadius + LampRadius + CollisionThreshold;
+            _spiderRadius = spiderRadius;
+            _lampRadius = configService.PlayerConfig.LampCollisionRadius;
+            _collisionThreshold = configService.PlayerConfig.CollisionThreshold;
+            _numberOfWires = configService.GameConfig.MegaspiderWireAttackNumberOfWires;
+            _wireAttackTimeInterval = configService.GameConfig.MegaspiderWireAttackTimeInterval;
+            _spiderAttackDelay = configService.GameConfig.MegaspiderWireAttackSpiderAttackDelay;
+            _mainAttackDuration = configService.GameConfig.MegaspiderWireAttackMainAttackDuration;
+            _mainAttackAcceleration = configService.GameConfig.MegaspiderWireAttackMainAttackAcceleration;
+            _webStartPositionsRanges = configService.GameConfig.MegaspiderWebStartPositionRanges;
+            _fullCollisionDistance = _spiderRadius + _lampRadius + _collisionThreshold;
             _wireState = WireStates.Inactive;
             _currentPosition = _inactivePosition;
             CreateEmptyAttackWireVariables();
@@ -158,14 +159,14 @@ namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
         
         private void HandleWiresAttack()
         {
-            float attackPhase = _localTime / WireAttackTimeInterval;
+            float attackPhase = _localTime / _wireAttackTimeInterval;
             if (attackPhase > 1)
             {
                 _attackWires[_currentAttackingWireIndex].SetActive(true);
                 _currentAttackingWireIndex++;
                 _localTime = 0f;
             
-                if (_currentAttackingWireIndex >= NumberOfWires)
+                if (_currentAttackingWireIndex >= _numberOfWires)
                 {
                     StartPreAttackPause();
                 }
@@ -181,7 +182,7 @@ namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
         
         private void HandlePreAttackPause()
         {
-            if (_localTime / SpiderAttackDelay > 1)
+            if (_localTime / _spiderAttackDelay > 1)
             {
                 StartMainAttack();            
             }
@@ -210,11 +211,11 @@ namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
                 return;
             }
 
-            float phase = _localTime / MainAttackDuration;
+            float phase = _localTime / _mainAttackDuration;
             _currentPosition = Vector3.Lerp(
                 _mainAttackWire.StartPosition, 
                 _mainAttackWire.EndPosition, 
-                Mathf.Pow(phase, MainAttackAcceleration));
+                Mathf.Pow(phase, _mainAttackAcceleration));
     
             CheckForCollision();
         
@@ -229,12 +230,12 @@ namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
             Vector3 projectedPos = CameraProjection.ProjectPointOnXYPlane(cameraPos, _currentPosition);
         
             Vector3 collisionDirection = (_lampTransform.position - projectedPos).normalized;
-            Vector3 collisionPoint = projectedPos + collisionDirection * SpiderRadius;
+            Vector3 collisionPoint = projectedPos + collisionDirection * _spiderRadius;
             collisionPoint = CameraProjection.ProjectPointOnXYPlane(cameraPos, collisionPoint);
 
 
             float projectedDistance = (_lampTransform.position - collisionPoint).magnitude; 
-            if (projectedDistance < (LampRadius + CollisionThreshold))
+            if (projectedDistance < (_lampRadius + _collisionThreshold))
             {
                 // Push Back to resolve penetration
                 Vector3 correctedProjectedPosition = (projectedPos - _lampTransform.position).normalized  * _fullCollisionDistance;
@@ -255,7 +256,7 @@ namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
         {
             RefreshActiveWiresList();
 
-            if (_activeWireIndices.Count == 0 && _destroyedWiresCount == NumberOfWires)
+            if (_activeWireIndices.Count == 0 && _destroyedWiresCount == _numberOfWires)
             {
                 IsDropped = true;
                 return;
@@ -274,7 +275,7 @@ namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
         
         private void CreateEmptyAttackWireVariables()
         {
-            for (int i = 0; i < NumberOfWires; i++)
+            for (int i = 0; i < _numberOfWires; i++)
             {
                 SpiderwebAttackWire wire = new();
                 _attackWires.Add(wire);
@@ -288,7 +289,7 @@ namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
             for (int i = 0; i < _webStartPositionsRanges.Length; i++)
                 _availableWireRangeIndices.Add(i);
         
-            for (int i = 0; i < NumberOfWires; i++)
+            for (int i = 0; i < _numberOfWires; i++)
             {
                 int randomRange = Random.Range(0, _availableWireRangeIndices.Count);
                 int randomIndex = _availableWireRangeIndices[randomRange];

@@ -22,6 +22,7 @@ namespace _GAME.Scripts.Factories
         // Dependencies
         private Transform _cameraTransform;
         private Transform _lampTransform;
+        private IGameConfigService _gameConfigService;
         
         private Animator _animator;
         private Transform _visibleBodyTransform;
@@ -32,6 +33,7 @@ namespace _GAME.Scripts.Factories
         private AnimationCurve _dropCurve;
         private AnimationCurve _climbCurve;
         private float _bounceSpeed;
+        private float _spiderRadius;
 
         // TODO: WILL BE LOCAL
         private bool _isLeftSide;
@@ -40,11 +42,13 @@ namespace _GAME.Scripts.Factories
         // TODO: Constructor (LATER)
         public MegaspiderMovementStateFactory(
             Transform cameraTransform,
-            Transform lampTransform
+            Transform lampTransform,
+            IGameConfigService gameConfigService
             )
         {
             _cameraTransform = cameraTransform;
             _lampTransform = lampTransform;
+            _gameConfigService = gameConfigService;
         }
         
         public void SetEnemyDependencies(
@@ -56,7 +60,8 @@ namespace _GAME.Scripts.Factories
             AnimationCurve swingCurve,
             AnimationCurve dropCurve,
             float bounceSpeed, // TODO: move to config
-            AnimationCurve climbCurve
+            AnimationCurve climbCurve,
+            float spiderRadius
         )
         {
             _animator = animator;
@@ -68,6 +73,7 @@ namespace _GAME.Scripts.Factories
             _dropCurve = dropCurve;
             _bounceSpeed = bounceSpeed;
             _climbCurve = climbCurve;
+            _spiderRadius = spiderRadius;
         }
 
         public EnemyMovementStateBase Create(Type stateType)
@@ -267,7 +273,9 @@ namespace _GAME.Scripts.Factories
                     _visibleBodyTransform,
                     _calculatedTransform,
                     _lampTransform,
-                    _cameraTransform
+                    _cameraTransform,
+                    _gameConfigService,
+                    _spiderRadius
                     );
             }
             

@@ -13,6 +13,16 @@ MonoBehaviour:
   m_Name: GameConfig
   m_EditorClassIdentifier: 
   <AnalyticsTimeOutTime>k__BackingField: 10
+  <IntroStageSkip>k__BackingField: 1
+  <IntroStageDuration>k__BackingField: 2
+  <PrepareInStageSkip>k__BackingField: 0
+  <PrepareInStageDuration>k__BackingField: 0.5
+  <PrepareOutStageSkip>k__BackingField: 0
+  <PrepareOutStageDuration>k__BackingField: 0.5
+  <GameoverInStageSkip>k__BackingField: 0
+  <GameoverInStageDuration>k__BackingField: 4.5
+  <GameoverOutStageSkip>k__BackingField: 0
+  <GameoverOutStageDuration>k__BackingField: 0.7
   <IsSpawnDisabled>k__BackingField: 0
   <IsTestStartWave>k__BackingField: 0
   <TestStartWave>k__BackingField: 61
@@ -36,13 +46,29 @@ MonoBehaviour:
   <DragonflySpiderAttackPositionBase>k__BackingField: {x: 0.68, y: -0.4, z: -0.62}
   <DragonflySpiderPatrolWaitMin>k__BackingField: 1.05
   <DragonflySpiderPatrolWaitMax>k__BackingField: 1.8
-  <IntroStageSkip>k__BackingField: 1
-  <IntroStageDuration>k__BackingField: 2
-  <PrepareInStageSkip>k__BackingField: 0
-  <PrepareInStageDuration>k__BackingField: 0.5
-  <PrepareOutStageSkip>k__BackingField: 0
-  <PrepareOutStageDuration>k__BackingField: 0.5
-  <GameoverInStageSkip>k__BackingField: 0
-  <GameoverInStageDuration>k__BackingField: 4.5
-  <GameoverOutStageSkip>k__BackingField: 0
-  <GameoverOutStageDuration>k__BackingField: 0.7
+  <MegaspiderWireAttackNumberOfWires>k__BackingField: 5
+  <MegaspiderWireAttackTimeInterval>k__BackingField: 0.45
+  <MegaspiderWireAttackSpiderAttackDelay>k__BackingField: 1.5
+  <MegaspiderWireAttackMainAttackDuration>k__BackingField: 1
+  <MegaspiderWireAttackMainAttackAcceleration>k__BackingField: 3
+  <MegaspiderWebStartPositionRanges>k__BackingField:
+  - p1: {x: -0.1696585, y: -1.571486, z: -5.533077}
+    p2: {x: -0.5621628, y: -1.601049, z: -5.457012}
+  - p1: {x: -0.5621628, y: -1.601049, z: -5.457012}
+    p2: {x: -0.8296229, y: -1.489632, z: -4.630661}
+  - p1: {x: -0.8296229, y: -1.489632, z: -4.630661}
+    p2: {x: -1.097083, y: -1.378216, z: -3.80431}
+  - p1: {x: -2.991441, y: 2.364229, z: 1.8949}
+    p2: {x: -3.222974, y: 3.461487, z: 3.060626}
+  - p1: {x: -3.222974, y: 3.461487, z: 3.060626}
+    p2: {x: -3.454506, y: 4.558745, z: 4.226351}
+  - p1: {x: 0.1696585, y: -1.571486, z: -5.533077}
+    p2: {x: 0.5621628, y: -1.601049, z: -5.457012}
+  - p1: {x: 0.5621628, y: -1.601049, z: -5.457012}
+    p2: {x: 0.8296229, y: -1.489632, z: -4.630661}
+  - p1: {x: 0.8296229, y: -1.489632, z: -4.630661}
+    p2: {x: 1.097083, y: -1.378216, z: -3.80431}
+  - p1: {x: 2.991441, y: 2.364229, z: 1.8949}
+    p2: {x: 3.222974, y: 3.461487, z: 3.060626}
+  - p1: {x: 3.222974, y: 3.461487, z: 3.060626}
+    p2: {x: 3.454506, y: 4.558745, z: 4.226351}

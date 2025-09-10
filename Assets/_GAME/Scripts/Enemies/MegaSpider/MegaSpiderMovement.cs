@@ -108,7 +108,8 @@ namespace _GAME.Scripts.Enemies.Megaspider
                 _swingCurve,
                 _dropCurve,
                 _bounceSpeed,
-                _climbCurve
+                _climbCurve,
+                _collisionRadius
                 );
 
             CreateMovementStates();
