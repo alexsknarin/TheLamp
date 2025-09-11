@@ -1,25 +1,28 @@
 using System;
+using _GAME.Scripts.Lib.Interfaces;
 using UnityEngine;
 
 namespace _GAME.Scripts.Enemies.MegaspiderProjectileSpider.MovementStates
 {
     public class MegaspiderProjectileSpiderBounceState : EnemyMovementStateBase
     {
-        private const float Speed = 2.5f;
-
-        private Vector3 _direction;
-
         // Dependencies
-        private Transform _bodyTransform;
-        private Transform _lampTransform;
+        private readonly Transform _bodyTransform;
+        private readonly Transform _lampTransform;
+        // Config
+        private readonly float _speed;
+        
+        private Vector3 _direction;
 
         public MegaspiderProjectileSpiderBounceState(
             Transform bodyTransform, 
-            Transform lampTransform
+            Transform lampTransform,
+            IGameConfigService configService
             )
         {
             _bodyTransform = bodyTransform;
             _lampTransform = lampTransform;
+            _speed = configService.GameConfig.MegaspiderProjectileSpiderBounceSpeed;
         }
         
         public event Action Ended;
@@ -32,7 +35,7 @@ namespace _GAME.Scripts.Enemies.MegaspiderProjectileSpider.MovementStates
         public override void Tick()
         {
             Vector3 newPosition = _bodyTransform.position;
-            newPosition += _direction * (Speed * Time.deltaTime);
+            newPosition += _direction * (_speed * Time.deltaTime);
             
             _bodyTransform.position = newPosition;
         }

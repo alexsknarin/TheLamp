@@ -66,6 +66,7 @@ namespace _GAME.Scripts.GameCoreSystems.DataManagement.DataTypes
         [field:SerializeField] public float MegaspiderTangleAttackTangleAcceleration { get; private set; } = 280f;
         
         [field:Header("Megaspider Projectile Spider Settings")]
+        [field:Header("Attack State:")]
         [field:SerializeField] public float MegaspiderProjectileSpiderTransitionDuration { get; private set; } = 0.33f;
         [field:SerializeField] public float MegaspiderProjectileSpiderSpeed { get; private set; } = 5f;
         [field:SerializeField] public float MegaspiderProjectileSpiderGravity { get; private set; } = 3.5f;
@@ -73,5 +74,7 @@ namespace _GAME.Scripts.GameCoreSystems.DataManagement.DataTypes
         [field:SerializeField] public float MegaspiderProjectileSpiderLampShiftMaximum { get; private set; } = .36f;
         [field:SerializeField] public float MegaspiderProjectileSpiderAttackAccelerationPower { get; private set; } = 0.65f;
         [field:SerializeField] public float MegaspiderProjectileSpiderAttackTopGravityMultiplier { get; private set; } = 0.25f;
+        [field:Header("Bounce State:")]
+        [field:SerializeField] public float MegaspiderProjectileSpiderBounceSpeed { get; private set; } = 2.5f;
     }
 }

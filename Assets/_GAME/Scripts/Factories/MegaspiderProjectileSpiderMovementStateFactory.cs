@@ -44,7 +44,7 @@ namespace _GAME.Scripts.Factories
             }
             else if (stateType == typeof(MegaspiderProjectileSpiderBounceState))
             {
-                return new MegaspiderProjectileSpiderBounceState(_bodyTransform, _lampTransform);
+                return new MegaspiderProjectileSpiderBounceState(_bodyTransform, _lampTransform, _gameConfigService);
             }
             else if (stateType == typeof(MegaspiderProjectileSpiderFallState))
             {
