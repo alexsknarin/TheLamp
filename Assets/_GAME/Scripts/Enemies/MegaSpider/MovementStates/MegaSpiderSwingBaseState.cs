@@ -1,3 +1,4 @@
+using _GAME.Scripts.Lib;
 using UnityEngine;
 
 namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
@@ -54,8 +55,7 @@ namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
             _visibleBodyTransform.position = position;
             
             _calculatedTransform.position = _visibleBodyTransform.position;
-            _visibleBodyTransform.SetParent(_calculatedTransform);
-            _visibleBodyTransform.localPosition = Vector3.zero;
+            HierarchyUtilities.ParentWithoutOffset(_visibleBodyTransform, _calculatedTransform);
             
             _currentSwingPivot = _swingPivot;
             if (!_isLeftSide)

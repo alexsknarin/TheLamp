@@ -84,8 +84,7 @@ namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
         
         public override void Enter()
         {
-            // Transform setup
-            ParentVisibleBodyToAnimatedTransform();
+            HierarchyUtilities.ParentWithoutOffset(_visibleBodyTransform, _calculatedTransform);
             
             // Show source ranges
             foreach (var range in _webStartPositionsRanges)
@@ -338,13 +337,6 @@ namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
                     _activeWireIndices.Add(i);
                 }
             }
-        }
-        
-        private void ParentVisibleBodyToAnimatedTransform()
-        {
-            _visibleBodyTransform.SetParent(_calculatedTransform, false);
-            _visibleBodyTransform.localPosition = Vector3.zero;
-            _visibleBodyTransform.localRotation = Quaternion.identity;
         }
     }
 }

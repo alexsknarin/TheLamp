@@ -1,5 +1,7 @@
 using System.Collections.Generic;
+using _GAME.Scripts.Lib;
 using _GAME.Scripts.Lib.Interfaces;
+using Unity.Hierarchy;
 using UnityEngine;
 
 namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
@@ -70,7 +72,10 @@ namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
         
         public override void Enter()
         {
-            ParentVisibleBodyToAnimatedTransform();
+            HierarchyUtilities.ParentWithoutOffset(
+                _visibleBodyTransform, 
+                _calculatedTransform);
+            
             StartEnterState();
         }
 
@@ -308,13 +313,6 @@ namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
             {
                 Debug.DrawLine(_hangPoint, _currentPosition, Color.red);
             }
-        }
-        
-        private void ParentVisibleBodyToAnimatedTransform()
-        {
-            _visibleBodyTransform.SetParent(_calculatedTransform, false);
-            _visibleBodyTransform.localPosition = Vector3.zero;
-            _visibleBodyTransform.localRotation = Quaternion.identity;
         }
     }
 }

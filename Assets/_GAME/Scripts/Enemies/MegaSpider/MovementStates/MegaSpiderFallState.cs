@@ -44,13 +44,9 @@ namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
         public override void Enter()
         {
             IsReadyToSwitch = false;
-                
             _visibleBodyTransform.SetParent(_rootTransform);
-            
             _calculatedTransform.position = _visibleBodyTransform.position;
-            _visibleBodyTransform.SetParent(_calculatedTransform);
-            _visibleBodyTransform.localPosition = Vector3.zero;
-            
+            HierarchyUtilities.ParentWithoutOffset(_visibleBodyTransform, _calculatedTransform);
             
             _initialDirection = (_calculatedTransform.position - _lampTransform.position).normalized;
             _outForceMagnitude = InitialOutForceMagnitude;

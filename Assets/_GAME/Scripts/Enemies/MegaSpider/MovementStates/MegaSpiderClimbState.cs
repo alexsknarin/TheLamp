@@ -1,3 +1,4 @@
+using _GAME.Scripts.Lib;
 using UnityEngine;
 
 namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
@@ -33,11 +34,8 @@ namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
             IsReadyToSwitch = false;
             
             _visibleBodyTransform.SetParent(_rootTransform);
-            
             _calculatedTransform.position = _visibleBodyTransform.position;
-            _visibleBodyTransform.SetParent(_calculatedTransform);
-            _visibleBodyTransform.localPosition = Vector3.zero;
-            
+            HierarchyUtilities.ParentWithoutOffset(_visibleBodyTransform, _calculatedTransform);
             _originalHeight = _calculatedTransform.position.y;
             _localTime = 0;
         }

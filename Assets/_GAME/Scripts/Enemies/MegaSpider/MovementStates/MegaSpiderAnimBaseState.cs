@@ -1,4 +1,6 @@
+using _GAME.Scripts.Lib;
 using _GAME.Scripts.Lib.Interfaces;
+using Unity.Hierarchy;
 using UnityEngine;
 
 namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
@@ -33,7 +35,7 @@ namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
                 scale.x = -1;
             }
             _animatedTransform.parent.localScale = scale;
-            ParentVisibleBodyToAnimatedTransform();
+            HierarchyUtilities.ParentWithoutOffset(_visibleBodyTransform, _animatedTransform);
             _animator.enabled = true;
             _animator.Play(_clipHash, -1, 0);
         }
@@ -45,14 +47,5 @@ namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
             _animator.enabled = false;
             Debug.Log("Exiting Animation State");
         }
-    
-        private void ParentVisibleBodyToAnimatedTransform()
-        {
-            _visibleBodyTransform.SetParent(_animatedTransform, false);
-            _visibleBodyTransform.localPosition = Vector3.zero;
-            _visibleBodyTransform.localRotation = Quaternion.identity;
-        }
-        
-        
     }
 }

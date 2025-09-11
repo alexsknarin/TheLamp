@@ -1,4 +1,6 @@
 using System;
+using _GAME.Scripts.Lib;
+using Unity.Hierarchy;
 using UnityEngine;
 
 namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
@@ -33,18 +35,15 @@ namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
         public override void Enter()
         {
             _visibleBodyTransform.SetParent(_rootTransform);
-           
             _calculatedTransform.position = _visibleBodyTransform.position;
-            _visibleBodyTransform.SetParent(_calculatedTransform);
-            _visibleBodyTransform.localPosition = Vector3.zero;
-
+            HierarchyUtilities.ParentWithoutOffset(_visibleBodyTransform, _calculatedTransform);
             _direction = (_calculatedTransform.position - _lampTransform.position).normalized;
         }
 
         public override void Tick()
         {
             Vector3 newPosition = _calculatedTransform.position;
-            newPosition += _direction * _speed * Time.deltaTime;
+            newPosition += _direction * (_speed * Time.deltaTime);
             
             _calculatedTransform.position = newPosition;
         }
