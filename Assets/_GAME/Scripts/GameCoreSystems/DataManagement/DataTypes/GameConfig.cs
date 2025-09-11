@@ -64,5 +64,9 @@ namespace _GAME.Scripts.GameCoreSystems.DataManagement.DataTypes
         [field:SerializeField] public float MegaspiderProjectileSpiderTransitionDuration { get; private set; } = 0.33f;
         [field:SerializeField] public float MegaspiderProjectileSpiderSpeed { get; private set; } = 5f;
         [field:SerializeField] public float MegaspiderProjectileSpiderGravity { get; private set; } = 3.5f;
+        [field:SerializeField] public float MegaspiderProjectileSpiderLampSideMaximum { get; private set; } = 1.4f;
+        [field:SerializeField] public float MegaspiderProjectileSpiderLampShiftMaximum { get; private set; } = .36f;
+        [field:SerializeField] public float MegaspiderProjectileSpiderAttackAccelerationPower { get; private set; } = 0.65f;
+        [field:SerializeField] public float MegaspiderProjectileSpiderAttackTopGravityMultiplier { get; private set; } = 0.25f;
     }
 }
