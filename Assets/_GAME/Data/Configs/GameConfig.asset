@@ -72,3 +72,14 @@ MonoBehaviour:
     p2: {x: 3.222974, y: 3.461487, z: 3.060626}
   - p1: {x: 3.222974, y: 3.461487, z: 3.060626}
     p2: {x: 3.454506, y: 4.558745, z: 4.226351}
+  <MegaspiderTangleAttackWireThickness>k__BackingField: 0.03
+  <MegaspiderTangleAttackHangPoint>k__BackingField: {x: -0.96, y: 3.13, z: 0}
+  <MegaspiderTangleAttackTangleSpeed>k__BackingField: 330
+  <MegaspiderTangleAttackTangleAcceleration>k__BackingField: 280
+  <MegaspiderProjectileSpiderTransitionDuration>k__BackingField: 0.33
+  <MegaspiderProjectileSpiderSpeed>k__BackingField: 5
+  <MegaspiderProjectileSpiderGravity>k__BackingField: 3.5
+  <MegaspiderProjectileSpiderLampSideMaximum>k__BackingField: 1.4
+  <MegaspiderProjectileSpiderLampShiftMaximum>k__BackingField: 0.36
+  <MegaspiderProjectileSpiderAttackAccelerationPower>k__BackingField: 0.65
+  <MegaspiderProjectileSpiderAttackTopGravityMultiplier>k__BackingField: 0.25

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using _GAME.Scripts.Lib.Interfaces;
 using UnityEngine;
 
 namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
@@ -11,22 +12,19 @@ namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
             Enter,
             Tangle
         }
-
-        private const float WireThickness = 0.03f;
-        private const float LampRadius = 0.5f; 
-        private const float SpiderRadius = 0.325f;
-        private static readonly Vector3 HangPoint = new Vector3(-0.96f, 3.13f, 0);
-
-        private const float EnterDuration = 1f;
-        private const float TangleSpeed = 330f;
-        private const float TangleAcceleration = 280f;
         
         // Dependencies
-        private Transform _lampTransform;
-        private Transform _visibleBodyTransform;
-        private Transform _calculatedTransform;
-        private AnimationCurve _swingCurve;
-        private AnimationCurve _dropCurve;
+        private readonly Transform _lampTransform;
+        private readonly Transform _visibleBodyTransform;
+        private readonly Transform _calculatedTransform;
+        private readonly AnimationCurve _swingCurve;
+        private readonly AnimationCurve _dropCurve;
+        private readonly float _megaspiderRadius;
+        // Config
+        private readonly float _lampRadius;
+        private readonly float _wireThickness;
+        private readonly float _tangleSpeed;
+        private readonly float _tangleAcceleration;
         
         private float _tangleSpeedAccelerated;
         private float _localTime;
@@ -48,6 +46,8 @@ namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
             Transform calculatedTransform,  
             AnimationCurve swingCurve, 
             AnimationCurve dropCurve,
+            IGameConfigService configService,
+            float megaspiderRadius,
             bool isLeftSide
             )
         {
@@ -58,9 +58,14 @@ namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
             _dropCurve = dropCurve;
             _isLeftSide = isLeftSide;
             _side = isLeftSide ? 1 : -1;
-            
-            _hangPoint = HangPoint;
+            _megaspiderRadius = megaspiderRadius;
+
+            _hangPoint = configService.GameConfig.MegaspiderTangleAttackHangPoint;
             _hangPoint.x *= _side;
+            _lampRadius = configService.PlayerConfig.LampCollisionRadius;
+            _wireThickness = configService.GameConfig.MegaspiderTangleAttackWireThickness;
+            _tangleSpeed = configService.GameConfig.MegaspiderTangleAttackTangleSpeed;
+            _tangleAcceleration = configService.GameConfig.MegaspiderTangleAttackTangleAcceleration;
         }
         
         public override void Enter()
@@ -92,7 +97,7 @@ namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
         {
             _localTime = 0;
             _collisionPoints.Clear();
-            _tangleSpeedAccelerated = TangleSpeed;
+            _tangleSpeedAccelerated = _tangleSpeed;
             _state = TangleStates.Enter;
         }
         
@@ -101,7 +106,7 @@ namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
             // All Intersection calculations are in the world space
             _currentPosition = CalculateSwingPosition(_hangPoint);
             Vector3 currentPointToPivot = _currentPosition - _hangPoint;
-            _currentPositionOnEnd = _hangPoint + currentPointToPivot.normalized * ( currentPointToPivot.magnitude + SpiderRadius);
+            _currentPositionOnEnd = _hangPoint + currentPointToPivot.normalized * ( currentPointToPivot.magnitude + _megaspiderRadius);
         
             _localTime += Time.deltaTime;
         
@@ -135,7 +140,7 @@ namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
             // All calculations in lamp space
             // Rotate around the pivot
             Vector3 currentPositionLocalized = _currentPositionLocalized - _collisionPointsLocalized[^1];
-            _tangleSpeedAccelerated += TangleAcceleration * Time.deltaTime;
+            _tangleSpeedAccelerated += _tangleAcceleration * Time.deltaTime;
 
             Vector3 axis = Vector3.back;
             if (_isLeftSide)
@@ -148,7 +153,7 @@ namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
             // Return Position into a world space
             _currentPosition = _lampTransform.localToWorldMatrix.MultiplyPoint(_currentPositionLocalized);
             Vector3 currentPointToPivot = _currentPosition - _collisionPoints[^1];
-            _currentPositionOnEnd = _collisionPoints[^1] + currentPointToPivot.normalized * ( currentPointToPivot.magnitude + SpiderRadius);
+            _currentPositionOnEnd = _collisionPoints[^1] + currentPointToPivot.normalized * ( currentPointToPivot.magnitude + _megaspiderRadius);
 
             // Check for intersection
             bool isIntersecting = FindCollisionPoints(
@@ -231,7 +236,7 @@ namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
             // Find a reference angle
             float distancePivotToCenter = Vector3.Distance(pivot, center);
             distancePivotToIntersectExpected = Mathf.Sqrt(
-                distancePivotToCenter * distancePivotToCenter - LampRadius * LampRadius);
+                distancePivotToCenter * distancePivotToCenter - _lampRadius * _lampRadius);
             referenceAngle = Mathf.Acos(distancePivotToIntersectExpected / distancePivotToCenter) * Mathf.Rad2Deg;
             
             // Find a current angle
@@ -265,7 +270,7 @@ namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
             Vector3 tangentPoint = pivot + correctedDirection.normalized * distancePivotToIntersectExpected;
             
             // Push tangent Point outside
-            Vector3 pushDirection = (tangentPoint - center).normalized * WireThickness;
+            Vector3 pushDirection = (tangentPoint - center).normalized * _wireThickness;
             tangentPoint += pushDirection;
             
             return tangentPoint;

@@ -33,13 +33,12 @@ namespace _GAME.Scripts.Factories
         private AnimationCurve _dropCurve;
         private AnimationCurve _climbCurve;
         private float _bounceSpeed;
-        private float _spiderRadius;
+        private float _megaspiderRadius;
 
         // TODO: WILL BE LOCAL
         private bool _isLeftSide;
         private int _clipHash; 
         
-        // TODO: Constructor (LATER)
         public MegaspiderMovementStateFactory(
             Transform cameraTransform,
             Transform lampTransform,
@@ -61,7 +60,7 @@ namespace _GAME.Scripts.Factories
             AnimationCurve dropCurve,
             float bounceSpeed, // TODO: move to config
             AnimationCurve climbCurve,
-            float spiderRadius
+            float megaspiderRadius
         )
         {
             _animator = animator;
@@ -73,7 +72,7 @@ namespace _GAME.Scripts.Factories
             _dropCurve = dropCurve;
             _bounceSpeed = bounceSpeed;
             _climbCurve = climbCurve;
-            _spiderRadius = spiderRadius;
+            _megaspiderRadius = megaspiderRadius;
         }
 
         public EnemyMovementStateBase Create(Type stateType)
@@ -251,6 +250,8 @@ namespace _GAME.Scripts.Factories
                     _calculatedTransform,
                     _swingCurve,
                     _dropCurve,
+                    _gameConfigService,
+                    _megaspiderRadius,
                     true
                 );
             }
@@ -263,6 +264,8 @@ namespace _GAME.Scripts.Factories
                     _calculatedTransform,
                     _swingCurve,
                     _dropCurve,
+                    _gameConfigService,
+                    _megaspiderRadius,
                     false
                     );
             }
@@ -275,7 +278,7 @@ namespace _GAME.Scripts.Factories
                     _lampTransform,
                     _cameraTransform,
                     _gameConfigService,
-                    _spiderRadius
+                    _megaspiderRadius
                     );
             }
             
