@@ -11,7 +11,6 @@ namespace _GAME.Scripts.Enemies.Megaspider
 {
     public class MegaspiderMovement : MonoBehaviour, IInitializable
     {
-        private const float CollisionThreshold = 0.0001f;
         [SerializeField] private Transform _visibleBodyTransform;
         [SerializeField] private Transform _animatedTransform;
         [SerializeField] private Transform _calculatedTransform;
@@ -71,22 +70,23 @@ namespace _GAME.Scripts.Enemies.Megaspider
         private Transform _cameraTransform;
         private Transform _lampTransform;
         private MegaspiderMovementStateFactory _stateFactory;
-        
+        private float _collisionThreshold;
         
         public void Construct(
             Transform cameraTransform, 
             Transform lampTransform, 
-            MegaspiderMovementStateFactory stateFactory)
+            MegaspiderMovementStateFactory stateFactory,
+            IGameConfigService gameConfigService
+            )
         {
             _cameraTransform = cameraTransform;
             _lampTransform = lampTransform;
             _stateFactory = stateFactory;
+            _collisionThreshold = gameConfigService.PlayerConfig.CollisionThreshold;
         }
         
         public event Action AnimatedAttackStarted;
         public event Action DeathStateEnded;
-
-        public Vector2 Position => _visibleBodyTransform.position;
 
         public void SetCollisionRadius(float radius)
         {
@@ -527,7 +527,7 @@ namespace _GAME.Scripts.Enemies.Megaspider
                     _visibleBodyTransform.position = 
                         _lampTransform.position 
                         + currentToLamp.normalized 
-                        * (_fullCollisionDistance - CollisionThreshold);
+                        * (_fullCollisionDistance - _collisionThreshold);
                 }
             }
         }
