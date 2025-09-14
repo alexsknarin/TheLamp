@@ -220,40 +220,9 @@ namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
                 _mainAttackWire.StartPosition, 
                 _mainAttackWire.EndPosition, 
                 Mathf.Pow(phase, _mainAttackAcceleration));
-    
-            // CheckForCollision();
         
             _localTime += Time.deltaTime;    
         
-        }
-        
-        // ---
-        private void CheckForCollision()
-        {
-            Vector3 cameraPos = _cameraTransform.position;
-            Vector3 projectedPos = CameraProjection.ProjectPointOnXYPlane(cameraPos, _currentPosition);
-        
-            Vector3 collisionDirection = (_lampTransform.position - projectedPos).normalized;
-            Vector3 collisionPoint = projectedPos + collisionDirection * _spiderRadius;
-            collisionPoint = CameraProjection.ProjectPointOnXYPlane(cameraPos, collisionPoint);
-
-
-            float projectedDistance = (_lampTransform.position - collisionPoint).magnitude; 
-            if (projectedDistance < (_lampRadius + _collisionThreshold))
-            {
-                // Push Back to resolve penetration
-                Vector3 correctedProjectedPosition = (projectedPos - _lampTransform.position).normalized  * _fullCollisionDistance;
-                Vector3 lampEndPos = _lampTransform.TransformPoint(_lampEndPoint);
-
-                float fullSideA = (correctedProjectedPosition - lampEndPos).magnitude;
-                float sideA1 = (projectedPos - lampEndPos).magnitude;
-            
-                float sideB1 = (lampEndPos - _currentPosition).magnitude;
-                float fullSideB = (fullSideA * sideB1) / sideA1;
-                _currentPosition = lampEndPos + (_currentPosition - lampEndPos).normalized * fullSideB;
-                
-                IsReadyToSwitch = true; // TODO: External collision Detection!
-            }
         }
         
         private void ReceiveWireDamage(int power)
