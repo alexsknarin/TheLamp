@@ -9,7 +9,6 @@ namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
 {
     public class MegaspiderWireAttackState : EnemyMovementStateBase
     {
-        private int ii = 0;
         private enum WireStates
         {
             Inactive,
@@ -29,7 +28,6 @@ namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
         
         private WireStates _wireState;
         private SpiderwebAttackWire _mainAttackWire;
-        private float _fullCollisionDistance;
         private Vector3 _currentPosition;
     
         private int _currentAttackingWireIndex = 0;
@@ -37,14 +35,10 @@ namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
         private float _localTime;
     
         // Dependencies
-        private Transform _visibleBodyTransform;
-        private Transform _calculatedTransform;
-        private Transform _lampTransform;
-        private Transform _cameraTransform;
-
-        private readonly float _spiderRadius;
-        private readonly float _lampRadius;
-        private readonly float _collisionThreshold;
+        private readonly Transform _visibleBodyTransform;
+        private readonly Transform _calculatedTransform;
+        private readonly Transform _lampTransform;
+        // Config
         private readonly int _numberOfWires;
         private readonly float _wireAttackTimeInterval; 
         private readonly float _spiderAttackDelay;       
@@ -55,32 +49,25 @@ namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
             Transform visibleBodyTransform, 
             Transform calculatedTransform,  
             Transform lampTransform, 
-            Transform cameraTransform,
-            IGameConfigService configService,
-            float spiderRadius
+            IGameConfigService configService
             )
         {
             _visibleBodyTransform = visibleBodyTransform;
             _calculatedTransform = calculatedTransform;
             _lampTransform = lampTransform;
-            _cameraTransform = cameraTransform;
             
-            _spiderRadius = spiderRadius;
-            _lampRadius = configService.PlayerConfig.LampCollisionRadius;
-            _collisionThreshold = configService.PlayerConfig.CollisionThreshold;
             _numberOfWires = configService.GameConfig.MegaspiderWireAttackNumberOfWires;
             _wireAttackTimeInterval = configService.GameConfig.MegaspiderWireAttackTimeInterval;
             _spiderAttackDelay = configService.GameConfig.MegaspiderWireAttackSpiderAttackDelay;
             _mainAttackDuration = configService.GameConfig.MegaspiderWireAttackMainAttackDuration;
             _mainAttackAcceleration = configService.GameConfig.MegaspiderWireAttackMainAttackAcceleration;
             _webStartPositionsRanges = configService.GameConfig.MegaspiderWebStartPositionRanges;
-            _fullCollisionDistance = _spiderRadius + _lampRadius + _collisionThreshold;
             _wireState = WireStates.Inactive;
             _currentPosition = _inactivePosition;
             CreateEmptyAttackWireVariables();
         }
-        public event Action Started;
         
+        public event Action Started;
         public bool IsDropped { get; private set; }
         
         public override void Enter()
@@ -206,10 +193,6 @@ namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
         
         private void HandleMainAttack()
         {
-            // TODO: test later and remove
-            Debug.Log("Main Attack: " + ii);
-            ii++;
-            
             if (_mainAttackWire == null)
             {
                 return;
@@ -222,7 +205,6 @@ namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
                 Mathf.Pow(phase, _mainAttackAcceleration));
         
             _localTime += Time.deltaTime;    
-        
         }
         
         private void ReceiveWireDamage(int power)

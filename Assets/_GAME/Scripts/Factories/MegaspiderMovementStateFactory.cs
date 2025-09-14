@@ -276,9 +276,7 @@ namespace _GAME.Scripts.Factories
                     _visibleBodyTransform,
                     _calculatedTransform,
                     _lampTransform,
-                    _cameraTransform,
-                    _gameConfigService,
-                    _megaspiderRadius
+                    _gameConfigService
                     );
             }
             
