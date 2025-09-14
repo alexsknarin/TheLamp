@@ -178,6 +178,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  _swingZoneSize: 1.11
 --- !u!114 &4562466805752491100
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -312,6 +313,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _movement: {fileID: 5781309945799557912}
   _collisionRadius: 0.075
+  _isAttackStarted: 0
 --- !u!114 &5781309945799557912
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -783,6 +785,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _movement: {fileID: 7537086714196788647}
   _collisionRadius: 0.075
+  _isAttackStarted: 0
 --- !u!114 &7537086714196788647
 MonoBehaviour:
   m_ObjectHideFlags: 0

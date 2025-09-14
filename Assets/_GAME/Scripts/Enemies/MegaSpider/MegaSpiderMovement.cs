@@ -25,6 +25,8 @@ namespace _GAME.Scripts.Enemies.Megaspider
         [SerializeField] private float _bounceSpeed;
         [Header("Climb Settings")]
         [SerializeField] private AnimationCurve _climbCurve;
+        [Header("Swing Settings")] 
+        [SerializeField] private float _swingZoneSize;
         
         // States
         private readonly StateMachine _stateMachine = new();
@@ -303,19 +305,37 @@ namespace _GAME.Scripts.Enemies.Megaspider
             At(_bounceState, _deathFallState, IsAttackEndedDeath());
             
             // Fall Transitions
-            At(_fallState, _swingLState, () => _fallState.IsReadyToSwitch && (_calculatedTransform.position.x > -0.9f && _calculatedTransform.position.x < 0f)); //+
-            At(_fallState, _swingRState, () => _fallState.IsReadyToSwitch && (_calculatedTransform.position.x > 0f && _calculatedTransform.position.x < 0.9f));
-            At(_fallState, _climbState, () => _fallState.IsReadyToSwitch && (_calculatedTransform.position.x < -0.9f || _calculatedTransform.position.x > 0.9f)); //+
+            At(_fallState, _swingLState, () => _fallState.IsReadyToSwitch && (
+                _calculatedTransform.position.x > -_swingZoneSize
+                && _calculatedTransform.position.x < 0f)); //+
+            At(_fallState, _swingRState, () => _fallState.IsReadyToSwitch && (
+                _calculatedTransform.position.x > 0f 
+                && _calculatedTransform.position.x < _swingZoneSize));
+            At(_fallState, _climbState, () => _fallState.IsReadyToSwitch && (
+                _calculatedTransform.position.x < -_swingZoneSize 
+                || _calculatedTransform.position.x > _swingZoneSize)); //+
             
             // Success Fall Transitions
-            At(_successFallState, _swingLState, () => _successFallState.IsReadyToSwitch && (_calculatedTransform.position.x > -0.9f && _calculatedTransform.position.x < 0f));
-            At(_successFallState, _swingRState, () => _successFallState.IsReadyToSwitch && (_calculatedTransform.position.x > 0f && _calculatedTransform.position.x < 0.9f));
-            At(_successFallState, _climbState, () => _successFallState.IsReadyToSwitch && (_calculatedTransform.position.x < -0.9f || _calculatedTransform.position.x > 0.9f));
+            At(_successFallState, _swingLState, () => _successFallState.IsReadyToSwitch && (
+                _calculatedTransform.position.x > -_swingZoneSize 
+                && _calculatedTransform.position.x < 0f));
+            At(_successFallState, _swingRState, () => _successFallState.IsReadyToSwitch && (
+                _calculatedTransform.position.x > 0f 
+                && _calculatedTransform.position.x < _swingZoneSize));
+            At(_successFallState, _climbState, () => _successFallState.IsReadyToSwitch && (
+                _calculatedTransform.position.x < -_swingZoneSize 
+                || _calculatedTransform.position.x > _swingZoneSize));
             
             // Drop Fall Transitions
-            At(_dropFallState, _swingLState, () => _dropFallState.IsReadyToSwitch && (_calculatedTransform.position.x > -0.9f && _calculatedTransform.position.x < 0f));
-            At(_dropFallState, _swingRState, () => _dropFallState.IsReadyToSwitch && (_calculatedTransform.position.x > 0f && _calculatedTransform.position.x < 0.9f));
-            At(_dropFallState, _climbState, () => _dropFallState.IsReadyToSwitch && (_calculatedTransform.position.x < -0.9f || _calculatedTransform.position.x > 0.9f));
+            At(_dropFallState, _swingLState, () => _dropFallState.IsReadyToSwitch && (
+                _calculatedTransform.position.x > -_swingZoneSize 
+                && _calculatedTransform.position.x < 0f));
+            At(_dropFallState, _swingRState, () => _dropFallState.IsReadyToSwitch && (
+                _calculatedTransform.position.x > 0f 
+                && _calculatedTransform.position.x < _swingZoneSize));
+            At(_dropFallState, _climbState, () => _dropFallState.IsReadyToSwitch && (
+                _calculatedTransform.position.x < -_swingZoneSize 
+                || _calculatedTransform.position.x > _swingZoneSize));
             
             // Swing Transitions
             At(_swingLState, _wireAttackState, () => _swingLState.IsReadyToSwitch && Random.Range(0,4) == 0); //+
