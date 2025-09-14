@@ -1,3 +1,4 @@
+using _GAME.Scripts.Lib.Interfaces;
 using UnityEngine;
 
 namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
@@ -8,11 +9,13 @@ namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
             Transform visibleBodyTransform, 
             Transform calculatedTransform,
             Transform rootTransform,
+            IGameConfigService configService,
             bool isLeftSide
             ) : base(
             visibleBodyTransform, 
             calculatedTransform,
             rootTransform,
+            configService,
             isLeftSide
             )
         {

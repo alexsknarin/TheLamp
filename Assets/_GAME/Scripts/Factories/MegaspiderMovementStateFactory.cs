@@ -349,6 +349,7 @@ namespace _GAME.Scripts.Factories
                     _visibleBodyTransform,
                     _calculatedTransform,
                     _rootTransform,
+                    _gameConfigService,
                     true
                 );
             }
@@ -359,6 +360,7 @@ namespace _GAME.Scripts.Factories
                     _visibleBodyTransform,
                     _calculatedTransform,
                     _rootTransform,
+                    _gameConfigService,
                     false
                 );
             }

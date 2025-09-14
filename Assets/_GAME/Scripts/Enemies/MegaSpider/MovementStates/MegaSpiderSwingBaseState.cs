@@ -1,20 +1,11 @@
 using _GAME.Scripts.Lib;
+using _GAME.Scripts.Lib.Interfaces;
 using UnityEngine;
 
 namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
 {
     public class MegaspiderSwingBaseState : EnemyMovementStateBase
     {
-        private const float OverallSpedFactor = 1.5f;
-        private const float InitialFallForceMagnitude = .9f;
-        private const float SwingForceIncrement = 5f;
-        private const float FallForceIncrement = 2f;
-        private const float SwingDownIncrement = 1f;
-        private const float ExitDistance = 4f;
-        
-        
-        private readonly Vector3 _swingPivot = new Vector3(-2.35f, 2.7f, 0);
-        
         private Vector3 _initialDirection;
         private float _swingForceMagnitude;
         private float _swingDownForceMagnitude;
@@ -31,11 +22,20 @@ namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
         private Transform _calculatedTransform;
         private Transform _rootTransform;
         private bool _isLeftSide;
-
+        // Config
+        private readonly float _overallSpedFactor;
+        private readonly float _initialFallForceMagnitude;
+        private readonly float _swingForceIncrement;
+        private readonly float _fallForceIncrement;
+        private readonly float _swingDownIncrement;
+        private readonly float _exitDistance;
+        private readonly Vector3 _swingPivot;
+        
         public MegaspiderSwingBaseState(
             Transform visibleBodyTransform, 
             Transform calculatedTransform,
             Transform rootTransform,
+            IGameConfigService configService,
             bool isLeftSide
             )
         {
@@ -43,16 +43,20 @@ namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
             _calculatedTransform = calculatedTransform;
             _rootTransform = rootTransform;
             _isLeftSide = isLeftSide;
+
+            _overallSpedFactor = configService.GameConfig.MegaspiderSwingOverallSpedFactor;
+            _initialFallForceMagnitude = configService.GameConfig.MegaspiderSwingInitialFallForceMagnitude;
+            _swingForceIncrement = configService.GameConfig.MegaspiderSwingSwingForceIncrement;
+            _fallForceIncrement = configService.GameConfig.MegaspiderSwingFallForceIncrement;
+            _swingDownIncrement = configService.GameConfig.MegaspiderSwingSwingDownIncrement;
+            _exitDistance = configService.GameConfig.MegaspiderSwingExitDistance;
+            _swingPivot = configService.GameConfig.MegaspiderSwingSwingPivot;
         }
         
         public override void Enter()
         {
             IsReadyToSwitch = false;
             _visibleBodyTransform.SetParent(_rootTransform);
-            
-            // TODO: TEMP for tests - remove later
-            Vector3 position = new Vector3(-0.16f, -1.91f, 0);
-            _visibleBodyTransform.position = position;
             
             _calculatedTransform.position = _visibleBodyTransform.position;
             HierarchyUtilities.ParentWithoutOffset(_visibleBodyTransform, _calculatedTransform);
@@ -65,7 +69,7 @@ namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
             
             _initialDirection = Vector3.down;
             
-            _fallForceMagnitude = InitialFallForceMagnitude;
+            _fallForceMagnitude = _initialFallForceMagnitude;
             _swingForceMagnitude = 0f;
             _swingDownForceMagnitude = 0f;
 
@@ -81,22 +85,22 @@ namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
 
         public override void Tick()
         {
-            _calculatedTransform.position += _initialDirection * (_fallForceMagnitude * Time.deltaTime * OverallSpedFactor)
-                + _swingDirection * (_swingForceMagnitude * Time.deltaTime * OverallSpedFactor)
-                + Vector3.down * (_swingDownForceMagnitude * Time.deltaTime * OverallSpedFactor);
+            _calculatedTransform.position += _initialDirection * (_fallForceMagnitude * Time.deltaTime * _overallSpedFactor)
+                + _swingDirection * (_swingForceMagnitude * Time.deltaTime * _overallSpedFactor)
+                + Vector3.down * (_swingDownForceMagnitude * Time.deltaTime * _overallSpedFactor);
             
-            _fallForceMagnitude -= FallForceIncrement * Time.deltaTime;
-            _fallForceMagnitude = Mathf.Clamp(_fallForceMagnitude, 0f, InitialFallForceMagnitude);
+            _fallForceMagnitude -= _fallForceIncrement * Time.deltaTime;
+            _fallForceMagnitude = Mathf.Clamp(_fallForceMagnitude, 0f, _initialFallForceMagnitude);
             
-            _swingForceMagnitude += SwingForceIncrement * Time.deltaTime;
-            _swingDownForceMagnitude += SwingDownIncrement * Time.deltaTime;
+            _swingForceMagnitude += _swingForceIncrement * Time.deltaTime;
+            _swingDownForceMagnitude += _swingDownIncrement * Time.deltaTime;
             DrawSwingDebugLine();
             
-            if (_isLeftSide && _calculatedTransform.position.x < -ExitDistance)
+            if (_isLeftSide && _calculatedTransform.position.x < -_exitDistance)
             {
                 IsReadyToSwitch = true;
             }
-            else if (!_isLeftSide && _calculatedTransform.position.x > ExitDistance)
+            else if (!_isLeftSide && _calculatedTransform.position.x > _exitDistance)
             {
                 IsReadyToSwitch = true;
             }
