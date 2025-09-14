@@ -9,6 +9,7 @@ namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
 {
     public class MegaspiderWireAttackState : EnemyMovementStateBase
     {
+        private int ii = 0;
         private enum WireStates
         {
             Inactive,
@@ -205,6 +206,10 @@ namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
         
         private void HandleMainAttack()
         {
+            // TODO: test later and remove
+            Debug.Log("Main Attack: " + ii);
+            ii++;
+            
             if (_mainAttackWire == null)
             {
                 return;
@@ -216,7 +221,7 @@ namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
                 _mainAttackWire.EndPosition, 
                 Mathf.Pow(phase, _mainAttackAcceleration));
     
-            CheckForCollision();
+            // CheckForCollision();
         
             _localTime += Time.deltaTime;    
         

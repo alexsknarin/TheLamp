@@ -60,14 +60,14 @@ namespace _GAME.Scripts.Enemies.Megaspider
         private MegaspiderDeathFallState _deathFallState;
 
         private bool _isAnimClipEnded = false;
-        private bool _isBounced = false;
+        private bool _isCollided = false;
         private AttackResult _attackResult;
         private float _collisionRadius;
         private float _fullCollisionDistance;
         private bool _isAttackStateBeforeCollision = false;
 
         // Dependencies
-        private Transform _cameraTransform;
+        private Transform _cameraTransform; // TODO: remove???
         private Transform _lampTransform;
         private MegaspiderMovementStateFactory _stateFactory;
         private float _collisionThreshold;
@@ -154,7 +154,7 @@ namespace _GAME.Scripts.Enemies.Megaspider
         private void OnAnimatedAttackStarted()
         {
             _isAttackStateBeforeCollision = true;
-            _isBounced = false;
+            _isCollided = false;
             AnimatedAttackStarted?.Invoke();
         }
 
@@ -194,6 +194,7 @@ namespace _GAME.Scripts.Enemies.Megaspider
         {
             // Initialize StateMachine 
             // Enter to Attacks
+            /*
             At(_enterLState, _wireAttackState, IsAnimationEndedRandom0Of4()); //++
             At(_enterLState, _zigzagAttackLState, IsAnimationEndedRandom1Of4());//+
             At(_enterLState, _projectileBottomAttackLState, IsAnimationEndedRandom2Of4());//+
@@ -203,18 +204,28 @@ namespace _GAME.Scripts.Enemies.Megaspider
             At(_enterRState, _zigzagAttackRState, IsAnimationEndedRandom1Of4());//+
             At(_enterRState, _projectileBottomAttackRState, IsAnimationEndedRandom2Of4());//+
             At(_enterRState, _projectileDoubleUpAttackRState, IsAnimationEndedRandom3Of4());//+
+            */
+            At(_enterLState, _wireAttackState, IsAnimationEndedRandom0Of4()); //++
+            At(_enterLState, _wireAttackState, IsAnimationEndedRandom1Of4());//+
+            At(_enterLState, _wireAttackState, IsAnimationEndedRandom2Of4());//+
+            At(_enterLState, _wireAttackState, IsAnimationEndedRandom3Of4());//++
+            
+            At(_enterRState, _wireAttackState, IsAnimationEndedRandom0Of4());//++
+            At(_enterRState, _wireAttackState, IsAnimationEndedRandom1Of4());//+
+            At(_enterRState, _wireAttackState, IsAnimationEndedRandom2Of4());//+
+            At(_enterRState, _wireAttackState, IsAnimationEndedRandom3Of4());//+
             
             // Wire Attack Transitions
-            At(_wireAttackState, _bounceState, () => _wireAttackState.IsReadyToSwitch); //+
+            At(_wireAttackState, _bounceState, IsCollided()); //+
             At(_wireAttackState, _fallState, IsAttackEndedFail()); //+
             At(_wireAttackState, _deathFallState, IsAttackEndedDeath()); //+
             At(_wireAttackState, _dropFallState, () => _wireAttackState.IsDropped); 
             
             // Zigzag Attack Transitions
-            At(_zigzagAttackLState, _bounceState, IsBounced()); //+
+            At(_zigzagAttackLState, _bounceState, IsCollided()); //+
             At(_zigzagAttackLState, _fallState, IsAttackEndedFail());          
             At(_zigzagAttackLState, _deathFallState, IsAttackEndedDeath());          
-            At(_zigzagAttackRState, _bounceState, IsBounced()); //+
+            At(_zigzagAttackRState, _bounceState, IsCollided()); //+
             At(_zigzagAttackRState, _fallState, IsAttackEndedFail());
             At(_zigzagAttackRState, _deathFallState, IsAttackEndedDeath());   
             
@@ -243,26 +254,26 @@ namespace _GAME.Scripts.Enemies.Megaspider
             At(_projectileDoubleUpAttackRState, _projectileDoubleDownAttackRState, IsAnimationEndedRandom5Of6()); //+
             
             // Hang Attack Transitions
-            At(_hangAttackLState, _bounceState, IsBounced()); //+
+            At(_hangAttackLState, _bounceState, IsCollided()); //+
             At(_hangAttackLState, _fallState, IsAttackEndedFail());
             At(_hangAttackLState, _deathFallState, IsAttackEndedDeath());
-            At(_hangAttackRState, _bounceState, IsBounced()); //+
+            At(_hangAttackRState, _bounceState, IsCollided()); //+
             At(_hangAttackRState, _fallState, IsAttackEndedFail());    
             At(_hangAttackRState, _deathFallState, IsAttackEndedDeath());
             
             // Hang Jump Attack Transitions
-            At(_hangJumpAttackLState, _bounceState, IsBounced()); //+
+            At(_hangJumpAttackLState, _bounceState, IsCollided()); //+
             At(_hangJumpAttackLState, _fallState, IsAttackEndedFail());    
             At(_hangJumpAttackLState, _deathFallState, IsAttackEndedDeath());    
-            At(_hangJumpAttackRState, _bounceState, IsBounced()); //+
+            At(_hangJumpAttackRState, _bounceState, IsCollided()); //+
             At(_hangJumpAttackRState, _fallState, IsAttackEndedFail());    
             At(_hangJumpAttackRState, _deathFallState, IsAttackEndedDeath());
             
             // Tangle Attack Transitions
-            At(_tangleAttackLState, _bounceState, IsBounced()); //+
+            At(_tangleAttackLState, _bounceState, IsCollided()); //+
             At(_tangleAttackLState, _fallState, IsAttackEndedFail());    
             At(_tangleAttackLState, _deathFallState, IsAttackEndedDeath());    
-            At(_tangleAttackRState, _bounceState, IsBounced()); //+
+            At(_tangleAttackRState, _bounceState, IsCollided()); //+
             At(_tangleAttackRState, _fallState, IsAttackEndedFail());
             At(_tangleAttackRState, _deathFallState, IsAttackEndedDeath());
             
@@ -436,11 +447,11 @@ namespace _GAME.Scripts.Enemies.Megaspider
                 return false;
             };
             
-            Func<bool> IsBounced() => () =>
+            Func<bool> IsCollided() => () =>
             {
-                if (_isBounced)
+                if (_isCollided)
                 {
-                    _isBounced = false;
+                    _isCollided = false;
                     return true;
                 }
                 return false;
@@ -479,7 +490,7 @@ namespace _GAME.Scripts.Enemies.Megaspider
 
         public void Play()
         {
-            _isBounced = false;
+            _isCollided = false;
             _attackResult = AttackResult.None;
             enabled = true;
             OnEnterStarted();
@@ -492,7 +503,7 @@ namespace _GAME.Scripts.Enemies.Megaspider
 
         public void TriggerBounce()
         {
-            _isBounced = true;
+            _isCollided = true;
         }
 
         private void OnEnterStarted()

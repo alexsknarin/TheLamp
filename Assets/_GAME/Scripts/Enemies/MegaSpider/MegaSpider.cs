@@ -21,7 +21,7 @@ namespace _GAME.Scripts.Enemies.Megaspider
         [SerializeField] private MegaspiderSwarm _swarm;
         [SerializeField] private MegaspiderAnimationClipEventListener _animationClipEvents;
         [SerializeField] private Transform _visibleBodyTransform;
-
+        private Vector2 _projectedPosition;
         private bool _isLampDestroyed;
         [SerializeField] private AttackResult _attackResult;
 
@@ -38,7 +38,8 @@ namespace _GAME.Scripts.Enemies.Megaspider
         public event Action<CollidableEnemy> ProjectileShot;
         public event Action<Enemy, bool> ProjectileDeactivated;
 
-        public override Vector2 Position => CameraProjection.ProjectPointOnXYPlane(_cameraTransform.position, _visibleBodyTransform.position);
+        public override Vector2 Position => GetProjectedPosition(_cameraTransform.position, _visibleBodyTransform.position);
+        public override float Radius => GetProjectedRadius(_cameraTransform.position, _visibleBodyTransform.position, _collisionRadius);
         public override string CollidableName => gameObject.name;
 
         public void Construct(Transform cameraTransform)
@@ -128,6 +129,7 @@ namespace _GAME.Scripts.Enemies.Megaspider
 
         public override void HandleCollision()
         {
+            Debug.Log("Megaspider is colliding with lamp.");
             _movement.TriggerBounce();
             CollisionState = CollidableState.AfterCollision;
         }
@@ -161,12 +163,6 @@ namespace _GAME.Scripts.Enemies.Megaspider
             AnimatedAttackStarted?.Invoke(this);
         }
 
-        private void OnDrawGizmos()
-        {
-            Gizmos.color = Color.cyan;
-            Gizmos.DrawWireSphere(_visibleBodyTransform.position, _collisionRadius);
-        }
-
         private void OnProjectileAttack01Called()
         {
             Debug.Log("Projectile01 Attack Called");
@@ -189,6 +185,30 @@ namespace _GAME.Scripts.Enemies.Megaspider
         private void OnProjecile02FallEnded(bool dameged)
         {
             ProjectileDeactivated?.Invoke(_swarm.Projectile02, dameged);
+        }
+
+        private Vector2 GetProjectedPosition(Vector3 cameraPosition, Vector3 targetPosition)
+        {
+            _projectedPosition = CameraProjection.ProjectPointOnXYPlane(cameraPosition, targetPosition);
+            return _projectedPosition;
+        }
+        
+        private float GetProjectedRadius(Vector3 cameraPosition, Vector3 targetPosition, float radius)
+        {
+            Vector3 targetPositionTop = targetPosition;
+            targetPositionTop.y += radius;
+            Vector2 projectedTargetPosition = CameraProjection.ProjectPointOnXYPlane(cameraPosition, targetPositionTop);
+            return Vector2.Distance(projectedTargetPosition, _projectedPosition);
+        }
+
+        private void OnDrawGizmos()
+        {
+            Gizmos.color = Color.cyan;
+            Gizmos.DrawWireSphere(_visibleBodyTransform.position, _collisionRadius);
+            Gizmos.color = Color.aquamarine;
+            Vector3 projectedPosition = Position;
+            float radius = Radius;
+            Gizmos.DrawWireSphere(projectedPosition, radius);
         }
     }
 }

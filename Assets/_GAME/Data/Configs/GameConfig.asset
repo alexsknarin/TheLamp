@@ -52,22 +52,22 @@ MonoBehaviour:
   <MegaspiderWireAttackMainAttackDuration>k__BackingField: 1
   <MegaspiderWireAttackMainAttackAcceleration>k__BackingField: 3
   <MegaspiderWebStartPositionRanges>k__BackingField:
-  - p1: {x: -0.1696585, y: -1.571486, z: -5.533077}
-    p2: {x: -0.5621628, y: -1.601049, z: -5.457012}
-  - p1: {x: -0.5621628, y: -1.601049, z: -5.457012}
-    p2: {x: -0.8296229, y: -1.489632, z: -4.630661}
-  - p1: {x: -0.8296229, y: -1.489632, z: -4.630661}
-    p2: {x: -1.097083, y: -1.378216, z: -3.80431}
+  - p1: {x: -0.2506161, y: -2.596756, z: -3.494265}
+    p2: {x: -0.98199, y: -2.5469, z: -3.380694}
+  - p1: {x: -0.98199, y: -2.5469, z: -3.380694}
+    p2: {x: -1.157323, y: -2.379065, z: -2.977964}
+  - p1: {x: -1.157323, y: -2.379065, z: -2.977964}
+    p2: {x: -1.332655, y: -2.21123, z: -2.575235}
   - p1: {x: -2.991441, y: 2.364229, z: 1.8949}
     p2: {x: -3.222974, y: 3.461487, z: 3.060626}
   - p1: {x: -3.222974, y: 3.461487, z: 3.060626}
     p2: {x: -3.454506, y: 4.558745, z: 4.226351}
-  - p1: {x: 0.1696585, y: -1.571486, z: -5.533077}
-    p2: {x: 0.5621628, y: -1.601049, z: -5.457012}
-  - p1: {x: 0.5621628, y: -1.601049, z: -5.457012}
-    p2: {x: 0.8296229, y: -1.489632, z: -4.630661}
-  - p1: {x: 0.8296229, y: -1.489632, z: -4.630661}
-    p2: {x: 1.097083, y: -1.378216, z: -3.80431}
+  - p1: {x: 0.2506161, y: -2.596756, z: -3.494265}
+    p2: {x: 0.98199, y: -2.5469, z: -3.380694}
+  - p1: {x: 0.98199, y: -2.5469, z: -3.380694}
+    p2: {x: 1.157323, y: -2.379065, z: -2.977964}
+  - p1: {x: 1.157323, y: -2.379065, z: -2.977964}
+    p2: {x: 1.332655, y: -2.21123, z: -2.575235}
   - p1: {x: 2.991441, y: 2.364229, z: 1.8949}
     p2: {x: 3.222974, y: 3.461487, z: 3.060626}
   - p1: {x: 3.222974, y: 3.461487, z: 3.060626}
@@ -83,3 +83,4 @@ MonoBehaviour:
   <MegaspiderProjectileSpiderLampShiftMaximum>k__BackingField: 0.36
   <MegaspiderProjectileSpiderAttackAccelerationPower>k__BackingField: 0.65
   <MegaspiderProjectileSpiderAttackTopGravityMultiplier>k__BackingField: 0.25
+  <MegaspiderProjectileSpiderBounceSpeed>k__BackingField: 2.5
