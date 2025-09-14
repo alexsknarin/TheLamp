@@ -21,6 +21,7 @@ namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
         private Transform _calculatedTransform;
         private Transform _lampTransform;
         private Transform _rootTransform;
+        private Transform _cameraTransform;
         private float _exitYCoordinate;
 
         public MegaspiderFallState(
@@ -28,6 +29,7 @@ namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
             Transform calculatedTransform,  
             Transform lampTransform,
             Transform rootTransform,
+            Transform cameraTransform,
             float exitYCoordinate,
             bool isFreeFall
             )
@@ -36,6 +38,7 @@ namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
             _calculatedTransform = calculatedTransform;
             _lampTransform = lampTransform;
             _rootTransform = rootTransform;
+            _cameraTransform = cameraTransform;
             _exitYCoordinate = exitYCoordinate;
             _isFreeFall = isFreeFall;
         }
@@ -66,9 +69,14 @@ namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
                 FallForceIncrement
                 );
             
-            if (_calculatedTransform.position.y < _exitYCoordinate)
+            Vector2 projectedPosition = CameraProjection.ProjectPointOnXYPlane(
+                _cameraTransform.position,
+                _calculatedTransform.position
+                );
+            
+            if (projectedPosition.y < _exitYCoordinate)
             {
-                Debug.Log("Megaspider FallState: Exiting");
+
                 IsReadyToSwitch = true;
             }
         }
