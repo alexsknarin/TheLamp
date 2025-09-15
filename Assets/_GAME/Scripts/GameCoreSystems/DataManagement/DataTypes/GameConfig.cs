@@ -76,7 +76,9 @@ namespace _GAME.Scripts.GameCoreSystems.DataManagement.DataTypes
         [field:SerializeField] public float MegaspiderFallInitialOutForceMagnitude { get; private set; } = 1.8f;
         [field:SerializeField] public float MegaspiderFallOutForceIncrement { get; private set; } = 5f;
         [field:SerializeField] public float MegaspiderFallFallForceIncrement { get; private set; } = 6f;
-        
+        [field:Header("Death State:")]
+        [field:SerializeField] public float MegaspiderDeathAccelerationDecrement { get; private set; } = 0.01f;
+        [field:SerializeField] public float MegaspiderDeathDuration { get; private set; } = 3.0f;
         [field:Header("Megaspider Projectile Spider Settings")]
         [field:Header("Attack State:")]
         [field:SerializeField] public float MegaspiderProjectileSpiderTransitionDuration { get; private set; } = 0.33f;

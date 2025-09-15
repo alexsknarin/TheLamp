@@ -83,6 +83,11 @@ MonoBehaviour:
   <MegaspiderSwingSwingDownIncrement>k__BackingField: 1
   <MegaspiderSwingExitDistance>k__BackingField: 21
   <MegaspiderSwingSwingPivot>k__BackingField: {x: -2.35, y: 2.7, z: 0}
+  <MegaspiderFallInitialOutForceMagnitude>k__BackingField: 1.8
+  <MegaspiderFallOutForceIncrement>k__BackingField: 5
+  <MegaspiderFallFallForceIncrement>k__BackingField: 6
+  <MegaspiderDeathAccelerationDecrement>k__BackingField: 0.5
+  <MegaspiderDeathDuration>k__BackingField: 2.5
   <MegaspiderProjectileSpiderTransitionDuration>k__BackingField: 0.33
   <MegaspiderProjectileSpiderSpeed>k__BackingField: 5
   <MegaspiderProjectileSpiderGravity>k__BackingField: 3.5
