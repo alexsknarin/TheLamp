@@ -82,6 +82,7 @@ namespace _GAME.Scripts.Enemies.Megaspider
         {
             IsGameOver = false;
             _isLampDestroyed = false;
+            _attackResult = AttackResult.Success;
             
             _currentHealth = _maxHealth;
             HealthChanged?.Invoke(_currentHealth, _maxHealth);
@@ -158,6 +159,7 @@ namespace _GAME.Scripts.Enemies.Megaspider
 
         private void OnAnimatedAttackStarted()
         {
+            _attackResult = AttackResult.Success;
             _swarm.HideProjectiles();
             AnimatedAttackStarted?.Invoke(this);
         }

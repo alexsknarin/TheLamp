@@ -63,7 +63,7 @@ namespace _GAME.Scripts.Enemies.Megaspider
 
         private bool _isAnimClipEnded = false;
         private bool _isCollided = false;
-        private AttackResult _attackResult;
+        [SerializeField] private AttackResult _attackResult;
         private float _collisionRadius;
         private float _fullCollisionDistance;
         private bool _isAttackStateBeforeCollision = false;
@@ -195,7 +195,6 @@ namespace _GAME.Scripts.Enemies.Megaspider
         {
             // Initialize StateMachine 
             // Enter to Attacks
-            /*
             At(_enterLState, _wireAttackState, IsAnimationEndedRandom0Of4()); //++
             At(_enterLState, _zigzagAttackLState, IsAnimationEndedRandom1Of4());//+
             At(_enterLState, _projectileBottomAttackLState, IsAnimationEndedRandom2Of4());//+
@@ -205,16 +204,6 @@ namespace _GAME.Scripts.Enemies.Megaspider
             At(_enterRState, _zigzagAttackRState, IsAnimationEndedRandom1Of4());//+
             At(_enterRState, _projectileBottomAttackRState, IsAnimationEndedRandom2Of4());//+
             At(_enterRState, _projectileDoubleUpAttackRState, IsAnimationEndedRandom3Of4());//+
-            */
-            At(_enterLState, _hangAttackLState, IsAnimationEndedRandom0Of4()); //++
-            At(_enterLState, _hangAttackLState, IsAnimationEndedRandom1Of4());//+
-            At(_enterLState, _hangAttackLState, IsAnimationEndedRandom2Of4());//+
-            At(_enterLState, _hangAttackLState, IsAnimationEndedRandom3Of4());//++
-            
-            At(_enterRState, _hangAttackLState, IsAnimationEndedRandom0Of4());//++
-            At(_enterRState, _hangAttackLState, IsAnimationEndedRandom1Of4());//+
-            At(_enterRState, _hangAttackLState, IsAnimationEndedRandom2Of4());//+
-            At(_enterRState, _hangAttackLState, IsAnimationEndedRandom3Of4());//+
             
             // Wire Attack Transitions
             At(_wireAttackState, _bounceState, IsCollided()); //+
