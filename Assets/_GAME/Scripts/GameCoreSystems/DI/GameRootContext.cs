@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using _GAME.Scripts.Enemies.Megaspider.MovementStates;
 using _GAME.Scripts.Factories;
 using _GAME.Scripts.GameCoreSystems.DataManagement;
 using _GAME.Scripts.GameCoreSystems.DataManagement.DataTypes;
@@ -95,6 +96,7 @@ namespace _GAME.Scripts.GameCoreSystems.DI
         private AnalyticsEventListener _analyticsEventListener;
         private AdvertisementEventListener _advertisementEventListener;
         private AttackZoneUpgradeEventListener _attackZoneUpgradeEventListener;
+        private MegaspiderWireAttackLampAttackEventListener _wireAttackLampAttackEventListener = new();
         // +++ Factories
         private BossCameraShakeFactory _bossCameraShakeFactory;
         // Enemy Factories
@@ -256,10 +258,11 @@ namespace _GAME.Scripts.GameCoreSystems.DI
                 _gameConfigService
             );
             _dragonflyBehaviourStateFactory.Initialize();
-
+            
             _megaspiderMovementStateFactory = new MegaspiderMovementStateFactory(
                 _cameraTransform,
                 _lampTransform,
+                _wireAttackLampAttackEventListener,
                 _gameConfigService
             );
 
@@ -434,6 +437,9 @@ namespace _GAME.Scripts.GameCoreSystems.DI
                 _lampStickyDetectionService
             );
             _disposables.Add(_attackZoneUpgradeEventListener);
+            
+            _wireAttackLampAttackEventListener.SubscribeToLampAttack(_gameModel);
+            _disposables.Add(_wireAttackLampAttackEventListener);
         }
 
         private void Update()

@@ -23,7 +23,7 @@ public class SpiderwebAttackWire
         _startPosition = startPosition;
         _endPosition = endPosition;
         _endPositionTransformed = Vector3.zero;
-        _hitPoints = 6;
+        _hitPoints = 3;
         _isDestroyed = false;
     }
     

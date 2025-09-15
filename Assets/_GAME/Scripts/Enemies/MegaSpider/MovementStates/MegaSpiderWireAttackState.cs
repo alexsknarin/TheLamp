@@ -37,6 +37,7 @@ namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
         // Dependencies
         private readonly Transform _visibleBodyTransform;
         private readonly Transform _calculatedTransform;
+        private readonly MegaspiderWireAttackLampAttackEventListener _lampAttackEventListener;
         private readonly Transform _lampTransform;
         // Config
         private readonly int _numberOfWires;
@@ -48,13 +49,15 @@ namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
         public MegaspiderWireAttackState(
             Transform visibleBodyTransform, 
             Transform calculatedTransform,  
-            Transform lampTransform, 
+            Transform lampTransform,
+            MegaspiderWireAttackLampAttackEventListener lampAttackEventListener,
             IGameConfigService configService
             )
         {
             _visibleBodyTransform = visibleBodyTransform;
             _calculatedTransform = calculatedTransform;
             _lampTransform = lampTransform;
+            _lampAttackEventListener = lampAttackEventListener;
             
             _numberOfWires = configService.GameConfig.MegaspiderWireAttackNumberOfWires;
             _wireAttackTimeInterval = configService.GameConfig.MegaspiderWireAttackTimeInterval;
@@ -88,6 +91,8 @@ namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
             _localTime = 0;
             InitializeAttackWires();
             StartWireAttack();
+            
+            _lampAttackEventListener.AttackStarted += ReceiveWireDamage;
         }
 
         public override void Tick()
@@ -95,8 +100,7 @@ namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
             // TODO: test later and remove
             if(Input.GetKeyDown(KeyCode.C))
                 IsDropped = true;
-            
-            
+ 
             if (_wireState == WireStates.WireAttack)
             {
                 HandleWiresAttack();
@@ -108,11 +112,6 @@ namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
             else if (_wireState == WireStates.MainAttack)
             {
                 HandleMainAttack();
-            }
-
-            if (Input.GetKeyDown(KeyCode.A))
-            {
-                ReceiveWireDamage(3);
             }
 
             foreach (var wire in _attackWires)
@@ -135,6 +134,8 @@ namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
 
             _currentPosition = _inactivePosition;
             _wireState = WireStates.Inactive;
+            
+            _lampAttackEventListener.AttackStarted -= ReceiveWireDamage;
         }
 
         private void StartWireAttack()

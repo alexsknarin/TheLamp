@@ -22,6 +22,7 @@ namespace _GAME.Scripts.Factories
         // Dependencies
         private Transform _cameraTransform;
         private Transform _lampTransform;
+        private MegaspiderWireAttackLampAttackEventListener _lampAttackEvenListener;
         private IGameConfigService _gameConfigService;
         
         private Animator _animator;
@@ -42,11 +43,13 @@ namespace _GAME.Scripts.Factories
         public MegaspiderMovementStateFactory(
             Transform cameraTransform,
             Transform lampTransform,
+            MegaspiderWireAttackLampAttackEventListener lampAttackEvenListener,
             IGameConfigService gameConfigService
             )
         {
             _cameraTransform = cameraTransform;
             _lampTransform = lampTransform;
+            _lampAttackEvenListener = lampAttackEvenListener;
             _gameConfigService = gameConfigService;
         }
         
@@ -276,6 +279,7 @@ namespace _GAME.Scripts.Factories
                     _visibleBodyTransform,
                     _calculatedTransform,
                     _lampTransform,
+                    _lampAttackEvenListener,
                     _gameConfigService
                     );
             }
