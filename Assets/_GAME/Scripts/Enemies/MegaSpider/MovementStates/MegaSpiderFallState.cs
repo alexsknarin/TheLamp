@@ -1,35 +1,35 @@
 using _GAME.Scripts.Lib;
+using _GAME.Scripts.Lib.Interfaces;
 using UnityEngine;
 
 namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
 {
     public class MegaspiderFallState : EnemyMovementStateBase
     {
-        private const float InitialOutForceMagnitude = 1.8f;
-        private const float OutForceIncrement = 5f;
-        private const float FallForceIncrement = 6f;
-        
         private Vector3 _initialDirection;
         private float _outForceMagnitude;
         private float _fallForceMagnitude;
         private bool _isFreeFall;
         
-        
-        
         // Dependencies
-        private Transform _visibleBodyTransform;
-        private Transform _calculatedTransform;
-        private Transform _lampTransform;
-        private Transform _rootTransform;
-        private Transform _cameraTransform;
-        private float _exitYCoordinate;
-
+        private readonly Transform _visibleBodyTransform;
+        private readonly Transform _calculatedTransform;
+        private readonly Transform _lampTransform;
+        private readonly Transform _rootTransform;
+        private readonly Transform _cameraTransform;
+        private readonly float _exitYCoordinate;
+        // Config
+        private readonly float _initialOutForceMagnitude;
+        private readonly float _outForceIncrement;
+        private readonly float _fallForceIncrement;
+        
         public MegaspiderFallState(
             Transform visibleBodyTransform, 
             Transform calculatedTransform,  
             Transform lampTransform,
             Transform rootTransform,
             Transform cameraTransform,
+            IGameConfigService configService,
             float exitYCoordinate,
             bool isFreeFall
             )
@@ -41,6 +41,10 @@ namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
             _cameraTransform = cameraTransform;
             _exitYCoordinate = exitYCoordinate;
             _isFreeFall = isFreeFall;
+            
+            _initialOutForceMagnitude = configService.GameConfig.MegaspiderFallInitialOutForceMagnitude;
+            _outForceIncrement = configService.GameConfig.MegaspiderFallOutForceIncrement;
+            _fallForceIncrement = configService.GameConfig.MegaspiderFallFallForceIncrement;
         }
         
         
@@ -52,7 +56,7 @@ namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
             HierarchyUtilities.ParentWithoutOffset(_visibleBodyTransform, _calculatedTransform);
             
             _initialDirection = (_calculatedTransform.position - _lampTransform.position).normalized;
-            _outForceMagnitude = InitialOutForceMagnitude;
+            _outForceMagnitude = _initialOutForceMagnitude;
             _fallForceMagnitude = 0f;
 
         }
@@ -64,9 +68,9 @@ namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
                 ref _outForceMagnitude, 
                 ref _fallForceMagnitude, 
                 _isFreeFall,
-                InitialOutForceMagnitude,
-                OutForceIncrement,
-                FallForceIncrement
+                _initialOutForceMagnitude,
+                _outForceIncrement,
+                _fallForceIncrement
                 );
             
             Vector2 projectedPosition = CameraProjection.ProjectPointOnXYPlane(

@@ -1,3 +1,4 @@
+using _GAME.Scripts.Lib.Interfaces;
 using UnityEngine;
 
 namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
@@ -10,6 +11,7 @@ namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
             Transform lampTransform,
             Transform rootTransform,
             Transform cameraTransform,
+            IGameConfigService configService,
             float exitYCoordinate,
             bool isFreeFall
             ) : base(
@@ -18,6 +20,7 @@ namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
                 lampTransform,
                 rootTransform,
                 cameraTransform,
+                configService,
                 exitYCoordinate,
                 isFreeFall
                 )

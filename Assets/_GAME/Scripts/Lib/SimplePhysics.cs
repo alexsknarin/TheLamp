@@ -11,10 +11,11 @@ namespace _GAME.Scripts.Lib
             bool isFreeFall,
             float initialOutForceMagnitude,
             float outForceIncrement,
-            float gravityIncrement
+            float gravityIncrement,
+            float speedFactor = 1f
             )
         {
-            float timeStep = Time.deltaTime;
+            float timeStep = Time.deltaTime * speedFactor;
             
             Vector3 result = Vector3.down * (gravityMagnitude * timeStep);
             

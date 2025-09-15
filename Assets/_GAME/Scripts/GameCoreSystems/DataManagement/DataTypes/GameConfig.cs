@@ -72,6 +72,10 @@ namespace _GAME.Scripts.GameCoreSystems.DataManagement.DataTypes
         [field:SerializeField] public float MegaspiderSwingSwingDownIncrement { get; private set; } = 1f;
         [field:SerializeField] public float MegaspiderSwingExitDistance { get; private set; } = 4f;
         [field:SerializeField] public Vector3 MegaspiderSwingSwingPivot { get; private set; }
+        [field:Header("Fall State:")]
+        [field:SerializeField] public float MegaspiderFallInitialOutForceMagnitude { get; private set; } = 1.8f;
+        [field:SerializeField] public float MegaspiderFallOutForceIncrement { get; private set; } = 5f;
+        [field:SerializeField] public float MegaspiderFallFallForceIncrement { get; private set; } = 6f;
         
         [field:Header("Megaspider Projectile Spider Settings")]
         [field:Header("Attack State:")]

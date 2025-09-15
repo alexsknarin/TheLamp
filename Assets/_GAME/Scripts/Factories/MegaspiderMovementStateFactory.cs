@@ -303,6 +303,7 @@ namespace _GAME.Scripts.Factories
                     _lampTransform,
                     _rootTransform,    
                     _cameraTransform,
+                    _gameConfigService,
                     -3.5f, // TODO: use config
                     false
                     );
@@ -315,7 +316,8 @@ namespace _GAME.Scripts.Factories
                     _calculatedTransform,
                     _lampTransform,
                     _rootTransform,   
-                    _cameraTransform,   
+                    _cameraTransform,  
+                    _gameConfigService,
                     -1.6f, // TODO: use config
                     false
                 );
@@ -329,6 +331,7 @@ namespace _GAME.Scripts.Factories
                     _lampTransform,
                     _rootTransform,  
                     _cameraTransform,  
+                    _gameConfigService,
                     -3.5f, // TODO: use config
                     false
                 );
@@ -342,6 +345,7 @@ namespace _GAME.Scripts.Factories
                     _lampTransform,
                     _rootTransform, 
                     _cameraTransform,
+                    _gameConfigService,
                     -2.2f, // TODO: use config
                     true
                 );
