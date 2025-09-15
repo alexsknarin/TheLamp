@@ -44,7 +44,6 @@ namespace _GAME.Scripts.Enemies.MegaspiderProjectileSpider
         
         public void Initialize()
         {
-            Debug.Log("Initialize Movement");
             _stateFactory.SetEnemyDependencies(
                 transform,
                 _lampTransform,

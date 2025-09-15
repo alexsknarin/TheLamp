@@ -99,7 +99,6 @@ namespace _GAME.Scripts.Enemies.Megaspider
         {
             enabled = false;
             _fullCollisionDistance = _collisionRadius + 0.49f;
-            Debug.Log($"Full Collision Distance: {_fullCollisionDistance}");
             _isAttackStateBeforeCollision = false;
             _stateFactory.SetEnemyDependencies(
                 _animator, 
@@ -207,15 +206,15 @@ namespace _GAME.Scripts.Enemies.Megaspider
             At(_enterRState, _projectileBottomAttackRState, IsAnimationEndedRandom2Of4());//+
             At(_enterRState, _projectileDoubleUpAttackRState, IsAnimationEndedRandom3Of4());//+
             */
-            At(_enterLState, _wireAttackState, IsAnimationEndedRandom0Of4()); //++
-            At(_enterLState, _wireAttackState, IsAnimationEndedRandom1Of4());//+
-            At(_enterLState, _wireAttackState, IsAnimationEndedRandom2Of4());//+
-            At(_enterLState, _wireAttackState, IsAnimationEndedRandom3Of4());//++
+            At(_enterLState, _hangAttackLState, IsAnimationEndedRandom0Of4()); //++
+            At(_enterLState, _hangAttackLState, IsAnimationEndedRandom1Of4());//+
+            At(_enterLState, _hangAttackLState, IsAnimationEndedRandom2Of4());//+
+            At(_enterLState, _hangAttackLState, IsAnimationEndedRandom3Of4());//++
             
-            At(_enterRState, _wireAttackState, IsAnimationEndedRandom0Of4());//++
-            At(_enterRState, _wireAttackState, IsAnimationEndedRandom1Of4());//+
-            At(_enterRState, _wireAttackState, IsAnimationEndedRandom2Of4());//+
-            At(_enterRState, _wireAttackState, IsAnimationEndedRandom3Of4());//+
+            At(_enterRState, _hangAttackLState, IsAnimationEndedRandom0Of4());//++
+            At(_enterRState, _hangAttackLState, IsAnimationEndedRandom1Of4());//+
+            At(_enterRState, _hangAttackLState, IsAnimationEndedRandom2Of4());//+
+            At(_enterRState, _hangAttackLState, IsAnimationEndedRandom3Of4());//+
             
             // Wire Attack Transitions
             At(_wireAttackState, _bounceState, IsCollided()); //+
@@ -565,7 +564,6 @@ namespace _GAME.Scripts.Enemies.Megaspider
 
         private void OnAnimClipEnded()
         {
-            Debug.Log("AnimClipEnded");
             _isAnimClipEnded = true;
         }
 

@@ -129,7 +129,6 @@ namespace _GAME.Scripts.Enemies.Megaspider
 
         public override void HandleCollision()
         {
-            Debug.Log("Megaspider is colliding with lamp.");
             _movement.TriggerBounce();
             CollisionState = CollidableState.AfterCollision;
         }
@@ -165,14 +164,12 @@ namespace _GAME.Scripts.Enemies.Megaspider
 
         private void OnProjectileAttack01Called()
         {
-            Debug.Log("Projectile01 Attack Called");
             ProjectileShot?.Invoke(_swarm.Projectile01);
             _swarm.Attack01();
         }
 
         private void OnProjectileAttack02Called()
         {
-            Debug.Log("Projectile02 Attack Called");
             ProjectileShot?.Invoke(_swarm.Projectile02);
             _swarm.Attack02();
         }

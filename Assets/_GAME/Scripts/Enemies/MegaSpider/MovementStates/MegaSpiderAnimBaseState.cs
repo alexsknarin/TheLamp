@@ -45,7 +45,6 @@ namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
         public override void Exit()
         {
             _animator.enabled = false;
-            Debug.Log("Exiting Animation State");
         }
     }
 }
