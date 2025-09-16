@@ -160,6 +160,7 @@ namespace _GAME.Scripts.Enemies.Megaspider
         private void OnAnimatedAttackStarted()
         {
             _attackResult = AttackResult.Success;
+            IsReceivedLampAttackDamage = false;
             _swarm.HideProjectiles();
             AnimatedAttackStarted?.Invoke(this);
         }
