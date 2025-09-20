@@ -12,6 +12,8 @@ GameObject:
   - component: {fileID: 4459765845128762470}
   - component: {fileID: 5885945323400971088}
   - component: {fileID: 4562466805752491100}
+  - component: {fileID: 6245810979945890085}
+  - component: {fileID: 5783863906398185475}
   m_Layer: 0
   m_Name: Megaspider
   m_TagString: Untagged
@@ -179,6 +181,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   _swingZoneSize: 1.11
+  _attackResult: 0
 --- !u!114 &4562466805752491100
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -197,6 +200,34 @@ MonoBehaviour:
   _projectile02: {fileID: 8608667332628048823}
   _projectile01Transform: {fileID: 1224464351496680659}
   _projectile02Transform: {fileID: 4689624644796432586}
+--- !u!114 &6245810979945890085
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1472883947192693691}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 61c88179c91d9e6429f7738d8c61ba9d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _megaspider: {fileID: 4459765845128762470}
+  _movement: {fileID: 5885945323400971088}
+  _animationClipEvents: {fileID: 6309120008655084617}
+  _spiderwebController: {fileID: 5783863906398185475}
+--- !u!114 &5783863906398185475
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1472883947192693691}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d94beea51b91db845b7615aa9e39dd1c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1569569308862950355
 GameObject:
   m_ObjectHideFlags: 0

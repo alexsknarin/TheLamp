@@ -9,7 +9,7 @@ namespace _GAME.Scripts.InGamePresentation.CameraShake
         [SerializeField] private float _shakeAmplitude;
         [SerializeField] private float _shakeDuration;
         [SerializeField] private AnimationCurve _shakeProfileCurve;
-        private ICameraShakeStrategy _cameraShakeStrategy;
+        private IStrategy _cameraShakeStrategy;
         private bool _isStrategyEnabled;
         private Vector3 _originalPos;
         private Vector3 _displaceVector;
@@ -40,7 +40,7 @@ namespace _GAME.Scripts.InGamePresentation.CameraShake
             _shakeAmplitudeMultiplier = 2.5f;
         }
 
-        public void EnableBossShake(ICameraShakeStrategy shakeStrategy)
+        public void EnableBossShake(IStrategy shakeStrategy)
         {
             _cameraShakeStrategy = shakeStrategy;
             _isStrategyEnabled = true;
