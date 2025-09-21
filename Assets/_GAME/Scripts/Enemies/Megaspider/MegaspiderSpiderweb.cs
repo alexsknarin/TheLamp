@@ -1,6 +1,7 @@
 using System;
 using _GAME.Scripts.Lib.Interfaces;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace _GAME.Scripts.Enemies.Megaspider
 {
@@ -31,7 +32,8 @@ namespace _GAME.Scripts.Enemies.Megaspider
         private int _shootPointCount = 20;
         private float _vibrateDuration = 0.45f;
         private float _fallDuration = 1f;
-        private float _breakHangDuration = .85f;
+        private float _breakHangDuration = .65f;
+        private float _breakHangNoiseOffset;
         private float _localTime;
 
         // TODO: Support moving end position
@@ -201,6 +203,7 @@ namespace _GAME.Scripts.Enemies.Megaspider
             _endPosition = _endPositionProvider.Position3D;
             _spiderwebState = SpiderwebState.BreakHang;
             _lineRenderer.positionCount = _shootPointCount;
+            _breakHangNoiseOffset = Random.Range(0.0f, 2.5f);
             _localTime = 0;
             enabled = true;
         }
@@ -222,7 +225,7 @@ namespace _GAME.Scripts.Enemies.Megaspider
             {
                 float resampledPhase = i / ((float) _lineRenderer.positionCount-1);
                 Vector3 resampledPos = Vector3.Lerp(_startPosition, endPos, resampledPhase);
-                resampledPos.x += (Mathf.PerlinNoise1D(resampledPos.y) - 0.5f) * phase * 3;
+                resampledPos.x += (Mathf.PerlinNoise1D(resampledPos.y + _breakHangNoiseOffset) - 0.5f) * phase * 2.8f;
                 _lineRenderer.SetPosition(i, resampledPos);
             }
 
