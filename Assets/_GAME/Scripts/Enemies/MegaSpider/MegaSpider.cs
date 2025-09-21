@@ -26,7 +26,7 @@ namespace _GAME.Scripts.Enemies.Megaspider
         [SerializeField] private AttackResult _attackResult;
 
         // Dependencies
-        private Transform _cameraTransform;
+        private Vector3 _cameraPosition;
         
         public event Action Started;
         public event Action<CollidableEnemy> AnimatedAttackStarted;
@@ -38,13 +38,13 @@ namespace _GAME.Scripts.Enemies.Megaspider
         public event Action<CollidableEnemy> ProjectileShot;
         public event Action<Enemy, bool> ProjectileDeactivated;
 
-        public override Vector2 Position => GetProjectedPosition(_cameraTransform.position, _visibleBodyTransform.position);
-        public override float Radius => GetProjectedRadius(_cameraTransform.position, _visibleBodyTransform.position, _collisionRadius);
+        public override Vector2 Position => GetProjectedPosition(_cameraPosition, _visibleBodyTransform.position);
+        public override float Radius => GetProjectedRadius(_cameraPosition, _visibleBodyTransform.position, _collisionRadius);
         public override string CollidableName => gameObject.name;
 
         public void Construct(Transform cameraTransform)
         {
-            _cameraTransform = cameraTransform;
+            _cameraPosition = cameraTransform.position;
         }
         
         public override void Initialize()

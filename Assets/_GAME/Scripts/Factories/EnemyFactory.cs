@@ -394,6 +394,8 @@ namespace _GAME.Scripts.Factories
                 );
             enemyInstance.GetComponent<MegaspiderSwarm>().Construct(_lampTransform, _megaspiderProjectileSpiderMovementStateFactory);
             enemy.Initialize();
+            enemyInstance.GetComponent<MegaspiderSpiderwebController>().Initialize();
+            
             return enemy;
         }
     }

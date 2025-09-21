@@ -89,6 +89,13 @@ namespace _GAME.Scripts.Enemies.Megaspider
         
         public event Action AnimatedAttackStarted;
         public event Action DeathStateEnded;
+        public event Action<Type> Bridge1Called;
+        public event Action Bridge1Broken;
+        public event Action<Type> Bridge2Called;
+        public event Action Bridge2Broken;
+        public event Action<Type, IPositionProvider> HangStartRequested;
+        public event Action HangStopRequested;
+        public event Action HangBreakRequested;
 
         public void SetCollisionRadius(float radius)
         {
@@ -117,6 +124,14 @@ namespace _GAME.Scripts.Enemies.Megaspider
             CreateStateTransitions();
 
             _animationClipEvents.AnimClipEnded += OnAnimClipEnded;
+            _animationClipEvents.Bridge1Called += OnBridge1Called;
+            _animationClipEvents.Bridge1Broken += OnBridge1Broken;
+            _animationClipEvents.Bridge2Called += OnBridge2Called;
+            _animationClipEvents.Bridge2Broken += OnBridge2Broken;
+            _animationClipEvents.HangStartRequested += OnHangStartRequested;
+            _animationClipEvents.HangStopRequested += OnHangStopRequested;
+            _animationClipEvents.HangBreakRequested += OnHangBreakRequested;
+            
 
             _zigzagAttackLState.Started += OnAnimatedAttackStarted;
             _zigzagAttackRState.Started += OnAnimatedAttackStarted;
@@ -137,6 +152,13 @@ namespace _GAME.Scripts.Enemies.Megaspider
         private void OnDestroy()
         {
             _animationClipEvents.AnimClipEnded -= OnAnimClipEnded;
+            _animationClipEvents.Bridge1Called -= OnBridge1Called;
+            _animationClipEvents.Bridge1Broken -= OnBridge1Broken;
+            _animationClipEvents.Bridge2Called -= OnBridge2Called;
+            _animationClipEvents.Bridge2Broken -= OnBridge2Broken;
+            _animationClipEvents.HangStartRequested -= OnHangStartRequested;
+            _animationClipEvents.HangStopRequested -= OnHangStopRequested;
+            _animationClipEvents.HangBreakRequested -= OnHangBreakRequested;
             
             _zigzagAttackLState.Started -= OnAnimatedAttackStarted;
             _zigzagAttackRState.Started -= OnAnimatedAttackStarted;
@@ -564,6 +586,44 @@ namespace _GAME.Scripts.Enemies.Megaspider
         private void OnDeathStateEnded()
         {
             DeathStateEnded?.Invoke();
+        }
+
+        private void OnBridge1Called()
+        {
+            Bridge1Called?.Invoke(_stateMachine.CurrentState.GetType());
+        }
+
+        private void OnBridge1Broken()
+        {
+            Bridge1Broken?.Invoke();
+        }
+
+        private void OnBridge2Called()
+        {
+            Bridge2Called?.Invoke(_stateMachine.CurrentState.GetType());
+        }
+
+        private void OnBridge2Broken()
+        {
+            Bridge2Broken?.Invoke();
+        }
+
+        private void OnHangStartRequested()
+        {
+            if (_stateMachine.CurrentState is MegaspiderEnterLState) 
+                HangStartRequested?.Invoke(_stateMachine.CurrentState.GetType(), (MegaspiderEnterLState)_stateMachine.CurrentState);
+            if (_stateMachine.CurrentState is MegaspiderEnterRState) 
+                HangStartRequested?.Invoke(_stateMachine.CurrentState.GetType(), (MegaspiderEnterRState)_stateMachine.CurrentState);
+        }
+
+        private void OnHangStopRequested()
+        {
+            HangStopRequested?.Invoke();
+        }
+
+        private void OnHangBreakRequested()
+        {
+            HangBreakRequested?.Invoke();
         }
     }
 }

@@ -9,6 +9,13 @@ namespace _GAME.Scripts.Enemies.Megaspider
         public event Action ProjectileAttack01Called;
         public event Action ProjectileAttack02Called;
         public event Action ProjectileResetCalled;
+        public event Action Bridge1Called;
+        public event Action Bridge1Broken;
+        public event Action Bridge2Called;
+        public event Action Bridge2Broken;
+        public event Action HangStartRequested;
+        public event Action HangStopRequested;
+        public event Action HangBreakRequested;
     
         public void ClipEnded()
         {
@@ -28,6 +35,41 @@ namespace _GAME.Scripts.Enemies.Megaspider
         public void ProjectilesReset()
         {
             ProjectileResetCalled?.Invoke();
+        }
+
+        public void CallStaticBridge1()
+        {
+            Bridge1Called?.Invoke();
+        }
+        
+        public void BreakStaticBridge1()
+        {
+            Bridge1Broken?.Invoke();
+        }
+        
+        public void CallStaticBridge2()
+        {
+            Bridge2Called?.Invoke();
+        }
+        
+        public void BreakStaticBridge2()
+        {
+            Bridge2Broken?.Invoke();
+        }
+        
+        public void RequestHangStart()
+        {
+            HangStartRequested?.Invoke();
+        }
+        
+        public void RequestHangStop()
+        {
+            HangStopRequested?.Invoke();
+        }
+        
+        public void RequestHangBreak()
+        {
+            HangBreakRequested?.Invoke();
         }
     }
 }

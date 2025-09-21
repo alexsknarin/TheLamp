@@ -5,13 +5,18 @@ using UnityEngine;
 
 namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
 {
-    public class MegaspiderAnimBaseState: EnemyMovementStateBase
+    public class MegaspiderAnimBaseState: EnemyMovementStateBase, IPositionProvider
     {
         protected Animator _animator;
         protected int _clipHash;
         private Transform _visibleBodyTransform;
         private Transform _animatedTransform;
+
         private bool _isLeftSide;
+        private Vector3 _position3D;
+        private Vector3 _position3D1;
+
+        Vector3 IPositionProvider.Position3D => _visibleBodyTransform.position;
 
         public MegaspiderAnimBaseState(
             Animator animator, 
@@ -26,7 +31,7 @@ namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
             _animatedTransform = animatedTransform;
             _isLeftSide = isLeftSide;
         }
-        
+
         public override void Enter()
         {
             Vector3 scale = Vector3.one;
