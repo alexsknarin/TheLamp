@@ -9,10 +9,15 @@ namespace _GAME.Scripts.Enemies.Megaspider
     {
         private enum SpiderwebState
         {
-            Idle,
-            Shoot,
-            Vibrate,
-            Break,
+            Inactive,
+            ShootStatic,
+            VibrateStatic,
+            FallBreakStatic,
+            TautStatic,
+            ShootDynamic,
+            VibrateDynamic,
+            FallBreakDynamic,
+            TautDynamic,
             Hang,
             BreakHang
         }
@@ -23,7 +28,7 @@ namespace _GAME.Scripts.Enemies.Megaspider
         [SerializeField] private AnimationCurve _vibrateFrequencyCurve;
         [SerializeField] private AnimationCurve _fallDeformationCurve;
         [SerializeField] private AnimationCurve _fallContractionCurve;
-        private SpiderwebState _spiderwebState = SpiderwebState.Idle;
+        private SpiderwebState _spiderwebState = SpiderwebState.Inactive;
         private Vector3 _startPosition;
         private Vector3 _endPosition;
         private IPositionProvider _endPositionProvider;
@@ -37,7 +42,7 @@ namespace _GAME.Scripts.Enemies.Megaspider
         private float _localTime;
 
         // TODO: Support moving end position
-        public void StartShoot(Vector3 startPosition, Vector3 endPosition)
+        public void StartShootStatic(Vector3 startPosition, Vector3 endPosition)
         {
             _localTime = 0;
             _startPosition = startPosition;
@@ -45,132 +50,74 @@ namespace _GAME.Scripts.Enemies.Megaspider
             _lineRenderer.enabled = true;
             _lineRenderer.positionCount = _shootPointCount;
             enabled = true;
-            _spiderwebState = SpiderwebState.Shoot;
+            _spiderwebState = SpiderwebState.ShootStatic;
         }
         
         // TODO: Support moving end position
-        private void PerformShoot()
+        private void PerformStaticShoot()
         {
-            Vector3 axis = (_endPosition - _startPosition).normalized;
-            Vector3 perpendicular = Vector3.Cross(axis, Vector3.back);
+            bool isShootFinished = SpiderwebMotionLibrary.CalculateWireShootMotion(
+                _startPosition,
+                _endPosition,
+                _lineRenderer,
+                _shootDuration,
+                _shootSineFrequency,
+                _shootSineAmplitudeCurve,
+                ref _localTime);
             
-            float phase = _localTime / _shootDuration;
-            
-            if (phase > 1)
-            {
-                StartVibrate();
-                return;
-            }
-        
-            Vector3 endPos = Vector3.Lerp(_startPosition, _endPosition, phase);
-
-            for (int i = 0; i < _lineRenderer.positionCount; i++)
-            {
-                float resampledPhase = i / ((float) _lineRenderer.positionCount-1);
-                Vector3 resampledPos = Vector3.Lerp(_startPosition, endPos, resampledPhase);
-                float u = 1 - resampledPhase;
-                float displace = Mathf.Sin(u * _shootSineFrequency * phase) 
-                                 * _shootSineAmplitudeCurve.Evaluate(phase);
-                resampledPos += perpendicular * (displace * resampledPhase);
-            
-                _lineRenderer.SetPosition(i, resampledPos);
-            }
-       
-            _localTime += Time.deltaTime;
+            if (isShootFinished)
+                StartVibrateStatic();
         }
 
-        private void StartVibrate()
+
+        private void StartVibrateStatic()
         {
             _localTime = 0;
-            _spiderwebState = SpiderwebState.Vibrate;
+            _spiderwebState = SpiderwebState.VibrateStatic;
         }
         
         // TODO: Support moving end position
-        private void PerformVibrate()
+        private void PerformStaticVibrate()
         {
-            Vector3 axis = (_endPosition - _startPosition).normalized;
-            Vector3 perpendicular = Vector3.Cross(axis, Vector3.back);
-        
-            float phase = _localTime / _vibrateDuration;
-        
-            if (phase > 1)
+            bool isVibrateFinished = SpiderwebMotionLibrary.CalculateWireVibrateMotion(
+                _startPosition,
+                _endPosition,
+                _lineRenderer,
+                _vibrateDuration,
+                _vibrateFrequencyCurve,
+                _vibrateAmplitudeCurve,
+                ref _localTime);
+            
+            if (isVibrateFinished)
             {
-                phase = 1;
                 enabled = false;
             }
-        
-            for (int i = 0; i < _lineRenderer.positionCount; i++)
-            {
-                float resampledPhase = i / ((float) _lineRenderer.positionCount-1);
-                Vector3 resampledPos = Vector3.Lerp(_startPosition, _endPosition, resampledPhase);
-                float u = 1 - resampledPhase;
-                float displace = Mathf.Sin(u * Mathf.PI) 
-                                 * Mathf.Cos(phase*_vibrateFrequencyCurve.Evaluate(phase))
-                                 *_vibrateAmplitudeCurve.Evaluate(phase);
-                resampledPos += perpendicular * displace;
-            
-                _lineRenderer.SetPosition(i, resampledPos);
-            }
-       
-            _localTime += Time.deltaTime;
         }
 
-        public void StartBreak()
+        public void StartBreakStatic()
         {
             _localTime = 0;
-            _spiderwebState = SpiderwebState.Break;
+            _spiderwebState = SpiderwebState.FallBreakStatic;
             enabled = true;
         }
 
-        private void PerformBreak()
+        private void PerformFallBreakStatic()
         {
-            Vector3 axis = (_endPosition - _startPosition).normalized;
-            Vector3 perpendicular = Vector3.Cross(axis, Vector3.back);
-        
-            // Calculate once
-            float fullAngle = Vector3.Angle(axis, Vector3.down);
-        
-            float phase = _localTime / _fallDuration;
-            if (phase > 1)
-            {
-                enabled = false;
-                _spiderwebState = SpiderwebState.Idle;
-                _lineRenderer.enabled = false;
-                return;
-            }
-        
-            float currentAngle = Mathf.Lerp(0, fullAngle, Mathf.Pow(phase, 3f));
-            float bendDirection = 1;
-            if (_endPosition.x < _startPosition.x)
-            {
-                currentAngle *= -1;
-                bendDirection *= -1;
-            }
-        
-            Vector3 endPos = _endPosition - _startPosition;
-            Quaternion endRotation = Quaternion.AngleAxis(currentAngle, Vector3.back);
-            endPos = endRotation * endPos;
-            endPos *= _fallContractionCurve.Evaluate(phase);
-            perpendicular = endRotation * perpendicular;
-            endPos += _startPosition;
-        
-        
-            for (int i = 0; i < _lineRenderer.positionCount; i++)
-            {
-                float resampledPhase = i / ((float) _lineRenderer.positionCount-1);
-                Vector3 resampledPos = Vector3.Lerp(_startPosition, endPos, resampledPhase);
-                float u = 1 - resampledPhase;
-                float displace = Mathf.Sin(u * 15f + phase * 10f) 
-                                 * (1-u) 
-                                 * _fallDeformationCurve.Evaluate(phase) * .5f
-                                 - Mathf.Sin(u * Mathf.PI) * phase * bendDirection;
-
-                resampledPos += perpendicular * displace;
+            bool isBreakFinished = SpiderwebMotionLibrary.CalculateWireFallBreakMotion(
+                _startPosition,
+                _endPosition,
+                _lineRenderer,
+                _fallDuration,
+                _fallContractionCurve,
+                _fallDeformationCurve,
+                ref _localTime);
             
-                _lineRenderer.SetPosition(i, resampledPos);
+            if (isBreakFinished)
+            {
+                _spiderwebState = SpiderwebState.Inactive;
+                _lineRenderer.enabled = false;
+                enabled = false;
             }
-       
-            _localTime += Time.deltaTime;
         }
         
         public void StartHang(Vector3 startPosition, IPositionProvider endPositionProvider)
@@ -194,7 +141,7 @@ namespace _GAME.Scripts.Enemies.Megaspider
         public void StopHang()
         {
             enabled = false;
-            _spiderwebState = SpiderwebState.Idle;
+            _spiderwebState = SpiderwebState.Inactive;
             _lineRenderer.enabled = false;
         }
         
@@ -210,36 +157,30 @@ namespace _GAME.Scripts.Enemies.Megaspider
         
         private void PerformBreakHang()
         {
-            float phase = _localTime / _breakHangDuration;
-            if (phase > 1)
-            {
-                enabled = false;
-                _spiderwebState = SpiderwebState.Idle;
-                _lineRenderer.enabled = false;
-                return;
-            }
+            bool isBreakHangFinished = SpiderwebMotionLibrary.CalculateWireBreakHangMotion(
+                _startPosition,
+                _endPosition,
+                _lineRenderer,
+                _breakHangDuration,
+                _breakHangNoiseOffset,
+                ref _localTime);
             
-            Vector3 endPos = Vector3.Lerp(_endPosition, _startPosition, phase);
-                
-            for(int i = 0; i < _lineRenderer.positionCount; i++)
+            if (isBreakHangFinished)
             {
-                float resampledPhase = i / ((float) _lineRenderer.positionCount-1);
-                Vector3 resampledPos = Vector3.Lerp(_startPosition, endPos, resampledPhase);
-                resampledPos.x += (Mathf.PerlinNoise1D(resampledPos.y + _breakHangNoiseOffset) - 0.5f) * phase * 2.8f;
-                _lineRenderer.SetPosition(i, resampledPos);
+                _spiderwebState = SpiderwebState.Inactive;
+                _lineRenderer.enabled = false;
+                enabled = false;
             }
-
-            _localTime += Time.deltaTime;
         }
         
         private void LateUpdate()
         {
-            if (_spiderwebState == SpiderwebState.Shoot)
-                PerformShoot();
-            else if (_spiderwebState == SpiderwebState.Vibrate)
-                PerformVibrate();
-            else if (_spiderwebState == SpiderwebState.Break)
-                PerformBreak();
+            if (_spiderwebState == SpiderwebState.ShootStatic)
+                PerformStaticShoot();
+            else if (_spiderwebState == SpiderwebState.VibrateStatic)
+                PerformStaticVibrate();
+            else if (_spiderwebState == SpiderwebState.FallBreakStatic)
+                PerformFallBreakStatic();
             else if (_spiderwebState == SpiderwebState.Hang)
                 PerformHang();
             else if (_spiderwebState == SpiderwebState.BreakHang)

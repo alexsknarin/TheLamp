@@ -85,82 +85,82 @@ namespace _GAME.Scripts.Enemies.Megaspider
         {
             if (state == typeof(MegaspiderEnterLState))
             {
-                _spiderweb1.StartShoot(_enter01LStartPoint, _enter01LEndPoint);          
+                _spiderweb1.StartShootStatic(_enter01LStartPoint, _enter01LEndPoint);          
             }
             else if (state == typeof(MegaspiderEnterRState))
             {
-                _spiderweb1.StartShoot(_enter01RStartPoint, _enter01REndPoint);
+                _spiderweb1.StartShootStatic(_enter01RStartPoint, _enter01REndPoint);
             }
             else if (state == typeof(MegaspiderProjectileBottomAttackLState))
             {
-                _spiderweb1.StartShoot(_projectileBottomAttackLStartPoint, _projectileBottomAttackLEndPoint);          
+                _spiderweb1.StartShootStatic(_projectileBottomAttackLStartPoint, _projectileBottomAttackLEndPoint);          
             }
             else if (state == typeof(MegaspiderProjectileBottomAttackRState))
             {
-                _spiderweb1.StartShoot(_projectileBottomAttackRStartPoint, _projectileBottomAttackREndPoint);
+                _spiderweb1.StartShootStatic(_projectileBottomAttackRStartPoint, _projectileBottomAttackREndPoint);
             }
             else if (state == typeof(MegaspiderProjectileDoubleDownAttackLState))
             {
-                _spiderweb1.StartShoot(_projectileDoubleDown01LStartPoint, _projectileDoubleDown01LEndPoint);
+                _spiderweb1.StartShootStatic(_projectileDoubleDown01LStartPoint, _projectileDoubleDown01LEndPoint);
             }
             else if (state == typeof(MegaspiderProjectileDoubleDownAttackRState))
             {
-                _spiderweb1.StartShoot(_projectileDoubleDown01RStartPoint, _projectileDoubleDown01REndPoint);
+                _spiderweb1.StartShootStatic(_projectileDoubleDown01RStartPoint, _projectileDoubleDown01REndPoint);
             }
             else if (state == typeof(MegaspiderProjectileDoubleUpAttackLState))
             {
-                _spiderweb1.StartShoot(_projectileDoubleUp01LStartPoint, _projectileDoubleUp01LEndPoint);
+                _spiderweb1.StartShootStatic(_projectileDoubleUp01LStartPoint, _projectileDoubleUp01LEndPoint);
             }
             else if (state == typeof(MegaspiderProjectileDoubleUpAttackRState))
             {
-                _spiderweb1.StartShoot(_projectileDoubleUp01RStartPoint, _projectileDoubleUp01REndPoint);
+                _spiderweb1.StartShootStatic(_projectileDoubleUp01RStartPoint, _projectileDoubleUp01REndPoint);
             }
             else if (state == typeof(MegaspiderProjectileTopAttackLState))
             {
-                _spiderweb1.StartShoot(_projectileTopAttackLStartPoint, _projectileTopAttackLEndPoint);          
+                _spiderweb1.StartShootStatic(_projectileTopAttackLStartPoint, _projectileTopAttackLEndPoint);          
             }
             else if (state == typeof(MegaspiderProjectileTopAttackRState))
             {
-                _spiderweb1.StartShoot(_projectileTopAttackRStartPoint, _projectileTopAttackREndPoint);          
+                _spiderweb1.StartShootStatic(_projectileTopAttackRStartPoint, _projectileTopAttackREndPoint);          
             }
         }
 
         private void OnBridge1Broken()
         {
-            _spiderweb1.StartBreak();
+            _spiderweb1.StartBreakStatic();
         }
 
         private void OnBridge2Called(Type state)
         {
             if (state == typeof(MegaspiderEnterLState))
             {
-                _spiderweb2.StartShoot(_enter02LStartPoint, _enter02LEndPoint);          
+                _spiderweb2.StartShootStatic(_enter02LStartPoint, _enter02LEndPoint);          
             }
             else if (state == typeof(MegaspiderEnterRState))
             {
-                _spiderweb2.StartShoot(_enter02RStartPoint, _enter02REndPoint);
+                _spiderweb2.StartShootStatic(_enter02RStartPoint, _enter02REndPoint);
             }
             else if (state == typeof(MegaspiderProjectileDoubleDownAttackLState))
             {
-                _spiderweb2.StartShoot(_projectileDoubleDown02LStartPoint, _projectileDoubleDown02LEndPoint);
+                _spiderweb2.StartShootStatic(_projectileDoubleDown02LStartPoint, _projectileDoubleDown02LEndPoint);
             }
             else if (state == typeof(MegaspiderProjectileDoubleDownAttackRState))
             {
-                _spiderweb2.StartShoot(_projectileDoubleDown02RStartPoint, _projectileDoubleDown02REndPoint);
+                _spiderweb2.StartShootStatic(_projectileDoubleDown02RStartPoint, _projectileDoubleDown02REndPoint);
             }
             else if (state == typeof(MegaspiderProjectileDoubleUpAttackLState))
             {
-                _spiderweb2.StartShoot(_projectileDoubleUp02LStartPoint, _projectileDoubleUp02LEndPoint);
+                _spiderweb2.StartShootStatic(_projectileDoubleUp02LStartPoint, _projectileDoubleUp02LEndPoint);
             }
             else if (state == typeof(MegaspiderProjectileDoubleUpAttackRState))
             {
-                _spiderweb2.StartShoot(_projectileDoubleUp02RStartPoint, _projectileDoubleUp02REndPoint);
+                _spiderweb2.StartShootStatic(_projectileDoubleUp02RStartPoint, _projectileDoubleUp02REndPoint);
             }
         }
 
         private void OnBridge2Broken()
         {
-            _spiderweb2.StartBreak();
+            _spiderweb2.StartBreakStatic();
         }
 
         private void OnHangStartRequested(Type state, IPositionProvider endPositionProvider)
