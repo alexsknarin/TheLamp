@@ -9,10 +9,12 @@ namespace _GAME.Scripts.Enemies.Megaspider
         public event Action ProjectileAttack01Called;
         public event Action ProjectileAttack02Called;
         public event Action ProjectileResetCalled;
-        public event Action Bridge1Called;
-        public event Action Bridge1Broken;
-        public event Action Bridge2Called;
-        public event Action Bridge2Broken;
+        public event Action StaticBridge1Called;
+        public event Action StaticBridge1Broken;
+        public event Action StaticBridge2Called;
+        public event Action StaticBridge2Broken;
+        public event Action StaticBridge3Called;
+        public event Action StaticBridge3Broken;
         public event Action HangStartRequested;
         public event Action HangStopRequested;
         public event Action HangBreakRequested;
@@ -39,22 +41,32 @@ namespace _GAME.Scripts.Enemies.Megaspider
 
         public void CallStaticBridge1()
         {
-            Bridge1Called?.Invoke();
+            StaticBridge1Called?.Invoke();
         }
         
         public void BreakStaticBridge1()
         {
-            Bridge1Broken?.Invoke();
+            StaticBridge1Broken?.Invoke();
         }
         
         public void CallStaticBridge2()
         {
-            Bridge2Called?.Invoke();
+            StaticBridge2Called?.Invoke();
         }
         
         public void BreakStaticBridge2()
         {
-            Bridge2Broken?.Invoke();
+            StaticBridge2Broken?.Invoke();
+        }
+        
+        public void CallStaticBridge3()
+        {
+            StaticBridge3Called?.Invoke();
+        }
+        
+        public void BreakStaticBridge3()
+        {
+            StaticBridge3Broken?.Invoke();
         }
         
         public void RequestHangStart()

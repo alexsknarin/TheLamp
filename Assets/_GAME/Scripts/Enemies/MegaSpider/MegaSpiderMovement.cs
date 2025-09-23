@@ -89,10 +89,12 @@ namespace _GAME.Scripts.Enemies.Megaspider
         
         public event Action AnimatedAttackStarted;
         public event Action DeathStateEnded;
-        public event Action<Type> Bridge1Called;
-        public event Action Bridge1Broken;
-        public event Action<Type> Bridge2Called;
-        public event Action Bridge2Broken;
+        public event Action<Type> StaticBridge1Called;
+        public event Action StaticBridge1Broken;
+        public event Action<Type> StaticBridge2Called;
+        public event Action StaticBridge2Broken;
+        public event Action<Type> StaticBridge3Called;
+        public event Action StaticBridge3Broken;
         public event Action<Type, IPositionProvider> HangStartRequested;
         public event Action HangStopRequested;
         public event Action HangBreakRequested;
@@ -124,10 +126,12 @@ namespace _GAME.Scripts.Enemies.Megaspider
             CreateStateTransitions();
 
             _animationClipEvents.AnimClipEnded += OnAnimClipEnded;
-            _animationClipEvents.Bridge1Called += OnBridge1Called;
-            _animationClipEvents.Bridge1Broken += OnBridge1Broken;
-            _animationClipEvents.Bridge2Called += OnBridge2Called;
-            _animationClipEvents.Bridge2Broken += OnBridge2Broken;
+            _animationClipEvents.StaticBridge1Called += OnStaticBridge1Called;
+            _animationClipEvents.StaticBridge1Broken += OnStaticBridge1Broken;
+            _animationClipEvents.StaticBridge2Called += OnStaticBridge2Called;
+            _animationClipEvents.StaticBridge2Broken += OnStaticBridge2Broken;
+            _animationClipEvents.StaticBridge3Called += OnStaticBridge3Called;
+            _animationClipEvents.StaticBridge3Broken += OnStaticBridge3Broken;
             _animationClipEvents.HangStartRequested += OnHangStartRequested;
             _animationClipEvents.HangStopRequested += OnHangStopRequested;
             _animationClipEvents.HangBreakRequested += OnHangBreakRequested;
@@ -152,10 +156,12 @@ namespace _GAME.Scripts.Enemies.Megaspider
         private void OnDestroy()
         {
             _animationClipEvents.AnimClipEnded -= OnAnimClipEnded;
-            _animationClipEvents.Bridge1Called -= OnBridge1Called;
-            _animationClipEvents.Bridge1Broken -= OnBridge1Broken;
-            _animationClipEvents.Bridge2Called -= OnBridge2Called;
-            _animationClipEvents.Bridge2Broken -= OnBridge2Broken;
+            _animationClipEvents.StaticBridge1Called -= OnStaticBridge1Called;
+            _animationClipEvents.StaticBridge1Broken -= OnStaticBridge1Broken;
+            _animationClipEvents.StaticBridge2Called -= OnStaticBridge2Called;
+            _animationClipEvents.StaticBridge2Broken -= OnStaticBridge2Broken;
+            _animationClipEvents.StaticBridge3Called -= OnStaticBridge3Called;
+            _animationClipEvents.StaticBridge3Broken -= OnStaticBridge3Broken;
             _animationClipEvents.HangStartRequested -= OnHangStartRequested;
             _animationClipEvents.HangStopRequested -= OnHangStopRequested;
             _animationClipEvents.HangBreakRequested -= OnHangBreakRequested;
@@ -588,24 +594,34 @@ namespace _GAME.Scripts.Enemies.Megaspider
             DeathStateEnded?.Invoke();
         }
 
-        private void OnBridge1Called()
+        private void OnStaticBridge1Called()
         {
-            Bridge1Called?.Invoke(_stateMachine.CurrentState.GetType());
+            StaticBridge1Called?.Invoke(_stateMachine.CurrentState.GetType());
         }
 
-        private void OnBridge1Broken()
+        private void OnStaticBridge1Broken()
         {
-            Bridge1Broken?.Invoke();
+            StaticBridge1Broken?.Invoke();
         }
 
-        private void OnBridge2Called()
+        private void OnStaticBridge2Called()
         {
-            Bridge2Called?.Invoke(_stateMachine.CurrentState.GetType());
+            StaticBridge2Called?.Invoke(_stateMachine.CurrentState.GetType());
         }
 
-        private void OnBridge2Broken()
+        private void OnStaticBridge2Broken()
         {
-            Bridge2Broken?.Invoke();
+            StaticBridge2Broken?.Invoke();
+        }
+        
+        private void OnStaticBridge3Called()
+        {
+            StaticBridge3Called?.Invoke(_stateMachine.CurrentState.GetType());
+        }
+
+        private void OnStaticBridge3Broken()
+        {
+            StaticBridge3Broken?.Invoke();
         }
 
         private void OnHangStartRequested()
