@@ -20,6 +20,16 @@ namespace _GAME.Scripts.Enemies.Megaspider
 
         public void Initialize()
         {
+            Vector3 start = new(-3.03f, 2.02f, 2.44f);
+            Vector3 endTmp = new(0.75f, 2.02f, 0f);
+            endTmp = endTmp - start;
+            endTmp *= 1.3f;
+            endTmp += start;
+            
+            Debug.Log(endTmp);
+            Debug.DrawLine(start, endTmp, Color.red, 10f);
+            
+            
             _movement.StaticBridge1Called += OnStaticBridge1Called;
             _movement.StaticBridge1Broken += OnStaticBridge1Broken;
             _movement.StaticBridge2Called += OnStaticBridge2Called;
@@ -93,6 +103,14 @@ namespace _GAME.Scripts.Enemies.Megaspider
             else if (state == typeof(MegaspiderZigzagAttackRState))
             {
                 _spiderweb1.StartShootStatic(_config.ZigzagAttack01RStartPoint, _config.ZigzagAttack01REndPoint);          
+            }
+            else if (state == typeof(MegaspiderHangJumpAttackLState))
+            {
+                _spiderweb1.StartShootStatic(_config.HangJumpAttackLStartPoint, _config.HangJumpAttackLEndPoint);          
+            }
+            else if (state == typeof(MegaspiderHangJumpAttackRState))
+            {
+                _spiderweb1.StartShootStatic(_config.HangJumpAttackRStartPoint, _config.HangJumpAttackREndPoint);          
             }
         }
 
@@ -176,6 +194,14 @@ namespace _GAME.Scripts.Enemies.Megaspider
             if (state == typeof(MegaspiderHangAttackRState))
             {
                 _spiderweb6.StartHang(_config.HangAttackRStartPoint, endPositionProvider);          
+            }
+            if (state == typeof(MegaspiderHangJumpAttackLState))
+            {
+                _spiderweb6.StartHang(_config.HangJumpAttackLHangPoint, endPositionProvider);          
+            }
+            if (state == typeof(MegaspiderHangJumpAttackRState))
+            {
+                _spiderweb6.StartHang(_config.HangJumpAttackRHangPoint, endPositionProvider);          
             }
         }
 

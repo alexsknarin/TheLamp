@@ -233,15 +233,15 @@ namespace _GAME.Scripts.Enemies.Megaspider
             // At(_enterRState, _projectileBottomAttackRState, IsAnimationEndedRandom2Of4());
             // At(_enterRState, _projectileDoubleUpAttackRState, IsAnimationEndedRandom3Of4());
             
-            At(_enterLState, _hangAttackLState, IsAnimationEndedRandom0Of4());
-            At(_enterLState, _hangAttackLState, IsAnimationEndedRandom1Of4());
-            At(_enterLState, _hangAttackLState, IsAnimationEndedRandom2Of4());
-            At(_enterLState, _hangAttackLState, IsAnimationEndedRandom3Of4());
+            At(_enterLState, _hangJumpAttackLState, IsAnimationEndedRandom0Of4());
+            At(_enterLState, _hangJumpAttackLState, IsAnimationEndedRandom1Of4());
+            At(_enterLState, _hangJumpAttackLState, IsAnimationEndedRandom2Of4());
+            At(_enterLState, _hangJumpAttackLState, IsAnimationEndedRandom3Of4());
             
-            At(_enterRState, _hangAttackRState, IsAnimationEndedRandom0Of4());
-            At(_enterRState, _hangAttackRState, IsAnimationEndedRandom1Of4());
-            At(_enterRState, _hangAttackRState, IsAnimationEndedRandom2Of4());
-            At(_enterRState, _hangAttackRState, IsAnimationEndedRandom3Of4());
+            At(_enterRState, _hangJumpAttackRState, IsAnimationEndedRandom0Of4());
+            At(_enterRState, _hangJumpAttackRState, IsAnimationEndedRandom1Of4());
+            At(_enterRState, _hangJumpAttackRState, IsAnimationEndedRandom2Of4());
+            At(_enterRState, _hangJumpAttackRState, IsAnimationEndedRandom3Of4());
             
             // Wire Attack Transitions
             At(_wireAttackState, _bounceState, IsCollided());
@@ -644,6 +644,10 @@ namespace _GAME.Scripts.Enemies.Megaspider
                 HangStartRequested?.Invoke(_stateMachine.CurrentState.GetType(), (MegaspiderHangAttackLState)_stateMachine.CurrentState);
             if (_stateMachine.CurrentState is MegaspiderHangAttackRState) 
                 HangStartRequested?.Invoke(_stateMachine.CurrentState.GetType(), (MegaspiderHangAttackRState)_stateMachine.CurrentState);
+            if (_stateMachine.CurrentState is MegaspiderHangJumpAttackLState) 
+                HangStartRequested?.Invoke(_stateMachine.CurrentState.GetType(), (MegaspiderHangJumpAttackLState)_stateMachine.CurrentState);
+            if (_stateMachine.CurrentState is MegaspiderHangJumpAttackRState) 
+                HangStartRequested?.Invoke(_stateMachine.CurrentState.GetType(), (MegaspiderHangJumpAttackRState)_stateMachine.CurrentState);
         }
 
         private void OnHangStopRequested()
