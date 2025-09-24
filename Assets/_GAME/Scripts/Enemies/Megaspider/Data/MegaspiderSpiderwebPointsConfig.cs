@@ -63,5 +63,8 @@ namespace _GAME.Scripts.Enemies.Megaspider.Data
         [field:SerializeField] public Vector3 ZigzagAttack03LEndPoint { get; private set; } = new(5.20f, 2.74f, 9.76f);
         [field:SerializeField] public Vector3 ZigzagAttack03RStartPoint { get; private set; } = new(1.95f, -0.78f, -1.24f);
         [field:SerializeField] public Vector3 ZigzagAttack03REndPoint { get; private set; } = new(-5.20f, 2.74f, 9.76f);
+        [field:Header("Hang Attack")]
+        [field:SerializeField] public Vector3 HangAttackLStartPoint { get; private set; } = new(-0.885392f, 3.38f, 0f);
+        [field:SerializeField] public Vector3 HangAttackRStartPoint { get; private set; } = new(0.885392f, 3.38f, 0f);
     }
 }

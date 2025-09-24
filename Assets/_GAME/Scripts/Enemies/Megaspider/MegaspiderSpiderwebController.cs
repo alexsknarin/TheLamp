@@ -28,7 +28,7 @@ namespace _GAME.Scripts.Enemies.Megaspider
             _movement.StaticBridge3Broken += OnStaticBridge3Broken;
             _movement.HangStartRequested += OnHangStartRequested;
             _movement.HangStopRequested += OnHangStopRequested;
-            _movement.HangBreakRequested += OnHangBreakRequested;
+            _movement.HangBreakRequested += OnHangBreakHangRequested;
         }
 
         private void OnDestroy()
@@ -41,7 +41,7 @@ namespace _GAME.Scripts.Enemies.Megaspider
             _movement.StaticBridge3Broken -= OnStaticBridge3Broken;
             _movement.HangStartRequested -= OnHangStartRequested;
             _movement.HangStopRequested -= OnHangStopRequested;
-            _movement.HangBreakRequested -= OnHangBreakRequested;
+            _movement.HangBreakRequested -= OnHangBreakHangRequested;
         }
 
         private void OnStaticBridge1Called(Type state)
@@ -169,6 +169,14 @@ namespace _GAME.Scripts.Enemies.Megaspider
             {
                 _spiderweb6.StartHang(_config.EnterHangRStartPoint, endPositionProvider);          
             }
+            if (state == typeof(MegaspiderHangAttackLState))
+            {
+                _spiderweb6.StartHang(_config.HangAttackLStartPoint, endPositionProvider);          
+            }
+            if (state == typeof(MegaspiderHangAttackRState))
+            {
+                _spiderweb6.StartHang(_config.HangAttackRStartPoint, endPositionProvider);          
+            }
         }
 
         private void OnHangStopRequested()
@@ -176,7 +184,7 @@ namespace _GAME.Scripts.Enemies.Megaspider
             _spiderweb6.StopHang();
         }
 
-        private void OnHangBreakRequested()
+        private void OnHangBreakHangRequested()
         {
             _spiderweb6.StartBreakHang();
         }
