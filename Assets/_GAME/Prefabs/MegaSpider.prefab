@@ -60,7 +60,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _stateDebug: 
-  _maxHealth: 4
+  _maxHealth: 24
   _currentHealth: 24
   _collisionRadius: 0.325
   _movement: {fileID: 5885945323400971088}
@@ -186,7 +186,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  _swingZoneSize: 1.11
   _attackResult: 0
 --- !u!114 &4562466805752491100
 MonoBehaviour:

@@ -51,6 +51,7 @@ namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
 
 
         public event Action OutForceCancelled;
+        public event Action Ended;
 
         public Vector3 Position3D => _calculatedTransform.position;
 
@@ -94,6 +95,11 @@ namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
                 _outForceCancelled = true;
                 OutForceCancelled?.Invoke();
             }
+        }
+        
+        public override void Exit()
+        {
+            Ended?.Invoke();
         }
     }
 }

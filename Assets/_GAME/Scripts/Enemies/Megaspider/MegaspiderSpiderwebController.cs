@@ -20,9 +20,10 @@ namespace _GAME.Scripts.Enemies.Megaspider
         [SerializeField] private MegaspiderSpiderweb _spiderweb6;
         [SerializeField] private MegaspiderSpiderwebPointsConfig _config;
         
-        private WaitForSeconds _fallShootDelay = new WaitForSeconds(0.75f);
+        private WaitForSeconds _fallShootDelay = new WaitForSeconds(0.25f);
         private Vector3 _swingPivot;
         private float _swingZoneSize;
+        private bool _isInReturnState;
         
         public void Construct(IGameConfigService configService)
         {
@@ -32,6 +33,8 @@ namespace _GAME.Scripts.Enemies.Megaspider
 
         public void Initialize()
         {
+            _isInReturnState = false;
+            
             _movement.StaticBridge1Called += OnStaticBridge1Called;
             _movement.StaticBridge1Broken += OnStaticBridge1Broken;
             _movement.StaticBridge2Called += OnStaticBridge2Called;
@@ -47,6 +50,7 @@ namespace _GAME.Scripts.Enemies.Megaspider
             _movement.FailFallOutForceCancelled += OnFailFallOutForceCancelled;
             _movement.ClimbStateEnded += OnClimbStateEnded;
             _movement.SwingStateEnded += OnSwingStateEnded;
+            _movement.FallStateEnded += OnFallStateEnded;
         }
 
         private void OnDestroy()
@@ -66,6 +70,7 @@ namespace _GAME.Scripts.Enemies.Megaspider
             _movement.FailFallOutForceCancelled -= OnFailFallOutForceCancelled;
             _movement.ClimbStateEnded -= OnClimbStateEnded;
             _movement.SwingStateEnded -= OnSwingStateEnded;
+            _movement.FallStateEnded -= OnFallStateEnded;
         }
 
         private void OnStaticBridge1Called(Type state)
@@ -241,23 +246,36 @@ namespace _GAME.Scripts.Enemies.Megaspider
 
         private void OnSuccessFallOutForceCancelled(IPositionProvider positionProvider)
         {
+            _isInReturnState = true;
             Vector3 hangPoint = FindFallSwingHangPoint(positionProvider);
-
             _spiderweb6.StartShootDynamic(positionProvider, hangPoint);
         }
 
         private void OnClimbStateEnded()
         {
             _spiderweb6.StopHang();
+            _isInReturnState = false;
         }
 
         private void OnSwingStateEnded()
         {
             _spiderweb6.StopHang();
+            _isInReturnState = false;
+        }
+
+        private void OnFallStateEnded(IPositionProvider positionProvider)
+        {
+            if (!_isInReturnState)
+            {
+                Vector3 hangPoint = FindFallSwingHangPoint(positionProvider);
+                _spiderweb6.StartShootDynamic(positionProvider, hangPoint);
+                _isInReturnState = true;
+            }
         }
 
         private void OnFailFallOutForceCancelled(IPositionProvider positionProvider)
         {
+            _isInReturnState = true;
             StartCoroutine(DelayFallSpiderwebShoot(positionProvider));
         }
 
