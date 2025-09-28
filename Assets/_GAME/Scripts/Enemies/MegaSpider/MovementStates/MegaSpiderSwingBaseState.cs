@@ -1,3 +1,4 @@
+using System;
 using _GAME.Scripts.Lib;
 using _GAME.Scripts.Lib.Interfaces;
 using UnityEngine;
@@ -52,6 +53,8 @@ namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
             _swingPivot = configService.GameConfig.MegaspiderSwingSwingPivot;
         }
         
+        public event Action Ended;
+        
         public override void Enter()
         {
             IsReadyToSwitch = false;
@@ -103,6 +106,11 @@ namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
             {
                 IsReadyToSwitch = true;
             }
+        }
+        
+        public override void Exit()
+        {
+            Ended?.Invoke();
         }
 
         private void DrawSwingDebugLine()

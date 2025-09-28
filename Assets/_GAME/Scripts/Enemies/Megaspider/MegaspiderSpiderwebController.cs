@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection.Emit;
 using _GAME.Scripts.Enemies.Megaspider.Data;
 using _GAME.Scripts.Enemies.Megaspider.MovementStates;
 using _GAME.Scripts.Lib.Interfaces;
@@ -20,6 +21,14 @@ namespace _GAME.Scripts.Enemies.Megaspider
         [SerializeField] private MegaspiderSpiderwebPointsConfig _config;
         
         private WaitForSeconds _fallShootDelay = new WaitForSeconds(0.75f);
+        private Vector3 _swingPivot;
+        private float _swingZoneSize;
+        
+        public void Construct(IGameConfigService configService)
+        {
+            _swingPivot = configService.GameConfig.MegaspiderSwingSwingPivot;
+            _swingZoneSize = configService.GameConfig.MegaspiderSwingZoneSize;
+        }
 
         public void Initialize()
         {
@@ -37,6 +46,7 @@ namespace _GAME.Scripts.Enemies.Megaspider
             _movement.SuccessFallOutForceCancelled += OnSuccessFallOutForceCancelled;
             _movement.FailFallOutForceCancelled += OnFailFallOutForceCancelled;
             _movement.ClimbStateEnded += OnClimbStateEnded;
+            _movement.SwingStateEnded += OnSwingStateEnded;
         }
 
         private void OnDestroy()
@@ -55,6 +65,7 @@ namespace _GAME.Scripts.Enemies.Megaspider
             _movement.SuccessFallOutForceCancelled -= OnSuccessFallOutForceCancelled;
             _movement.FailFallOutForceCancelled -= OnFailFallOutForceCancelled;
             _movement.ClimbStateEnded -= OnClimbStateEnded;
+            _movement.SwingStateEnded -= OnSwingStateEnded;
         }
 
         private void OnStaticBridge1Called(Type state)
@@ -230,12 +241,17 @@ namespace _GAME.Scripts.Enemies.Megaspider
 
         private void OnSuccessFallOutForceCancelled(IPositionProvider positionProvider)
         {
-            Vector3 hangPoint = positionProvider.Position3D;
-            hangPoint.y = 4f;
+            Vector3 hangPoint = FindFallSwingHangPoint(positionProvider);
+
             _spiderweb6.StartShootDynamic(positionProvider, hangPoint);
         }
 
         private void OnClimbStateEnded()
+        {
+            _spiderweb6.StopHang();
+        }
+
+        private void OnSwingStateEnded()
         {
             _spiderweb6.StopHang();
         }
@@ -248,9 +264,25 @@ namespace _GAME.Scripts.Enemies.Megaspider
         private IEnumerator DelayFallSpiderwebShoot(IPositionProvider positionProvider)
         {
             yield return _fallShootDelay;
-            Vector3 hangPoint = positionProvider.Position3D;
-            hangPoint.y = 4f;
+            Vector3 hangPoint = FindFallSwingHangPoint(positionProvider);
             _spiderweb6.StartShootDynamic(positionProvider, hangPoint);
+        }
+
+        private Vector3 FindFallSwingHangPoint(IPositionProvider positionProvider)
+        {
+            Vector3 hangPoint;
+            if (Mathf.Abs(positionProvider.Position3D.x) > _swingZoneSize)
+            {
+                hangPoint = positionProvider.Position3D;
+                hangPoint.y = 4f;
+            }
+            else
+            {
+                hangPoint = _swingPivot;
+                hangPoint.x = Mathf.Abs(hangPoint.x) * Mathf.Sign(positionProvider.Position3D.x);
+            }
+
+            return hangPoint;
         }
     }
 }
