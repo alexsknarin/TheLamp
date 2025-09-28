@@ -266,25 +266,15 @@ namespace _GAME.Scripts.Enemies.Megaspider
         {
             // Initialize StateMachine 
             // Enter to Attacks
-            // At(_enterLState, _wireAttackState, IsAnimationEndedRandom0Of4());
-            // At(_enterLState, _zigzagAttackLState, IsAnimationEndedRandom1Of4());
-            // At(_enterLState, _projectileBottomAttackLState, IsAnimationEndedRandom2Of4());
-            // At(_enterLState, _projectileDoubleUpAttackLState, IsAnimationEndedRandom3Of4());
-            //
-            // At(_enterRState, _wireAttackState, IsAnimationEndedRandom0Of4());
-            // At(_enterRState, _zigzagAttackRState, IsAnimationEndedRandom1Of4());
-            // At(_enterRState, _projectileBottomAttackRState, IsAnimationEndedRandom2Of4());
-            // At(_enterRState, _projectileDoubleUpAttackRState, IsAnimationEndedRandom3Of4());
-            
             At(_enterLState, _wireAttackState, IsAnimationEndedRandom0Of4());
-            At(_enterLState, _wireAttackState, IsAnimationEndedRandom1Of4());
-            At(_enterLState, _wireAttackState, IsAnimationEndedRandom2Of4());
-            At(_enterLState, _wireAttackState, IsAnimationEndedRandom3Of4());
+            At(_enterLState, _zigzagAttackLState, IsAnimationEndedRandom1Of4());
+            At(_enterLState, _projectileBottomAttackLState, IsAnimationEndedRandom2Of4());
+            At(_enterLState, _projectileDoubleUpAttackLState, IsAnimationEndedRandom3Of4());
             
             At(_enterRState, _wireAttackState, IsAnimationEndedRandom0Of4());
-            At(_enterRState, _wireAttackState, IsAnimationEndedRandom1Of4());
-            At(_enterRState, _wireAttackState, IsAnimationEndedRandom2Of4());
-            At(_enterRState, _wireAttackState, IsAnimationEndedRandom3Of4());
+            At(_enterRState, _zigzagAttackRState, IsAnimationEndedRandom1Of4());
+            At(_enterRState, _projectileBottomAttackRState, IsAnimationEndedRandom2Of4());
+            At(_enterRState, _projectileDoubleUpAttackRState, IsAnimationEndedRandom3Of4());
             
             // Wire Attack Transitions
             At(_wireAttackState, _bounceState, IsCollided());
