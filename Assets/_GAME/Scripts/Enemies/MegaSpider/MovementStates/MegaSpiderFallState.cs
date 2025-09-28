@@ -1,15 +1,17 @@
+using System;
 using _GAME.Scripts.Lib;
 using _GAME.Scripts.Lib.Interfaces;
 using UnityEngine;
 
 namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
 {
-    public class MegaspiderFallState : EnemyMovementStateBase
+    public class MegaspiderFallState : EnemyMovementStateBase, IPositionProvider
     {
         private Vector3 _initialDirection;
         private float _outForceMagnitude;
         private float _fallForceMagnitude;
         private bool _isFreeFall;
+        private bool _outForceCancelled;
         
         // Dependencies
         private readonly Transform _visibleBodyTransform;
@@ -22,7 +24,7 @@ namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
         private readonly float _initialOutForceMagnitude;
         private readonly float _outForceIncrement;
         private readonly float _fallForceIncrement;
-        
+
         public MegaspiderFallState(
             Transform visibleBodyTransform, 
             Transform calculatedTransform,  
@@ -46,8 +48,12 @@ namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
             _outForceIncrement = configService.GameConfig.MegaspiderFallOutForceIncrement;
             _fallForceIncrement = configService.GameConfig.MegaspiderFallFallForceIncrement;
         }
-        
-        
+
+
+        public event Action OutForceCancelled;
+
+        public Vector3 Position3D => _calculatedTransform.position;
+
         public override void Enter()
         {
             IsReadyToSwitch = false;
@@ -58,7 +64,7 @@ namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
             _initialDirection = (_calculatedTransform.position - _lampTransform.position).normalized;
             _outForceMagnitude = _initialOutForceMagnitude;
             _fallForceMagnitude = 0f;
-
+            _outForceCancelled = false;
         }
 
         public override void Tick()
@@ -80,8 +86,13 @@ namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
             
             if (projectedPosition.y < _exitYCoordinate)
             {
-
                 IsReadyToSwitch = true;
+            }
+
+            if (!_outForceCancelled && _outForceMagnitude < 0.01f)
+            {
+                _outForceCancelled = true;
+                OutForceCancelled?.Invoke();
             }
         }
     }

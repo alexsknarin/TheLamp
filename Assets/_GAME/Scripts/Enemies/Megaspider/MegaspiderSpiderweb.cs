@@ -23,6 +23,7 @@ namespace _GAME.Scripts.Enemies.Megaspider
             BreakHang,
             Tangle,
             Detangle
+            
         }
         
         [SerializeField] private LineRenderer _lineRenderer;
@@ -35,6 +36,7 @@ namespace _GAME.Scripts.Enemies.Megaspider
         private Vector3 _startPosition;
         private Vector3 _endPosition;
         private List<Vector3> _tanglePositions;
+        private IPositionProvider _startPositionProvider;
         private IPositionProvider _endPositionProvider;
         private ITangledWireProvider _tangledWireProvider;
         private float _shootDuration = 0.25f;
@@ -46,7 +48,6 @@ namespace _GAME.Scripts.Enemies.Megaspider
         private float _breakHangNoiseOffset;
         private float _localTime;
 
-        // TODO: Support moving end position
         public void StartShootStatic(Vector3 startPosition, Vector3 endPosition)
         {
             _localTime = 0;
@@ -58,7 +59,6 @@ namespace _GAME.Scripts.Enemies.Megaspider
             _spiderwebState = SpiderwebState.ShootStatic;
         }
         
-        // TODO: Support moving end position
         private void PerformStaticShoot()
         {
             bool isShootFinished = SpiderwebMotionLibrary.CalculateWireShootMotion(
@@ -81,7 +81,6 @@ namespace _GAME.Scripts.Enemies.Megaspider
             _spiderwebState = SpiderwebState.VibrateStatic;
         }
         
-        // TODO: Support moving end position
         private void PerformStaticVibrate()
         {
             bool isVibrateFinished = SpiderwebMotionLibrary.CalculateWireVibrateMotion(
@@ -264,6 +263,56 @@ namespace _GAME.Scripts.Enemies.Megaspider
             enabled = true;
         }
         
+        public void StartShootDynamic(IPositionProvider startPositionProvider, Vector3 endPosition)
+        {
+            _localTime = 0;
+            _startPosition = startPositionProvider.Position3D;
+            _endPosition = endPosition;
+            _startPositionProvider = startPositionProvider;
+            _lineRenderer.enabled = true;
+            _lineRenderer.positionCount = _shootPointCount;
+            enabled = true;
+            _spiderwebState = SpiderwebState.ShootDynamic;
+        }
+        
+        private void PerformDynamicShoot()
+        {
+            bool isShootFinished = SpiderwebMotionLibrary.CalculateWireShootMotion(
+                _startPositionProvider.Position3D,
+                _endPosition,
+                _lineRenderer,
+                _shootDuration,
+                _shootSineFrequency,
+                _shootSineAmplitudeCurve,
+                ref _localTime);
+            
+            if (isShootFinished)
+                StartVibrateDynamic();
+        }
+        
+        private void StartVibrateDynamic()
+        {
+            _localTime = 0;
+            _spiderwebState = SpiderwebState.VibrateDynamic;
+        }
+        
+        // TODO: Support moving end position
+        private void PerformDynamicVibrate()
+        {
+            bool isVibrateFinished = SpiderwebMotionLibrary.CalculateWireVibrateMotion(
+                _startPositionProvider.Position3D,
+                _endPosition,
+                _lineRenderer,
+                _vibrateDuration,
+                _vibrateFrequencyCurve,
+                _vibrateAmplitudeCurve,
+                ref _localTime);
+            
+            if (isVibrateFinished)
+            {
+                StartHang(_endPosition, _startPositionProvider);
+            }
+        }
         
         private void LateUpdate()
         {
@@ -281,6 +330,10 @@ namespace _GAME.Scripts.Enemies.Megaspider
                 PerformTangle();
             else if (_spiderwebState == SpiderwebState.Detangle)
                 PerformDetangle();
+            else if (_spiderwebState == SpiderwebState.ShootDynamic)
+                PerformDynamicShoot();
+            else if (_spiderwebState == SpiderwebState.VibrateDynamic)
+                PerformDynamicVibrate();
         }
     }
 }

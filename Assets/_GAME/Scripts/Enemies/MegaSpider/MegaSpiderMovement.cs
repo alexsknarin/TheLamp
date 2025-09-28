@@ -100,6 +100,8 @@ namespace _GAME.Scripts.Enemies.Megaspider
         public event Action HangBreakRequested;
         public event Action<ITangledWireProvider> TangleAttackStarted;
         public event Action TangleAttackEnded;
+        public event Action<IPositionProvider> SuccessFallOutForceCancelled;
+        public event Action ClimbStateEnded;
 
         public void SetCollisionRadius(float radius)
         {
@@ -138,7 +140,6 @@ namespace _GAME.Scripts.Enemies.Megaspider
             _animationClipEvents.HangStopRequested += OnHangStopRequested;
             _animationClipEvents.HangBreakRequested += OnHangBreakRequested;
             
-
             _zigzagAttackLState.Started += OnAnimatedAttackStarted;
             _zigzagAttackRState.Started += OnAnimatedAttackStarted;
             _hangAttackLState.Started += OnAnimatedAttackStarted;
@@ -153,6 +154,10 @@ namespace _GAME.Scripts.Enemies.Megaspider
             _tangleAttackRState.Started += OnTangleAttackRStarted;
             _tangleAttackLState.Ended += OnTangleAttackEnded;
             _tangleAttackRState.Ended += OnTangleAttackEnded;
+            
+            _successFallState.OutForceCancelled += OnSuccessFallOutForceCancelled;
+            
+            _climbState.Ended += OnClimbStateEnded;
 
             _bounceState.Ended += OnBounceStateEnded;
             _deathFallState.Ended += OnDeathStateEnded;
@@ -187,6 +192,10 @@ namespace _GAME.Scripts.Enemies.Megaspider
             _tangleAttackRState.Started -= OnTangleAttackRStarted;
             _tangleAttackLState.Ended -= OnTangleAttackEnded;
             _tangleAttackRState.Ended -= OnTangleAttackEnded;
+
+            _successFallState.OutForceCancelled -= OnSuccessFallOutForceCancelled;
+            
+            _climbState.Ended -= OnClimbStateEnded;
             
             _bounceState.Ended -= OnBounceStateEnded;
             _deathFallState.Ended -= OnDeathStateEnded;
@@ -685,6 +694,16 @@ namespace _GAME.Scripts.Enemies.Megaspider
         private void OnTangleAttackEnded()
         {
             TangleAttackEnded?.Invoke();
+        }
+
+        private void OnSuccessFallOutForceCancelled()
+        {
+            SuccessFallOutForceCancelled?.Invoke(_successFallState);
+        }
+
+        private void OnClimbStateEnded()
+        {
+            ClimbStateEnded?.Invoke();
         }
     }
 }

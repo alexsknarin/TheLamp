@@ -12,7 +12,6 @@ namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
         private float _fallForceMagnitude;
         private bool _isFreeFall;
         private Vector3 _swingDirection;
-        
 
         private float _localTime;
         private Vector3 _currentSwingPivot;

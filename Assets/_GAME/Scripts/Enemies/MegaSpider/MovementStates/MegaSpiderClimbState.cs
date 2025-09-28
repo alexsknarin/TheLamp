@@ -1,3 +1,4 @@
+using System;
 using _GAME.Scripts.Lib;
 using UnityEngine;
 
@@ -29,6 +30,8 @@ namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
             _climbCurve = climbCurve;
         }
         
+        public event Action Ended;
+        
         public override void Enter()
         {
             IsReadyToSwitch = false;
@@ -53,6 +56,11 @@ namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
             _calculatedTransform.position = newPosition;
             
             _localTime += Time.deltaTime;
+        }
+        
+        public override void Exit()
+        {
+            Ended?.Invoke();
         }
     }
 }

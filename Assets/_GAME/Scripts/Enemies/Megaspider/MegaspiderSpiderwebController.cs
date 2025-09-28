@@ -31,6 +31,8 @@ namespace _GAME.Scripts.Enemies.Megaspider
             _movement.HangBreakRequested += OnHangBreakHangRequested;
             _movement.TangleAttackStarted += OnTangleAttackStarted;
             _movement.TangleAttackEnded += OnTangleAttackEnded;
+            _movement.SuccessFallOutForceCancelled += OnSuccessFallOutForceCancelled;
+            _movement.ClimbStateEnded += OnClimbStateEnded;
         }
 
         private void OnDestroy()
@@ -46,6 +48,8 @@ namespace _GAME.Scripts.Enemies.Megaspider
             _movement.HangBreakRequested -= OnHangBreakHangRequested;
             _movement.TangleAttackStarted -= OnTangleAttackStarted;
             _movement.TangleAttackEnded -= OnTangleAttackEnded;
+            _movement.SuccessFallOutForceCancelled -= OnSuccessFallOutForceCancelled;
+            _movement.ClimbStateEnded -= OnClimbStateEnded;
         }
 
         private void OnStaticBridge1Called(Type state)
@@ -209,14 +213,26 @@ namespace _GAME.Scripts.Enemies.Megaspider
             _spiderweb6.StartBreakHang();
         }
 
-        private void OnTangleAttackStarted(ITangledWireProvider state)
+        private void OnTangleAttackStarted(ITangledWireProvider positionProvider)
         {
-            _spiderweb5.StartTangle(state);
+            _spiderweb6.StartTangle(positionProvider);
         }
 
         private void OnTangleAttackEnded()
         {
-            _spiderweb5.StartDetangle();
+            _spiderweb6.StartDetangle();
+        }
+
+        private void OnSuccessFallOutForceCancelled(IPositionProvider positionProvider)
+        {
+            Vector3 hangPoint = positionProvider.Position3D;
+            hangPoint.y = 4f;
+            _spiderweb6.StartShootDynamic(positionProvider, hangPoint);
+        }
+
+        private void OnClimbStateEnded()
+        {
+            _spiderweb6.StopHang();
         }
     }
 }
