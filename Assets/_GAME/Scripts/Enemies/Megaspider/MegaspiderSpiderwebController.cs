@@ -1,4 +1,6 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using _GAME.Scripts.Enemies.Megaspider.Data;
 using _GAME.Scripts.Enemies.Megaspider.MovementStates;
 using _GAME.Scripts.Lib.Interfaces;
@@ -16,7 +18,8 @@ namespace _GAME.Scripts.Enemies.Megaspider
         [SerializeField] private MegaspiderSpiderweb _spiderweb5;
         [SerializeField] private MegaspiderSpiderweb _spiderweb6;
         [SerializeField] private MegaspiderSpiderwebPointsConfig _config;
-
+        
+        private WaitForSeconds _fallShootDelay = new WaitForSeconds(0.75f);
 
         public void Initialize()
         {
@@ -32,6 +35,7 @@ namespace _GAME.Scripts.Enemies.Megaspider
             _movement.TangleAttackStarted += OnTangleAttackStarted;
             _movement.TangleAttackEnded += OnTangleAttackEnded;
             _movement.SuccessFallOutForceCancelled += OnSuccessFallOutForceCancelled;
+            _movement.FailFallOutForceCancelled += OnFailFallOutForceCancelled;
             _movement.ClimbStateEnded += OnClimbStateEnded;
         }
 
@@ -49,6 +53,7 @@ namespace _GAME.Scripts.Enemies.Megaspider
             _movement.TangleAttackStarted -= OnTangleAttackStarted;
             _movement.TangleAttackEnded -= OnTangleAttackEnded;
             _movement.SuccessFallOutForceCancelled -= OnSuccessFallOutForceCancelled;
+            _movement.FailFallOutForceCancelled -= OnFailFallOutForceCancelled;
             _movement.ClimbStateEnded -= OnClimbStateEnded;
         }
 
@@ -233,6 +238,19 @@ namespace _GAME.Scripts.Enemies.Megaspider
         private void OnClimbStateEnded()
         {
             _spiderweb6.StopHang();
+        }
+
+        private void OnFailFallOutForceCancelled(IPositionProvider positionProvider)
+        {
+            StartCoroutine(DelayFallSpiderwebShoot(positionProvider));
+        }
+
+        private IEnumerator DelayFallSpiderwebShoot(IPositionProvider positionProvider)
+        {
+            yield return _fallShootDelay;
+            Vector3 hangPoint = positionProvider.Position3D;
+            hangPoint.y = 4f;
+            _spiderweb6.StartShootDynamic(positionProvider, hangPoint);
         }
     }
 }

@@ -102,6 +102,7 @@ namespace _GAME.Scripts.Enemies.Megaspider
         public event Action TangleAttackEnded;
         public event Action<IPositionProvider> SuccessFallOutForceCancelled;
         public event Action ClimbStateEnded;
+        public event Action<IPositionProvider> FailFallOutForceCancelled;
 
         public void SetCollisionRadius(float radius)
         {
@@ -156,6 +157,7 @@ namespace _GAME.Scripts.Enemies.Megaspider
             _tangleAttackRState.Ended += OnTangleAttackEnded;
             
             _successFallState.OutForceCancelled += OnSuccessFallOutForceCancelled;
+            _fallState.OutForceCancelled += OnFailFallOutForceCancelled;
             
             _climbState.Ended += OnClimbStateEnded;
 
@@ -194,6 +196,7 @@ namespace _GAME.Scripts.Enemies.Megaspider
             _tangleAttackRState.Ended -= OnTangleAttackEnded;
 
             _successFallState.OutForceCancelled -= OnSuccessFallOutForceCancelled;
+            _fallState.OutForceCancelled -= OnFailFallOutForceCancelled;
             
             _climbState.Ended -= OnClimbStateEnded;
             
@@ -704,6 +707,11 @@ namespace _GAME.Scripts.Enemies.Megaspider
         private void OnClimbStateEnded()
         {
             ClimbStateEnded?.Invoke();
+        }
+
+        private void OnFailFallOutForceCancelled()
+        {
+            FailFallOutForceCancelled?.Invoke(_fallState);
         }
     }
 }
