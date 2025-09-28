@@ -72,7 +72,6 @@ namespace _GAME.Scripts.Enemies.Megaspider
         public void RequestHangStart()
         {
             HangStartRequested?.Invoke();
-            Debug.Log("Listener: HangStartRequested");
         }
         
         public void RequestHangStop()

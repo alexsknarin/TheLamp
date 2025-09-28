@@ -20,16 +20,6 @@ namespace _GAME.Scripts.Enemies.Megaspider
 
         public void Initialize()
         {
-            Vector3 start = new(-3.03f, 2.02f, 2.44f);
-            Vector3 endTmp = new(0.75f, 2.02f, 0f);
-            endTmp = endTmp - start;
-            endTmp *= 1.3f;
-            endTmp += start;
-            
-            Debug.Log(endTmp);
-            Debug.DrawLine(start, endTmp, Color.red, 10f);
-            
-            
             _movement.StaticBridge1Called += OnStaticBridge1Called;
             _movement.StaticBridge1Broken += OnStaticBridge1Broken;
             _movement.StaticBridge2Called += OnStaticBridge2Called;
@@ -39,6 +29,8 @@ namespace _GAME.Scripts.Enemies.Megaspider
             _movement.HangStartRequested += OnHangStartRequested;
             _movement.HangStopRequested += OnHangStopRequested;
             _movement.HangBreakRequested += OnHangBreakHangRequested;
+            _movement.TangleAttackStarted += OnTangleAttackStarted;
+            _movement.TangleAttackEnded += OnTangleAttackEnded;
         }
 
         private void OnDestroy()
@@ -52,6 +44,8 @@ namespace _GAME.Scripts.Enemies.Megaspider
             _movement.HangStartRequested -= OnHangStartRequested;
             _movement.HangStopRequested -= OnHangStopRequested;
             _movement.HangBreakRequested -= OnHangBreakHangRequested;
+            _movement.TangleAttackStarted -= OnTangleAttackStarted;
+            _movement.TangleAttackEnded -= OnTangleAttackEnded;
         }
 
         private void OnStaticBridge1Called(Type state)
@@ -171,7 +165,7 @@ namespace _GAME.Scripts.Enemies.Megaspider
                 _spiderweb3.StartShootStatic(_config.ZigzagAttack03RStartPoint, _config.ZigzagAttack03REndPoint);          
             }
         }
-        
+
         private void OnStaticBridge3Broken()
         {
             _spiderweb3.StartBreakStatic();
@@ -213,6 +207,16 @@ namespace _GAME.Scripts.Enemies.Megaspider
         private void OnHangBreakHangRequested()
         {
             _spiderweb6.StartBreakHang();
+        }
+
+        private void OnTangleAttackStarted(ITangledWireProvider state)
+        {
+            _spiderweb5.StartTangle(state);
+        }
+
+        private void OnTangleAttackEnded()
+        {
+            _spiderweb5.StartDetangle();
         }
     }
 }

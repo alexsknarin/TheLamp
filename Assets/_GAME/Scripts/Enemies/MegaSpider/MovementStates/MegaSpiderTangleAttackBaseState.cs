@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
 {
-    public class MegaspiderTangleAttackBaseState: EnemyMovementStateBase
+    public class MegaspiderTangleAttackBaseState: EnemyMovementStateBase, ITangledWireProvider
     {
         private enum TangleStates
         {
@@ -41,6 +41,9 @@ namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
         private Vector3 _lampWorldPosition;
         private bool _isLeftSide;
         private int _side;
+        private Vector3 _startPoint;
+        private List<Vector3> _collisionPoints1;
+        private Vector3 _endPoint;
 
         public MegaspiderTangleAttackBaseState(
             Transform lampTransform, 
@@ -69,6 +72,10 @@ namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
             _tangleSpeed = configService.GameConfig.MegaspiderTangleAttackTangleSpeed;
             _tangleAcceleration = configService.GameConfig.MegaspiderTangleAttackTangleAcceleration;
         }
+        
+        Vector3 ITangledWireProvider.StartPoint => _hangPoint;
+        List<Vector3> ITangledWireProvider.CollisionPoints => _collisionPoints;
+        Vector3 ITangledWireProvider.EndPoint => _currentPosition;
         
         public override void Enter()
         {
@@ -298,21 +305,23 @@ namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
                 {
                     Debug.DrawLine(_lampWorldPosition, point, Color.green);
                 }
-                Debug.DrawLine(_hangPoint, _collisionPoints[0], Color.red);
-                Debug.DrawLine(_collisionPoints[^1], _currentPosition, Color.red);
+                Debug.DrawLine(_hangPoint, _collisionPoints[0], Color.yellow);
+                Debug.DrawLine(_collisionPoints[^1], _currentPosition, Color.yellow);
 
                 if (_collisionPoints.Count > 1)
                 {
                     for (int i = 1; i < _collisionPoints.Count; i++)
                     {
-                        Debug.DrawLine(_collisionPoints[i - 1], _collisionPoints[i], Color.red);
+                        Debug.DrawLine(_collisionPoints[i - 1], _collisionPoints[i], Color.yellow);
                     }
                 }
             }
             else
             {
-                Debug.DrawLine(_hangPoint, _currentPosition, Color.red);
+                Debug.DrawLine(_hangPoint, _currentPosition, Color.yellow);
             }
         }
+
+
     }
 }

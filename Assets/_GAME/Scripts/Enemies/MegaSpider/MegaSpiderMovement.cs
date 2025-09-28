@@ -98,6 +98,8 @@ namespace _GAME.Scripts.Enemies.Megaspider
         public event Action<Type, IPositionProvider> HangStartRequested;
         public event Action HangStopRequested;
         public event Action HangBreakRequested;
+        public event Action<ITangledWireProvider> TangleAttackStarted;
+        public event Action TangleAttackEnded;
 
         public void SetCollisionRadius(float radius)
         {
@@ -147,6 +149,11 @@ namespace _GAME.Scripts.Enemies.Megaspider
             _tangleAttackRState.Started += OnAnimatedAttackStarted;
             _wireAttackState.Started += OnAnimatedAttackStarted;
 
+            _tangleAttackLState.Started += OnTangleAttackLStarted;
+            _tangleAttackRState.Started += OnTangleAttackRStarted;
+            _tangleAttackLState.Ended += OnTangleAttackEnded;
+            _tangleAttackRState.Ended += OnTangleAttackEnded;
+
             _bounceState.Ended += OnBounceStateEnded;
             _deathFallState.Ended += OnDeathStateEnded;
 
@@ -175,6 +182,11 @@ namespace _GAME.Scripts.Enemies.Megaspider
             _tangleAttackLState.Started -= OnAnimatedAttackStarted;
             _tangleAttackRState.Started -= OnAnimatedAttackStarted;
             _wireAttackState.Started -= OnAnimatedAttackStarted;
+            
+            _tangleAttackLState.Started -= OnTangleAttackLStarted;
+            _tangleAttackRState.Started -= OnTangleAttackRStarted;
+            _tangleAttackLState.Ended -= OnTangleAttackEnded;
+            _tangleAttackRState.Ended -= OnTangleAttackEnded;
             
             _bounceState.Ended -= OnBounceStateEnded;
             _deathFallState.Ended -= OnDeathStateEnded;
@@ -233,15 +245,15 @@ namespace _GAME.Scripts.Enemies.Megaspider
             // At(_enterRState, _projectileBottomAttackRState, IsAnimationEndedRandom2Of4());
             // At(_enterRState, _projectileDoubleUpAttackRState, IsAnimationEndedRandom3Of4());
             
-            At(_enterLState, _hangJumpAttackLState, IsAnimationEndedRandom0Of4());
-            At(_enterLState, _hangJumpAttackLState, IsAnimationEndedRandom1Of4());
-            At(_enterLState, _hangJumpAttackLState, IsAnimationEndedRandom2Of4());
-            At(_enterLState, _hangJumpAttackLState, IsAnimationEndedRandom3Of4());
+            At(_enterLState, _tangleAttackLState, IsAnimationEndedRandom0Of4());
+            At(_enterLState, _tangleAttackLState, IsAnimationEndedRandom1Of4());
+            At(_enterLState, _tangleAttackLState, IsAnimationEndedRandom2Of4());
+            At(_enterLState, _tangleAttackLState, IsAnimationEndedRandom3Of4());
             
-            At(_enterRState, _hangJumpAttackRState, IsAnimationEndedRandom0Of4());
-            At(_enterRState, _hangJumpAttackRState, IsAnimationEndedRandom1Of4());
-            At(_enterRState, _hangJumpAttackRState, IsAnimationEndedRandom2Of4());
-            At(_enterRState, _hangJumpAttackRState, IsAnimationEndedRandom3Of4());
+            At(_enterRState, _tangleAttackRState, IsAnimationEndedRandom0Of4());
+            At(_enterRState, _tangleAttackRState, IsAnimationEndedRandom1Of4());
+            At(_enterRState, _tangleAttackRState, IsAnimationEndedRandom2Of4());
+            At(_enterRState, _tangleAttackRState, IsAnimationEndedRandom3Of4());
             
             // Wire Attack Transitions
             At(_wireAttackState, _bounceState, IsCollided());
@@ -623,7 +635,7 @@ namespace _GAME.Scripts.Enemies.Megaspider
         {
             StaticBridge2Broken?.Invoke();
         }
-        
+
         private void OnStaticBridge3Called()
         {
             StaticBridge3Called?.Invoke(_stateMachine.CurrentState.GetType());
@@ -658,6 +670,21 @@ namespace _GAME.Scripts.Enemies.Megaspider
         private void OnHangBreakRequested()
         {
             HangBreakRequested?.Invoke();
+        }
+
+        private void OnTangleAttackLStarted()
+        {
+            TangleAttackStarted?.Invoke(_tangleAttackLState);
+        }
+
+        private void OnTangleAttackRStarted()
+        {
+            TangleAttackStarted?.Invoke(_tangleAttackRState);
+        }
+
+        private void OnTangleAttackEnded()
+        {
+            TangleAttackEnded?.Invoke();
         }
     }
 }

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using _GAME.Scripts.Lib.Interfaces;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -19,7 +20,9 @@ namespace _GAME.Scripts.Enemies.Megaspider
             FallBreakDynamic,
             TautDynamic,
             Hang,
-            BreakHang
+            BreakHang,
+            Tangle,
+            Detangle
         }
         
         [SerializeField] private LineRenderer _lineRenderer;
@@ -31,7 +34,9 @@ namespace _GAME.Scripts.Enemies.Megaspider
         private SpiderwebState _spiderwebState = SpiderwebState.Inactive;
         private Vector3 _startPosition;
         private Vector3 _endPosition;
+        private List<Vector3> _tanglePositions;
         private IPositionProvider _endPositionProvider;
+        private ITangledWireProvider _tangledWireProvider;
         private float _shootDuration = 0.25f;
         private float _shootSineFrequency = 13f;
         private int _shootPointCount = 20;
@@ -173,6 +178,93 @@ namespace _GAME.Scripts.Enemies.Megaspider
             }
         }
         
+        public void StartTangle(ITangledWireProvider tangledWireProvider)
+        {
+            _tangledWireProvider = tangledWireProvider;
+            _spiderwebState = SpiderwebState.Tangle;
+            _lineRenderer.enabled = true;
+            enabled = true;
+        }
+        
+        private void PerformTangle()
+        {
+            int currentPointIndex = 0;
+            _lineRenderer.positionCount = 2 + _tangledWireProvider.CollisionPoints.Count;
+            _lineRenderer.SetPosition(currentPointIndex, _tangledWireProvider.StartPoint);
+            currentPointIndex++;
+            if (_tangledWireProvider.CollisionPoints.Count > 0)
+            {
+                foreach (var point in _tangledWireProvider.CollisionPoints)
+                {
+                    _lineRenderer.SetPosition(currentPointIndex, point);
+                    currentPointIndex++;
+                }
+            }
+            _lineRenderer.SetPosition(currentPointIndex, _tangledWireProvider.EndPoint);
+        }
+
+        public void StartDetangle()
+        {
+            _startPosition = _tangledWireProvider.StartPoint;
+            _endPosition = _tangledWireProvider.EndPoint;
+            _tanglePositions = _tangledWireProvider.CollisionPoints;
+            _lineRenderer.enabled = true;
+            _localTime = 0f;
+            enabled = true;
+            _spiderwebState = SpiderwebState.Detangle;
+        }
+
+        private void PerformDetangle()
+        {
+            _lineRenderer.positionCount = 2 + _tangledWireProvider.CollisionPoints.Count;
+            
+            int currentPointIndex = 0;
+            _lineRenderer.SetPosition(currentPointIndex, _startPosition);
+            currentPointIndex++;
+
+            if (_tanglePositions.Count > 0)
+            {
+                for (int i = 0; i < _tanglePositions.Count; i++)
+                {
+                    Vector3 expandedDirection = _tanglePositions[i].normalized;
+                    _tanglePositions[i] = _tanglePositions[i] + expandedDirection * (Time.deltaTime * .8f); // Make speed parameter
+                    _lineRenderer.SetPosition(currentPointIndex, _tanglePositions[i]);
+                    currentPointIndex++;
+                }
+            
+                float phase = _localTime / 0.03f;
+                if (phase > 1f)
+                {
+                    _endPosition = _tanglePositions[_tanglePositions.Count - 1];
+                    _tanglePositions.RemoveAt(_tanglePositions.Count - 1);
+                    _localTime = 0;
+                }
+                else
+                {
+                    _lineRenderer.SetPosition(
+                        currentPointIndex, 
+                        Vector3.Lerp(_endPosition, _tanglePositions[_tanglePositions.Count - 1], phase)
+                    );
+                }
+                _localTime += Time.deltaTime;
+            }
+            else
+            {
+                _lineRenderer.SetPosition(currentPointIndex, _endPosition);
+                StartPostTangleBreakHang();
+            }
+        }
+        
+        private void StartPostTangleBreakHang()
+        {
+            _spiderwebState = SpiderwebState.BreakHang;
+            _lineRenderer.positionCount = _shootPointCount;
+            _breakHangNoiseOffset = Random.Range(0.0f, 2.5f);
+            _localTime = 0;
+            enabled = true;
+        }
+        
+        
         private void LateUpdate()
         {
             if (_spiderwebState == SpiderwebState.ShootStatic)
@@ -185,6 +277,10 @@ namespace _GAME.Scripts.Enemies.Megaspider
                 PerformHang();
             else if (_spiderwebState == SpiderwebState.BreakHang)
                 PerformBreakHang();
+            else if (_spiderwebState == SpiderwebState.Tangle)
+                PerformTangle();
+            else if (_spiderwebState == SpiderwebState.Detangle)
+                PerformDetangle();
         }
     }
 }
