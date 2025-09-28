@@ -7,7 +7,7 @@ using Random = UnityEngine.Random;
 
 namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
 {
-    public class MegaspiderWireAttackState : EnemyMovementStateBase
+    public class MegaspiderWireAttackState : EnemyMovementStateBase, IAttackWiresProvider
     {
         private enum WireStates
         {
@@ -17,35 +17,37 @@ namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
             MainAttack
         }
 
+
         private readonly SpiderwebSpawnRange[] _webStartPositionsRanges;
-        
+
         private readonly Vector3 _lampEndPoint = new (0.0f, -0.35f, 0);
         private readonly Vector3 _inactivePosition = new (0.0f, -10.0f, 0);
-        
+
         private List<int> _availableWireRangeIndices = new();
         private List<SpiderwebAttackWire> _attackWires = new();
         private List<int> _activeWireIndices = new();
-        
+
         private WireStates _wireState;
         private SpiderwebAttackWire _mainAttackWire;
         private Vector3 _currentPosition;
-    
+
         private int _currentAttackingWireIndex = 0;
         private int _destroyedWiresCount = 0;
         private float _localTime;
-    
+
         // Dependencies
         private readonly Transform _visibleBodyTransform;
         private readonly Transform _calculatedTransform;
         private readonly MegaspiderWireAttackLampAttackEventListener _lampAttackEventListener;
         private readonly Transform _lampTransform;
+
         // Config
         private readonly int _numberOfWires;
-        private readonly float _wireAttackTimeInterval; 
-        private readonly float _spiderAttackDelay;       
+        private readonly float _wireAttackTimeInterval;
+        private readonly float _spiderAttackDelay;
         private readonly float _mainAttackDuration;
         private readonly float _mainAttackAcceleration;
-        
+
         public MegaspiderWireAttackState(
             Transform visibleBodyTransform, 
             Transform calculatedTransform,  
@@ -70,9 +72,13 @@ namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
             CreateEmptyAttackWireVariables();
         }
         
+        public event Action Entered;
         public event Action Started;
-        public bool IsDropped { get; private set; }
         
+        public bool IsDropped { get; private set; }
+        public List<SpiderwebAttackWire> AttackWires => _attackWires;
+
+
         public override void Enter()
         {
             HierarchyUtilities.ParentWithoutOffset(_visibleBodyTransform, _calculatedTransform);
@@ -93,6 +99,8 @@ namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
             StartWireAttack();
             
             _lampAttackEventListener.AttackStarted += ReceiveWireDamage;
+            
+            Entered?.Invoke();
         }
 
         public override void Tick()
@@ -144,7 +152,7 @@ namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
             _localTime = 0f;
             _wireState = WireStates.WireAttack;
         }
-        
+
         private void HandleWiresAttack()
         {
             float attackPhase = _localTime / _wireAttackTimeInterval;
@@ -161,13 +169,13 @@ namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
             }
             _localTime += Time.deltaTime;
         }
-        
+
         private void StartPreAttackPause()
         {
             _wireState = WireStates.PreAttackPause;
             _localTime = 0f;
         }
-        
+
         private void HandlePreAttackPause()
         {
             if (_localTime / _spiderAttackDelay > 1)
@@ -176,7 +184,7 @@ namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
             }
             _localTime += Time.deltaTime;
         }
-        
+
         private void StartMainAttack()
         {
             _localTime = 0;
@@ -191,7 +199,7 @@ namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
             Debug.DrawLine(_mainAttackWire.StartPosition, _mainAttackWire.EndPosition, Color.orangeRed, 10);
             Started?.Invoke();
         }
-        
+
         private void HandleMainAttack()
         {
             if (_mainAttackWire == null)
@@ -207,7 +215,7 @@ namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
         
             _localTime += Time.deltaTime;    
         }
-        
+
         private void ReceiveWireDamage(int power)
         {
             RefreshActiveWiresList();
@@ -228,7 +236,7 @@ namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
                 _destroyedWiresCount++;
             }
         }
-        
+
         private void CreateEmptyAttackWireVariables()
         {
             for (int i = 0; i < _numberOfWires; i++)
@@ -237,7 +245,7 @@ namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
                 _attackWires.Add(wire);
             }
         }
-        
+
         private void InitializeAttackWires() 
         {
             _availableWireRangeIndices.Clear();
@@ -261,7 +269,7 @@ namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
                 );
             }
         }
-        
+
         private Vector3 GetWireStickPoint(Vector3 startPosition, Vector3 lampEndPoint)
         {
             Vector3 centerPoint = Vector3.zero;
@@ -282,7 +290,7 @@ namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
         
             return intesectionPos;
         }
-        
+
         private void RefreshActiveWiresList()
         {
             _activeWireIndices.Clear();

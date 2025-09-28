@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using _GAME.Scripts.Enemies.Megaspider;
 using _GAME.Scripts.Lib;
 using UnityEngine;
 using Random = UnityEngine.Random;

@@ -107,6 +107,7 @@ namespace _GAME.Scripts.Enemies.Megaspider
         public event Action<IPositionProvider> FailFallOutForceCancelled;
         public event Action SwingStateEnded;
         public event Action<IPositionProvider> FallStateEnded;
+        public event Action<IAttackWiresProvider> WireAttackStateEntered;
 
         public void SetCollisionRadius(float radius)
         {
@@ -159,6 +160,8 @@ namespace _GAME.Scripts.Enemies.Megaspider
             _tangleAttackRState.Started += OnTangleAttackRStarted;
             _tangleAttackLState.Ended += OnTangleAttackEnded;
             _tangleAttackRState.Ended += OnTangleAttackEnded;
+            
+            _wireAttackState.Entered += OnWireAttackStateEntered;
 
             _swingLState.Ended += OnSwingEnded;
             _swingRState.Ended += OnSwingEnded;
@@ -203,6 +206,8 @@ namespace _GAME.Scripts.Enemies.Megaspider
             _tangleAttackRState.Started -= OnTangleAttackRStarted;
             _tangleAttackLState.Ended -= OnTangleAttackEnded;
             _tangleAttackRState.Ended -= OnTangleAttackEnded;
+
+            _wireAttackState.Entered -= OnWireAttackStateEntered;
             
             _swingLState.Ended -= OnSwingEnded;
             _swingRState.Ended -= OnSwingEnded;
@@ -211,7 +216,7 @@ namespace _GAME.Scripts.Enemies.Megaspider
             _fallState.OutForceCancelled -= OnFailFallOutForceCancelled;
             _successFallState.Ended -= OnSuccessFallStateEnded;
             _fallState.Ended -= OnFailFallStateEnded;
-            
+
             _climbState.Ended -= OnClimbStateEnded;
             
             _bounceState.Ended -= OnBounceStateEnded;
@@ -261,15 +266,25 @@ namespace _GAME.Scripts.Enemies.Megaspider
         {
             // Initialize StateMachine 
             // Enter to Attacks
+            // At(_enterLState, _wireAttackState, IsAnimationEndedRandom0Of4());
+            // At(_enterLState, _zigzagAttackLState, IsAnimationEndedRandom1Of4());
+            // At(_enterLState, _projectileBottomAttackLState, IsAnimationEndedRandom2Of4());
+            // At(_enterLState, _projectileDoubleUpAttackLState, IsAnimationEndedRandom3Of4());
+            //
+            // At(_enterRState, _wireAttackState, IsAnimationEndedRandom0Of4());
+            // At(_enterRState, _zigzagAttackRState, IsAnimationEndedRandom1Of4());
+            // At(_enterRState, _projectileBottomAttackRState, IsAnimationEndedRandom2Of4());
+            // At(_enterRState, _projectileDoubleUpAttackRState, IsAnimationEndedRandom3Of4());
+            
             At(_enterLState, _wireAttackState, IsAnimationEndedRandom0Of4());
-            At(_enterLState, _zigzagAttackLState, IsAnimationEndedRandom1Of4());
-            At(_enterLState, _projectileBottomAttackLState, IsAnimationEndedRandom2Of4());
-            At(_enterLState, _projectileDoubleUpAttackLState, IsAnimationEndedRandom3Of4());
+            At(_enterLState, _wireAttackState, IsAnimationEndedRandom1Of4());
+            At(_enterLState, _wireAttackState, IsAnimationEndedRandom2Of4());
+            At(_enterLState, _wireAttackState, IsAnimationEndedRandom3Of4());
             
             At(_enterRState, _wireAttackState, IsAnimationEndedRandom0Of4());
-            At(_enterRState, _zigzagAttackRState, IsAnimationEndedRandom1Of4());
-            At(_enterRState, _projectileBottomAttackRState, IsAnimationEndedRandom2Of4());
-            At(_enterRState, _projectileDoubleUpAttackRState, IsAnimationEndedRandom3Of4());
+            At(_enterRState, _wireAttackState, IsAnimationEndedRandom1Of4());
+            At(_enterRState, _wireAttackState, IsAnimationEndedRandom2Of4());
+            At(_enterRState, _wireAttackState, IsAnimationEndedRandom3Of4());
             
             // Wire Attack Transitions
             At(_wireAttackState, _bounceState, IsCollided());
@@ -731,6 +746,11 @@ namespace _GAME.Scripts.Enemies.Megaspider
         private void OnFailFallStateEnded()
         {
             FallStateEnded?.Invoke(_fallState);
+        }
+
+        private void OnWireAttackStateEntered()
+        {
+            WireAttackStateEntered?.Invoke(_wireAttackState);
         }
     }
 }

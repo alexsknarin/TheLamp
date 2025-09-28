@@ -24,6 +24,9 @@ namespace _GAME.Scripts.Enemies.Megaspider
         private Vector3 _swingPivot;
         private float _swingZoneSize;
         private bool _isInReturnState;
+
+        private IAttackWiresProvider _attackWiresProvider;
+        
         
         public void Construct(IGameConfigService configService)
         {
@@ -51,6 +54,7 @@ namespace _GAME.Scripts.Enemies.Megaspider
             _movement.ClimbStateEnded += OnClimbStateEnded;
             _movement.SwingStateEnded += OnSwingStateEnded;
             _movement.FallStateEnded += OnFallStateEnded;
+            _movement.WireAttackStateEntered += OnWireAttackStateEntered;
         }
 
         private void OnDestroy()
@@ -71,6 +75,7 @@ namespace _GAME.Scripts.Enemies.Megaspider
             _movement.ClimbStateEnded -= OnClimbStateEnded;
             _movement.SwingStateEnded -= OnSwingStateEnded;
             _movement.FallStateEnded -= OnFallStateEnded;
+            _movement.WireAttackStateEntered -= OnWireAttackStateEntered;
         }
 
         private void OnStaticBridge1Called(Type state)
@@ -135,7 +140,7 @@ namespace _GAME.Scripts.Enemies.Megaspider
 
         private void OnStaticBridge1Broken()
         {
-            _spiderweb1.StartBreakStatic();
+            _spiderweb1.StartFallBreakStatic();
         }
 
         private void OnStaticBridge2Called(Type state)
@@ -176,7 +181,7 @@ namespace _GAME.Scripts.Enemies.Megaspider
 
         private void OnStaticBridge2Broken()
         {
-            _spiderweb2.StartBreakStatic();
+            _spiderweb2.StartFallBreakStatic();
         }
 
         private void OnStaticBridge3Called(Type state)
@@ -193,7 +198,7 @@ namespace _GAME.Scripts.Enemies.Megaspider
 
         private void OnStaticBridge3Broken()
         {
-            _spiderweb3.StartBreakStatic();
+            _spiderweb3.StartFallBreakStatic();
         }
 
         private void OnHangStartRequested(Type state, IPositionProvider endPositionProvider)
@@ -301,6 +306,92 @@ namespace _GAME.Scripts.Enemies.Megaspider
             }
 
             return hangPoint;
+        }
+
+        private void OnWireAttackStateEntered(IAttackWiresProvider attackWiresProvider)
+        {
+            _attackWiresProvider = attackWiresProvider;
+            _attackWiresProvider.AttackWires[0].Activated += OnWire1Activated;
+            _attackWiresProvider.AttackWires[1].Activated += OnWire2Activated;
+            _attackWiresProvider.AttackWires[2].Activated += OnWire3Activated;
+            _attackWiresProvider.AttackWires[3].Activated += OnWire4Activated;
+            _attackWiresProvider.AttackWires[4].Activated += OnWire5Activated;
+
+            _attackWiresProvider.AttackWires[0].Destroyed += OnWire1Deactivated;
+            _attackWiresProvider.AttackWires[0].Deactivated += OnWire1Deactivated;
+            _attackWiresProvider.AttackWires[1].Destroyed += OnWire2Deactivated;
+            _attackWiresProvider.AttackWires[1].Deactivated += OnWire2Deactivated;
+            _attackWiresProvider.AttackWires[2].Destroyed += OnWire3Deactivated;
+            _attackWiresProvider.AttackWires[2].Deactivated += OnWire3Deactivated;
+            _attackWiresProvider.AttackWires[3].Destroyed += OnWire4Deactivated;
+            _attackWiresProvider.AttackWires[3].Deactivated += OnWire4Deactivated;
+            _attackWiresProvider.AttackWires[4].Destroyed += OnWire5Deactivated;
+            _attackWiresProvider.AttackWires[4].Deactivated += OnWire5Deactivated;
+        }
+
+        private void OnWire1Activated()
+        {
+            _spiderweb1.StartShootDynamicFull(_attackWiresProvider.AttackWires[0]);
+        }
+
+        private void OnWire2Activated()
+        {
+            _spiderweb2.StartShootDynamicFull(_attackWiresProvider.AttackWires[1]);
+        }
+
+        private void OnWire3Activated()
+        {
+            _spiderweb3.StartShootDynamicFull(_attackWiresProvider.AttackWires[2]);
+        }
+
+        private void OnWire4Activated()
+        {
+            _spiderweb4.StartShootDynamicFull(_attackWiresProvider.AttackWires[3]);
+        }
+
+        private void OnWire5Activated()
+        {
+            _spiderweb5.StartShootDynamicFull(_attackWiresProvider.AttackWires[4]);
+        }
+
+        private void OnWire1Deactivated()
+        {
+            _attackWiresProvider.AttackWires[0].Activated -= OnWire1Activated;
+            _attackWiresProvider.AttackWires[0].Destroyed -= OnWire1Deactivated;
+            _attackWiresProvider.AttackWires[0].Deactivated -= OnWire1Deactivated;
+            _spiderweb1.StartFallBreakDynamic();
+        }
+        
+        private void OnWire2Deactivated()
+        {
+            _attackWiresProvider.AttackWires[1].Activated -= OnWire2Activated;
+            _attackWiresProvider.AttackWires[1].Destroyed -= OnWire2Deactivated;
+            _attackWiresProvider.AttackWires[1].Deactivated -= OnWire2Deactivated;
+            _spiderweb2.StartFallBreakDynamic();
+        }
+        
+        private void OnWire3Deactivated()
+        {
+            _attackWiresProvider.AttackWires[2].Activated -= OnWire3Activated;
+            _attackWiresProvider.AttackWires[2].Destroyed -= OnWire3Deactivated;
+            _attackWiresProvider.AttackWires[2].Deactivated -= OnWire3Deactivated;
+            _spiderweb3.StartFallBreakDynamic();
+        }
+        
+        private void OnWire4Deactivated()
+        {
+            _attackWiresProvider.AttackWires[3].Activated -= OnWire4Activated;
+            _attackWiresProvider.AttackWires[3].Destroyed -= OnWire4Deactivated;
+            _attackWiresProvider.AttackWires[3].Deactivated -= OnWire4Deactivated;
+            _spiderweb4.StartFallBreakDynamic();
+        }
+        
+        private void OnWire5Deactivated()
+        {
+            _attackWiresProvider.AttackWires[4].Activated -= OnWire5Activated;
+            _attackWiresProvider.AttackWires[4].Destroyed -= OnWire5Deactivated;
+            _attackWiresProvider.AttackWires[4].Deactivated -= OnWire5Deactivated;
+            _spiderweb5.StartFallBreakDynamic();
         }
     }
 }
