@@ -1,0 +1,77 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &2404249415177374852
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5080344092029977841}
+  - component: {fileID: 2540989381667369505}
+  m_Layer: 0
+  m_Name: ManywebsAttackTest1
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5080344092029977841
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2404249415177374852}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2540989381667369505
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2404249415177374852}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c276633e6aacf17488278d092f32a631, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _webStartPositionsRanges:
+  - p1: {x: -0.1696585, y: -1.571486, z: -5.533077}
+    p2: {x: -0.5621628, y: -1.601049, z: -5.457012}
+  - p1: {x: -0.5621628, y: -1.601049, z: -5.457012}
+    p2: {x: -0.8296229, y: -1.489632, z: -4.630661}
+  - p1: {x: -0.8296229, y: -1.489632, z: -4.630661}
+    p2: {x: -1.097083, y: -1.378216, z: -3.80431}
+  - p1: {x: -2.991441, y: 2.364229, z: 1.8949}
+    p2: {x: -3.222974, y: 3.461487, z: 3.060626}
+  - p1: {x: -3.222974, y: 3.461487, z: 3.060626}
+    p2: {x: -3.454506, y: 4.558745, z: 4.226351}
+  - p1: {x: 0.1696585, y: -1.571486, z: -5.533077}
+    p2: {x: 0.5621628, y: -1.601049, z: -5.457012}
+  - p1: {x: 0.5621628, y: -1.601049, z: -5.457012}
+    p2: {x: 0.8296229, y: -1.489632, z: -4.630661}
+  - p1: {x: 0.8296229, y: -1.4896325, z: -4.630661}
+    p2: {x: 1.097083, y: -1.378216, z: -3.80431}
+  - p1: {x: 2.991441, y: 2.364229, z: 1.8949}
+    p2: {x: 3.222974, y: 3.461487, z: 3.060626}
+  - p1: {x: 2.991441, y: 2.364229, z: 1.8949}
+    p2: {x: 3.454506, y: 4.558745, z: 4.226351}
+  _lampTransform: {fileID: 0}
+  _cameraTransform: {fileID: 0}
+  _lampEndPoint: {x: 0, y: -0.35, z: 0}
+  _numberOfWires: 5
+  _attackTimeInterval: 0.45
+  _spiderAttackDelay: 2
+  _inactivePosition: {x: 0, y: -10, z: 0}
+  _wireState: 0
+  _mainAttackDuration: 1
+  _mainAttackAcceleration: 3

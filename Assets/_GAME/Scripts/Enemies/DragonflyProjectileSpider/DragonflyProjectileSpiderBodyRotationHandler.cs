@@ -14,7 +14,7 @@ namespace _GAME.Scripts.Enemies.DragonflyProjectileSpider
             Fall
         }
         
-        [SerializeField] private DragonflyProjectileMovementSpider _movement;
+        [SerializeField] private DragonflyProjectileSpiderMovement _movement;
         [SerializeField] private Transform _bodyTransform;
         [SerializeField] private RotationState _rotationState;
         [SerializeField] private float _curlRotationSpeed = 100f;

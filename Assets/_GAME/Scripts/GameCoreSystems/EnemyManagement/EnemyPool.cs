@@ -7,6 +7,7 @@ using _GAME.Scripts.Enemies.Fly;
 using _GAME.Scripts.Enemies.Ladybug;
 using _GAME.Scripts.Enemies.Megabeetle;
 using _GAME.Scripts.Enemies.Megamothling;
+using _GAME.Scripts.Enemies.Megaspider;
 using _GAME.Scripts.Enemies.Moth;
 using _GAME.Scripts.Enemies.Mothling;
 using _GAME.Scripts.Enemies.Spider;
@@ -29,6 +30,7 @@ namespace _GAME.Scripts.GameCoreSystems.EnemyManagement
         private ObjectPool<Enemy> _waspPool;
         private ObjectPool<Enemy> _megabeetlePool;
         private ObjectPool<Enemy> _dragonflyPool;
+        private ObjectPool<Enemy> _megaspiderPool;
     
         private readonly EnemyFactory _enemyFactory;
         private readonly int _poolSize = 5;
@@ -42,6 +44,7 @@ namespace _GAME.Scripts.GameCoreSystems.EnemyManagement
         private int _waspCount;
         private int _megabeetleCount;
         private int _dragonflyCount;
+        private int _megaspiderCount;
     
         private readonly List<Type> _preloadedEnemyTypes = new List<Type>();
     
@@ -148,6 +151,16 @@ namespace _GAME.Scripts.GameCoreSystems.EnemyManagement
                 _poolSize,
                 _poolSize
             );
+            
+            _megaspiderPool = new ObjectPool<Enemy>(
+                CreateMegaspider,
+                OnGetFromPool, 
+                OnReleaseToPool, 
+                OnDestroyPooledObject,
+                true,
+                _poolSize,
+                _poolSize
+            );
         }
 
         public void PreloadEnemy(Type type)
@@ -158,7 +171,8 @@ namespace _GAME.Scripts.GameCoreSystems.EnemyManagement
                 _enemyFactory.LoadEnemy(type);
             }
         }
-
+        
+        // TODO: switch to else if
         public Enemy Get(Type type)
         {
             if (type == typeof(Mothling))
@@ -240,6 +254,14 @@ namespace _GAME.Scripts.GameCoreSystems.EnemyManagement
                     return _dragonflyPool.Get();
                 }
                 throw new Exception("Dragonfly prefab is not loaded yet");
+            }
+            if (type == typeof(Megaspider))
+            {
+                if (_enemyFactory.IsMegaspiderLoaded)
+                {
+                    return _megaspiderPool.Get();
+                }
+                throw new Exception("Megaspider prefab is not loaded yet");
             }
             else
             {
@@ -335,6 +357,16 @@ namespace _GAME.Scripts.GameCoreSystems.EnemyManagement
             enemyInstance.SetObjectPool(_dragonflyPool);
             enemyInstance.name = "Dragonfly" + _dragonflyCount;
             _dragonflyCount++;
+            return enemyInstance;
+        }
+        
+        // TODO: Megaspider / Megaspider consistent naming 
+        private Enemy CreateMegaspider()
+        {
+            Enemy enemyInstance = _enemyFactory.CreateEnemy(typeof(Megaspider));
+            enemyInstance.SetObjectPool(_megaspiderPool);
+            enemyInstance.name = "Megaspider" + _megaspiderCount;
+            _megaspiderCount++;
             return enemyInstance;
         }
     

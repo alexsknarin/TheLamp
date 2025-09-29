@@ -8,6 +8,7 @@ namespace _GAME.Scripts.Enemies
     {
         public virtual  Vector2 Position { get; protected set; }
         public virtual float Radius { get; protected set; }
+        public virtual string CollidableName { get; protected set; }
         public CollidableState CollisionState { get; protected set; }
     
         public virtual void HandleEnterAttackZone()

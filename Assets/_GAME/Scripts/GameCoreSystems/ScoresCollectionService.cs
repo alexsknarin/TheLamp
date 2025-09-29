@@ -110,6 +110,12 @@ namespace _GAME.Scripts.GameCoreSystems
                 case EnemyType.Dragonfly:
                     score = _gameConfigService.ScoreConfig.Dragonfly;
                     break;
+                case EnemyType.Megaspider:
+                    score = _gameConfigService.ScoreConfig.Megaspider;
+                    break;
+                case EnemyType.MegaspiderProjectileSpider:
+                    score = _gameConfigService.ScoreConfig.MegaspiderProjectileSpider;
+                    break;
             }
         
             ScoreChanged?.Invoke(score);

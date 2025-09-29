@@ -7,7 +7,7 @@ namespace _GAME.Scripts.Enemies.DragonflyProjectileSpider
     public class DragonflyProjectileSpider : CollidableEnemy
     {
         [SerializeField] private float _collisionRadius = 0.15f;
-        [SerializeField] private DragonflyProjectileMovementSpider _movement;
+        [SerializeField] private DragonflyProjectileSpiderMovement _movement;
         [SerializeField] private DragonflySpiderPresentation _presentation;
         [SerializeField] private TrailRenderer _trailRenderer;
         private int _direction;

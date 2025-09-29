@@ -14,6 +14,8 @@ namespace _GAME.Scripts.Lib.Enums
         Dragonfly,
         DragonflyProjectileSpider,
         DragonflyProjectileMoth,
+        Megaspider,
+        MegaspiderProjectileSpider,
         None
     }
 }

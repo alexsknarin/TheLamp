@@ -106,6 +106,9 @@ namespace _GAME.Scripts.GameCoreSystems.EnemyManagement
 
         public void StartWave()
         {
+            if (_gameConfigService.GameConfig.IsSpawnDisabled)
+                return;
+            
             _lampBlocked = false;
             _enemiesKilledCount = 0;
             _enemySpawner.StartWave();
@@ -381,19 +384,13 @@ namespace _GAME.Scripts.GameCoreSystems.EnemyManagement
 
         private void Update()
         {
+            if (_gameConfigService.GameConfig.IsSpawnDisabled)
+                return;
+            
             if (_isAttackEnabled)
                 _enemyAttacker.Tick(Time.deltaTime);
             
             _fireflyExplosionEnemyDamager.Tick(Time.deltaTime);
-
-            // TODO: added for tests - remove
-            if (Input.GetKeyDown(KeyCode.A))
-            {
-                SpreadEnemies();
-            }
         }
-
-
-    
     }
 }

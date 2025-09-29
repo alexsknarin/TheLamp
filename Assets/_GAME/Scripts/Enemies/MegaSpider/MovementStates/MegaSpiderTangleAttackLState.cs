@@ -1,0 +1,46 @@
+using System;
+using _GAME.Scripts.Lib.Interfaces;
+using UnityEngine;
+
+namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
+{
+    public class MegaspiderTangleAttackLState : MegaspiderTangleAttackBaseState
+    {
+        public MegaspiderTangleAttackLState(
+            Transform lampTransform, 
+            Transform visibleBody, 
+            Transform calculatedTransform,  
+            AnimationCurve swingCurve, 
+            AnimationCurve dropCurve,
+            IGameConfigService configService,
+            float megaspiderRadius,
+            bool isLeftSide
+            ) : base(
+                lampTransform, 
+                visibleBody, 
+                calculatedTransform, 
+                swingCurve, 
+                dropCurve,
+                configService,
+                megaspiderRadius,
+                isLeftSide
+            )
+        {
+        }
+        
+        public event Action Started;
+        public event Action Ended;
+
+        public override void Enter()
+        {
+            base.Enter();
+            Started?.Invoke();
+        }
+
+        public override void Exit()
+        {
+            base.Exit();
+            Ended?.Invoke();
+        }
+    }
+}

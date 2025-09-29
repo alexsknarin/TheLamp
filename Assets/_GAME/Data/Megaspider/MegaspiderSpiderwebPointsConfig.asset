@@ -1,0 +1,60 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b6695d62d89ca434090638495b5473ae, type: 3}
+  m_Name: MegaspiderSpiderwebPointsConfig
+  m_EditorClassIdentifier: 
+  <Enter01LStartPoint>k__BackingField: {x: -4.74, y: 2.61, z: 7.15}
+  <Enter01LEndPoint>k__BackingField: {x: 2.71, y: 1.76, z: 1.76}
+  <Enter01RStartPoint>k__BackingField: {x: 4.74, y: 2.61, z: 7.15}
+  <Enter01REndPoint>k__BackingField: {x: -2.71, y: 1.76, z: 1.76}
+  <Enter02LStartPoint>k__BackingField: {x: 2.71, y: 1.55, z: 0.69}
+  <Enter02LEndPoint>k__BackingField: {x: -1.9, y: 1.76, z: -1.2}
+  <Enter02RStartPoint>k__BackingField: {x: -2.71, y: 1.55, z: 0.69}
+  <Enter02REndPoint>k__BackingField: {x: 1.9, y: 1.76, z: -1.2}
+  <EnterHangLStartPoint>k__BackingField: {x: -0.35, y: 1.05, z: -3.99}
+  <EnterHangRStartPoint>k__BackingField: {x: 0.35, y: 1.05, z: -3.99}
+  <ProjectileBottomAttackLStartPoint>k__BackingField: {x: -1.93, y: -2.34, z: -1.34}
+  <ProjectileBottomAttackLEndPoint>k__BackingField: {x: 2.46, y: -1.52, z: 0.54}
+  <ProjectileBottomAttackRStartPoint>k__BackingField: {x: 1.93, y: -2.34, z: -1.34}
+  <ProjectileBottomAttackREndPoint>k__BackingField: {x: -2.46, y: -1.52, z: 0.54}
+  <ProjectileDoubleDown01LStartPoint>k__BackingField: {x: -3.28, y: 2.6, z: 1.02}
+  <ProjectileDoubleDown01LEndPoint>k__BackingField: {x: 2.67, y: 1.38, z: 0.71}
+  <ProjectileDoubleDown01RStartPoint>k__BackingField: {x: 3.28, y: 2.6, z: 1.02}
+  <ProjectileDoubleDown01REndPoint>k__BackingField: {x: -2.67, y: 1.38, z: 0.71}
+  <ProjectileDoubleDown02LStartPoint>k__BackingField: {x: 2.46, y: -1.69, z: 0.28}
+  <ProjectileDoubleDown02LEndPoint>k__BackingField: {x: -1.93, y: -2.87, z: -1.68}
+  <ProjectileDoubleDown02RStartPoint>k__BackingField: {x: -2.46, y: -1.69, z: 0.28}
+  <ProjectileDoubleDown02REndPoint>k__BackingField: {x: 1.93, y: -2.87, z: -1.68}
+  <ProjectileDoubleUp01LStartPoint>k__BackingField: {x: -1.93, y: -2.87, z: -1.68}
+  <ProjectileDoubleUp01LEndPoint>k__BackingField: {x: 2.46, y: -1.69, z: 0.28}
+  <ProjectileDoubleUp01RStartPoint>k__BackingField: {x: 1.93, y: -2.87, z: -1.68}
+  <ProjectileDoubleUp01REndPoint>k__BackingField: {x: -2.46, y: -1.69, z: 0.28}
+  <ProjectileDoubleUp02LStartPoint>k__BackingField: {x: 2.67, y: 1.04, z: 0.56}
+  <ProjectileDoubleUp02LEndPoint>k__BackingField: {x: -3.12, y: 2.43, z: 0.6}
+  <ProjectileDoubleUp02RStartPoint>k__BackingField: {x: -2.67, y: 1.04, z: 0.56}
+  <ProjectileDoubleUp02REndPoint>k__BackingField: {x: 3.12, y: 2.43, z: 0.6}
+  <ProjectileTopAttackLStartPoint>k__BackingField: {x: -2.71, y: 1.61, z: 1.27}
+  <ProjectileTopAttackLEndPoint>k__BackingField: {x: 2.92, y: 3.13, z: 1.65}
+  <ProjectileTopAttackRStartPoint>k__BackingField: {x: 2.71, y: 1.61, z: 1.27}
+  <ProjectileTopAttackREndPoint>k__BackingField: {x: -2.92, y: 3.13, z: 1.65}
+  <ZigzagAttack01LStartPoint>k__BackingField: {x: -1.09, y: -1.67, z: -3.75}
+  <ZigzagAttack01LEndPoint>k__BackingField: {x: 1.76, y: -1.35, z: -2.05}
+  <ZigzagAttack01RStartPoint>k__BackingField: {x: 1.09, y: -1.67, z: -3.75}
+  <ZigzagAttack01REndPoint>k__BackingField: {x: -1.76, y: -1.35, z: -2.05}
+  <ZigzagAttack02LStartPoint>k__BackingField: {x: 1.76, y: -1.35, z: -2.05}
+  <ZigzagAttack02LEndPoint>k__BackingField: {x: -1.95, y: -0.78, z: -1.24}
+  <ZigzagAttack02RStartPoint>k__BackingField: {x: -1.76, y: -1.35, z: -2.05}
+  <ZigzagAttack02REndPoint>k__BackingField: {x: 1.95, y: -0.78, z: -1.24}
+  <ZigzagAttack03LStartPoint>k__BackingField: {x: -1.95, y: -0.78, z: -1.24}
+  <ZigzagAttack03LEndPoint>k__BackingField: {x: 5.2, y: 2.74, z: 9.76}
+  <ZigzagAttack03RStartPoint>k__BackingField: {x: 1.95, y: -0.78, z: -1.24}
+  <ZigzagAttack03REndPoint>k__BackingField: {x: -5.2, y: 2.74, z: 9.76}

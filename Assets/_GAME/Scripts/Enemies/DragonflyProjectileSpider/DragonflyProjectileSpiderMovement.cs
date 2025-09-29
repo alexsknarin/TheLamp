@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace _GAME.Scripts.Enemies.DragonflyProjectileSpider
 {
-    public class DragonflyProjectileMovementSpider : MonoBehaviour
+    public class DragonflyProjectileSpiderMovement : MonoBehaviour
     {
         [SerializeField] private Vector3 _endPosition;
         [SerializeField] private float _startHeight = 2.4f;

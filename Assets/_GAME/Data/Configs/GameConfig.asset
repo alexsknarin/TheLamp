@@ -13,6 +13,17 @@ MonoBehaviour:
   m_Name: GameConfig
   m_EditorClassIdentifier: 
   <AnalyticsTimeOutTime>k__BackingField: 10
+  <IntroStageSkip>k__BackingField: 1
+  <IntroStageDuration>k__BackingField: 2
+  <PrepareInStageSkip>k__BackingField: 0
+  <PrepareInStageDuration>k__BackingField: 0.5
+  <PrepareOutStageSkip>k__BackingField: 0
+  <PrepareOutStageDuration>k__BackingField: 0.5
+  <GameoverInStageSkip>k__BackingField: 0
+  <GameoverInStageDuration>k__BackingField: 4.5
+  <GameoverOutStageSkip>k__BackingField: 0
+  <GameoverOutStageDuration>k__BackingField: 0.7
+  <IsSpawnDisabled>k__BackingField: 0
   <IsTestStartWave>k__BackingField: 0
   <TestStartWave>k__BackingField: 61
   <FireflyExplosionRadius>k__BackingField: 0.8
@@ -26,8 +37,8 @@ MonoBehaviour:
     type: 2}
   <DragonflyTailAttackPositionBase>k__BackingField: {x: -0.9991122, y: -0.7506288,
     z: -1.272415}
-  <DragonflyPatrolWaitMin>k__BackingField: 0
-  <DragonflyPatrolWaitMax>k__BackingField: 0.5
+  <DragonflyPatrolHeadWaitMin>k__BackingField: 0
+  <DragonflyPatrolHeadWaitMax>k__BackingField: 0.5
   <DragonflyPatrolTailWaitMin>k__BackingField: 0
   <DragonflyPatrolTailWaitMax>k__BackingField: 0.5
   <DragonflyHoverWaitMin>k__BackingField: 0.5
@@ -35,13 +46,53 @@ MonoBehaviour:
   <DragonflySpiderAttackPositionBase>k__BackingField: {x: 0.68, y: -0.4, z: -0.62}
   <DragonflySpiderPatrolWaitMin>k__BackingField: 1.05
   <DragonflySpiderPatrolWaitMax>k__BackingField: 1.8
-  <IntroStageSkip>k__BackingField: 0
-  <IntroStageDuration>k__BackingField: 2
-  <PrepareInStageSkip>k__BackingField: 0
-  <PrepareInStageDuration>k__BackingField: 0.5
-  <PrepareOutStageSkip>k__BackingField: 0
-  <PrepareOutStageDuration>k__BackingField: 0.5
-  <GameoverInStageSkip>k__BackingField: 0
-  <GameoverInStageDuration>k__BackingField: 4.5
-  <GameoverOutStageSkip>k__BackingField: 0
-  <GameoverOutStageDuration>k__BackingField: 0.7
+  <MegaspiderWireAttackNumberOfWires>k__BackingField: 5
+  <MegaspiderWireAttackTimeInterval>k__BackingField: 0.45
+  <MegaspiderWireAttackSpiderAttackDelay>k__BackingField: 1.5
+  <MegaspiderWireAttackMainAttackDuration>k__BackingField: 1
+  <MegaspiderWireAttackMainAttackAcceleration>k__BackingField: 3
+  <MegaspiderWebStartPositionRanges>k__BackingField:
+  - p1: {x: -0.2506161, y: -2.596756, z: -3.494265}
+    p2: {x: -0.98199, y: -2.5469, z: -3.380694}
+  - p1: {x: -0.98199, y: -2.5469, z: -3.380694}
+    p2: {x: -1.157323, y: -2.379065, z: -2.977964}
+  - p1: {x: -1.157323, y: -2.379065, z: -2.977964}
+    p2: {x: -1.332655, y: -2.21123, z: -2.575235}
+  - p1: {x: -2.991441, y: 2.364229, z: 1.8949}
+    p2: {x: -3.222974, y: 3.461487, z: 3.060626}
+  - p1: {x: -3.222974, y: 3.461487, z: 3.060626}
+    p2: {x: -3.454506, y: 4.558745, z: 4.226351}
+  - p1: {x: 0.2506161, y: -2.596756, z: -3.494265}
+    p2: {x: 0.98199, y: -2.5469, z: -3.380694}
+  - p1: {x: 0.98199, y: -2.5469, z: -3.380694}
+    p2: {x: 1.157323, y: -2.379065, z: -2.977964}
+  - p1: {x: 1.157323, y: -2.379065, z: -2.977964}
+    p2: {x: 1.332655, y: -2.21123, z: -2.575235}
+  - p1: {x: 2.991441, y: 2.364229, z: 1.8949}
+    p2: {x: 3.222974, y: 3.461487, z: 3.060626}
+  - p1: {x: 3.222974, y: 3.461487, z: 3.060626}
+    p2: {x: 3.454506, y: 4.558745, z: 4.226351}
+  <MegaspiderTangleAttackWireThickness>k__BackingField: 0.03
+  <MegaspiderTangleAttackHangPoint>k__BackingField: {x: -0.96, y: 3.13, z: 0}
+  <MegaspiderTangleAttackTangleSpeed>k__BackingField: 330
+  <MegaspiderTangleAttackTangleAcceleration>k__BackingField: 280
+  <MegaspiderSwingOverallSpedFactor>k__BackingField: 1.5
+  <MegaspiderSwingInitialFallForceMagnitude>k__BackingField: 0.9
+  <MegaspiderSwingSwingForceIncrement>k__BackingField: 5
+  <MegaspiderSwingFallForceIncrement>k__BackingField: 2
+  <MegaspiderSwingSwingDownIncrement>k__BackingField: 1
+  <MegaspiderSwingExitDistance>k__BackingField: 21
+  <MegaspiderSwingSwingPivot>k__BackingField: {x: -2.35, y: 2.7, z: 0}
+  <MegaspiderFallInitialOutForceMagnitude>k__BackingField: 1.8
+  <MegaspiderFallOutForceIncrement>k__BackingField: 5
+  <MegaspiderFallFallForceIncrement>k__BackingField: 6
+  <MegaspiderDeathAccelerationDecrement>k__BackingField: 0.5
+  <MegaspiderDeathDuration>k__BackingField: 2.5
+  <MegaspiderProjectileSpiderTransitionDuration>k__BackingField: 0.33
+  <MegaspiderProjectileSpiderSpeed>k__BackingField: 5
+  <MegaspiderProjectileSpiderGravity>k__BackingField: 3.5
+  <MegaspiderProjectileSpiderLampSideMaximum>k__BackingField: 1.4
+  <MegaspiderProjectileSpiderLampShiftMaximum>k__BackingField: 0.36
+  <MegaspiderProjectileSpiderAttackAccelerationPower>k__BackingField: 0.65
+  <MegaspiderProjectileSpiderAttackTopGravityMultiplier>k__BackingField: 0.25
+  <MegaspiderProjectileSpiderBounceSpeed>k__BackingField: 2.5

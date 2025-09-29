@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace _GAME.Scripts.InGamePresentation.CameraShake
 {
-    public abstract class BaseCameraShakeStrategy: ScriptableObject, ICameraShakeStrategy, IInitializable
+    public abstract class BaseCameraShakeStrategy: ScriptableObject, IStrategy, IInitializable
     {
         public abstract void Construct(Transform bossTransform);
         public abstract void Initialize();

@@ -8,6 +8,8 @@ using _GAME.Scripts.Enemies.Fly;
 using _GAME.Scripts.Enemies.Ladybug;
 using _GAME.Scripts.Enemies.Megabeetle;
 using _GAME.Scripts.Enemies.Megamothling;
+using _GAME.Scripts.Enemies.Megaspider;
+using _GAME.Scripts.Enemies.MegaspiderProjectileSpider;
 using _GAME.Scripts.Enemies.Moth;
 using _GAME.Scripts.Enemies.Mothling;
 using _GAME.Scripts.Enemies.Spider;
@@ -30,7 +32,9 @@ namespace _GAME.Scripts.Lib.Enums
             { EnemyType.Megabeetle , typeof(Megabeetle) },
             { EnemyType.Dragonfly , typeof(Dragonfly) },
             { EnemyType.DragonflyProjectileSpider , typeof(DragonflyProjectileSpider) },
-            { EnemyType.DragonflyProjectileMoth , typeof(DragonflyProjectileMoth) }
+            { EnemyType.DragonflyProjectileMoth , typeof(DragonflyProjectileMoth) },
+            { EnemyType.Megaspider , typeof(Megaspider) },
+            { EnemyType.MegaspiderProjectileSpider , typeof(MegaspiderProjectileSpider) }
         
         };
     
@@ -47,7 +51,9 @@ namespace _GAME.Scripts.Lib.Enums
             { typeof(Megabeetle), EnemyType.Megabeetle },
             { typeof(Dragonfly), EnemyType.Dragonfly },
             { typeof(DragonflyProjectileSpider), EnemyType.DragonflyProjectileSpider },
-            { typeof(DragonflyProjectileMoth), EnemyType.DragonflyProjectileMoth }
+            { typeof(DragonflyProjectileMoth), EnemyType.DragonflyProjectileMoth },
+            { typeof(Megaspider), EnemyType.Megaspider },
+            { typeof(MegaspiderProjectileSpider), EnemyType.MegaspiderProjectileSpider }
         };
     }
 }

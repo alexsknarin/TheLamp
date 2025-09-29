@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using _GAME.Scripts.Enemies.Megaspider.MovementStates;
 using _GAME.Scripts.Factories;
 using _GAME.Scripts.GameCoreSystems.DataManagement;
 using _GAME.Scripts.GameCoreSystems.DataManagement.DataTypes;
@@ -58,6 +59,7 @@ namespace _GAME.Scripts.GameCoreSystems.DI
         [Header("Scene References")]
         [SerializeField] private Transform _cameraTransform;
         [SerializeField] private LadybugLampPositionsHolder _ladybugLampPositionsHolder;
+        [SerializeField] private Transform _lampTransform;
 
         private CoroutineHost _coroutineHost;
 
@@ -94,6 +96,7 @@ namespace _GAME.Scripts.GameCoreSystems.DI
         private AnalyticsEventListener _analyticsEventListener;
         private AdvertisementEventListener _advertisementEventListener;
         private AttackZoneUpgradeEventListener _attackZoneUpgradeEventListener;
+        private MegaspiderWireAttackLampAttackEventListener _wireAttackLampAttackEventListener = new();
         // +++ Factories
         private BossCameraShakeFactory _bossCameraShakeFactory;
         // Enemy Factories
@@ -105,6 +108,8 @@ namespace _GAME.Scripts.GameCoreSystems.DI
         private MegamothlingMovementStateFactory _megamothlingMovementStateFactory;
         private MegabeetleMovementStateFactory _megabeetleMovementStateFactory;
         private DragonflyBehaviourStateFactory _dragonflyBehaviourStateFactory;
+        private MegaspiderMovementStateFactory _megaspiderMovementStateFactory;
+        private MegaspiderProjectileSpiderMovementStateFactory _megaspiderProjectileSpiderMovementStateFactory;
         private EnemyFactory _enemyFactory;
         private FXFactory _fxFactory;   
     
@@ -253,6 +258,17 @@ namespace _GAME.Scripts.GameCoreSystems.DI
                 _gameConfigService
             );
             _dragonflyBehaviourStateFactory.Initialize();
+            
+            _megaspiderMovementStateFactory = new MegaspiderMovementStateFactory(
+                _cameraTransform,
+                _lampTransform,
+                _wireAttackLampAttackEventListener,
+                _gameConfigService
+            );
+
+            _megaspiderProjectileSpiderMovementStateFactory = new MegaspiderProjectileSpiderMovementStateFactory(
+                _gameConfigService
+            );
         
             _enemyFactory = new EnemyFactory(
                 _mothlingMovementStateFactory, 
@@ -263,11 +279,14 @@ namespace _GAME.Scripts.GameCoreSystems.DI
                 _megamothlingMovementStateFactory,
                 _megabeetleMovementStateFactory,
                 _dragonflyBehaviourStateFactory,
+                _megaspiderMovementStateFactory,
+                _megaspiderProjectileSpiderMovementStateFactory,
                 _lampPositionProviderService,
                 _gameConfigService,
                 _spiderPositionHolder,
                 _fullscreenRendererFeatureProvider,
-                Camera.main
+                Camera.main,
+                _lampTransform
             );
             _enemyPool = new EnemyPool(_enemyFactory);
             _enemyPool.Initialize();
@@ -418,6 +437,9 @@ namespace _GAME.Scripts.GameCoreSystems.DI
                 _lampStickyDetectionService
             );
             _disposables.Add(_attackZoneUpgradeEventListener);
+            
+            _wireAttackLampAttackEventListener.SubscribeToLampAttack(_gameModel);
+            _disposables.Add(_wireAttackLampAttackEventListener);
         }
 
         private void Update()

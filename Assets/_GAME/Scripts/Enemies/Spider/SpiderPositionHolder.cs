@@ -2,6 +2,7 @@ using _GAME.Scripts.Enemies;
 using _GAME.Scripts.Lib.Interfaces;
 using UnityEngine;
 
+// TODO: Add to namespace, fix readonly
 public class SpiderPositionHolder: ISpiderSpawnAvailablityProvider, ISpiderSideDirectionProvider
 {
     private readonly int[] _directions = {-1, 1};

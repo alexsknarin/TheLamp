@@ -38,14 +38,18 @@ namespace _GAME.Scripts.GameCoreSystems.DataManagement.GameDataHandlers
                 int bossMegamothlingCount = jsonObject[2][i][8].AsInt;
                 int bossMegabeetleCount = jsonObject[2][i][9].AsInt;
                 int bossDragonflyCount = jsonObject[2][i][10].AsInt;
+                int bossMegaspiderCount = jsonObject[2][i][11].AsInt;
+                Debug.Log("bossMegaspiderCount : " + bossMegaspiderCount);
+                // Intro
                 string enemyIntro = (jsonObject[2][i][18]).ToString().Replace("\"", "");
                 
                 int totalEnemies = mothlingCount + flyCount + mothCount + fireflyCount + ladybugCount + spiderCount;
+                Debug.Log("Total enemies: " + totalEnemies);
                 // Add boss
                 int bossPosition = 10000;
                 bool hasBossWithCustomPosition = false;
                 EnemyType bossType = EnemyType.None;
-                if (bossMegabeetleCount + bossMegamothlingCount + bossWaspCount + bossDragonflyCount > 0)
+                if (bossMegabeetleCount + bossMegamothlingCount + bossWaspCount + bossDragonflyCount + bossMegaspiderCount > 0)
                 {
                     totalEnemies++;
                     if (bossMegabeetleCount > 0)
@@ -65,6 +69,10 @@ namespace _GAME.Scripts.GameCoreSystems.DataManagement.GameDataHandlers
                     else if (bossDragonflyCount > 0)
                     {
                         bossType = EnemyType.Dragonfly;
+                    }
+                    else if (bossMegaspiderCount > 0)
+                    {
+                        bossType = EnemyType.Megaspider;
                     }
                 }
             
@@ -96,6 +104,11 @@ namespace _GAME.Scripts.GameCoreSystems.DataManagement.GameDataHandlers
                     rawEnemyList.AddRange(Enumerable.Repeat(EnemyType.Megabeetle, bossMegabeetleCount));
                 if (bossDragonflyCount > 0)
                     rawEnemyList.AddRange(Enumerable.Repeat(EnemyType.Dragonfly, bossDragonflyCount));
+                if (bossMegaspiderCount > 0)
+                    rawEnemyList.AddRange(Enumerable.Repeat(EnemyType.Megaspider, bossMegaspiderCount));
+                
+                Debug.Log(rawEnemyList.Count + " enemies in queue");
+                Debug.Log(rawEnemyList[0].ToString());
                 
                 // Shuffle the list
                 int currentEnemyIndex = 0;
