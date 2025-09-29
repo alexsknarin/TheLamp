@@ -170,6 +170,7 @@ namespace _GAME.Scripts.Enemies.Megaspider
             _fallState.OutForceCancelled += OnFailFallOutForceCancelled;
             _successFallState.Ended += OnSuccessFallStateEnded;
             _fallState.Ended += OnFailFallStateEnded;
+            _dropFallState.Ended += OnDropFallStateEnded;
             
             _climbState.Ended += OnClimbStateEnded;
 
@@ -216,6 +217,7 @@ namespace _GAME.Scripts.Enemies.Megaspider
             _fallState.OutForceCancelled -= OnFailFallOutForceCancelled;
             _successFallState.Ended -= OnSuccessFallStateEnded;
             _fallState.Ended -= OnFailFallStateEnded;
+            _dropFallState.Ended -= OnDropFallStateEnded;
 
             _climbState.Ended -= OnClimbStateEnded;
             
@@ -736,6 +738,11 @@ namespace _GAME.Scripts.Enemies.Megaspider
         private void OnFailFallStateEnded()
         {
             FallStateEnded?.Invoke(_fallState);
+        }
+
+        private void OnDropFallStateEnded()
+        {
+            FallStateEnded?.Invoke(_dropFallState);
         }
 
         private void OnWireAttackStateEntered()
