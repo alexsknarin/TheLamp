@@ -74,6 +74,14 @@ Material:
         m_Texture: {fileID: 2800000, guid: c3f41c22364fdc843b9ec0034d2ab077, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _Mask01:
+        m_Texture: {fileID: 2800000, guid: c465717134de9704d86a587d3251b5e4, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Mask02:
+        m_Texture: {fileID: 2800000, guid: 4438ad372afc3214fb7c2b4e2aa518fe, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -95,11 +103,11 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SSSMask:
-        m_Texture: {fileID: 2800000, guid: f0b7de3c76c76934482d05250734f195, type: 3}
+        m_Texture: {fileID: 2800000, guid: 7a5296b766f14fe41a9999352f3148e0, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SheenMask:
-        m_Texture: {fileID: 2800000, guid: 302c01df11717124db6022d245984932, type: 3}
+        m_Texture: {fileID: 2800000, guid: 66d390ce73f39af429c8abd0ebba95fe, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SpecGlossMap:
@@ -127,9 +135,11 @@ Material:
     - _AddPrecomputedVelocity: 0
     - _AlphaClip: 0
     - _AlphaToMask: 0
+    - _AttackSemaphore: 0
     - _Blend: 0
     - _BlendModePreserveSpecular: 1
     - _BumpScale: 1
+    - _BurnEdgeSize: 0.05
     - _ClearCoatMask: 0
     - _ClearCoatSmoothness: 0
     - _Cull: 2
@@ -144,10 +154,14 @@ Material:
     - _Glossiness: 0
     - _GlossyReflections: 0
     - _HUE: 21.03
+    - _Health: 1
     - _LegMaskIntensity: 0.579
     - _Metallic: 0
+    - _NoiseOffset: 2.44
+    - _NoiseSize: 59.93
     - _OcclusionStrength: 1
     - _Parallax: 0.005
+    - _PreAttackIntensity: 1
     - _QueueControl: 0
     - _QueueOffset: 0
     - _ReceiveShadows: 1
@@ -171,8 +185,10 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
+    - _BurnColor: {r: 1.590808, g: 0.0354425, b: 0, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _PreAttackEmissionColor: {r: 2.958679, g: 0.07745238, b: 0.03098099, a: 1}
     - _SheenColor: {r: 0.82075465, g: 1, b: 0.97268355, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
     - _SpecColorMax: {r: 0.44025147, g: 0.44025147, b: 0.44025147, a: 1}
