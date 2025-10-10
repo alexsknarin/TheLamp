@@ -144,12 +144,14 @@ Material:
     - _ClearCoatSmoothness: 0
     - _Cull: 2
     - _Cutoff: 0.5
+    - _DamageFade: 0
+    - _DeathFade: 0
     - _DetailAlbedoMapScale: 1
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
     - _DstBlendAlpha: 0
     - _EnvironmentReflections: 1
-    - _FresnelPower: 1.81
+    - _FresnelPower: 1.47
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
@@ -168,7 +170,7 @@ Material:
     - _RoughnessMax: 0.494
     - _RoughnessMin: 0.939
     - _SATURATION: 0.5
-    - _SheenTextureMix: 0.16
+    - _SheenTextureMix: -0.16
     - _Smoothness: 0.468
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
@@ -187,6 +189,7 @@ Material:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _BurnColor: {r: 1.590808, g: 0.0354425, b: 0, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _DamageColor: {r: 3.688606, g: 0.131729, b: 0, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _PreAttackEmissionColor: {r: 2.958679, g: 0.07745238, b: 0.03098099, a: 1}
     - _SheenColor: {r: 0.82075465, g: 1, b: 0.97268355, a: 1}
