@@ -7,12 +7,13 @@ namespace _GAME.Scripts.Enemies.Generic.Presentation
     {
         [SerializeField] private VisualEffect _damageEmitParticles;
         
-        const float DamageRateMultiplier = 22f;
-        const float DeathRateMultiplier = 35f;
+        const float DamageRateMultiplier = 22f; // TODO: config
+        const float DeathRateMultiplier = 35f;  // TODO: config
         
         public void Initialize()
         {
             _damageEmitParticles.gameObject.SetActive(false);
+            _damageEmitParticles.SetFloat("Rate", 0);
         }
 
         public void HandleHealthChanged(int currentHealth, int maxHealth)

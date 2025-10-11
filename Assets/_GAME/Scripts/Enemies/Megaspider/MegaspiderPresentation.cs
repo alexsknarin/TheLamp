@@ -14,6 +14,9 @@ namespace _GAME.Scripts.Enemies.Megaspider
         [SerializeField] private DamageFlashSingleMaterial _damageFlash;
         [SerializeField] private PreAttackFlashSingleMaterial _preAttackFlash;
         [SerializeField] private float _preattackDuration = 0.15f;
+        [SerializeField] private HealthIndicationSingleMaterial _healthIndication;
+        [SerializeField] private DamageEmitParticles _damageEmitParticles;
+        [SerializeField] private DeathFlashSingleMaterial _deathFlash;
         
         private WaitForSeconds _preattackDelay;  
         
@@ -24,16 +27,29 @@ namespace _GAME.Scripts.Enemies.Megaspider
             _spiderwebController.Initialize();
             _damageFlash.Initialize();
             _preAttackFlash.Initialize();
-            
-            _megaspider.Damaged += _damageFlash.Play;
-            _movement.PreAttackStarted += StartPreattack;
+            _healthIndication.Initialize();
+            _deathFlash.Initialize();
 
+            _movement.PreAttackStarted += StartPreattack;
+            _megaspider.Started += OnMegaspiderStarted;
+            _megaspider.Damaged += _damageFlash.Play;
+            _megaspider.HealthChanged += _healthIndication.Refresh;
+            _megaspider.HealthChanged += _damageEmitParticles.HandleHealthChanged;
+            _megaspider.Dead += _deathFlash.Play;
+            _megaspider.Dead += _damageEmitParticles.HandleDead;
+            _movement.DeathStateEnded += _damageEmitParticles.HandleDeathEnd;
         }
 
         private void OnDestroy()
         {
-            _megaspider.Damaged -= _damageFlash.Play;
             _movement.PreAttackStarted -= StartPreattack;
+            _megaspider.Started -= OnMegaspiderStarted;
+            _megaspider.Damaged -= _damageFlash.Play;
+            _megaspider.HealthChanged -= _healthIndication.Refresh;
+            _megaspider.HealthChanged -= _damageEmitParticles.HandleHealthChanged;
+            _megaspider.Dead -= _deathFlash.Play;
+            _megaspider.Dead -= _damageEmitParticles.HandleDead;
+            _movement.DeathStateEnded -= _damageEmitParticles.HandleDeathEnd;
         }
 
         private void StartPreattack()
@@ -46,6 +62,13 @@ namespace _GAME.Scripts.Enemies.Megaspider
         {
             yield return _preattackDelay;
             _preAttackFlash.PreAttackEnd();
+        }
+
+        private void OnMegaspiderStarted()
+        {
+            _healthIndication.Reset();
+            _damageEmitParticles.Initialize();
+            _deathFlash.Initialize();
         }
     }
 }

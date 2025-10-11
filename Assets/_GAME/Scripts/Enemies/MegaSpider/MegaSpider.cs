@@ -32,7 +32,7 @@ namespace _GAME.Scripts.Enemies.Megaspider
         public event Action<CollidableEnemy> AnimatedAttackStarted;
         public event Action Damaged;
         public event Action<int, int> HealthChanged;
-        public event Action Died;
+        public event Action Dead;
         public event Action SpreadRequested;
         
         public event Action<CollidableEnemy> ProjectileShot;
@@ -113,7 +113,7 @@ namespace _GAME.Scripts.Enemies.Megaspider
                     _attackResult = AttackResult.Death;
                     _currentHealth = 0; 
                     _movement.TriggerFall(_attackResult);
-                    Died?.Invoke();
+                    Dead?.Invoke();
                 }
             }
         }
