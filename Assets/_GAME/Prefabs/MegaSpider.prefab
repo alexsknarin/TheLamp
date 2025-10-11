@@ -128,6 +128,7 @@ GameObject:
   - component: {fileID: 4562466805752491100}
   - component: {fileID: 5783863906398185475}
   - component: {fileID: 6245810979945890085}
+  - component: {fileID: 630220866309748892}
   - component: {fileID: 8166035647375991389}
   m_Layer: 0
   m_Name: Megaspider
@@ -357,6 +358,22 @@ MonoBehaviour:
   _animationClipEvents: {fileID: 6309120008655084617}
   _spiderwebController: {fileID: 5783863906398185475}
   _damageFlash: {fileID: 8166035647375991389}
+  _preAttackFlash: {fileID: 630220866309748892}
+--- !u!114 &630220866309748892
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1472883947192693691}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 879cb391c7353d24a8df90e6af267512, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _meshRenderer: {fileID: 4825004682827822413}
+  _enableTrailRenderer: 0
+  _trailRenderer: {fileID: 0}
 --- !u!114 &8166035647375991389
 MonoBehaviour:
   m_ObjectHideFlags: 0

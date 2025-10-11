@@ -108,6 +108,7 @@ namespace _GAME.Scripts.Enemies.Megaspider
         public event Action SwingStateEnded;
         public event Action<IPositionProvider> FallStateEnded;
         public event Action<IAttackWiresProvider> WireAttackStateEntered;
+        public event Action PreAttackStarted;
 
         public void SetCollisionRadius(float radius)
         {
@@ -145,6 +146,7 @@ namespace _GAME.Scripts.Enemies.Megaspider
             _animationClipEvents.HangStartRequested += OnHangStartRequested;
             _animationClipEvents.HangStopRequested += OnHangStopRequested;
             _animationClipEvents.HangBreakRequested += OnHangBreakRequested;
+            _animationClipEvents.PreattackCalled += OnPreattackStarted;
             
             _zigzagAttackLState.Started += OnAnimatedAttackStarted;
             _zigzagAttackRState.Started += OnAnimatedAttackStarted;
@@ -153,8 +155,11 @@ namespace _GAME.Scripts.Enemies.Megaspider
             _hangJumpAttackLState.Started += OnAnimatedAttackStarted;
             _hangJumpAttackRState.Started += OnAnimatedAttackStarted;
             _tangleAttackLState.Started += OnAnimatedAttackStarted;
+            _tangleAttackLState.Started += OnPreattackStarted;
             _tangleAttackRState.Started += OnAnimatedAttackStarted;
+            _tangleAttackRState.Started += OnPreattackStarted;
             _wireAttackState.Started += OnAnimatedAttackStarted;
+            _wireAttackState.Started += OnPreattackStarted;
 
             _tangleAttackLState.Started += OnTangleAttackLStarted;
             _tangleAttackRState.Started += OnTangleAttackRStarted;
@@ -176,6 +181,7 @@ namespace _GAME.Scripts.Enemies.Megaspider
 
             _bounceState.Ended += OnBounceStateEnded;
             _deathFallState.Ended += OnDeathStateEnded;
+            
 
 
         }
@@ -192,6 +198,7 @@ namespace _GAME.Scripts.Enemies.Megaspider
             _animationClipEvents.HangStartRequested -= OnHangStartRequested;
             _animationClipEvents.HangStopRequested -= OnHangStopRequested;
             _animationClipEvents.HangBreakRequested -= OnHangBreakRequested;
+            _animationClipEvents.PreattackCalled -= OnPreattackStarted;
             
             _zigzagAttackLState.Started -= OnAnimatedAttackStarted;
             _zigzagAttackRState.Started -= OnAnimatedAttackStarted;
@@ -200,8 +207,11 @@ namespace _GAME.Scripts.Enemies.Megaspider
             _hangJumpAttackLState.Started -= OnAnimatedAttackStarted;
             _hangJumpAttackRState.Started -= OnAnimatedAttackStarted;
             _tangleAttackLState.Started -= OnAnimatedAttackStarted;
+            _tangleAttackLState.Started -= OnPreattackStarted;
             _tangleAttackRState.Started -= OnAnimatedAttackStarted;
+            _tangleAttackRState.Started -= OnPreattackStarted;
             _wireAttackState.Started -= OnAnimatedAttackStarted;
+            _wireAttackState.Started -= OnPreattackStarted;
             
             _tangleAttackLState.Started -= OnTangleAttackLStarted;
             _tangleAttackRState.Started -= OnTangleAttackRStarted;
@@ -748,6 +758,11 @@ namespace _GAME.Scripts.Enemies.Megaspider
         private void OnWireAttackStateEntered()
         {
             WireAttackStateEntered?.Invoke(_wireAttackState);
+        }
+
+        private void OnPreattackStarted()
+        {
+            PreAttackStarted?.Invoke();
         }
     }
 }

@@ -18,6 +18,7 @@ namespace _GAME.Scripts.Enemies.Megaspider
         public event Action HangStartRequested;
         public event Action HangStopRequested;
         public event Action HangBreakRequested;
+        public event Action PreattackCalled;
     
         public void ClipEnded()
         {
@@ -82,6 +83,11 @@ namespace _GAME.Scripts.Enemies.Megaspider
         public void RequestHangBreak()
         {
             HangBreakRequested?.Invoke();
+        }
+
+        public void CallPreattack()
+        {
+            PreattackCalled?.Invoke();
         }
     }
 }
