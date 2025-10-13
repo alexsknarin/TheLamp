@@ -88,7 +88,8 @@ namespace _GAME.Scripts.Enemies.Megaspider
             _collisionThreshold = gameConfigService.PlayerConfig.CollisionThreshold;
             _swingZoneSize = gameConfigService.GameConfig.MegaspiderSwingZoneSize;
         }
-        
+
+        public event Action EnterStateStarted;
         public event Action AnimatedAttackStarted;
         public event Action DeathStateEnded;
         public event Action<Type> StaticBridge1Called;
@@ -147,7 +148,7 @@ namespace _GAME.Scripts.Enemies.Megaspider
             _animationClipEvents.HangStopRequested += OnHangStopRequested;
             _animationClipEvents.HangBreakRequested += OnHangBreakRequested;
             _animationClipEvents.PreattackCalled += OnPreattackStarted;
-            
+
             _zigzagAttackLState.Started += OnAnimatedAttackStarted;
             _zigzagAttackRState.Started += OnAnimatedAttackStarted;
             _hangAttackLState.Started += OnAnimatedAttackStarted;
@@ -181,6 +182,7 @@ namespace _GAME.Scripts.Enemies.Megaspider
 
             _bounceState.Ended += OnBounceStateEnded;
             _deathFallState.Ended += OnDeathStateEnded;
+            
             
 
 
@@ -606,7 +608,7 @@ namespace _GAME.Scripts.Enemies.Megaspider
             else
                 _stateMachine.SetState(_enterRState);
             
-            // _stateMachine.SetState(_projectileTopAttackRState);
+            EnterStateStarted?.Invoke();
         }
 
         private void Update()
