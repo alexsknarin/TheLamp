@@ -97,6 +97,7 @@ namespace _GAME.Scripts.Enemies.Megaspider
         public event Action HangJumpAttackStateStarted;
         public event Action ProjectileAttackStateStarted;
         public event Action AnimatedAttackStarted;
+        public event Action BounceStateStarted;
         public event Action DeathStateEnded;
         public event Action<Type> StaticBridge1Called;
         public event Action StaticBridge1Broken;
@@ -111,6 +112,7 @@ namespace _GAME.Scripts.Enemies.Megaspider
         public event Action<Vector3> TanglePivotChanged;
         public event Action TangleAttackEnded;
         public event Action<IPositionProvider> SuccessFallOutForceCancelled;
+        public event Action ClimbStateStarted;
         public event Action ClimbStateEnded;
         public event Action<IPositionProvider> FailFallOutForceCancelled;
         public event Action SwingStateEnded;
@@ -187,6 +189,9 @@ namespace _GAME.Scripts.Enemies.Megaspider
             _tangleAttackRState.Ended += OnTangleAttackEnded;
             
             _wireAttackState.Entered += OnWireAttackStateEntered;
+            
+            _bounceState.Started += OnBounceStateStarted;
+            _climbState.Started += OnClimbStateStarted;
 
             _swingLState.Ended += OnSwingEnded;
             _swingRState.Ended += OnSwingEnded;
@@ -252,6 +257,9 @@ namespace _GAME.Scripts.Enemies.Megaspider
             _tangleAttackRState.Ended -= OnTangleAttackEnded;
 
             _wireAttackState.Entered -= OnWireAttackStateEntered;
+
+            _bounceState.Started -= OnBounceStateStarted;
+            _climbState.Started -= OnClimbStateStarted;
             
             _swingLState.Ended -= OnSwingEnded;
             _swingRState.Ended -= OnSwingEnded;
@@ -839,6 +847,16 @@ namespace _GAME.Scripts.Enemies.Megaspider
         private void OnTanglePivotChanged(Vector3 pivotPosition)
         {
             TanglePivotChanged?.Invoke(pivotPosition);
+        }
+
+        private void OnBounceStateStarted()
+        {
+            BounceStateStarted?.Invoke();
+        }
+
+        private void OnClimbStateStarted()
+        {
+            ClimbStateStarted?.Invoke();
         }
     }
 }

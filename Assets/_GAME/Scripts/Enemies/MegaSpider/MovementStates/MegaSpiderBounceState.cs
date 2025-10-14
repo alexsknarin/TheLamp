@@ -30,6 +30,7 @@ namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
             _speed = speed;
         }
         
+        public event Action Started;
         public event Action Ended;
         
         public override void Enter()
@@ -38,6 +39,7 @@ namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
             _calculatedTransform.position = _visibleBodyTransform.position;
             HierarchyUtilities.ParentWithoutOffset(_visibleBodyTransform, _calculatedTransform);
             _direction = (_calculatedTransform.position - _lampTransform.position).normalized;
+            Started?.Invoke();
         }
 
         public override void Tick()

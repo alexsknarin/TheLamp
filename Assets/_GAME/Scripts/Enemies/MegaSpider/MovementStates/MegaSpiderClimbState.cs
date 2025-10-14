@@ -30,6 +30,7 @@ namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
             _climbCurve = climbCurve;
         }
         
+        public event Action Started;
         public event Action Ended;
         
         public override void Enter()
@@ -41,6 +42,7 @@ namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
             HierarchyUtilities.ParentWithoutOffset(_visibleBodyTransform, _calculatedTransform);
             _originalHeight = _calculatedTransform.position.y;
             _localTime = 0;
+            Started?.Invoke();
         }
 
         public override void Tick()

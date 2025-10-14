@@ -40,9 +40,12 @@ namespace _GAME.Scripts.Enemies.MegaSpider
         [SerializeField] private Vector3 _enterUpTarget;
         private Vector3 _previousPosition;
         private Vector3 _velocityDirection;
-        private Vector3 _forward;
+        [SerializeField] private Vector3 _forward;
         private Vector3 _up;
+        [SerializeField] private Vector3 _bounceStartForwardDirection;
         [SerializeField] private Vector3 _hangPosition;
+        [SerializeField] private float _bounceRotationDuration = 0.5f;
+        private float _localTime;
 
         public void Initialize()
         {
@@ -55,6 +58,8 @@ namespace _GAME.Scripts.Enemies.MegaSpider
             _movement.HangJumpAttackStateStarted += OnHangJumpAttackStateStarted;
             _movement.TangleAttackStarted += OnTangleAttackStarted;
             _movement.TanglePivotChanged += OnTanglePivotChanged;
+            _movement.BounceStateStarted += OnBounceStateStarted;
+            _movement.ClimbStateStarted += OnClimbStateStarted;
         }
 
         private void OnDestroy()
@@ -68,6 +73,8 @@ namespace _GAME.Scripts.Enemies.MegaSpider
             _movement.HangJumpAttackStateStarted -= OnHangJumpAttackStateStarted;
             _movement.TangleAttackStarted -= OnTangleAttackStarted;
             _movement.TanglePivotChanged -= OnTanglePivotChanged;
+            _movement.BounceStateStarted -= OnBounceStateStarted;
+            _movement.ClimbStateStarted -= OnClimbStateStarted;
         }
 
         private void LateUpdate()
@@ -95,6 +102,9 @@ namespace _GAME.Scripts.Enemies.MegaSpider
                     break;
                 case RotationState.TangleAttack:
                     PerformTangleAttackState();
+                    break;
+                case RotationState.Bounce:
+                    PerformBounceState();
                     break;
             }
         
@@ -204,6 +214,34 @@ namespace _GAME.Scripts.Enemies.MegaSpider
             CalculateStandardHangVectors();   
         }
 
+        private void OnTanglePivotChanged(Vector3 pivotPosition)
+        {
+            _hangPosition = pivotPosition;       
+        }
+
+        private void OnBounceStateStarted()
+        {
+            _bounceStartForwardDirection = _forward;
+            _localTime = 0;
+            _rotationState = RotationState.Bounce;
+        }
+
+        private void PerformBounceState()
+        {
+            if (_localTime < _bounceRotationDuration)
+            {
+                float phase = _localTime / _bounceRotationDuration;
+                _forward = Vector3.LerpUnclamped(_bounceStartForwardDirection, Vector3.down, phase);
+                _up = Vector3.back;    
+            }
+            _localTime += Time.deltaTime;
+        }
+
+        private void OnClimbStateStarted()
+        {
+            _rotationState = RotationState.Climb;
+        }
+
         private void CalculateStandardRunVectors()
         {
             _forward = _velocityDirection;
@@ -214,11 +252,6 @@ namespace _GAME.Scripts.Enemies.MegaSpider
         {
             _forward = -(_hangPosition - _bodyTransform.position).normalized;
             _up = Vector3.back;
-        }
-
-        private void OnTanglePivotChanged(Vector3 pivotPosition)
-        {
-            _hangPosition = pivotPosition;       
         }
     }
 }
