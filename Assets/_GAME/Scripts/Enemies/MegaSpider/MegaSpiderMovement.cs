@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using _GAME.Scripts.Enemies.Dragonfly; // TODO: move to library
 using _GAME.Scripts.Enemies.Megaspider.MovementStates;
 using _GAME.Scripts.Factories;
@@ -90,6 +91,11 @@ namespace _GAME.Scripts.Enemies.Megaspider
         }
 
         public event Action EnterStateStarted;
+        public event Action ZigzagAttackStateStarted;
+        public event Action WireAttackStateStarted;
+        public event Action HangAttackStateStarted;
+        public event Action HangJumpAttackStateStarted;
+        public event Action ProjectileAttackStateStarted;
         public event Action AnimatedAttackStarted;
         public event Action DeathStateEnded;
         public event Action<Type> StaticBridge1Called;
@@ -102,6 +108,7 @@ namespace _GAME.Scripts.Enemies.Megaspider
         public event Action HangStopRequested;
         public event Action HangBreakRequested;
         public event Action<ITangledWireProvider> TangleAttackStarted;
+        public event Action<Vector3> TanglePivotChanged;
         public event Action TangleAttackEnded;
         public event Action<IPositionProvider> SuccessFallOutForceCancelled;
         public event Action ClimbStateEnded;
@@ -162,6 +169,18 @@ namespace _GAME.Scripts.Enemies.Megaspider
             _wireAttackState.Started += OnAnimatedAttackStarted;
             _wireAttackState.Started += OnPreattackStarted;
 
+            _tangleAttackLState.PivotChanged += OnTanglePivotChanged;
+            _tangleAttackRState.PivotChanged += OnTanglePivotChanged;
+            
+            _projectileBottomAttackLState.Started += OnProjectileAttackStarted;
+            _projectileBottomAttackRState.Started += OnProjectileAttackStarted;
+            _projectileDoubleUpAttackLState.Started += OnProjectileAttackStarted;
+            _projectileDoubleUpAttackRState.Started += OnProjectileAttackStarted;
+            _projectileTopAttackLState.Started += OnProjectileAttackStarted;
+            _projectileTopAttackRState.Started += OnProjectileAttackStarted;
+            _projectileDoubleDownAttackLState.Started += OnProjectileAttackStarted;
+            _projectileDoubleDownAttackRState.Started += OnProjectileAttackStarted;
+
             _tangleAttackLState.Started += OnTangleAttackLStarted;
             _tangleAttackRState.Started += OnTangleAttackRStarted;
             _tangleAttackLState.Ended += OnTangleAttackEnded;
@@ -215,6 +234,18 @@ namespace _GAME.Scripts.Enemies.Megaspider
             _wireAttackState.Started -= OnAnimatedAttackStarted;
             _wireAttackState.Started -= OnPreattackStarted;
             
+            _tangleAttackLState.PivotChanged -= OnTanglePivotChanged;
+            _tangleAttackRState.PivotChanged -= OnTanglePivotChanged;
+
+            _projectileBottomAttackLState.Started -= OnProjectileAttackStarted;
+            _projectileBottomAttackRState.Started -= OnProjectileAttackStarted;
+            _projectileDoubleUpAttackLState.Started -= OnProjectileAttackStarted;
+            _projectileDoubleUpAttackRState.Started -= OnProjectileAttackStarted;
+            _projectileTopAttackLState.Started -= OnProjectileAttackStarted;
+            _projectileTopAttackRState.Started -= OnProjectileAttackStarted;
+            _projectileDoubleDownAttackLState.Started -= OnProjectileAttackStarted;
+            _projectileDoubleDownAttackRState.Started -= OnProjectileAttackStarted;
+            
             _tangleAttackLState.Started -= OnTangleAttackLStarted;
             _tangleAttackRState.Started -= OnTangleAttackRStarted;
             _tangleAttackLState.Ended -= OnTangleAttackEnded;
@@ -235,13 +266,6 @@ namespace _GAME.Scripts.Enemies.Megaspider
             
             _bounceState.Ended -= OnBounceStateEnded;
             _deathFallState.Ended -= OnDeathStateEnded;
-        }
-
-        private void OnAnimatedAttackStarted()
-        {
-            _isAttackStateBeforeCollision = true;
-            _isCollided = false;
-            AnimatedAttackStarted?.Invoke();
         }
 
         private void CreateMovementStates()
@@ -280,15 +304,25 @@ namespace _GAME.Scripts.Enemies.Megaspider
         {
             // Initialize StateMachine 
             // Enter to Attacks
-            At(_enterLState, _wireAttackState, IsAnimationEndedRandom0Of4());
-            At(_enterLState, _zigzagAttackLState, IsAnimationEndedRandom1Of4());
-            At(_enterLState, _projectileBottomAttackLState, IsAnimationEndedRandom2Of4());
-            At(_enterLState, _projectileDoubleUpAttackLState, IsAnimationEndedRandom3Of4());
+            // At(_enterLState, _wireAttackState, IsAnimationEndedRandom0Of4());
+            // At(_enterLState, _zigzagAttackLState, IsAnimationEndedRandom1Of4());
+            // At(_enterLState, _projectileBottomAttackLState, IsAnimationEndedRandom2Of4());
+            // At(_enterLState, _projectileDoubleUpAttackLState, IsAnimationEndedRandom3Of4());
+            //
+            // At(_enterRState, _wireAttackState, IsAnimationEndedRandom0Of4());
+            // At(_enterRState, _zigzagAttackRState, IsAnimationEndedRandom1Of4());
+            // At(_enterRState, _projectileBottomAttackRState, IsAnimationEndedRandom2Of4());
+            // At(_enterRState, _projectileDoubleUpAttackRState, IsAnimationEndedRandom3Of4());
             
-            At(_enterRState, _wireAttackState, IsAnimationEndedRandom0Of4());
-            At(_enterRState, _zigzagAttackRState, IsAnimationEndedRandom1Of4());
-            At(_enterRState, _projectileBottomAttackRState, IsAnimationEndedRandom2Of4());
-            At(_enterRState, _projectileDoubleUpAttackRState, IsAnimationEndedRandom3Of4());
+            At(_enterLState, _tangleAttackLState, IsAnimationEndedRandom0Of4());
+            At(_enterLState, _tangleAttackLState, IsAnimationEndedRandom1Of4());
+            At(_enterLState, _tangleAttackLState, IsAnimationEndedRandom2Of4());
+            At(_enterLState, _tangleAttackLState, IsAnimationEndedRandom3Of4());
+            
+            At(_enterRState, _tangleAttackRState, IsAnimationEndedRandom0Of4());
+            At(_enterRState, _tangleAttackRState, IsAnimationEndedRandom1Of4());
+            At(_enterRState, _tangleAttackRState, IsAnimationEndedRandom2Of4());
+            At(_enterRState, _tangleAttackRState, IsAnimationEndedRandom3Of4());
             
             // Wire Attack Transitions
             At(_wireAttackState, _bounceState, IsCollided());
@@ -636,6 +670,36 @@ namespace _GAME.Scripts.Enemies.Megaspider
             }
         }
 
+        private void OnAnimatedAttackStarted()
+        {
+            _isAttackStateBeforeCollision = true;
+            _isCollided = false;
+            AnimatedAttackStarted?.Invoke();
+            if (_stateMachine.CurrentState == _zigzagAttackLState || _stateMachine.CurrentState == _zigzagAttackRState)
+            {
+                ZigzagAttackStateStarted?.Invoke();
+            }
+            else if (_stateMachine.CurrentState == _wireAttackState)
+            {
+                WireAttackStateStarted?.Invoke();
+            }
+            else if (_stateMachine.CurrentState == _hangAttackLState || _stateMachine.CurrentState == _hangAttackRState)
+            {
+                StartCoroutine(HangAttackStateStartedDelay());
+            }
+            else if (_stateMachine.CurrentState == _hangJumpAttackLState 
+                     || _stateMachine.CurrentState == _hangJumpAttackRState)
+            {
+                HangJumpAttackStateStarted?.Invoke();
+            }
+        }
+
+        private IEnumerator HangAttackStateStartedDelay()
+        {
+            yield return null;
+            HangAttackStateStarted?.Invoke();
+        }
+
         private void OnAnimClipEnded()
         {
             _isAnimClipEnded = true;
@@ -766,5 +830,16 @@ namespace _GAME.Scripts.Enemies.Megaspider
         {
             PreAttackStarted?.Invoke();
         }
+
+        private void OnProjectileAttackStarted()
+        {
+            ProjectileAttackStateStarted?.Invoke();
+        }
+
+        private void OnTanglePivotChanged(Vector3 pivotPosition)
+        {
+            TanglePivotChanged?.Invoke(pivotPosition);
+        }
     }
 }
+

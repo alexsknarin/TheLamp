@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using _GAME.Scripts.Lib;
 using _GAME.Scripts.Lib.Interfaces;
@@ -73,6 +74,10 @@ namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
             _tangleAcceleration = configService.GameConfig.MegaspiderTangleAttackTangleAcceleration;
         }
         
+        public event Action Started;
+        public event Action Ended;
+        public event Action<Vector3> PivotChanged;
+        
         Vector3 ITangledWireProvider.StartPoint => _hangPoint;
         List<Vector3> ITangledWireProvider.CollisionPoints => _collisionPoints;
         Vector3 ITangledWireProvider.EndPoint => _currentPosition;
@@ -84,6 +89,7 @@ namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
                 _calculatedTransform);
             
             StartEnterState();
+            Started?.Invoke();
         }
 
         public override void Tick()
@@ -222,13 +228,16 @@ namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
                     _currentPositionLocalized = _lampTransform.worldToLocalMatrix.MultiplyPoint(_currentPosition);
                 
                     _collisionPoints.Add(tangentPoint);
+                    PivotChanged?.Invoke(tangentPoint);
                     _collisionPointsLocalized.Add(_lampTransform.worldToLocalMatrix.MultiplyPoint(tangentPoint));
                 }
                 else
                 {
                     _currentPositionLocalized = pivot + correctedCurrentDirection;
                     _collisionPointsLocalized.Add(tangentPoint);
-                    _collisionPoints.Add(_lampTransform.localToWorldMatrix.MultiplyPoint(tangentPoint));
+                    Vector3 worldPivot = _lampTransform.localToWorldMatrix.MultiplyPoint(tangentPoint);
+                    _collisionPoints.Add(worldPivot);
+                    PivotChanged?.Invoke(worldPivot);
                 }
                 return true;
             }
@@ -322,6 +331,9 @@ namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
             }
         }
 
-
+        public override void Exit()
+        {
+            Ended?.Invoke();
+        }
     }
 }
