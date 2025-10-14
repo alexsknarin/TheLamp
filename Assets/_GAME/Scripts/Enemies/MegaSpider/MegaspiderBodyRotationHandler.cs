@@ -46,6 +46,14 @@ namespace _GAME.Scripts.Enemies.MegaSpider
         [SerializeField] private Vector3 _hangPosition;
         [SerializeField] private float _bounceRotationDuration = 0.5f;
         private float _localTime;
+        private Vector3 _swingPivot;
+        private float _swingZoneSize;
+
+        public void Construct(IGameConfigService configService)
+        {
+            _swingPivot = configService.GameConfig.MegaspiderSwingSwingPivot;
+            _swingZoneSize = configService.GameConfig.MegaspiderSwingZoneSize;
+        }
 
         public void Initialize()
         {
@@ -60,6 +68,9 @@ namespace _GAME.Scripts.Enemies.MegaSpider
             _movement.TanglePivotChanged += OnTanglePivotChanged;
             _movement.BounceStateStarted += OnBounceStateStarted;
             _movement.ClimbStateStarted += OnClimbStateStarted;
+            _movement.SuccessFallOutForceCancelled += OnFallOutForceCancelled;
+            _movement.FailFallOutForceCancelled += OnFallOutForceCancelled;
+            _movement.FallStateEnded += OnFallOutForceCancelled;
         }
 
         private void OnDestroy()
@@ -75,6 +86,9 @@ namespace _GAME.Scripts.Enemies.MegaSpider
             _movement.TanglePivotChanged -= OnTanglePivotChanged;
             _movement.BounceStateStarted -= OnBounceStateStarted;
             _movement.ClimbStateStarted -= OnClimbStateStarted;
+            _movement.SuccessFallOutForceCancelled -= OnFallOutForceCancelled;
+            _movement.FailFallOutForceCancelled -= OnFallOutForceCancelled;
+            _movement.FallStateEnded -= OnFallOutForceCancelled;
         }
 
         private void LateUpdate()
@@ -105,6 +119,9 @@ namespace _GAME.Scripts.Enemies.MegaSpider
                     break;
                 case RotationState.Bounce:
                     PerformBounceState();
+                    break;
+                case RotationState.Swing:
+                    PerformSwingState();
                     break;
             }
         
@@ -241,7 +258,24 @@ namespace _GAME.Scripts.Enemies.MegaSpider
         {
             _rotationState = RotationState.Climb;
         }
-
+        
+        private void OnFallOutForceCancelled(IPositionProvider positionProvider)
+        {
+            if (Mathf.Abs(positionProvider.Position3D.x) > _swingZoneSize)
+            {
+                return;
+            }
+            
+            _hangPosition = _swingPivot;
+            _hangPosition.x = Mathf.Abs(_hangPosition.x) * Mathf.Sign(positionProvider.Position3D.x);
+            _rotationState = RotationState.Swing;
+        }
+        
+        private void PerformSwingState()
+        {
+            CalculateStandardHangVectors();
+        }
+        
         private void CalculateStandardRunVectors()
         {
             _forward = _velocityDirection;

@@ -398,6 +398,7 @@ namespace _GAME.Scripts.Factories
             enemyInstance.GetComponent<MegaspiderSpiderwebController>().Construct(_gameConfigService);
             enemyInstance.GetComponent<MegaspiderSpiderwebController>().Initialize();
             enemyInstance.GetComponent<MegaspiderPresentation>().Initialize();
+            enemyInstance.GetComponent<MegaspiderBodyRotationHandler>().Construct(_gameConfigService);
             enemyInstance.GetComponent<MegaspiderBodyRotationHandler>().Initialize();
             
             return enemy;
