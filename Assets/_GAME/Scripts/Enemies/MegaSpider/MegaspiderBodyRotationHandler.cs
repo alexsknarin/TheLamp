@@ -18,8 +18,6 @@ namespace _GAME.Scripts.Enemies.MegaSpider
             TangleAttack,
             WireAttack,
             Bounce,
-            SuccessFall,
-            FailFall,
             DeathFall,
             Climb,
             Swing
@@ -28,8 +26,7 @@ namespace _GAME.Scripts.Enemies.MegaSpider
         private enum AnimationMode
         {
             Run,
-            Climb,
-            Swing
+            Climb
         }
         
         [SerializeField] private Transform _bodyTransform;
@@ -45,6 +42,10 @@ namespace _GAME.Scripts.Enemies.MegaSpider
         [SerializeField] private Vector3 _bounceStartForwardDirection;
         [SerializeField] private Vector3 _hangPosition;
         [SerializeField] private float _bounceRotationDuration = 0.5f;
+        [SerializeField] private Vector3 _deathStartForwardDirection;
+        [SerializeField] private Vector3 _deathStartUpDirection;
+        [SerializeField] private Vector3 _deathEndForwardDirection;
+        [SerializeField] private float _deathDuration = 1.6f;
         private float _localTime;
         private Vector3 _swingPivot;
         private float _swingZoneSize;
@@ -71,6 +72,7 @@ namespace _GAME.Scripts.Enemies.MegaSpider
             _movement.SuccessFallOutForceCancelled += OnFallOutForceCancelled;
             _movement.FailFallOutForceCancelled += OnFallOutForceCancelled;
             _movement.FallStateEnded += OnFallOutForceCancelled;
+            _movement.DeathStateStarted += OnDeathStateStarted;
         }
 
         private void OnDestroy()
@@ -89,6 +91,7 @@ namespace _GAME.Scripts.Enemies.MegaSpider
             _movement.SuccessFallOutForceCancelled -= OnFallOutForceCancelled;
             _movement.FailFallOutForceCancelled -= OnFallOutForceCancelled;
             _movement.FallStateEnded -= OnFallOutForceCancelled;
+            _movement.DeathStateStarted -= OnDeathStateStarted;
         }
 
         private void LateUpdate()
@@ -122,6 +125,9 @@ namespace _GAME.Scripts.Enemies.MegaSpider
                     break;
                 case RotationState.Swing:
                     PerformSwingState();
+                    break;
+                case RotationState.DeathFall:
+                    PerformDeathFallState();
                     break;
             }
         
@@ -258,7 +264,7 @@ namespace _GAME.Scripts.Enemies.MegaSpider
         {
             _rotationState = RotationState.Climb;
         }
-        
+
         private void OnFallOutForceCancelled(IPositionProvider positionProvider)
         {
             if (Mathf.Abs(positionProvider.Position3D.x) > _swingZoneSize)
@@ -270,12 +276,34 @@ namespace _GAME.Scripts.Enemies.MegaSpider
             _hangPosition.x = Mathf.Abs(_hangPosition.x) * Mathf.Sign(positionProvider.Position3D.x);
             _rotationState = RotationState.Swing;
         }
-        
+
         private void PerformSwingState()
         {
             CalculateStandardHangVectors();
         }
-        
+
+        private void OnDeathStateStarted()
+        {
+            _deathStartForwardDirection = _forward;
+            _deathStartUpDirection = _up;
+            _deathEndForwardDirection = _bodyTransform.position.normalized;
+            
+            _localTime = 0;
+            _rotationState = RotationState.DeathFall;  
+        }
+
+        private void PerformDeathFallState()
+        {
+            if (_localTime < _deathDuration)
+            {
+                float phase = _localTime / _deathDuration;
+                _forward = Vector3.LerpUnclamped(_deathStartForwardDirection, _deathEndForwardDirection, phase);
+                _up = Vector3.LerpUnclamped(_deathStartUpDirection, Vector3.down, phase);    
+            }
+            
+            _localTime += Time.deltaTime;
+        }
+
         private void CalculateStandardRunVectors()
         {
             _forward = _velocityDirection;

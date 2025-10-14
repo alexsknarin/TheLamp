@@ -98,6 +98,7 @@ namespace _GAME.Scripts.Enemies.Megaspider
         public event Action ProjectileAttackStateStarted;
         public event Action AnimatedAttackStarted;
         public event Action BounceStateStarted;
+        public event Action DeathStateStarted;
         public event Action DeathStateEnded;
         public event Action<Type> StaticBridge1Called;
         public event Action StaticBridge1Broken;
@@ -205,7 +206,9 @@ namespace _GAME.Scripts.Enemies.Megaspider
             _climbState.Ended += OnClimbStateEnded;
 
             _bounceState.Ended += OnBounceStateEnded;
+            _deathFallState.Started += OnDeathFallStateStarted;
             _deathFallState.Ended += OnDeathStateEnded;
+            
         }
 
         private void OnDestroy()
@@ -269,6 +272,7 @@ namespace _GAME.Scripts.Enemies.Megaspider
             _climbState.Ended -= OnClimbStateEnded;
             
             _bounceState.Ended -= OnBounceStateEnded;
+            _deathFallState.Started -= OnDeathFallStateStarted;
             _deathFallState.Ended -= OnDeathStateEnded;
         }
 
@@ -308,26 +312,16 @@ namespace _GAME.Scripts.Enemies.Megaspider
         {
             // Initialize StateMachine 
             // Enter to Attacks
-            // At(_enterLState, _wireAttackState, IsAnimationEndedRandom0Of4());
-            // At(_enterLState, _zigzagAttackLState, IsAnimationEndedRandom1Of4());
-            // At(_enterLState, _projectileBottomAttackLState, IsAnimationEndedRandom2Of4());
-            // At(_enterLState, _projectileDoubleUpAttackLState, IsAnimationEndedRandom3Of4());
-            //
-            // At(_enterRState, _wireAttackState, IsAnimationEndedRandom0Of4());
-            // At(_enterRState, _zigzagAttackRState, IsAnimationEndedRandom1Of4());
-            // At(_enterRState, _projectileBottomAttackRState, IsAnimationEndedRandom2Of4());
-            // At(_enterRState, _projectileDoubleUpAttackRState, IsAnimationEndedRandom3Of4());
-            
             At(_enterLState, _wireAttackState, IsAnimationEndedRandom0Of4());
-            At(_enterLState, _wireAttackState, IsAnimationEndedRandom1Of4());
-            At(_enterLState, _wireAttackState, IsAnimationEndedRandom2Of4());
-            At(_enterLState, _wireAttackState, IsAnimationEndedRandom3Of4());
+            At(_enterLState, _zigzagAttackLState, IsAnimationEndedRandom1Of4());
+            At(_enterLState, _projectileBottomAttackLState, IsAnimationEndedRandom2Of4());
+            At(_enterLState, _projectileDoubleUpAttackLState, IsAnimationEndedRandom3Of4());
             
             At(_enterRState, _wireAttackState, IsAnimationEndedRandom0Of4());
-            At(_enterRState, _wireAttackState, IsAnimationEndedRandom1Of4());
-            At(_enterRState, _wireAttackState, IsAnimationEndedRandom2Of4());
-            At(_enterRState, _wireAttackState, IsAnimationEndedRandom3Of4());
-            
+            At(_enterRState, _zigzagAttackRState, IsAnimationEndedRandom1Of4());
+            At(_enterRState, _projectileBottomAttackRState, IsAnimationEndedRandom2Of4());
+            At(_enterRState, _projectileDoubleUpAttackRState, IsAnimationEndedRandom3Of4());
+
             // Wire Attack Transitions
             At(_wireAttackState, _bounceState, IsCollided());
             At(_wireAttackState, _fallState, IsAttackEndedFail());
@@ -853,6 +847,11 @@ namespace _GAME.Scripts.Enemies.Megaspider
         private void OnClimbStateStarted()
         {
             ClimbStateStarted?.Invoke();
+        }
+
+        private void OnDeathFallStateStarted()
+        {
+            DeathStateStarted?.Invoke();
         }
     }
 }
