@@ -62,6 +62,8 @@ namespace _GAME.Scripts.Enemies.Megaspider
             _movement.HangJumpAttackStateStarted += OnHangJumpAttackStateStarted;
             _animationClipEvents.HangJumpCalled += OnHangJumpCalled;
             _animationClipEvents.HangJumpDiveCalled += OnHangJumpDiveCalled;
+            _movement.HangAttackStateStarted += OnHangAttackStateStarted;
+            _movement.TangleAttackStarted += OnTangleAttackStarted;
             
             _movement.PreAttackStarted += StartPreattack;
             _movement.DeathStateEnded += _damageEmitParticles.HandleDeathEnd;
@@ -91,6 +93,8 @@ namespace _GAME.Scripts.Enemies.Megaspider
             _movement.HangJumpAttackStateStarted -= OnHangJumpAttackStateStarted;
             _animationClipEvents.HangJumpCalled -= OnHangJumpCalled;
             _animationClipEvents.HangJumpDiveCalled -= OnHangJumpDiveCalled;
+            _movement.HangAttackStateStarted -= OnHangAttackStateStarted;
+            _movement.TangleAttackStarted -= OnTangleAttackStarted;
             
             _movement.PreAttackStarted -= StartPreattack;
             _movement.DeathStateEnded -= _damageEmitParticles.HandleDeathEnd;
@@ -208,6 +212,16 @@ namespace _GAME.Scripts.Enemies.Megaspider
         }
 
         private void OnHangJumpDiveCalled()
+        {
+            _animator.SetTrigger(ToDive);
+        }
+
+        private void OnHangAttackStateStarted()
+        {
+            _animator.SetTrigger(ToDive);
+        }
+
+        private void OnTangleAttackStarted(ITangledWireProvider obj)
         {
             _animator.SetTrigger(ToDive);
         }
