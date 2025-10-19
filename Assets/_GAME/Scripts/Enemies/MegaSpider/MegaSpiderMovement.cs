@@ -96,6 +96,11 @@ namespace _GAME.Scripts.Enemies.Megaspider
         public event Action HangAttackStateStarted;
         public event Action HangJumpAttackStateStarted;
         public event Action ProjectileAttackStateStarted;
+        public event Action ProjectileBottomAttackStateStarted;
+        public event Action ProjectileDoubleUpAttackStateStarted;
+        public event Action ProjectileTopAttackStateStarted;
+        public event Action ProjectileDoubleDownAttackStateStarted;
+        
         public event Action AnimatedAttackStarted;
         public event Action BounceStateStarted;
         public event Action DeathStateStarted;
@@ -312,15 +317,25 @@ namespace _GAME.Scripts.Enemies.Megaspider
         {
             // Initialize StateMachine 
             // Enter to Attacks
-            At(_enterLState, _wireAttackState, IsAnimationEndedRandom0Of4());
-            At(_enterLState, _zigzagAttackLState, IsAnimationEndedRandom1Of4());
-            At(_enterLState, _projectileBottomAttackLState, IsAnimationEndedRandom2Of4());
-            At(_enterLState, _projectileDoubleUpAttackLState, IsAnimationEndedRandom3Of4());
+            // At(_enterLState, _wireAttackState, IsAnimationEndedRandom0Of4());
+            // At(_enterLState, _zigzagAttackLState, IsAnimationEndedRandom1Of4());
+            // At(_enterLState, _projectileBottomAttackLState, IsAnimationEndedRandom2Of4());
+            // At(_enterLState, _projectileDoubleUpAttackLState, IsAnimationEndedRandom3Of4());
+            //
+            // At(_enterRState, _wireAttackState, IsAnimationEndedRandom0Of4());
+            // At(_enterRState, _zigzagAttackRState, IsAnimationEndedRandom1Of4());
+            // At(_enterRState, _projectileBottomAttackRState, IsAnimationEndedRandom2Of4());
+            // At(_enterRState, _projectileDoubleUpAttackRState, IsAnimationEndedRandom3Of4());
             
-            At(_enterRState, _wireAttackState, IsAnimationEndedRandom0Of4());
-            At(_enterRState, _zigzagAttackRState, IsAnimationEndedRandom1Of4());
-            At(_enterRState, _projectileBottomAttackRState, IsAnimationEndedRandom2Of4());
-            At(_enterRState, _projectileDoubleUpAttackRState, IsAnimationEndedRandom3Of4());
+            At(_enterLState, _hangJumpAttackLState, IsAnimationEndedRandom0Of4());
+            At(_enterLState, _hangJumpAttackLState, IsAnimationEndedRandom1Of4());
+            At(_enterLState, _hangJumpAttackLState, IsAnimationEndedRandom2Of4());
+            At(_enterLState, _hangJumpAttackLState, IsAnimationEndedRandom3Of4());
+            
+            At(_enterRState, _hangJumpAttackLState, IsAnimationEndedRandom0Of4());
+            At(_enterRState, _hangJumpAttackLState, IsAnimationEndedRandom1Of4());
+            At(_enterRState, _hangJumpAttackLState, IsAnimationEndedRandom2Of4());
+            At(_enterRState, _hangJumpAttackLState, IsAnimationEndedRandom3Of4());
 
             // Wire Attack Transitions
             At(_wireAttackState, _bounceState, IsCollided());
@@ -832,6 +847,19 @@ namespace _GAME.Scripts.Enemies.Megaspider
         private void OnProjectileAttackStarted()
         {
             ProjectileAttackStateStarted?.Invoke();
+            
+            if (_stateMachine.CurrentState is MegaspiderProjectileBottomAttackLState
+                || _stateMachine.CurrentState is MegaspiderProjectileBottomAttackRState) 
+                ProjectileBottomAttackStateStarted?.Invoke();
+            else if (_stateMachine.CurrentState is MegaspiderProjectileDoubleUpAttackLState
+                     || _stateMachine.CurrentState is MegaspiderProjectileDoubleUpAttackRState) 
+                ProjectileDoubleUpAttackStateStarted?.Invoke();
+            else if (_stateMachine.CurrentState is MegaspiderProjectileTopAttackLState
+                     || _stateMachine.CurrentState is MegaspiderProjectileTopAttackRState) 
+                ProjectileTopAttackStateStarted?.Invoke();
+            else if (_stateMachine.CurrentState is MegaspiderProjectileDoubleDownAttackLState
+                     || _stateMachine.CurrentState is MegaspiderProjectileDoubleDownAttackRState) 
+                ProjectileDoubleDownAttackStateStarted?.Invoke();
         }
 
         private void OnTanglePivotChanged(Vector3 pivotPosition)

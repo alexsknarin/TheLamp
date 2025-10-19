@@ -333,6 +333,13 @@ AnimationClip:
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
+  - time: 0.9166667
+    functionName: CallHangJump
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
   - time: 1.1833333
     functionName: CallPreattack
     data: 
@@ -342,6 +349,13 @@ AnimationClip:
     messageOptions: 0
   - time: 1.2
     functionName: RequestHangStart
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 1.2166667
+    functionName: CallHangJumpDive
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
