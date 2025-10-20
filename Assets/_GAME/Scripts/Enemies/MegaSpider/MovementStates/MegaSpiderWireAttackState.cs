@@ -34,6 +34,7 @@ namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
         private int _currentAttackingWireIndex = 0;
         private int _destroyedWiresCount = 0;
         private float _localTime;
+        private bool _isReadyToCollide;
 
         // Dependencies
         private readonly Transform _visibleBodyTransform;
@@ -74,6 +75,7 @@ namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
         
         public event Action Entered;
         public event Action Started;
+        public event Action CollisionProximityEntered;
         
         public bool IsDropped { get; private set; }
         public List<SpiderwebAttackWire> AttackWires => _attackWires;
@@ -93,6 +95,7 @@ namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
             
             IsDropped = false;
             IsReadyToSwitch = false;
+            _isReadyToCollide = false;
             _destroyedWiresCount = 0;
             _localTime = 0;
             InitializeAttackWires();
@@ -212,7 +215,13 @@ namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
                 _mainAttackWire.StartPosition, 
                 _mainAttackWire.EndPosition, 
                 Mathf.Pow(phase, _mainAttackAcceleration));
-        
+
+            if (phase > 0.8f && !_isReadyToCollide)
+            {
+                _isReadyToCollide = true;
+                CollisionProximityEntered?.Invoke();           
+            }
+            
             _localTime += Time.deltaTime;    
         }
 
