@@ -255,7 +255,7 @@ namespace _GAME.Scripts.Enemies.Megaspider
                 _localTime += Time.deltaTime;
                 yield return null;
                 float phase = _localTime / 1.2f;
-                _animator.SetFloat(Speed, Mathf.Lerp(0.95f, 1.8f, phase));
+                _animator.SetFloat(Speed, Mathf.Lerp(0.25f, 1.8f, phase));
             }
         }
 
