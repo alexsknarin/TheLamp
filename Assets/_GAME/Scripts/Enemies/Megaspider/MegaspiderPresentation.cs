@@ -22,6 +22,7 @@ namespace _GAME.Scripts.Enemies.Megaspider
         private static readonly int ToClimbShoot = Animator.StringToHash("ToClimbShoot");
         private static readonly int ToClimbUp = Animator.StringToHash("ToClimbUp");
         private static readonly int ToFail = Animator.StringToHash("ToFail");
+        private static readonly int ToDeath = Animator.StringToHash("ToDeath");
         [SerializeField] private Megaspider _megaspider;
         [SerializeField] private MegaspiderMovement _movement;
         [SerializeField] private MegaspiderAnimationClipEventListener _animationClipEvents;
@@ -87,6 +88,8 @@ namespace _GAME.Scripts.Enemies.Megaspider
             _movement.SwingStateEnded += OnSwingStateEnded;
             _movement.FailFallStarted += OnFailFallStarted;
 
+            _movement.DeathStateStarted += OnDeathStateStarted; 
+
             _movement.PreAttackStarted += StartPreattack;
             _movement.DeathStateEnded += _damageEmitParticles.HandleDeathEnd;
         }
@@ -128,6 +131,7 @@ namespace _GAME.Scripts.Enemies.Megaspider
             _movement.ClimbStateEnded -= OnClimbStateEnded;
             _movement.SwingStateEnded -= OnSwingStateEnded;
             _movement.FailFallStarted -= OnFailFallStarted;
+            _movement.DeathStateStarted -= OnDeathStateStarted;
 
             
             _movement.PreAttackStarted -= StartPreattack;
@@ -148,6 +152,7 @@ namespace _GAME.Scripts.Enemies.Megaspider
             _animator.ResetTrigger("ToClimbShoot");
             _animator.ResetTrigger("ToClimbUp");
             _animator.ResetTrigger("ToFail");
+            _animator.ResetTrigger("ToDeath");
         }
 
         private void StartPreattack()
@@ -354,6 +359,12 @@ namespace _GAME.Scripts.Enemies.Megaspider
         {
             ResetBodyAnimationTriggers();
             _animator.SetTrigger(ToAttack);
+        }
+
+        private void OnDeathStateStarted()
+        {
+            ResetBodyAnimationTriggers();
+            _animator.SetTrigger(ToDeath);
         }
     }
 }
