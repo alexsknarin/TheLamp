@@ -46,16 +46,23 @@ namespace _GAME.Scripts.Enemies.Megaspider
         private float _shootSineFrequency = 13f;
         private int _shootPointCount = 20;
         private float _vibrateDuration = 0.45f;
+        private float _vibrateAmplitude = 1f;
         private float _fallDuration = 1f;
         private float _breakHangDuration = .65f;
         private float _breakHangNoiseOffset;
         private float _localTime;
 
-        public void StartShootStatic(Vector3 startPosition, Vector3 endPosition)
+        public void StartShootStatic(
+            Vector3 startPosition, 
+            Vector3 endPosition, 
+            float vibrateDuration = 0.45f,
+            float vibrateAmplitude = 1.0f)
         {
             _localTime = 0;
             _startPosition = startPosition;
             _endPosition = endPosition;
+            _vibrateDuration = vibrateDuration;
+            _vibrateAmplitude = vibrateAmplitude;
             _lineRenderer.enabled = true;
             _lineRenderer.positionCount = _shootPointCount;
             enabled = true;
@@ -93,6 +100,7 @@ namespace _GAME.Scripts.Enemies.Megaspider
                 _vibrateDuration,
                 _vibrateFrequencyCurve,
                 _vibrateAmplitudeCurve,
+                _vibrateAmplitude,
                 ref _localTime);
             
             if (isVibrateFinished)
@@ -275,11 +283,18 @@ namespace _GAME.Scripts.Enemies.Megaspider
             enabled = true;
         }
         
-        public void StartShootDynamic(IPositionProvider startPositionProvider, Vector3 endPosition)
+        public void StartShootDynamic(
+            IPositionProvider startPositionProvider, 
+            Vector3 endPosition, 
+            float vibrateDuration = 0.45f,
+            float vibrateAmplitude = 1.0f
+            )
         {
             _localTime = 0;
             _startPosition = startPositionProvider.Position3D;
             _endPosition = endPosition;
+            _vibrateDuration = vibrateDuration;
+            _vibrateAmplitude = vibrateAmplitude;
             _startPositionProvider = startPositionProvider;
             _lineRenderer.enabled = true;
             _lineRenderer.positionCount = _shootPointCount;
@@ -317,6 +332,7 @@ namespace _GAME.Scripts.Enemies.Megaspider
                 _vibrateDuration,
                 _vibrateFrequencyCurve,
                 _vibrateAmplitudeCurve,
+                _vibrateAmplitude,
                 ref _localTime);
             
             if (isVibrateFinished)
@@ -325,11 +341,12 @@ namespace _GAME.Scripts.Enemies.Megaspider
             }
         }
 
-        public void StartShootDynamicFull(IStartEndPositionsProvider startEndPositionProvider) 
+        public void StartShootDynamicFull(IStartEndPositionsProvider startEndPositionProvider, float vibrateAmplitude = 1.0f) 
         {
             _localTime = 0;
             _startPosition = startEndPositionProvider.StartPosition;
             _endPosition = startEndPositionProvider.EndPosition;
+            _vibrateAmplitude = vibrateAmplitude;
             _startEndPositionsProvider = startEndPositionProvider;
             _lineRenderer.enabled = true;
             _lineRenderer.positionCount = _shootPointCount;
@@ -367,6 +384,7 @@ namespace _GAME.Scripts.Enemies.Megaspider
                 _vibrateDuration,
                 _vibrateFrequencyCurve,
                 _vibrateAmplitudeCurve,
+                _vibrateAmplitude,
                 ref _localTime);
             
             if (isVibrateFinished)

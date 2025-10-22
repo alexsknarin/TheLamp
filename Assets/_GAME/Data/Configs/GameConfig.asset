@@ -52,26 +52,26 @@ MonoBehaviour:
   <MegaspiderWireAttackMainAttackDuration>k__BackingField: 1
   <MegaspiderWireAttackMainAttackAcceleration>k__BackingField: 3
   <MegaspiderWebStartPositionRanges>k__BackingField:
-  - p1: {x: -0.2506161, y: -2.596756, z: -3.494265}
+  - p1: {x: -0.28, y: -2.86, z: -3.84}
     p2: {x: -0.98199, y: -2.5469, z: -3.380694}
-  - p1: {x: -0.98199, y: -2.5469, z: -3.380694}
-    p2: {x: -1.157323, y: -2.379065, z: -2.977964}
-  - p1: {x: -1.157323, y: -2.379065, z: -2.977964}
-    p2: {x: -1.332655, y: -2.21123, z: -2.575235}
-  - p1: {x: -2.991441, y: 2.364229, z: 1.8949}
-    p2: {x: -3.222974, y: 3.461487, z: 3.060626}
-  - p1: {x: -3.222974, y: 3.461487, z: 3.060626}
-    p2: {x: -3.454506, y: 4.558745, z: 4.226351}
-  - p1: {x: 0.2506161, y: -2.596756, z: -3.494265}
-    p2: {x: 0.98199, y: -2.5469, z: -3.380694}
-  - p1: {x: 0.98199, y: -2.5469, z: -3.380694}
-    p2: {x: 1.157323, y: -2.379065, z: -2.977964}
-  - p1: {x: 1.157323, y: -2.379065, z: -2.977964}
-    p2: {x: 1.332655, y: -2.21123, z: -2.575235}
-  - p1: {x: 2.991441, y: 2.364229, z: 1.8949}
-    p2: {x: 3.222974, y: 3.461487, z: 3.060626}
-  - p1: {x: 3.222974, y: 3.461487, z: 3.060626}
-    p2: {x: 3.454506, y: 4.558745, z: 4.226351}
+  - p1: {x: -1.08, y: -2.8, z: -3.72}
+    p2: {x: -1.27, y: -2.62, z: -3.28}
+  - p1: {x: -1.27, y: -2.62, z: -3.28}
+    p2: {x: -1.47, y: -2.43, z: -2.83}
+  - p1: {x: -3.29, y: 2.6, z: 2.08}
+    p2: {x: -3.55, y: 3.81, z: 3.37}
+  - p1: {x: -3.55, y: 3.81, z: 3.37}
+    p2: {x: -3.8, y: 5.01, z: 4.65}
+  - p1: {x: 0.28, y: -2.86, z: -3.84}
+    p2: {x: 1.08, y: -2.8, z: -3.72}
+  - p1: {x: 1.08, y: -2.8, z: -3.72}
+    p2: {x: 1.27, y: -2.62, z: -3.28}
+  - p1: {x: 1.27, y: -2.62, z: -3.28}
+    p2: {x: 1.47, y: -2.43, z: -2.83}
+  - p1: {x: 3.29, y: 2.6, z: 2.08}
+    p2: {x: 3.55, y: 3.81, z: 3.37}
+  - p1: {x: 3.55, y: 3.81, z: 3.37}
+    p2: {x: 3.8, y: 5.01, z: 4.65}
   <MegaspiderTangleAttackWireThickness>k__BackingField: 0.03
   <MegaspiderTangleAttackHangPoint>k__BackingField: {x: -0.96, y: 3.13, z: 0}
   <MegaspiderTangleAttackTangleSpeed>k__BackingField: 330
@@ -83,6 +83,7 @@ MonoBehaviour:
   <MegaspiderSwingSwingDownIncrement>k__BackingField: 1
   <MegaspiderSwingExitDistance>k__BackingField: 21
   <MegaspiderSwingSwingPivot>k__BackingField: {x: -2.35, y: 2.7, z: 0}
+  <MegaspiderSwingZoneSize>k__BackingField: 1.11
   <MegaspiderFallInitialOutForceMagnitude>k__BackingField: 1.8
   <MegaspiderFallOutForceIncrement>k__BackingField: 5
   <MegaspiderFallFallForceIncrement>k__BackingField: 6

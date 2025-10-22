@@ -122,11 +122,11 @@ namespace _GAME.Scripts.Enemies.Megaspider
             }
             else if (state == typeof(MegaspiderZigzagAttackLState))
             {
-                _spiderweb1.StartShootStatic(_config.ZigzagAttack01LStartPoint, _config.ZigzagAttack01LEndPoint);          
+                _spiderweb1.StartShootStatic(_config.ZigzagAttack01LStartPoint, _config.ZigzagAttack01LEndPoint, .15f, .5f);          
             }
             else if (state == typeof(MegaspiderZigzagAttackRState))
             {
-                _spiderweb1.StartShootStatic(_config.ZigzagAttack01RStartPoint, _config.ZigzagAttack01REndPoint);          
+                _spiderweb1.StartShootStatic(_config.ZigzagAttack01RStartPoint, _config.ZigzagAttack01REndPoint, 0.15f, 0.5f);          
             }
             else if (state == typeof(MegaspiderHangJumpAttackLState))
             {
@@ -171,11 +171,11 @@ namespace _GAME.Scripts.Enemies.Megaspider
             }
             else if (state == typeof(MegaspiderZigzagAttackLState))
             {
-                _spiderweb2.StartShootStatic(_config.ZigzagAttack02LStartPoint, _config.ZigzagAttack02LEndPoint);          
+                _spiderweb2.StartShootStatic(_config.ZigzagAttack02LStartPoint, _config.ZigzagAttack02LEndPoint, 0.15f, 0.5f);          
             }
             else if (state == typeof(MegaspiderZigzagAttackRState))
             {
-                _spiderweb2.StartShootStatic(_config.ZigzagAttack02RStartPoint, _config.ZigzagAttack02REndPoint);          
+                _spiderweb2.StartShootStatic(_config.ZigzagAttack02RStartPoint, _config.ZigzagAttack02REndPoint, 0.15f, 0.5f);
             }
         }
 
@@ -188,11 +188,11 @@ namespace _GAME.Scripts.Enemies.Megaspider
         {
             if (state == typeof(MegaspiderZigzagAttackLState))
             {
-                _spiderweb3.StartShootStatic(_config.ZigzagAttack03LStartPoint, _config.ZigzagAttack03LEndPoint);          
+                _spiderweb3.StartShootStatic(_config.ZigzagAttack03LStartPoint, _config.ZigzagAttack03LEndPoint, 0.15f, 0.5f);          
             }
             else if (state == typeof(MegaspiderZigzagAttackRState))
             {
-                _spiderweb3.StartShootStatic(_config.ZigzagAttack03RStartPoint, _config.ZigzagAttack03REndPoint);          
+                _spiderweb3.StartShootStatic(_config.ZigzagAttack03RStartPoint, _config.ZigzagAttack03REndPoint, 0.15f, 0.5f);          
             }
         }
 
