@@ -338,15 +338,15 @@ namespace _GAME.Scripts.Enemies.Megaspider
             // At(_enterRState, _projectileBottomAttackRState, IsAnimationEndedRandom2Of4());
             // At(_enterRState, _projectileDoubleUpAttackRState, IsAnimationEndedRandom3Of4());
             
-            At(_enterLState, _zigzagAttackRState, IsAnimationEndedRandom0Of4());
-            At(_enterLState, _zigzagAttackRState, IsAnimationEndedRandom1Of4());
-            At(_enterLState, _zigzagAttackRState, IsAnimationEndedRandom2Of4());
-            At(_enterLState, _zigzagAttackRState, IsAnimationEndedRandom3Of4());
+            At(_enterLState, _hangJumpAttackRState, IsAnimationEndedRandom0Of4());
+            At(_enterLState, _hangJumpAttackRState, IsAnimationEndedRandom1Of4());
+            At(_enterLState, _hangJumpAttackRState, IsAnimationEndedRandom2Of4());
+            At(_enterLState, _hangJumpAttackRState, IsAnimationEndedRandom3Of4());
             
-            At(_enterRState, _zigzagAttackRState, IsAnimationEndedRandom0Of4());
-            At(_enterRState, _zigzagAttackRState, IsAnimationEndedRandom1Of4());
-            At(_enterRState, _zigzagAttackRState, IsAnimationEndedRandom2Of4());
-            At(_enterRState, _zigzagAttackRState, IsAnimationEndedRandom3Of4());
+            At(_enterRState, _hangJumpAttackRState, IsAnimationEndedRandom0Of4());
+            At(_enterRState, _hangJumpAttackRState, IsAnimationEndedRandom1Of4());
+            At(_enterRState, _hangJumpAttackRState, IsAnimationEndedRandom2Of4());
+            At(_enterRState, _hangJumpAttackRState, IsAnimationEndedRandom3Of4());
 
             // Wire Attack Transitions
             At(_wireAttackState, _bounceState, IsCollided());

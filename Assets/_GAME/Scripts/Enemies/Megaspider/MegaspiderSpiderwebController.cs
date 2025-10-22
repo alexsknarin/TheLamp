@@ -90,11 +90,11 @@ namespace _GAME.Scripts.Enemies.Megaspider
             }
             else if (state == typeof(MegaspiderProjectileBottomAttackLState))
             {
-                _spiderweb1.StartShootStatic(_config.ProjectileBottomAttackLStartPoint, _config.ProjectileBottomAttackLEndPoint);          
+                _spiderweb1.StartShootStatic(_config.ProjectileBottomAttackLStartPoint, _config.ProjectileBottomAttackLEndPoint,.25f, .45f);          
             }
             else if (state == typeof(MegaspiderProjectileBottomAttackRState))
             {
-                _spiderweb1.StartShootStatic(_config.ProjectileBottomAttackRStartPoint, _config.ProjectileBottomAttackREndPoint);
+                _spiderweb1.StartShootStatic(_config.ProjectileBottomAttackRStartPoint, _config.ProjectileBottomAttackREndPoint, .25f, .45f);
             }
             else if (state == typeof(MegaspiderProjectileDoubleDownAttackLState))
             {
@@ -106,11 +106,11 @@ namespace _GAME.Scripts.Enemies.Megaspider
             }
             else if (state == typeof(MegaspiderProjectileDoubleUpAttackLState))
             {
-                _spiderweb1.StartShootStatic(_config.ProjectileDoubleUp01LStartPoint, _config.ProjectileDoubleUp01LEndPoint);
+                _spiderweb1.StartShootStatic(_config.ProjectileDoubleUp01LStartPoint, _config.ProjectileDoubleUp01LEndPoint, .31f, .68f);
             }
             else if (state == typeof(MegaspiderProjectileDoubleUpAttackRState))
             {
-                _spiderweb1.StartShootStatic(_config.ProjectileDoubleUp01RStartPoint, _config.ProjectileDoubleUp01REndPoint);
+                _spiderweb1.StartShootStatic(_config.ProjectileDoubleUp01RStartPoint, _config.ProjectileDoubleUp01REndPoint, .31f, .68f);
             }
             else if (state == typeof(MegaspiderProjectileTopAttackLState))
             {
@@ -130,11 +130,11 @@ namespace _GAME.Scripts.Enemies.Megaspider
             }
             else if (state == typeof(MegaspiderHangJumpAttackLState))
             {
-                _spiderweb1.StartShootStatic(_config.HangJumpAttackLStartPoint, _config.HangJumpAttackLEndPoint);          
+                _spiderweb1.StartShootStatic(_config.HangJumpAttackLStartPoint, _config.HangJumpAttackLEndPoint, .20f, .4f);          
             }
             else if (state == typeof(MegaspiderHangJumpAttackRState))
             {
-                _spiderweb1.StartShootStatic(_config.HangJumpAttackRStartPoint, _config.HangJumpAttackREndPoint);          
+                _spiderweb1.StartShootStatic(_config.HangJumpAttackRStartPoint, _config.HangJumpAttackREndPoint, .20f, .4f);          
             }
         }
 
@@ -163,11 +163,11 @@ namespace _GAME.Scripts.Enemies.Megaspider
             }
             else if (state == typeof(MegaspiderProjectileDoubleUpAttackLState))
             {
-                _spiderweb2.StartShootStatic(_config.ProjectileDoubleUp02LStartPoint, _config.ProjectileDoubleUp02LEndPoint);
+                _spiderweb2.StartShootStatic(_config.ProjectileDoubleUp02LStartPoint, _config.ProjectileDoubleUp02LEndPoint, .31f, .68f);
             }
             else if (state == typeof(MegaspiderProjectileDoubleUpAttackRState))
             {
-                _spiderweb2.StartShootStatic(_config.ProjectileDoubleUp02RStartPoint, _config.ProjectileDoubleUp02REndPoint);
+                _spiderweb2.StartShootStatic(_config.ProjectileDoubleUp02RStartPoint, _config.ProjectileDoubleUp02REndPoint, .31f, .68f);
             }
             else if (state == typeof(MegaspiderZigzagAttackLState))
             {
