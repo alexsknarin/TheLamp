@@ -138,6 +138,15 @@ namespace _GAME.Scripts.Enemies.Megaspider
             _lineRenderer.enabled = true;
             enabled = true;
             _spiderwebState = SpiderwebState.Hang;
+
+            if (_startPosition.z < -3.5f)
+            {
+                _lineRenderer.widthMultiplier = 0.019f;
+            }
+            else
+            {
+                _lineRenderer.widthMultiplier = 0.025f;
+            }
         }
 
         private void PerformHang()
