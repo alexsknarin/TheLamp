@@ -24,7 +24,6 @@ namespace _GAME.Scripts.Enemies.Generic.Presentation
 
         public override void Play()
         {
-            Debug.Log("Damaged!!!!");
             enabled = true;
             _damageParticles.gameObject.SetActive(true);
             

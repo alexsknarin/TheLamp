@@ -86,6 +86,7 @@ namespace _GAME.Scripts.Enemies.Megaspider
             _movement.ClimbStateStarted += OnClimbStateStarted;
             _movement.ClimbStateEnded += OnClimbStateEnded;
             _movement.SwingStateEnded += OnSwingStateEnded;
+            _movement.DropFallStarted += OnFailFallStarted;
             _movement.FailFallStarted += OnFailFallStarted;
 
             _movement.DeathStateStarted += OnDeathStateStarted; 
@@ -131,6 +132,7 @@ namespace _GAME.Scripts.Enemies.Megaspider
             _movement.ClimbStateEnded -= OnClimbStateEnded;
             _movement.SwingStateEnded -= OnSwingStateEnded;
             _movement.FailFallStarted -= OnFailFallStarted;
+            _movement.DropFallStarted -= OnFailFallStarted;
             _movement.DeathStateStarted -= OnDeathStateStarted;
 
             

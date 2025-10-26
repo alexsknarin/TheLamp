@@ -108,10 +108,6 @@ namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
 
         public override void Tick()
         {
-            // TODO: test later and remove
-            if(Input.GetKeyDown(KeyCode.C))
-                IsDropped = true;
- 
             if (_wireState == WireStates.WireAttack)
             {
                 HandleWiresAttack();
@@ -136,6 +132,7 @@ namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
         public override void Exit()
         {
             _localTime = 0;
+            IsDropped = false;
             _availableWireRangeIndices.Clear();
             _activeWireIndices.Clear();
             foreach (var wire in _attackWires)
@@ -147,6 +144,7 @@ namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
             _wireState = WireStates.Inactive;
             
             _lampAttackEventListener.AttackStarted -= ReceiveWireDamage;
+            _mainAttackWire.Destroyed -= OnMainAttackWireDestroyed;
         }
 
         private void StartWireAttack()
@@ -199,6 +197,7 @@ namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
                 return;       
             }
             _mainAttackWire = _attackWires[_activeWireIndices[Random.Range(0, _activeWireIndices.Count)]];
+            _mainAttackWire.Destroyed += OnMainAttackWireDestroyed;
             Debug.DrawLine(_mainAttackWire.StartPosition, _mainAttackWire.EndPosition, Color.orangeRed, 10);
             Started?.Invoke();
         }
@@ -311,6 +310,11 @@ namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
                     _activeWireIndices.Add(i);
                 }
             }
+        }
+
+        private void OnMainAttackWireDestroyed()
+        {
+            IsDropped = true;
         }
     }
 }
