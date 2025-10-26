@@ -145,7 +145,7 @@ Material:
     - _Cull: 2
     - _Cutoff: 0.5
     - _DamageFade: 0
-    - _DeathFade: 1
+    - _DeathFade: 0
     - _DetailAlbedoMapScale: 1
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
@@ -156,7 +156,7 @@ Material:
     - _Glossiness: 0
     - _GlossyReflections: 0
     - _HUE: 21.03
-    - _Health: 0.06666667
+    - _Health: 1
     - _LegMaskIntensity: 0.579
     - _Metallic: 0
     - _NoiseOffset: 2.44

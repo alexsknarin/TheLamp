@@ -10,7 +10,11 @@ namespace _GAME.Scripts.Enemies.MegaspiderProjectileSpider
         [SerializeField] private MegaspiderProjectileSpiderMovement _movement;
         [SerializeField] private float _collisionRadius = 0.075f; 
         [SerializeField] private bool _isAttackStarted = false;
-        
+
+        public event Action Started;
+        public event Action JumpStarted;
+        public event Action FallStarted;
+        public event Action Damaged;
         public event Action FallEnded;
         
         public bool IsAttackStarted => _isAttackStarted;
@@ -35,6 +39,7 @@ namespace _GAME.Scripts.Enemies.MegaspiderProjectileSpider
             _movement.Play();
             IsReceivedLampAttackDamage = false;
             _isAttackStarted = false;
+            Started?.Invoke();
         }
 
         public override void ReceiveDamage(int damageAmount)
@@ -42,12 +47,14 @@ namespace _GAME.Scripts.Enemies.MegaspiderProjectileSpider
             if (damageAmount < 1f) return;
             IsReceivedLampAttackDamage = true;
             _movement.TriggerFall(AttackResult.Fail);
+            Damaged?.Invoke();
         }
 
         public override void Attack()
         {
             _movement.TriggerAttack();
             _isAttackStarted = true;
+            JumpStarted?.Invoke();
         }
 
         public override void DoDeath()
@@ -60,6 +67,7 @@ namespace _GAME.Scripts.Enemies.MegaspiderProjectileSpider
             CollisionState = CollidableState.AfterCollision;
             IsReadyForDamage = true;
             _movement.TriggerCollide();
+            FallStarted?.Invoke();
         }
         
         public override void HandleExitAttackZone()

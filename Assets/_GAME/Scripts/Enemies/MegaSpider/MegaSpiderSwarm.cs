@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using _GAME.Scripts.Enemies.MegaspiderProjectileSpider;
+using _GAME.Scripts.Enemies.MegaSpiderProjectileSpider;
 using _GAME.Scripts.Factories;
 using _GAME.Scripts.Lib.Interfaces;
 using UnityEngine;
@@ -36,7 +37,11 @@ namespace _GAME.Scripts.Enemies.Megaspider
         public void Initialize()
         {
             _projectile01.Initialize();
+            _projectile01.GetComponent<MegaspiderProjectilePresentation>().Initialize();
+            _projectile01.GetComponent<MegaspiderProjectileBodyRotationHandler>().Initialize();
             _projectile02.Initialize();
+            _projectile02.GetComponent<MegaspiderProjectilePresentation>().Initialize();
+            _projectile02.GetComponent<MegaspiderProjectileBodyRotationHandler>().Initialize();
 
             _projectile01.FallEnded += OnProjectile01FallEnded;
             _projectile02.FallEnded += OnProjectile02FallEnded;
