@@ -77,6 +77,7 @@ namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
         public event Action Started;
         public event Action Ended;
         public event Action<Vector3> PivotChanged;
+        public event Action PreAttackStarted;
         
         Vector3 ITangledWireProvider.StartPoint => _hangPoint;
         List<Vector3> ITangledWireProvider.CollisionPoints => _collisionPoints;
@@ -184,6 +185,7 @@ namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
             if (isIntersecting)
             {
                 StartTangleState();
+                PreAttackStarted?.Invoke();
             }
                
             _localTime += Time.deltaTime;

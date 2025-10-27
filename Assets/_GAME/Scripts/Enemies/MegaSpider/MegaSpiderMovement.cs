@@ -175,11 +175,10 @@ namespace _GAME.Scripts.Enemies.Megaspider
             _hangJumpAttackLState.Started += OnAnimatedAttackStarted;
             _hangJumpAttackRState.Started += OnAnimatedAttackStarted;
             _tangleAttackLState.Started += OnAnimatedAttackStarted;
-            _tangleAttackLState.Started += OnPreattackStarted;
+            _tangleAttackLState.PreAttackStarted += OnPreattackStarted;
             _tangleAttackRState.Started += OnAnimatedAttackStarted;
-            _tangleAttackRState.Started += OnPreattackStarted;
+            _tangleAttackRState.PreAttackStarted += OnPreattackStarted;
             _wireAttackState.Started += OnAnimatedAttackStarted;
-            // _wireAttackState.Started += OnPreattackStarted;
             _wireAttackState.PreAttackStarted += OnPreattackStarted;
 
             _tangleAttackLState.PivotChanged += OnTanglePivotChanged;
@@ -247,11 +246,10 @@ namespace _GAME.Scripts.Enemies.Megaspider
             _hangJumpAttackLState.Started -= OnAnimatedAttackStarted;
             _hangJumpAttackRState.Started -= OnAnimatedAttackStarted;
             _tangleAttackLState.Started -= OnAnimatedAttackStarted;
-            _tangleAttackLState.Started -= OnPreattackStarted;
+            _tangleAttackLState.PreAttackStarted -= OnPreattackStarted;
             _tangleAttackRState.Started -= OnAnimatedAttackStarted;
-            _tangleAttackRState.Started -= OnPreattackStarted;
+            _tangleAttackRState.PreAttackStarted -= OnPreattackStarted;
             _wireAttackState.Started -= OnAnimatedAttackStarted;
-            // _wireAttackState.Started -= OnPreattackStarted;
             _wireAttackState.PreAttackStarted -= OnPreattackStarted;
             
             _tangleAttackLState.PivotChanged -= OnTanglePivotChanged;
@@ -343,15 +341,15 @@ namespace _GAME.Scripts.Enemies.Megaspider
             // At(_enterRState, _projectileBottomAttackRState, IsAnimationEndedRandom2Of4());
             // At(_enterRState, _projectileDoubleUpAttackRState, IsAnimationEndedRandom3Of4());
             
-            At(_enterLState, _wireAttackState, IsAnimationEndedRandom0Of4());
-            At(_enterLState, _wireAttackState, IsAnimationEndedRandom1Of4());
-            At(_enterLState, _wireAttackState, IsAnimationEndedRandom2Of4());
-            At(_enterLState, _wireAttackState, IsAnimationEndedRandom3Of4());
+            At(_enterLState, _tangleAttackLState, IsAnimationEndedRandom0Of4());
+            At(_enterLState, _tangleAttackLState, IsAnimationEndedRandom1Of4());
+            At(_enterLState, _tangleAttackLState, IsAnimationEndedRandom2Of4());
+            At(_enterLState, _tangleAttackLState, IsAnimationEndedRandom3Of4());
             
-            At(_enterRState, _wireAttackState, IsAnimationEndedRandom0Of4());
-            At(_enterRState, _wireAttackState, IsAnimationEndedRandom1Of4());
-            At(_enterRState, _wireAttackState, IsAnimationEndedRandom2Of4());
-            At(_enterRState, _wireAttackState, IsAnimationEndedRandom3Of4());
+            At(_enterRState, _tangleAttackLState, IsAnimationEndedRandom0Of4());
+            At(_enterRState, _tangleAttackLState, IsAnimationEndedRandom1Of4());
+            At(_enterRState, _tangleAttackLState, IsAnimationEndedRandom2Of4());
+            At(_enterRState, _tangleAttackLState, IsAnimationEndedRandom3Of4());
 
             // Wire Attack Transitions
             At(_wireAttackState, _bounceState, IsCollided());
