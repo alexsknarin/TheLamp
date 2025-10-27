@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.VFX;
 
@@ -31,6 +32,11 @@ namespace _GAME.Scripts.Enemies.Generic.Presentation
             Vector3 direction = _transform.position.normalized;
             _damageParticles.SetVector3("Direction", direction);
             _damageParticles.SendEvent("OnDamage");
+        }
+
+        public void Reset()
+        {
+            _material.SetFloat(DamageFade, 0);
         }
 
         private void Update()

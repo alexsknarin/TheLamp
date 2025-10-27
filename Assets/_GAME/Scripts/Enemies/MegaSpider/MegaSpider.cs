@@ -34,7 +34,7 @@ namespace _GAME.Scripts.Enemies.Megaspider
         public event Action<int, int> HealthChanged;
         public event Action Dead;
         public event Action SpreadRequested;
-        
+        public event Action Restarted;
         public event Action<CollidableEnemy> ProjectileShot;
         public event Action<Enemy, bool> ProjectileDeactivated;
 
@@ -143,6 +143,14 @@ namespace _GAME.Scripts.Enemies.Megaspider
                 _movement.TriggerFall(_attackResult);
             }
         }
+        
+        public override void ReturnToPool()
+        {
+            Restarted?.Invoke();
+            base.ReturnToPool();
+            _movement.Reset();
+        }
+
 
         public void HandleLampDestroyed()
         {

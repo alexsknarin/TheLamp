@@ -53,6 +53,7 @@ namespace _GAME.Scripts.Enemies.Megaspider
 
             _isRegularShootStarted = false;
             _megaspider.Started += OnMegaspiderStarted;
+            _megaspider.Restarted += OnMegaspiderRestarted;
             _megaspider.Damaged += _damageFlash.Play;
             _megaspider.HealthChanged += _healthIndication.Refresh;
             _megaspider.HealthChanged += _damageEmitParticles.HandleHealthChanged;
@@ -98,6 +99,7 @@ namespace _GAME.Scripts.Enemies.Megaspider
         private void OnDestroy()
         {
             _megaspider.Started -= OnMegaspiderStarted;
+            _megaspider.Restarted -= OnMegaspiderRestarted;
             _megaspider.Damaged -= _damageFlash.Play;
             _megaspider.HealthChanged -= _healthIndication.Refresh;
             _megaspider.HealthChanged -= _damageEmitParticles.HandleHealthChanged;
@@ -367,6 +369,14 @@ namespace _GAME.Scripts.Enemies.Megaspider
         {
             ResetBodyAnimationTriggers();
             _animator.SetTrigger(ToDeath);
+        }
+
+        private void OnMegaspiderRestarted()
+        {
+            _preAttackFlash.Reset();
+            _damageFlash.Reset();
+            _healthIndication.Reset();
+            _deathFlash.Reset();
         }
     }
 }

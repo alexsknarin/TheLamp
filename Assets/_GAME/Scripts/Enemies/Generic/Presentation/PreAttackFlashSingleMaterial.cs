@@ -1,3 +1,4 @@
+using System;
 using _GAME.Scripts.Lib.Interfaces;
 using UnityEngine;
 
@@ -21,6 +22,11 @@ namespace _GAME.Scripts.Enemies.Generic.Presentation
                 _trailMaterial = _trailRenderer.material;
                 _trailMaterial.SetFloat(EmissionMultipler, 0f);
             }
+        }
+
+        public void Reset()
+        {
+            _bodyMaterial.SetFloat(AttackSemaphore, 0);
         }
 
         public void PreAttackStart()

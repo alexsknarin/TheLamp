@@ -11,6 +11,7 @@ namespace _GAME.Scripts.Enemies.Megaspider
 {
     public class MegaspiderSpiderwebController : MonoBehaviour, IInitializable
     {
+        [SerializeField] private Megaspider _megaspider;
         [SerializeField] private MegaspiderMovement _movement;
         [SerializeField] private MegaspiderSpiderweb _spiderweb1;
         [SerializeField] private MegaspiderSpiderweb _spiderweb2;
@@ -55,6 +56,10 @@ namespace _GAME.Scripts.Enemies.Megaspider
             _movement.SwingStateEnded += OnSwingStateEnded;
             _movement.FallStateEnded += OnFallStateEnded;
             _movement.WireAttackStateEntered += OnWireAttackStateEntered;
+
+            _megaspider.Started += OnMegaspiderStarted;
+            _megaspider.Restarted += OnRestarted;
+            
         }
 
         private void OnDestroy()
@@ -76,6 +81,9 @@ namespace _GAME.Scripts.Enemies.Megaspider
             _movement.SwingStateEnded -= OnSwingStateEnded;
             _movement.FallStateEnded -= OnFallStateEnded;
             _movement.WireAttackStateEntered -= OnWireAttackStateEntered;
+            
+            _megaspider.Started -= OnMegaspiderStarted;
+            _megaspider.Restarted -= OnRestarted;
         }
 
         private void OnStaticBridge1Called(Type state)
@@ -361,7 +369,7 @@ namespace _GAME.Scripts.Enemies.Megaspider
             _attackWiresProvider.AttackWires[0].Deactivated -= OnWire1Deactivated;
             _spiderweb1.StartFallBreakDynamic();
         }
-        
+
         private void OnWire2Deactivated()
         {
             _attackWiresProvider.AttackWires[1].Activated -= OnWire2Activated;
@@ -369,7 +377,7 @@ namespace _GAME.Scripts.Enemies.Megaspider
             _attackWiresProvider.AttackWires[1].Deactivated -= OnWire2Deactivated;
             _spiderweb2.StartFallBreakDynamic();
         }
-        
+
         private void OnWire3Deactivated()
         {
             _attackWiresProvider.AttackWires[2].Activated -= OnWire3Activated;
@@ -377,7 +385,7 @@ namespace _GAME.Scripts.Enemies.Megaspider
             _attackWiresProvider.AttackWires[2].Deactivated -= OnWire3Deactivated;
             _spiderweb3.StartFallBreakDynamic();
         }
-        
+
         private void OnWire4Deactivated()
         {
             _attackWiresProvider.AttackWires[3].Activated -= OnWire4Activated;
@@ -385,13 +393,33 @@ namespace _GAME.Scripts.Enemies.Megaspider
             _attackWiresProvider.AttackWires[3].Deactivated -= OnWire4Deactivated;
             _spiderweb4.StartFallBreakDynamic();
         }
-        
+
         private void OnWire5Deactivated()
         {
             _attackWiresProvider.AttackWires[4].Activated -= OnWire5Activated;
             _attackWiresProvider.AttackWires[4].Destroyed -= OnWire5Deactivated;
             _attackWiresProvider.AttackWires[4].Deactivated -= OnWire5Deactivated;
             _spiderweb5.StartFallBreakDynamic();
+        }
+
+        private void OnMegaspiderStarted()
+        {
+            _spiderweb1.Activate();
+            _spiderweb2.Activate();
+            _spiderweb3.Activate();
+            _spiderweb4.Activate();
+            _spiderweb5.Activate();
+            _spiderweb6.Activate();
+        }
+
+        private void OnRestarted()
+        {
+            _spiderweb1.Deactivate();
+            _spiderweb2.Deactivate();
+            _spiderweb3.Deactivate();
+            _spiderweb4.Deactivate();
+            _spiderweb5.Deactivate();
+            _spiderweb6.Deactivate();
         }
     }
 }

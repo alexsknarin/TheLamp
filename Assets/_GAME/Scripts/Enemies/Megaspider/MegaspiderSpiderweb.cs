@@ -51,6 +51,7 @@ namespace _GAME.Scripts.Enemies.Megaspider
         private float _breakHangDuration = .65f;
         private float _breakHangNoiseOffset;
         private float _localTime;
+        private bool _isActive;
 
         public void StartShootStatic(
             Vector3 startPosition, 
@@ -412,6 +413,8 @@ namespace _GAME.Scripts.Enemies.Megaspider
         
         public void StartFallBreakDynamic()
         {
+            if (!_isActive) return;
+            Debug.Log("Start Fall Break Dynamic");
             _localTime = 0;
             _lineRenderer.positionCount = _shootPointCount;
             _startPosition = _startEndPositionsProvider.StartPosition;
@@ -419,6 +422,20 @@ namespace _GAME.Scripts.Enemies.Megaspider
             _lineRenderer.enabled = true;
             _spiderwebState = SpiderwebState.FallBreakStatic;
             enabled = true;
+        }
+
+        public void Activate()
+        {
+            _isActive = true;
+        }
+
+        public void Deactivate()
+        {
+            Debug.Log("Deactivate Spiderweb");
+            enabled = false;
+            _isActive = false;
+            _spiderwebState = SpiderwebState.Inactive;
+            _lineRenderer.enabled = false;
         }
 
         private void LateUpdate()

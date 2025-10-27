@@ -149,9 +149,20 @@ namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
             _wireState = WireStates.Inactive;
             
             _lampAttackEventListener.AttackStarted -= ReceiveWireDamage;
-            _mainAttackWire.Destroyed -= OnMainAttackWireDestroyed;
+            if (_mainAttackWire != null)
+            {
+                _mainAttackWire.Destroyed -= OnMainAttackWireDestroyed;                
+            }
         }
 
+        public void Reset()
+        {
+            if (_mainAttackWire != null)
+            {
+                _mainAttackWire.Destroyed -= OnMainAttackWireDestroyed;                
+            }
+        }
+        
         private void StartWireAttack()
         {
             _currentAttackingWireIndex = 0;

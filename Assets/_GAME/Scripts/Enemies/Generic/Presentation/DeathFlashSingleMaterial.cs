@@ -37,6 +37,11 @@ namespace _GAME.Scripts.Enemies.Generic.Presentation
             _damageParticles.SendEvent("OnDamage");
         }
 
+        public void Reset()
+        {
+            _material.SetFloat(DeathFade, 0);
+        }
+
         private void Update()
         {
             float phase = _localTime / _duration;

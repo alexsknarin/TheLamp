@@ -43,10 +43,7 @@ namespace _GAME.Scripts.Lib
             {
                 _currentTransitions = EmptyTransitions;
             }
-        
-            Debug.Log("Entering: " + _currentState.GetType());
             _currentState.Enter();
-            
         }
 
         public void AddTransition(IState from, IState to, Func<bool> predicate)
