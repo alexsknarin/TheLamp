@@ -51,6 +51,7 @@ MonoBehaviour:
   <MegaspiderWireAttackSpiderAttackDelay>k__BackingField: 1.5
   <MegaspiderWireAttackMainAttackDuration>k__BackingField: 1
   <MegaspiderWireAttackMainAttackAcceleration>k__BackingField: 3
+  <MegaspiderWireAttackPreattackDelay>k__BackingField: 0.45
   <MegaspiderWebStartPositionRanges>k__BackingField:
   - p1: {x: -0.28, y: -2.86, z: -3.84}
     p2: {x: -0.98199, y: -2.5469, z: -3.380694}

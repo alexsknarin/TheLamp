@@ -58,6 +58,7 @@ namespace _GAME.Scripts.GameCoreSystems.DataManagement.DataTypes
         [field:SerializeField] public float MegaspiderWireAttackSpiderAttackDelay { get; private set; } = 1.5f;
         [field:SerializeField] public float MegaspiderWireAttackMainAttackDuration { get; private set; } = 1.0f;
         [field:SerializeField] public float MegaspiderWireAttackMainAttackAcceleration { get; private set; } = 3.0f;
+        [field:SerializeField] public float MegaspiderWireAttackPreattackDelay { get; private set; } = 0.75f;
         [field:SerializeField] public SpiderwebSpawnRange[] MegaspiderWebStartPositionRanges { get; private set; }
         [field:Header("Tangle Attack State:")]
         [field:SerializeField] public float MegaspiderTangleAttackWireThickness { get; private set; } = 0.03f;

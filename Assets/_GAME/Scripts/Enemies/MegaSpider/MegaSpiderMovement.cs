@@ -179,7 +179,8 @@ namespace _GAME.Scripts.Enemies.Megaspider
             _tangleAttackRState.Started += OnAnimatedAttackStarted;
             _tangleAttackRState.Started += OnPreattackStarted;
             _wireAttackState.Started += OnAnimatedAttackStarted;
-            _wireAttackState.Started += OnPreattackStarted;
+            // _wireAttackState.Started += OnPreattackStarted;
+            _wireAttackState.PreAttackStarted += OnPreattackStarted;
 
             _tangleAttackLState.PivotChanged += OnTanglePivotChanged;
             _tangleAttackRState.PivotChanged += OnTanglePivotChanged;
@@ -250,7 +251,8 @@ namespace _GAME.Scripts.Enemies.Megaspider
             _tangleAttackRState.Started -= OnAnimatedAttackStarted;
             _tangleAttackRState.Started -= OnPreattackStarted;
             _wireAttackState.Started -= OnAnimatedAttackStarted;
-            _wireAttackState.Started -= OnPreattackStarted;
+            // _wireAttackState.Started -= OnPreattackStarted;
+            _wireAttackState.PreAttackStarted -= OnPreattackStarted;
             
             _tangleAttackLState.PivotChanged -= OnTanglePivotChanged;
             _tangleAttackRState.PivotChanged -= OnTanglePivotChanged;

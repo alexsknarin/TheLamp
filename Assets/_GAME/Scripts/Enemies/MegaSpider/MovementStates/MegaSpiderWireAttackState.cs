@@ -35,6 +35,7 @@ namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
         private int _destroyedWiresCount = 0;
         private float _localTime;
         private bool _isReadyToCollide;
+        private bool _isPreAttackStarted;
 
         // Dependencies
         private readonly Transform _visibleBodyTransform;
@@ -48,6 +49,7 @@ namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
         private readonly float _spiderAttackDelay;
         private readonly float _mainAttackDuration;
         private readonly float _mainAttackAcceleration;
+        private readonly float _preAttackDelay;
 
         public MegaspiderWireAttackState(
             Transform visibleBodyTransform, 
@@ -68,6 +70,7 @@ namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
             _mainAttackDuration = configService.GameConfig.MegaspiderWireAttackMainAttackDuration;
             _mainAttackAcceleration = configService.GameConfig.MegaspiderWireAttackMainAttackAcceleration;
             _webStartPositionsRanges = configService.GameConfig.MegaspiderWebStartPositionRanges;
+            _preAttackDelay = configService.GameConfig.MegaspiderWireAttackPreattackDelay;
             _wireState = WireStates.Inactive;
             _currentPosition = _inactivePosition;
             CreateEmptyAttackWireVariables();
@@ -76,6 +79,7 @@ namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
         public event Action Entered;
         public event Action Started;
         public event Action CollisionProximityEntered;
+        public event Action PreAttackStarted;
         
         public bool IsDropped { get; private set; }
         public List<SpiderwebAttackWire> AttackWires => _attackWires;
@@ -96,6 +100,7 @@ namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
             IsDropped = false;
             IsReadyToSwitch = false;
             _isReadyToCollide = false;
+            _isPreAttackStarted = false;
             _destroyedWiresCount = 0;
             _localTime = 0;
             InitializeAttackWires();
@@ -219,6 +224,12 @@ namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
             {
                 _isReadyToCollide = true;
                 CollisionProximityEntered?.Invoke();           
+            }
+
+            if (_localTime > _preAttackDelay && !_isPreAttackStarted)
+            {
+                _isPreAttackStarted = true;
+                PreAttackStarted?.Invoke();
             }
             
             _localTime += Time.deltaTime;    
