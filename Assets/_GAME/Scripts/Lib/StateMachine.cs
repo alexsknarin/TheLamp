@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using _GAME.Scripts.Lib.Interfaces;
+using UnityEngine;
 
 namespace _GAME.Scripts.Lib
 {
@@ -43,7 +44,9 @@ namespace _GAME.Scripts.Lib
                 _currentTransitions = EmptyTransitions;
             }
         
+            Debug.Log("Entering: " + _currentState.GetType());
             _currentState.Enter();
+            
         }
 
         public void AddTransition(IState from, IState to, Func<bool> predicate)
