@@ -68,6 +68,7 @@ namespace _GAME.Scripts.Enemies.Megaspider
         private float _collisionRadius;
         private float _fullCollisionDistance;
         private bool _isAttackStateBeforeCollision = false;
+        [SerializeField] private bool _isLampDestroyed = false;
 
         // Dependencies
         private Transform _cameraTransform; // TODO: remove???
@@ -364,6 +365,8 @@ namespace _GAME.Scripts.Enemies.Megaspider
             At(_projectileBottomAttackRState, _projectileTopAttackLState, IsAnimationEndedRandom2Of4());
             At(_projectileBottomAttackLState, _hangJumpAttackRState, IsAnimationEndedRandom3Of4());
             At(_projectileBottomAttackRState, _hangJumpAttackLState, IsAnimationEndedRandom3Of4());
+            At(_projectileBottomAttackLState, _idleState, IsAnimationEndedLampDestroyed());
+            At(_projectileBottomAttackRState, _idleState, IsAnimationEndedLampDestroyed());
             
             // Projectile Double Up Transitions
             At(_projectileDoubleUpAttackLState, _wireAttackState, IsAnimationEndedRandom0Of6());
@@ -378,6 +381,8 @@ namespace _GAME.Scripts.Enemies.Megaspider
             At(_projectileDoubleUpAttackRState, _projectileTopAttackRState, IsAnimationEndedRandom4Of6());
             At(_projectileDoubleUpAttackLState, _projectileDoubleDownAttackLState, IsAnimationEndedRandom5Of6());
             At(_projectileDoubleUpAttackRState, _projectileDoubleDownAttackRState, IsAnimationEndedRandom5Of6());
+            At(_projectileDoubleUpAttackLState, _idleState, IsAnimationEndedLampDestroyed());
+            At(_projectileDoubleUpAttackRState, _idleState, IsAnimationEndedLampDestroyed());
             
             // Hang Attack Transitions
             At(_hangAttackLState, _bounceState, IsCollided());
@@ -412,6 +417,8 @@ namespace _GAME.Scripts.Enemies.Megaspider
             At(_projectileTopAttackRState, _hangJumpAttackLState, IsAnimationEndedRandom2Of4());
             At(_projectileTopAttackLState, _hangAttackRState, IsAnimationEndedRandom3Of4());
             At(_projectileTopAttackRState, _hangAttackLState, IsAnimationEndedRandom3Of4());
+            At(_projectileTopAttackLState, _idleState, IsAnimationEndedLampDestroyed());
+            At(_projectileTopAttackRState, _idleState, IsAnimationEndedLampDestroyed());
             
             // Projectile Double Down Attack Transitions
             At(_projectileDoubleDownAttackLState, _wireAttackState, IsAnimationEndedRandom0Of4());
@@ -422,6 +429,8 @@ namespace _GAME.Scripts.Enemies.Megaspider
             At(_projectileDoubleDownAttackRState, _projectileBottomAttackRState, IsAnimationEndedRandom2Of4());
             At(_projectileDoubleDownAttackLState, _projectileDoubleUpAttackLState, IsAnimationEndedRandom3Of4());
             At(_projectileDoubleDownAttackRState, _projectileDoubleUpAttackRState, IsAnimationEndedRandom3Of4());
+            At(_projectileDoubleDownAttackLState, _idleState, IsAnimationEndedLampDestroyed());
+            At(_projectileDoubleDownAttackRState, _idleState, IsAnimationEndedLampDestroyed());
             
             // Bounce Transitions
             At(_bounceState, _fallState, IsAttackEndedFail());
@@ -462,26 +471,29 @@ namespace _GAME.Scripts.Enemies.Megaspider
                 || _calculatedTransform.position.x > _swingZoneSize));
             
             // Swing Transitions
-            At(_swingLState, _wireAttackState, () => _swingLState.IsReadyToSwitch && Random.Range(0,4) == 0);
-            At(_swingRState, _wireAttackState, () => _swingRState.IsReadyToSwitch && Random.Range(0,4) == 0);
-            At(_swingLState, _zigzagAttackLState, () => _swingLState.IsReadyToSwitch && Random.Range(0,4) == 1);
-            At(_swingRState, _zigzagAttackRState, () => _swingRState.IsReadyToSwitch && Random.Range(0,4) == 1);
-            At(_swingLState, _projectileBottomAttackLState, () => _swingLState.IsReadyToSwitch && Random.Range(0,4) == 2);
-            At(_swingRState, _projectileBottomAttackRState, () => _swingRState.IsReadyToSwitch && Random.Range(0,4) == 2);
-            At(_swingLState, _projectileDoubleUpAttackLState, () => _swingLState.IsReadyToSwitch && Random.Range(0,4) == 3);
-            At(_swingRState, _projectileDoubleUpAttackRState, () => _swingRState.IsReadyToSwitch && Random.Range(0,4) == 3);
+            At(_swingLState, _wireAttackState, () => _swingLState.IsReadyToSwitch && Random.Range(0,4) == 0 && !_isLampDestroyed);
+            At(_swingRState, _wireAttackState, () => _swingRState.IsReadyToSwitch && Random.Range(0,4) == 0 && !_isLampDestroyed);
+            At(_swingLState, _zigzagAttackLState, () => _swingLState.IsReadyToSwitch && Random.Range(0,4) == 1 && !_isLampDestroyed);
+            At(_swingRState, _zigzagAttackRState, () => _swingRState.IsReadyToSwitch && Random.Range(0,4) == 1 && !_isLampDestroyed);
+            At(_swingLState, _projectileBottomAttackLState, () => _swingLState.IsReadyToSwitch && Random.Range(0,4) == 2 && !_isLampDestroyed);
+            At(_swingRState, _projectileBottomAttackRState, () => _swingRState.IsReadyToSwitch && Random.Range(0,4) == 2 && !_isLampDestroyed);
+            At(_swingLState, _projectileDoubleUpAttackLState, () => _swingLState.IsReadyToSwitch && Random.Range(0,4) == 3 && !_isLampDestroyed);
+            At(_swingRState, _projectileDoubleUpAttackRState, () => _swingRState.IsReadyToSwitch && Random.Range(0,4) == 3 && !_isLampDestroyed);
+            At(_swingLState, _idleState, () => _swingLState.IsReadyToSwitch && _isLampDestroyed);
+            At(_swingRState, _idleState, () => _swingLState.IsReadyToSwitch && _isLampDestroyed);
             
             // Climb Transitions
-            At(_climbState, _hangAttackLState, () => _climbState.IsReadyToSwitch && _calculatedTransform.position.x < 0 && Random.Range(0,5) == 0);
-            At(_climbState, _hangAttackRState, () => _climbState.IsReadyToSwitch && _calculatedTransform.position.x > 0 && Random.Range(0,5) == 0);
-            At(_climbState, _hangJumpAttackLState, () => _climbState.IsReadyToSwitch && _calculatedTransform.position.x < 0 && Random.Range(0,5) == 1);
-            At(_climbState, _hangJumpAttackRState, () => _climbState.IsReadyToSwitch && _calculatedTransform.position.x > 0 && Random.Range(0,5) == 1);
-            At(_climbState, _tangleAttackLState, () => _climbState.IsReadyToSwitch && _calculatedTransform.position.x < 0 && Random.Range(0,5) == 2);
-            At(_climbState, _tangleAttackRState, () => _climbState.IsReadyToSwitch && _calculatedTransform.position.x > 0 && Random.Range(0,5) == 3);
-            At(_climbState, _projectileTopAttackLState, () => _climbState.IsReadyToSwitch && _calculatedTransform.position.x < 0 && Random.Range(0,5) == 3);
-            At(_climbState, _projectileTopAttackRState, () => _climbState.IsReadyToSwitch && _calculatedTransform.position.x > 0 && Random.Range(0,5) == 3);
-            At(_climbState, _projectileDoubleDownAttackLState, () => _climbState.IsReadyToSwitch && _calculatedTransform.position.x < 0 && Random.Range(0,5) == 4);
-            At(_climbState, _projectileDoubleDownAttackRState, () => _climbState.IsReadyToSwitch && _calculatedTransform.position.x > 0 && Random.Range(0,5) == 4);
+            At(_climbState, _hangAttackLState, () => _climbState.IsReadyToSwitch && _calculatedTransform.position.x < 0 && Random.Range(0,5) == 0 && !_isLampDestroyed);
+            At(_climbState, _hangAttackRState, () => _climbState.IsReadyToSwitch && _calculatedTransform.position.x > 0 && Random.Range(0,5) == 0 && !_isLampDestroyed);
+            At(_climbState, _hangJumpAttackLState, () => _climbState.IsReadyToSwitch && _calculatedTransform.position.x < 0 && Random.Range(0,5) == 1 && !_isLampDestroyed);
+            At(_climbState, _hangJumpAttackRState, () => _climbState.IsReadyToSwitch && _calculatedTransform.position.x > 0 && Random.Range(0,5) == 1 && !_isLampDestroyed);
+            At(_climbState, _tangleAttackLState, () => _climbState.IsReadyToSwitch && _calculatedTransform.position.x < 0 && Random.Range(0,5) == 2 && !_isLampDestroyed);
+            At(_climbState, _tangleAttackRState, () => _climbState.IsReadyToSwitch && _calculatedTransform.position.x > 0 && Random.Range(0,5) == 3 && !_isLampDestroyed);
+            At(_climbState, _projectileTopAttackLState, () => _climbState.IsReadyToSwitch && _calculatedTransform.position.x < 0 && Random.Range(0,5) == 3 && !_isLampDestroyed);
+            At(_climbState, _projectileTopAttackRState, () => _climbState.IsReadyToSwitch && _calculatedTransform.position.x > 0 && Random.Range(0,5) == 3 && !_isLampDestroyed);
+            At(_climbState, _projectileDoubleDownAttackLState, () => _climbState.IsReadyToSwitch && _calculatedTransform.position.x < 0 && Random.Range(0,5) == 4 && !_isLampDestroyed);
+            At(_climbState, _projectileDoubleDownAttackRState, () => _climbState.IsReadyToSwitch && _calculatedTransform.position.x > 0 && Random.Range(0,5) == 4 && !_isLampDestroyed);
+            At(_climbState, _idleState, () => _climbState.IsReadyToSwitch && _isLampDestroyed);
 
             // Death Fall Transitions
             At(_deathFallState, _idleState, () => _deathFallState.IsReadyToSwitch); //+
@@ -493,7 +505,7 @@ namespace _GAME.Scripts.Enemies.Megaspider
             // Predicates 
             Func<bool> IsAnimationEndedRandom0Of4() => () =>
             {
-                if (_isAnimClipEnded && Random.Range(0, 4) == 0)
+                if (_isAnimClipEnded && Random.Range(0, 4) == 0 && !_isLampDestroyed)
                 {
                     _isAnimClipEnded = false;
                     return true;
@@ -503,7 +515,7 @@ namespace _GAME.Scripts.Enemies.Megaspider
             
             Func<bool> IsAnimationEndedRandom1Of4() => () =>
             {
-                if (_isAnimClipEnded && Random.Range(0, 4) == 1)
+                if (_isAnimClipEnded && Random.Range(0, 4) == 1 && !_isLampDestroyed)
                 {
                     _isAnimClipEnded = false;
                     return true;
@@ -513,7 +525,7 @@ namespace _GAME.Scripts.Enemies.Megaspider
             
             Func<bool> IsAnimationEndedRandom2Of4() => () =>
             {
-                if (_isAnimClipEnded && Random.Range(0, 4) == 2)
+                if (_isAnimClipEnded && Random.Range(0, 4) == 2 && !_isLampDestroyed)
                 {
                     _isAnimClipEnded = false;
                     return true;
@@ -523,7 +535,7 @@ namespace _GAME.Scripts.Enemies.Megaspider
             
             Func<bool> IsAnimationEndedRandom3Of4() => () =>
             {
-                if (_isAnimClipEnded && Random.Range(0, 4) == 3)
+                if (_isAnimClipEnded && Random.Range(0, 4) == 3 && !_isLampDestroyed)
                 {
                     _isAnimClipEnded = false;
                     return true;
@@ -533,7 +545,7 @@ namespace _GAME.Scripts.Enemies.Megaspider
             
             Func<bool> IsAnimationEndedRandom0Of6() => () =>
             {
-                if (_isAnimClipEnded && Random.Range(0, 6) == 0)
+                if (_isAnimClipEnded && Random.Range(0, 6) == 0 && !_isLampDestroyed)
                 {
                     _isAnimClipEnded = false;
                     return true;
@@ -543,7 +555,7 @@ namespace _GAME.Scripts.Enemies.Megaspider
             
             Func<bool> IsAnimationEndedRandom1Of6() => () =>
             {
-                if (_isAnimClipEnded && Random.Range(0, 6) == 1)
+                if (_isAnimClipEnded && Random.Range(0, 6) == 1 && !_isLampDestroyed)
                 {
                     _isAnimClipEnded = false;
                     return true;
@@ -553,7 +565,7 @@ namespace _GAME.Scripts.Enemies.Megaspider
             
             Func<bool> IsAnimationEndedRandom2Of6() => () =>
             {
-                if (_isAnimClipEnded && Random.Range(0, 6) == 2)
+                if (_isAnimClipEnded && Random.Range(0, 6) == 2 && !_isLampDestroyed)
                 {
                     _isAnimClipEnded = false;
                     return true;
@@ -563,7 +575,7 @@ namespace _GAME.Scripts.Enemies.Megaspider
             
             Func<bool> IsAnimationEndedRandom3Of6() => () =>
             {
-                if (_isAnimClipEnded && Random.Range(0, 6) == 3)
+                if (_isAnimClipEnded && Random.Range(0, 6) == 3 && !_isLampDestroyed)
                 {
                     _isAnimClipEnded = false;
                     return true;
@@ -573,7 +585,7 @@ namespace _GAME.Scripts.Enemies.Megaspider
             
             Func<bool> IsAnimationEndedRandom4Of6() => () =>
             {
-                if (_isAnimClipEnded && Random.Range(0, 6) == 4)
+                if (_isAnimClipEnded && Random.Range(0, 6) == 4 && !_isLampDestroyed)
                 {
                     _isAnimClipEnded = false;
                     return true;
@@ -583,7 +595,17 @@ namespace _GAME.Scripts.Enemies.Megaspider
             
             Func<bool> IsAnimationEndedRandom5Of6() => () =>
             {
-                if (_isAnimClipEnded && Random.Range(0, 6) == 5)
+                if (_isAnimClipEnded && Random.Range(0, 6) == 5 && !_isLampDestroyed)
+                {
+                    _isAnimClipEnded = false;
+                    return true;
+                }
+                return false;
+            };
+            
+            Func<bool> IsAnimationEndedLampDestroyed() => () =>
+            {
+                if (_isAnimClipEnded && _isLampDestroyed)
                 {
                     _isAnimClipEnded = false;
                     return true;
@@ -635,6 +657,7 @@ namespace _GAME.Scripts.Enemies.Megaspider
         public void Play()
         {
             _isCollided = false;
+            _isLampDestroyed = false;
             _attackResult = AttackResult.None;
             enabled = true;
             OnEnterStarted();
@@ -654,6 +677,11 @@ namespace _GAME.Scripts.Enemies.Megaspider
         public void TriggerBounce()
         {
             _isCollided = true;
+        }
+
+        public void SetLampDestroyed()
+        {
+            _isLampDestroyed = true;
         }
 
         private void OnEnterStarted()

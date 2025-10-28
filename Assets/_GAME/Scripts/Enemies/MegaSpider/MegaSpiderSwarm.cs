@@ -16,6 +16,7 @@ namespace _GAME.Scripts.Enemies.Megaspider
         [SerializeField] private MegaspiderProjectileSpider.MegaspiderProjectileSpider _projectile02;
         [SerializeField] private Transform _projectile01Transform;
         [SerializeField] private Transform _projectile02Transform;
+        private bool _isLampDestroyed;
         
         // Dependencies
         private Transform _lampTransform;
@@ -46,10 +47,19 @@ namespace _GAME.Scripts.Enemies.Megaspider
             _projectile01.FallEnded += OnProjectile01FallEnded;
             _projectile02.FallEnded += OnProjectile02FallEnded;
             
-            
-            
             Reset();
         }
+        
+        public void Play()
+        {
+            _isLampDestroyed = false;
+        }
+        
+        public void SetLampDestroyed()
+        {
+            _isLampDestroyed = true;
+        }
+        
 
         private void OnProjectile01FallEnded()
         {
@@ -100,11 +110,13 @@ namespace _GAME.Scripts.Enemies.Megaspider
         
         public void Attack01()
         {
+            if (_isLampDestroyed) return;
             _projectile01.Attack();
         }
     
         public void Attack02()
         {
+            if (_isLampDestroyed) return;
             _projectile02.Attack();
         }
     }

@@ -22,7 +22,6 @@ namespace _GAME.Scripts.Enemies.Megaspider
         [SerializeField] private MegaspiderAnimationClipEventListener _animationClipEvents;
         [SerializeField] private Transform _visibleBodyTransform;
         private Vector2 _projectedPosition;
-        private bool _isLampDestroyed;
         [SerializeField] private AttackResult _attackResult;
 
         // Dependencies
@@ -81,13 +80,13 @@ namespace _GAME.Scripts.Enemies.Megaspider
         public override void Play()
         {
             IsGameOver = false;
-            _isLampDestroyed = false;
             _attackResult = AttackResult.Success;
             
             _currentHealth = _maxHealth;
             HealthChanged?.Invoke(_currentHealth, _maxHealth);
             
             _movement.Play();
+            _swarm.Play();
             Started?.Invoke();
             
             _swarm.HideProjectiles();
@@ -154,10 +153,8 @@ namespace _GAME.Scripts.Enemies.Megaspider
 
         public void HandleLampDestroyed()
         {
-            // _movement.SetLampDestroyed();
-            // _swarm.TriggerGameover();
-            
-            _isLampDestroyed = true;
+            _movement.SetLampDestroyed();
+            _swarm.SetLampDestroyed();
         }
 
         public override Vector3 ProvideImpactPoint()

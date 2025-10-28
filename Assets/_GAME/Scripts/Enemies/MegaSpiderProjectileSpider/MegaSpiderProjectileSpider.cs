@@ -77,6 +77,11 @@ namespace _GAME.Scripts.Enemies.MegaspiderProjectileSpider
             _movement.TriggerFall(AttackResult.Success);
         }
 
+        public void HandleLampDestroyed()
+        {
+            _movement.SetLampDestroyed();
+        }
+
         private void OnFallEnded()
         {
             gameObject.SetActive(false);

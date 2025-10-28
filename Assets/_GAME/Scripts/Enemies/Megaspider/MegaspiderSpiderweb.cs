@@ -414,7 +414,6 @@ namespace _GAME.Scripts.Enemies.Megaspider
         public void StartFallBreakDynamic()
         {
             if (!_isActive) return;
-            Debug.Log("Start Fall Break Dynamic");
             _localTime = 0;
             _lineRenderer.positionCount = _shootPointCount;
             _startPosition = _startEndPositionsProvider.StartPosition;
@@ -431,7 +430,6 @@ namespace _GAME.Scripts.Enemies.Megaspider
 
         public void Deactivate()
         {
-            Debug.Log("Deactivate Spiderweb");
             enabled = false;
             _isActive = false;
             _spiderwebState = SpiderwebState.Inactive;
