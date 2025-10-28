@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using _GAME.Scripts.Lib.Interfaces;
+using UnityEngine;
 
 namespace _GAME.Scripts.Lib
 {
@@ -42,7 +43,6 @@ namespace _GAME.Scripts.Lib
             {
                 _currentTransitions = EmptyTransitions;
             }
-        
             _currentState.Enter();
         }
 

@@ -4,6 +4,7 @@ using _GAME.Scripts.Factories;
 using _GAME.Scripts.Lib;
 using _GAME.Scripts.Lib.Interfaces;
 using _GAME.Scripts.Enemies.Dragonfly;
+using _GAME.Scripts.Enemies.MegaSpiderProjectileSpider.MovementStates;
 using UnityEngine;
 
 namespace _GAME.Scripts.Enemies.MegaspiderProjectileSpider
@@ -21,15 +22,17 @@ namespace _GAME.Scripts.Enemies.MegaspiderProjectileSpider
         private Vector3 _prevPos;
         private float _gravityMagnitude;
         private bool _isAttacking;
+        private bool _isLampDestroyed;
         
         // States
-        private MegaspiderProjectileSpiderMovementStateFactory _stateFactory; // DI it later
+        private MegaspiderProjectileSpiderMovementStateFactory _stateFactory;
         private readonly StateMachine _stateMachine = new ();
         private MegaspiderProjectileSpiderIdleState _idleState;
         private MegaspiderProjectileSpiderPreAttackState _preAttackState;
         private MegaspiderProjectileSpiderAttackState _attackState;
         private MegaspiderProjectileSpiderBounceState _bounceState;
         private MegaspiderProjectileSpiderFallState _fallState;
+        private MegaspiderProjectileSpiderFallLampDestroyedState _fallLampDestroyedState;
         
         // Dependencies
         private Transform _lampTransform;
@@ -63,6 +66,7 @@ namespace _GAME.Scripts.Enemies.MegaspiderProjectileSpider
         {
             _isAttacking = false;
             _isCollided = false;
+            _isLampDestroyed = false;
             enabled = true;
             _stateMachine.SetState(_idleState);
             _attackResult = AttackResult.None;
@@ -77,14 +81,21 @@ namespace _GAME.Scripts.Enemies.MegaspiderProjectileSpider
         {
             _isCollided = true;
         }
+        
+        public void SetLampDestroyed()
+        {
+            _isLampDestroyed = true;
+        }
 
         private void CreateStates()
         {
             _idleState = (MegaspiderProjectileSpiderIdleState)_stateFactory.Create(typeof(MegaspiderProjectileSpiderIdleState));
             _preAttackState = (MegaspiderProjectileSpiderPreAttackState)_stateFactory.Create(typeof(MegaspiderProjectileSpiderPreAttackState));
-            _attackState =  (MegaspiderProjectileSpiderAttackState)_stateFactory.Create(typeof(MegaspiderProjectileSpiderAttackState));
-            _bounceState =  (MegaspiderProjectileSpiderBounceState)_stateFactory.Create(typeof(MegaspiderProjectileSpiderBounceState));
-            _fallState =  (MegaspiderProjectileSpiderFallState)_stateFactory.Create(typeof(MegaspiderProjectileSpiderFallState));
+            _attackState = (MegaspiderProjectileSpiderAttackState)_stateFactory.Create(typeof(MegaspiderProjectileSpiderAttackState));
+            _bounceState = (MegaspiderProjectileSpiderBounceState)_stateFactory.Create(typeof(MegaspiderProjectileSpiderBounceState));
+            _fallState = (MegaspiderProjectileSpiderFallState)_stateFactory.Create(typeof(MegaspiderProjectileSpiderFallState));
+            _fallLampDestroyedState = (MegaspiderProjectileSpiderFallLampDestroyedState)_stateFactory
+                .Create(typeof(MegaspiderProjectileSpiderFallLampDestroyedState));
         }
 
         private void ConfigureStateTransitions()
@@ -97,8 +108,6 @@ namespace _GAME.Scripts.Enemies.MegaspiderProjectileSpider
             At(_bounceState, _fallState, IsAttackFail());
             At(_bounceState, _fallState, IsAttackSuccess());
             At(_fallState, _idleState, () => _fallState.IsReadyToSwitch);
-            
-            
             
             // Transition helper methods
             void At(IState from, IState to, Func<bool> condition) => _stateMachine.AddTransition(from, to, condition);

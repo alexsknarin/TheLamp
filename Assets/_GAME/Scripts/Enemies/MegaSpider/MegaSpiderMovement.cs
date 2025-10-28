@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using _GAME.Scripts.Enemies.Dragonfly; // TODO: move to library
 using _GAME.Scripts.Enemies.Megaspider.MovementStates;
 using _GAME.Scripts.Factories;
@@ -67,6 +68,7 @@ namespace _GAME.Scripts.Enemies.Megaspider
         private float _collisionRadius;
         private float _fullCollisionDistance;
         private bool _isAttackStateBeforeCollision = false;
+        [SerializeField] private bool _isLampDestroyed = false;
 
         // Dependencies
         private Transform _cameraTransform; // TODO: remove???
@@ -88,8 +90,20 @@ namespace _GAME.Scripts.Enemies.Megaspider
             _collisionThreshold = gameConfigService.PlayerConfig.CollisionThreshold;
             _swingZoneSize = gameConfigService.GameConfig.MegaspiderSwingZoneSize;
         }
-        
+
+        public event Action EnterStateStarted;
+        public event Action ZigzagAttackStateStarted;
+        public event Action WireAttackStateStarted;
+        public event Action HangAttackStateStarted;
+        public event Action HangJumpAttackStateStarted;
+        public event Action ProjectileAttackStateStarted;
+        public event Action ProjectileBottomAttackStateStarted;
+        public event Action ProjectileDoubleUpAttackStateStarted;
+        public event Action ProjectileTopAttackStateStarted;
+        public event Action ProjectileDoubleDownAttackStateStarted;
         public event Action AnimatedAttackStarted;
+        public event Action BounceStateStarted;
+        public event Action DeathStateStarted;
         public event Action DeathStateEnded;
         public event Action<Type> StaticBridge1Called;
         public event Action StaticBridge1Broken;
@@ -101,13 +115,21 @@ namespace _GAME.Scripts.Enemies.Megaspider
         public event Action HangStopRequested;
         public event Action HangBreakRequested;
         public event Action<ITangledWireProvider> TangleAttackStarted;
+        public event Action<Vector3> TanglePivotChanged;
         public event Action TangleAttackEnded;
         public event Action<IPositionProvider> SuccessFallOutForceCancelled;
+        public event Action ClimbStateStarted;
         public event Action ClimbStateEnded;
         public event Action<IPositionProvider> FailFallOutForceCancelled;
+        public event Action SwingStateStarted;
         public event Action SwingStateEnded;
         public event Action<IPositionProvider> FallStateEnded;
         public event Action<IAttackWiresProvider> WireAttackStateEntered;
+        public event Action PreAttackStarted;
+        public event Action FailFallStarted;
+        public event Action WireCollisionProximityEntered;
+        public event Action DropFallStarted;
+        
 
         public void SetCollisionRadius(float radius)
         {
@@ -145,7 +167,8 @@ namespace _GAME.Scripts.Enemies.Megaspider
             _animationClipEvents.HangStartRequested += OnHangStartRequested;
             _animationClipEvents.HangStopRequested += OnHangStopRequested;
             _animationClipEvents.HangBreakRequested += OnHangBreakRequested;
-            
+            _animationClipEvents.PreattackCalled += OnPreattackStarted;
+
             _zigzagAttackLState.Started += OnAnimatedAttackStarted;
             _zigzagAttackRState.Started += OnAnimatedAttackStarted;
             _hangAttackLState.Started += OnAnimatedAttackStarted;
@@ -153,8 +176,23 @@ namespace _GAME.Scripts.Enemies.Megaspider
             _hangJumpAttackLState.Started += OnAnimatedAttackStarted;
             _hangJumpAttackRState.Started += OnAnimatedAttackStarted;
             _tangleAttackLState.Started += OnAnimatedAttackStarted;
+            _tangleAttackLState.PreAttackStarted += OnPreattackStarted;
             _tangleAttackRState.Started += OnAnimatedAttackStarted;
+            _tangleAttackRState.PreAttackStarted += OnPreattackStarted;
             _wireAttackState.Started += OnAnimatedAttackStarted;
+            _wireAttackState.PreAttackStarted += OnPreattackStarted;
+
+            _tangleAttackLState.PivotChanged += OnTanglePivotChanged;
+            _tangleAttackRState.PivotChanged += OnTanglePivotChanged;
+            
+            _projectileBottomAttackLState.Started += OnProjectileAttackStarted;
+            _projectileBottomAttackRState.Started += OnProjectileAttackStarted;
+            _projectileDoubleUpAttackLState.Started += OnProjectileAttackStarted;
+            _projectileDoubleUpAttackRState.Started += OnProjectileAttackStarted;
+            _projectileTopAttackLState.Started += OnProjectileAttackStarted;
+            _projectileTopAttackRState.Started += OnProjectileAttackStarted;
+            _projectileDoubleDownAttackLState.Started += OnProjectileAttackStarted;
+            _projectileDoubleDownAttackRState.Started += OnProjectileAttackStarted;
 
             _tangleAttackLState.Started += OnTangleAttackLStarted;
             _tangleAttackRState.Started += OnTangleAttackRStarted;
@@ -162,22 +200,30 @@ namespace _GAME.Scripts.Enemies.Megaspider
             _tangleAttackRState.Ended += OnTangleAttackEnded;
             
             _wireAttackState.Entered += OnWireAttackStateEntered;
+            _wireAttackState.CollisionProximityEntered += OnWireAttackCollisionProximityEntered;
+            
+            _bounceState.Started += OnBounceStateStarted;
+            _climbState.Started += OnClimbStateStarted;
 
+            _swingLState.Started += OnSwingStarted;
+            _swingRState.Started += OnSwingStarted;
             _swingLState.Ended += OnSwingEnded;
             _swingRState.Ended += OnSwingEnded;
-            
+
+            _fallState.Started += OnFallStateStarted; 
             _successFallState.OutForceCancelled += OnSuccessFallOutForceCancelled;
             _fallState.OutForceCancelled += OnFailFallOutForceCancelled;
             _successFallState.Ended += OnSuccessFallStateEnded;
             _fallState.Ended += OnFailFallStateEnded;
+            _dropFallState.Started += OnDropFallStateStarted;
             _dropFallState.Ended += OnDropFallStateEnded;
             
             _climbState.Ended += OnClimbStateEnded;
 
             _bounceState.Ended += OnBounceStateEnded;
+            _deathFallState.Started += OnDeathFallStateStarted;
             _deathFallState.Ended += OnDeathStateEnded;
-
-
+            
         }
 
         private void OnDestroy()
@@ -192,6 +238,7 @@ namespace _GAME.Scripts.Enemies.Megaspider
             _animationClipEvents.HangStartRequested -= OnHangStartRequested;
             _animationClipEvents.HangStopRequested -= OnHangStopRequested;
             _animationClipEvents.HangBreakRequested -= OnHangBreakRequested;
+            _animationClipEvents.PreattackCalled -= OnPreattackStarted;
             
             _zigzagAttackLState.Started -= OnAnimatedAttackStarted;
             _zigzagAttackRState.Started -= OnAnimatedAttackStarted;
@@ -200,8 +247,23 @@ namespace _GAME.Scripts.Enemies.Megaspider
             _hangJumpAttackLState.Started -= OnAnimatedAttackStarted;
             _hangJumpAttackRState.Started -= OnAnimatedAttackStarted;
             _tangleAttackLState.Started -= OnAnimatedAttackStarted;
+            _tangleAttackLState.PreAttackStarted -= OnPreattackStarted;
             _tangleAttackRState.Started -= OnAnimatedAttackStarted;
+            _tangleAttackRState.PreAttackStarted -= OnPreattackStarted;
             _wireAttackState.Started -= OnAnimatedAttackStarted;
+            _wireAttackState.PreAttackStarted -= OnPreattackStarted;
+            
+            _tangleAttackLState.PivotChanged -= OnTanglePivotChanged;
+            _tangleAttackRState.PivotChanged -= OnTanglePivotChanged;
+
+            _projectileBottomAttackLState.Started -= OnProjectileAttackStarted;
+            _projectileBottomAttackRState.Started -= OnProjectileAttackStarted;
+            _projectileDoubleUpAttackLState.Started -= OnProjectileAttackStarted;
+            _projectileDoubleUpAttackRState.Started -= OnProjectileAttackStarted;
+            _projectileTopAttackLState.Started -= OnProjectileAttackStarted;
+            _projectileTopAttackRState.Started -= OnProjectileAttackStarted;
+            _projectileDoubleDownAttackLState.Started -= OnProjectileAttackStarted;
+            _projectileDoubleDownAttackRState.Started -= OnProjectileAttackStarted;
             
             _tangleAttackLState.Started -= OnTangleAttackLStarted;
             _tangleAttackRState.Started -= OnTangleAttackRStarted;
@@ -209,27 +271,29 @@ namespace _GAME.Scripts.Enemies.Megaspider
             _tangleAttackRState.Ended -= OnTangleAttackEnded;
 
             _wireAttackState.Entered -= OnWireAttackStateEntered;
+            _wireAttackState.CollisionProximityEntered -= OnWireAttackCollisionProximityEntered;
+
+            _bounceState.Started -= OnBounceStateStarted;
+            _climbState.Started -= OnClimbStateStarted;
             
+            _swingLState.Started -= OnSwingStarted;
+            _swingRState.Started -= OnSwingStarted;
             _swingLState.Ended -= OnSwingEnded;
             _swingRState.Ended -= OnSwingEnded;
-
+            
+            _fallState.Started -= OnFallStateStarted;
             _successFallState.OutForceCancelled -= OnSuccessFallOutForceCancelled;
             _fallState.OutForceCancelled -= OnFailFallOutForceCancelled;
             _successFallState.Ended -= OnSuccessFallStateEnded;
             _fallState.Ended -= OnFailFallStateEnded;
+            _dropFallState.Started -= OnDropFallStateStarted;
             _dropFallState.Ended -= OnDropFallStateEnded;
 
             _climbState.Ended -= OnClimbStateEnded;
             
             _bounceState.Ended -= OnBounceStateEnded;
+            _deathFallState.Started -= OnDeathFallStateStarted;
             _deathFallState.Ended -= OnDeathStateEnded;
-        }
-
-        private void OnAnimatedAttackStarted()
-        {
-            _isAttackStateBeforeCollision = true;
-            _isCollided = false;
-            AnimatedAttackStarted?.Invoke();
         }
 
         private void CreateMovementStates()
@@ -277,7 +341,7 @@ namespace _GAME.Scripts.Enemies.Megaspider
             At(_enterRState, _zigzagAttackRState, IsAnimationEndedRandom1Of4());
             At(_enterRState, _projectileBottomAttackRState, IsAnimationEndedRandom2Of4());
             At(_enterRState, _projectileDoubleUpAttackRState, IsAnimationEndedRandom3Of4());
-            
+
             // Wire Attack Transitions
             At(_wireAttackState, _bounceState, IsCollided());
             At(_wireAttackState, _fallState, IsAttackEndedFail());
@@ -301,6 +365,8 @@ namespace _GAME.Scripts.Enemies.Megaspider
             At(_projectileBottomAttackRState, _projectileTopAttackLState, IsAnimationEndedRandom2Of4());
             At(_projectileBottomAttackLState, _hangJumpAttackRState, IsAnimationEndedRandom3Of4());
             At(_projectileBottomAttackRState, _hangJumpAttackLState, IsAnimationEndedRandom3Of4());
+            At(_projectileBottomAttackLState, _idleState, IsAnimationEndedLampDestroyed());
+            At(_projectileBottomAttackRState, _idleState, IsAnimationEndedLampDestroyed());
             
             // Projectile Double Up Transitions
             At(_projectileDoubleUpAttackLState, _wireAttackState, IsAnimationEndedRandom0Of6());
@@ -315,6 +381,8 @@ namespace _GAME.Scripts.Enemies.Megaspider
             At(_projectileDoubleUpAttackRState, _projectileTopAttackRState, IsAnimationEndedRandom4Of6());
             At(_projectileDoubleUpAttackLState, _projectileDoubleDownAttackLState, IsAnimationEndedRandom5Of6());
             At(_projectileDoubleUpAttackRState, _projectileDoubleDownAttackRState, IsAnimationEndedRandom5Of6());
+            At(_projectileDoubleUpAttackLState, _idleState, IsAnimationEndedLampDestroyed());
+            At(_projectileDoubleUpAttackRState, _idleState, IsAnimationEndedLampDestroyed());
             
             // Hang Attack Transitions
             At(_hangAttackLState, _bounceState, IsCollided());
@@ -349,6 +417,8 @@ namespace _GAME.Scripts.Enemies.Megaspider
             At(_projectileTopAttackRState, _hangJumpAttackLState, IsAnimationEndedRandom2Of4());
             At(_projectileTopAttackLState, _hangAttackRState, IsAnimationEndedRandom3Of4());
             At(_projectileTopAttackRState, _hangAttackLState, IsAnimationEndedRandom3Of4());
+            At(_projectileTopAttackLState, _idleState, IsAnimationEndedLampDestroyed());
+            At(_projectileTopAttackRState, _idleState, IsAnimationEndedLampDestroyed());
             
             // Projectile Double Down Attack Transitions
             At(_projectileDoubleDownAttackLState, _wireAttackState, IsAnimationEndedRandom0Of4());
@@ -359,6 +429,8 @@ namespace _GAME.Scripts.Enemies.Megaspider
             At(_projectileDoubleDownAttackRState, _projectileBottomAttackRState, IsAnimationEndedRandom2Of4());
             At(_projectileDoubleDownAttackLState, _projectileDoubleUpAttackLState, IsAnimationEndedRandom3Of4());
             At(_projectileDoubleDownAttackRState, _projectileDoubleUpAttackRState, IsAnimationEndedRandom3Of4());
+            At(_projectileDoubleDownAttackLState, _idleState, IsAnimationEndedLampDestroyed());
+            At(_projectileDoubleDownAttackRState, _idleState, IsAnimationEndedLampDestroyed());
             
             // Bounce Transitions
             At(_bounceState, _fallState, IsAttackEndedFail());
@@ -399,26 +471,29 @@ namespace _GAME.Scripts.Enemies.Megaspider
                 || _calculatedTransform.position.x > _swingZoneSize));
             
             // Swing Transitions
-            At(_swingLState, _wireAttackState, () => _swingLState.IsReadyToSwitch && Random.Range(0,4) == 0);
-            At(_swingRState, _wireAttackState, () => _swingRState.IsReadyToSwitch && Random.Range(0,4) == 0);
-            At(_swingLState, _zigzagAttackLState, () => _swingLState.IsReadyToSwitch && Random.Range(0,4) == 1);
-            At(_swingRState, _zigzagAttackRState, () => _swingRState.IsReadyToSwitch && Random.Range(0,4) == 1);
-            At(_swingLState, _projectileBottomAttackLState, () => _swingLState.IsReadyToSwitch && Random.Range(0,4) == 2);
-            At(_swingRState, _projectileBottomAttackRState, () => _swingRState.IsReadyToSwitch && Random.Range(0,4) == 2);
-            At(_swingLState, _projectileDoubleUpAttackLState, () => _swingLState.IsReadyToSwitch && Random.Range(0,4) == 3);
-            At(_swingRState, _projectileDoubleUpAttackRState, () => _swingRState.IsReadyToSwitch && Random.Range(0,4) == 3);
+            At(_swingLState, _wireAttackState, () => _swingLState.IsReadyToSwitch && Random.Range(0,4) == 0 && !_isLampDestroyed);
+            At(_swingRState, _wireAttackState, () => _swingRState.IsReadyToSwitch && Random.Range(0,4) == 0 && !_isLampDestroyed);
+            At(_swingLState, _zigzagAttackLState, () => _swingLState.IsReadyToSwitch && Random.Range(0,4) == 1 && !_isLampDestroyed);
+            At(_swingRState, _zigzagAttackRState, () => _swingRState.IsReadyToSwitch && Random.Range(0,4) == 1 && !_isLampDestroyed);
+            At(_swingLState, _projectileBottomAttackLState, () => _swingLState.IsReadyToSwitch && Random.Range(0,4) == 2 && !_isLampDestroyed);
+            At(_swingRState, _projectileBottomAttackRState, () => _swingRState.IsReadyToSwitch && Random.Range(0,4) == 2 && !_isLampDestroyed);
+            At(_swingLState, _projectileDoubleUpAttackLState, () => _swingLState.IsReadyToSwitch && Random.Range(0,4) == 3 && !_isLampDestroyed);
+            At(_swingRState, _projectileDoubleUpAttackRState, () => _swingRState.IsReadyToSwitch && Random.Range(0,4) == 3 && !_isLampDestroyed);
+            At(_swingLState, _idleState, () => _swingLState.IsReadyToSwitch && _isLampDestroyed);
+            At(_swingRState, _idleState, () => _swingLState.IsReadyToSwitch && _isLampDestroyed);
             
             // Climb Transitions
-            At(_climbState, _hangAttackLState, () => _climbState.IsReadyToSwitch && _calculatedTransform.position.x < 0 && Random.Range(0,5) == 0);
-            At(_climbState, _hangAttackRState, () => _climbState.IsReadyToSwitch && _calculatedTransform.position.x > 0 && Random.Range(0,5) == 0);
-            At(_climbState, _hangJumpAttackLState, () => _climbState.IsReadyToSwitch && _calculatedTransform.position.x < 0 && Random.Range(0,5) == 1);
-            At(_climbState, _hangJumpAttackRState, () => _climbState.IsReadyToSwitch && _calculatedTransform.position.x > 0 && Random.Range(0,5) == 1);
-            At(_climbState, _tangleAttackLState, () => _climbState.IsReadyToSwitch && _calculatedTransform.position.x < 0 && Random.Range(0,5) == 2);
-            At(_climbState, _tangleAttackRState, () => _climbState.IsReadyToSwitch && _calculatedTransform.position.x > 0 && Random.Range(0,5) == 3);
-            At(_climbState, _projectileTopAttackLState, () => _climbState.IsReadyToSwitch && _calculatedTransform.position.x < 0 && Random.Range(0,5) == 3);
-            At(_climbState, _projectileTopAttackRState, () => _climbState.IsReadyToSwitch && _calculatedTransform.position.x > 0 && Random.Range(0,5) == 3);
-            At(_climbState, _projectileDoubleDownAttackLState, () => _climbState.IsReadyToSwitch && _calculatedTransform.position.x < 0 && Random.Range(0,5) == 4);
-            At(_climbState, _projectileDoubleDownAttackRState, () => _climbState.IsReadyToSwitch && _calculatedTransform.position.x > 0 && Random.Range(0,5) == 4);
+            At(_climbState, _hangAttackLState, () => _climbState.IsReadyToSwitch && _calculatedTransform.position.x < 0 && Random.Range(0,5) == 0 && !_isLampDestroyed);
+            At(_climbState, _hangAttackRState, () => _climbState.IsReadyToSwitch && _calculatedTransform.position.x > 0 && Random.Range(0,5) == 0 && !_isLampDestroyed);
+            At(_climbState, _hangJumpAttackLState, () => _climbState.IsReadyToSwitch && _calculatedTransform.position.x < 0 && Random.Range(0,5) == 1 && !_isLampDestroyed);
+            At(_climbState, _hangJumpAttackRState, () => _climbState.IsReadyToSwitch && _calculatedTransform.position.x > 0 && Random.Range(0,5) == 1 && !_isLampDestroyed);
+            At(_climbState, _tangleAttackLState, () => _climbState.IsReadyToSwitch && _calculatedTransform.position.x < 0 && Random.Range(0,5) == 2 && !_isLampDestroyed);
+            At(_climbState, _tangleAttackRState, () => _climbState.IsReadyToSwitch && _calculatedTransform.position.x > 0 && Random.Range(0,5) == 3 && !_isLampDestroyed);
+            At(_climbState, _projectileTopAttackLState, () => _climbState.IsReadyToSwitch && _calculatedTransform.position.x < 0 && Random.Range(0,5) == 3 && !_isLampDestroyed);
+            At(_climbState, _projectileTopAttackRState, () => _climbState.IsReadyToSwitch && _calculatedTransform.position.x > 0 && Random.Range(0,5) == 3 && !_isLampDestroyed);
+            At(_climbState, _projectileDoubleDownAttackLState, () => _climbState.IsReadyToSwitch && _calculatedTransform.position.x < 0 && Random.Range(0,5) == 4 && !_isLampDestroyed);
+            At(_climbState, _projectileDoubleDownAttackRState, () => _climbState.IsReadyToSwitch && _calculatedTransform.position.x > 0 && Random.Range(0,5) == 4 && !_isLampDestroyed);
+            At(_climbState, _idleState, () => _climbState.IsReadyToSwitch && _isLampDestroyed);
 
             // Death Fall Transitions
             At(_deathFallState, _idleState, () => _deathFallState.IsReadyToSwitch); //+
@@ -430,7 +505,7 @@ namespace _GAME.Scripts.Enemies.Megaspider
             // Predicates 
             Func<bool> IsAnimationEndedRandom0Of4() => () =>
             {
-                if (_isAnimClipEnded && Random.Range(0, 4) == 0)
+                if (_isAnimClipEnded && Random.Range(0, 4) == 0 && !_isLampDestroyed)
                 {
                     _isAnimClipEnded = false;
                     return true;
@@ -440,7 +515,7 @@ namespace _GAME.Scripts.Enemies.Megaspider
             
             Func<bool> IsAnimationEndedRandom1Of4() => () =>
             {
-                if (_isAnimClipEnded && Random.Range(0, 4) == 1)
+                if (_isAnimClipEnded && Random.Range(0, 4) == 1 && !_isLampDestroyed)
                 {
                     _isAnimClipEnded = false;
                     return true;
@@ -450,7 +525,7 @@ namespace _GAME.Scripts.Enemies.Megaspider
             
             Func<bool> IsAnimationEndedRandom2Of4() => () =>
             {
-                if (_isAnimClipEnded && Random.Range(0, 4) == 2)
+                if (_isAnimClipEnded && Random.Range(0, 4) == 2 && !_isLampDestroyed)
                 {
                     _isAnimClipEnded = false;
                     return true;
@@ -460,7 +535,7 @@ namespace _GAME.Scripts.Enemies.Megaspider
             
             Func<bool> IsAnimationEndedRandom3Of4() => () =>
             {
-                if (_isAnimClipEnded && Random.Range(0, 4) == 3)
+                if (_isAnimClipEnded && Random.Range(0, 4) == 3 && !_isLampDestroyed)
                 {
                     _isAnimClipEnded = false;
                     return true;
@@ -470,7 +545,7 @@ namespace _GAME.Scripts.Enemies.Megaspider
             
             Func<bool> IsAnimationEndedRandom0Of6() => () =>
             {
-                if (_isAnimClipEnded && Random.Range(0, 6) == 0)
+                if (_isAnimClipEnded && Random.Range(0, 6) == 0 && !_isLampDestroyed)
                 {
                     _isAnimClipEnded = false;
                     return true;
@@ -480,7 +555,7 @@ namespace _GAME.Scripts.Enemies.Megaspider
             
             Func<bool> IsAnimationEndedRandom1Of6() => () =>
             {
-                if (_isAnimClipEnded && Random.Range(0, 6) == 1)
+                if (_isAnimClipEnded && Random.Range(0, 6) == 1 && !_isLampDestroyed)
                 {
                     _isAnimClipEnded = false;
                     return true;
@@ -490,7 +565,7 @@ namespace _GAME.Scripts.Enemies.Megaspider
             
             Func<bool> IsAnimationEndedRandom2Of6() => () =>
             {
-                if (_isAnimClipEnded && Random.Range(0, 6) == 2)
+                if (_isAnimClipEnded && Random.Range(0, 6) == 2 && !_isLampDestroyed)
                 {
                     _isAnimClipEnded = false;
                     return true;
@@ -500,7 +575,7 @@ namespace _GAME.Scripts.Enemies.Megaspider
             
             Func<bool> IsAnimationEndedRandom3Of6() => () =>
             {
-                if (_isAnimClipEnded && Random.Range(0, 6) == 3)
+                if (_isAnimClipEnded && Random.Range(0, 6) == 3 && !_isLampDestroyed)
                 {
                     _isAnimClipEnded = false;
                     return true;
@@ -510,7 +585,7 @@ namespace _GAME.Scripts.Enemies.Megaspider
             
             Func<bool> IsAnimationEndedRandom4Of6() => () =>
             {
-                if (_isAnimClipEnded && Random.Range(0, 6) == 4)
+                if (_isAnimClipEnded && Random.Range(0, 6) == 4 && !_isLampDestroyed)
                 {
                     _isAnimClipEnded = false;
                     return true;
@@ -520,7 +595,17 @@ namespace _GAME.Scripts.Enemies.Megaspider
             
             Func<bool> IsAnimationEndedRandom5Of6() => () =>
             {
-                if (_isAnimClipEnded && Random.Range(0, 6) == 5)
+                if (_isAnimClipEnded && Random.Range(0, 6) == 5 && !_isLampDestroyed)
+                {
+                    _isAnimClipEnded = false;
+                    return true;
+                }
+                return false;
+            };
+            
+            Func<bool> IsAnimationEndedLampDestroyed() => () =>
+            {
+                if (_isAnimClipEnded && _isLampDestroyed)
                 {
                     _isAnimClipEnded = false;
                     return true;
@@ -572,9 +657,16 @@ namespace _GAME.Scripts.Enemies.Megaspider
         public void Play()
         {
             _isCollided = false;
+            _isLampDestroyed = false;
             _attackResult = AttackResult.None;
             enabled = true;
             OnEnterStarted();
+        }
+
+        public void Reset()
+        {
+            _stateMachine.SetState(_idleState);
+            _wireAttackState.Reset();
         }
 
         public void TriggerFall(AttackResult attackResult)
@@ -587,6 +679,11 @@ namespace _GAME.Scripts.Enemies.Megaspider
             _isCollided = true;
         }
 
+        public void SetLampDestroyed()
+        {
+            _isLampDestroyed = true;
+        }
+
         private void OnEnterStarted()
         {
             int side = Random.Range(0, 2);
@@ -596,7 +693,7 @@ namespace _GAME.Scripts.Enemies.Megaspider
             else
                 _stateMachine.SetState(_enterRState);
             
-            // _stateMachine.SetState(_projectileTopAttackRState);
+            EnterStateStarted?.Invoke();
         }
 
         private void Update()
@@ -622,6 +719,36 @@ namespace _GAME.Scripts.Enemies.Megaspider
                         * (_fullCollisionDistance - _collisionThreshold);
                 }
             }
+        }
+
+        private void OnAnimatedAttackStarted()
+        {
+            _isAttackStateBeforeCollision = true;
+            _isCollided = false;
+            AnimatedAttackStarted?.Invoke();
+            if (_stateMachine.CurrentState == _zigzagAttackLState || _stateMachine.CurrentState == _zigzagAttackRState)
+            {
+                ZigzagAttackStateStarted?.Invoke();
+            }
+            else if (_stateMachine.CurrentState == _wireAttackState)
+            {
+                WireAttackStateStarted?.Invoke();
+            }
+            else if (_stateMachine.CurrentState == _hangAttackLState || _stateMachine.CurrentState == _hangAttackRState)
+            {
+                StartCoroutine(HangAttackStateStartedDelay());
+            }
+            else if (_stateMachine.CurrentState == _hangJumpAttackLState 
+                     || _stateMachine.CurrentState == _hangJumpAttackRState)
+            {
+                HangJumpAttackStateStarted?.Invoke();
+            }
+        }
+
+        private IEnumerator HangAttackStateStartedDelay()
+        {
+            yield return null;
+            HangAttackStateStarted?.Invoke();
         }
 
         private void OnAnimClipEnded()
@@ -749,5 +876,69 @@ namespace _GAME.Scripts.Enemies.Megaspider
         {
             WireAttackStateEntered?.Invoke(_wireAttackState);
         }
+
+        private void OnPreattackStarted()
+        {
+            PreAttackStarted?.Invoke();
+        }
+
+        private void OnProjectileAttackStarted()
+        {
+            ProjectileAttackStateStarted?.Invoke();
+            
+            if (_stateMachine.CurrentState is MegaspiderProjectileBottomAttackLState
+                || _stateMachine.CurrentState is MegaspiderProjectileBottomAttackRState) 
+                ProjectileBottomAttackStateStarted?.Invoke();
+            else if (_stateMachine.CurrentState is MegaspiderProjectileDoubleUpAttackLState
+                     || _stateMachine.CurrentState is MegaspiderProjectileDoubleUpAttackRState) 
+                ProjectileDoubleUpAttackStateStarted?.Invoke();
+            else if (_stateMachine.CurrentState is MegaspiderProjectileTopAttackLState
+                     || _stateMachine.CurrentState is MegaspiderProjectileTopAttackRState) 
+                ProjectileTopAttackStateStarted?.Invoke();
+            else if (_stateMachine.CurrentState is MegaspiderProjectileDoubleDownAttackLState
+                     || _stateMachine.CurrentState is MegaspiderProjectileDoubleDownAttackRState) 
+                ProjectileDoubleDownAttackStateStarted?.Invoke();
+        }
+
+        private void OnTanglePivotChanged(Vector3 pivotPosition)
+        {
+            TanglePivotChanged?.Invoke(pivotPosition);
+        }
+
+        private void OnBounceStateStarted()
+        {
+            BounceStateStarted?.Invoke();
+        }
+
+        private void OnClimbStateStarted()
+        {
+            ClimbStateStarted?.Invoke();
+        }
+
+        private void OnDeathFallStateStarted()
+        {
+            DeathStateStarted?.Invoke();
+        }
+
+        private void OnSwingStarted()
+        {
+            SwingStateStarted?.Invoke();
+        }
+
+        private void OnFallStateStarted()
+        {
+            FailFallStarted?.Invoke();
+        }
+
+        private void OnWireAttackCollisionProximityEntered()
+        {
+            WireCollisionProximityEntered?.Invoke();
+        }
+
+        private void OnDropFallStateStarted()
+        {
+            DropFallStarted?.Invoke();
+        }
     }
 }
+

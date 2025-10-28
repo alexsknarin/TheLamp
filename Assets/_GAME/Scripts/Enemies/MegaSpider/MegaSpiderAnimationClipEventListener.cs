@@ -18,6 +18,13 @@ namespace _GAME.Scripts.Enemies.Megaspider
         public event Action HangStartRequested;
         public event Action HangStopRequested;
         public event Action HangBreakRequested;
+        public event Action PreattackCalled;
+        public event Action AttackCalled;
+        public event Action ZigZag3Called;
+        public event Action ProjectileDoubleUp2Called;
+        public event Action ProjectileDoubleDown2Called;
+        public event Action HangJumpCalled;
+        public event Action HangJumpDiveCalled;
     
         public void ClipEnded()
         {
@@ -82,6 +89,41 @@ namespace _GAME.Scripts.Enemies.Megaspider
         public void RequestHangBreak()
         {
             HangBreakRequested?.Invoke();
+        }
+
+        public void CallPreattack()
+        {
+            PreattackCalled?.Invoke();
+        }
+        
+        public void CallAttack()
+        {
+            AttackCalled?.Invoke();
+        }
+        
+        public void CallZigZag3()
+        {
+            ZigZag3Called?.Invoke();
+        }
+        
+        public void CallProjectileDoubleUp2()
+        {
+            ProjectileDoubleUp2Called?.Invoke();
+        }
+        
+        public void CallProjectileDoubleDown2()
+        {
+            ProjectileDoubleDown2Called?.Invoke();
+        }
+        
+        public void CallHangJump()
+        {
+            HangJumpCalled?.Invoke();
+        }
+        
+        public void CallHangJumpDive()
+        {
+            HangJumpDiveCalled?.Invoke();
         }
     }
 }

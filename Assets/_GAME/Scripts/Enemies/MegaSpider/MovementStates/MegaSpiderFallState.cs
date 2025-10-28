@@ -50,6 +50,7 @@ namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
         }
 
 
+        public event Action Started;
         public event Action OutForceCancelled;
         public event Action Ended;
 
@@ -66,6 +67,7 @@ namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
             _outForceMagnitude = _initialOutForceMagnitude;
             _fallForceMagnitude = 0f;
             _outForceCancelled = false;
+            Started?.Invoke();
         }
 
         public override void Tick()

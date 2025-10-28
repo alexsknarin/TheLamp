@@ -27,20 +27,5 @@ namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
             )
         {
         }
-        
-        public event Action Started;
-        public event Action Ended;
-
-        public override void Enter()
-        {
-            base.Enter();
-            Started?.Invoke();
-        }
-
-        public override void Exit()
-        {
-            base.Exit();
-            Ended?.Invoke();
-        }
     }
 }

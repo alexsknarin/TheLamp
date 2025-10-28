@@ -1,6 +1,7 @@
 using System;
 using _GAME.Scripts.Enemies;
 using _GAME.Scripts.Enemies.MegaspiderProjectileSpider.MovementStates;
+using _GAME.Scripts.Enemies.MegaSpiderProjectileSpider.MovementStates;
 using _GAME.Scripts.Lib.Interfaces;
 using UnityEngine;
 
@@ -50,7 +51,10 @@ namespace _GAME.Scripts.Factories
             {
                 return new MegaspiderProjectileSpiderFallState(_bodyTransform, _lampTransform, -4f, false);
             }
-            
+            else if (stateType == typeof(MegaspiderProjectileSpiderFallLampDestroyedState))
+            {
+                return new MegaspiderProjectileSpiderFallLampDestroyedState(_bodyTransform, _lampTransform, -4f, true);
+            }
             return null;
         }
     }

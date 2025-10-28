@@ -51,6 +51,7 @@ namespace _GAME.Scripts.Enemies.Megaspider
             float duration,
             AnimationCurve vibrateFrequencyCurve,
             AnimationCurve vibrateAmplitudeCurve,
+            float amplitude,
             ref float localTime)
         {
             bool isFinished = false;
@@ -72,7 +73,8 @@ namespace _GAME.Scripts.Enemies.Megaspider
                 float u = 1 - resampledPhase;
                 float displace = Mathf.Sin(u * Mathf.PI) 
                                  * Mathf.Cos(phase * vibrateFrequencyCurve.Evaluate(phase))
-                                 * vibrateAmplitudeCurve.Evaluate(phase);
+                                 * vibrateAmplitudeCurve.Evaluate(phase)
+                                 * amplitude;
                 resampledPos += perpendicular * displace;
             
                 lineRenderer.SetPosition(i, resampledPos);

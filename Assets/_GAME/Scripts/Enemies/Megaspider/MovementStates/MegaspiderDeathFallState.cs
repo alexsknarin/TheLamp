@@ -54,6 +54,7 @@ namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
             _deathFallDuration = configService.GameConfig.MegaspiderDeathDuration;
         }
 
+        public event Action Started;
         public event Action Ended;
         
         public override void Enter()
@@ -68,6 +69,7 @@ namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
             _fallForceMagnitude = 0f;
             _currentSpeed = 1;
             _localTime = 0;
+            Started?.Invoke();
         }
 
         public override void Tick()

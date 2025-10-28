@@ -1,3 +1,4 @@
+using System;
 using _GAME.Scripts.Lib;
 using _GAME.Scripts.Lib.Interfaces;
 using Unity.Hierarchy;
@@ -31,7 +32,7 @@ namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
             _animatedTransform = animatedTransform;
             _isLeftSide = isLeftSide;
         }
-
+        public event Action Started;
         public override void Enter()
         {
             Vector3 scale = Vector3.one;
@@ -43,6 +44,7 @@ namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
             HierarchyUtilities.ParentWithoutOffset(_visibleBodyTransform, _animatedTransform);
             _animator.enabled = true;
             _animator.Play(_clipHash, -1, 0);
+            Started?.Invoke();
         }
 
         public override void Tick() { }

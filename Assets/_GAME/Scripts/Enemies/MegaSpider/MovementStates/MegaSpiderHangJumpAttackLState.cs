@@ -19,13 +19,5 @@ namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
                 isLeftSide)
         {
         }
-        
-        public event Action Started;
-
-        public override void Enter()
-        {
-            base.Enter();
-            Started?.Invoke();
-        }
     }
 }

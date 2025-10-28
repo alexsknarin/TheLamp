@@ -22,7 +22,6 @@ namespace _GAME.Scripts.Enemies.Megaspider
         [SerializeField] private MegaspiderAnimationClipEventListener _animationClipEvents;
         [SerializeField] private Transform _visibleBodyTransform;
         private Vector2 _projectedPosition;
-        private bool _isLampDestroyed;
         [SerializeField] private AttackResult _attackResult;
 
         // Dependencies
@@ -32,9 +31,9 @@ namespace _GAME.Scripts.Enemies.Megaspider
         public event Action<CollidableEnemy> AnimatedAttackStarted;
         public event Action Damaged;
         public event Action<int, int> HealthChanged;
-        public event Action Died;
+        public event Action Dead;
         public event Action SpreadRequested;
-        
+        public event Action Restarted;
         public event Action<CollidableEnemy> ProjectileShot;
         public event Action<Enemy, bool> ProjectileDeactivated;
 
@@ -81,13 +80,13 @@ namespace _GAME.Scripts.Enemies.Megaspider
         public override void Play()
         {
             IsGameOver = false;
-            _isLampDestroyed = false;
             _attackResult = AttackResult.Success;
             
             _currentHealth = _maxHealth;
             HealthChanged?.Invoke(_currentHealth, _maxHealth);
             
             _movement.Play();
+            _swarm.Play();
             Started?.Invoke();
             
             _swarm.HideProjectiles();
@@ -113,7 +112,7 @@ namespace _GAME.Scripts.Enemies.Megaspider
                     _attackResult = AttackResult.Death;
                     _currentHealth = 0; 
                     _movement.TriggerFall(_attackResult);
-                    Died?.Invoke();
+                    Dead?.Invoke();
                 }
             }
         }
@@ -143,13 +142,19 @@ namespace _GAME.Scripts.Enemies.Megaspider
                 _movement.TriggerFall(_attackResult);
             }
         }
+        
+        public override void ReturnToPool()
+        {
+            Restarted?.Invoke();
+            base.ReturnToPool();
+            _movement.Reset();
+        }
+
 
         public void HandleLampDestroyed()
         {
-            // _movement.SetLampDestroyed();
-            // _swarm.TriggerGameover();
-            
-            _isLampDestroyed = true;
+            _movement.SetLampDestroyed();
+            _swarm.SetLampDestroyed();
         }
 
         public override Vector3 ProvideImpactPoint()

@@ -53,6 +53,7 @@ namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
             _swingPivot = configService.GameConfig.MegaspiderSwingSwingPivot;
         }
         
+        public event Action Started;
         public event Action Ended;
         
         public override void Enter()
@@ -83,6 +84,8 @@ namespace _GAME.Scripts.Enemies.Megaspider.MovementStates
             {
                 _swingDirection = Vector3.right;
             }
+            
+            Started?.Invoke();
         }
 
         public override void Tick()

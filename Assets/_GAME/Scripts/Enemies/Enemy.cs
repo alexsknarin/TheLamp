@@ -36,7 +36,7 @@ namespace _GAME.Scripts.Enemies
         {
             ReturnToPool();
         }
-        public void ReturnToPool()
+        public virtual void ReturnToPool()
         {
             if (_objectPool != null)
                 _objectPool.Release(this);

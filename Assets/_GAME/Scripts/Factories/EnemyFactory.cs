@@ -8,6 +8,7 @@ using _GAME.Scripts.Enemies.Ladybug;
 using _GAME.Scripts.Enemies.Megabeetle;
 using _GAME.Scripts.Enemies.Megamothling;
 using _GAME.Scripts.Enemies.Megaspider;
+using _GAME.Scripts.Enemies.MegaSpider;
 using _GAME.Scripts.Enemies.Moth;
 using _GAME.Scripts.Enemies.Mothling;
 using _GAME.Scripts.Enemies.Spider;
@@ -396,6 +397,9 @@ namespace _GAME.Scripts.Factories
             enemy.Initialize();
             enemyInstance.GetComponent<MegaspiderSpiderwebController>().Construct(_gameConfigService);
             enemyInstance.GetComponent<MegaspiderSpiderwebController>().Initialize();
+            enemyInstance.GetComponent<MegaspiderPresentation>().Initialize();
+            enemyInstance.GetComponent<MegaspiderBodyRotationHandler>().Construct(_gameConfigService);
+            enemyInstance.GetComponent<MegaspiderBodyRotationHandler>().Initialize();
             
             return enemy;
         }
